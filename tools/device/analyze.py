@@ -11,6 +11,8 @@ Metric primitives:
 import re
 import sys
 import gzip
+import io
+import urllib.request
 from datetime import datetime
 
 LINE = re.compile(
@@ -21,16 +23,22 @@ WAKEUP = re.compile(r'sched_wakeup(?:_rt)?:.*?pid=(?P<pid>\d+)')
 
 
 def open_trace(path):
-    """Open a raw or gzip-compressed hitrace artifact as text."""
-    with open(path, 'rb') as probe:
-        compressed = probe.read(2) == b'\x1f\x8b'
-    return gzip.open(path, 'rt', errors='replace') if compressed else open(
-        path, 'r', errors='replace')
+    """Open a raw or gzip-compressed local or GitHub Release artifact."""
+    path = str(path)
+    if path.startswith(('https://', 'http://')):
+        raw = io.BytesIO(urllib.request.urlopen(path, timeout=120).read())
+    else:
+        raw = open(path, 'rb')
+    compressed = raw.read(2) == b'\x1f\x8b'
+    raw.seek(0)
+    if compressed:
+        return io.TextIOWrapper(gzip.GzipFile(fileobj=raw), errors='replace')
+    return io.TextIOWrapper(raw, errors='replace')
 
 
 def _clean(hlog_path):
-    """hilog tee files may embed NUL markers; strip them per line."""
-    with open(hlog_path, 'r', errors='replace') as f:
+    """Read raw/gzipped local or Release hilog; strip embedded NUL markers."""
+    with open_trace(hlog_path) as f:
         for line in f:
             yield line.replace('\x00', '')
 
