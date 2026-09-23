@@ -1,3 +1,9 @@
 toolchain/
 hosts/*/
 *.log
+# device verification working files
+tools/.sign_material.json
+results/*.chtrace
+results/*.png
+results/*.json
+results/*.hlog
