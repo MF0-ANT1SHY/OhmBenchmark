@@ -1,0 +1,43 @@
+diff --git a/entry/src/main/ets/utils/RdbUtils.ets b/entry/src/main/ets/utils/RdbUtils.ets
+index 5f3c789..7ac3795 100644
+--- a/entry/src/main/ets/utils/RdbUtils.ets
++++ b/entry/src/main/ets/utils/RdbUtils.ets
+@@ -166,22 +166,24 @@ export default class RdbUtils {
+ 
+   static async deleteAll() {
+     const dateList: string[] = await RdbUtils.queryAllDate()
+-    for (const date of dateList) {
+-      const tableName = "history_" + date
+-      // 逐条删除各日期分表中的浏览记录
+-      let resultSet: relationalStore.ResultSet | null = null
++
++    const store = RdbUtils.getStore()
++    try {
++      // 所有删除放在同一个事务中提交，避免每条 DELETE 单独落盘
++      store.beginTransaction()
++      for (const date of dateList) {
++        const tableName = "history_" + date
++        await store.executeSql(`DELETE FROM ${tableName}`)
++        await store.executeSql(`DELETE FROM date_table WHERE date = '${date}'`)
++      }
++      store.commit()
++    } catch (error) {
+       try {
+-        resultSet = await RdbUtils.getStore().querySql(`SELECT id FROM ${tableName}`)
+-        while (resultSet.goToNextRow()) {
+-          const id = resultSet.getLong(resultSet.getColumnIndex("id"))
+-          await RdbUtils.getStore().executeSql(`DELETE FROM ${tableName} WHERE id = ${id}`)
+-        }
+-      } catch (error) {
+-        console.error(`清理历史记录异常： ${error.code}，失败信息： ${error.message}`)
+-      } finally {
+-        resultSet?.close()
++        store.rollBack()
++      } catch (rollbackError) {
++        console.error(`回滚事务异常： ${rollbackError}`)
+       }
+-      await RdbUtils.getStore().executeSql(`DELETE FROM date_table WHERE date = '${date}'`)
++      console.error(`清理历史记录异常： ${error.code}，失败信息： ${error.message}`)
+     }
+ 
+     RdbUtils.knownDates.clear()

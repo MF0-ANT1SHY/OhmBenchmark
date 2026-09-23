@@ -1,0 +1,38 @@
+{
+  "id": "browser_insert_date_lookup_cache",
+  "host_app": {
+    "name": "browser (小狐狸浏览器)",
+    "repository": "https://github.com/langwudong/browser",
+    "bundle_name": "com.example.nanvision",
+    "local_path": "hosts/browser",
+    "base_branch": "ohmbase",
+    "base_commit": "c42e4b3"
+  },
+  "android_source_case": "fdroid_category_id_cache",
+  "android_mechanism": "Repeated category-ID lookup executed for every imported row; fix caches IDs in memory",
+  "category": "latency",
+  "bug_description": "Every time a page finishes loading, onSaveHistory -> RdbUtils.insertDate re-queries the date_table for the current date and re-runs CREATE TABLE IF NOT EXISTS for the per-day history table, even though the same date is looked up on every save within a session. The redundant query + DDL run on each page navigation and add avoidable RDB round-trips to the page-save path.",
+  "perf_scenarios": ["状态更新", "数据库读取"],
+  "unfixed_commit": "e3c8aa9",
+  "fixed_commit": "9138921",
+  "fix_summary": "Cache already-verified per-day tables in an in-memory Set (RdbUtils.knownDates); insertDate returns early on cache hit, and deleteAll clears the cache.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Install and launch the app; start hitrace capture (categories: ace, app, disk).",
+    "Browse 20 pages sequentially through the address bar (each page load triggers onSaveHistory).",
+    "Stop hitrace; repeat 3 repetitions for unfixed; then install the fixed HAP and repeat 3 repetitions identically."
+  ],
+  "test_oracle": {
+    "metric": "rdb_statements_per_page_save",
+    "definition": "Count of RDB statement executions attributable to history saving (date_table SELECT + CREATE TABLE + history INSERT) per page load, from disk/sqlite activity in the hitrace trace or RDB debug logs.",
+    "comparison": "unfixed: >= 3 statements per page save after the first (SELECT + CREATE TABLE + INSERT); fixed: 1 statement per page save (INSERT only). Overall page-save wall time in trace drops accordingly."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 30 ace app sched disk -o /data/local/tmp/browser_insertdate.chtrace",
+    "window_ms": 30000
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "browser_history_delete_no_transaction",
+  "host_app": {
+    "name": "browser (小狐狸浏览器)",
+    "repository": "https://github.com/langwudong/browser",
+    "bundle_name": "com.example.nanvision",
+    "local_path": "hosts/browser",
+    "base_branch": "ohmbase",
+    "base_commit": "c42e4b3"
+  },
+  "android_source_case": "portauthority_oui_import_transactions",
+  "android_mechanism": "OUI CSV import commits each row separately; fix batches all inserts into one transaction",
+  "category": "latency",
+  "bug_description": "Clearing browsing history (settings -> clear history) walks every per-day history table, selects all row IDs and executes one standalone DELETE statement per row, each in its own implicit transaction (autocommit). With hundreds of history entries this causes hundreds of individual journal/fsync cycles, making the clear operation and the following UI freeze noticeably long.",
+  "perf_scenarios": ["数据库读取", "状态更新"],
+  "unfixed_commit": "28a458b",
+  "fixed_commit": "52bc232",
+  "fix_summary": "All clear-history DELETE statements are wrapped in a single RDB transaction (beginTransaction/commit with rollback on error): one bulk DELETE per table inside one commit.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Seed the app with a large history (browse ~100 pages across several days).",
+    "Start hitrace capture (categories: app, sched, disk, filesystem).",
+    "Open settings dialog and tap 清除浏览记录 (clear browsing history).",
+    "Wait until the history dialog shows no entries. Stop hitrace. Repeat 3 repetitions for unfixed, then install fixed and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "clear_history_wall_time_ms",
+    "definition": "Time from the clear-button tap event (input dispatch in trace) to completion of the last RDB write observed in disk activity.",
+    "comparison": "unfixed shows one sqlite fsync/journal cycle per deleted row; fixed shows a single commit. unfixed_clear_history_wall_time_ms > fixed_clear_history_wall_time_ms by >= 2x with 100+ entries."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 20 app sched disk filesystem -o /data/local/tmp/browser_clearhist.chtrace",
+    "window_ms": 20000
+  }
+}
