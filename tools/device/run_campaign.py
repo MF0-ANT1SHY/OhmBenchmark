@@ -52,6 +52,7 @@ def trace_has_data(path, pid=None, min_bytes=500_000):
 
 
 def run_case(case_id, reps=REPS):
+    ohb.shell('power-shell wakeup')
     ctx = tc.Ctx(case_id)
     rec = {'case': case_id, 'host': ctx.case['host_app']['local_path'], 'ts': time.time()}
     seed_fn = tc.SEEDS.get(case_id)

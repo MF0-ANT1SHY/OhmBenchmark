@@ -36,6 +36,16 @@ def main():
     case = json.load(open(os.path.join(REPO, 'cases', case_id, 'case.json')))
     host_dir = os.path.join(REPO, case['host_app']['local_path'])
     commit = case[f'{variant}_commit']
+    # patch-reconstructed hosts (ytmusic) get different hashes than case.json;
+    # commit_map.json maps case_id/variant -> local hash
+    map_path = os.path.join(HERE, 'commit_map.json')
+    if os.path.exists(map_path):
+        cmap = json.load(open(map_path)).get(case_id)
+        if cmap and cmap.get(variant):
+            rc = subprocess.run(['git', '-C', host_dir, 'cat-file', '-e', commit],
+                                capture_output=True)
+            if rc.returncode != 0:
+                commit = cmap[variant]
     status = {'case': case_id, 'variant': variant, 'commit': commit, 'ts': time.time()}
 
     if not skip_build:
