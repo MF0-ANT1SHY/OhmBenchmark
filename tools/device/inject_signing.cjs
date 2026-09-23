@@ -44,11 +44,50 @@ if (fs.existsSync(appJsonPath)) {
   const app = appFile.app || appFile;
   const old = app.bundleName;
   app.bundleName = mat.bundle;
+  // hosts ship different versionCodes; a shared bundle name needs one value or
+  // host-to-host switches fail with "install version downgrade"
+  app.versionCode = 1000000;
   delete appFile.bundleName; // in case an earlier bad run wrote it top-level
   fs.writeFileSync(appJsonPath, JSON.stringify(appFile, null, 2) + '\n');
-  console.log(`bundleName: ${old} -> ${mat.bundle}`);
+  console.log(`bundleName: ${old} -> ${mat.bundle} (versionCode=1000000)`);
 } else {
   // FA model or unusual layout: fail loudly so we notice.
   console.error('WARN: AppScope/app.json5 not found at ' + appJsonPath);
 }
+
+// Module-level compatibility for real-phone debug installs:
+//  - add "phone" to deviceTypes (some hosts declare tablet/2in1 only)
+//  - drop restricted permissions a normal debug profile cannot be granted
+//    (SYSTEM_FLOAT_WINDOW = desktop-lyrics feature; not exercised by cases)
+const RESTRICTED = new Set(['ohos.permission.SYSTEM_FLOAT_WINDOW']);
+function walk(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) walk(p);
+    else if (e.name === 'module.json5') {
+      const m = json5.parse(fs.readFileSync(p, 'utf8'));
+      let changed = [];
+      const mod = m.module || m;
+      if (Array.isArray(mod.deviceTypes) && !mod.deviceTypes.includes('phone')) {
+        mod.deviceTypes.push('phone');
+        changed.push('+phone');
+      }
+      if (Array.isArray(mod.requestPermissions)) {
+        const before = mod.requestPermissions.length;
+        mod.requestPermissions = mod.requestPermissions.filter(
+          (r) => !RESTRICTED.has(r.name));
+        if (mod.requestPermissions.length !== before) changed.push('-SYSTEM_FLOAT_WINDOW');
+      }
+      if (changed.length) {
+        fs.writeFileSync(p, JSON.stringify(m, null, 2) + '\n');
+        console.log(`module.json5 ${p.replace(hostDir, '')}: ${changed.join(' ')}`);
+      }
+    }
+  }
+}
+walk(path.join(hostDir, 'entry'));
+const productsDir = path.join(hostDir, 'products');
+if (fs.existsSync(productsDir)) walk(productsDir);
+const featuresDir = path.join(hostDir, 'features');
+if (fs.existsSync(featuresDir)) walk(featuresDir);
 console.log('signing config injected into ' + bpPath);
