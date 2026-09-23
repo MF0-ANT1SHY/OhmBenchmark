@@ -1,0 +1,116 @@
+From e3c8aa99fd6a93333a9e906216545861aec07456 Mon Sep 17 00:00:00 2001
+From: mike <dust@to.com>
+Date: Wed, 23 Sep 2026 12:38:05 +0800
+Subject: [PATCH 2/6] perf: load browsing history lazily when the history
+ dialog first opens instead of eagerly querying all history tables during app
+ startup
+
+---
+ entry/src/main/ets/pages/Index.ets      |  6 +---
+ entry/src/main/ets/utils/RdbUtils.ets   | 38 ++++++++++++-------------
+ entry/src/main/ets/view/PagesDialog.ets |  8 ++++++
+ 3 files changed, 27 insertions(+), 25 deletions(-)
+
+diff --git a/entry/src/main/ets/pages/Index.ets b/entry/src/main/ets/pages/Index.ets
+index 4395494..6c6be76 100644
+--- a/entry/src/main/ets/pages/Index.ets
++++ b/entry/src/main/ets/pages/Index.ets
+@@ -61,11 +61,7 @@ struct Index {
+   async aboutToAppear() {
+     console.debug("项目正在启动")
+ 
+-    const allDate: string[] = await RdbUtils.queryAllDate()
+-
+-    allDate.forEach(async date => {
+-      this.historyMap.set(date, await RdbUtils.queryHistoriesByDate(date))
+-    })
++    // 历史记录改为在首次打开浏览记录弹窗时按需加载（见 PagesDialog），避免启动阶段全量查询数据库
+ 
+     // 开启软键盘高度变化的监听
+     window.getLastWindow(getContext(this), (err, data) => {
+diff --git a/entry/src/main/ets/utils/RdbUtils.ets b/entry/src/main/ets/utils/RdbUtils.ets
+index 1a0daad..fc11825 100644
+--- a/entry/src/main/ets/utils/RdbUtils.ets
++++ b/entry/src/main/ets/utils/RdbUtils.ets
+@@ -112,34 +112,32 @@ export default class RdbUtils {
+ 
+   static async queryHistoriesByDate(date: string) {
+     date = "history_" + date
+-    let predicates = new relationalStore.RdbPredicates(date);
++    const predicates = new relationalStore.RdbPredicates(date);
+ 
+     let histories: History[] = []
+ 
+-    RdbUtils.getStore().query(predicates, []).then(async (resultSet: relationalStore.ResultSet) => {
+-      console.info(`ResultSet column names: ${resultSet.columnNames}, column count: ${resultSet.columnCount}`)
++    let resultSet: relationalStore.ResultSet | null = null
+ 
+-      try {
+-        while (resultSet.goToNextRow()) {
+-          const id = resultSet.getLong(resultSet.getColumnIndex("id"));
+-          const title = resultSet.getString(resultSet.getColumnIndex("title"));
+-          const url = resultSet.getString(resultSet.getColumnIndex("url"));
+-          const timestamp = resultSet.getString(resultSet.getColumnIndex("timestamp"));
++    try {
++      resultSet = await RdbUtils.getStore().query(predicates, [])
+ 
+-          console.info(`查询到记录：id = ${id}, title = ${title}, url = ${url}, timestamp = ${timestamp}`)
++      while (resultSet.goToNextRow()) {
++        const id = resultSet.getLong(resultSet.getColumnIndex("id"));
++        const title = resultSet.getString(resultSet.getColumnIndex("title"));
++        const url = resultSet.getString(resultSet.getColumnIndex("url"));
++        const timestamp = resultSet.getString(resultSet.getColumnIndex("timestamp"));
+ 
+-          let history: History = new History(title, url, timestamp)
+-          history.setId(id)
++        let history: History = new History(title, url, timestamp)
++        history.setId(id)
+ 
+-          histories.unshift(history)
+-        }
+-      } catch (error) {
+-        console.error(`查询异常，失败代码： ${error.code}，失败信息： ${error.message}`);
+-      } finally {
+-        // 释放数据集的内存，若不释放可能会引起 fd 泄露与内存泄露
+-        resultSet.close()
++        histories.unshift(history)
+       }
+-    })
++    } catch (error) {
++      console.error(`查询异常，失败代码： ${error.code}，失败信息： ${error.message}`);
++    } finally {
++      // 释放数据集的内存，若不释放可能会引起 fd 泄露与内存泄露
++      resultSet?.close()
++    }
+ 
+     return histories
+   }
+diff --git a/entry/src/main/ets/view/PagesDialog.ets b/entry/src/main/ets/view/PagesDialog.ets
+index efac653..b117b24 100644
+--- a/entry/src/main/ets/view/PagesDialog.ets
++++ b/entry/src/main/ets/view/PagesDialog.ets
+@@ -1,6 +1,7 @@
+ import History from '../common/bean/History'
+ import { HistoryGroup } from '../common/constants/CommonConstants'
+ import HistoryItem from './HistoryItem'
++import RdbUtils from '../utils/RdbUtils'
+ 
+ @CustomDialog
+ export default struct PagesDialog {
+@@ -17,6 +18,13 @@ export default struct PagesDialog {
+ 
+   async loadHistoryData() {
+     try {
++      // 历史记录按需加载：仅当内存中还没有加载过时才查询数据库
++      if (this.historyMap.size === 0) {
++        const allDate: string[] = await RdbUtils.queryAllDate()
++        for (const date of allDate) {
++          this.historyMap.set(date, await RdbUtils.queryHistoriesByDate(date))
++        }
++      }
+       this.historyGroups = []
+       this.historyGroups = Array.from(this.historyMap.entries()).map((item) => ({
+         date: item[0],
+-- 
+2.34.1
+

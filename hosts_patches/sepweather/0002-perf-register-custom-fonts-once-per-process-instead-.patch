@@ -1,0 +1,52 @@
+From e720e2150a6a062c85ccbe8269399d4edc6e7300 Mon Sep 17 00:00:00 2001
+From: mike <dust@to.com>
+Date: Wed, 23 Sep 2026 12:54:06 +0800
+Subject: [PATCH 2/2] perf: register custom fonts once per process instead of
+ re-loading the TTFs on every MainPage creation
+
+---
+ entry/src/main/ets/pages/MainPage.ets | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
+
+diff --git a/entry/src/main/ets/pages/MainPage.ets b/entry/src/main/ets/pages/MainPage.ets
+index 01f7a39..ff364cf 100644
+--- a/entry/src/main/ets/pages/MainPage.ets
++++ b/entry/src/main/ets/pages/MainPage.ets
+@@ -26,17 +26,24 @@ struct MainPage {
+     @State focusIndex: number = 0
+     private tabsController: TabsController = new TabsController()
+ 
++    // 字体只需在每个进程中注册一次；页面重建时跳过重复注册，避免重复加载与解析 TTF
++    private static fontsRegistered: boolean = false
++
+     aboutToAppear(): void {
+-        // 注册字体
+-        font.registerFont({
+-            familyName: 'sepifont',
+-            familySrc: $rawfile('iconfont.ttf')
+-        });
+-
+-        font.registerFont({
+-            familyName: 'DINCOROS',
+-            familySrc: $rawfile('DINCOROS-Regular.ttf')
+-        });
++        if (!MainPage.fontsRegistered) {
++            // 注册字体
++            font.registerFont({
++                familyName: 'sepifont',
++                familySrc: $rawfile('iconfont.ttf')
++            });
++
++            font.registerFont({
++                familyName: 'DINCOROS',
++                familySrc: $rawfile('DINCOROS-Regular.ttf')
++            });
++
++            MainPage.fontsRegistered = true;
++        }
+     }
+ 
+     onPageShow(): void {
+-- 
+2.34.1
+

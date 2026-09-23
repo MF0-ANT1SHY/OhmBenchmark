@@ -1,0 +1,99 @@
+From 5bf6142f76af3ff2fd25b6f731a27fee6b838346 Mon Sep 17 00:00:00 2001
+From: mike <dust@to.com>
+Date: Wed, 23 Sep 2026 12:35:26 +0800
+Subject: [PATCH 1/4] build: move README screenshots out of resources and strip
+ local signing configs for headless CI build
+
+---
+ .../Screenshot_2024-07-11T121726.png           | Bin
+ .../Screenshot_2024-07-11T121748.png           | Bin
+ .../Screenshot_2024-07-11T121758.png           | Bin
+ .../Screenshot_2024-07-11T121852.png           | Bin
+ .../Screenshot_2024-07-11T121919.png           | Bin
+ .../Screenshot_2024-07-11T121941.png           | Bin
+ .../Screenshot_2024-07-11T121951.png           | Bin
+ build-profile.json5                            |  17 +----------------
+ oh-package-lock.json5                          |   3 ++-
+ 9 files changed, 3 insertions(+), 17 deletions(-)
+ rename {entry/src/main/resources/README_img => README_img}/Screenshot_2024-07-11T121726.png (100%)
+ rename {entry/src/main/resources/README_img => README_img}/Screenshot_2024-07-11T121748.png (100%)
+ rename {entry/src/main/resources/README_img => README_img}/Screenshot_2024-07-11T121758.png (100%)
+ rename {entry/src/main/resources/README_img => README_img}/Screenshot_2024-07-11T121852.png (100%)
+ rename {entry/src/main/resources/README_img => README_img}/Screenshot_2024-07-11T121919.png (100%)
+ rename {entry/src/main/resources/README_img => README_img}/Screenshot_2024-07-11T121941.png (100%)
+ rename {entry/src/main/resources/README_img => README_img}/Screenshot_2024-07-11T121951.png (100%)
+
+diff --git a/entry/src/main/resources/README_img/Screenshot_2024-07-11T121726.png b/README_img/Screenshot_2024-07-11T121726.png
+similarity index 100%
+rename from entry/src/main/resources/README_img/Screenshot_2024-07-11T121726.png
+rename to README_img/Screenshot_2024-07-11T121726.png
+diff --git a/entry/src/main/resources/README_img/Screenshot_2024-07-11T121748.png b/README_img/Screenshot_2024-07-11T121748.png
+similarity index 100%
+rename from entry/src/main/resources/README_img/Screenshot_2024-07-11T121748.png
+rename to README_img/Screenshot_2024-07-11T121748.png
+diff --git a/entry/src/main/resources/README_img/Screenshot_2024-07-11T121758.png b/README_img/Screenshot_2024-07-11T121758.png
+similarity index 100%
+rename from entry/src/main/resources/README_img/Screenshot_2024-07-11T121758.png
+rename to README_img/Screenshot_2024-07-11T121758.png
+diff --git a/entry/src/main/resources/README_img/Screenshot_2024-07-11T121852.png b/README_img/Screenshot_2024-07-11T121852.png
+similarity index 100%
+rename from entry/src/main/resources/README_img/Screenshot_2024-07-11T121852.png
+rename to README_img/Screenshot_2024-07-11T121852.png
+diff --git a/entry/src/main/resources/README_img/Screenshot_2024-07-11T121919.png b/README_img/Screenshot_2024-07-11T121919.png
+similarity index 100%
+rename from entry/src/main/resources/README_img/Screenshot_2024-07-11T121919.png
+rename to README_img/Screenshot_2024-07-11T121919.png
+diff --git a/entry/src/main/resources/README_img/Screenshot_2024-07-11T121941.png b/README_img/Screenshot_2024-07-11T121941.png
+similarity index 100%
+rename from entry/src/main/resources/README_img/Screenshot_2024-07-11T121941.png
+rename to README_img/Screenshot_2024-07-11T121941.png
+diff --git a/entry/src/main/resources/README_img/Screenshot_2024-07-11T121951.png b/README_img/Screenshot_2024-07-11T121951.png
+similarity index 100%
+rename from entry/src/main/resources/README_img/Screenshot_2024-07-11T121951.png
+rename to README_img/Screenshot_2024-07-11T121951.png
+diff --git a/build-profile.json5 b/build-profile.json5
+index 3323b12..896d35a 100644
+--- a/build-profile.json5
++++ b/build-profile.json5
+@@ -1,24 +1,9 @@
+ {
+   "app": {
+-    "signingConfigs": [
+-      {
+-        "name": "default",
+-        "type": "HarmonyOS",
+-        "material": {
+-          "certpath": "/Users/charles_stark/.ohos/config/default_MyApplication_O887-5vEKkq8O-9eT-okonbg7LihoNzzelcOF3duhUg=.cer",
+-          "storePassword": "0000001B4D3A5E2BFBD4F65113DDA5C8664B9F406ED7537293E6CB494C757B3DF0072A6F00F107D19AE2CC",
+-          "keyAlias": "debugKey",
+-          "keyPassword": "0000001BA2DBE2154B38FAFAEAB8F09B96CFC74C072B683A0AC1DDA04C311BCC17282D3F352422177E1E40",
+-          "profile": "/Users/charles_stark/.ohos/config/default_MyApplication_O887-5vEKkq8O-9eT-okonbg7LihoNzzelcOF3duhUg=.p7b",
+-          "signAlg": "SHA256withECDSA",
+-          "storeFile": "/Users/charles_stark/.ohos/config/default_MyApplication_O887-5vEKkq8O-9eT-okonbg7LihoNzzelcOF3duhUg=.p12"
+-        }
+-      }
+-    ],
++    "signingConfigs": [],
+     "products": [
+       {
+         "name": "default",
+-        "signingConfig": "default",
+         "compatibleSdkVersion": "5.0.0(12)",
+         "runtimeOS": "HarmonyOS",
+       }
+diff --git a/oh-package-lock.json5 b/oh-package-lock.json5
+index 55d0357..7d3169d 100644
+--- a/oh-package-lock.json5
++++ b/oh-package-lock.json5
+@@ -1,6 +1,7 @@
+ {
+   "meta": {
+-    "stableOrder": true
++    "stableOrder": true,
++    "enableUnifiedLockfile": false
+   },
+   "lockfileVersion": 3,
+   "ATTENTION": "THIS IS AN AUTOGENERATED FILE. DO NOT EDIT THIS FILE DIRECTLY.",
+-- 
+2.34.1
+
