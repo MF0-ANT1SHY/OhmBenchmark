@@ -1,0 +1,39 @@
+{
+  "id": "cloudmusic_local_song_memory_filter",
+  "host_app": {
+    "name": "CloudMusic-HarmonyOSNext (仿网易云音乐)",
+    "repository": "https://github.com/Chenlvin/CloudMusic-HarmonyOSNext",
+    "bundle_name": "cc.chenlvin.cloudmusic",
+    "local_path": "hosts/cloudmusic",
+    "base_branch": "ohmbase",
+    "base_commit": "f8fd90d"
+  },
+  "android_source_case": "voipms_sql_message_filter",
+  "android_mechanism": "Conversation messages filtered in memory after materialization; fix filters in SQLite",
+  "category": "latency",
+  "bug_description": "Searching local songs materializes the entire songs table via getAllSongs() (already loaded in full by the page) and then filters with Array.filter over songFile strings in memory for every search submission. With a large local library the search does O(total_songs) string work on the UI path instead of an indexed SQLite LIKE query that returns only matching rows.",
+  "perf_scenarios": ["数据库读取", "状态更新"],
+  "unfixed_commit": "a967ef1",
+  "fixed_commit": "2aa4715",
+  "fix_summary": "A getSongsByKeyword query (RdbPredicates.like on songFile, with LIKE-wildcard escaping) performs the filtering in SQLite; the page search handler awaits it directly instead of filtering the full in-memory list.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Upload/seed a large local library (hundreds of audio files) via the local-songs page upload dialog.",
+    "Start hitrace capture (categories: app, sched, disk, database).",
+    "Submit a keyword search in the local songs page; repeat the same search 5 times.",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "search_result_latency_ms",
+    "definition": "Time from search submit event to filtered data source update (first query completion in database trace), averaged over 5 identical searches.",
+    "comparison": "unfixed scans all rows in memory (CPU grows with library size); fixed returns only matching rows from SQLite. With >= 300 local songs, unfixed_avg_ms > fixed_avg_ms."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 20 app sched disk database -o /data/local/tmp/cm_localsong.chtrace",
+    "window_ms": 20000
+  }
+}
