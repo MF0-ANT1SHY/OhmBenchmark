@@ -1,5 +1,5 @@
 import { describe, it } from '@ohos/hypium';
-import { Driver, Component, On } from '@ohos.UiTest';
+import { Driver, Component, On, MatchPattern } from '@ohos.UiTest';
 
 /**
  * OHB reproducible UI flows for the browser host (小狐狸浏览器).
@@ -71,6 +71,20 @@ export default function ohbBrowserTest() {
       await sleep(1200);
       await driver.assertComponentExist(new On().text('浏览记录'));
       console.info(`${TAG} openHistory ok`);
+    })
+
+    it('openHistoryMeasure', 0, async () => {
+      // Time from the history-button tap to the first history ROW rendering.
+      // Data load is identical in both variants; the delta is the row-build
+      // strategy (plain ForEach builds every row vs LazyForEach viewport).
+      const driver: Driver = Driver.create();
+      await waitHome(driver);
+      await sleep(800);
+      const t0 = Date.now();
+      await driver.click(630, 2615);
+      await driver.waitForComponent(new On().text('OhmBench', MatchPattern.CONTAINS), 60000);
+      console.info(`${TAG} openHistory firstRowMs=${Date.now() - t0}`);
+      await sleep(2500); // let remaining build work land inside the capture
     })
 
     it('scrollHistory', 0, async () => {

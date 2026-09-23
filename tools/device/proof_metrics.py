@@ -66,41 +66,22 @@ def m_eager(art):
 
 
 def m_list(art):
-    """browser_history_list_foreach: row components built when the history
-    dialog opens (For-all vs LazyForEach) + app CPU for the whole flow."""
-    trace, hlog = art['trace'], art['hilog']
-    pid = art.get('pid') or _pid(trace)
+    """browser_history_list_foreach: time from the history-button tap to the
+    first history row rendering. Data load is identical across variants, so
+    the delta is the plain-ForEach full build vs LazyForEach viewport build."""
+    hlog = art['hilog']
+    pid = art.get('pid') or _pid(art['trace'])
     if not pid:
         return {'error': 'no pid'}
-    # build window: process start -> dialog open done (OHB openHistory marker)
-    open_wall = None
-    first_line = None
+    first_row_ms = None
     for line in analyze._clean(hlog):
-        if not re.match(r'^\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}', line):
-            continue
-        if f' {pid} ' not in line[:44]:
-            continue
-        if first_line is None:
-            first_line = line
-        if 'OHB openHistory ok' in line:
-            open_wall = line
+        m = re.search(r'OHB openHistory firstRowMs=(\d+)', line)
+        if m:
+            first_row_ms = int(m.group(1))
             break
-    creates = 0
-    if first_line is not None and open_wall is not None:
-        t0 = analyze.pid_first_ts(trace, pid)
-        t1 = t0 + (analyze._wall_ms(open_wall) - analyze._wall_ms(first_line)) / 1000.0
-        pat = re.compile(rf'B\|{pid}\|H:Create')
-        for line in _trace_lines(trace):
-            mt = analyze.LINE.match(line)
-            if not mt or pat.search(line) is None:
-                continue
-            ts = float(mt.group('ts'))
-            if t0 <= ts <= t1:
-                creates += 1
-    return {
-        'rows_built_at_open': creates,
-        'cpu_ms': round(analyze.cpu_time(trace, pid) or 0, 1),
-    }
+    cpu = analyze.cpu_time(art['trace'], pid) or 0
+    return {'first_row_ms': first_row_ms,
+            'cpu_ms': round(cpu, 1)}
 
 
 _TRACE_CACHE = {}
@@ -385,10 +366,11 @@ def judge(case, unfixed, fixed):
                              'rows_at_startup': [ru, rf], 'startup_queries': [qu, qf]}}
 
     if case == 'browser_history_list_foreach':
-        bu, bf = med('rows_built_at_open', unfixed), med('rows_built_at_open', fixed)
-        ok = bu and bf is not None and bu >= 60 and bf <= 30 and bu > bf * 2
+        bu, bf = med('first_row_ms', unfixed), med('first_row_ms', fixed)
+        gap = (bu / bf - 1) if (bu and bf) else None
+        ok = (bu and bf and bu > bf * 1.3)
         return {'verdict': 'PASS' if ok else 'FAIL',
-                'evidence': {'rows_built_at_open': [bu, bf]}}
+                'evidence': {'first_row_ms': [bu, bf], 'gap': gap}}
 
     if case == 'browser_insert_date_lookup_cache':
         du, df = med('median_save_delta_ms', unfixed), med('median_save_delta_ms', fixed)

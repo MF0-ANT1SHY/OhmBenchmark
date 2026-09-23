@@ -121,8 +121,8 @@ def t_browser_history_delete_no_transaction(ctx, rep):
 
 
 def t_browser_history_list_foreach(ctx, rep):
-    return browser_uitest_trigger(ctx, 'openHistory', ['ace', 'app', 'sched'],
-                                  30, tail_swipes=6, rep=rep)
+    return browser_uitest_trigger(ctx, 'openHistoryMeasure', ['ace', 'app', 'sched'],
+                                  30, rep=rep)
 
 
 def t_browser_insert_date_lookup_cache(ctx, rep):
