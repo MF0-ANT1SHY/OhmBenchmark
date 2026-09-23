@@ -1,0 +1,1825 @@
+{
+  "repository": "MF0-ANT1SHY/OhmBenchmark",
+  "release_tag": "device-proof-2026-09-24",
+  "artifacts": [
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load/browser_eager_history_load_rep1_0.chtrace",
+      "relative_path": "browser_eager_history_load/browser_eager_history_load_rep1_0.chtrace",
+      "asset_name": "browser_eager_history_load-browser_eager_history_load_rep1_0--9e191d1b1106.chtrace.gz",
+      "source_size": 53882161,
+      "source_sha256": "9e191d1b11062c28a2f7cc8ce5fdcbbd27d18ba4323b7aa50a9be4313cbbf796",
+      "asset_size": 4819917,
+      "asset_sha256": "9364a6af130f2457aa80a6cd6f35a4f997a95e5750fb06b6eaa53b7d9a18e502",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load-browser_eager_history_load_rep1_0--9e191d1b1106.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load/browser_eager_history_load_rep1_1.chtrace",
+      "relative_path": "browser_eager_history_load/browser_eager_history_load_rep1_1.chtrace",
+      "asset_name": "browser_eager_history_load-browser_eager_history_load_rep1_1--8a7b3ebe04ac.chtrace.gz",
+      "source_size": 49857657,
+      "source_sha256": "8a7b3ebe04ac8effdbe4478560c6c7af057d1c9b13470cab6e6e15f3bfe15ebb",
+      "asset_size": 4332302,
+      "asset_sha256": "ee88822ddbe5dc35b490fdca6e2a53a75e64ac484d77a2ec2a014df052a635a7",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load-browser_eager_history_load_rep1_1--8a7b3ebe04ac.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load/browser_eager_history_load_rep1_3.chtrace",
+      "relative_path": "browser_eager_history_load/browser_eager_history_load_rep1_3.chtrace",
+      "asset_name": "browser_eager_history_load-browser_eager_history_load_rep1_3--5677850968ca.chtrace.gz",
+      "source_size": 54205707,
+      "source_sha256": "5677850968ca8c194ebb7a50abcdf12ca6e10cc08182140e55b476391733c56f",
+      "asset_size": 4862971,
+      "asset_sha256": "e220fbba9e4507542f0277b5b1f1016dbc2554ee3a16d6cfc5543d62bfc11c57",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load-browser_eager_history_load_rep1_3--5677850968ca.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load/browser_eager_history_load_rep2_1.chtrace",
+      "relative_path": "browser_eager_history_load/browser_eager_history_load_rep2_1.chtrace",
+      "asset_name": "browser_eager_history_load-browser_eager_history_load_rep2_1--a9b64c858992.chtrace.gz",
+      "source_size": 53978002,
+      "source_sha256": "a9b64c858992db31d516134e8812350da5c308c6d2b126db3fb39d50c5459cfa",
+      "asset_size": 4737141,
+      "asset_sha256": "5044b6b650612c27f541cc7486e68106fa0b540a2d70e2bd73d524b5d9ee0bd7",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load-browser_eager_history_load_rep2_1--a9b64c858992.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load/browser_eager_history_load_rep2_4.chtrace",
+      "relative_path": "browser_eager_history_load/browser_eager_history_load_rep2_4.chtrace",
+      "asset_name": "browser_eager_history_load-browser_eager_history_load_rep2_4--9310e690a2d7.chtrace.gz",
+      "source_size": 54603145,
+      "source_sha256": "9310e690a2d7f5b4d519c1fb9c295cb322fad4c4d6b9260d4d8a70bdd1eb7101",
+      "asset_size": 4851661,
+      "asset_sha256": "9793107c1e2adfa76f0844145541c897be56750ec8c5ea19afa353cc0297e6c4",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load-browser_eager_history_load_rep2_4--9310e690a2d7.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load/browser_eager_history_load_rep3_2.chtrace",
+      "relative_path": "browser_eager_history_load/browser_eager_history_load_rep3_2.chtrace",
+      "asset_name": "browser_eager_history_load-browser_eager_history_load_rep3_2--847a90261412.chtrace.gz",
+      "source_size": 54497652,
+      "source_sha256": "847a90261412c9d5a255d8f69d21cf6a054063c090f28fe7e31f48f73e5b403a",
+      "asset_size": 4816343,
+      "asset_sha256": "b679e0efda5dab8d23e1bef57b64ace7cfce42e31c10d9d65dc55ab9443405c5",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load-browser_eager_history_load_rep3_2--847a90261412.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load/browser_eager_history_load_rep3_5.chtrace",
+      "relative_path": "browser_eager_history_load/browser_eager_history_load_rep3_5.chtrace",
+      "asset_name": "browser_eager_history_load-browser_eager_history_load_rep3_5--773320007bd4.chtrace.gz",
+      "source_size": 54394703,
+      "source_sha256": "773320007bd48239a7852dbe827a754544274d3bc56e7cb95873bdcae63a1cc6",
+      "asset_size": 4906555,
+      "asset_sha256": "e39bef6e50a3e210bab6f6fcdcdc2bce85e5eea90785352ac5fbd1a097f001f5",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load-browser_eager_history_load_rep3_5--773320007bd4.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load/rep1_1.hilog",
+      "relative_path": "browser_eager_history_load/rep1_1.hilog",
+      "asset_name": "browser_eager_history_load-rep1_1--8bc97b1fdb06.hilog.gz",
+      "source_size": 1114342482,
+      "source_sha256": "8bc97b1fdb063dab72d4e7af7d4e4de57402fd294a0afcf946c4fde33ba98976",
+      "asset_size": 2172244,
+      "asset_sha256": "0448b94bf6831b43febd778a5215f0fa155e9c7af468c78315f91f2edc309831",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load-rep1_1--8bc97b1fdb06.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load/rep1_2.hilog",
+      "relative_path": "browser_eager_history_load/rep1_2.hilog",
+      "asset_name": "browser_eager_history_load-rep1_2--5674b9a5cdef.hilog.gz",
+      "source_size": 5669134,
+      "source_sha256": "5674b9a5cdef588e552a5704f6c7644bb92a51cd028550fccbbdcad594c441e3",
+      "asset_size": 511156,
+      "asset_sha256": "c3bda8ce0423d373447341d71ab96adc2d317b25cfc43c1c20d2feca1d5b2df1",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load-rep1_2--5674b9a5cdef.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load/rep1_4.hilog",
+      "relative_path": "browser_eager_history_load/rep1_4.hilog",
+      "asset_name": "browser_eager_history_load-rep1_4--5fa0b59bf483.hilog.gz",
+      "source_size": 1120064422,
+      "source_sha256": "5fa0b59bf4831e71a3ff6fa644b5b91c4898f65b28e1c185a3d0a2e3e03b9694",
+      "asset_size": 2192109,
+      "asset_sha256": "b5c3faf5d3e7e758f57e56857bf6f32961d84e465afada467d47105c99af5301",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load-rep1_4--5fa0b59bf483.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load/rep2_2.hilog",
+      "relative_path": "browser_eager_history_load/rep2_2.hilog",
+      "asset_name": "browser_eager_history_load-rep2_2--13fbde07acc8.hilog.gz",
+      "source_size": 786906900,
+      "source_sha256": "13fbde07acc8348bf545c5c36d4d43aa6a6d2dd690410bd4aca83fe25516c337",
+      "asset_size": 1433218,
+      "asset_sha256": "2bd62b69b82ce7fc76f98191eb70aa5f86199d5716c7d0979aed69f395d8c214",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load-rep2_2--13fbde07acc8.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load/rep2_5.hilog",
+      "relative_path": "browser_eager_history_load/rep2_5.hilog",
+      "asset_name": "browser_eager_history_load-rep2_5--cc43557aa333.hilog.gz",
+      "source_size": 792323602,
+      "source_sha256": "cc43557aa33326ee9a0cab3330de4b240208ef42df5ea5870592bb02b8adfd98",
+      "asset_size": 1487452,
+      "asset_sha256": "72606afc7df975eea466d1ee6825de79a6fcc45ac54f9904fb7c778c39987e09",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load-rep2_5--cc43557aa333.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load/rep3_3.hilog",
+      "relative_path": "browser_eager_history_load/rep3_3.hilog",
+      "asset_name": "browser_eager_history_load-rep3_3--f11f6632304e.hilog.gz",
+      "source_size": 786988680,
+      "source_sha256": "f11f6632304ef46f65dc4a96f4495bde676c1dabde7c79eebd525bee2932fb13",
+      "asset_size": 1434502,
+      "asset_sha256": "365830b6e00f33651ed3146f575e0a2457913b8b7a3bdd0f13c36e374315efe8",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load-rep3_3--f11f6632304e.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load/rep3_6.hilog",
+      "relative_path": "browser_eager_history_load/rep3_6.hilog",
+      "asset_name": "browser_eager_history_load-rep3_6--b0a8615ec3f0.hilog.gz",
+      "source_size": 792376845,
+      "source_sha256": "b0a8615ec3f09691f225ad69210ddd384f098132aac20eea46e6d1bf22e9e953",
+      "asset_size": 1545711,
+      "asset_sha256": "c0c61662cdb61e8affbf42390cd9545a2f9814b595da52743da8b3c84ec05f1e",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load-rep3_6--b0a8615ec3f0.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load.fixed.launch.json",
+      "relative_path": "browser_eager_history_load.fixed.launch.json",
+      "asset_name": "browser_eager_history_load.fixed.launch--31564b4cdd93.json",
+      "source_size": 56338,
+      "source_sha256": "31564b4cdd931e5326f995c76ea195a5515d098bfa069a657fe0fede4c5c4468",
+      "asset_size": 56338,
+      "asset_sha256": "31564b4cdd931e5326f995c76ea195a5515d098bfa069a657fe0fede4c5c4468",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load.fixed.launch--31564b4cdd93.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load.fixed.launch.png",
+      "relative_path": "browser_eager_history_load.fixed.launch.png",
+      "asset_name": "browser_eager_history_load.fixed.launch--bbc366568bb2.png",
+      "source_size": 2735639,
+      "source_sha256": "bbc366568bb25643baafddb59d9a2346461980be97e10806ddf2262e6a43bb11",
+      "asset_size": 2735639,
+      "asset_sha256": "bbc366568bb25643baafddb59d9a2346461980be97e10806ddf2262e6a43bb11",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load.fixed.launch--bbc366568bb2.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load.unfixed.launch.json",
+      "relative_path": "browser_eager_history_load.unfixed.launch.json",
+      "asset_name": "browser_eager_history_load.unfixed.launch--6d27fe6919ae.json",
+      "source_size": 56338,
+      "source_sha256": "6d27fe6919ae7e3be4dc87e60c28b176ac65d8ad9184afc6001121ed20a112e3",
+      "asset_size": 56338,
+      "asset_sha256": "6d27fe6919ae7e3be4dc87e60c28b176ac65d8ad9184afc6001121ed20a112e3",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load.unfixed.launch--6d27fe6919ae.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_eager_history_load.unfixed.launch.png",
+      "relative_path": "browser_eager_history_load.unfixed.launch.png",
+      "asset_name": "browser_eager_history_load.unfixed.launch--f1a803182d07.png",
+      "source_size": 2735639,
+      "source_sha256": "f1a803182d077d547d74269aeb1117cabc7d7b26f6b9e09572c1a22e5fb299a0",
+      "asset_size": 2735639,
+      "asset_sha256": "f1a803182d077d547d74269aeb1117cabc7d7b26f6b9e09572c1a22e5fb299a0",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_eager_history_load.unfixed.launch--f1a803182d07.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_delete_no_transaction/browser_history_delete_no_transaction_rep1_0.chtrace",
+      "relative_path": "browser_history_delete_no_transaction/browser_history_delete_no_transaction_rep1_0.chtrace",
+      "asset_name": "browser_history_delete_no_transaction-browser_history_delete_no_transaction_rep1_0--0cf439110781.chtrace.gz",
+      "source_size": 55438561,
+      "source_sha256": "0cf439110781fd23a42f3ae2643376ad7ce41b2b3db4840597437e13764e45ef",
+      "asset_size": 4679295,
+      "asset_sha256": "b0ad613cf6a3ceac6e2573b3dcc0e360594f6e4b5fb242f6c6d308db8043d83b",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_delete_no_transaction-browser_history_delete_no_transaction_rep1_0--0cf439110781.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_delete_no_transaction/browser_history_delete_no_transaction_rep1_1.chtrace",
+      "relative_path": "browser_history_delete_no_transaction/browser_history_delete_no_transaction_rep1_1.chtrace",
+      "asset_name": "browser_history_delete_no_transaction-browser_history_delete_no_transaction_rep1_1--38b0a25fa92f.chtrace.gz",
+      "source_size": 55203072,
+      "source_sha256": "38b0a25fa92ff568b4fd89ec5aca872a0611f1b9ed7e8b176c4c6406e0b925a2",
+      "asset_size": 4688482,
+      "asset_sha256": "c37296431ce81414c35ec23a8c712ed07c61e61bc92dc77e3043ba4862200eb7",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_delete_no_transaction-browser_history_delete_no_transaction_rep1_1--38b0a25fa92f.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_delete_no_transaction/rep1_1.hilog",
+      "relative_path": "browser_history_delete_no_transaction/rep1_1.hilog",
+      "asset_name": "browser_history_delete_no_transaction-rep1_1--cd3759931fc7.hilog.gz",
+      "source_size": 3178268,
+      "source_sha256": "cd3759931fc7648e8a53fda5cc8c8881d66ab4b15966a3d768c08311aa5b284d",
+      "asset_size": 449593,
+      "asset_sha256": "776969adcf3dc0109c3c06c7e9fc1496f4e1685e83b630bdd0d710c6bb198b3a",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_delete_no_transaction-rep1_1--cd3759931fc7.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_delete_no_transaction/rep1_2.hilog",
+      "relative_path": "browser_history_delete_no_transaction/rep1_2.hilog",
+      "asset_name": "browser_history_delete_no_transaction-rep1_2--22bbc82637f4.hilog.gz",
+      "source_size": 6717119,
+      "source_sha256": "22bbc82637f4b98918c3b0a416e727122fbf6daf50a53064aeadee2f419e01b5",
+      "asset_size": 578638,
+      "asset_sha256": "1fd28afdf2889694b5a6c7d4a8c34e9011e4b0fc9176479eb667ee7631a454e8",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_delete_no_transaction-rep1_2--22bbc82637f4.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_delete_no_transaction.fixed.launch.json",
+      "relative_path": "browser_history_delete_no_transaction.fixed.launch.json",
+      "asset_name": "browser_history_delete_no_transaction.fixed.launch--276aeb021f5e.json",
+      "source_size": 56338,
+      "source_sha256": "276aeb021f5e5bc51fe227f03698a4d06cd7e8e0ac2d23fe3954fe6f896b7885",
+      "asset_size": 56338,
+      "asset_sha256": "276aeb021f5e5bc51fe227f03698a4d06cd7e8e0ac2d23fe3954fe6f896b7885",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_delete_no_transaction.fixed.launch--276aeb021f5e.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_delete_no_transaction.fixed.launch.png",
+      "relative_path": "browser_history_delete_no_transaction.fixed.launch.png",
+      "asset_name": "browser_history_delete_no_transaction.fixed.launch--593f21e7126e.png",
+      "source_size": 2371493,
+      "source_sha256": "593f21e7126e39324a00f6c8033f2203ed94239994f8a4575b146b35f07e85cb",
+      "asset_size": 2371493,
+      "asset_sha256": "593f21e7126e39324a00f6c8033f2203ed94239994f8a4575b146b35f07e85cb",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_delete_no_transaction.fixed.launch--593f21e7126e.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_delete_no_transaction.unfixed.launch.json",
+      "relative_path": "browser_history_delete_no_transaction.unfixed.launch.json",
+      "asset_name": "browser_history_delete_no_transaction.unfixed.launch--131bdd14c6fb.json",
+      "source_size": 56338,
+      "source_sha256": "131bdd14c6fbdea0acded788c33a4bdcf8d017cf1b8d1f7329b8dddeb60e7458",
+      "asset_size": 56338,
+      "asset_sha256": "131bdd14c6fbdea0acded788c33a4bdcf8d017cf1b8d1f7329b8dddeb60e7458",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_delete_no_transaction.unfixed.launch--131bdd14c6fb.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_delete_no_transaction.unfixed.launch.png",
+      "relative_path": "browser_history_delete_no_transaction.unfixed.launch.png",
+      "asset_name": "browser_history_delete_no_transaction.unfixed.launch--ffceb31c12ef.png",
+      "source_size": 2371493,
+      "source_sha256": "ffceb31c12efabd7acd11d2614bb5a6ef1db606619780616458281901f28167b",
+      "asset_size": 2371493,
+      "asset_sha256": "ffceb31c12efabd7acd11d2614bb5a6ef1db606619780616458281901f28167b",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_delete_no_transaction.unfixed.launch--ffceb31c12ef.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach/browser_history_list_foreach_rep1_0.chtrace",
+      "relative_path": "browser_history_list_foreach/browser_history_list_foreach_rep1_0.chtrace",
+      "asset_name": "browser_history_list_foreach-browser_history_list_foreach_rep1_0--9dcb86d57e6f.chtrace.gz",
+      "source_size": 122890297,
+      "source_sha256": "9dcb86d57e6ffae9cd9b223fd47764d6b42695bb80558d017167fbe37eb7443c",
+      "asset_size": 11159039,
+      "asset_sha256": "a46ee3e7e674b147c71f45fad607b8650b8bd671380db50929724d47d1022b23",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach-browser_history_list_foreach_rep1_0--9dcb86d57e6f.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach/browser_history_list_foreach_rep1_1.chtrace",
+      "relative_path": "browser_history_list_foreach/browser_history_list_foreach_rep1_1.chtrace",
+      "asset_name": "browser_history_list_foreach-browser_history_list_foreach_rep1_1--0517e66615ef.chtrace.gz",
+      "source_size": 51579999,
+      "source_sha256": "0517e66615ef5f0653d9bd18e61ade3897c8c564c1abe5d534e1fb249f21c985",
+      "asset_size": 4575311,
+      "asset_sha256": "fc7bf2b32f269f93e9bf02d59382386d20c6231708d727e54ac937a984473192",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach-browser_history_list_foreach_rep1_1--0517e66615ef.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach/browser_history_list_foreach_rep1_3.chtrace",
+      "relative_path": "browser_history_list_foreach/browser_history_list_foreach_rep1_3.chtrace",
+      "asset_name": "browser_history_list_foreach-browser_history_list_foreach_rep1_3--ba8769f0a3ac.chtrace.gz",
+      "source_size": 132524372,
+      "source_sha256": "ba8769f0a3acc3388ba2a28e1b4620bfac5102e5c73da2616f39f088ba2100bc",
+      "asset_size": 12000413,
+      "asset_sha256": "4da2e88af5f61f2af82c3155b13eada15ecac0993601bed64181f3aba7902ad9",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach-browser_history_list_foreach_rep1_3--ba8769f0a3ac.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach/browser_history_list_foreach_rep2_1.chtrace",
+      "relative_path": "browser_history_list_foreach/browser_history_list_foreach_rep2_1.chtrace",
+      "asset_name": "browser_history_list_foreach-browser_history_list_foreach_rep2_1--4f733eb98456.chtrace.gz",
+      "source_size": 163878771,
+      "source_sha256": "4f733eb98456a9b2f62c3cc1caae46260b4381f47cd080698f3f7a317526d150",
+      "asset_size": 14673578,
+      "asset_sha256": "d8db387f2eef57548de6164745b97076f7cdc423099dfae082043798c55d9cfc",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach-browser_history_list_foreach_rep2_1--4f733eb98456.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach/browser_history_list_foreach_rep2_4.chtrace",
+      "relative_path": "browser_history_list_foreach/browser_history_list_foreach_rep2_4.chtrace",
+      "asset_name": "browser_history_list_foreach-browser_history_list_foreach_rep2_4--59b3c429ee3c.chtrace.gz",
+      "source_size": 140834623,
+      "source_sha256": "59b3c429ee3c16a0181806c35d536e0abe2c3303c1b0c097acb4a62efed09e3f",
+      "asset_size": 12670556,
+      "asset_sha256": "a5c7e05f2529c964314c787f2b492d6502b915df5785e75e4df2dd5d5d02ac5e",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach-browser_history_list_foreach_rep2_4--59b3c429ee3c.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach/browser_history_list_foreach_rep3_2.chtrace",
+      "relative_path": "browser_history_list_foreach/browser_history_list_foreach_rep3_2.chtrace",
+      "asset_name": "browser_history_list_foreach-browser_history_list_foreach_rep3_2--38e02dab9e36.chtrace.gz",
+      "source_size": 130430380,
+      "source_sha256": "38e02dab9e36c54265261fe31835aa418a03b8dd084080ffe7a6b35a13b2bdda",
+      "asset_size": 11693821,
+      "asset_sha256": "dde6184d54c808dc00acb85fe39f85a86e8491b0cfa0738e03f6c954cb222f9c",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach-browser_history_list_foreach_rep3_2--38e02dab9e36.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach/browser_history_list_foreach_rep3_5.chtrace",
+      "relative_path": "browser_history_list_foreach/browser_history_list_foreach_rep3_5.chtrace",
+      "asset_name": "browser_history_list_foreach-browser_history_list_foreach_rep3_5--0e4c9f0e7be7.chtrace.gz",
+      "source_size": 128334321,
+      "source_sha256": "0e4c9f0e7be7c2666a0a91b6f5416e7caee2cef68671bfd315c8a75f8ca7e79e",
+      "asset_size": 11524091,
+      "asset_sha256": "27d52920949e1e3b66cdfa15c1d32ce0db7d3944bb6d767c4e00961f4d548cd0",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach-browser_history_list_foreach_rep3_5--0e4c9f0e7be7.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach/rep1_1.hilog",
+      "relative_path": "browser_history_list_foreach/rep1_1.hilog",
+      "asset_name": "browser_history_list_foreach-rep1_1--f3f014973173.hilog.gz",
+      "source_size": 1103877207,
+      "source_sha256": "f3f0149731737e1b2f8638904c90728b7a5a1d494f5326a587c5c3c05c668f0e",
+      "asset_size": 2816482,
+      "asset_sha256": "f69c85002fc7704cf1a26be049da0763ca144d0ef396c388561081d40fa3ec7a",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach-rep1_1--f3f014973173.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach/rep1_2.hilog",
+      "relative_path": "browser_history_list_foreach/rep1_2.hilog",
+      "asset_name": "browser_history_list_foreach-rep1_2--ae818bae35ff.hilog.gz",
+      "source_size": 7737361,
+      "source_sha256": "ae818bae35ff3e766b81f078d653d5bb83d283d993dae683acf3d0a72bc80b4a",
+      "asset_size": 675943,
+      "asset_sha256": "9b20b29baca455f3a1b2006c549d87a616e9b24cfb92c77c30f57df60c1c1c25",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach-rep1_2--ae818bae35ff.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach/rep1_4.hilog",
+      "relative_path": "browser_history_list_foreach/rep1_4.hilog",
+      "asset_name": "browser_history_list_foreach-rep1_4--2442e4cb8e07.hilog.gz",
+      "source_size": 1097179431,
+      "source_sha256": "2442e4cb8e0743d03956fc6c0275c49e25ccfd06b980a3d008f8773258d3ef9e",
+      "asset_size": 2964423,
+      "asset_sha256": "471b0f110b6b951586e54b73fbce09dee17fe294c49ce7a70fd388177ccd2d6a",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach-rep1_4--2442e4cb8e07.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach/rep2_2.hilog",
+      "relative_path": "browser_history_list_foreach/rep2_2.hilog",
+      "asset_name": "browser_history_list_foreach-rep2_2--812b89416c3d.hilog.gz",
+      "source_size": 48476784,
+      "source_sha256": "812b89416c3df29edf5fc5e98ac9b62b5ccf4a11f5d3a859d2064b8d8454350d",
+      "asset_size": 1692068,
+      "asset_sha256": "93a48c424f5e8b3d47063091bcb50f58ec4f90189d8ebb09397eceb55ec31eb1",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach-rep2_2--812b89416c3d.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach/rep2_5.hilog",
+      "relative_path": "browser_history_list_foreach/rep2_5.hilog",
+      "asset_name": "browser_history_list_foreach-rep2_5--f117bde00701.hilog.gz",
+      "source_size": 55853334,
+      "source_sha256": "f117bde00701684b173058db02f11dbf125c8c1cf00e74c80e279e10ccb37c97",
+      "asset_size": 2060298,
+      "asset_sha256": "74dc9ddad5859df576202ec2e7d4ffb96cc4adf791bbbd4bb08b84a8caffcbfe",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach-rep2_5--f117bde00701.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach/rep3_3.hilog",
+      "relative_path": "browser_history_list_foreach/rep3_3.hilog",
+      "asset_name": "browser_history_list_foreach-rep3_3--7f37e495e183.hilog.gz",
+      "source_size": 48842261,
+      "source_sha256": "7f37e495e183bffa5f8f2af6cf385d19e7e7972fdc823c8b7e065e728c03eabf",
+      "asset_size": 1679068,
+      "asset_sha256": "8e843d917e01706f73275fc98992de05b7e4b9e49a8dad0c84bf348c6a910c85",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach-rep3_3--7f37e495e183.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach/rep3_6.hilog",
+      "relative_path": "browser_history_list_foreach/rep3_6.hilog",
+      "asset_name": "browser_history_list_foreach-rep3_6--1d0e8ac60bb2.hilog.gz",
+      "source_size": 55896674,
+      "source_sha256": "1d0e8ac60bb24deaca69d142d3a0d7902f7789a909ef417c278d3b73de14c04d",
+      "asset_size": 1586595,
+      "asset_sha256": "90cc807178eb122ebb9c58ac43c6c1308b2d72624ed060f4577c1a7f40112f9e",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach-rep3_6--1d0e8ac60bb2.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach.fixed.launch.json",
+      "relative_path": "browser_history_list_foreach.fixed.launch.json",
+      "asset_name": "browser_history_list_foreach.fixed.launch--b9fde7d73a01.json",
+      "source_size": 56338,
+      "source_sha256": "b9fde7d73a01d1eae10228510e865733c8414153f26e0bea05d91ecdfe044dc7",
+      "asset_size": 56338,
+      "asset_sha256": "b9fde7d73a01d1eae10228510e865733c8414153f26e0bea05d91ecdfe044dc7",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach.fixed.launch--b9fde7d73a01.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach.fixed.launch.png",
+      "relative_path": "browser_history_list_foreach.fixed.launch.png",
+      "asset_name": "browser_history_list_foreach.fixed.launch--4b5a845ea6a4.png",
+      "source_size": 2735639,
+      "source_sha256": "4b5a845ea6a403c9fe1385e7564471c9491c0e5f1f548ff2f2720fbee1408250",
+      "asset_size": 2735639,
+      "asset_sha256": "4b5a845ea6a403c9fe1385e7564471c9491c0e5f1f548ff2f2720fbee1408250",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach.fixed.launch--4b5a845ea6a4.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach.unfixed.launch.json",
+      "relative_path": "browser_history_list_foreach.unfixed.launch.json",
+      "asset_name": "browser_history_list_foreach.unfixed.launch--6257e7f8e314.json",
+      "source_size": 56338,
+      "source_sha256": "6257e7f8e3148e8ff3c0583a0f46bdcd32246b2bf8658cc8fefb0373331d4009",
+      "asset_size": 56338,
+      "asset_sha256": "6257e7f8e3148e8ff3c0583a0f46bdcd32246b2bf8658cc8fefb0373331d4009",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach.unfixed.launch--6257e7f8e314.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_history_list_foreach.unfixed.launch.png",
+      "relative_path": "browser_history_list_foreach.unfixed.launch.png",
+      "asset_name": "browser_history_list_foreach.unfixed.launch--07edc3808f3b.png",
+      "source_size": 2735639,
+      "source_sha256": "07edc3808f3b25163b10f5f64ddb7ecad9320a050b081c3e134ae5adfdeaf648",
+      "asset_size": 2735639,
+      "asset_sha256": "07edc3808f3b25163b10f5f64ddb7ecad9320a050b081c3e134ae5adfdeaf648",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_history_list_foreach.unfixed.launch--07edc3808f3b.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache/browser_insert_date_lookup_cache_rep1_0.chtrace",
+      "relative_path": "browser_insert_date_lookup_cache/browser_insert_date_lookup_cache_rep1_0.chtrace",
+      "asset_name": "browser_insert_date_lookup_cache-browser_insert_date_lookup_cache_rep1_0--5ea600d0df46.chtrace.gz",
+      "source_size": 34278281,
+      "source_sha256": "5ea600d0df463125db65935783ef97de94b90b119b1c651a8c46758e3fca1e8c",
+      "asset_size": 2396145,
+      "asset_sha256": "36a7ecd2ae141ac30237aecbd9f2c168fe2cecd4b242a3dfd10e96a781e470cf",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache-browser_insert_date_lookup_cache_rep1_0--5ea600d0df46.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache/browser_insert_date_lookup_cache_rep1_1.chtrace",
+      "relative_path": "browser_insert_date_lookup_cache/browser_insert_date_lookup_cache_rep1_1.chtrace",
+      "asset_name": "browser_insert_date_lookup_cache-browser_insert_date_lookup_cache_rep1_1--a73e088553f7.chtrace.gz",
+      "source_size": 34323312,
+      "source_sha256": "a73e088553f7a6516c0f206ffe02fd0b161c27542be174460697b92041597ff1",
+      "asset_size": 2382797,
+      "asset_sha256": "9c3d621b380013e5a5615f53a3e5f87dbcc2cd6517a4f128ddd130f2e9856322",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache-browser_insert_date_lookup_cache_rep1_1--a73e088553f7.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache/browser_insert_date_lookup_cache_rep1_3.chtrace",
+      "relative_path": "browser_insert_date_lookup_cache/browser_insert_date_lookup_cache_rep1_3.chtrace",
+      "asset_name": "browser_insert_date_lookup_cache-browser_insert_date_lookup_cache_rep1_3--6a542c5ceb34.chtrace.gz",
+      "source_size": 572387480,
+      "source_sha256": "6a542c5ceb34e882f67e563d16ccedb154bc758d5663eb1e0f599cb35fb8a058",
+      "asset_size": 53031347,
+      "asset_sha256": "ca63f34dee40d9ad52d377db8bceac2722edb594ca0407eeb1412dac97889c66",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache-browser_insert_date_lookup_cache_rep1_3--6a542c5ceb34.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache/browser_insert_date_lookup_cache_rep2_1.chtrace",
+      "relative_path": "browser_insert_date_lookup_cache/browser_insert_date_lookup_cache_rep2_1.chtrace",
+      "asset_name": "browser_insert_date_lookup_cache-browser_insert_date_lookup_cache_rep2_1--0879fc4bb840.chtrace.gz",
+      "source_size": 572579776,
+      "source_sha256": "0879fc4bb840190d16e3a48a4e53baced86345bbf033877b0b46e71a9ecc6c66",
+      "asset_size": 52325783,
+      "asset_sha256": "b127ebfaf015c40a2de00db301afaf2be46d3209797a724234dbee7433e0352f",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache-browser_insert_date_lookup_cache_rep2_1--0879fc4bb840.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache/browser_insert_date_lookup_cache_rep2_4.chtrace",
+      "relative_path": "browser_insert_date_lookup_cache/browser_insert_date_lookup_cache_rep2_4.chtrace",
+      "asset_name": "browser_insert_date_lookup_cache-browser_insert_date_lookup_cache_rep2_4--770da736b606.chtrace.gz",
+      "source_size": 572742088,
+      "source_sha256": "770da736b606e1fb3924eb459fca094384c30c367f54de6da90232cf478cee26",
+      "asset_size": 52796960,
+      "asset_sha256": "d4f12ccf663b3ac48fa8941854894c472eaae477122a1978eb960b011dc76961",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache-browser_insert_date_lookup_cache_rep2_4--770da736b606.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache/browser_insert_date_lookup_cache_rep3_2.chtrace",
+      "relative_path": "browser_insert_date_lookup_cache/browser_insert_date_lookup_cache_rep3_2.chtrace",
+      "asset_name": "browser_insert_date_lookup_cache-browser_insert_date_lookup_cache_rep3_2--011e19782ae4.chtrace.gz",
+      "source_size": 574129510,
+      "source_sha256": "011e19782ae487f3c0ccebc173cf28e009cea61f5b3eb9a30459f11cb3cca641",
+      "asset_size": 53403382,
+      "asset_sha256": "e0fd247b56f2eacd680f0f58f93da2b5f536fd4132428ef4e59123bbe807ca21",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache-browser_insert_date_lookup_cache_rep3_2--011e19782ae4.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache/browser_insert_date_lookup_cache_rep3_5.chtrace",
+      "relative_path": "browser_insert_date_lookup_cache/browser_insert_date_lookup_cache_rep3_5.chtrace",
+      "asset_name": "browser_insert_date_lookup_cache-browser_insert_date_lookup_cache_rep3_5--6982a099db08.chtrace.gz",
+      "source_size": 571575716,
+      "source_sha256": "6982a099db08d834adda78ce1048147dcaa69b3a0dcdc6296f493139b9c2ce04",
+      "asset_size": 53047573,
+      "asset_sha256": "5e4c627510815b2b94820cb06c1d231a1ef299bfd12934c5efac4d0f58a383d0",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache-browser_insert_date_lookup_cache_rep3_5--6982a099db08.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache/rep1_1.hilog",
+      "relative_path": "browser_insert_date_lookup_cache/rep1_1.hilog",
+      "asset_name": "browser_insert_date_lookup_cache-rep1_1--9ed85c8f71fc.hilog.gz",
+      "source_size": 1127287233,
+      "source_sha256": "9ed85c8f71fc4614390daeb9a7b8e1729c76654991052c3182f3991cb59fc134",
+      "asset_size": 7294024,
+      "asset_sha256": "e6db0627c91e841b662ea6d374ddbe86363e1a21028e15a958682bae971d9aa1",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache-rep1_1--9ed85c8f71fc.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache/rep1_2.hilog",
+      "relative_path": "browser_insert_date_lookup_cache/rep1_2.hilog",
+      "asset_name": "browser_insert_date_lookup_cache-rep1_2--1cb97d61cbb5.hilog.gz",
+      "source_size": 28370424,
+      "source_sha256": "1cb97d61cbb515949b436ec9bdaa8c2b9af1d469fb0d7e58953a2547302d16de",
+      "asset_size": 3843147,
+      "asset_sha256": "3e5a699d35e9a4cb80d1775585b0a42a547076ba37ab3e1792aae8756a8a069c",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache-rep1_2--1cb97d61cbb5.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache/rep1_4.hilog",
+      "relative_path": "browser_insert_date_lookup_cache/rep1_4.hilog",
+      "asset_name": "browser_insert_date_lookup_cache-rep1_4--fbd798de9027.hilog.gz",
+      "source_size": 1201338035,
+      "source_sha256": "fbd798de9027a5acb81718cb1b71ec3e7f06b978a6288d01212c6a730fde28cc",
+      "asset_size": 9198026,
+      "asset_sha256": "9dd4c278f41a8ac1994108449018a3d80e6910952c42d3b8efba025a59295c0b",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache-rep1_4--fbd798de9027.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache/rep2_2.hilog",
+      "relative_path": "browser_insert_date_lookup_cache/rep2_2.hilog",
+      "asset_name": "browser_insert_date_lookup_cache-rep2_2--19c111f95a0c.hilog.gz",
+      "source_size": 23097512,
+      "source_sha256": "19c111f95a0c17b84361292499e1f3c280c9e81279b516de336ef6984f812deb",
+      "asset_size": 2266682,
+      "asset_sha256": "0cf7eb4f560c5d176c00aa0d5d52fd0f4d2b1ae132393427a19756bf66c0418f",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache-rep2_2--19c111f95a0c.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache/rep2_5.hilog",
+      "relative_path": "browser_insert_date_lookup_cache/rep2_5.hilog",
+      "asset_name": "browser_insert_date_lookup_cache-rep2_5--458efc8d5f6f.hilog.gz",
+      "source_size": 97213714,
+      "source_sha256": "458efc8d5f6f58fd5afe9edcc6a36fc86a176a05a654c30d7a4181efaf43a70e",
+      "asset_size": 4580004,
+      "asset_sha256": "fe5d98b1f4e34ae49039a5b8742bd3e5e8a93a2ab9600da8cda85ff4e80a57b7",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache-rep2_5--458efc8d5f6f.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache/rep3_3.hilog",
+      "relative_path": "browser_insert_date_lookup_cache/rep3_3.hilog",
+      "asset_name": "browser_insert_date_lookup_cache-rep3_3--9452e20a1c69.hilog.gz",
+      "source_size": 23183418,
+      "source_sha256": "9452e20a1c69d8685c93ceb84ba33d8112a8a7be10bf423d3c8a9dbd0de2993a",
+      "asset_size": 2269561,
+      "asset_sha256": "573f10325e324d9fda3dcecf59312c76570fb7e97690311d2c28ceacb499ee81",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache-rep3_3--9452e20a1c69.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache/rep3_6.hilog",
+      "relative_path": "browser_insert_date_lookup_cache/rep3_6.hilog",
+      "asset_name": "browser_insert_date_lookup_cache-rep3_6--3035eefb7ed3.hilog.gz",
+      "source_size": 97012455,
+      "source_sha256": "3035eefb7ed31814c1b8e9d9208f306cecbad46e044fffe7b3e0b8a394f89d18",
+      "asset_size": 4492821,
+      "asset_sha256": "03ef5cf9a2ef197ec97c7212a3a5be615cc22d3d86ebf180d92627a5ec4dbb88",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache-rep3_6--3035eefb7ed3.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache.fixed.launch.json",
+      "relative_path": "browser_insert_date_lookup_cache.fixed.launch.json",
+      "asset_name": "browser_insert_date_lookup_cache.fixed.launch--4d01c47cb38d.json",
+      "source_size": 56338,
+      "source_sha256": "4d01c47cb38d0a03482d2613ef4c2802f65007a52b5b0baf5a35bcda71058c4c",
+      "asset_size": 56338,
+      "asset_sha256": "4d01c47cb38d0a03482d2613ef4c2802f65007a52b5b0baf5a35bcda71058c4c",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache.fixed.launch--4d01c47cb38d.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache.fixed.launch.png",
+      "relative_path": "browser_insert_date_lookup_cache.fixed.launch.png",
+      "asset_name": "browser_insert_date_lookup_cache.fixed.launch--648e510f7574.png",
+      "source_size": 2735639,
+      "source_sha256": "648e510f757436ef5d0f62eb192d96a63ed3a831834565837f6417a6953bd833",
+      "asset_size": 2735639,
+      "asset_sha256": "648e510f757436ef5d0f62eb192d96a63ed3a831834565837f6417a6953bd833",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache.fixed.launch--648e510f7574.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/browser_insert_date_lookup_cache.unfixed.launch.png",
+      "relative_path": "browser_insert_date_lookup_cache.unfixed.launch.png",
+      "asset_name": "browser_insert_date_lookup_cache.unfixed.launch--661872f2f67f.png",
+      "source_size": 2735639,
+      "source_sha256": "661872f2f67fbafff4a7200365899fc1aa878b8938f6012da761edfc0d182e20",
+      "asset_size": 2735639,
+      "asset_sha256": "661872f2f67fbafff4a7200365899fc1aa878b8938f6012da761edfc0d182e20",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/browser_insert_date_lookup_cache.unfixed.launch--661872f2f67f.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_indexof_in_render.fixed.launch.json",
+      "relative_path": "cloudmusic_indexof_in_render.fixed.launch.json",
+      "asset_name": "cloudmusic_indexof_in_render.fixed.launch--dec8048fcea8.json",
+      "source_size": 51511,
+      "source_sha256": "dec8048fcea87071fb2714ec36d4cfda4aa9c0680cd31857607baac43a606876",
+      "asset_size": 51511,
+      "asset_sha256": "dec8048fcea87071fb2714ec36d4cfda4aa9c0680cd31857607baac43a606876",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_indexof_in_render.fixed.launch--dec8048fcea8.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_indexof_in_render.fixed.launch.png",
+      "relative_path": "cloudmusic_indexof_in_render.fixed.launch.png",
+      "asset_name": "cloudmusic_indexof_in_render.fixed.launch--64c63faa9d23.png",
+      "source_size": 2371493,
+      "source_sha256": "64c63faa9d231629d50598f16ba093690b0893053b788a61785d8c2b4e3cc07e",
+      "asset_size": 2371493,
+      "asset_sha256": "64c63faa9d231629d50598f16ba093690b0893053b788a61785d8c2b4e3cc07e",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_indexof_in_render.fixed.launch--64c63faa9d23.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_indexof_in_render.unfixed.launch.json",
+      "relative_path": "cloudmusic_indexof_in_render.unfixed.launch.json",
+      "asset_name": "cloudmusic_indexof_in_render.unfixed.launch--73e723efc744.json",
+      "source_size": 51576,
+      "source_sha256": "73e723efc744defc2756e5b93d4e40dfbd5888545ec2985e9997d148038ea24a",
+      "asset_size": 51576,
+      "asset_sha256": "73e723efc744defc2756e5b93d4e40dfbd5888545ec2985e9997d148038ea24a",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_indexof_in_render.unfixed.launch--73e723efc744.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_indexof_in_render.unfixed.launch.png",
+      "relative_path": "cloudmusic_indexof_in_render.unfixed.launch.png",
+      "asset_name": "cloudmusic_indexof_in_render.unfixed.launch--d1fb22575ed9.png",
+      "source_size": 2371493,
+      "source_sha256": "d1fb22575ed9a4fdf9e7018afc000879c9372f25e9fd8ca574a2ec4479a2d4e5",
+      "asset_size": 2371493,
+      "asset_sha256": "d1fb22575ed9a4fdf9e7018afc000879c9372f25e9fd8ca574a2ec4479a2d4e5",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_indexof_in_render.unfixed.launch--d1fb22575ed9.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_local_song_memory_filter.fixed.launch.json",
+      "relative_path": "cloudmusic_local_song_memory_filter.fixed.launch.json",
+      "asset_name": "cloudmusic_local_song_memory_filter.fixed.launch--f149348610fb.json",
+      "source_size": 51511,
+      "source_sha256": "f149348610fbff9b622d489a81e8fe1b92d6672953c820c2b6ea62e9fb199d15",
+      "asset_size": 51511,
+      "asset_sha256": "f149348610fbff9b622d489a81e8fe1b92d6672953c820c2b6ea62e9fb199d15",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_local_song_memory_filter.fixed.launch--f149348610fb.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_local_song_memory_filter.fixed.launch.png",
+      "relative_path": "cloudmusic_local_song_memory_filter.fixed.launch.png",
+      "asset_name": "cloudmusic_local_song_memory_filter.fixed.launch--385d67614199.png",
+      "source_size": 2371493,
+      "source_sha256": "385d67614199dafba39ff9ac9c638406c93f310d4b17c1121952a8e4dd2c4010",
+      "asset_size": 2371493,
+      "asset_sha256": "385d67614199dafba39ff9ac9c638406c93f310d4b17c1121952a8e4dd2c4010",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_local_song_memory_filter.fixed.launch--385d67614199.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_local_song_memory_filter.unfixed.launch.json",
+      "relative_path": "cloudmusic_local_song_memory_filter.unfixed.launch.json",
+      "asset_name": "cloudmusic_local_song_memory_filter.unfixed.launch--72a013cb963d.json",
+      "source_size": 51576,
+      "source_sha256": "72a013cb963d52ab3f88f24f5fdf5cefa6a605951cfdee4d658bb0221f569484",
+      "asset_size": 51576,
+      "asset_sha256": "72a013cb963d52ab3f88f24f5fdf5cefa6a605951cfdee4d658bb0221f569484",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_local_song_memory_filter.unfixed.launch--72a013cb963d.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_local_song_memory_filter.unfixed.launch.png",
+      "relative_path": "cloudmusic_local_song_memory_filter.unfixed.launch.png",
+      "asset_name": "cloudmusic_local_song_memory_filter.unfixed.launch--db3f17b273a0.png",
+      "source_size": 2371493,
+      "source_sha256": "db3f17b273a098c8c251987e216908d8d5e9fe32a2bdfa087959981fe27efef0",
+      "asset_size": 2371493,
+      "asset_sha256": "db3f17b273a098c8c251987e216908d8d5e9fe32a2bdfa087959981fe27efef0",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_local_song_memory_filter.unfixed.launch--db3f17b273a0.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_play_time_high_frequency_update.fixed.launch.json",
+      "relative_path": "cloudmusic_play_time_high_frequency_update.fixed.launch.json",
+      "asset_name": "cloudmusic_play_time_high_frequency_update.fixed.launch--c027c8dafcc0.json",
+      "source_size": 51511,
+      "source_sha256": "c027c8dafcc0037a977348968f7a3344d14c7a180da1ba251d1ea2e83eda5465",
+      "asset_size": 51511,
+      "asset_sha256": "c027c8dafcc0037a977348968f7a3344d14c7a180da1ba251d1ea2e83eda5465",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_play_time_high_frequency_update.fixed.launch--c027c8dafcc0.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_play_time_high_frequency_update.fixed.launch.png",
+      "relative_path": "cloudmusic_play_time_high_frequency_update.fixed.launch.png",
+      "asset_name": "cloudmusic_play_time_high_frequency_update.fixed.launch--7a4cf9692553.png",
+      "source_size": 2371493,
+      "source_sha256": "7a4cf9692553113b4a9e05f16c29d08e5a796c80189dbff5a2964fbbe73242cc",
+      "asset_size": 2371493,
+      "asset_sha256": "7a4cf9692553113b4a9e05f16c29d08e5a796c80189dbff5a2964fbbe73242cc",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_play_time_high_frequency_update.fixed.launch--7a4cf9692553.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_play_time_high_frequency_update.unfixed.launch.json",
+      "relative_path": "cloudmusic_play_time_high_frequency_update.unfixed.launch.json",
+      "asset_name": "cloudmusic_play_time_high_frequency_update.unfixed.launch--7b2ebe063a5e.json",
+      "source_size": 51576,
+      "source_sha256": "7b2ebe063a5e8804336e492d26e69cf0314e937304922a45d39016e27dad43d1",
+      "asset_size": 51576,
+      "asset_sha256": "7b2ebe063a5e8804336e492d26e69cf0314e937304922a45d39016e27dad43d1",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_play_time_high_frequency_update.unfixed.launch--7b2ebe063a5e.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_play_time_high_frequency_update.unfixed.launch.png",
+      "relative_path": "cloudmusic_play_time_high_frequency_update.unfixed.launch.png",
+      "asset_name": "cloudmusic_play_time_high_frequency_update.unfixed.launch--f84c65fb745c.png",
+      "source_size": 2371493,
+      "source_sha256": "f84c65fb745c1f416e7bf07a7cb7d6e9aab92fe5adabe7140593fc30fdb0fd39",
+      "asset_size": 2371493,
+      "asset_sha256": "f84c65fb745c1f416e7bf07a7cb7d6e9aab92fe5adabe7140593fc30fdb0fd39",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_play_time_high_frequency_update.unfixed.launch--f84c65fb745c.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_search_result_foreach.fixed.launch.json",
+      "relative_path": "cloudmusic_search_result_foreach.fixed.launch.json",
+      "asset_name": "cloudmusic_search_result_foreach.fixed.launch--cecc9986348c.json",
+      "source_size": 51576,
+      "source_sha256": "cecc9986348c564bffe0b01d968a87115760935d9b190a25da3ec09f9113003f",
+      "asset_size": 51576,
+      "asset_sha256": "cecc9986348c564bffe0b01d968a87115760935d9b190a25da3ec09f9113003f",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_search_result_foreach.fixed.launch--cecc9986348c.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_search_result_foreach.fixed.launch.png",
+      "relative_path": "cloudmusic_search_result_foreach.fixed.launch.png",
+      "asset_name": "cloudmusic_search_result_foreach.fixed.launch--dcb7ee63e6b8.png",
+      "source_size": 2371493,
+      "source_sha256": "dcb7ee63e6b87fa3d2704c7c60a4a5029b10138b11ea5075d4730fd158c985c2",
+      "asset_size": 2371493,
+      "asset_sha256": "dcb7ee63e6b87fa3d2704c7c60a4a5029b10138b11ea5075d4730fd158c985c2",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_search_result_foreach.fixed.launch--dcb7ee63e6b8.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_search_result_foreach.unfixed.launch.json",
+      "relative_path": "cloudmusic_search_result_foreach.unfixed.launch.json",
+      "asset_name": "cloudmusic_search_result_foreach.unfixed.launch--da6137173a47.json",
+      "source_size": 51576,
+      "source_sha256": "da6137173a473569f5da561fa8879f15ae8112b6352507b804ec6898cd972940",
+      "asset_size": 51576,
+      "asset_sha256": "da6137173a473569f5da561fa8879f15ae8112b6352507b804ec6898cd972940",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_search_result_foreach.unfixed.launch--da6137173a47.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_search_result_foreach.unfixed.launch.png",
+      "relative_path": "cloudmusic_search_result_foreach.unfixed.launch.png",
+      "asset_name": "cloudmusic_search_result_foreach.unfixed.launch--9ffdc561e69e.png",
+      "source_size": 2371493,
+      "source_sha256": "9ffdc561e69ec208707318fd1f5649afc21ec810d6afbc1281cb4cc9710796fa",
+      "asset_size": 2371493,
+      "asset_sha256": "9ffdc561e69ec208707318fd1f5649afc21ec810d6afbc1281cb4cc9710796fa",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_search_result_foreach.unfixed.launch--9ffdc561e69e.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_songcard_artists_concat.fixed.launch.json",
+      "relative_path": "cloudmusic_songcard_artists_concat.fixed.launch.json",
+      "asset_name": "cloudmusic_songcard_artists_concat.fixed.launch--49a2bda0c509.json",
+      "source_size": 51576,
+      "source_sha256": "49a2bda0c50972794858d93b4aef631a163ac3c94a1603c6448a289158ad77f6",
+      "asset_size": 51576,
+      "asset_sha256": "49a2bda0c50972794858d93b4aef631a163ac3c94a1603c6448a289158ad77f6",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_songcard_artists_concat.fixed.launch--49a2bda0c509.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_songcard_artists_concat.fixed.launch.png",
+      "relative_path": "cloudmusic_songcard_artists_concat.fixed.launch.png",
+      "asset_name": "cloudmusic_songcard_artists_concat.fixed.launch--4ecbe7f9d2bf.png",
+      "source_size": 2371493,
+      "source_sha256": "4ecbe7f9d2bf1b655c27a59067c1656ce145d25ade92f495ed2ec5e1af951ef7",
+      "asset_size": 2371493,
+      "asset_sha256": "4ecbe7f9d2bf1b655c27a59067c1656ce145d25ade92f495ed2ec5e1af951ef7",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_songcard_artists_concat.fixed.launch--4ecbe7f9d2bf.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_songcard_artists_concat.unfixed.launch.json",
+      "relative_path": "cloudmusic_songcard_artists_concat.unfixed.launch.json",
+      "asset_name": "cloudmusic_songcard_artists_concat.unfixed.launch--77d9c564f322.json",
+      "source_size": 51576,
+      "source_sha256": "77d9c564f32271f3929a31f1391329db9fe9a34de2eda48a5def68eab2fd5212",
+      "asset_size": 51576,
+      "asset_sha256": "77d9c564f32271f3929a31f1391329db9fe9a34de2eda48a5def68eab2fd5212",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_songcard_artists_concat.unfixed.launch--77d9c564f322.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/cloudmusic_songcard_artists_concat.unfixed.launch.png",
+      "relative_path": "cloudmusic_songcard_artists_concat.unfixed.launch.png",
+      "asset_name": "cloudmusic_songcard_artists_concat.unfixed.launch--097b8ab39d31.png",
+      "source_size": 2371493,
+      "source_sha256": "097b8ab39d314b57d76864f41f95255d2efc76b7c58d9702b1af48eda315c90a",
+      "asset_size": 2371493,
+      "asset_sha256": "097b8ab39d314b57d76864f41f95255d2efc76b7c58d9702b1af48eda315c90a",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/cloudmusic_songcard_artists_concat.unfixed.launch--097b8ab39d31.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sepweather_font_register_per_page/rep1_1.hilog",
+      "relative_path": "sepweather_font_register_per_page/rep1_1.hilog",
+      "asset_name": "sepweather_font_register_per_page-rep1_1--7b7ec14718ae.hilog.gz",
+      "source_size": 4048216,
+      "source_sha256": "7b7ec14718ae1b66f52e83d592d0393d0f1b5dd90ea98c746c44d105db5e4881",
+      "asset_size": 638243,
+      "asset_sha256": "05521bb0c8951ec3fff0901aab29bd7b400cf92decfde96f725e4929ef0f3d18",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sepweather_font_register_per_page-rep1_1--7b7ec14718ae.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sepweather_font_register_per_page/rep1_2.hilog",
+      "relative_path": "sepweather_font_register_per_page/rep1_2.hilog",
+      "asset_name": "sepweather_font_register_per_page-rep1_2--43ac7fb21c94.hilog.gz",
+      "source_size": 9662668,
+      "source_sha256": "43ac7fb21c94109a3d69bc32a5f85d43a302694ec2ffaae708e80e6a26f43ebb",
+      "asset_size": 1158906,
+      "asset_sha256": "cc63884dc5d1ca52c834d807a0dea79d9be9d01e31189763cf8f8a92b137b549",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sepweather_font_register_per_page-rep1_2--43ac7fb21c94.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sepweather_font_register_per_page/sepweather_font_register_per_page_rep1_0.chtrace",
+      "relative_path": "sepweather_font_register_per_page/sepweather_font_register_per_page_rep1_0.chtrace",
+      "asset_name": "sepweather_font_register_per_page-sepweather_font_register_per_page_rep1_0--ed0031149ccd.chtrace.gz",
+      "source_size": 6269846,
+      "source_sha256": "ed0031149ccdbde936c6d45d6d0eecbd8300c60f7a8a02c9ca076f4160c99f10",
+      "asset_size": 6269846,
+      "asset_sha256": "ed0031149ccdbde936c6d45d6d0eecbd8300c60f7a8a02c9ca076f4160c99f10",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sepweather_font_register_per_page-sepweather_font_register_per_page_rep1_0--ed0031149ccd.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sepweather_font_register_per_page/sepweather_font_register_per_page_rep1_1.chtrace",
+      "relative_path": "sepweather_font_register_per_page/sepweather_font_register_per_page_rep1_1.chtrace",
+      "asset_name": "sepweather_font_register_per_page-sepweather_font_register_per_page_rep1_1--7d61385648c9.chtrace.gz",
+      "source_size": 6321151,
+      "source_sha256": "7d61385648c995c9a1c03747aa11570ef802c5549dd44c5b02bf378d96147f77",
+      "asset_size": 6321151,
+      "asset_sha256": "7d61385648c995c9a1c03747aa11570ef802c5549dd44c5b02bf378d96147f77",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sepweather_font_register_per_page-sepweather_font_register_per_page_rep1_1--7d61385648c9.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sepweather_font_register_per_page.fixed.launch.json",
+      "relative_path": "sepweather_font_register_per_page.fixed.launch.json",
+      "asset_name": "sepweather_font_register_per_page.fixed.launch--5300b75a9056.json",
+      "source_size": 64054,
+      "source_sha256": "5300b75a905656b2b1e7db8cee92fa0d941abe83bd3eb781510cd2f808e57464",
+      "asset_size": 64054,
+      "asset_sha256": "5300b75a905656b2b1e7db8cee92fa0d941abe83bd3eb781510cd2f808e57464",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sepweather_font_register_per_page.fixed.launch--5300b75a9056.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sepweather_font_register_per_page.fixed.launch.png",
+      "relative_path": "sepweather_font_register_per_page.fixed.launch.png",
+      "asset_name": "sepweather_font_register_per_page.fixed.launch--c5079a97c8a5.png",
+      "source_size": 2371493,
+      "source_sha256": "c5079a97c8a5acff158d28fafc6461fb21c7929439b001c2e1087531a2ec4309",
+      "asset_size": 2371493,
+      "asset_sha256": "c5079a97c8a5acff158d28fafc6461fb21c7929439b001c2e1087531a2ec4309",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sepweather_font_register_per_page.fixed.launch--c5079a97c8a5.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sepweather_font_register_per_page.unfixed.launch.json",
+      "relative_path": "sepweather_font_register_per_page.unfixed.launch.json",
+      "asset_name": "sepweather_font_register_per_page.unfixed.launch--4e2701e043b7.json",
+      "source_size": 46740,
+      "source_sha256": "4e2701e043b7a606316633fb381deb694c0984850a42ab0c97d5842deb6d5aae",
+      "asset_size": 46740,
+      "asset_sha256": "4e2701e043b7a606316633fb381deb694c0984850a42ab0c97d5842deb6d5aae",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sepweather_font_register_per_page.unfixed.launch--4e2701e043b7.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sepweather_font_register_per_page.unfixed.launch.png",
+      "relative_path": "sepweather_font_register_per_page.unfixed.launch.png",
+      "asset_name": "sepweather_font_register_per_page.unfixed.launch--07ee96e31442.png",
+      "source_size": 2371493,
+      "source_sha256": "07ee96e314421c3a2ea0e9d0e2eb5fc78bded7dcf8a288a47fb4caffd5c51b37",
+      "asset_size": 2371493,
+      "asset_sha256": "07ee96e314421c3a2ea0e9d0e2eb5fc78bded7dcf8a288a47fb4caffd5c51b37",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sepweather_font_register_per_page.unfixed.launch--07ee96e31442.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_article_list_foreach.fixed.launch.json",
+      "relative_path": "sheafreader_article_list_foreach.fixed.launch.json",
+      "asset_name": "sheafreader_article_list_foreach.fixed.launch--5a0a0b1f1326.json",
+      "source_size": 51570,
+      "source_sha256": "5a0a0b1f1326cb949f2d4361550312b1dacc094ab284daab3467ba7f40f130f3",
+      "asset_size": 51570,
+      "asset_sha256": "5a0a0b1f1326cb949f2d4361550312b1dacc094ab284daab3467ba7f40f130f3",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_article_list_foreach.fixed.launch--5a0a0b1f1326.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_article_list_foreach.fixed.launch.png",
+      "relative_path": "sheafreader_article_list_foreach.fixed.launch.png",
+      "asset_name": "sheafreader_article_list_foreach.fixed.launch--d442cc5113ab.png",
+      "source_size": 2371493,
+      "source_sha256": "d442cc5113ab3249a118402358cdcd6622f2bc86b3e3ff213e5fe3cdfac4da3b",
+      "asset_size": 2371493,
+      "asset_sha256": "d442cc5113ab3249a118402358cdcd6622f2bc86b3e3ff213e5fe3cdfac4da3b",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_article_list_foreach.fixed.launch--d442cc5113ab.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_article_list_foreach.unfixed.launch.json",
+      "relative_path": "sheafreader_article_list_foreach.unfixed.launch.json",
+      "asset_name": "sheafreader_article_list_foreach.unfixed.launch--f3dd0f592bc7.json",
+      "source_size": 51570,
+      "source_sha256": "f3dd0f592bc79b7cbd713cb133c0a1e532972af4c1a90901580e647a1c62f7ec",
+      "asset_size": 51570,
+      "asset_sha256": "f3dd0f592bc79b7cbd713cb133c0a1e532972af4c1a90901580e647a1c62f7ec",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_article_list_foreach.unfixed.launch--f3dd0f592bc7.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_article_list_foreach.unfixed.launch.png",
+      "relative_path": "sheafreader_article_list_foreach.unfixed.launch.png",
+      "asset_name": "sheafreader_article_list_foreach.unfixed.launch--49704296423a.png",
+      "source_size": 2371493,
+      "source_sha256": "49704296423ac0c284d0943f5bce33ac0e751996f38889ed8f53637ea82a78f7",
+      "asset_size": 2371493,
+      "asset_sha256": "49704296423ac0c284d0943f5bce33ac0e751996f38889ed8f53637ea82a78f7",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_article_list_foreach.unfixed.launch--49704296423a.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_extract_tag_tolowercase.fixed.launch.json",
+      "relative_path": "sheafreader_extract_tag_tolowercase.fixed.launch.json",
+      "asset_name": "sheafreader_extract_tag_tolowercase.fixed.launch--95c4305765bd.json",
+      "source_size": 51570,
+      "source_sha256": "95c4305765bdbac9b9f181a3085800d9f9f52ce29cdbd2ff7739826bcd7478e5",
+      "asset_size": 51570,
+      "asset_sha256": "95c4305765bdbac9b9f181a3085800d9f9f52ce29cdbd2ff7739826bcd7478e5",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_extract_tag_tolowercase.fixed.launch--95c4305765bd.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_extract_tag_tolowercase.fixed.launch.png",
+      "relative_path": "sheafreader_extract_tag_tolowercase.fixed.launch.png",
+      "asset_name": "sheafreader_extract_tag_tolowercase.fixed.launch--053e3fd9c3c5.png",
+      "source_size": 2371493,
+      "source_sha256": "053e3fd9c3c5b25ee4f9c26dc3935bbb1bf6c10b78755d73c7131a353ec63f7f",
+      "asset_size": 2371493,
+      "asset_sha256": "053e3fd9c3c5b25ee4f9c26dc3935bbb1bf6c10b78755d73c7131a353ec63f7f",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_extract_tag_tolowercase.fixed.launch--053e3fd9c3c5.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_extract_tag_tolowercase.unfixed.launch.json",
+      "relative_path": "sheafreader_extract_tag_tolowercase.unfixed.launch.json",
+      "asset_name": "sheafreader_extract_tag_tolowercase.unfixed.launch--b786966f5127.json",
+      "source_size": 51570,
+      "source_sha256": "b786966f5127fccc3cb6102c4bd930d4b2cf40eb7ed770784022b5cef835261d",
+      "asset_size": 51570,
+      "asset_sha256": "b786966f5127fccc3cb6102c4bd930d4b2cf40eb7ed770784022b5cef835261d",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_extract_tag_tolowercase.unfixed.launch--b786966f5127.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_extract_tag_tolowercase.unfixed.launch.png",
+      "relative_path": "sheafreader_extract_tag_tolowercase.unfixed.launch.png",
+      "asset_name": "sheafreader_extract_tag_tolowercase.unfixed.launch--0813bd44010f.png",
+      "source_size": 2371493,
+      "source_sha256": "0813bd44010faa8c7e4ffbdd37c0feb0bed43c677f4eca16d824cf86811b5756",
+      "asset_size": 2371493,
+      "asset_sha256": "0813bd44010faa8c7e4ffbdd37c0feb0bed43c677f4eca16d824cf86811b5756",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_extract_tag_tolowercase.unfixed.launch--0813bd44010f.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_insert_duplicate_exception.fixed.launch.json",
+      "relative_path": "sheafreader_insert_duplicate_exception.fixed.launch.json",
+      "asset_name": "sheafreader_insert_duplicate_exception.fixed.launch--f3edcbba6e04.json",
+      "source_size": 51570,
+      "source_sha256": "f3edcbba6e045d12b15052e749cd1e5c2c2714341bbcb5d0d22057d643a7a626",
+      "asset_size": 51570,
+      "asset_sha256": "f3edcbba6e045d12b15052e749cd1e5c2c2714341bbcb5d0d22057d643a7a626",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_insert_duplicate_exception.fixed.launch--f3edcbba6e04.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_insert_duplicate_exception.fixed.launch.png",
+      "relative_path": "sheafreader_insert_duplicate_exception.fixed.launch.png",
+      "asset_name": "sheafreader_insert_duplicate_exception.fixed.launch--56f7b1fdada5.png",
+      "source_size": 2371493,
+      "source_sha256": "56f7b1fdada52c5143e6886f9984db7a5dad0619cc63f4b3dfad5af47978f3e9",
+      "asset_size": 2371493,
+      "asset_sha256": "56f7b1fdada52c5143e6886f9984db7a5dad0619cc63f4b3dfad5af47978f3e9",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_insert_duplicate_exception.fixed.launch--56f7b1fdada5.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_insert_duplicate_exception.unfixed.launch.json",
+      "relative_path": "sheafreader_insert_duplicate_exception.unfixed.launch.json",
+      "asset_name": "sheafreader_insert_duplicate_exception.unfixed.launch--27d95b6073ad.json",
+      "source_size": 51570,
+      "source_sha256": "27d95b6073ad1c60fa8f19b0b4d2e7abf02ec560d89ffbd77b3ffb63ade8bb5a",
+      "asset_size": 51570,
+      "asset_sha256": "27d95b6073ad1c60fa8f19b0b4d2e7abf02ec560d89ffbd77b3ffb63ade8bb5a",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_insert_duplicate_exception.unfixed.launch--27d95b6073ad.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_insert_duplicate_exception.unfixed.launch.png",
+      "relative_path": "sheafreader_insert_duplicate_exception.unfixed.launch.png",
+      "asset_name": "sheafreader_insert_duplicate_exception.unfixed.launch--15356a26de83.png",
+      "source_size": 2371493,
+      "source_sha256": "15356a26de83e48a2f4e62c3146338bc43c1fcb3b580a8168a1e526c52ac626a",
+      "asset_size": 2371493,
+      "asset_sha256": "15356a26de83e48a2f4e62c3146338bc43c1fcb3b580a8168a1e526c52ac626a",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_insert_duplicate_exception.unfixed.launch--15356a26de83.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_refresh_feeds_sequential.fixed.launch.json",
+      "relative_path": "sheafreader_refresh_feeds_sequential.fixed.launch.json",
+      "asset_name": "sheafreader_refresh_feeds_sequential.fixed.launch--01280fabe3c1.json",
+      "source_size": 51570,
+      "source_sha256": "01280fabe3c14cdbccc16288dc4fad3b31962c0d7b5304c97f885468b29ae506",
+      "asset_size": 51570,
+      "asset_sha256": "01280fabe3c14cdbccc16288dc4fad3b31962c0d7b5304c97f885468b29ae506",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_refresh_feeds_sequential.fixed.launch--01280fabe3c1.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_refresh_feeds_sequential.fixed.launch.png",
+      "relative_path": "sheafreader_refresh_feeds_sequential.fixed.launch.png",
+      "asset_name": "sheafreader_refresh_feeds_sequential.fixed.launch--bf631b865e87.png",
+      "source_size": 2371493,
+      "source_sha256": "bf631b865e87d288582a7c1ed26b233f51fd8a9acd18b359a96c22716d9a1ae7",
+      "asset_size": 2371493,
+      "asset_sha256": "bf631b865e87d288582a7c1ed26b233f51fd8a9acd18b359a96c22716d9a1ae7",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_refresh_feeds_sequential.fixed.launch--bf631b865e87.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_refresh_feeds_sequential.unfixed.launch.json",
+      "relative_path": "sheafreader_refresh_feeds_sequential.unfixed.launch.json",
+      "asset_name": "sheafreader_refresh_feeds_sequential.unfixed.launch--df57e17f77e5.json",
+      "source_size": 51570,
+      "source_sha256": "df57e17f77e55eda1dcf7077d248bebb81e44a3f96c5073b9ac2d324f949b376",
+      "asset_size": 51570,
+      "asset_sha256": "df57e17f77e55eda1dcf7077d248bebb81e44a3f96c5073b9ac2d324f949b376",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_refresh_feeds_sequential.unfixed.launch--df57e17f77e5.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_refresh_feeds_sequential.unfixed.launch.png",
+      "relative_path": "sheafreader_refresh_feeds_sequential.unfixed.launch.png",
+      "asset_name": "sheafreader_refresh_feeds_sequential.unfixed.launch--77bea70fcb2c.png",
+      "source_size": 2371493,
+      "source_sha256": "77bea70fcb2cea2355388a54e8911c16b2b94493f0353b12c2887013de06a0bd",
+      "asset_size": 2371493,
+      "asset_sha256": "77bea70fcb2cea2355388a54e8911c16b2b94493f0353b12c2887013de06a0bd",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_refresh_feeds_sequential.unfixed.launch--77bea70fcb2c.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_unread_counts_n_plus_1.fixed.launch.json",
+      "relative_path": "sheafreader_unread_counts_n_plus_1.fixed.launch.json",
+      "asset_name": "sheafreader_unread_counts_n_plus_1.fixed.launch--e6a013d80038.json",
+      "source_size": 51570,
+      "source_sha256": "e6a013d80038c6d0049efb7e7f0726826039566b56c7cc77f731014c1fa08df6",
+      "asset_size": 51570,
+      "asset_sha256": "e6a013d80038c6d0049efb7e7f0726826039566b56c7cc77f731014c1fa08df6",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_unread_counts_n_plus_1.fixed.launch--e6a013d80038.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_unread_counts_n_plus_1.fixed.launch.png",
+      "relative_path": "sheafreader_unread_counts_n_plus_1.fixed.launch.png",
+      "asset_name": "sheafreader_unread_counts_n_plus_1.fixed.launch--e04dca6d4381.png",
+      "source_size": 2371493,
+      "source_sha256": "e04dca6d438145ba5804abd44a8aafcfed21dec6a066eb4972058d6979051570",
+      "asset_size": 2371493,
+      "asset_sha256": "e04dca6d438145ba5804abd44a8aafcfed21dec6a066eb4972058d6979051570",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_unread_counts_n_plus_1.fixed.launch--e04dca6d4381.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_unread_counts_n_plus_1.unfixed.launch.json",
+      "relative_path": "sheafreader_unread_counts_n_plus_1.unfixed.launch.json",
+      "asset_name": "sheafreader_unread_counts_n_plus_1.unfixed.launch--142a9cf85e66.json",
+      "source_size": 51570,
+      "source_sha256": "142a9cf85e66e97474469ba940e235703e4f863c38e408fbb94c656b62bf0ecc",
+      "asset_size": 51570,
+      "asset_sha256": "142a9cf85e66e97474469ba940e235703e4f863c38e408fbb94c656b62bf0ecc",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_unread_counts_n_plus_1.unfixed.launch--142a9cf85e66.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sheafreader_unread_counts_n_plus_1.unfixed.launch.png",
+      "relative_path": "sheafreader_unread_counts_n_plus_1.unfixed.launch.png",
+      "asset_name": "sheafreader_unread_counts_n_plus_1.unfixed.launch--cd0b5250f2c9.png",
+      "source_size": 2371493,
+      "source_sha256": "cd0b5250f2c97734d326e732f6c74705c4325ae4af2e7c2efce232924cee1105",
+      "asset_size": 2371493,
+      "asset_sha256": "cd0b5250f2c97734d326e732f6c74705c4325ae4af2e7c2efce232924cee1105",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sheafreader_unread_counts_n_plus_1.unfixed.launch--cd0b5250f2c9.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/sweep.log",
+      "relative_path": "sweep.log",
+      "asset_name": "sweep--dc1f5ad10728.log.gz",
+      "source_size": 34064,
+      "source_sha256": "dc1f5ad1072863541336a81c30af6be1e0b5e6356438966ee8dfb84482e700a5",
+      "asset_size": 3308,
+      "asset_sha256": "ac01b39f84cb8036a1dfd8aefd0a7494f8d675ad62d67f48aeb8e0db63842852",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/sweep--dc1f5ad10728.log.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization/rep1_1.hilog",
+      "relative_path": "wanharmony_history_log_materialization/rep1_1.hilog",
+      "asset_name": "wanharmony_history_log_materialization-rep1_1--fa8bf1d39ae6.hilog.gz",
+      "source_size": 1196808849,
+      "source_sha256": "fa8bf1d39ae6fe6b6e15160c5194c92146b78ca102e4b141af3b13008c78abd7",
+      "asset_size": 3610464,
+      "asset_sha256": "abed0e5bba0876bb01a215f74060c4729cb3be55536096dbe478b34d35f9f3a7",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization-rep1_1--fa8bf1d39ae6.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization/rep1_2.hilog",
+      "relative_path": "wanharmony_history_log_materialization/rep1_2.hilog",
+      "asset_name": "wanharmony_history_log_materialization-rep1_2--3ffc4a33ec9a.hilog.gz",
+      "source_size": 9797199,
+      "source_sha256": "3ffc4a33ec9a0dc7faad4283d009f00f3f9e9e5104981d0d7b51bb190588699d",
+      "asset_size": 995086,
+      "asset_sha256": "00832d974d5fe53f63a1f60c05f44ac4fba27299ad49fe316f7d8da10e2f2318",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization-rep1_2--3ffc4a33ec9a.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization/rep1_4.hilog",
+      "relative_path": "wanharmony_history_log_materialization/rep1_4.hilog",
+      "asset_name": "wanharmony_history_log_materialization-rep1_4--163869ad09a5.hilog.gz",
+      "source_size": 1227367452,
+      "source_sha256": "163869ad09a5ecc9eabadaa9596fc1f70df6b979e8099e7c2e04c6e704fe9fe2",
+      "asset_size": 4281909,
+      "asset_sha256": "050cfeeb7d0da6223d5515200cadbe02bc0b93604082ec9b372a6cc143a8feeb",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization-rep1_4--163869ad09a5.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization/rep2_2.hilog",
+      "relative_path": "wanharmony_history_log_materialization/rep2_2.hilog",
+      "asset_name": "wanharmony_history_log_materialization-rep2_2--ef43edf44398.hilog.gz",
+      "source_size": 4371583,
+      "source_sha256": "ef43edf443988867e0fc13c7d0a2bd94b8fb828c5e33f305a64455d1638bc445",
+      "asset_size": 720069,
+      "asset_sha256": "69c7d36fc196dfa725f9a2f1f8f93b65a92dff414ed9c5a8a7c7a9d1c88637ad",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization-rep2_2--ef43edf44398.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization/rep2_5.hilog",
+      "relative_path": "wanharmony_history_log_materialization/rep2_5.hilog",
+      "asset_name": "wanharmony_history_log_materialization-rep2_5--b04384fa8f8c.hilog.gz",
+      "source_size": 35143080,
+      "source_sha256": "b04384fa8f8cb942c54ae9a3e785ef018c872234655aafb24934cb8f00528531",
+      "asset_size": 1435112,
+      "asset_sha256": "af943b94f50bcc996b1da9d01ae34e441f9f324d02f79bda8d2d3cbcd4ee60df",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization-rep2_5--b04384fa8f8c.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization/rep3_3.hilog",
+      "relative_path": "wanharmony_history_log_materialization/rep3_3.hilog",
+      "asset_name": "wanharmony_history_log_materialization-rep3_3--be2b5d99c43e.hilog.gz",
+      "source_size": 4628841,
+      "source_sha256": "be2b5d99c43e35519e7614bc5b05107580dda9c6de6f29bc380f2941b455d15f",
+      "asset_size": 725462,
+      "asset_sha256": "2b739a26f4dcb7e5dfad89e2a18675fccb43d4a78bc7d58c070622891961b9d5",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization-rep3_3--be2b5d99c43e.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization/rep3_6.hilog",
+      "relative_path": "wanharmony_history_log_materialization/rep3_6.hilog",
+      "asset_name": "wanharmony_history_log_materialization-rep3_6--bb4cce2a424f.hilog.gz",
+      "source_size": 35435815,
+      "source_sha256": "bb4cce2a424fa9998453161f41418cbc0479a01cd5bdbaa84290f60d363b7183",
+      "asset_size": 1483423,
+      "asset_sha256": "a5e2b6696ec03607cd5f9fdfdda38cab4a58795221e244fb011f632e81cd2cc0",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization-rep3_6--bb4cce2a424f.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization/wanharmony_history_log_materialization_rep1_0.chtrace",
+      "relative_path": "wanharmony_history_log_materialization/wanharmony_history_log_materialization_rep1_0.chtrace",
+      "asset_name": "wanharmony_history_log_materialization-wanharmony_history_log_materialization_rep1_0--5235e4b26d6c.chtrace.gz",
+      "source_size": 597744690,
+      "source_sha256": "5235e4b26d6cb6ae46f8e22aeafd831b9f1e6a5434a47432bb68ef7e76bda5cd",
+      "asset_size": 54972618,
+      "asset_sha256": "fbd2178ca78b00696f88d5afece24a88cdc36ec72a03e08cbd9b95949d28c3f0",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization-wanharmony_history_log_materialization_rep1_0--5235e4b26d6c.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization/wanharmony_history_log_materialization_rep1_1.chtrace",
+      "relative_path": "wanharmony_history_log_materialization/wanharmony_history_log_materialization_rep1_1.chtrace",
+      "asset_name": "wanharmony_history_log_materialization-wanharmony_history_log_materialization_rep1_1--7f6c8871079c.chtrace.gz",
+      "source_size": 51386655,
+      "source_sha256": "7f6c8871079c16e2980891c0a88be8f923d6c84adcf574f1248e02bf4128b226",
+      "asset_size": 4855814,
+      "asset_sha256": "fc7c8615f67dd20921c4e66ea03506f10eb599c061d5e9ff319d031dc4f712b0",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization-wanharmony_history_log_materialization_rep1_1--7f6c8871079c.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization/wanharmony_history_log_materialization_rep1_3.chtrace",
+      "relative_path": "wanharmony_history_log_materialization/wanharmony_history_log_materialization_rep1_3.chtrace",
+      "asset_name": "wanharmony_history_log_materialization-wanharmony_history_log_materialization_rep1_3--10cdfa548234.chtrace.gz",
+      "source_size": 606865331,
+      "source_sha256": "10cdfa548234bb029eae9aa314653a3241a86b5c803eb6bb68e5cf2b7b8bec28",
+      "asset_size": 56656843,
+      "asset_sha256": "22ca5eff58907afda40ae02469e45c2e79b37fd3b5932ba1d7ff370bc3cdf8e7",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization-wanharmony_history_log_materialization_rep1_3--10cdfa548234.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization/wanharmony_history_log_materialization_rep2_1.chtrace",
+      "relative_path": "wanharmony_history_log_materialization/wanharmony_history_log_materialization_rep2_1.chtrace",
+      "asset_name": "wanharmony_history_log_materialization-wanharmony_history_log_materialization_rep2_1--8a9170e64407.chtrace.gz",
+      "source_size": 326097969,
+      "source_sha256": "8a9170e644072f28e61866a41fad9d861a4ad8126d89f10ad62a14b5cc094f95",
+      "asset_size": 30351382,
+      "asset_sha256": "93ec447c5149f5c8d7fcec965a3a8663c7042ae167696a84edadcfe029e4cd61",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization-wanharmony_history_log_materialization_rep2_1--8a9170e64407.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization/wanharmony_history_log_materialization_rep2_4.chtrace",
+      "relative_path": "wanharmony_history_log_materialization/wanharmony_history_log_materialization_rep2_4.chtrace",
+      "asset_name": "wanharmony_history_log_materialization-wanharmony_history_log_materialization_rep2_4--3cd936a990bb.chtrace.gz",
+      "source_size": 439960161,
+      "source_sha256": "3cd936a990bb57dccc96ebbc759995fc0b59923122865aa859eaa340f0e07e9e",
+      "asset_size": 41086352,
+      "asset_sha256": "84e8e922eec45c05693a899181bfc9f502907dca52189ba867575a8bcd6c1aeb",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization-wanharmony_history_log_materialization_rep2_4--3cd936a990bb.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization/wanharmony_history_log_materialization_rep3_2.chtrace",
+      "relative_path": "wanharmony_history_log_materialization/wanharmony_history_log_materialization_rep3_2.chtrace",
+      "asset_name": "wanharmony_history_log_materialization-wanharmony_history_log_materialization_rep3_2--6c94c6600de1.chtrace.gz",
+      "source_size": 316051305,
+      "source_sha256": "6c94c6600de11fe5aaffe76e5ba6fa4259edfcb6874fffae8912b8a23e647528",
+      "asset_size": 29636215,
+      "asset_sha256": "992409f0a0440601ff7f564798e76faa1d726939fcc566ef16bc520576787375",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization-wanharmony_history_log_materialization_rep3_2--6c94c6600de1.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization/wanharmony_history_log_materialization_rep3_5.chtrace",
+      "relative_path": "wanharmony_history_log_materialization/wanharmony_history_log_materialization_rep3_5.chtrace",
+      "asset_name": "wanharmony_history_log_materialization-wanharmony_history_log_materialization_rep3_5--a428958df1b7.chtrace.gz",
+      "source_size": 430332108,
+      "source_sha256": "a428958df1b7e767cc90d6a90a692c30ff38bed2fa219074bd107a559201b2b4",
+      "asset_size": 39918591,
+      "asset_sha256": "748d532a939f8f51c06159367c99b7941e4a948c55aeb533a3c5b2a0b742bb3c",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization-wanharmony_history_log_materialization_rep3_5--a428958df1b7.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization.fixed.launch.json",
+      "relative_path": "wanharmony_history_log_materialization.fixed.launch.json",
+      "asset_name": "wanharmony_history_log_materialization.fixed.launch--27e8a1c73ee5.json",
+      "source_size": 101225,
+      "source_sha256": "27e8a1c73ee5be53aab646e8711b2d2737b05abc763af615d833c6c70f2987ea",
+      "asset_size": 101225,
+      "asset_sha256": "27e8a1c73ee5be53aab646e8711b2d2737b05abc763af615d833c6c70f2987ea",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization.fixed.launch--27e8a1c73ee5.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization.fixed.launch.png",
+      "relative_path": "wanharmony_history_log_materialization.fixed.launch.png",
+      "asset_name": "wanharmony_history_log_materialization.fixed.launch--f8cc54a87a8f.png",
+      "source_size": 2735639,
+      "source_sha256": "f8cc54a87a8f5b0b6f7a71aabd0d02556a7f99e58162ab44b68cd061178ae751",
+      "asset_size": 2735639,
+      "asset_sha256": "f8cc54a87a8f5b0b6f7a71aabd0d02556a7f99e58162ab44b68cd061178ae751",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization.fixed.launch--f8cc54a87a8f.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization.unfixed.launch.json",
+      "relative_path": "wanharmony_history_log_materialization.unfixed.launch.json",
+      "asset_name": "wanharmony_history_log_materialization.unfixed.launch--2d7f9f1354b2.json",
+      "source_size": 101201,
+      "source_sha256": "2d7f9f1354b28f294af9ea17b2b4f468129647e70174ec80b3404889b4d39c30",
+      "asset_size": 101201,
+      "asset_sha256": "2d7f9f1354b28f294af9ea17b2b4f468129647e70174ec80b3404889b4d39c30",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization.unfixed.launch--2d7f9f1354b2.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_history_log_materialization.unfixed.launch.png",
+      "relative_path": "wanharmony_history_log_materialization.unfixed.launch.png",
+      "asset_name": "wanharmony_history_log_materialization.unfixed.launch--90befa37817b.png",
+      "source_size": 2735639,
+      "source_sha256": "90befa37817bbdb414ca5994eb72f2e5ac7d3f806693e649be380f4a989c0930",
+      "asset_size": 2735639,
+      "asset_sha256": "90befa37817bbdb414ca5994eb72f2e5ac7d3f806693e649be380f4a989c0930",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_history_log_materialization.unfixed.launch--90befa37817b.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/aborted_20260924_0145_app.hilog",
+      "relative_path": "wanharmony_html_decode_per_render/aborted_20260924_0145_app.hilog",
+      "asset_name": "wanharmony_html_decode_per_render-aborted_20260924_0145_app--dbfc9732d5a4.hilog.gz",
+      "source_size": 786996,
+      "source_sha256": "dbfc9732d5a40e43980d8c8d62e96197a9b901533d7767deeecb89b19bd7290c",
+      "asset_size": 88337,
+      "asset_sha256": "78b00c0742d3f90fc25eccd851d35794b92ce9060d66a905f8153deceb5dc26f",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-aborted_20260924_0145_app--dbfc9732d5a4.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/rep1_2.hilog",
+      "relative_path": "wanharmony_html_decode_per_render/rep1_2.hilog",
+      "asset_name": "wanharmony_html_decode_per_render-rep1_2--70fd23d3d38b.hilog.gz",
+      "source_size": 6921848,
+      "source_sha256": "70fd23d3d38ba0cac8f978c76be5ffd66069380255376c442757191c0985dd5a",
+      "asset_size": 731791,
+      "asset_sha256": "4c6f1f9ffca7c3cef8849f31fa01bfc5c62d7873f6251e017ff09d1c94467d49",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-rep1_2--70fd23d3d38b.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_0.chtrace",
+      "relative_path": "wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_0.chtrace",
+      "asset_name": "wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_0--a797d54c0ee2.chtrace.gz",
+      "source_size": 237386117,
+      "source_sha256": "a797d54c0ee2e745e7c73587c5b85531aeddbc50f536e0c07730a059c2b2bd73",
+      "asset_size": 25737796,
+      "asset_sha256": "d3e3df0b004e81419cd8e79eb2ebbba4ae6fb7402149f166f51da1de7ec8d2b6",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_0--a797d54c0ee2.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_0.hilog",
+      "relative_path": "wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_0.hilog",
+      "asset_name": "wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_0--cda2be91508b.hilog.gz",
+      "source_size": 73268,
+      "source_sha256": "cda2be91508b83760d0851645a66b36b02ceaaf6e45ad4326dbec21863151269",
+      "asset_size": 8708,
+      "asset_sha256": "0af7c34a7c52bccfb9bf8f69189fb0a7cf6bde2ca692dc812c08dbf1a2bd649b",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_0--cda2be91508b.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_3.chtrace",
+      "relative_path": "wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_3.chtrace",
+      "asset_name": "wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_3--85eaf901ddb0.chtrace.gz",
+      "source_size": 231105393,
+      "source_sha256": "85eaf901ddb06a930ec82cd2f16f2c2c967ccecd0d5b3858831dc176da8a94b4",
+      "asset_size": 25045181,
+      "asset_sha256": "5a071ce1a1bcdfbdecb9cb14d356773e0218b1d74eba15c8d73032be23371e36",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_3--85eaf901ddb0.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_3.hilog",
+      "relative_path": "wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_3.hilog",
+      "asset_name": "wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_3--cdc51d7fbe92.hilog.gz",
+      "source_size": 86877,
+      "source_sha256": "cdc51d7fbe925555d1f096ddfee3666263ea99669b11c5f355e3493f30398c83",
+      "asset_size": 10482,
+      "asset_sha256": "3a918c2c3ab71eddae8ea6645612364a6dfb6328c9b65dc6493ffd2e71ef2f66",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep1_3--cdc51d7fbe92.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_1.chtrace",
+      "relative_path": "wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_1.chtrace",
+      "asset_name": "wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_1--7bd0ba28a854.chtrace.gz",
+      "source_size": 231454510,
+      "source_sha256": "7bd0ba28a854a0f5f1492e04c0057154a277d09281c88d2dc16f1506f5636545",
+      "asset_size": 25240790,
+      "asset_sha256": "c23b1de358b8c18110c37ff9abe993b67228ecc63e829b0727e03fbbc160165e",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_1--7bd0ba28a854.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_1.hilog",
+      "relative_path": "wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_1.hilog",
+      "asset_name": "wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_1--6ade86296552.hilog.gz",
+      "source_size": 71577,
+      "source_sha256": "6ade862965520cab4bc563b70bb8f39db7fe15d66aa240be9842d76e5155c716",
+      "asset_size": 8094,
+      "asset_sha256": "a9a8a1d6b697760e41cd26d1d6b65daf353e26bbb5cdaef190475f584e1c5ec7",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_1--6ade86296552.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_4.chtrace",
+      "relative_path": "wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_4.chtrace",
+      "asset_name": "wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_4--462eb572042d.chtrace.gz",
+      "source_size": 231665210,
+      "source_sha256": "462eb572042d4aaf8ed92f7fafe9f5b572c810e5170744b2048a3f62f17c6022",
+      "asset_size": 25207561,
+      "asset_sha256": "f0ad8164b3e8e7b68d528220cc743ad0b6ab804e86d9a45dddb2e4d1ca4ca4ae",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_4--462eb572042d.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_4.hilog",
+      "relative_path": "wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_4.hilog",
+      "asset_name": "wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_4--176aa1c62fa6.hilog.gz",
+      "source_size": 72867,
+      "source_sha256": "176aa1c62fa6cae21f2618b3d71e3d7541024e75e6069ade56f421a0ecf45d9e",
+      "asset_size": 8435,
+      "asset_sha256": "8aa1009771b0236839926d96a2dedb88836e2703114f22831f36da537f7bedcf",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep2_4--176aa1c62fa6.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_2.chtrace",
+      "relative_path": "wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_2.chtrace",
+      "asset_name": "wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_2--85ed82bbf27c.chtrace.gz",
+      "source_size": 236318645,
+      "source_sha256": "85ed82bbf27c42f6fbf70f743b7ead99bc78656973be6067d4cf0431daa32cf2",
+      "asset_size": 25759821,
+      "asset_sha256": "ff3fce1a3247c140860717c0693ab78b1b65aaf3261f9d9a3548efce5a881203",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_2--85ed82bbf27c.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_2.hilog",
+      "relative_path": "wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_2.hilog",
+      "asset_name": "wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_2--b0e5b51090fe.hilog.gz",
+      "source_size": 73173,
+      "source_sha256": "b0e5b51090fe6eb1f02eeb18e2ba85d23f9199addb873b451737ed1b7654b71b",
+      "asset_size": 8580,
+      "asset_sha256": "16953f3fccb035e88f3094f77c256c469c092d412274554044b2cd582c7980b2",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_2--b0e5b51090fe.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_5.chtrace",
+      "relative_path": "wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_5.chtrace",
+      "asset_name": "wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_5--ec43c13f27cc.chtrace.gz",
+      "source_size": 232086632,
+      "source_sha256": "ec43c13f27ccc96341208db1fdbb68f953811068c0c3c5674d6549f406386121",
+      "asset_size": 25230959,
+      "asset_sha256": "e185d8ebc38769e963baf47b1aeb8e1f49b19b1f5a63676ebd909567b6de621c",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_5--ec43c13f27cc.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_5.hilog",
+      "relative_path": "wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_5.hilog",
+      "asset_name": "wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_5--84489f060e9d.hilog.gz",
+      "source_size": 73017,
+      "source_sha256": "84489f060e9d4f0d75de0a5687c359c7aef77b49c37b8a3a68e3a727f1d2f06d",
+      "asset_size": 8337,
+      "asset_sha256": "2c6bfa774fe2ec901f06f59b02ad01ac303882d25f671370947d26aabc316238",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_1790186175753545000_38495_rep3_5--84489f060e9d.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_rep1_1.chtrace",
+      "relative_path": "wanharmony_html_decode_per_render/wanharmony_html_decode_per_render_rep1_1.chtrace",
+      "asset_name": "wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_rep1_1--86641e572e9a.chtrace.gz",
+      "source_size": 50687883,
+      "source_sha256": "86641e572e9aeaba4787a33a2a837229ea2a39f17ab427ad87e88d15928dfa75",
+      "asset_size": 5595725,
+      "asset_sha256": "2b09fa7f34988cf3c37bdc63b1071026847c8fba4b4c274e8a4e8d016736af71",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render-wanharmony_html_decode_per_render_rep1_1--86641e572e9a.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render.fixed.launch.json",
+      "relative_path": "wanharmony_html_decode_per_render.fixed.launch.json",
+      "asset_name": "wanharmony_html_decode_per_render.fixed.launch--2be422ad0cba.json",
+      "source_size": 101233,
+      "source_sha256": "2be422ad0cba838894f439daf80ff71f7e4da186688d72889d088e4913aebfd6",
+      "asset_size": 101233,
+      "asset_sha256": "2be422ad0cba838894f439daf80ff71f7e4da186688d72889d088e4913aebfd6",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render.fixed.launch--2be422ad0cba.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render.fixed.launch.png",
+      "relative_path": "wanharmony_html_decode_per_render.fixed.launch.png",
+      "asset_name": "wanharmony_html_decode_per_render.fixed.launch--61a8671ab924.png",
+      "source_size": 2735639,
+      "source_sha256": "61a8671ab924bca026d96d1565978a0ebdd1f35b959774bdb9b03af4d4a05c36",
+      "asset_size": 2735639,
+      "asset_sha256": "61a8671ab924bca026d96d1565978a0ebdd1f35b959774bdb9b03af4d4a05c36",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render.fixed.launch--61a8671ab924.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render.unfixed.launch.json",
+      "relative_path": "wanharmony_html_decode_per_render.unfixed.launch.json",
+      "asset_name": "wanharmony_html_decode_per_render.unfixed.launch--b9bcc5f3e147.json",
+      "source_size": 101225,
+      "source_sha256": "b9bcc5f3e147b8ff066485b97ab2134dd4d4b3b24056a60d7b223bfaac3d97bf",
+      "asset_size": 101225,
+      "asset_sha256": "b9bcc5f3e147b8ff066485b97ab2134dd4d4b3b24056a60d7b223bfaac3d97bf",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render.unfixed.launch--b9bcc5f3e147.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_html_decode_per_render.unfixed.launch.png",
+      "relative_path": "wanharmony_html_decode_per_render.unfixed.launch.png",
+      "asset_name": "wanharmony_html_decode_per_render.unfixed.launch--475187daa634.png",
+      "source_size": 2735639,
+      "source_sha256": "475187daa634327ca4448a0ae009f16efb730f6779bb519be52ce6235f03864a",
+      "asset_size": 2735639,
+      "asset_sha256": "475187daa634327ca4448a0ae009f16efb730f6779bb519be52ce6235f03864a",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_html_decode_per_render.unfixed.launch--475187daa634.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_persisted_home_list_growth/rep1_1.hilog",
+      "relative_path": "wanharmony_persisted_home_list_growth/rep1_1.hilog",
+      "asset_name": "wanharmony_persisted_home_list_growth-rep1_1--9beb0c466875.hilog.gz",
+      "source_size": 3520897,
+      "source_sha256": "9beb0c466875195ae2d1c9dfc6ec920abc171344062810f2229d77006a2516df",
+      "asset_size": 465759,
+      "asset_sha256": "0596c733259f10d1befde64a958a6c1622e24a2bd4cec4173e761cb8488e55f0",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_persisted_home_list_growth-rep1_1--9beb0c466875.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_persisted_home_list_growth/rep1_2.hilog",
+      "relative_path": "wanharmony_persisted_home_list_growth/rep1_2.hilog",
+      "asset_name": "wanharmony_persisted_home_list_growth-rep1_2--00f02c9ae362.hilog.gz",
+      "source_size": 9078530,
+      "source_sha256": "00f02c9ae362b5bd11fd39b2e7f60a7908f90f68217919028b71141a2efee223",
+      "asset_size": 885365,
+      "asset_sha256": "20493043ee23ff17b04aaf26256599e8af88089b152e3fe4610bd662a65b8530",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_persisted_home_list_growth-rep1_2--00f02c9ae362.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_persisted_home_list_growth/wanharmony_persisted_home_list_growth_rep1_0.chtrace",
+      "relative_path": "wanharmony_persisted_home_list_growth/wanharmony_persisted_home_list_growth_rep1_0.chtrace",
+      "asset_name": "wanharmony_persisted_home_list_growth-wanharmony_persisted_home_list_growth_rep1_0--e59b967344a5.chtrace.gz",
+      "source_size": 55580233,
+      "source_sha256": "e59b967344a53dbc84f1457c808cb4bba335eb37714bbc6afb7a3177e707b9ff",
+      "asset_size": 5460043,
+      "asset_sha256": "522781c31590ed5ff430935ec2d13395c564af3b502eb8eca6290e01618dca0d",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_persisted_home_list_growth-wanharmony_persisted_home_list_growth_rep1_0--e59b967344a5.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_persisted_home_list_growth/wanharmony_persisted_home_list_growth_rep1_1.chtrace",
+      "relative_path": "wanharmony_persisted_home_list_growth/wanharmony_persisted_home_list_growth_rep1_1.chtrace",
+      "asset_name": "wanharmony_persisted_home_list_growth-wanharmony_persisted_home_list_growth_rep1_1--ddf0922202d0.chtrace.gz",
+      "source_size": 55326372,
+      "source_sha256": "ddf0922202d08196a21fef3e9fed4f17ca9188aba8499c530b964acb4a79bc51",
+      "asset_size": 5458481,
+      "asset_sha256": "a1c631aae3bc1bc15ef751867d1fe693e80cb8f5cbc4b510fa9c65d9e5a2a171",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_persisted_home_list_growth-wanharmony_persisted_home_list_growth_rep1_1--ddf0922202d0.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_persisted_home_list_growth.fixed.launch.json",
+      "relative_path": "wanharmony_persisted_home_list_growth.fixed.launch.json",
+      "asset_name": "wanharmony_persisted_home_list_growth.fixed.launch--6cc1f7a1c4bf.json",
+      "source_size": 101205,
+      "source_sha256": "6cc1f7a1c4bf020a03bae805dcaa62f41beb153a2e370bb569041e541766c952",
+      "asset_size": 101205,
+      "asset_sha256": "6cc1f7a1c4bf020a03bae805dcaa62f41beb153a2e370bb569041e541766c952",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_persisted_home_list_growth.fixed.launch--6cc1f7a1c4bf.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_persisted_home_list_growth.fixed.launch.png",
+      "relative_path": "wanharmony_persisted_home_list_growth.fixed.launch.png",
+      "asset_name": "wanharmony_persisted_home_list_growth.fixed.launch--7f9872287032.png",
+      "source_size": 2371493,
+      "source_sha256": "7f987228703214aaa1a111b174c5b6ccd54dbc831116265e77414df57432ba1b",
+      "asset_size": 2371493,
+      "asset_sha256": "7f987228703214aaa1a111b174c5b6ccd54dbc831116265e77414df57432ba1b",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_persisted_home_list_growth.fixed.launch--7f9872287032.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_persisted_home_list_growth.unfixed.launch.json",
+      "relative_path": "wanharmony_persisted_home_list_growth.unfixed.launch.json",
+      "asset_name": "wanharmony_persisted_home_list_growth.unfixed.launch--c0fd94b8899d.json",
+      "source_size": 101239,
+      "source_sha256": "c0fd94b8899db95f25ca08167fd846bd1cb2479f030a4f7f46b5f149f2d033f0",
+      "asset_size": 101239,
+      "asset_sha256": "c0fd94b8899db95f25ca08167fd846bd1cb2479f030a4f7f46b5f149f2d033f0",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_persisted_home_list_growth.unfixed.launch--c0fd94b8899d.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_persisted_home_list_growth.unfixed.launch.png",
+      "relative_path": "wanharmony_persisted_home_list_growth.unfixed.launch.png",
+      "asset_name": "wanharmony_persisted_home_list_growth.unfixed.launch--965676a8c8aa.png",
+      "source_size": 2371493,
+      "source_sha256": "965676a8c8aabf24bbd1ce9be99622e8c4b31b030af85d0453fd15e8022a6875",
+      "asset_size": 2371493,
+      "asset_sha256": "965676a8c8aabf24bbd1ce9be99622e8c4b31b030af85d0453fd15e8022a6875",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_persisted_home_list_growth.unfixed.launch--965676a8c8aa.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_web_progress_log_storm/rep1_1.hilog",
+      "relative_path": "wanharmony_web_progress_log_storm/rep1_1.hilog",
+      "asset_name": "wanharmony_web_progress_log_storm-rep1_1--9825c085dee3.hilog.gz",
+      "source_size": 2545007,
+      "source_sha256": "9825c085dee3829cb4ef47b4334e5ce94fd1ab0788b090edf1fbe5993eb5efdc",
+      "asset_size": 372370,
+      "asset_sha256": "4680ea214f8a733f72755d3213ea6ee53a5f9f798ada620918b842d7039c8795",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_web_progress_log_storm-rep1_1--9825c085dee3.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_web_progress_log_storm/rep1_2.hilog",
+      "relative_path": "wanharmony_web_progress_log_storm/rep1_2.hilog",
+      "asset_name": "wanharmony_web_progress_log_storm-rep1_2--f758f7044b0b.hilog.gz",
+      "source_size": 6385279,
+      "source_sha256": "f758f7044b0bb5114aa700015a1d5b2600028e399cce857a94d41e6cdbb87ea7",
+      "asset_size": 700651,
+      "asset_sha256": "4b985e97a0020decb7a4a7b28c75afc65e9aa4973d4e53901c1f74ff186f3b46",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_web_progress_log_storm-rep1_2--f758f7044b0b.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_web_progress_log_storm/wanharmony_web_progress_log_storm_rep1_0.chtrace",
+      "relative_path": "wanharmony_web_progress_log_storm/wanharmony_web_progress_log_storm_rep1_0.chtrace",
+      "asset_name": "wanharmony_web_progress_log_storm-wanharmony_web_progress_log_storm_rep1_0--8db7e70bcd77.chtrace.gz",
+      "source_size": 51051896,
+      "source_sha256": "8db7e70bcd779c50e84df396ce740a3799682a7bb19e72717489999a3189ee80",
+      "asset_size": 4808710,
+      "asset_sha256": "1b5edf51cfde8a9c1fddc463459ed366887d4e67f14071702ad331d4d640997f",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_web_progress_log_storm-wanharmony_web_progress_log_storm_rep1_0--8db7e70bcd77.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_web_progress_log_storm/wanharmony_web_progress_log_storm_rep1_1.chtrace",
+      "relative_path": "wanharmony_web_progress_log_storm/wanharmony_web_progress_log_storm_rep1_1.chtrace",
+      "asset_name": "wanharmony_web_progress_log_storm-wanharmony_web_progress_log_storm_rep1_1--6c16452bb9bb.chtrace.gz",
+      "source_size": 52110945,
+      "source_sha256": "6c16452bb9bb00ec7e4c82b16fce22f7c25149992616e1b5c03536357074a32f",
+      "asset_size": 4969699,
+      "asset_sha256": "d1b7a59b0844a61a4f3e8dda37d3741689e3123d15d7b2cb2398270e369d482c",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_web_progress_log_storm-wanharmony_web_progress_log_storm_rep1_1--6c16452bb9bb.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_web_progress_log_storm.fixed.launch.json",
+      "relative_path": "wanharmony_web_progress_log_storm.fixed.launch.json",
+      "asset_name": "wanharmony_web_progress_log_storm.fixed.launch--38f24466b6a4.json",
+      "source_size": 101834,
+      "source_sha256": "38f24466b6a4abf4129408f2285f7a1988d6dc0bbf3507982081bfb712a61936",
+      "asset_size": 101834,
+      "asset_sha256": "38f24466b6a4abf4129408f2285f7a1988d6dc0bbf3507982081bfb712a61936",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_web_progress_log_storm.fixed.launch--38f24466b6a4.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_web_progress_log_storm.fixed.launch.png",
+      "relative_path": "wanharmony_web_progress_log_storm.fixed.launch.png",
+      "asset_name": "wanharmony_web_progress_log_storm.fixed.launch--3f1f2fa11602.png",
+      "source_size": 2371493,
+      "source_sha256": "3f1f2fa116027a6a9ed9d64ba259766c6cb929b9f8bbd7650e885b121949fd20",
+      "asset_size": 2371493,
+      "asset_sha256": "3f1f2fa116027a6a9ed9d64ba259766c6cb929b9f8bbd7650e885b121949fd20",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_web_progress_log_storm.fixed.launch--3f1f2fa11602.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_web_progress_log_storm.unfixed.launch.json",
+      "relative_path": "wanharmony_web_progress_log_storm.unfixed.launch.json",
+      "asset_name": "wanharmony_web_progress_log_storm.unfixed.launch--e7a331f75661.json",
+      "source_size": 101834,
+      "source_sha256": "e7a331f7566102079e7f40432791fc535c37cb4fc5b7714bac4c1b6000e64f41",
+      "asset_size": 101834,
+      "asset_sha256": "e7a331f7566102079e7f40432791fc535c37cb4fc5b7714bac4c1b6000e64f41",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_web_progress_log_storm.unfixed.launch--e7a331f75661.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/wanharmony_web_progress_log_storm.unfixed.launch.png",
+      "relative_path": "wanharmony_web_progress_log_storm.unfixed.launch.png",
+      "asset_name": "wanharmony_web_progress_log_storm.unfixed.launch--78309858c812.png",
+      "source_size": 2371493,
+      "source_sha256": "78309858c812ee71b6bc091895066ef92d9fed5e9a52a499f658cf13b932c541",
+      "asset_size": 2371493,
+      "asset_sha256": "78309858c812ee71b6bc091895066ef92d9fed5e9a52a499f658cf13b932c541",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/wanharmony_web_progress_log_storm.unfixed.launch--78309858c812.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_current_playing_timeupdate/rep1_1.hilog",
+      "relative_path": "ytmusic_current_playing_timeupdate/rep1_1.hilog",
+      "asset_name": "ytmusic_current_playing_timeupdate-rep1_1--bf2e3afb3d9b.hilog.gz",
+      "source_size": 2840887,
+      "source_sha256": "bf2e3afb3d9b956384bcc123e60bd00471c70f40fc9f16f194f7cfd8a3df3bb5",
+      "asset_size": 461403,
+      "asset_sha256": "85ff971e79f2eb80d75011e9baef6cbfb9ac8aa28a67a2927a27045b49ecba2a",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_current_playing_timeupdate-rep1_1--bf2e3afb3d9b.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_current_playing_timeupdate/rep1_2.hilog",
+      "relative_path": "ytmusic_current_playing_timeupdate/rep1_2.hilog",
+      "asset_name": "ytmusic_current_playing_timeupdate-rep1_2--9397de9d48b0.hilog.gz",
+      "source_size": 7284484,
+      "source_sha256": "9397de9d48b08a303ae1cca2e5ade11d8065f8c3e912a11f32bff3190a72aec6",
+      "asset_size": 739542,
+      "asset_sha256": "558373ff5ef8e7d2d62cc021025acff5186feceaf02fe7425a6135e36242936a",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_current_playing_timeupdate-rep1_2--9397de9d48b0.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_current_playing_timeupdate/ytmusic_current_playing_timeupdate_rep1_0.chtrace",
+      "relative_path": "ytmusic_current_playing_timeupdate/ytmusic_current_playing_timeupdate_rep1_0.chtrace",
+      "asset_name": "ytmusic_current_playing_timeupdate-ytmusic_current_playing_timeupdate_rep1_0--0711276e175e.chtrace.gz",
+      "source_size": 46937451,
+      "source_sha256": "0711276e175e283c69c1abefb00d746c2e05eb59f3a622be3a89817cf9ef53e3",
+      "asset_size": 4906586,
+      "asset_sha256": "220db86b51dc75b2d57c41ab0a84350936cc504089f1767ce5a17aa8552f4f0b",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_current_playing_timeupdate-ytmusic_current_playing_timeupdate_rep1_0--0711276e175e.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_current_playing_timeupdate/ytmusic_current_playing_timeupdate_rep1_1.chtrace",
+      "relative_path": "ytmusic_current_playing_timeupdate/ytmusic_current_playing_timeupdate_rep1_1.chtrace",
+      "asset_name": "ytmusic_current_playing_timeupdate-ytmusic_current_playing_timeupdate_rep1_1--056739a41f51.chtrace.gz",
+      "source_size": 51394343,
+      "source_sha256": "056739a41f51fb26ff9896192cabef130386407cc938f3c72e64978c0cbc77d0",
+      "asset_size": 4669436,
+      "asset_sha256": "a7fd650d1a562ae3e5de74bd80f9c072b64c65514e230d0ac5b4049c35f98022",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_current_playing_timeupdate-ytmusic_current_playing_timeupdate_rep1_1--056739a41f51.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_current_playing_timeupdate.fixed.launch.json",
+      "relative_path": "ytmusic_current_playing_timeupdate.fixed.launch.json",
+      "asset_name": "ytmusic_current_playing_timeupdate.fixed.launch--8df537354998.json",
+      "source_size": 62625,
+      "source_sha256": "8df5373549989ccacfb7cc29464885b2b43ca9f1467233d2ad81bf75d25fdc32",
+      "asset_size": 62625,
+      "asset_sha256": "8df5373549989ccacfb7cc29464885b2b43ca9f1467233d2ad81bf75d25fdc32",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_current_playing_timeupdate.fixed.launch--8df537354998.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_current_playing_timeupdate.fixed.launch.png",
+      "relative_path": "ytmusic_current_playing_timeupdate.fixed.launch.png",
+      "asset_name": "ytmusic_current_playing_timeupdate.fixed.launch--c4aa67a155c5.png",
+      "source_size": 2371493,
+      "source_sha256": "c4aa67a155c5c3fde02290a2f712ca7da6f26013a063ffcb3e31a40541dc6331",
+      "asset_size": 2371493,
+      "asset_sha256": "c4aa67a155c5c3fde02290a2f712ca7da6f26013a063ffcb3e31a40541dc6331",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_current_playing_timeupdate.fixed.launch--c4aa67a155c5.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_current_playing_timeupdate.unfixed.launch.json",
+      "relative_path": "ytmusic_current_playing_timeupdate.unfixed.launch.json",
+      "asset_name": "ytmusic_current_playing_timeupdate.unfixed.launch--f7015a7fa437.json",
+      "source_size": 62625,
+      "source_sha256": "f7015a7fa4379671950b0367f5ef1f9cd04602b3fca6a9d7b408c2a51e176e35",
+      "asset_size": 62625,
+      "asset_sha256": "f7015a7fa4379671950b0367f5ef1f9cd04602b3fca6a9d7b408c2a51e176e35",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_current_playing_timeupdate.unfixed.launch--f7015a7fa437.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_current_playing_timeupdate.unfixed.launch.png",
+      "relative_path": "ytmusic_current_playing_timeupdate.unfixed.launch.png",
+      "asset_name": "ytmusic_current_playing_timeupdate.unfixed.launch--a43f3e9df919.png",
+      "source_size": 2371493,
+      "source_sha256": "a43f3e9df919659c8b836d7f363b82092cfccfefb709348eb4998aa299d56340",
+      "asset_size": 2371493,
+      "asset_sha256": "a43f3e9df919659c8b836d7f363b82092cfccfefb709348eb4998aa299d56340",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_current_playing_timeupdate.unfixed.launch--a43f3e9df919.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_history_json_parse_per_row/rep1_1.hilog",
+      "relative_path": "ytmusic_history_json_parse_per_row/rep1_1.hilog",
+      "asset_name": "ytmusic_history_json_parse_per_row-rep1_1--432eda3c3b23.hilog.gz",
+      "source_size": 2528554,
+      "source_sha256": "432eda3c3b23c015b399bc6d52b403cf843605b966202713bdca57397162b404",
+      "asset_size": 354256,
+      "asset_sha256": "645b84d66fec8aee71625f2c2a50961723b907a2e7d49cf451331bf371965c5f",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_history_json_parse_per_row-rep1_1--432eda3c3b23.hilog.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_history_json_parse_per_row/ytmusic_history_json_parse_per_row_rep1_0.chtrace",
+      "relative_path": "ytmusic_history_json_parse_per_row/ytmusic_history_json_parse_per_row_rep1_0.chtrace",
+      "asset_name": "ytmusic_history_json_parse_per_row-ytmusic_history_json_parse_per_row_rep1_0--b4ff4d627315.chtrace.gz",
+      "source_size": 53135115,
+      "source_sha256": "b4ff4d6273151f140b7329a9c0d7e355d377116b9b12926bface237ae40405e6",
+      "asset_size": 5421653,
+      "asset_sha256": "a9eb2cf21b3dc0cb3c8b8ba431fe735aeb410ca31eb84ed250ccdc229f7e5c72",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_history_json_parse_per_row-ytmusic_history_json_parse_per_row_rep1_0--b4ff4d627315.chtrace.gz"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_history_json_parse_per_row.fixed.launch.json",
+      "relative_path": "ytmusic_history_json_parse_per_row.fixed.launch.json",
+      "asset_name": "ytmusic_history_json_parse_per_row.fixed.launch--fc2e60c31920.json",
+      "source_size": 62625,
+      "source_sha256": "fc2e60c31920ce4d0a9cc0e1720d9cf47bd5086586446fd265893f6f113af562",
+      "asset_size": 62625,
+      "asset_sha256": "fc2e60c31920ce4d0a9cc0e1720d9cf47bd5086586446fd265893f6f113af562",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_history_json_parse_per_row.fixed.launch--fc2e60c31920.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_history_json_parse_per_row.fixed.launch.png",
+      "relative_path": "ytmusic_history_json_parse_per_row.fixed.launch.png",
+      "asset_name": "ytmusic_history_json_parse_per_row.fixed.launch--d1e481c57864.png",
+      "source_size": 2371493,
+      "source_sha256": "d1e481c5786443a78907cb933df30725bfec0722f23650df8df16f0c3418b4aa",
+      "asset_size": 2371493,
+      "asset_sha256": "d1e481c5786443a78907cb933df30725bfec0722f23650df8df16f0c3418b4aa",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_history_json_parse_per_row.fixed.launch--d1e481c57864.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_history_json_parse_per_row.unfixed.launch.json",
+      "relative_path": "ytmusic_history_json_parse_per_row.unfixed.launch.json",
+      "asset_name": "ytmusic_history_json_parse_per_row.unfixed.launch--7f7f4ab5f147.json",
+      "source_size": 62625,
+      "source_sha256": "7f7f4ab5f147c8cdb1236a42f6b4e2e6a3df7ffbed5d74d912d230e3224f380c",
+      "asset_size": 62625,
+      "asset_sha256": "7f7f4ab5f147c8cdb1236a42f6b4e2e6a3df7ffbed5d74d912d230e3224f380c",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_history_json_parse_per_row.unfixed.launch--7f7f4ab5f147.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_history_json_parse_per_row.unfixed.launch.png",
+      "relative_path": "ytmusic_history_json_parse_per_row.unfixed.launch.png",
+      "asset_name": "ytmusic_history_json_parse_per_row.unfixed.launch--896ad9344030.png",
+      "source_size": 2371493,
+      "source_sha256": "896ad9344030036b06be9f2d80f401b8c421676d84f2cb879cb40c74913f3944",
+      "asset_size": 2371493,
+      "asset_sha256": "896ad9344030036b06be9f2d80f401b8c421676d84f2cb879cb40c74913f3944",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_history_json_parse_per_row.unfixed.launch--896ad9344030.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_search_no_debounce.fixed.launch.json",
+      "relative_path": "ytmusic_search_no_debounce.fixed.launch.json",
+      "asset_name": "ytmusic_search_no_debounce.fixed.launch--8add5c097119.json",
+      "source_size": 62625,
+      "source_sha256": "8add5c097119bd5eb0c94c2bad04d595375421a9d2e3326e60bf47c29c08b622",
+      "asset_size": 62625,
+      "asset_sha256": "8add5c097119bd5eb0c94c2bad04d595375421a9d2e3326e60bf47c29c08b622",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_search_no_debounce.fixed.launch--8add5c097119.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_search_no_debounce.fixed.launch.png",
+      "relative_path": "ytmusic_search_no_debounce.fixed.launch.png",
+      "asset_name": "ytmusic_search_no_debounce.fixed.launch--d1e481c57864.png",
+      "source_size": 2371493,
+      "source_sha256": "d1e481c5786443a78907cb933df30725bfec0722f23650df8df16f0c3418b4aa",
+      "asset_size": 2371493,
+      "asset_sha256": "d1e481c5786443a78907cb933df30725bfec0722f23650df8df16f0c3418b4aa",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_search_no_debounce.fixed.launch--d1e481c57864.png"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_search_no_debounce.unfixed.launch.json",
+      "relative_path": "ytmusic_search_no_debounce.unfixed.launch.json",
+      "asset_name": "ytmusic_search_no_debounce.unfixed.launch--13114552ff36.json",
+      "source_size": 62625,
+      "source_sha256": "13114552ff36291b104d363aecceb14f9aa4fd4b02873b85445e00b206467e45",
+      "asset_size": 62625,
+      "asset_sha256": "13114552ff36291b104d363aecceb14f9aa4fd4b02873b85445e00b206467e45",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_search_no_debounce.unfixed.launch--13114552ff36.json"
+    },
+    {
+      "source": "/Users/syang/repo/OhmBenchmark/results/ytmusic_search_no_debounce.unfixed.launch.png",
+      "relative_path": "ytmusic_search_no_debounce.unfixed.launch.png",
+      "asset_name": "ytmusic_search_no_debounce.unfixed.launch--d1e481c57864.png",
+      "source_size": 2371493,
+      "source_sha256": "d1e481c5786443a78907cb933df30725bfec0722f23650df8df16f0c3418b4aa",
+      "asset_size": 2371493,
+      "asset_sha256": "d1e481c5786443a78907cb933df30725bfec0722f23650df8df16f0c3418b4aa",
+      "asset_url": "https://github.com/MF0-ANT1SHY/OhmBenchmark/releases/download/device-proof-2026-09-24/ytmusic_search_no_debounce.unfixed.launch--d1e481c57864.png"
+    }
+  ],
+  "omitted_artifacts": [
+    {
+      "relative_path": "browser_insert_date_lookup_cache.unfixed.launch.json",
+      "source_size": 0,
+      "reason": "empty source file; GitHub Releases does not accept zero-byte assets"
+    }
+  ],
+  "updated_at_utc": "2026-09-23T18:44:21Z",
+  "source_commit": "e4074a09e7593ab0467ca901200d65634625e64a"
+}

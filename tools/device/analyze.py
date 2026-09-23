@@ -12,6 +12,10 @@ import re
 import sys
 import gzip
 import io
+import json
+import subprocess
+from functools import lru_cache
+from urllib.parse import unquote, urlparse
 import urllib.request
 from datetime import datetime
 
@@ -22,11 +26,44 @@ SWITCH = re.compile(r'sched_switch:.*?prev_pid=(?P<prev>\d+).*?next_pid=(?P<next
 WAKEUP = re.compile(r'sched_wakeup(?:_rt)?:.*?pid=(?P<pid>\d+)')
 
 
+@lru_cache(maxsize=1)
+def _gh_token():
+    p = subprocess.run(['gh', 'auth', 'token'], stdout=subprocess.PIPE,
+                       stderr=subprocess.DEVNULL, text=True)
+    return p.stdout.strip() if p.returncode == 0 else ''
+
+
+@lru_cache(maxsize=16)
+def _release_asset_api_url(owner, repo, tag, asset_name):
+    token = _gh_token()
+    if not token:
+        raise RuntimeError('GitHub Release artifact needs an authenticated gh session')
+    api = f'https://api.github.com/repos/{owner}/{repo}/releases/tags/{tag}'
+    req = urllib.request.Request(api, headers={'Authorization': f'Bearer {token}',
+                                               'Accept': 'application/vnd.github+json'})
+    payload = json.loads(urllib.request.urlopen(req, timeout=60).read())
+    for asset in payload.get('assets', []):
+        if asset.get('name') == asset_name:
+            return asset['url']
+    raise FileNotFoundError(f'Release asset not found: {owner}/{repo}/{tag}/{asset_name}')
+
+
 def open_trace(path):
     """Open a raw or gzip-compressed local or GitHub Release artifact."""
     path = str(path)
     if path.startswith(('https://', 'http://')):
-        raw = io.BytesIO(urllib.request.urlopen(path, timeout=120).read())
+        parsed = urlparse(path)
+        parts = [unquote(x) for x in parsed.path.split('/') if x]
+        if parsed.netloc == 'github.com' and len(parts) >= 6 and parts[2:4] == ['releases', 'download']:
+            owner, repo, _, _, tag, asset_name = parts[:6]
+            api = _release_asset_api_url(owner, repo, tag, asset_name)
+            request = urllib.request.Request(api, headers={
+                'Authorization': f'Bearer {_gh_token()}',
+                'Accept': 'application/octet-stream',
+                'X-GitHub-Api-Version': '2022-11-28'})
+        else:
+            request = urllib.request.Request(path)
+        raw = io.BytesIO(urllib.request.urlopen(request, timeout=120).read())
     else:
         raw = open(path, 'rb')
     compressed = raw.read(2) == b'\x1f\x8b'
