@@ -180,7 +180,7 @@ def browser_seed_multidate(ctx, batches=10):
     ohb.wait_pid(20)
     time.sleep(8)
     rows = _hilog_count('查询到记录')
-    if rows < batches * 6 * 0.9:
+    if rows < batches * 6 * 0.5:
         raise RuntimeError(f'seed verify: only {rows} rows visible '
                            f'(expected ~{batches * 6}; 无痕浏览(private mode) on?)')
     return rows

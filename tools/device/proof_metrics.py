@@ -38,17 +38,30 @@ def _count(hlog, needle, pid=None):
 
 def m_eager(art):
     """browser_eager_history_load: startup CPU between process start and the
-    项目已启动 marker, plus eager rows/queries observable in hilog."""
+    completion of the eager load. The unfixed per-day queries are concurrent
+    (not awaited) so 项目已启动 fires before the materialization lands; the
+    oracle's 'last RDB query completion' anchor is the last 查询到记录 row
+    line. Rows/queries counts are corroborating (hilog may drop lines)."""
     trace, hlog = art['trace'], art['hilog']
     pid = art.get('pid') or _pid(trace)
     if not pid:
         return {'error': 'no pid'}
-    cpu, dt = analyze.startup_cpu_ms(trace, hlog, pid, '项目已启动')
+    first_wall, lines = _hilog_pid_lines(hlog, pid)
+    started = [w for w, l in lines if '项目已启动' in l]
+    rows = [w for w, l in lines if '查询到记录：' in l]
+    queries = sum(1 for w, l in lines if 'ResultSet column names' in l)
+    t_first = analyze.pid_first_ts(trace, pid)
+    if t_first is None or first_wall is None:
+        return {'error': 'no trace anchor'}
+    end_wall = max(started + rows) if (started or rows) else None
+    cpu = None
+    if end_wall is not None:
+        t_end = t_first + (end_wall - first_wall) / 1000.0 + 0.05
+        cpu = analyze.cpu_time(trace, pid, t0=t_first, t1=t_end)
     return {
         'startup_cpu_ms': round(cpu, 1) if cpu is not None else None,
-        'startup_wall_ms': round(dt, 1) if dt is not None else None,
-        'rows_at_startup': _count(hlog, '查询到记录：', pid),
-        'startup_queries': _count(hlog, 'ResultSet column names', pid),
+        'rows_at_startup': len(rows),
+        'startup_queries': queries,
     }
 
 
