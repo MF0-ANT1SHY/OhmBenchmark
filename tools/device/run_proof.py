@@ -69,7 +69,8 @@ def run_case(case_id, reps=3, skip_seed=False):
                 a['pid'] = ohb.pid()
                 arts.append(a)
                 out.setdefault(f'artifacts_{variant}', []).append(
-                    {k: a[k] for k in ('trace', 'hilog', 'rep')})
+                    {k: a[k] for k in ('trace', 'hilog', 'rep') if k in a}
+                    | ({'result': a['result']} if 'result' in a else {}))
         except Exception as e:
             out.setdefault(f'artifacts_{variant}', []).extend(
                 {k: a[k] for k in ('trace', 'hilog', 'rep')} for a in arts)

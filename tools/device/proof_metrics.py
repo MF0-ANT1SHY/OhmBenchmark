@@ -67,21 +67,11 @@ def m_eager(art):
 
 def m_list(art):
     """browser_history_list_foreach: time from the history-button tap to the
-    first history row rendering. Data load is identical across variants, so
-    the delta is the plain-ForEach full build vs LazyForEach viewport build."""
-    hlog = art['hilog']
-    pid = art.get('pid') or _pid(art['trace'])
-    if not pid:
-        return {'error': 'no pid'}
-    first_row_ms = None
-    for line in analyze._clean(hlog):
-        m = re.search(r'OHB openHistory firstRowMs=(\d+)', line)
-        if m:
-            first_row_ms = int(m.group(1))
-            break
-    cpu = analyze.cpu_time(art['trace'], pid) or 0
-    return {'first_row_ms': first_row_ms,
-            'cpu_ms': round(cpu, 1)}
+    first history row rendering (host-side layout polls). Data load is
+    identical across variants, so the delta is the plain-ForEach full build vs
+    LazyForEach viewport build."""
+    res = art.get('result') or {}
+    return {'first_row_s': res.get('first_row_s')}
 
 
 _TRACE_CACHE = {}
@@ -366,11 +356,11 @@ def judge(case, unfixed, fixed):
                              'rows_at_startup': [ru, rf], 'startup_queries': [qu, qf]}}
 
     if case == 'browser_history_list_foreach':
-        bu, bf = med('first_row_ms', unfixed), med('first_row_ms', fixed)
+        bu, bf = med('first_row_s', unfixed), med('first_row_s', fixed)
         gap = (bu / bf - 1) if (bu and bf) else None
         ok = (bu and bf and bu > bf * 1.3)
         return {'verdict': 'PASS' if ok else 'FAIL',
-                'evidence': {'first_row_ms': [bu, bf], 'gap': gap}}
+                'evidence': {'first_row_s': [bu, bf], 'gap': gap}}
 
     if case == 'browser_insert_date_lookup_cache':
         du, df = med('median_save_delta_ms', unfixed), med('median_save_delta_ms', fixed)

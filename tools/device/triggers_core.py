@@ -121,8 +121,27 @@ def t_browser_history_delete_no_transaction(ctx, rep):
 
 
 def t_browser_history_list_foreach(ctx, rep):
-    return browser_uitest_trigger(ctx, 'openHistoryMeasure', ['ace', 'app', 'sched'],
-                                  30, rep=rep)
+    # Hypium driver waits are unreliable on this SDK build (waitForComponent
+    # resolves instantly), so time tap->first-row from the host with layout
+    # polls instead.
+    def act2():
+        ohb.force_stop()
+        time.sleep(1)
+        ohb.launch(ctx.ability)
+        ohb.wait_pid(20)
+        time.sleep(4)
+        ohb.tap(630, 2615)  # history dialog
+        t0 = time.time()
+        first = None
+        while time.time() - t0 < 40:
+            if ohb.find_nodes(ohb.dump_layout(), contains='OhmBench', type_='Text'):
+                first = round(time.time() - t0, 2)
+                break
+        if first is None:
+            raise RuntimeError('list: first history row never rendered')
+        time.sleep(2)
+        return {'first_row_s': first}
+    return ctx.capture_during(['ace', 'app', 'sched'], 40, act2, name=f'rep{rep}')
 
 
 def t_browser_insert_date_lookup_cache(ctx, rep):
