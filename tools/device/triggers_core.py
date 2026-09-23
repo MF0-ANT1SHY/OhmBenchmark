@@ -97,7 +97,7 @@ def t_browser_eager_history_load(ctx, rep):
                               lambda: ctx.launch_and_wait_home(), name=f'rep{rep}')
 
 
-def browser_uitest_trigger(ctx, method, categories, seconds, tail_swipes=0):
+def browser_uitest_trigger(ctx, method, categories, seconds, tail_swipes=0, rep=1):
     """Run a Hypium flow inside the capture window, then optional swipes."""
     def act():
         out = ohb.run_uitest(f'ActsOhbBrowser#{method}', timeout=seconds)
@@ -113,12 +113,13 @@ def browser_uitest_trigger(ctx, method, categories, seconds, tail_swipes=0):
 def t_browser_history_delete_no_transaction(ctx, rep):
     # NOTE: the UI 清除浏览记录 button never touches the DB (RdbUtils.deleteAll
     # is dead code in every host commit) — see results/proof.jsonl.
-    return browser_uitest_trigger(ctx, 'clearHistory', ['app', 'sched', 'disk', 'idle'], 30)
+    return browser_uitest_trigger(ctx, 'clearHistory', ['app', 'sched', 'disk', 'idle'],
+                                  30, rep=rep)
 
 
 def t_browser_history_list_foreach(ctx, rep):
-    return browser_uitest_trigger(ctx, 'openHistory', ['ace', 'app', 'sched'], 20,
-                                  tail_swipes=6)
+    return browser_uitest_trigger(ctx, 'openHistory', ['ace', 'app', 'sched'],
+                                  20, tail_swipes=6, rep=rep)
 
 
 def t_browser_insert_date_lookup_cache(ctx, rep):
