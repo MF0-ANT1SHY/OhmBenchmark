@@ -41,6 +41,8 @@ class Ctx:
                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         time.sleep(0.8)
         marker_log = os.path.join(self.outdir, f'{name}_{self.trace_n}.hilog')
+        # clear the buffer first: fresh window = minimal flow-control loss
+        ohb.shell('hilog -r')
         hilog_proc = subprocess.Popen([ohb.HDC, 'shell', f'hilog > /data/local/tmp/{self.case_id}_{name}.hlog'],
                                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         result = action()
@@ -127,20 +129,30 @@ def t_browser_insert_date_lookup_cache(ctx, rep):
             n = ohb.find_nodes(ohb.dump_layout(), type_='Search')
             if not n:
                 raise RuntimeError('search field not found')
-            ohb.tap_node(n[0]); time.sleep(1.0)
-            ohb.shell(f'uitest uiInput text ohm{rep}q{i}s{int(time.time())%100000}')
-            time.sleep(0.4)
+            cx, cy = ohb._center(n[0])
+            # local mock pages: near-instant load, so inter-save wall time is
+            # dominated by the save path itself (oracle metric)
+            ohb.shell(f'uitest uiInput inputText {cx} {cy} '
+                      f'http://127.0.0.1:8978/page/q{rep}i{i}t{int(time.time()) % 100000}.com')
+            time.sleep(0.6)
             ohb.key(2054)
-            time.sleep(2.2)
-    return ctx.capture_during(['ace', 'app', 'sched', 'disk'], 100, act, name=f'rep{rep}')
+            time.sleep(2.0)
+    return ctx.capture_during(['ace', 'app', 'sched', 'disk'], 90, act, name=f'rep{rep}')
+
+
+def _hilog_count(needle):
+    out = ohb.shell(f'hilog -x | grep -c {needle}').strip()
+    m = re.search(r'\d+', out)
+    return int(m.group()) if m else 0
 
 
 def browser_seed_multidate(ctx, batches=10):
     """Seed browsing history across N distinct days: set the device date per
     batch, browse 6 local mock pages (hdc rport 8978 -> mock_server /page/*),
-    restore the real date. Uses the CLI inputText path (Hypium driver.inputText
-    does not commit text on this device)."""
-    total = 0
+    restore the real date. CLI inputText path (Hypium driver.inputText does not
+    commit text on this device). Fixed pacing per item; hilog save counters are
+    lossy (flow control), so the seed is verified once at the end via the
+    cold-start eager load (查询到记录 row lines), not per item."""
     for b in range(batches):
         ohb.set_device_date(days_ago=batches - 1 - b)
         ohb.force_stop()
@@ -148,32 +160,30 @@ def browser_seed_multidate(ctx, batches=10):
         ohb.launch(ctx.ability)
         ohb.wait_pid(20)
         time.sleep(4)
-        saves0 = ohb.shell('hilog -x | grep -c 保存浏览记录成功').strip() or '0'
-        try:
-            saves0 = int(re.search(r'\d+', saves0).group())
-        except AttributeError:
-            saves0 = 0
         for i in range(6):
             n = ohb.find_nodes(ohb.dump_layout(), type_='Search')
             if not n:
+                ohb.restore_device_date()
                 raise RuntimeError(f'seed: search field not found (batch {b} item {i})')
             cx, cy = ohb._center(n[0])
             ohb.shell(f'uitest uiInput inputText {cx} {cy} '
                       f'http://127.0.0.1:8978/page/b{b}s{i}t{int(time.time()) % 100000}.com')
-            time.sleep(0.8)
+            time.sleep(1.0)
             ohb.key(2054)
-            time.sleep(2.5)  # local page load + 保存浏览记录
-            total += 1
-        saves1 = ohb.shell('hilog -x | grep -c 保存浏览记录成功').strip() or '0'
-        try:
-            saves1 = int(re.search(r'\d+', saves1).group())
-        except AttributeError:
-            saves1 = 0
-        if saves1 - saves0 < 6:
-            ohb.restore_device_date()
-            raise RuntimeError(f'seed batch {b}: only {saves1 - saves0}/6 rows saved')
+            time.sleep(3.0)  # page load + onPageEnd save
     ohb.restore_device_date()
-    return total
+    # verify: cold start materializes every row (eager path logs one line/row)
+    ohb.force_stop()
+    time.sleep(1)
+    ohb.shell('hilog -r')
+    ohb.launch(ctx.ability)
+    ohb.wait_pid(20)
+    time.sleep(8)
+    rows = _hilog_count('查询到记录')
+    if rows < batches * 6 * 0.9:
+        raise RuntimeError(f'seed verify: only {rows} rows visible '
+                           f'(expected ~{batches * 6}; 无痕浏览(private mode) on?)')
+    return rows
 
 
 TRIGGERS = {
@@ -203,29 +213,57 @@ def default_trigger(ctx, rep):
 WAN_BUNDLE = 'com.example.myapplication2'
 
 
-def wan_open_article(ctx):
-    """Tap the first tappable article card on home (title text row)."""
+def wan_article_rows(ctx):
+    """Home article rows (title-ish Texts). Author lines use a half-width
+    colon ('作者: '), so matching on '作者：' never fired; filter rows by
+    content instead of searching for the author marker."""
     root = ohb.dump_layout()
-    for n in ohb.find_nodes(root, contains='作者：'):
+    out = []
+    for n in ohb.find_nodes(root, type_='Text'):
         a = n.get('attributes', {})
-        if a.get('type') in ('Text', 'Column', 'Row', 'Flex'):
-            ohb.tap_node(n)
-            return True
-    return False
+        t = (a.get('text') or '').strip()
+        b = ohb._bounds(n)
+        if not t or not b or len(t) < 12:
+            continue
+        cy = (b[1] + b[3]) // 2
+        if cy > 2450 or cy < 400:  # status/toolbar + bottom nav
+            continue
+        if any(k in t for k in ('作者', '分享人', '置顶文章', '推荐文章')) or t.startswith('['):
+            continue
+        out.append(n)
+    return out
 
 
-def wan_seed_history(ctx, opens=40):
+def wan_open_article(ctx):
+    """Tap the bottom-most article row in the viewport (fresh content lives
+    deeper in the infinite feed; re-opening the top row adds no new history
+    because historyList filters duplicate urls)."""
+    rows = wan_article_rows(ctx)
+    if not rows:
+        return False
+    rows.sort(key=lambda n: ohb._center(n)[1])
+    ohb.tap_node(rows[-1])
+    return True
+
+
+def wan_seed_history(ctx, opens=100):
+    """Open `opens` distinct articles so historyList grows to 100+ entries."""
     ctx.launch_and_wait_home(settle=6)
+    misses = 0
     for i in range(opens):
         if not wan_open_article(ctx):
-            ohb.swipe(630, 2000, 630, 1600, 800)  # scroll a bit to reveal items
-            time.sleep(1)
+            misses += 1
+            if misses > 12:
+                raise RuntimeError('wan seed: no article rows found (feed dead?)')
+            ohb.swipe(630, 2100, 630, 1500, 900)
+            time.sleep(1.5)
             continue
-        time.sleep(2.5)  # let title event fire
-        ohb.key('Back'); time.sleep(1.2)
-        if i % 8 == 7:
-            ohb.swipe(630, 2000, 630, 1500, 900)
-            time.sleep(1)
+        time.sleep(3.2)  # article load + onTitleReceive history write
+        ohb.key('Back')
+        time.sleep(1.4)
+        ohb.swipe(630, 2200, 630, 1900, 900)  # reveal fresh rows below
+        time.sleep(1.2)
+    return opens
 
 
 def t_wan_html_decode_per_render(ctx, rep):
@@ -265,9 +303,9 @@ def t_wan_history_log_materialization(ctx, rep):
         for i in range(10):
             if not wan_open_article(ctx):
                 ohb.swipe(630, 2000, 630, 1600, 800); time.sleep(1); continue
-            time.sleep(2.5)
-            ohb.key('Back'); time.sleep(1.2)
-    return ctx.capture_during(['ace', 'app', 'sched'], 60, act, name=f'rep{rep}')
+            time.sleep(3.5)
+            ohb.key('Back'); time.sleep(1.4)
+    return ctx.capture_during(['ace', 'app', 'sched'], 70, act, name=f'rep{rep}')
 
 
 # --------------------------------------------------------------------------
@@ -402,7 +440,7 @@ TRIGGERS.update({
 })
 
 SEEDS.update({
-    'wanharmony_history_log_materialization': lambda ctx: wan_seed_history(ctx, opens=40),
+    'wanharmony_history_log_materialization': lambda ctx: wan_seed_history(ctx, opens=100),
 })
 
 # --------------------------------------------------------------------------
