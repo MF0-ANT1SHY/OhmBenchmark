@@ -1,4 +1,3 @@
 toolchain/
 hosts/*/
 *.log
-hosts_bundles/
