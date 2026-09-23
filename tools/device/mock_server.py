@@ -9,6 +9,7 @@ Endpoints:
   /search?keyword=...     ytmusic search  -> SongProps[] (names = bundled mp3s)
   /randomSongs?count=N    ytmusic playlist -> SongProps[]
   /icon<N>.jpeg           tiny jpeg (weatherassistant icon stand-in)
+  /page/<tag>[.com]       tiny HTML page (browser history seeding)
 """
 import os
 import re
@@ -53,6 +54,15 @@ def songs(count):
     return out
 
 
+def page(path):
+    """Tiny deterministic page for browser-history seeding. The browser treats
+    inputs ending in .com as URLs, so seeds request /page/<n>.com."""
+    m = re.match(r'/page/([\w-]+)', path)
+    tag = m.group(1) if m else 'x'
+    return (f'<!DOCTYPE html><html><head><title>OhmBench {tag}</title></head>'
+            f'<body><h1>OhmBench {tag}</h1><p>seed page</p></body></html>')
+
+
 class H(BaseHTTPRequestHandler):
     def log_message(self, fmt, *a):
         sys.stderr.write('MOCK %s\n' % (fmt % a))
@@ -79,6 +89,8 @@ class H(BaseHTTPRequestHandler):
                 return self._send(__import__('json').dumps(songs(q.get('count', ['27'])[0])), 'application/json')
             if p.path.startswith('/icon'):
                 return self._send(ICON, 'image/jpeg')
+            if p.path.startswith('/page/'):
+                return self._send(page(p.path), 'text/html')
             if p.path.startswith('/media'):
                 return self._send(__import__('json').dumps(songs(len(SONGS))), 'application/json')
         except Exception as e:

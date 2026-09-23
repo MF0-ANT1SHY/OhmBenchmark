@@ -244,6 +244,42 @@ def device_ready():
     return bool(re.search(r'^[0-9A-F]{20,}$', hdc('list', 'targets'), re.M))
 
 
+_MONTHS = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
+           'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12}
+
+_REAL_TIME = {'date': None}
+
+
+def device_date():
+    """Return device (year, month, day, hh, mm, ss)."""
+    out = shell('date')
+    m = re.search(r'\w{3} (\w{3}) +(\d+) (\d{2}):(\d{2}):(\d{2}).*?(\d{4})', out)
+    if not m:
+        raise RuntimeError(f'cannot parse device date: {out!r}')
+    return (int(m.group(6)), _MONTHS[m.group(1)], int(m.group(2)),
+            int(m.group(3)), int(m.group(4)), int(m.group(5)))
+
+
+def set_device_date(days_ago=0, keep_real=False):
+    """Rewrite the device date (hdc shell is root) keeping time-of-day.
+    keep_real=True snapshots the real date for a later restore()."""
+    y, mo, d, hh, mm, ss = device_date()
+    if keep_real:
+        _REAL_TIME['date'] = (y, mo, d, hh, mm, ss)
+    import datetime
+    dt = datetime.datetime(y, mo, d) - datetime.timedelta(days=days_ago)
+    shell(f'date {dt.month:02d}{dt.day:02d}{hh:02d}{mm:02d}{dt.year}.{ss}')
+    return shell('date')
+
+
+def restore_device_date():
+    if not _REAL_TIME['date']:
+        return set_device_date(0)
+    y, mo, d, hh, mm, ss = _REAL_TIME['date']
+    shell(f'date {mo:02d}{d:02d}{hh:02d}{mm:02d}{y}.{ss}')
+    return shell('date')
+
+
 def run_uitest(suite_method, timeout=300):
     """Run a Hypium UI test on device, e.g. run_uitest('ActsOhbBrowser#seed6').
     The test runner relaunches the ability, so force-stop first to guarantee a

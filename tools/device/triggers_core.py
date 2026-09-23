@@ -78,34 +78,15 @@ class Ctx:
 # browser family
 # --------------------------------------------------------------------------
 
-def browser_seed(ctx, pages=30):
-    """Seed browsing history by submitting distinct searches (each leaves rows)."""
-    ohb.launch(ctx.ability)
-    time.sleep(3)
-    for i in range(1, pages):
-        n = ohb.find_nodes(ohb.dump_layout(), contains='搜索或输入网址')
-        if not n:
-            ohb.key('Back'); time.sleep(1.2)
-            n = ohb.find_nodes(ohb.dump_layout(), contains='搜索或输入网址')
-        if not n:
-            ohb.launch(ctx.ability); time.sleep(3)
-            n = ohb.find_nodes(ohb.dump_layout(), contains='搜索或输入网址')
-        if not n:
-            raise RuntimeError('cannot find browser search field')
-        ohb.tap_node(n[0]); time.sleep(1.2)
-        ohb.input_text_at(636, 1441, f'ohmbench seed {int(time.time()) % 100000} {i}')
-        time.sleep(0.4)
-        key = ohb.find_nodes(ohb.dump_layout(), text='搜索', type_='Text')
-        ohb.tap_node(key[-1]) if key else ohb.key(2054)
-        time.sleep(2.5)
-
-
 def browser_open_history(ctx):
-    """From browser home open the 浏览记录 dialog (middle bottom button)."""
-    n = ohb.find_nodes(ohb.dump_layout(), contains='搜索或输入网址')
-    if not n:  # a web page is open; cold-relaunch
-        ohb.force_stop(); time.sleep(1); ohb.launch(ctx.ability); time.sleep(3.5)
-    ohb.tap(630, 2615)
+    """Open the 浏览记录 dialog. Dialogs only open on the home page and a cold
+    relaunch always lands there (no session restore), so force-stop first."""
+    ohb.force_stop()
+    time.sleep(1)
+    ohb.launch(ctx.ability)
+    ohb.wait_pid(20)
+    time.sleep(3.5)
+    ohb.tap(630, 2615)  # 3rd bottom button (PagesButton) at y=2615
     time.sleep(1.5)
 
 
@@ -114,43 +95,85 @@ def t_browser_eager_history_load(ctx, rep):
                               lambda: ctx.launch_and_wait_home(), name=f'rep{rep}')
 
 
-def t_browser_history_delete_no_transaction(ctx, rep):
+def browser_uitest_trigger(ctx, method, categories, seconds, tail_swipes=0):
+    """Run a Hypium flow inside the capture window, then optional swipes."""
     def act():
-        ctx.launch_and_wait_home()
-        browser_open_history(ctx)
-        time.sleep(1)
-        # open settings dialog (4th bottom button) and clear history
-        ohb.tap(882, 2615); time.sleep(1.5)
-        ctx.tap_if(contains='清除')
-        time.sleep(4)  # wait for delete to finish
-    return ctx.capture_during(['app', 'sched', 'disk', 'idle'], 20, act, name=f'rep{rep}')
+        out = ohb.run_uitest(f'ActsOhbBrowser#{method}', timeout=seconds)
+        if 'Pass: 1' not in out:
+            raise RuntimeError(f'{method} failed: '
+                               + ' '.join(l for l in out.splitlines() if 'Error in' in l or 'stream=' in l)[:200])
+        for _ in range(tail_swipes):
+            ohb.swipe(630, 2200, 630, 800, 1200)
+            time.sleep(1.2)
+    return ctx.capture_during(categories, seconds, act, name=f'rep{rep}')
+
+
+def t_browser_history_delete_no_transaction(ctx, rep):
+    # NOTE: the UI 清除浏览记录 button never touches the DB (RdbUtils.deleteAll
+    # is dead code in every host commit) — see results/proof.jsonl.
+    return browser_uitest_trigger(ctx, 'clearHistory', ['app', 'sched', 'disk', 'idle'], 30)
 
 
 def t_browser_history_list_foreach(ctx, rep):
-    def act():
-        ctx.launch_and_wait_home()
-        browser_open_history(ctx)
-        time.sleep(1.5)
-        for _ in range(6):
-            ohb.swipe(630, 2200, 630, 800, 1200)
-            time.sleep(1.2)
-    return ctx.capture_during(['ace', 'app', 'sched'], 25, act, name=f'rep{rep}')
+    return browser_uitest_trigger(ctx, 'openHistory', ['ace', 'app', 'sched'], 20,
+                                  tail_swipes=6)
 
 
 def t_browser_insert_date_lookup_cache(ctx, rep):
     def act():
-        ctx.launch_and_wait_home()
+        ctx.launch_and_wait_home(settle=4)
         for i in range(20):
-            n = ohb.find_nodes(ohb.dump_layout(), contains='搜索或输入网址')
+            # URL bar is type Search on home and web pages alike
+            n = ohb.find_nodes(ohb.dump_layout(), type_='Search')
             if not n:
-                ohb.key('Back'); time.sleep(1); continue
-            ohb.tap_node(n[0]); time.sleep(1)
-            ohb.input_text_at(636, 1441, f'ohmbench b{rep} {i}')
-            time.sleep(0.3)
-            key = ohb.find_nodes(ohb.dump_layout(), text='搜索', type_='Text')
-            ohb.tap_node(key[-1]) if key else ohb.key(2054)
-            time.sleep(2)
-    return ctx.capture_during(['ace', 'app', 'disk'], 90, act, name=f'rep{rep}')
+                raise RuntimeError('search field not found')
+            ohb.tap_node(n[0]); time.sleep(1.0)
+            ohb.shell(f'uitest uiInput text ohm{rep}q{i}s{int(time.time())%100000}')
+            time.sleep(0.4)
+            ohb.key(2054)
+            time.sleep(2.2)
+    return ctx.capture_during(['ace', 'app', 'sched', 'disk'], 100, act, name=f'rep{rep}')
+
+
+def browser_seed_multidate(ctx, batches=10):
+    """Seed browsing history across N distinct days: set the device date per
+    batch, browse 6 local mock pages (hdc rport 8978 -> mock_server /page/*),
+    restore the real date. Uses the CLI inputText path (Hypium driver.inputText
+    does not commit text on this device)."""
+    total = 0
+    for b in range(batches):
+        ohb.set_device_date(days_ago=batches - 1 - b)
+        ohb.force_stop()
+        time.sleep(1)
+        ohb.launch(ctx.ability)
+        ohb.wait_pid(20)
+        time.sleep(4)
+        saves0 = ohb.shell('hilog -x | grep -c 保存浏览记录成功').strip() or '0'
+        try:
+            saves0 = int(re.search(r'\d+', saves0).group())
+        except AttributeError:
+            saves0 = 0
+        for i in range(6):
+            n = ohb.find_nodes(ohb.dump_layout(), type_='Search')
+            if not n:
+                raise RuntimeError(f'seed: search field not found (batch {b} item {i})')
+            cx, cy = ohb._center(n[0])
+            ohb.shell(f'uitest uiInput inputText {cx} {cy} '
+                      f'http://127.0.0.1:8978/page/b{b}s{i}t{int(time.time()) % 100000}.com')
+            time.sleep(0.8)
+            ohb.key(2054)
+            time.sleep(2.5)  # local page load + 保存浏览记录
+            total += 1
+        saves1 = ohb.shell('hilog -x | grep -c 保存浏览记录成功').strip() or '0'
+        try:
+            saves1 = int(re.search(r'\d+', saves1).group())
+        except AttributeError:
+            saves1 = 0
+        if saves1 - saves0 < 6:
+            ohb.restore_device_date()
+            raise RuntimeError(f'seed batch {b}: only {saves1 - saves0}/6 rows saved')
+    ohb.restore_device_date()
+    return total
 
 
 TRIGGERS = {
@@ -161,9 +184,9 @@ TRIGGERS = {
 }
 
 SEEDS = {
-    'browser_eager_history_load': lambda ctx: browser_seed(ctx, pages=25),
-    'browser_history_delete_no_transaction': lambda ctx: browser_seed(ctx, pages=60),
-    'browser_history_list_foreach': lambda ctx: browser_seed(ctx, pages=60),
+    'browser_eager_history_load': lambda ctx: browser_seed_multidate(ctx, batches=10),
+    'browser_history_delete_no_transaction': lambda ctx: browser_seed_multidate(ctx, batches=18),
+    'browser_history_list_foreach': lambda ctx: browser_seed_multidate(ctx, batches=18),
     'browser_insert_date_lookup_cache': None,  # browsing IS the trigger
 }
 

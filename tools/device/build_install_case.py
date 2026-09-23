@@ -133,6 +133,24 @@ def main():
         status.update(step='install', ok=False, err=str(e)[-400:])
         _done(status)
 
+    # Hypium UI-test module (if this host has OHB suites): build+install so
+    # triggers can run `aa test` flows. Test code is variant-independent, the
+    # rebuild is a cheap incremental no-op.
+    if status.get('uitest', '').endswith('suite(s)'):
+        rc, out = run(['hvigorw', '--mode', 'module', '-p', 'module=entry@ohosTest',
+                       '-p', 'product=default', '-p', 'buildMode=debug',
+                       'assembleHap', '--no-daemon'], host_dir, timeout=1200)
+        thap = os.path.join(host_dir, 'entry/build/default/outputs/ohosTest/entry-ohosTest-signed.hap')
+        if rc or not os.path.exists(thap):
+            status.update(step='ohosTest build', ok=False, err=out[-400:])
+            _done(status)
+        try:
+            ohb.install(thap)
+            status['ohosTest'] = 'ok'
+        except Exception as e:
+            status.update(step='ohosTest install', ok=False, err=str(e)[-400:])
+            _done(status)
+
     try:
         ability = ohb.ability_of(host_dir)
         ohb.force_stop()
