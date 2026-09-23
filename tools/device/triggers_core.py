@@ -30,11 +30,15 @@ class Ctx:
         os.makedirs(self.outdir, exist_ok=True)
         self.ability = ohb.ability_of(self.host_dir)
         self.trace_n = 0
+        # Never overwrite an earlier proof run's raw evidence.
+        self.run_id = f'{time.time_ns()}_{os.getpid()}'
 
     # --- capture helpers -------------------------------------------------
-    def capture_during(self, categories, seconds, action, name='trace'):
+    def capture_during(self, categories, seconds, action, name='trace', clock='wall'):
         """Run `action()` while hitrace captures for `seconds` in background."""
-        remote = f'/data/local/tmp/{self.case_id}_{name}_{self.trace_n}.chtrace'
+        stem = f'{self.case_id}_{self.run_id}_{name}_{self.trace_n}'
+        remote = f'/data/local/tmp/{stem}.chtrace'
+        remote_log = f'/data/local/tmp/{stem}.hlog'
         self.trace_n += 1
         t0 = time.time()
         # 200MB buffer: the default 18MB ring holds only ~8s of sched volume,
@@ -43,21 +47,41 @@ class Ctx:
                               f'hitrace -b 204800 -t {seconds} {" ".join(categories)} -o {remote}'],
                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         time.sleep(0.8)
-        marker_log = os.path.join(self.outdir, f'{name}_{self.trace_n}.hilog')
+        marker_log = os.path.join(self.outdir, f'{stem}.hilog')
         # clear the buffer first: fresh window = minimal flow-control loss
         ohb.shell('hilog -r')
-        hilog_proc = subprocess.Popen([ohb.HDC, 'shell', f'hilog > /data/local/tmp/{self.case_id}_{name}.hlog'],
-                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        result = action()
-        elapsed = time.time() - t0
-        remain = seconds - elapsed + 1
-        if remain > 0:
-            time.sleep(remain)
-        hilog_proc.terminate()
-        ohb.hdc('file', 'recv', f'/data/local/tmp/{self.case_id}_{name}.hlog', marker_log)
+        # Limit to the app log type: full-system capture once exceeded 1GB in
+        # 45s. Do not use hilog -e <bundle>: it matches message text only,
+        # missing the bundle shown in an app log's header. Capture live because
+        # the hilog ring would lose earlier lines if read after the action.
+        fmt = ' -v monotonic -v usec' if clock == 'monotonic' else ''
+        log_cmd = f'hilog -t app{fmt} > {remote_log} & echo $!'
+        hilog_proc = subprocess.Popen([ohb.HDC, 'shell', log_cmd],
+                                      stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                      text=True)
+        pid_line = hilog_proc.stdout.readline().strip()
+        if not pid_line.isdigit():
+            raise RuntimeError(f'cannot start filtered hilog: {pid_line}')
+        try:
+            result = action()
+            elapsed = time.time() - t0
+            remain = seconds - elapsed + 1
+            if remain > 0:
+                time.sleep(remain)
+        finally:
+            ohb.shell(f'kill {pid_line}')
+            try:
+                hilog_proc.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                hilog_proc.terminate()
+            if p.poll() is None:
+                p.wait(timeout=seconds + 30)
+        ohb.hdc('file', 'recv', remote_log, marker_log)
         local = os.path.join(self.outdir, os.path.basename(remote))
         ohb.hdc('file', 'recv', remote, local)
-        return {'trace': local, 'hilog': marker_log, 'result': result, 'capture_seconds': seconds}
+        ohb.shell(f'rm {remote} {remote_log}')
+        return {'trace': local, 'hilog': marker_log, 'result': result,
+                'capture_seconds': seconds, 'hilog_clock': clock}
 
     def launch_and_wait_home(self, marker=None, timeout=15, settle=3.0):
         ohb.force_stop()
@@ -270,41 +294,100 @@ def wan_open_article(ctx):
 
 
 def wan_seed_history(ctx, opens=100):
-    """Open `opens` distinct articles so historyList grows to 100+ entries."""
+    """Open distinct home-feed titles so historyList grows to 100+ entries."""
     ctx.launch_and_wait_home(settle=6)
+    seen = set()
     misses = 0
-    for i in range(opens):
-        if not wan_open_article(ctx):
+    for _ in range(opens * 3):
+        rows = wan_article_rows(ctx)
+        rows.sort(key=lambda n: ohb._center(n)[1], reverse=True)
+        row = next((n for n in rows if (n.get('attributes', {}).get('text') or '').strip()
+                    not in seen), None)
+        if row is None:
             misses += 1
-            if misses > 12:
-                raise RuntimeError('wan seed: no article rows found (feed dead?)')
-            ohb.swipe(630, 2100, 630, 1500, 900)
-            time.sleep(1.5)
+            if misses > 20:
+                raise RuntimeError(f'wan seed: only {len(seen)}/{opens} distinct titles')
+            ohb.swipe(630, 2300, 630, 900, 900)
+            time.sleep(1.3)
             continue
+        misses = 0
+        title = (row.get('attributes', {}).get('text') or '').strip()
+        ohb.tap_node(row)
         time.sleep(3.2)  # article load + onTitleReceive history write
         ohb.key('Back')
         time.sleep(1.4)
-        ohb.swipe(630, 2200, 630, 1900, 900)  # reveal fresh rows below
+        seen.add(title)
+        ohb.swipe(630, 2200, 630, 1500, 900)  # reveal new rows below
         time.sleep(1.2)
-    return opens
+        if len(seen) >= opens:
+            return len(seen)
+    raise RuntimeError(f'wan seed: only {len(seen)}/{opens} distinct titles')
 
 
 def t_wan_html_decode_per_render(ctx, rep):
+    # Prepare a large real feed before measuring scrolling and the final page
+    # appends. The old 10-swipe run reached only page 3 (~40 items), below the
+    # case.json workload of 100+ rows.
+    ctx.launch_and_wait_home(settle=6)
+    for _ in range(18):
+        ohb.swipe(630, 2300, 630, 700, 1300)
+        time.sleep(1.5)
+
     def act():
-        ctx.launch_and_wait_home(settle=6)
-        for _ in range(10):
-            ohb.swipe(630, 2300, 630, 700, 1500)
-            time.sleep(2)
-    return ctx.capture_during(['ace', 'app', 'sched'], 45, act, name=f'rep{rep}')
+        for _ in range(14):
+            ohb.swipe(630, 2300, 630, 700, 1300)
+            time.sleep(1.5)
+        return {'preload_swipes': 18, 'measured_swipes': 14}
+    return ctx.capture_during(['ace', 'app', 'sched'], 60, act, name=f'rep{rep}')
 
 
 def t_wan_persisted_home_list_growth(ctx, rep):
+    def page(pid, previous):
+        log = ohb.shell(f'hilog -x -t app -P {pid} -e loadMore | tail -1')
+        m = re.search(r'loadMore: this.currentPage = (\d+)', log)
+        return max(previous, int(m.group(1))) if m else previous
+
+    def io_counters(pid):
+        io = ohb.shell(f'cat /proc/{pid}/io')
+        physical = re.search(r'^write_bytes:\s*(\d+)', io, re.M)
+        logical = re.search(r'^wchar:\s*(\d+)', io, re.M)
+        if not physical or not logical:
+            raise RuntimeError(f'wan persist: /proc/{pid}/io unavailable')
+        return {'write_bytes': int(physical.group(1)),
+                'wchar': int(logical.group(1))}
+
+    def scroll_to(pid, current, target, samples=None):
+        for _ in range((target - current) * 7 + 15):
+            if current >= target:
+                break
+            ohb.swipe(630, 2300, 630, 700, 1000)
+            time.sleep(1.1)
+            reached = page(pid, current)
+            if reached > current:
+                current = reached
+                time.sleep(2.4)  # loadMore gate + preference write completion
+                if samples is not None:
+                    samples.append({'page': current, **io_counters(pid)})
+        if current < target:
+            raise RuntimeError(f'wan persist: reached page {current}, need {target}')
+        return current
+
+    ctx.launch_and_wait_home(settle=6)
+    pid = ohb.pid()
+    if not pid:
+        raise RuntimeError('wan persist: app has no pid')
+    ohb.shell('hilog -r')
+    scroll_to(pid, 0, 10)  # 100+ real articles before measurement
+
     def act():
-        ctx.launch_and_wait_home(settle=6)
-        for _ in range(14):  # onReachEnd auto-load-more, 2s gate
-            ohb.swipe(630, 2400, 630, 500, 1200)
-            time.sleep(2.2)
-    return ctx.capture_during(['app', 'sched', 'disk', 'idle'], 60, act, name=f'rep{rep}')
+        samples = [{'page': 10, **io_counters(pid)}]
+        final_page = scroll_to(pid, 10, 20, samples)
+        status = ohb.shell(f'cat /proc/{pid}/status')
+        m = re.search(r'^VmRSS:\s*(\d+)\s+kB', status, re.M)
+        return {'start_page': 10, 'final_page': final_page,
+                'io_samples': samples, 'rss_kb': int(m.group(1)) if m else None}
+    return ctx.capture_during(['app', 'sched', 'disk', 'filemanagement'], 120,
+                              act, name=f'rep{rep}')
 
 
 def t_wan_web_progress_log_storm(ctx, rep):
@@ -328,7 +411,8 @@ def t_wan_history_log_materialization(ctx, rep):
                 ohb.swipe(630, 2000, 630, 1600, 800); time.sleep(1); continue
             time.sleep(3.5)
             ohb.key('Back'); time.sleep(1.4)
-    return ctx.capture_during(['ace', 'app', 'sched'], 70, act, name=f'rep{rep}')
+    return ctx.capture_during(['ace', 'app', 'sched'], 70, act,
+                              name=f'rep{rep}', clock='monotonic')
 
 
 # --------------------------------------------------------------------------
@@ -518,15 +602,19 @@ def t_jingmo_sync_page_reimport(ctx, rep):
 # --------------------------------------------------------------------------
 
 def t_sepweather_font_register_per_page(ctx, rep):
-    def act():
-        ctx.launch_and_wait_home(settle=5)
-        for _ in range(10):
+    ctx.launch_and_wait_home(settle=5)
+
+    def round_trip(count):
+        for _ in range(count):
             if not ctx.tap_if(id_='AddAddressBtn'):
                 raise RuntimeError('AddAddressBtn not found')
             time.sleep(1.5)
             ohb.key('Back')  # LocationListPage is a router page: Back pops safely
             time.sleep(1.5)
-    return ctx.capture_during(['ace', 'app', 'sched', 'disk'], 40, act, name=f'rep{rep}')
+
+    round_trip(5)
+    return ctx.capture_during(['ace', 'app', 'sched', 'disk'], 30,
+                              lambda: round_trip(5), name=f'rep{rep}')
 
 
 # --------------------------------------------------------------------------

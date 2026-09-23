@@ -27,7 +27,7 @@ def rep_files(case_dir, rep):
 
 def app_pid(trace):
     counts = {}
-    with open(trace, 'r', errors='replace') as f:
+    with analyze.open_trace(trace) as f:
         for line in f:
             m = re.search(rf'{APP_COMM}-(\d+)', line)
             if m:
@@ -39,7 +39,7 @@ def app_pid(trace):
 def count_creates(trace, pid, t0=None, t1=None):
     n = 0
     pat = re.compile(rf'B\|{pid}\|H:Create')
-    with open(trace, 'r', errors='replace') as f:
+    with analyze.open_trace(trace) as f:
         for line in f:
             if pat.search(line):
                 m = analyze.LINE.match(line)

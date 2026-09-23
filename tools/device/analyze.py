@@ -10,6 +10,7 @@ Metric primitives:
 """
 import re
 import sys
+import gzip
 from datetime import datetime
 
 LINE = re.compile(
@@ -17,6 +18,14 @@ LINE = re.compile(
     r'(?P<flags>[.\dHZx]*)\s*(?P<ts>\d+\.\d+):\s*(?P<rest>.*)$')
 SWITCH = re.compile(r'sched_switch:.*?prev_pid=(?P<prev>\d+).*?next_pid=(?P<next>\d+)')
 WAKEUP = re.compile(r'sched_wakeup(?:_rt)?:.*?pid=(?P<pid>\d+)')
+
+
+def open_trace(path):
+    """Open a raw or gzip-compressed hitrace artifact as text."""
+    with open(path, 'rb') as probe:
+        compressed = probe.read(2) == b'\x1f\x8b'
+    return gzip.open(path, 'rt', errors='replace') if compressed else open(
+        path, 'r', errors='replace')
 
 
 def _clean(hlog_path):
@@ -29,7 +38,7 @@ def _clean(hlog_path):
 def events(path, wanted_pids=None, wanted_fns=None):
     pids = set(wanted_pids or [])
     fns = tuple(wanted_fns or [])
-    with open(path, 'r', errors='replace') as f:
+    with open_trace(path) as f:
         for line in f:
             if wanted_fns and not line.rstrip().endswith(fns) and not any(fn in line for fn in fns):
                 if not pids:
@@ -77,6 +86,57 @@ def cpu_time(path, pid, t0=None, t1=None):
         for v in entered.values():
             total += (t1 or last_ts) - v
     return total * 1000.0
+
+
+def cpu_time_process(path, tgid, t0=None, t1=None):
+    """On-CPU ms of every thread in a process, from sched_switch records.
+
+    In this hitrace format the event header identifies the task switched *in*
+    and carries its TGID. Keep that TGID on each CPU until the next switch.
+    """
+    running = {}
+    total = 0.0
+    last_ts = None
+
+    def overlap(start, end):
+        lo = max(start, t0) if t0 is not None else start
+        hi = min(end, t1) if t1 is not None else end
+        return max(0.0, hi - lo)
+
+    for m in events(path, wanted_fns=['sched_switch']):
+        ts = float(m.group('ts'))
+        cpu = m.group('cpu')
+        if cpu in running:
+            start, owner = running[cpu]
+            if owner == tgid:
+                total += overlap(start, ts)
+        running[cpu] = (ts, int(m.group('tgid')))
+        last_ts = ts
+    if last_ts is not None:
+        for start, owner in running.values():
+            if owner == tgid:
+                total += overlap(start, t1 if t1 is not None else last_ts)
+    return total * 1000.0
+
+
+def cpu_time_windows(path, pid, windows):
+    """Main-thread CPU ms for several trace-time windows in one file scan."""
+    totals = [0.0] * len(windows)
+    entered = {}
+    for m in events(path, wanted_fns=['sched_switch']):
+        sm = SWITCH.search(m.group('rest'))
+        if not sm:
+            continue
+        ts = float(m.group('ts'))
+        cpu = m.group('cpu')
+        prev, nxt = int(sm.group('prev')), int(sm.group('next'))
+        if prev == pid and cpu in entered:
+            start = entered.pop(cpu)
+            for i, (t0, t1) in enumerate(windows):
+                totals[i] += max(0.0, min(ts, t1) - max(start, t0))
+        if nxt == pid:
+            entered[cpu] = ts
+    return [v * 1000.0 for v in totals]
 
 
 def hilog_lines(hlog_path, pid=None, contains=None):

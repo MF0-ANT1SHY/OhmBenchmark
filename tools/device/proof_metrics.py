@@ -8,6 +8,7 @@ import os
 import re
 import statistics
 import sys
+from functools import lru_cache
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import analyze  # noqa: E402
@@ -17,7 +18,7 @@ APP_COMM = 'myapplication2'
 
 def _pid(trace):
     counts = {}
-    with open(trace, 'r', errors='replace') as f:
+    with analyze.open_trace(trace) as f:
         for line in f:
             m = re.search(rf'{APP_COMM}-(\d+)', line)
             if m:
@@ -98,14 +99,12 @@ def m_list(art):
     return {'first_row_s': res.get('first_row_s')}
 
 
-_TRACE_CACHE = {}
-
-
+@lru_cache(maxsize=1)
 def _trace_lines(trace):
-    if trace not in _TRACE_CACHE:
-        with open(trace, 'r', errors='replace') as f:
-            _TRACE_CACHE[trace] = f.readlines()
-    return _TRACE_CACHE[trace]
+    # A proof has six traces; retaining every decoded 200-500MB file can
+    # exhaust memory before the fixed variant is judged.
+    with analyze.open_trace(trace) as f:
+        return f.readlines()
 
 
 def m_generic_cpu(art):
@@ -174,70 +173,130 @@ def _hilog_pid_lines(hlog, pid):
     return first, out
 
 
+def _mono_pid_lines(hlog, pid):
+    """Monotonic hilog timestamps use the same boot clock as hitrace."""
+    out = []
+    for line in analyze._clean(hlog):
+        m = re.match(r'^\s*(\d+\.\d+)\s+(\d+)\s+\d+\s', line)
+        if m and int(m.group(2)) == pid:
+            out.append((float(m.group(1)), line))
+    return out
+
+
 def m_wan_history(art):
-    """wanharmony_history_log_materialization: CPU per onTitleReceive event
-    window + total historyList log bytes (unfixed JSON-stringifies the whole
-    list twice per open, fixed logs only the size)."""
+    """CPU in each onTitleReceive handler, bracketed by its own log lines.
+    Monotonic hilog timestamps line up directly with hitrace's boot clock.
+    Old wall-clock captures retain mechanism evidence but cannot yield this
+    handler-specific CPU metric."""
     trace, hlog = art['trace'], art['hilog']
     pid = resolve_pid(art)
     if not pid:
         return {'error': 'no pid'}
-    first_wall, lines = _hilog_pid_lines(hlog, pid)
+    mono = art.get('hilog_clock') == 'monotonic'
+    lines = _mono_pid_lines(hlog, pid) if mono else _hilog_pid_lines(hlog, pid)[1]
     events = [w for w, l in lines if 'onTitleReceive title:' in l]
     hl_bytes = sum(len(l) for w, l in lines if 'historyList =' in l)
-    cpu = None
-    t_first = analyze.pid_first_ts(trace, pid)
-    if events and t_first is not None and first_wall is not None:
-        per = []
-        for w in events:
-            t0 = t_first + (w - first_wall) / 1000.0
-            c = analyze.cpu_time(trace, pid, t0=t0, t1=t0 + 2.5)
-            if c is not None:
-                per.append(c)
-        cpu = round(sum(per) / len(per), 1) if per else None
+    spans = []
+    start = None
+    for ts, line in lines:
+        if 'onTitleReceive title:' in line:
+            start = ts
+        elif start is not None and '更新后 historyList' in line:
+            if ts >= start and ts - start < (0.1 if mono else 100):
+                spans.append((start, ts))
+            start = None
+    handler_cpu = None
+    handler_wall = None
+    if mono and spans:
+        cpu_samples = analyze.cpu_time_windows(trace, pid, spans)
+        handler_cpu = round(statistics.mean(cpu_samples), 3)
+        handler_wall = round(statistics.mean((b - a) * 1000 for a, b in spans), 3)
+    sizes = [int(m.group(1)) for _, line in lines
+             if (m := re.search(r'historyList\.size = (\d+)', line))]
     size_logs = sum(1 for w, l in lines if 'historyList.size =' in l)
     return {
         'title_events': len(events),
-        'cpu_per_title_ms': cpu,
+        'title_handler_cpu_ms': handler_cpu,
+        'title_handler_wall_ms': handler_wall,
+        'handler_samples': len(spans),
         'history_log_bytes': hl_bytes,
         'history_size_logs': size_logs,
+        'history_entries': statistics.median(sizes) if sizes else None,
     }
 
 
 def m_wan_html_decode(art):
-    """wanharmony_html_decode_per_render: app CPU divided by item components
-    created during the scroll window (plain ForEach re-decodes per build)."""
+    """wanharmony_html_decode_per_render: app CPU per article-list child
+    created while loading more pages. H:CreateTaskMeasure is a layout pass,
+    not an article item, so do not use its count as the denominator."""
     trace = art['trace']
     pid = resolve_pid(art)
     if not pid:
         return {'error': 'no pid'}
-    creates = 0
-    pat = re.compile(rf'B\|{pid}\|H:Create')
+    groups = {}
+    pat = re.compile(rf'B\|{pid}\|H:ForEachNode::Update Id\[(\d+)\] '
+                     r'preIds\[(\d+)\] newIds\[(\d+)\].*additionalChildComps\[(\d+)\]')
     for line in _trace_lines(trace):
-        mt = analyze.LINE.match(line)
-        if mt and pat.search(line):
-            creates += 1
-    cpu = analyze.cpu_time(trace, pid) or 0
-    per_item = round(cpu / creates, 2) if creates else None
-    return {'creates': creates, 'cpu_ms': round(cpu, 1), 'cpu_per_item_ms': per_item}
+        m = pat.search(line)
+        if m:
+            node, before, after, added = map(int, m.groups())
+            g = groups.setdefault(node, {'total_items': 0, 'rendered_items': 0})
+            g['total_items'] = max(g['total_items'], after)
+            g['rendered_items'] += added
+    main = max(groups.values(), key=lambda g: g['total_items'], default={})
+    cpu = analyze.cpu_time_process(trace, pid) or 0
+    rendered = main.get('rendered_items', 0)
+    per_item = round(cpu / rendered, 2) if rendered else None
+    pages = set()
+    for line in analyze._clean(art['hilog']):
+        if f' {pid} ' in line[:44]:
+            m = re.search(r'/article/list/(\d+)/json', line)
+            if m:
+                pages.add(int(m.group(1)))
+    return {'rendered_items': rendered, 'total_items': main.get('total_items'),
+            'pages_loaded_in_capture': sorted(pages),
+            'cpu_ms': round(cpu, 1), 'cpu_per_item_ms': per_item}
 
 
 def m_wan_persisted(art):
-    """wanharmony_persisted_home_list_growth: block write bytes during the
-    load-more scroll (unfixed rewrites the whole list per load-more)."""
+    """Per-process write volume while appending pages 11-20 to the feed.
+    Global block_rq_issue includes unrelated processes, so use /proc/PID/io
+    snapshots taken after each observed loadMore event instead."""
     trace = art['trace']
     pid = resolve_pid(art)
     if not pid:
         return {'error': 'no pid'}
-    write_re = re.compile(r'block_rq_issue: \S+ (W\S*) (\d+) ')
-    total = 0
-    for line in _trace_lines(trace):
-        if 'block_rq_issue' in line:
-            m = write_re.search(line)
+    result = art.get('result') or {}
+    samples = result.get('io_samples') or []
+    if len(samples) < 2:
+        return {'error': 'no per-process IO samples'}
+    cycles = samples[-1]['page'] - samples[0]['page']
+    if cycles <= 0:
+        return {'error': 'no loadMore cycles'}
+    physical = samples[-1]['write_bytes'] - samples[0]['write_bytes']
+    logical = samples[-1]['wchar'] - samples[0]['wchar']
+    physical_steps = [(b['write_bytes'] - a['write_bytes']) /
+                      (b['page'] - a['page']) for a, b in zip(samples, samples[1:])
+                      if b['page'] > a['page']]
+    logical_steps = [(b['wchar'] - a['wchar']) /
+                     (b['page'] - a['page']) for a, b in zip(samples, samples[1:])
+                     if b['page'] > a['page']]
+    total_items = 0
+    pat = re.compile(rf'B\|{pid}\|H:ForEachNode::Update Id\[\d+\] '
+                     r'preIds\[\d+\] newIds\[(\d+)\]')
+    with analyze.open_trace(trace) as f:
+        for line in f:
+            m = pat.search(line)
             if m:
-                total += int(m.group(2))
-    return {'block_write_bytes': total,
-            'cpu_ms': round(analyze.cpu_time(trace, pid) or 0, 1)}
+                total_items = max(total_items, int(m.group(1)))
+    return {'loadmore_cycles': cycles, 'total_items': total_items,
+            'process_write_bytes': physical, 'process_wchar': logical,
+            'write_bytes_per_cycle': round(physical / cycles, 1),
+            'early_write_bytes': round(statistics.mean(physical_steps[:3]), 1),
+            'late_write_bytes': round(statistics.mean(physical_steps[-3:]), 1),
+            'early_wchar': round(statistics.mean(logical_steps[:3]), 1),
+            'late_wchar': round(statistics.mean(logical_steps[-3:]), 1),
+            'rss_kb': result.get('rss_kb')}
 
 
 def m_wan_progress(art):
@@ -292,17 +351,40 @@ def _block_bytes(trace, t0=None, t1=None, reads=False):
 
 
 def m_sepweather(art):
-    """sepweather_font_register_per_page: CPU per MainPage recreation round-trip
-    + TTF read bytes in window (unfixed re-registers fonts on every creation)."""
+    """MainPage return-to-first-render latency for the five measured trips.
+    The route marker precedes page construction; the next MainPage update and
+    app FlushRenderTask bound the first frame on this OS build."""
     trace = art['trace']
     pid = resolve_pid(art)
     if not pid:
         return {'error': 'no pid'}
-    cpu = analyze.cpu_time(trace, pid) or 0
-    read_bytes = _block_bytes(trace, reads=True)
-    return {'cpu_per_round_ms': round(cpu / 10.0, 1),
-            'cpu_ms': round(cpu, 1),
-            'read_bytes': read_bytes}
+    routes, updates, frames = [], [], []
+    prefix = f'B|{pid}|H:'
+    for line in _trace_lines(trace):
+        if prefix not in line:
+            continue
+        mt = analyze.LINE.match(line)
+        if not mt:
+            continue
+        ts = float(mt.group('ts'))
+        if ('Router Page from entry/src/main/ets/pages/LocationListPage '
+                'to entry/src/main/ets/pages/MainPage' in line):
+            routes.append(ts)
+        elif 'CustomNodeUpdate name:MainPage' in line:
+            updates.append(ts)
+        elif 'FlushRenderTask' in line:
+            frames.append(ts)
+    latencies = []
+    for t in routes:
+        update = next((x for x in updates if t <= x < t + 0.5), None)
+        frame = next((x for x in frames if update is not None and
+                      update <= x < t + 0.5), None)
+        if frame is not None:
+            latencies.append(round((frame - t) * 1000, 3))
+    return {'mainpage_build_ms': round(statistics.mean(latencies), 3)
+            if latencies else None,
+            'recreations': len(latencies), 'per_recreation_ms': latencies,
+            'global_read_bytes': _block_bytes(trace, reads=True)}
 
 
 def m_ytmusic(art):
@@ -441,37 +523,55 @@ def judge(case, unfixed, fixed):
 
     if case == 'wanharmony_history_log_materialization':
         eu, ef = med('title_events', unfixed), med('title_events', fixed)
-        cu, cf = med('cpu_per_title_ms', unfixed), med('cpu_per_title_ms', fixed)
+        cu, cf = med('title_handler_cpu_ms', unfixed), med('title_handler_cpu_ms', fixed)
         bu, bf = med('history_log_bytes', unfixed), med('history_log_bytes', fixed)
         su, sf = med('history_size_logs', unfixed), med('history_size_logs', fixed)
+        hu, hf = med('handler_samples', unfixed), med('handler_samples', fixed)
+        history_entries = med('history_entries', fixed)
         cpu_gap = (cu / cf - 1) if (cu is not None and cf) else None
-        # case.json requires >=30% less CPU on the title-event path. The log
-        # volume confirms that the expensive branch ran, but cannot replace
-        # the CPU oracle. The current 2.5s windows include webview work.
-        ok = (eu and ef and eu >= 10 and ef >= 10 and cu is not None and cf
-              and cu > cf * 1.3 and bu and bu >= 50000 and (bf or 0) < bu / 10)
+        ok = (eu and ef and eu >= 10 and ef >= 10 and hu and hf
+              and hu >= 10 and hf >= 10 and history_entries and history_entries >= 100
+              and cu is not None and cf and cu > cf * 1.3
+              and bu and bu >= 50000 and (bf or 0) < bu / 10)
         return {'verdict': 'PASS' if ok else 'FAIL',
                 'evidence': {'title_events': [eu, ef],
                              'history_log_bytes': [bu, bf],
                              'history_size_logs': [su, sf],
-                             'cpu_per_title_ms': [cu, cf], 'cpu_gap': cpu_gap,
-                             'cpu_note': '2.5s windows include webview rendering; a handler-specific CPU measurement is still needed'}}
+                             'handler_samples': [hu, hf],
+                             'history_entries_fixed': history_entries,
+                             'title_handler_cpu_ms': [cu, cf], 'cpu_gap': cpu_gap}}
 
     if case == 'wanharmony_html_decode_per_render':
         iu, ifx = med('cpu_per_item_ms', unfixed), med('cpu_per_item_ms', fixed)
-        cu, cf = med('creates', unfixed), med('creates', fixed)
+        cu, cf = med('rendered_items', unfixed), med('rendered_items', fixed)
+        tu, tf = med('total_items', unfixed), med('total_items', fixed)
         gap = (iu / ifx - 1) if (iu and ifx) else None
-        ok = (iu and ifx and cu and cf and cu >= 10 and iu > ifx * 1.15)
+        ok = (iu and ifx and cu and cf and cu >= 20 and cf >= 20
+              and tu and tf and tu >= 100 and tf >= 100 and iu > ifx * 1.15)
         return {'verdict': 'PASS' if ok else 'FAIL',
                 'evidence': {'cpu_per_item_ms': [iu, ifx], 'gap': gap,
-                             'creates': [cu, cf]}}
+                             'rendered_items': [cu, cf], 'total_items': [tu, tf],
+                             'pages_loaded_in_capture':
+                             [r.get('pages_loaded_in_capture') for r in unfixed + fixed]}}
 
     if case == 'wanharmony_persisted_home_list_growth':
-        bu, bf = med('block_write_bytes', unfixed), med('block_write_bytes', fixed)
-        ratio = (bu / bf) if (bu and bf) else None
-        ok = (bu and bf and bu > bf * 3)
+        bu, bf = med('process_write_bytes', unfixed), med('process_write_bytes', fixed)
+        wu, wf = med('process_wchar', unfixed), med('process_wchar', fixed)
+        cu, cf = med('loadmore_cycles', unfixed), med('loadmore_cycles', fixed)
+        iu, ifx = med('total_items', unfixed), med('total_items', fixed)
+        early_u, late_u = med('early_wchar', unfixed), med('late_wchar', unfixed)
+        ratio = (bu / bf) if (bu is not None and bf) else None
+        ok = (bu is not None and bf is not None and bu > 0 and bu > bf * 3
+              and cu and cf and cu >= 10 and cf >= 10
+              and iu and ifx and iu >= 200 and ifx >= 200
+              and early_u is not None and late_u is not None
+              and late_u > early_u * 1.3)
         return {'verdict': 'PASS' if ok else 'FAIL',
-                'evidence': {'block_write_bytes': [bu, bf], 'ratio': ratio}}
+                'evidence': {'process_write_bytes': [bu, bf], 'ratio': ratio,
+                             'process_wchar': [wu, wf],
+                             'loadmore_cycles': [cu, cf], 'total_items': [iu, ifx],
+                             'unfixed_wchar_early_late': [early_u, late_u],
+                             'rss_kb': [med('rss_kb', unfixed), med('rss_kb', fixed)]}}
 
     if case == 'wanharmony_web_progress_log_storm':
         pu, pf = med('progress_logs', unfixed), med('progress_logs', fixed)
@@ -480,15 +580,16 @@ def judge(case, unfixed, fixed):
                 'evidence': {'progress_logs': [pu, pf]}}
 
     if case == 'sepweather_font_register_per_page':
-        cu, cf = med('cpu_per_round_ms', unfixed), med('cpu_per_round_ms', fixed)
-        ru, rf = med('read_bytes', unfixed), med('read_bytes', fixed)
+        cu, cf = med('mainpage_build_ms', unfixed), med('mainpage_build_ms', fixed)
+        nu, nf = med('recreations', unfixed), med('recreations', fixed)
         gap = (cu / cf - 1) if (cu and cf) else None
-        # fixed approaches the no-font-work floor: less CPU per recreation and
-        # no repeated TTF reads
-        ok = (cu and cf and cu > cf * 1.1) or (ru and rf is not None and ru > rf * 2)
+        ok = (cu and cf and nu and nf and nu >= 5 and nf >= 5 and cu > cf)
         return {'verdict': 'PASS' if ok else 'FAIL',
-                'evidence': {'cpu_per_round_ms': [cu, cf], 'cpu_gap': gap,
-                             'read_bytes': [ru, rf]}}
+                'evidence': {'mainpage_build_ms': [cu, cf], 'gap': gap,
+                             'recreations': [nu, nf],
+                             'global_read_bytes':
+                             [med('global_read_bytes', unfixed),
+                              med('global_read_bytes', fixed)]}}
 
     if case == 'jingmo_dataset_import_no_transaction':
         iu, ifx = med('row_dispatch_logs', unfixed), med('row_dispatch_logs', fixed)
