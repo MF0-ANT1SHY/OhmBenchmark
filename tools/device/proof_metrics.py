@@ -195,10 +195,12 @@ def m_wan_history(art):
             if c is not None:
                 per.append(c)
         cpu = round(sum(per) / len(per), 1) if per else None
+    size_logs = sum(1 for w, l in lines if 'historyList.size =' in l)
     return {
         'title_events': len(events),
         'cpu_per_title_ms': cpu,
         'history_log_bytes': hl_bytes,
+        'history_size_logs': size_logs,
     }
 
 
@@ -441,13 +443,19 @@ def judge(case, unfixed, fixed):
         eu, ef = med('title_events', unfixed), med('title_events', fixed)
         cu, cf = med('cpu_per_title_ms', unfixed), med('cpu_per_title_ms', fixed)
         bu, bf = med('history_log_bytes', unfixed), med('history_log_bytes', fixed)
-        gap = (cu / cf - 1) if (cu is not None and cf) else None
-        ok = (eu and ef and eu >= 5 and cu is not None and cf is not None
-              and cu > cf * 1.3 and bu > bf * 3)
+        su, sf = med('history_size_logs', unfixed), med('history_size_logs', fixed)
+        cpu_gap = (cu / cf - 1) if (cu is not None and cf) else None
+        # case.json requires >=30% less CPU on the title-event path. The log
+        # volume confirms that the expensive branch ran, but cannot replace
+        # the CPU oracle. The current 2.5s windows include webview work.
+        ok = (eu and ef and eu >= 10 and ef >= 10 and cu is not None and cf
+              and cu > cf * 1.3 and bu and bu >= 50000 and (bf or 0) < bu / 10)
         return {'verdict': 'PASS' if ok else 'FAIL',
                 'evidence': {'title_events': [eu, ef],
-                             'cpu_per_title_ms': [cu, cf], 'cpu_gap': gap,
-                             'history_log_bytes': [bu, bf]}}
+                             'history_log_bytes': [bu, bf],
+                             'history_size_logs': [su, sf],
+                             'cpu_per_title_ms': [cu, cf], 'cpu_gap': cpu_gap,
+                             'cpu_note': '2.5s windows include webview rendering; a handler-specific CPU measurement is still needed'}}
 
     if case == 'wanharmony_html_decode_per_render':
         iu, ifx = med('cpu_per_item_ms', unfixed), med('cpu_per_item_ms', fixed)
