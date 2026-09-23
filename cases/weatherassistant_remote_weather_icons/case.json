@@ -1,0 +1,39 @@
+{
+  "id": "weatherassistant_remote_weather_icons",
+  "host_app": {
+    "name": "HarmonyOS-Next-Weather-Assistant",
+    "repository": "https://github.com/AlatusLee/HarmonyOS-Next-Weather-Assistant",
+    "bundle_name": "com.alatus.futureweather",
+    "local_path": "hosts/weatherassistant",
+    "base_branch": "ohmbase",
+    "base_commit": "167ca48"
+  },
+  "android_source_case": "gdroid_network_74cae42ede14",
+  "android_mechanism": "Check whether a download is really required before performing it (static assets re-fetched every time)",
+  "category": "latency",
+  "bug_description": "The weather condition glyphs (sunny/cloudy/overcast/rain) are rendered from four hard-coded remote CDN URLs (i-blog.csdnimg.cn). The forecast view shows ~9 icon instances per city tab (big current-weather icon plus per-day day/night icons); every cold start and every cache miss re-downloads these static images over the network, delaying first paint of the weather panel and wasting bandwidth.",
+  "perf_scenarios": ["图片加载", "页面启动", "页面切换"],
+  "unfixed_commit": "20e8e16",
+  "fixed_commit": "c181b31",
+  "fix_summary": "The four weather glyphs are bundled as local rawfile resources and referenced with $rawfile, eliminating the network fetches and speeding up first render.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Clear the app's network image cache (or reinstall); ensure network is available for weather data.",
+    "Start hitrace capture (categories: app, sched, network, net, ace).",
+    "Cold-start the app and wait for the weather panel to fully render; switch between 2 city tabs.",
+    "Stop hitrace. Repeat 3 repetitions (reinstall between repetitions) for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "icon_first_paint_ms_and_net_bytes",
+    "definition": "(a) Time from page build start to weather-icon render completion in the ace trace; (b) bytes of image downloads to the icon CDN observed in the network trace.",
+    "comparison": "unfixed downloads ~9 images (hundreds of KB) before/while icons appear and shows network stalls on cold start; fixed has zero icon-related network traffic and near-instant icon paint."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 25 ace app sched network net -o /data/local/tmp/wa_icons.chtrace",
+    "window_ms": 25000
+  }
+}

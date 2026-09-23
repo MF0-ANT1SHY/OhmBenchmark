@@ -1,0 +1,14 @@
+diff --git a/alatus/src/main/ets/viewmodel/getWeatherUtil.ets b/alatus/src/main/ets/viewmodel/getWeatherUtil.ets
+index 4326d7d..7ab0698 100644
+--- a/alatus/src/main/ets/viewmodel/getWeatherUtil.ets
++++ b/alatus/src/main/ets/viewmodel/getWeatherUtil.ets
+@@ -15,6 +15,9 @@ class getWeatherUtil{
+         }
+       }).catch((err:object)=>{
+         console.log(err.toString());
++      }).finally(()=>{
++        // 请求结束后销毁 HTTP 会话，避免连接与句柄滞留
++        request.destroy();
+       });
+     });
+   }
