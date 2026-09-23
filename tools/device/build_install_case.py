@@ -54,6 +54,13 @@ def main():
         if rc:
             status.update(step='inject', ok=False, err=out[-400:])
             _done(status)
+        prep = os.path.join(HERE, 'prep', f'{case_id}.sh')
+        if os.path.exists(prep):
+            rc, out = run(['bash', prep], host_dir, timeout=120)
+            if rc:
+                status.update(step='prep', ok=False, err=out[-400:])
+                _done(status)
+            status['prep'] = 'ok'
         rc, out = run(['hvigorw', '--mode', 'module', '-p', 'product=default',
                        '-p', 'buildMode=debug', 'assembleHap', '--no-daemon'], host_dir, timeout=1800)
         if rc or 'BUILD SUCCESSFUL' not in out:
