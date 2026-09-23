@@ -51,12 +51,21 @@ def screen_size():
 
 
 def ability_of(host_dir):
-    """Return (ability_name, entry_module) parsed from the host's module.json5."""
-    mj = os.path.join(host_dir, 'entry', 'src', 'main', 'module.json5')
-    txt = open(mj).read()
+    """Return the launcher ability name parsed from any module.json5."""
+    cands = []
+    for root, dirs, files in os.walk(host_dir):
+        dirs[:] = [d for d in dirs if d not in ('oh_modules', 'node_modules', '.git', 'build', 'ohosTest')]
+        if 'module.json5' in files and 'ohosTest' not in root:
+            cands.append(os.path.join(root, 'module.json5'))
+    entry = [c for c in cands if '/entry/' in c] or cands
+    if not entry:
+        raise RuntimeError(f'no module.json5 under {host_dir}')
+    txt = open(entry[0]).read()
     m = re.search(r'"mainElement"\s*:\s*"([^"]+)"', txt)
     if not m:
         m = re.search(r'"name"\s*:\s*"(EntryAbility|[^"]*Ability)"', txt)
+    if not m:
+        raise RuntimeError(f'no mainElement in {entry[0]}')
     return m.group(1)
 
 
