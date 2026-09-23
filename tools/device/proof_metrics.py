@@ -241,6 +241,83 @@ def m_wan_progress(art):
     return {'progress_logs': progress}
 
 
+def _trace_span(trace, seconds):
+    """Trace-time window covering the middle of the capture."""
+    last = None
+    first = None
+    for line in _trace_lines(trace):
+        mt = analyze.LINE.match(line)
+        if mt:
+            ts = float(mt.group('ts'))
+            if first is None:
+                first = ts
+            last = ts
+    if first is None or last is None:
+        return None, None
+    t1 = last - 3.0
+    t0 = max(first, t1 - seconds)
+    return t0, t1
+
+
+def _block_bytes(trace, t0=None, t1=None, reads=False):
+    total = 0
+    write_re = re.compile(r'block_rq_issue: \S+ (\S+) (\d+) ')
+    for line in _trace_lines(trace):
+        if 'block_rq_issue' not in line:
+            continue
+        mt = analyze.LINE.match(line)
+        if not mt:
+            continue
+        ts = float(mt.group('ts'))
+        if (t0 and ts < t0) or (t1 and ts > t1):
+            continue
+        m = write_re.search(line)
+        if not m:
+            continue
+        flags, size = m.group(1), int(m.group(2))
+        is_read = flags.startswith('R')
+        if reads == is_read:
+            total += size
+    return total
+
+
+def m_sepweather(art):
+    """sepweather_font_register_per_page: CPU per MainPage recreation round-trip
+    + TTF read bytes in window (unfixed re-registers fonts on every creation)."""
+    trace = art['trace']
+    pid = art.get('pid') or _pid(trace)
+    if not pid:
+        return {'error': 'no pid'}
+    cpu = analyze.cpu_time(trace, pid) or 0
+    read_bytes = _block_bytes(trace, reads=True)
+    return {'cpu_per_round_ms': round(cpu / 10.0, 1),
+            'cpu_ms': round(cpu, 1),
+            'read_bytes': read_bytes}
+
+
+def m_ytmusic(art):
+    """ytmusic_current_playing_timeupdate: steady-playback window render
+    passes (CustomNodeUpdate spans) + CPU; unfixed re-renders ~10x/s."""
+    trace = art['trace']
+    pid = art.get('pid') or _pid(trace)
+    if not pid:
+        return {'error': 'no pid'}
+    t0, t1 = _trace_span(trace, 40)
+    if t0 is None:
+        return {'error': 'empty trace'}
+    updates = 0
+    upd_re = re.compile(rf'U\|{pid}\|H:CustomNodeUpdate|B\|{pid}\|H:CustomNodeUpdate')
+    for line in _trace_lines(trace):
+        mt = analyze.LINE.match(line)
+        if not mt:
+            continue
+        ts = float(mt.group('ts'))
+        if t0 <= ts <= t1 and upd_re.search(line):
+            updates += 1
+    cpu = analyze.cpu_time(trace, pid, t0=t0, t1=t1) or 0
+    return {'steady_updates': updates, 'steady_cpu_ms': round(cpu, 1)}
+
+
 MEASURES = {
     'browser_eager_history_load': m_eager,
     'browser_history_list_foreach': m_list,
@@ -249,6 +326,8 @@ MEASURES = {
     'wanharmony_html_decode_per_render': m_wan_html_decode,
     'wanharmony_persisted_home_list_growth': m_wan_persisted,
     'wanharmony_web_progress_log_storm': m_wan_progress,
+    'sepweather_font_register_per_page': m_sepweather,
+    'ytmusic_current_playing_timeupdate': m_ytmusic,
 }
 
 
@@ -342,6 +421,27 @@ def judge(case, unfixed, fixed):
         ok = (pu and pf is not None and pu >= 50 and pu > pf * 2)
         return {'verdict': 'PASS' if ok else 'FAIL',
                 'evidence': {'progress_logs': [pu, pf]}}
+
+    if case == 'sepweather_font_register_per_page':
+        cu, cf = med('cpu_per_round_ms', unfixed), med('cpu_per_round_ms', fixed)
+        ru, rf = med('read_bytes', unfixed), med('read_bytes', fixed)
+        gap = (cu / cf - 1) if (cu and cf) else None
+        # fixed approaches the no-font-work floor: less CPU per recreation and
+        # no repeated TTF reads
+        ok = (cu and cf and cu > cf * 1.1) or (ru and rf is not None and ru > rf * 2)
+        return {'verdict': 'PASS' if ok else 'FAIL',
+                'evidence': {'cpu_per_round_ms': [cu, cf], 'cpu_gap': gap,
+                             'read_bytes': [ru, rf]}}
+
+    if case == 'ytmusic_current_playing_timeupdate':
+        uu, uf = med('steady_updates', unfixed), med('steady_updates', fixed)
+        cu, cf = med('steady_cpu_ms', unfixed), med('steady_cpu_ms', fixed)
+        gap = (cu / cf - 1) if (cu and cf) else None
+        # unfixed ~600 page updates/min vs fixed ~60; UI CPU follows
+        ok = (uu and uf is not None and uu > uf * 2) and (cu and cf and cu > cf * 1.1)
+        return {'verdict': 'PASS' if ok else 'FAIL',
+                'evidence': {'steady_updates': [uu, uf],
+                             'steady_cpu_ms': [cu, cf], 'cpu_gap': gap}}
 
     # generic fallback: CPU medians, honest data-only verdict
     cu, cf = med('cpu_ms', unfixed), med('cpu_ms', fixed)
