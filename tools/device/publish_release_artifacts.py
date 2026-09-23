@@ -146,6 +146,8 @@ def main():
     publish_paths, purge_paths = candidates(args.case)
     if not publish_paths:
         raise SystemExit('no untracked results artifacts found to publish')
+    empty_paths = [p for p in publish_paths if p.stat().st_size == 0]
+    publish_paths = [p for p in publish_paths if p.stat().st_size > 0]
     slug, rel = release_data(args.tag)
     existing = {a['name']: a for a in rel.get('assets', [])}
     expected = []
@@ -192,10 +194,16 @@ def main():
         if doc.exists():
             manifest = json.loads(doc.read_text(encoding='utf-8'))
         else:
-            manifest = {'repository': slug, 'release_tag': args.tag, 'artifacts': []}
+            manifest = {'repository': slug, 'release_tag': args.tag,
+                        'artifacts': [], 'omitted_artifacts': []}
         known = {x.get('asset_name') for x in manifest.get('artifacts', [])}
         manifest.setdefault('artifacts', []).extend(
             i for i in expected if i['asset_name'] not in known)
+        omitted = {x.get('relative_path') for x in manifest.get('omitted_artifacts', [])}
+        manifest.setdefault('omitted_artifacts', []).extend(
+            {'relative_path': p.relative_to(RESULTS).as_posix(), 'source_size': 0,
+             'reason': 'empty source file; GitHub Releases does not accept zero-byte assets'}
+            for p in empty_paths if p.relative_to(RESULTS).as_posix() not in omitted)
         manifest['updated_at_utc'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
         manifest['source_commit'] = run(['git', 'rev-parse', 'HEAD'])
         doc.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n',
@@ -242,6 +250,7 @@ def main():
     print(json.dumps({'release': f'https://github.com/{slug}/releases/tag/{args.tag}',
                       'published_artifacts': len(expected),
                       'new_assets': len(to_upload) + 1,
+                      'omitted_empty_artifacts': len(empty_paths),
                       'removed_local_files': len(purge_paths),
                       'removed_regular_bytes': removed_bytes,
                       'manifest': str(doc)}, ensure_ascii=False, indent=2))
