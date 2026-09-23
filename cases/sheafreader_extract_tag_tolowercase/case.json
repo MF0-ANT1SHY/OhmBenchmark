@@ -1,0 +1,39 @@
+{
+  "id": "sheafreader_extract_tag_tolowercase",
+  "host_app": {
+    "name": "Sheaf-Reader (束阅 RSS 阅读器)",
+    "repository": "https://github.com/simon2137/Sheaf-Reader",
+    "bundle_name": "com.sheafreader.hm",
+    "local_path": "hosts/sheafreader",
+    "base_branch": "ohmbase",
+    "base_commit": "e04ef65"
+  },
+  "android_source_case": "fdroid_sax_character_allocation",
+  "android_mechanism": "The complete SAX character buffer is copied on every text event; fix avoids the per-event copy",
+  "category": "cpu",
+  "bug_description": "FeedParser.extractTag locates the closing tag with xml.toLowerCase().indexOf(...), materializing a full lowercase copy of the item fragment for every extracted tag. Parsing one RSS item extracts ~6 tags (title/link/description/date/guid/author), so each refresh of a feed with N items allocates and scans ~6N full-fragment lowercase copies on the parsing thread, increasing GC pressure and feed-refresh latency.",
+  "perf_scenarios": ["数据库读取", "网络结果渲染"],
+  "unfixed_commit": "e04ef65",
+  "fixed_commit": "f62858e",
+  "fix_summary": "The closing tag is located with a case-insensitive regex over the remaining substring, eliminating the per-tag lowercase copy while preserving case-insensitive matching semantics.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Add several large RSS/Atom feeds (or one feed with 100+ long articles) to the reader.",
+    "Start hitrace capture (categories: app, sched, memory).",
+    "Trigger 刷新全部 (refresh all feeds).",
+    "Stop hitrace after refresh completes. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "feed_parse_cpu_ms",
+    "definition": "CPU time of the feed parsing phase per refresh (from first article parse to last, before DB insert), plus count/size of large short-lived string allocations (GC events in memory trace).",
+    "comparison": "unfixed performs one full-fragment toLowerCase copy per extracted tag (~6 per item); fixed none. unfixed parse CPU and GC activity > fixed by >= 15% on feeds with long descriptions."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 40 app sched memory -o /data/local/tmp/sr_parse.chtrace",
+    "window_ms": 40000
+  }
+}
