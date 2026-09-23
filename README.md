@@ -10,7 +10,7 @@ config, and a test oracle.
 
 ## Dataset at a glance
 
-- **30 cases** across **9 bundle names / 8 host applications** (all public GitHub projects)
+- **30 cases** across **9 host applications** (all public GitHub projects)
 - Categories: 16 latency, 11 cpu, 3 resource_retention
 - Every unfixed and fixed commit builds successfully (`hvigorw assembleHap`, see `build_results.jsonl`)
 - Full index: [`manifest.json`](manifest.json) · per-case metadata: [`cases/<id>/case.json`](cases)
@@ -24,6 +24,8 @@ cases/<id>/
   case.json       bundle name, commits, bug description, android source case, trigger steps,
                   test oracle (metric + comparison), hitrace capture config
   fix.patch       the unfixed→fixed diff
+hosts_patches/    per-host git format-patch series (upstream base → all dataset commits),
+                  see hosts_patches/README.md for full reconstruction instructions
 manifest.json     machine-readable index of all 30 cases
 tools/
   strip_signing.py  removes local signing configs for headless builds
