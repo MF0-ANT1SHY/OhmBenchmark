@@ -251,6 +251,26 @@ def t_wan_history_log_materialization(ctx, rep):
 # cloudmusic family (needs a reachable NeteaseCloudMusicApi server)
 # --------------------------------------------------------------------------
 
+def cloud_config_api(ctx):
+    """First-launch config: point the app at the local NeteaseCloudMusicApi
+    (device localhost:3000 via hdc rport) through the 设置在线服务 sheet."""
+    ctx.launch_and_wait_home(settle=6)
+    if ctx.tap_if(contains='设置在线服务'):
+        time.sleep(2)
+        field = ohb.find_nodes(ohb.dump_layout(), type_='TextInput') or \
+            ohb.find_nodes(ohb.dump_layout(), type_='Search') or \
+            ohb.find_nodes(ohb.dump_layout(), type_='TextArea')
+        if field:
+            ohb.tap_node(field[0]); time.sleep(1)
+            ohb.input_text_at(*ohb._center(field[0]), 'http://127.0.0.1:3000')
+            time.sleep(0.5)
+            ohb.key(2054); time.sleep(1)
+        if not ctx.tap_if(text='确定') and not ctx.tap_if(text='保存'):
+            ohb.key('Back')
+        time.sleep(2)
+        ctx.launch_and_wait_home(settle=6)
+
+
 def cloud_open_toplist(ctx):
     """Explore tab -> 排行榜 -> first toplist card."""
     ctx.launch_and_wait_home(settle=6)
@@ -271,6 +291,7 @@ def cloud_scroll_songs(ctx, seconds=25):
 
 def t_cloud_indexof_in_render(ctx, rep):
     def act():
+        cloud_config_api(ctx)
         if not cloud_open_toplist(ctx):
             raise RuntimeError('cannot open toplist (API server unreachable?)')
         cloud_scroll_songs(ctx)
@@ -283,6 +304,7 @@ def t_cloud_songcard_artists_concat(ctx, rep):
 
 def t_cloud_search_result_foreach(ctx, rep):
     def act():
+        cloud_config_api(ctx)
         ctx.launch_and_wait_home(settle=6)
         n = ohb.find_nodes(ohb.dump_layout(), contains='Search something')
         if not n:
@@ -305,6 +327,7 @@ def t_cloud_search_result_foreach(ctx, rep):
 
 def t_cloud_play_time_high_frequency_update(ctx, rep):
     def act():
+        cloud_config_api(ctx)
         if not cloud_open_toplist(ctx):
             raise RuntimeError('cannot open toplist (API server unreachable?)')
         if not ctx.tap_if(text='播放全部'):
@@ -322,6 +345,7 @@ def t_cloud_play_time_high_frequency_update(ctx, rep):
 
 def t_cloud_local_song_memory_filter(ctx, rep):
     def act():
+        cloud_config_api(ctx)
         ctx.launch_and_wait_home(settle=6)
         if not ctx.tap_if(text='Me'):
             raise RuntimeError('Me tab not found')
