@@ -37,7 +37,10 @@ class Ctx:
         remote = f'/data/local/tmp/{self.case_id}_{name}_{self.trace_n}.chtrace'
         self.trace_n += 1
         t0 = time.time()
-        p = subprocess.Popen([ohb.HDC, 'shell', f'hitrace -t {seconds} {" ".join(categories)} -o {remote}'],
+        # 200MB buffer: the default 18MB ring holds only ~8s of sched volume,
+        # which drops the app's early events on longer flows
+        p = subprocess.Popen([ohb.HDC, 'shell',
+                              f'hitrace -b 204800 -t {seconds} {" ".join(categories)} -o {remote}'],
                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         time.sleep(0.8)
         marker_log = os.path.join(self.outdir, f'{name}_{self.trace_n}.hilog')
@@ -119,7 +122,7 @@ def t_browser_history_delete_no_transaction(ctx, rep):
 
 def t_browser_history_list_foreach(ctx, rep):
     return browser_uitest_trigger(ctx, 'openHistory', ['ace', 'app', 'sched'],
-                                  20, tail_swipes=6, rep=rep)
+                                  30, tail_swipes=6, rep=rep)
 
 
 def t_browser_insert_date_lookup_cache(ctx, rep):
