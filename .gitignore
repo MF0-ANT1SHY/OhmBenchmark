@@ -3,7 +3,6 @@ hosts/*/
 *.log
 # device verification working files
 tools/.sign_material.json
-results/*.chtrace
-results/*.png
-results/*.json
-results/*.hlog
+# keep only small jsonl records under results/, ignore bulky artifacts
+results/*
+!results/*.jsonl
