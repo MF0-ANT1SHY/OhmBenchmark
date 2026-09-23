@@ -8,6 +8,7 @@ Writes a JSON status line to results/device_run.jsonl and prints it.
 """
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -28,6 +29,36 @@ os.makedirs(RESULTS, exist_ok=True)
 def run(cmd, cwd, timeout=1200):
     r = subprocess.run(cmd, cwd=cwd, env=ENV, capture_output=True, text=True, timeout=timeout)
     return r.returncode, r.stdout + r.stderr
+
+
+def install_uitest(host_dir, case, status):
+    """Copy Hypium UI-flow scripts for this host into the ohosTest source set
+    and register them in List.test.ets. Files live in tools/device/uitest/<host>/
+    (single source of truth); the host repo stays clean across commit switches
+    because `git checkout -- .` leaves untracked files alone and we rewrite
+    List.test.ets on every build."""
+    host = case['host_app']['local_path'].rsplit('/', 1)[-1]
+    src = os.path.join(REPO, 'tools', 'device', 'uitest', host)
+    if not os.path.isdir(src):
+        return
+    test_dir = os.path.join(host_dir, 'entry', 'src', 'ohosTest', 'ets', 'test')
+    if not os.path.isdir(test_dir):
+        status['uitest'] = 'no ohosTest dir'
+        return
+    suites = []
+    for f in sorted(os.listdir(src)):
+        if f.endswith('.test.ets'):
+            shutil.copy2(os.path.join(src, f), os.path.join(test_dir, f))
+            suites.append(f[:-9])
+    if not suites:
+        return
+    lines = [f"import {s.replace('-', '_')} from './{s}.test';" for s in suites]
+    lines.append('export default function testsuite() {')
+    lines += [f'  {s.replace("-", "_")}();' for s in suites]
+    lines.append('}')
+    with open(os.path.join(test_dir, 'List.test.ets'), 'w') as f:
+        f.write('\n'.join(lines) + '\n')
+    status['uitest'] = f'{len(suites)} suite(s)'
 
 
 def main():
@@ -64,6 +95,7 @@ def main():
         if rc:
             status.update(step='inject', ok=False, err=out[-400:])
             _done(status)
+        install_uitest(host_dir, case, status)
         prep = os.path.join(HERE, 'prep', f'{case_id}.sh')
         if os.path.exists(prep):
             rc, out = run(['bash', prep], host_dir, timeout=120)

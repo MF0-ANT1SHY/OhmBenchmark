@@ -177,7 +177,12 @@ def tap_text(text=None, contains=None, type_=None, timeout=15, root_refresh=None
 
 
 def input_text_at(x, y, text):
-    shell(f'uitest uiInput inputText {int(x)} {int(y)} "{text}"')
+    """Type `text` at (x, y). Works from any state: with the IME already up a
+    bare `inputText` re-click cancels editing, so tap to focus then `uiInput
+    text` into the focused node; from a clean state the tap just refocuses."""
+    tap(x, y)
+    time.sleep(0.8)
+    shell(f'uitest uiInput text {text}')
 
 
 def key(code):
@@ -237,3 +242,17 @@ def clean_appdata():
 
 def device_ready():
     return bool(re.search(r'^[0-9A-F]{20,}$', hdc('list', 'targets'), re.M))
+
+
+def run_uitest(suite_method, timeout=300):
+    """Run a Hypium UI test on device, e.g. run_uitest('ActsOhbBrowser#seed6').
+    The test runner relaunches the ability, so force-stop first to guarantee a
+    clean single-instance state (dialogs/tab state do not survive). Blocking;
+    returns combined stdout (contains OHB markers + OHOS_REPORT)."""
+    force_stop()
+    time.sleep(1)
+    module = 'entry_test'
+    out = hdc('shell', 'aa test -b ' + BUNDLE + f' -m {module} -s unittest '
+              f'/ets/testrunner/OpenHarmonyTestRunner -s class {suite_method} '
+              f'-s timeout {timeout * 1000}', timeout=timeout + 60)
+    return out
