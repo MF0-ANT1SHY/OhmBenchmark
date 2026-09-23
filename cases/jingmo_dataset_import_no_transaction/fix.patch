@@ -1,0 +1,80 @@
+diff --git a/features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets b/features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets
+index ae8b612..0efecc8 100644
+--- a/features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets
++++ b/features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets
+@@ -37,6 +37,38 @@ export class  ClassicPoemDao {
+       })
+   }
+ 
++  // 批量导入数据集：使用 batchInsert 在单个事务中完成，避免逐条插入产生的大量独立提交
++  async createClassicPoems(classicPoems: ClassicPoem[]) {
++    const valuesBuckets: relationalStore.ValuesBucket[] = classicPoems.map((classicPoem: ClassicPoem): relationalStore.ValuesBucket => {
++      const bucket: relationalStore.ValuesBucket = {
++        'id': classicPoem.id,
++        'dynasty': classicPoem.dynasty,
++        'writer': classicPoem.writer,
++        'writer_introduction': classicPoem.writer_introduction,
++        'title': classicPoem.title,
++        'subtitle': classicPoem.subtitle,
++        'preface': classicPoem.preface,
++        'content': classicPoem.content,
++        'annotation': classicPoem.annotation,
++        'translation': classicPoem.translation,
++        'creative_background': classicPoem.creative_background,
++        'explain': classicPoem.explain,
++        'comment': classicPoem.comment,
++        'collection': classicPoem.collection,
++        'category': classicPoem.category,
++      }
++      return bucket
++    })
++
++    try {
++      const rowCount = await DbUtil.objectiveRDB?.batchInsert(DbTableConst.ClassicPoemTable, valuesBuckets)
++      this.logger.info(`Batch insert is successful, rowCount = ${rowCount}`)
++    } catch (err) {
++      const error = err as BusinessError
++      this.logger.error(`Batch insert is failed, code is ${error.code},message is ${error.message}`)
++    }
++  }
++
+   async readRandomClassicPoem(): Promise<ClassicPoem | null> {
+     let classicPoem: ClassicPoem | null = null
+ 
+diff --git a/features/settings/src/main/ets/pages/SyncData.ets b/features/settings/src/main/ets/pages/SyncData.ets
+index 2077628..f7ece9a 100644
+--- a/features/settings/src/main/ets/pages/SyncData.ets
++++ b/features/settings/src/main/ets/pages/SyncData.ets
+@@ -24,13 +24,10 @@ export struct SyncData {
+     })
+ 
+     DatasetViewModel.getClassicPoemList().then((data: string) => {
+-      this.logger.info(data)
++      this.logger.info(`classic poem dataset size: ${data.length}`)
+       let wrapper: DataWrapper<ClassicPoem> = JSON.parse(data)
+       this.logger.info(wrapper.total.toString())
+-      wrapper.data.map((classicPoem:ClassicPoem, index: number) => {
+-        this.logger.info(`index = ${index}`)
+-        DatasetViewModel.insertClassicPoemToDb(classicPoem)
+-      })
++      DatasetViewModel.insertClassicPoemsToDb(wrapper.data)
+     }).catch((error: BusinessError) => {
+       this.logger.error(`code = ${error.code}, msg = ${error.message}`)
+     })
+diff --git a/features/settings/src/main/ets/viewmodel/DatasetViewModel.ets b/features/settings/src/main/ets/viewmodel/DatasetViewModel.ets
+index e04cbb3..17ec4c0 100644
+--- a/features/settings/src/main/ets/viewmodel/DatasetViewModel.ets
++++ b/features/settings/src/main/ets/viewmodel/DatasetViewModel.ets
+@@ -51,6 +51,12 @@ class DatasetViewModel {
+       this.logger.error(`insertClassicPoemToDb error, code = :${error.code}, message = ${error.message}`)
+     })
+   }
++
++  async insertClassicPoemsToDb(classicPoems: ClassicPoem[]){
++    await this.classicPoemDao.createClassicPoems(classicPoems).catch((error: BusinessError) => {
++      this.logger.error(`insertClassicPoemsToDb error, code = :${error.code}, message = ${error.message}`)
++    })
++  }
+ }
+ 
+ let datasetViewModel = new DatasetViewModel()

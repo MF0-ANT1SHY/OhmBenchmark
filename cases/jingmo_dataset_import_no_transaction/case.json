@@ -1,0 +1,39 @@
+{
+  "id": "jingmo_dataset_import_no_transaction",
+  "host_app": {
+    "name": "jingmo (京墨文库)",
+    "repository": "https://github.com/hefengbao/jingmo-for-HarmonyOS",
+    "bundle_name": "com.hefengbao.jingmo.hw",
+    "local_path": "hosts/jingmo",
+    "base_branch": "ohmbase",
+    "base_commit": "3eb7686"
+  },
+  "android_source_case": "portauthority_oui_import_transactions",
+  "android_mechanism": "OUI CSV import commits each row separately; fix batches all inserts into one transaction",
+  "category": "latency",
+  "bug_description": "The dataset-sync page imports the classic-poem dataset by iterating the parsed JSON array and issuing one standalone RDB INSERT per poem (each in its own autocommit transaction, all fired concurrently via a non-awaited map). Importing thousands of rows generates thousands of individual journal/fsync cycles, saturating the DB writer and freezing the sync page for a long time.",
+  "perf_scenarios": ["数据库读取", "网络结果渲染"],
+  "unfixed_commit": "caf0823",
+  "fixed_commit": "d52c391",
+  "fix_summary": "Dataset import uses RdbStore.batchInsert so the whole array is inserted in a single transaction; the per-row debug logging is removed.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Install the app with an empty database; ensure network access to the dataset URL.",
+    "Start hitrace capture (categories: app, sched, disk, filesystem).",
+    "Open settings -> 数据同步 (sync data) to trigger the dataset fetch and import.",
+    "Wait until import completes (row count stable in hilog). Stop hitrace. Repeat 3 repetitions for unfixed (clear app data between repetitions), then install fixed and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "dataset_import_wall_time_ms",
+    "definition": "Time from dataset JSON parse completion to the last INSERT commit observed in disk/database trace activity.",
+    "comparison": "unfixed: one sqlite journal/fsync cycle per row (thousands of small commits); fixed: single batched commit. unfixed_import_ms > fixed_import_ms by >= 3x for a multi-thousand-row dataset."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 60 app sched disk filesystem database -o /data/local/tmp/jingmo_import.chtrace",
+    "window_ms": 60000
+  }
+}
