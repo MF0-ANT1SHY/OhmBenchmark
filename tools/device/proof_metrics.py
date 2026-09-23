@@ -26,6 +26,30 @@ def _pid(trace):
     return max(counts, key=counts.get) if counts else None
 
 
+def _pid_from_hilog(hlog):
+    """The app's pid from hilog header columns (some launch paths rename the
+    traced comm, but the hilog tag always carries the bundle)."""
+    pid = None
+    for line in analyze._clean(hlog):
+        if APP_COMM not in line:
+            continue
+        m = re.match(r'\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\s+(\d+)\s+\d+\s', line)
+        if m:
+            pid = int(m.group(1))
+    return pid
+
+
+def resolve_pid(art):
+    """art['pid'] (post-trigger pidof) -> trace comm -> hilog tag column."""
+    pid = art.get('pid')
+    if pid:
+        return pid
+    pid = _pid(art['trace'])
+    if pid:
+        return pid
+    return _pid_from_hilog(art.get('hilog') or '')
+
+
 def _count(hlog, needle, pid=None):
     n = 0
     for line in analyze._clean(hlog):
@@ -43,7 +67,7 @@ def m_eager(art):
     oracle's 'last RDB query completion' anchor is the last 查询到记录 row
     line. Rows/queries counts are corroborating (hilog may drop lines)."""
     trace, hlog = art['trace'], art['hilog']
-    pid = art.get('pid') or _pid(trace)
+    pid = resolve_pid(art)
     if not pid:
         return {'error': 'no pid'}
     first_wall, lines = _hilog_pid_lines(hlog, pid)
@@ -86,7 +110,7 @@ def _trace_lines(trace):
 
 def m_generic_cpu(art):
     trace = art['trace']
-    pid = art.get('pid') or _pid(trace)
+    pid = resolve_pid(art)
     if not pid:
         return {'error': 'no pid'}
     return {'cpu_ms': round(analyze.cpu_time(trace, pid) or 0, 1)}
@@ -96,7 +120,7 @@ def m_insert(art):
     """browser_insert_date_lookup_cache: per-save wall time from consecutive
     保存浏览记录成功 hilog lines + block I/O ops in the browse window."""
     trace, hlog = art['trace'], art['hilog']
-    pid = art.get('pid') or _pid(trace)
+    pid = resolve_pid(art)
     if not pid:
         return {'error': 'no pid'}
     stamps = []
@@ -155,7 +179,7 @@ def m_wan_history(art):
     window + total historyList log bytes (unfixed JSON-stringifies the whole
     list twice per open, fixed logs only the size)."""
     trace, hlog = art['trace'], art['hilog']
-    pid = art.get('pid') or _pid(trace)
+    pid = resolve_pid(art)
     if not pid:
         return {'error': 'no pid'}
     first_wall, lines = _hilog_pid_lines(hlog, pid)
@@ -182,7 +206,7 @@ def m_wan_html_decode(art):
     """wanharmony_html_decode_per_render: app CPU divided by item components
     created during the scroll window (plain ForEach re-decodes per build)."""
     trace = art['trace']
-    pid = art.get('pid') or _pid(trace)
+    pid = resolve_pid(art)
     if not pid:
         return {'error': 'no pid'}
     creates = 0
@@ -200,7 +224,7 @@ def m_wan_persisted(art):
     """wanharmony_persisted_home_list_growth: block write bytes during the
     load-more scroll (unfixed rewrites the whole list per load-more)."""
     trace = art['trace']
-    pid = art.get('pid') or _pid(trace)
+    pid = resolve_pid(art)
     if not pid:
         return {'error': 'no pid'}
     write_re = re.compile(r'block_rq_issue: \S+ (W\S*) (\d+) ')
@@ -217,7 +241,7 @@ def m_wan_persisted(art):
 def m_wan_progress(art):
     """wanharmony_web_progress_log_storm: progress-log lines per page-load set."""
     hlog = art['hilog']
-    pid = art.get('pid') or _pid(art['trace'])
+    pid = resolve_pid(art)
     if not pid:
         return {'error': 'no pid'}
     progress = sum(1 for l in analyze._clean(hlog)
@@ -269,7 +293,7 @@ def m_sepweather(art):
     """sepweather_font_register_per_page: CPU per MainPage recreation round-trip
     + TTF read bytes in window (unfixed re-registers fonts on every creation)."""
     trace = art['trace']
-    pid = art.get('pid') or _pid(trace)
+    pid = resolve_pid(art)
     if not pid:
         return {'error': 'no pid'}
     cpu = analyze.cpu_time(trace, pid) or 0
@@ -283,7 +307,7 @@ def m_ytmusic(art):
     """ytmusic_current_playing_timeupdate: steady-playback window render
     passes (CustomNodeUpdate spans) + CPU; unfixed re-renders ~10x/s."""
     trace = art['trace']
-    pid = art.get('pid') or _pid(trace)
+    pid = resolve_pid(art)
     if not pid:
         return {'error': 'no pid'}
     t0, t1 = _trace_span(trace, 40)
