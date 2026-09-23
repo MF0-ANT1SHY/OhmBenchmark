@@ -1,0 +1,39 @@
+{
+  "id": "sheafreader_insert_duplicate_exception",
+  "host_app": {
+    "name": "Sheaf-Reader (束阅 RSS 阅读器)",
+    "repository": "https://github.com/simon2137/Sheaf-Reader",
+    "bundle_name": "com.sheafreader.hm",
+    "local_path": "hosts/sheafreader",
+    "base_branch": "ohmbase",
+    "base_commit": "e04ef65"
+  },
+  "android_source_case": "fdroid_skip_unchanged_installed_apps",
+  "android_mechanism": "Unchanged items re-processed (rehashed) on every refresh; fix skips unchanged items cheaply",
+  "category": "cpu",
+  "bug_description": "insertArticle detects duplicates by letting the UNIQUE(feed_id, guid) constraint fail and catching the thrown exception ('Duplicate entry, ignore'). Every feed refresh re-attempts inserts for ALL previously seen articles — each one a full insert attempt that ends in a constraint-violation exception (statement execution + error object construction + catch), multiplying refresh cost with stored article count.",
+  "perf_scenarios": ["数据库读取", "网络结果渲染"],
+  "unfixed_commit": "4c9b8dc",
+  "fixed_commit": "ba9a953",
+  "fix_summary": "Inserts run with ConflictResolution.ON_CONFLICT_IGNORE so SQLite silently skips duplicates without exception overhead; behavior (only new articles stored) is unchanged.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Subscribe to feeds with substantial history and refresh once to populate articles.",
+    "Start hitrace capture (categories: app, sched, disk, database).",
+    "Trigger refresh-all again (all articles already exist; every insert is a duplicate).",
+    "Stop hitrace when refresh completes. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "no_op_refresh_cpu_ms",
+    "definition": "CPU time of the refresh phase when nothing new arrives (all duplicate inserts), from trace + JS sampling (exception handling frames).",
+    "comparison": "unfixed pays statement-execution + exception-throw/catch per stored article; fixed pays a cheap ignored insert. unfixed no-op refresh CPU > fixed by a clear margin scaling with stored article count."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 60 app sched disk database -o /data/local/tmp/sr_dupinsert.chtrace",
+    "window_ms": 60000
+  }
+}

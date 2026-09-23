@@ -1,0 +1,39 @@
+{
+  "id": "sheafreader_article_list_foreach",
+  "host_app": {
+    "name": "Sheaf-Reader (束阅 RSS 阅读器)",
+    "repository": "https://github.com/simon2137/Sheaf-Reader",
+    "bundle_name": "com.sheafreader.hm",
+    "local_path": "hosts/sheafreader",
+    "base_branch": "ohmbase",
+    "base_commit": "e04ef65"
+  },
+  "android_source_case": "alwayson_lazy_layout_previews",
+  "android_mechanism": "All list-row content (drawables/previews) eagerly prepared instead of only bound/visible rows",
+  "category": "latency",
+  "bug_description": "The main article list and card grid render store.articles with plain ForEach. Opening a feed or scrolling loads pages of articles (limit grows with 'load more'), and every accumulated article row/card — including off-screen ones — is built eagerly, with per-card context menus bound, slowing list display and paging in large feeds.",
+  "perf_scenarios": ["列表滑动", "组件创建", "页面切换"],
+  "unfixed_commit": "f62858e",
+  "fixed_commit": "c3e7b11",
+  "fix_summary": "Both the list and grid render via LazyForEach over an IDataSource kept in sync with the store, so rows are created on demand as they enter the viewport.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Subscribe to feeds with many articles (or import an OPML with large feeds) so a category holds several hundred articles.",
+    "Start hitrace capture (categories: ace, app, sched).",
+    "Open the 全部文章 view, trigger load-more 5 times, then scroll through the list.",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "article_row_build_count",
+    "definition": "Count of article card component builds during open + load-more + scroll (ace trace), first-render latency after open, and dropped frames while scrolling.",
+    "comparison": "unfixed builds every accumulated article (hundreds) eagerly; fixed builds only viewport rows. unfixed first-render and scroll jank measurably worse."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 40 ace app sched graphic -o /data/local/tmp/sr_artlist.chtrace",
+    "window_ms": 40000
+  }
+}

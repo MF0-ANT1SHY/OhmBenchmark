@@ -1,0 +1,39 @@
+{
+  "id": "ytmusic_current_playing_timeupdate",
+  "host_app": {
+    "name": "Youtube-Music-ArkTS-Clone",
+    "repository": "https://github.com/Charles-Stark/Youtube-Music-ArkTS-Clone",
+    "bundle_name": "com.example.myapplication",
+    "local_path": "hosts/ytmusic",
+    "base_branch": "ohmbase",
+    "base_commit": "5bf6142"
+  },
+  "android_source_case": "atmospherelogger_redundant_paint_state",
+  "android_mechanism": "UI state (paint) updated when nothing visually changed; fix skips redundant updates",
+  "category": "cpu",
+  "bug_description": "The now-playing page assigns the raw millisecond position from AVPlayer's timeUpdate callback into a page-level @State on every callback (~10/s). The whole player page (cover image, title, slider, controls) re-renders at callback frequency although the slider position and time labels only visibly change once per second, wasting UI-thread CPU throughout playback.",
+  "perf_scenarios": ["动画", "状态更新"],
+  "unfixed_commit": "b32b720",
+  "fixed_commit": "b140b41",
+  "fix_summary": "The state is assigned only when the whole-second part of the position changes.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Play a track and stay on the now-playing page.",
+    "Start hitrace capture (categories: ace, app, sched, graphic).",
+    "Let it play untouched for 60 seconds.",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "player_page_updates_per_minute",
+    "definition": "Count of page state updates / render passes attributable to currentValue during 60s idle playback, plus UI-thread CPU time.",
+    "comparison": "unfixed ~600 updates/minute vs fixed ~60/minute; unfixed UI CPU during playback > fixed."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 70 ace app sched graphic -o /data/local/tmp/yt_timeupdate.chtrace",
+    "window_ms": 70000
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "wanharmony_web_progress_log_storm",
+  "host_app": {
+    "name": "WanHarmony (WanAndroid 客户端)",
+    "repository": "https://github.com/zjmok/WanHarmony",
+    "bundle_name": "org.example.wan.ohos",
+    "local_path": "hosts/wanharmony",
+    "base_branch": "ohmbase",
+    "base_commit": "dd45ad2"
+  },
+  "android_source_case": "fdroid_method_04298f8886b2",
+  "android_mechanism": "Progress broadcast emitted on every change; fix reports only meaningful updates",
+  "category": "cpu",
+  "bug_description": "WebPage's onProgressChange handler writes a hilog log line for every progress event. Web progress fires dozens of times per page load (per sub-resource), so opening any article emits a log storm on the UI thread (formatting + hilog IPC per event), adding overhead to every page load.",
+  "perf_scenarios": ["网络结果渲染", "状态更新"],
+  "unfixed_commit": "d1618b9",
+  "fixed_commit": "cb8a8ea",
+  "fix_summary": "Progress is logged only at milestones (every 25% and completion), cutting per-event formatting and hilog traffic during page loads.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Open an article from the home list (content-heavy page).",
+    "Start hitrace capture (categories: ace, app, sched, hdf) before the tap.",
+    "Wait for the page to finish loading; repeat for 5 articles.",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "log_calls_per_pageload",
+    "definition": "Count of hilog invocations from the app during page load (progress-event logs), and UI-thread CPU from tap to page-end.",
+    "comparison": "unfixed logs on every progress event (dozens per page); fixed logs <= 5 per page. unfixed page-load UI CPU > fixed."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 30 ace app sched -o /data/local/tmp/wan_progresslog.chtrace",
+    "window_ms": 30000
+  }
+}

@@ -1,0 +1,15 @@
+diff --git a/entry/src/main/ets/data/DatabaseManager.ets b/entry/src/main/ets/data/DatabaseManager.ets
+index ac6d8d1..6104b46 100644
+--- a/entry/src/main/ets/data/DatabaseManager.ets
++++ b/entry/src/main/ets/data/DatabaseManager.ets
+@@ -331,7 +331,9 @@ export class DatabaseManager {
+       notify: article.notify ? 1 : 0
+     };
+     try {
+-      const result = await this.store.insert('articles', values);
++      // ON CONFLICT IGNORE：重复文章由 SQLite 直接忽略，不再为每个已存在条目走一次约束冲突异常
++      const result: number = await this.store.insert('articles', values,
++        relationalStore.ConflictResolution.ON_CONFLICT_IGNORE);
+       return result;
+     } catch {
+       // Duplicate entry, ignore

@@ -1,0 +1,38 @@
+{
+  "id": "cloudmusic_songcard_artists_concat",
+  "host_app": {
+    "name": "CloudMusic-HarmonyOSNext (仿网易云音乐)",
+    "repository": "https://github.com/Chenlvin/CloudMusic-HarmonyOSNext",
+    "bundle_name": "cc.chenlvin.cloudmusic",
+    "local_path": "hosts/cloudmusic",
+    "base_branch": "ohmbase",
+    "base_commit": "f8fd90d"
+  },
+  "android_source_case": "fdroid_method_e5d25ae8d0fa",
+  "android_mechanism": "String assembled by repeated concatenation; fix uses a builder/join",
+  "category": "cpu",
+  "bug_description": "getArtists builds the artist name line with artistStr = artistStr + artist.name + ', ' inside a loop and then strips the trailing separator. It runs in SongCard.aboutToAppear for every visible song row (lists, search results, playlists), allocating an intermediate string per artist per row on the render path.",
+  "perf_scenarios": ["列表滑动", "组件创建"],
+  "unfixed_commit": "153f8c7",
+  "fixed_commit": "ff15a99",
+  "fix_summary": "Names are collected into an array and joined once.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Open a large playlist (hundreds of songs) and scroll it continuously for 30 seconds.",
+    "Start hitrace capture (categories: ace, app, sched) before scrolling.",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "row_appear_cpu_overhead",
+    "definition": "CPU time in SongCard aboutToAppear per row appearance from JS sampling stacks (getArtists frames), aggregated over the scroll.",
+    "comparison": "unfixed shows repeated string-concat allocations in getArtists for every row build; fixed shows a single join per row. Aggregate scroll CPU lower in fixed; effect scales with rows rendered."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 35 ace app sched -o /data/local/tmp/cm_artists.chtrace",
+    "window_ms": 35000
+  }
+}

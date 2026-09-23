@@ -1,0 +1,20 @@
+diff --git a/entry/src/main/ets/common/functions/common/convert.ets b/entry/src/main/ets/common/functions/common/convert.ets
+index 8070680..c4b357e 100644
+--- a/entry/src/main/ets/common/functions/common/convert.ets
++++ b/entry/src/main/ets/common/functions/common/convert.ets
+@@ -84,11 +84,12 @@ export async function fetchSongInfo(fileName: string): Promise<Song> {
+  * @returns
+  */
+ export function getArtists(artists:Artist[]): string {
+-  let artistStr:string = ''
++  // 收集到数组后一次 join，避免循环中反复拼接字符串产生大量中间对象
++  const names: string[] = []
+   for(let artist of artists) {
+-    artistStr = artistStr + artist.name + ', '
++    names.push(artist.name)
+   }
+-  return artistStr.slice(0,-2)
++  return names.join(', ')
+ }
+ 
+ /**

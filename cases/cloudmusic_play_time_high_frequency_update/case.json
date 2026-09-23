@@ -1,0 +1,39 @@
+{
+  "id": "cloudmusic_play_time_high_frequency_update",
+  "host_app": {
+    "name": "CloudMusic-HarmonyOSNext (仿网易云音乐)",
+    "repository": "https://github.com/Chenlvin/CloudMusic-HarmonyOSNext",
+    "bundle_name": "cc.chenlvin.cloudmusic",
+    "local_path": "hosts/cloudmusic",
+    "base_branch": "ohmbase",
+    "base_commit": "f8fd90d"
+  },
+  "android_source_case": "fdroid_method_04298f8886b2",
+  "android_mechanism": "Progress broadcast emitted on every update; fix emits only when the value actually changes",
+  "category": "cpu",
+  "bug_description": "AVPlayerUtils' timeUpdate callback writes the millisecond-precision playback position into the global PLAY_TIME AppStorage state on every callback (about 10 times per second). The full player page binds PLAY_TIME via @StorageProp, so the heavy player view (cover art, controls, lyrics entry) re-renders at callback frequency even though the displayed progress only changes once per second, wasting UI-thread CPU during playback and draining battery.",
+  "perf_scenarios": ["动画", "状态更新"],
+  "unfixed_commit": "2aa4715",
+  "fixed_commit": "d755085",
+  "fix_summary": "The global state is written only when the whole-second part of the position changes (seek still updates immediately).",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Start playing any song and open the full player page; keep the screen on.",
+    "Start hitrace capture (categories: ace, app, sched, graphic).",
+    "Let the song play untouched for 60 seconds.",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "player_page_rerenders_per_minute",
+    "definition": "Count of player-page state-update/render passes attributable to PLAY_TIME changes during 60s of idle playback (ace trace component update events or JS state-set calls), plus UI-thread CPU time.",
+    "comparison": "unfixed ~600 state writes/minute (10/s); fixed ~60/minute (1/s). unfixed UI CPU time > fixed by a clearly measurable margin during playback."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 70 ace app sched graphic -o /data/local/tmp/cm_playtime.chtrace",
+    "window_ms": 70000
+  }
+}
