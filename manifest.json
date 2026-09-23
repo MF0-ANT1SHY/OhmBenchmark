@@ -1,0 +1,433 @@
+{
+  "dataset": "OhmBenchmark",
+  "platform": "OpenHarmony / HarmonyOS NEXT (ArkTS/ArkUI)",
+  "case_count": 30,
+  "host_count": 9,
+  "cases": [
+    {
+      "id": "browser_eager_history_load",
+      "host": "browser (小狐狸浏览器)",
+      "bundle_name": "com.example.nanvision",
+      "category": "latency",
+      "android_source_case": "lightning_history_materialization",
+      "scenarios": [
+        "页面启动",
+        "数据库读取"
+      ],
+      "unfixed_commit": "c42e4b3",
+      "fixed_commit": "e3c8aa9",
+      "patch": "cases/browser_eager_history_load/fix.patch"
+    },
+    {
+      "id": "browser_history_delete_no_transaction",
+      "host": "browser (小狐狸浏览器)",
+      "bundle_name": "com.example.nanvision",
+      "category": "latency",
+      "android_source_case": "portauthority_oui_import_transactions",
+      "scenarios": [
+        "数据库读取",
+        "状态更新"
+      ],
+      "unfixed_commit": "28a458b",
+      "fixed_commit": "52bc232",
+      "patch": "cases/browser_history_delete_no_transaction/fix.patch"
+    },
+    {
+      "id": "browser_history_list_foreach",
+      "host": "browser (小狐狸浏览器)",
+      "bundle_name": "com.example.nanvision",
+      "category": "latency",
+      "android_source_case": "listmyapps_view_recycling",
+      "scenarios": [
+        "列表滑动",
+        "组件创建",
+        "页面切换"
+      ],
+      "unfixed_commit": "52bc232",
+      "fixed_commit": "f9425c4",
+      "patch": "cases/browser_history_list_foreach/fix.patch"
+    },
+    {
+      "id": "browser_insert_date_lookup_cache",
+      "host": "browser (小狐狸浏览器)",
+      "bundle_name": "com.example.nanvision",
+      "category": "latency",
+      "android_source_case": "fdroid_category_id_cache",
+      "scenarios": [
+        "状态更新",
+        "数据库读取"
+      ],
+      "unfixed_commit": "e3c8aa9",
+      "fixed_commit": "9138921",
+      "patch": "cases/browser_insert_date_lookup_cache/fix.patch"
+    },
+    {
+      "id": "cloudmusic_indexof_in_render",
+      "host": "CloudMusic-HarmonyOSNext (仿网易云音乐)",
+      "bundle_name": "cc.chenlvin.cloudmusic",
+      "category": "cpu",
+      "android_source_case": "fdroid_category_id_cache",
+      "scenarios": [
+        "列表滑动",
+        "网络结果渲染"
+      ],
+      "unfixed_commit": "f8fd90d",
+      "fixed_commit": "a967ef1",
+      "patch": "cases/cloudmusic_indexof_in_render/fix.patch"
+    },
+    {
+      "id": "cloudmusic_local_song_memory_filter",
+      "host": "CloudMusic-HarmonyOSNext (仿网易云音乐)",
+      "bundle_name": "cc.chenlvin.cloudmusic",
+      "category": "latency",
+      "android_source_case": "voipms_sql_message_filter",
+      "scenarios": [
+        "数据库读取",
+        "状态更新"
+      ],
+      "unfixed_commit": "a967ef1",
+      "fixed_commit": "2aa4715",
+      "patch": "cases/cloudmusic_local_song_memory_filter/fix.patch"
+    },
+    {
+      "id": "cloudmusic_play_time_high_frequency_update",
+      "host": "CloudMusic-HarmonyOSNext (仿网易云音乐)",
+      "bundle_name": "cc.chenlvin.cloudmusic",
+      "category": "cpu",
+      "android_source_case": "fdroid_method_04298f8886b2",
+      "scenarios": [
+        "动画",
+        "状态更新"
+      ],
+      "unfixed_commit": "2aa4715",
+      "fixed_commit": "d755085",
+      "patch": "cases/cloudmusic_play_time_high_frequency_update/fix.patch"
+    },
+    {
+      "id": "cloudmusic_search_result_foreach",
+      "host": "CloudMusic-HarmonyOSNext (仿网易云音乐)",
+      "bundle_name": "cc.chenlvin.cloudmusic",
+      "category": "latency",
+      "android_source_case": "listmyapps_view_recycling",
+      "scenarios": [
+        "列表滑动",
+        "网络结果渲染",
+        "组件创建"
+      ],
+      "unfixed_commit": "d755085",
+      "fixed_commit": "153f8c7",
+      "patch": "cases/cloudmusic_search_result_foreach/fix.patch"
+    },
+    {
+      "id": "cloudmusic_songcard_artists_concat",
+      "host": "CloudMusic-HarmonyOSNext (仿网易云音乐)",
+      "bundle_name": "cc.chenlvin.cloudmusic",
+      "category": "cpu",
+      "android_source_case": "fdroid_method_e5d25ae8d0fa",
+      "scenarios": [
+        "列表滑动",
+        "组件创建"
+      ],
+      "unfixed_commit": "153f8c7",
+      "fixed_commit": "ff15a99",
+      "patch": "cases/cloudmusic_songcard_artists_concat/fix.patch"
+    },
+    {
+      "id": "interviewapp_response_log_full_stringify",
+      "host": "interview-handbook-project (面试通)",
+      "bundle_name": "com.itcast.pass_interview",
+      "category": "cpu",
+      "android_source_case": "fdroid_method_e5d25ae8d0fa",
+      "scenarios": [
+        "网络结果渲染",
+        "页面启动"
+      ],
+      "unfixed_commit": "6f1c96f",
+      "fixed_commit": "4fd3756",
+      "patch": "cases/interviewapp_response_log_full_stringify/fix.patch"
+    },
+    {
+      "id": "interviewapp_search_history_sync_flush",
+      "host": "interview-handbook-project (面试通)",
+      "bundle_name": "com.itcast.pass_interview",
+      "category": "latency",
+      "android_source_case": "calculator_deferred_floating_history_save",
+      "scenarios": [
+        "状态更新",
+        "数据库读取"
+      ],
+      "unfixed_commit": "ad61830",
+      "fixed_commit": "6f1c96f",
+      "patch": "cases/interviewapp_search_history_sync_flush/fix.patch"
+    },
+    {
+      "id": "interviewapp_search_history_unbounded",
+      "host": "interview-handbook-project (面试通)",
+      "bundle_name": "com.itcast.pass_interview",
+      "category": "resource_retention",
+      "android_source_case": "dns66_packet_cache_growth",
+      "scenarios": [
+        "状态更新",
+        "页面切换"
+      ],
+      "unfixed_commit": "4fd3756",
+      "fixed_commit": "9f226e3",
+      "patch": "cases/interviewapp_search_history_unbounded/fix.patch"
+    },
+    {
+      "id": "jingmo_dataset_import_no_transaction",
+      "host": "jingmo (京墨文库)",
+      "bundle_name": "com.hefengbao.jingmo.hw",
+      "category": "latency",
+      "android_source_case": "portauthority_oui_import_transactions",
+      "scenarios": [
+        "数据库读取",
+        "网络结果渲染"
+      ],
+      "unfixed_commit": "caf0823",
+      "fixed_commit": "d52c391",
+      "patch": "cases/jingmo_dataset_import_no_transaction/fix.patch"
+    },
+    {
+      "id": "jingmo_random_poem_orderby_random",
+      "host": "jingmo (京墨文库)",
+      "bundle_name": "com.hefengbao.jingmo.hw",
+      "category": "latency",
+      "android_source_case": "fdroid_suggested_version_index",
+      "scenarios": [
+        "数据库读取",
+        "页面启动"
+      ],
+      "unfixed_commit": "3eb7686",
+      "fixed_commit": "caf0823",
+      "patch": "cases/jingmo_random_poem_orderby_random/fix.patch"
+    },
+    {
+      "id": "jingmo_sync_page_reimport",
+      "host": "jingmo (京墨文库)",
+      "bundle_name": "com.hefengbao.jingmo.hw",
+      "category": "latency",
+      "android_source_case": "gdroid_network_98940b96bdd5",
+      "scenarios": [
+        "数据库读取",
+        "页面切换"
+      ],
+      "unfixed_commit": "d52c391",
+      "fixed_commit": "6d6ad77",
+      "patch": "cases/jingmo_sync_page_reimport/fix.patch"
+    },
+    {
+      "id": "sepweather_font_register_per_page",
+      "host": "SepWeather",
+      "bundle_name": "cn.seayj.sepweather",
+      "category": "latency",
+      "android_source_case": "calculator_themed_font_lookup",
+      "scenarios": [
+        "页面启动",
+        "页面切换"
+      ],
+      "unfixed_commit": "30cc357",
+      "fixed_commit": "e720e21",
+      "patch": "cases/sepweather_font_register_per_page/fix.patch"
+    },
+    {
+      "id": "sheafreader_article_list_foreach",
+      "host": "Sheaf-Reader (束阅 RSS 阅读器)",
+      "bundle_name": "com.sheafreader.hm",
+      "category": "latency",
+      "android_source_case": "alwayson_lazy_layout_previews",
+      "scenarios": [
+        "列表滑动",
+        "组件创建",
+        "页面切换"
+      ],
+      "unfixed_commit": "f62858e",
+      "fixed_commit": "c3e7b11",
+      "patch": "cases/sheafreader_article_list_foreach/fix.patch"
+    },
+    {
+      "id": "sheafreader_extract_tag_tolowercase",
+      "host": "Sheaf-Reader (束阅 RSS 阅读器)",
+      "bundle_name": "com.sheafreader.hm",
+      "category": "cpu",
+      "android_source_case": "fdroid_sax_character_allocation",
+      "scenarios": [
+        "数据库读取",
+        "网络结果渲染"
+      ],
+      "unfixed_commit": "e04ef65",
+      "fixed_commit": "f62858e",
+      "patch": "cases/sheafreader_extract_tag_tolowercase/fix.patch"
+    },
+    {
+      "id": "sheafreader_insert_duplicate_exception",
+      "host": "Sheaf-Reader (束阅 RSS 阅读器)",
+      "bundle_name": "com.sheafreader.hm",
+      "category": "cpu",
+      "android_source_case": "fdroid_skip_unchanged_installed_apps",
+      "scenarios": [
+        "数据库读取",
+        "网络结果渲染"
+      ],
+      "unfixed_commit": "4c9b8dc",
+      "fixed_commit": "ba9a953",
+      "patch": "cases/sheafreader_insert_duplicate_exception/fix.patch"
+    },
+    {
+      "id": "sheafreader_refresh_feeds_sequential",
+      "host": "Sheaf-Reader (束阅 RSS 阅读器)",
+      "bundle_name": "com.sheafreader.hm",
+      "category": "latency",
+      "android_source_case": "portauthority_scan_scheduling",
+      "scenarios": [
+        "网络结果渲染",
+        "页面启动"
+      ],
+      "unfixed_commit": "c3e7b11",
+      "fixed_commit": "cf4f9fb",
+      "patch": "cases/sheafreader_refresh_feeds_sequential/fix.patch"
+    },
+    {
+      "id": "sheafreader_unread_counts_n_plus_1",
+      "host": "Sheaf-Reader (束阅 RSS 阅读器)",
+      "bundle_name": "com.sheafreader.hm",
+      "category": "latency",
+      "android_source_case": "fdroid_suggested_version_queries",
+      "scenarios": [
+        "数据库读取",
+        "状态更新"
+      ],
+      "unfixed_commit": "cf4f9fb",
+      "fixed_commit": "4c9b8dc",
+      "patch": "cases/sheafreader_unread_counts_n_plus_1/fix.patch"
+    },
+    {
+      "id": "wanharmony_history_log_materialization",
+      "host": "WanHarmony (WanAndroid 客户端)",
+      "bundle_name": "org.example.wan.ohos",
+      "category": "cpu",
+      "android_source_case": "lightning_history_materialization",
+      "scenarios": [
+        "网络结果渲染",
+        "页面切换"
+      ],
+      "unfixed_commit": "85a7398",
+      "fixed_commit": "87d63ec",
+      "patch": "cases/wanharmony_history_log_materialization/fix.patch"
+    },
+    {
+      "id": "wanharmony_html_decode_per_render",
+      "host": "WanHarmony (WanAndroid 客户端)",
+      "bundle_name": "org.example.wan.ohos",
+      "category": "latency",
+      "android_source_case": "fdroid_precomputed_preferred_metadata",
+      "scenarios": [
+        "列表滑动",
+        "网络结果渲染"
+      ],
+      "unfixed_commit": "dd45ad2",
+      "fixed_commit": "85a7398",
+      "patch": "cases/wanharmony_html_decode_per_render/fix.patch"
+    },
+    {
+      "id": "wanharmony_persisted_home_list_growth",
+      "host": "WanHarmony (WanAndroid 客户端)",
+      "bundle_name": "org.example.wan.ohos",
+      "category": "resource_retention",
+      "android_source_case": "dns66_packet_cache_growth",
+      "scenarios": [
+        "列表滑动",
+        "状态更新"
+      ],
+      "unfixed_commit": "87d63ec",
+      "fixed_commit": "d1618b9",
+      "patch": "cases/wanharmony_persisted_home_list_growth/fix.patch"
+    },
+    {
+      "id": "wanharmony_web_progress_log_storm",
+      "host": "WanHarmony (WanAndroid 客户端)",
+      "bundle_name": "org.example.wan.ohos",
+      "category": "cpu",
+      "android_source_case": "fdroid_method_04298f8886b2",
+      "scenarios": [
+        "网络结果渲染",
+        "状态更新"
+      ],
+      "unfixed_commit": "d1618b9",
+      "fixed_commit": "cb8a8ea",
+      "patch": "cases/wanharmony_web_progress_log_storm/fix.patch"
+    },
+    {
+      "id": "weatherassistant_http_session_leak",
+      "host": "HarmonyOS-Next-Weather-Assistant",
+      "bundle_name": "com.alatus.futureweather",
+      "category": "resource_retention",
+      "android_source_case": "portauthority_b311d3140b48",
+      "scenarios": [
+        "网络结果渲染",
+        "页面切换"
+      ],
+      "unfixed_commit": "167ca48",
+      "fixed_commit": "20e8e16",
+      "patch": "cases/weatherassistant_http_session_leak/fix.patch"
+    },
+    {
+      "id": "weatherassistant_remote_weather_icons",
+      "host": "HarmonyOS-Next-Weather-Assistant",
+      "bundle_name": "com.alatus.futureweather",
+      "category": "latency",
+      "android_source_case": "gdroid_network_74cae42ede14",
+      "scenarios": [
+        "图片加载",
+        "页面启动",
+        "页面切换"
+      ],
+      "unfixed_commit": "20e8e16",
+      "fixed_commit": "c181b31",
+      "patch": "cases/weatherassistant_remote_weather_icons/fix.patch"
+    },
+    {
+      "id": "ytmusic_current_playing_timeupdate",
+      "host": "Youtube-Music-ArkTS-Clone",
+      "bundle_name": "com.example.myapplication",
+      "category": "cpu",
+      "android_source_case": "atmospherelogger_redundant_paint_state",
+      "scenarios": [
+        "动画",
+        "状态更新"
+      ],
+      "unfixed_commit": "b32b720",
+      "fixed_commit": "b140b41",
+      "patch": "cases/ytmusic_current_playing_timeupdate/fix.patch"
+    },
+    {
+      "id": "ytmusic_history_json_parse_per_row",
+      "host": "Youtube-Music-ArkTS-Clone",
+      "bundle_name": "com.example.myapplication",
+      "category": "cpu",
+      "android_source_case": "fdroid_precomputed_preferred_metadata",
+      "scenarios": [
+        "列表滑动",
+        "状态更新",
+        "组件创建"
+      ],
+      "unfixed_commit": "5bf6142",
+      "fixed_commit": "1e3d086",
+      "patch": "cases/ytmusic_history_json_parse_per_row/fix.patch"
+    },
+    {
+      "id": "ytmusic_search_no_debounce",
+      "host": "Youtube-Music-ArkTS-Clone",
+      "bundle_name": "com.example.myapplication",
+      "category": "cpu",
+      "android_source_case": "portauthority_excessive_ui_callbacks",
+      "scenarios": [
+        "网络结果渲染",
+        "状态更新"
+      ],
+      "unfixed_commit": "1e3d086",
+      "fixed_commit": "b32b720",
+      "patch": "cases/ytmusic_search_no_debounce/fix.patch"
+    }
+  ]
+}

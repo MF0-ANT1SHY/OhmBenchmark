@@ -1,0 +1,5 @@
+{"case":"browser_eager_history_load","label":"unfixed","commit":"c42e4b3","result":"PASS"}
+{"case":"browser_eager_history_load","label":"fixed","commit":"e3c8aa9","result":"PASS"}
+{"case":"browser_history_delete_no_transaction","label":"unfixed","commit":"28a458b","result":"PASS"}
+{"case":"browser_history_delete_no_transaction","label":"fixed","commit":"52bc232","result":"PASS"}
+{"case":"browser_history_list_foreach","label":"unfixed","commit":"52bc232","result":"PASS"}
