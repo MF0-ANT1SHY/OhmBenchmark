@@ -1,0 +1,39 @@
+{
+  "id": "wanharmony_history_log_materialization",
+  "host_app": {
+    "name": "WanHarmony (WanAndroid 客户端)",
+    "repository": "https://github.com/zjmok/WanHarmony",
+    "bundle_name": "org.example.wan.ohos",
+    "local_path": "hosts/wanharmony",
+    "base_branch": "ohmbase",
+    "base_commit": "dd45ad2"
+  },
+  "android_source_case": "lightning_history_materialization",
+  "android_mechanism": "Suggestions materialize all matching history rows instead of a bounded recent subset",
+  "category": "cpu",
+  "bug_description": "WebPage.onTitleReceive serializes the ENTIRE browsing-history list with JSON.stringify(list.map(...)) twice (before and after every recorded page visit), and HistoryPage.aboutToAppear stringifies the whole list again when the history page opens. With a large history this materializes and stringifies hundreds of entries on every page-load title event, blocking the web page load path and the history page transition.",
+  "perf_scenarios": ["网络结果渲染", "页面切换"],
+  "unfixed_commit": "85a7398",
+  "fixed_commit": "87d63ec",
+  "fix_summary": "The debug logs report the list size only, removing full-list map + JSON.stringify on the page-load and page-open paths.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Seed a large history: open ~100 distinct articles from the home list (each open records one history entry).",
+    "Start hitrace capture (categories: ace, app, sched).",
+    "Open 10 more articles sequentially.",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "title_event_cpu_ms",
+    "definition": "CPU time consumed in onTitleReceive handlers per page open (bounded by onTitleReceive to onPageEnd interval in trace), averaged over 10 opens.",
+    "comparison": "unfixed spends O(history_size) in JSON serialization per open (grows with history); fixed is O(1). With 100+ entries unfixed > fixed by >= 30% on the title-event path."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 30 ace app sched -o /data/local/tmp/wan_histlog.chtrace",
+    "window_ms": 30000
+  }
+}
