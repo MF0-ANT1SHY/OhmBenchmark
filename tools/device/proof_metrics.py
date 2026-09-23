@@ -326,6 +326,44 @@ def m_ytmusic(art):
     return {'steady_updates': updates, 'steady_cpu_ms': round(cpu, 1)}
 
 
+def _jingmo_stamps(hlog, pid, marker):
+    out = []
+    for line in analyze._clean(hlog):
+        if marker not in line or f' {pid} ' not in line[:44]:
+            continue
+        m = re.match(r'(\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})', line)
+        if m:
+            out.append((analyze._wall_ms(m.group(1)), line))
+    return out
+
+
+def m_jingmo_import(art):
+    """jingmo_dataset_import_no_transaction / sync_page_reimport: per-row
+    dispatch logs ('index = N', one per unbatched INSERT), dataset refetch
+    logs, and block write volume in the import window."""
+    trace, hlog = art['trace'], art['hilog']
+    pid = resolve_pid(art)
+    if not pid:
+        return {'error': 'no pid'}
+    first_wall, lines = _hilog_pid_lines(hlog, pid)
+    idx = [w for w, l in lines if re.search(r'index = \d+', l)]
+    size = [w for w, l in lines if 'classic poem dataset size:' in l]
+    skip = [l for w, l in lines if 'dataset already imported' in l]
+    t_first = analyze.pid_first_ts(trace, pid)
+    block = None
+    span = None
+    if size and idx and t_first is not None and first_wall is not None:
+        t0 = t_first + (min(size) - first_wall) / 1000.0
+        t1 = t_first + (max(idx) - first_wall) / 1000.0 + 25.0
+        span = round(max(idx) - min(size), 0)
+        block = _block_bytes(trace, t0, t1)
+    return {'row_dispatch_logs': len(idx),
+            'dataset_fetch_logs': len(size),
+            'skip_logs': len(skip),
+            'import_span_ms': span,
+            'block_write_bytes': block}
+
+
 MEASURES = {
     'browser_eager_history_load': m_eager,
     'browser_history_list_foreach': m_list,
@@ -336,6 +374,8 @@ MEASURES = {
     'wanharmony_web_progress_log_storm': m_wan_progress,
     'sepweather_font_register_per_page': m_sepweather,
     'ytmusic_current_playing_timeupdate': m_ytmusic,
+    'jingmo_dataset_import_no_transaction': m_jingmo_import,
+    'jingmo_sync_page_reimport': m_jingmo_import,
 }
 
 
@@ -441,6 +481,28 @@ def judge(case, unfixed, fixed):
         return {'verdict': 'PASS' if ok else 'FAIL',
                 'evidence': {'cpu_per_round_ms': [cu, cf], 'cpu_gap': gap,
                              'read_bytes': [ru, rf]}}
+
+    if case == 'jingmo_dataset_import_no_transaction':
+        iu, ifx = med('row_dispatch_logs', unfixed), med('row_dispatch_logs', fixed)
+        bu, bf = med('block_write_bytes', unfixed), med('block_write_bytes', fixed)
+        spanu, spanf = med('import_span_ms', unfixed), med('import_span_ms', fixed)
+        ratio = (spanu / spanf) if (spanu and spanf) else None
+        ok = (iu and ifx == 0 and spanu and spanf and spanu > spanf * 3) or \
+             (bu and bf and bu > bf * 3)
+        return {'verdict': 'PASS' if ok else 'FAIL',
+                'evidence': {'row_dispatch_logs': [iu, ifx],
+                             'import_span_ms': [spanu, spanf], 'span_ratio': ratio,
+                             'block_write_bytes': [bu, bf]}}
+
+    if case == 'jingmo_sync_page_reimport':
+        iu, ifx = med('row_dispatch_logs', unfixed), med('row_dispatch_logs', fixed)
+        fu, ff = med('dataset_fetch_logs', unfixed), med('dataset_fetch_logs', fixed)
+        sf, st = med('skip_logs', unfixed), med('skip_logs', fixed)
+        ok = (iu and iu >= 1000 and ifx == 0 and (ff or 0) >= 1)
+        return {'verdict': 'PASS' if ok else 'FAIL',
+                'evidence': {'row_dispatch_logs': [iu, ifx],
+                             'dataset_fetch_logs': [fu, ff],
+                             'skip_logs': [sf, st]}}
 
     if case == 'ytmusic_current_playing_timeupdate':
         uu, uf = med('steady_updates', unfixed), med('steady_updates', fixed)
