@@ -103,6 +103,15 @@ def main():
                 status.update(step='prep', ok=False, err=out[-400:])
                 _done(status)
             status['prep'] = 'ok'
+        # host-level prep (e.g. ytmusic dead-domain -> local mock patch: same
+        # environment fix for every case of the host)
+        hprep = os.path.join(HERE, 'prep', f'{host_dir.rsplit("/", 1)[-1]}.sh')
+        if os.path.exists(hprep):
+            rc, out = run(['bash', hprep], host_dir, timeout=120)
+            if rc:
+                status.update(step='host prep', ok=False, err=out[-400:])
+                _done(status)
+            status['host_prep'] = 'ok'
         rc, out = run(['hvigorw', '--mode', 'module', '-p', 'product=default',
                        '-p', 'buildMode=debug', 'assembleHap', '--no-daemon'], host_dir, timeout=1800)
         if rc or 'BUILD SUCCESSFUL' not in out:
