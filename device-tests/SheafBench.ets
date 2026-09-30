@@ -12,7 +12,7 @@ export async function runSheafBench(context: common.UIAbilityContext, name: stri
   const db = DatabaseManager.getInstance();
   await OhmProbe.measure(context, name, async (): Promise<void> => {
     if (name === 'sheafreader_extract_tag_tolowercase') {
-      const body = '<p>HarmonyOS Performance Engineering: Measuring Memory, Database, Rendering and Application Responsiveness.</p>'.repeat(650);
+      const body = '<p>HarmonyOS Performance Engineering. ΑΝΑΛΥΣΗ ΔΕΔΟΜΕΝΩΝ; ПРИЛОЖЕНИЕ И ПРОИЗВОДИТЕЛЬНОСТЬ; İstanbul İŞLEM; 中文应用性能测试。</p>'.repeat(650);
       const items: string[] = [];
       for (let i = 0; i < 300; i++) {
         items.push('<item><title>Engineering Article ' + i + '</title><link>https://example.org/' + i + '</link><description>Article summary</description><pubDate>Wed, 30 Sep 2026 12:00:00 GMT</pubDate><guid>article-' + i + '</guid><author>Engineering Team</author><content:encoded><![CDATA[' + body + ']]></content:encoded></item>');

@@ -62,5 +62,7 @@ for n in range(1,4):
     with (out/'trace.txt').open('rb') as f, gzip.open(out/'trace.txt.gz','wb') as z: z.write(f.read())
     (out/'trace.txt').unlink()
     (out/'hilog.txt').write_text(sh(f'hilog -x -P {pid}'),encoding='utf-8')
+    sh('snapshot_display -f /data/local/tmp/ohm-screen.jpeg')
+    hdc('file','recv','/data/local/tmp/ohm-screen.jpeg',str(out/'ui-after.jpeg'))
     print(json.dumps(result),flush=True)
     time.sleep(2)
