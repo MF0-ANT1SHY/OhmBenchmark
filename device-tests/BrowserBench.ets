@@ -15,12 +15,13 @@ export async function runBrowserBench(context: common.UIAbilityContext, name: st
       await store.executeSql("INSERT INTO date_table(date) VALUES ('" + date + "')");
       await RdbUtils.createHistoryTable(date);
       const values: relationalStore.ValuesBucket[] = [];
-      for (let i = 0; i < 200; i++) {
+      for (let i = 0; i < (name === 'browser_eager_history_load' ? 2000 : 200); i++) {
         values.push({title: 'HarmonyOS performance article ' + i, url: 'https://example.org/article/' + i, timestamp: '12:00:00'});
       }
       await store.batchInsert('history_' + date, values);
     }
   }, async (): Promise<number> => {
+    if (name === 'browser_eager_history_load') return 10000;
     if (name === 'browser_history_delete_no_transaction') {
       await RdbUtils.deleteAll();
       const remaining = await RdbUtils.queryAllDate();

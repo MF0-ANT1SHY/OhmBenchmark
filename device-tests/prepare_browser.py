@@ -17,6 +17,15 @@ s = s.replace('export default class EntryAbility extends UIAbility {', '''export
   }
 ''')
 p.write_text(s,encoding='utf-8')
+if case=='browser_eager_history_load':
+    s="import hiTraceMeter from '@ohos.hiTraceMeter';\n"+s
+    s=s.replace('export default class EntryAbility extends UIAbility {', '''export default class EntryAbility extends UIAbility {
+  onCreate(): void {
+    hiTraceMeter.startTrace('OHMB/browser_eager_history_load', 1);
+    setTimeout(() => { hiTraceMeter.finishTrace('OHMB/browser_eager_history_load', 1); }, 10000);
+  }
+''')
+    p.write_text(s,encoding='utf-8')
 subprocess.run(['git','-C',str(host),'add','entry/src/main/ets'],check=True)
 subprocess.run(['git','-C',str(host),'commit','-m',f'test({case}): add identical on-device measurement entry for {variant}'],check=True)
 out=root/'device-tests/patches'/case

@@ -49,10 +49,10 @@ index 2cbda2f..2b913ac 100644
    }
 diff --git a/products/default/src/main/ets/utils/JingmoBench.ets b/products/default/src/main/ets/utils/JingmoBench.ets
 new file mode 100644
-index 0000000..c41b849
+index 0000000..55459f1
 --- /dev/null
 +++ b/products/default/src/main/ets/utils/JingmoBench.ets
-@@ -0,0 +1,28 @@
+@@ -0,0 +1,30 @@
 +import { common } from '@kit.AbilityKit';
 +import { OhmProbe } from './OhmProbe';
 +import DbUtil from 'utils/src/main/ets/database/DbUtil';
@@ -78,9 +78,11 @@ index 0000000..c41b849
 +      }
 +    }
 +  }, async (): Promise<number> => {
-+    await Promise.all(poems.map((p: ClassicPoem) => dao.createClassicPoem(p))); return poems.length;
++    await Promise.all(poems.map(async (p: ClassicPoem): Promise<void> => { await dao.createClassicPoem(p); })); const store=DbUtil.objectiveRDB; if (!store) return -1; const rows=await store.querySql('SELECT COUNT(*) FROM '+DbTableConst.ClassicPoemTable); rows.goToFirstRow(); const count=rows.getLong(0); rows.close(); return count;
 +  });
 +}
++
++
 diff --git a/products/default/src/main/ets/utils/OhmProbe.ets b/products/default/src/main/ets/utils/OhmProbe.ets
 new file mode 100644
 index 0000000..d37c5ea

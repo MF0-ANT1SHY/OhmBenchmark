@@ -16,8 +16,10 @@ else:
     if variant=='unfixed':
         p=host/'features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets'
         p.write_text(p.read_text(encoding='utf-8').replace('    DbUtil.objectiveRDB?.insert','    return DbUtil.objectiveRDB?.insert'),encoding='utf-8')
-        action='await Promise.all(poems.map((p: ClassicPoem) => dao.createClassicPoem(p))); return poems.length;'
+        action='await Promise.all(poems.map(async (p: ClassicPoem): Promise<void> => { await dao.createClassicPoem(p); })); return poems.length;'
     else: action='await dao.createClassicPoems(poems); return poems.length;'
+if case!='jingmo_random_poem_orderby_random':
+    action=action.replace('return poems.length;', "const store=DbUtil.objectiveRDB; if (!store) return -1; const rows=await store.querySql('SELECT COUNT(*) FROM '+DbTableConst.ClassicPoemTable); rows.goToFirstRow(); const count=rows.getLong(0); rows.close(); return count;")
 (ets/'utils/JingmoBench.ets').write_text(s.replace('// MEASURE_ACTION',action),encoding='utf-8')
 p=ets/'entryability/EntryAbility.ets'; s=p.read_text(encoding='utf-8')
 s="import { runJingmoBench } from '../utils/JingmoBench';\n"+s

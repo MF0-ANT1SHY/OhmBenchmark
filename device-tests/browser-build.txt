@@ -9,7 +9,7 @@
 > hvigor [32mFinished :entry:default@ProcessIntegratedHsp... after 1 ms [39m
 > hvigor [32mFinished :entry:default@BuildNativeWithCmake... after 1 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@MakePackInfo...  [39m
-> hvigor [32mFinished :entry:default@SyscapTransform... after 20 ms [39m
+> hvigor [32mFinished :entry:default@SyscapTransform... after 21 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@ProcessProfile...  [39m
 > hvigor [32mUP-TO-DATE :entry:default@ProcessRouterMap...  [39m
 > hvigor [32mFinished :entry:default@ProcessStartupConfig... after 2 ms [39m
@@ -75,19 +75,19 @@
 [33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/browser/entry/src/main/ets/pages/Index.ets:13:19
  'PersistProp' has been deprecated.
 [39m[39m
-[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/browser/entry/src/main/ets/pages/Index.ets:67:26
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/browser/entry/src/main/ets/pages/Index.ets:71:26
  'getContext' has been deprecated.
 [39m[39m
-[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/browser/entry/src/main/ets/pages/Index.ets:203:42
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/browser/entry/src/main/ets/pages/Index.ets:207:42
  To use this API, you need to apply for the permissions: ohos.permission.CONNECT_IME_ABILITY
 [39m[39m
 [39m
-> hvigor [32mFinished :entry:default@CompileArkTS... after 7 s 974 ms [39m
+> hvigor [32mFinished :entry:default@CompileArkTS... after 7 s 981 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@GeneratePkgModuleJson...  [39m
-> hvigor [32mFinished :entry:default@PackageHap... after 505 ms [39m
+> hvigor [32mFinished :entry:default@PackageHap... after 509 ms [39m
 > hvigor WARN: Will skip sign 'hos_hap'. No signingConfigs profile is configured in current project.
              If needed, configure the signingConfigs in D:\OhmBenchmark-main\hosts\browser\build-profile.json5.
 > hvigor [32mFinished :entry:default@SignHap... after 3 ms [39m
 > hvigor [32mFinished :entry:default@CollectDebugSymbol... after 2 ms [39m
 > hvigor [32mFinished :entry:assembleHap... after 1 ms [39m
-> hvigor [32mBUILD SUCCESSFUL in 18 s 663 ms [39m
+> hvigor [32mBUILD SUCCESSFUL in 18 s 205 ms [39m
