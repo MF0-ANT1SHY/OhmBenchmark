@@ -29,10 +29,10 @@ index 5cd10ed..ea49cf6 100644
        if (err) {
 diff --git a/entry/src/main/ets/utils/BrowserBench.ets b/entry/src/main/ets/utils/BrowserBench.ets
 new file mode 100644
-index 0000000..984a46b
+index 0000000..0d3a23c
 --- /dev/null
 +++ b/entry/src/main/ets/utils/BrowserBench.ets
-@@ -0,0 +1,36 @@
+@@ -0,0 +1,38 @@
 +import { common } from '@kit.AbilityKit';
 +import { relationalStore } from '@kit.ArkData';
 +import RdbUtils from './RdbUtils';
@@ -45,18 +45,20 @@ index 0000000..984a46b
 +    const dates = await RdbUtils.queryAllDate();
 +    for (const date of dates) await store.executeSql('DROP TABLE IF EXISTS history_' + date);
 +    await store.executeSql('DELETE FROM date_table');
-+    for (let d = 1; d <= 5; d++) {
-+      const date = '202609' + (10 + d).toString();
++    for (let d = 1; d <= (name === 'browser_eager_history_load' ? 100 : 5); d++) {
++      const day = new Date(2026, 5, d);
++      const date = name === 'browser_eager_history_load' ? day.getFullYear() + '_' + (day.getMonth()+1).toString().padStart(2,'0') + '_' + day.getDate().toString().padStart(2,'0') : (name === 'browser_history_list_foreach' ? '2026_09_' : '202609') + (10 + d).toString();
 +      await store.executeSql("INSERT INTO date_table(date) VALUES ('" + date + "')");
 +      await RdbUtils.createHistoryTable(date);
 +      const values: relationalStore.ValuesBucket[] = [];
-+      for (let i = 0; i < (name === 'browser_eager_history_load' ? 2000 : 200); i++) {
++      for (let i = 0; i < (name === 'browser_eager_history_load' ? 500 : 200); i++) {
 +        values.push({title: 'HarmonyOS performance article ' + i, url: 'https://example.org/article/' + i, timestamp: '12:00:00'});
 +      }
 +      await store.batchInsert('history_' + date, values);
 +    }
 +  }, async (): Promise<number> => {
-+    if (name === 'browser_eager_history_load') return 10000;
++    if (name === 'browser_eager_history_load') return 50000;
++    if (name === 'browser_history_list_foreach') return 1000;
 +    if (name === 'browser_history_delete_no_transaction') {
 +      await RdbUtils.deleteAll();
 +      const remaining = await RdbUtils.queryAllDate();

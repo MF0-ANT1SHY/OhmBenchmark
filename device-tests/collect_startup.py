@@ -6,7 +6,7 @@ startup=case=='browser_eager_history_load'
 base=f'/data/app/el2/100/base/{bundle}/haps/entry/files'
 def sh(cmd):return subprocess.check_output([hdc,'shell',cmd],timeout=90).decode('utf-8',errors='replace')
 def recv(remote,local):subprocess.run([hdc,'file','recv',remote,str(local)],check=True,stdout=subprocess.DEVNULL)
-# Populate the same 10,000 history records once, outside all captured launches.
+# Populate the same history records once, outside all captured launches.
 sh(f'aa force-stop {bundle}');sh(f'aa start -a EntryAbility -b {bundle}');time.sleep(12)
 sh(f'rm -f {base}/ohm-status.json {base}/ohm-go')
 sh(f'aa start -a EntryAbility -b {bundle} --ps bench {case}')
@@ -17,6 +17,7 @@ for i in range(240):
     time.sleep(.5)
 else:raise TimeoutError('seed')
 sh(f'touch {base}/ohm-go');time.sleep(1)
+seed_status=json.loads(sh(f'cat {base}/ohm-status.json'))
 for n in range(1,4):
     out=root/'measurements'/case/variant/f'run{n}';out.mkdir(parents=True,exist_ok=True)
     sh(f'aa force-stop {bundle}');time.sleep(2)
@@ -48,5 +49,5 @@ for n in range(1,4):
     sh('uitest dumpLayout -p /data/local/tmp/ohm-layout.json');recv('/data/local/tmp/ohm-layout.json',out/'ui-after.json')
     (out/'hilog.txt').write_text(sh(f'hilog -x -P {pid}'),encoding='utf-8')
     (out/'capture.txt').write_text('\n'.join(capture),encoding='utf-8')
-    result=dict(state='done',case=case,variant=variant,run=n,pid=pid,bundle=bundle,elapsed_ms=10000,result=10000 if startup else 1000,metric='CPU in 10-second observation window, not completion latency')
+    result=dict(state='done',case=case,variant=variant,run=n,pid=pid,bundle=bundle,elapsed_ms=10000,result=seed_status['result'],metric='CPU in 10-second observation window, not completion latency')
     (out/'result.json').write_text(json.dumps(result,indent=2),encoding='utf-8');print(json.dumps(result),flush=True)
