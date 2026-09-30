@@ -1,0 +1,116 @@
+diff --git a/entry/src/main/ets/entryability/EntryAbility.ets b/entry/src/main/ets/entryability/EntryAbility.ets
+index 37f0abf..685f4a5 100644
+--- a/entry/src/main/ets/entryability/EntryAbility.ets
++++ b/entry/src/main/ets/entryability/EntryAbility.ets
+@@ -1,3 +1,4 @@
++import { runSheafBench } from '../utils/SheafBench';
+ import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
+ import { window } from '@kit.ArkUI';
+ import { hilog } from '@kit.PerformanceAnalysisKit';
+@@ -16,6 +17,9 @@ export default class EntryAbility extends UIAbility {
+    * than in `onCreate`; both paths park the article id for the page.
+    */
+   onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): void {
++    if (want.parameters && want.parameters['bench']) {
++      runSheafBench(this.context, want.parameters['bench'].toString());
++    }
+     hilog.info(0x0000, 'EntryAbility', 'Ability onNewWant');
+     EntryAbility.applyDeepLink(want);
+   }
+diff --git a/entry/src/main/ets/utils/OhmProbe.ets b/entry/src/main/ets/utils/OhmProbe.ets
+new file mode 100644
+index 0000000..d37c5ea
+--- /dev/null
++++ b/entry/src/main/ets/utils/OhmProbe.ets
+@@ -0,0 +1,36 @@
++import fs from '@ohos.file.fs';
++import systemDateTime from '@ohos.systemDateTime';
++import hiTraceMeter from '@ohos.hiTraceMeter';
++import { common } from '@kit.AbilityKit';
++
++export class OhmProbe {
++  static write(context: common.UIAbilityContext, value: string): void {
++    const file = fs.openSync(context.filesDir + '/ohm-status.json', fs.OpenMode.CREATE | fs.OpenMode.WRITE_ONLY | fs.OpenMode.TRUNC);
++    fs.writeSync(file.fd, value);
++    fs.closeSync(file);
++  }
++
++  static async measure(context: common.UIAbilityContext, name: string,
++    prepare: () => Promise<void>, action: () => Promise<number>): Promise<void> {
++    try {
++      OhmProbe.write(context, '{"state":"preparing"}');
++      await prepare();
++      const go = context.filesDir + '/ohm-go';
++      if (fs.accessSync(go)) fs.unlinkSync(go);
++      OhmProbe.write(context, '{"state":"ready"}');
++      await new Promise<void>((resolve) => {
++        const timer = setInterval(() => {
++          if (fs.accessSync(go)) { clearInterval(timer); resolve(); }
++        }, 100);
++      });
++      hiTraceMeter.startTrace('OHMB/' + name, 1);
++      const start = systemDateTime.getUptime(systemDateTime.TimeType.STARTUP, true);
++      const result = await action();
++      const elapsed = (systemDateTime.getUptime(systemDateTime.TimeType.STARTUP, true) - start) / 1000000;
++      hiTraceMeter.finishTrace('OHMB/' + name, 1);
++      OhmProbe.write(context, '{"state":"done","case":"' + name + '","elapsed_ms":' + elapsed + ',"result":' + result + '}');
++    } catch (e) {
++      OhmProbe.write(context, '{"state":"error","message":' + JSON.stringify(String(e)) + '}');
++    }
++  }
++}
+diff --git a/entry/src/main/ets/utils/SheafBench.ets b/entry/src/main/ets/utils/SheafBench.ets
+new file mode 100644
+index 0000000..bcccc24
+--- /dev/null
++++ b/entry/src/main/ets/utils/SheafBench.ets
+@@ -0,0 +1,49 @@
++import { common } from '@kit.AbilityKit';
++import { relationalStore } from '@kit.ArkData';
++import { OhmProbe } from './OhmProbe';
++import { DatabaseManager } from '../data/DatabaseManager';
++import { FeedService } from '../services/FeedService';
++import { FeedParser } from './FeedParser';
++import { Article } from '../model/Models';
++
++export async function runSheafBench(context: common.UIAbilityContext, name: string): Promise<void> {
++  let xml: string = '';
++  const articles: Article[] = [];
++  const db = DatabaseManager.getInstance();
++  await OhmProbe.measure(context, name, async (): Promise<void> => {
++    if (name === 'sheafreader_extract_tag_tolowercase') {
++      const body = '<p>HarmonyOS Performance Engineering: Measuring Memory, Database, Rendering and Application Responsiveness.</p>'.repeat(650);
++      const items: string[] = [];
++      for (let i = 0; i < 300; i++) {
++        items.push('<item><title>Engineering Article ' + i + '</title><link>https://example.org/' + i + '</link><description>Article summary</description><pubDate>Wed, 30 Sep 2026 12:00:00 GMT</pubDate><guid>article-' + i + '</guid><author>Engineering Team</author><content:encoded><![CDATA[' + body + ']]></content:encoded></item>');
++      }
++      xml = '<rss version="2.0"><channel><title>Engineering Feed</title><link>https://example.org</link><description>Long form engineering articles</description>' + items.join('') + '</channel></rss>';
++      return;
++    }
++    const store = await relationalStore.getRdbStore(context, {name:'sheaf_reader.db',securityLevel:relationalStore.SecurityLevel.S1});
++    await store.executeSql('DELETE FROM articles');
++    await store.executeSql('DELETE FROM feeds');
++    await store.executeSql("WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x+1 FROM n WHERE x<200) INSERT INTO feeds(id,url,title) SELECT x, 'https://example.org/feed/'||x, 'Feed '||x FROM n");
++    await store.executeSql("WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x+1 FROM n WHERE x<10000) INSERT INTO articles(feed_id,title,guid,content) SELECT ((x-1)%200)+1, 'Article '||x, 'article-'||x, 'Engineering article content' FROM n");
++    if (name === 'sheafreader_insert_duplicate_exception') {
++      for (let i=1;i<=10000;i++) {
++        const a = new Article(); a.feedId=((i-1)%200)+1;
++        a.guid='article-'+i; a.title='Article '+i; a.content='Engineering article content';
++        articles.push(a);
++      }
++    }
++  }, async (): Promise<number> => {
++    if (name === 'sheafreader_extract_tag_tolowercase') {
++      const parsed = FeedParser.parse(xml, 'https://example.org/feed');
++      return parsed === null ? -1 : parsed.articles.length;
++    }
++    if (name === 'sheafreader_unread_counts_n_plus_1') {
++      const feeds = await FeedService.getInstance().getFeedsWithCounts();
++      let sum = 0; for (const f of feeds) sum += f.unreadCount;
++      return sum;
++    }
++    let inserted = 0;
++    for (const a of articles) { if (await db.insertArticle(a) > 0) inserted++; }
++    return inserted;
++  });
++}
