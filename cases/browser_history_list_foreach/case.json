@@ -1,0 +1,39 @@
+{
+  "id": "browser_history_list_foreach",
+  "host_app": {
+    "name": "browser (小狐狸浏览器)",
+    "repository": "https://github.com/langwudong/browser",
+    "bundle_name": "com.example.nanvision",
+    "local_path": "hosts/browser",
+    "base_branch": "ohmbase",
+    "base_commit": "c42e4b3"
+  },
+  "android_source_case": "listmyapps_view_recycling",
+  "android_mechanism": "List rows are re-created during scrolling instead of being recycled",
+  "category": "latency",
+  "bug_description": "The browsing-history dialog renders each day's entries with a plain ForEach inside ListItemGroup, so when the dialog opens, HistoryItem components for every recorded entry (including off-screen ones) are created eagerly, and scrolling re-creates components instead of recycling them. Opening the history dialog and scrolling it is slow once history grows.",
+  "perf_scenarios": ["列表滑动", "组件创建", "页面切换"],
+  "unfixed_commit": "52bc232",
+  "fixed_commit": "f9425c4",
+  "fix_summary": "History entries are rendered with LazyForEach backed by a per-group IDataSource implementation, so row components are created on demand as they enter the viewport and recycled while scrolling.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Seed the app with a large history (browse ~100 pages in one day).",
+    "Start hitrace capture (categories: ace, app, sched).",
+    "Open the pages/history dialog (bottom bar history button) and scroll the list from top to bottom at constant speed.",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "component_build_count_and_first_frame_ms",
+    "definition": "(a) Time from dialog-open event to first rendered history frame; (b) count of HistoryItem component build/attach operations in the ace trace during the whole scroll; (c) dropped-frame count while scrolling.",
+    "comparison": "unfixed builds all N components at open (N = seeded entries) vs fixed builds only visible rows (~10-15); unfixed_first_frame_ms > fixed_first_frame_ms; unfixed shows more jank frames during scroll."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 20 ace app sched graphic -o /data/local/tmp/browser_histlist.chtrace",
+    "window_ms": 20000
+  }
+}

@@ -1,0 +1,61 @@
+diff --git a/entry/src/main/ets/pages/SearchPage.ets b/entry/src/main/ets/pages/SearchPage.ets
+index 9ca72af..e774593 100644
+--- a/entry/src/main/ets/pages/SearchPage.ets
++++ b/entry/src/main/ets/pages/SearchPage.ets
+@@ -6,6 +6,20 @@ import { SongProps } from '../models/song';
+ @Component
+ export struct SearchPage {
+   @State result: SongProps[] | null = null
++  private searchDebounceTimer: number = -1
++
++  private doSearch(keyword: string) {
++    axios.get('https://yt.c12k.dev/search', {
++      params: {
++        keyword: keyword
++      }
++    })
++      .then((res: AxiosResponse) => {
++        if (res.status == 200) {
++          this.result = res.data
++        }
++      })
++  }
+ 
+   build() {
+     Column() {
+@@ -25,28 +39,15 @@ export struct SearchPage {
+           .backgroundColor('#ff3c3c3c')
+           .layoutWeight(1)
+           .onChange((keyword: string) => {
+-            axios.get('https://yt.c12k.dev/search', {
+-              params: {
+-                keyword: keyword
+-              }
+-            })
+-              .then((res: AxiosResponse) => {
+-                if (res.status == 200) {
+-                  this.result = res.data
+-                }
+-              })
++            // 输入防抖：停止输入 300ms 后才发起搜索请求，避免每个按键都触发一次网络请求
++            clearTimeout(this.searchDebounceTimer)
++            this.searchDebounceTimer = setTimeout(() => {
++              this.doSearch(keyword)
++            }, 300)
+           })
+           .onSubmit((_enterKey: EnterKeyType, event: SubmitEvent) => {
+-            axios.get('https://yt.c12k.dev/search', {
+-              params: {
+-                keyword: event.text
+-              }
+-            })
+-              .then((res: AxiosResponse) => {
+-                if (res.status == 200) {
+-                  this.result = res.data
+-                }
+-              })
++            clearTimeout(this.searchDebounceTimer)
++            this.doSearch(event.text)
+           })
+ 
+         Button() {

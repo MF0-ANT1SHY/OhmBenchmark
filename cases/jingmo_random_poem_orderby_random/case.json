@@ -1,0 +1,40 @@
+{
+  "id": "jingmo_random_poem_orderby_random",
+  "host_app": {
+    "name": "jingmo (京墨文库)",
+    "repository": "https://github.com/hefengbao/jingmo-for-HarmonyOS",
+    "bundle_name": "com.hefengbao.jingmo.hw",
+    "local_path": "hosts/jingmo",
+    "base_branch": "ohmbase",
+    "base_commit": "3eb7686",
+    "upstream_base_commit": "ddca186"
+  },
+  "android_source_case": "fdroid_suggested_version_index",
+  "android_mechanism": "Suggested-version query does nested/unindexed scans; fix uses a better index/access path",
+  "category": "latency",
+  "bug_description": "Reading a random classic poem executes 'select * from classicalliterature_classicpoem where id = (select p.id from classicalliterature_classicpoem p order by random() limit 1)', which materializes and sorts every row of the poem table (thousands of rows with long text fields) on each refresh. The classic-poem page runs this query on page entry and on every toolbar refresh tap, so its latency grows linearly with dataset size.",
+  "perf_scenarios": ["数据库读取", "页面启动"],
+  "unfixed_commit": "3eb7686",
+  "fixed_commit": "caf0823",
+  "fix_summary": "The random pick uses a random id range scan on the primary key (where id >= abs(random()) % max(id) ... order by id limit 1), an O(log n) indexed lookup instead of a full-table sort.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Install the app, import the classic-poem dataset via settings (数据同步) so the table holds thousands of rows.",
+    "Start hitrace capture (categories: app, sched, disk, database).",
+    "Navigate to the classic-poem page (随机一首) and tap the refresh toolbar action 10 times.",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "random_read_query_ms",
+    "definition": "Wall time of each random-poem SELECT execution (from query start to resultSet ready, visible in database/disk trace activity and hilog), averaged over 10 refreshes.",
+    "comparison": "unfixed query time grows with row count (full scan + sort of N rows); fixed is near-constant. With >= 5000 rows, unfixed_avg_ms > fixed_avg_ms by >= 5x."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 20 app sched disk database -o /data/local/tmp/jingmo_random.chtrace",
+    "window_ms": 20000
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "cloudmusic_search_result_foreach",
+  "host_app": {
+    "name": "CloudMusic-HarmonyOSNext (仿网易云音乐)",
+    "repository": "https://github.com/Chenlvin/CloudMusic-HarmonyOSNext",
+    "bundle_name": "cc.chenlvin.cloudmusic",
+    "local_path": "hosts/cloudmusic",
+    "base_branch": "ohmbase",
+    "base_commit": "f8fd90d"
+  },
+  "android_source_case": "listmyapps_view_recycling",
+  "android_mechanism": "List rows eagerly created / not recycled while scrolling",
+  "category": "latency",
+  "bug_description": "The song search-result tab renders results with a plain ForEach inside List. Loading several result pages (30 per page) eagerly creates SongCard components for every accumulated result — including off-screen ones — and rebuilds them as the array grows, slowing search-result display and scrolling.",
+  "perf_scenarios": ["列表滑动", "网络结果渲染", "组件创建"],
+  "unfixed_commit": "d755085",
+  "fixed_commit": "153f8c7",
+  "fix_summary": "Results render through LazyForEach backed by a LazyData data source (already used elsewhere in the app), so rows are created on demand and recycled.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Search a broad keyword (e.g. a popular artist) yielding many pages of results.",
+    "Start hitrace capture (categories: ace, app, sched).",
+    "Load 5+ result pages via the load-more button, then scroll the list up and down.",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "search_list_render_cpu_and_jank",
+    "definition": "(a) UI-thread CPU from results display to end of scroll; (b) count of SongCard component builds; (c) dropped frames while scrolling.",
+    "comparison": "unfixed builds all accumulated rows (150+ after 5 pages) at once; fixed builds only visible rows. unfixed first-paint after load-more and scroll CPU measurably higher; more jank frames."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 30 ace app sched graphic -o /data/local/tmp/cm_searchlist.chtrace",
+    "window_ms": 30000
+  }
+}

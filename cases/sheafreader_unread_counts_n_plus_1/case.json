@@ -1,0 +1,39 @@
+{
+  "id": "sheafreader_unread_counts_n_plus_1",
+  "host_app": {
+    "name": "Sheaf-Reader (束阅 RSS 阅读器)",
+    "repository": "https://github.com/simon2137/Sheaf-Reader",
+    "bundle_name": "com.sheafreader.hm",
+    "local_path": "hosts/sheafreader",
+    "base_branch": "ohmbase",
+    "base_commit": "e04ef65"
+  },
+  "android_source_case": "fdroid_suggested_version_queries",
+  "android_mechanism": "Per-row subqueries replacing a single aggregated query; fix computes all values in one query",
+  "category": "latency",
+  "bug_description": "getFeedsWithCounts issues one SELECT COUNT(*) query per feed (N+1 pattern) every time the sidebar feed list refreshes — which happens after every article open/mark-read/refresh. With many subscriptions the sidebar update performs dozens of sequential RDB round-trips on the UI path.",
+  "perf_scenarios": ["数据库读取", "状态更新"],
+  "unfixed_commit": "cf4f9fb",
+  "fixed_commit": "4c9b8dc",
+  "fix_summary": "A single grouped query (GROUP BY feed_id over unread articles) returns all feeds' unread counts at once.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Subscribe to 15+ feeds and sync articles.",
+    "Start hitrace capture (categories: app, sched, disk, database).",
+    "Open and close 5 articles (each triggers a sidebar counts refresh).",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "sidebar_count_queries_per_refresh",
+    "definition": "Number of RDB SELECT statements attributable to unread-count computation per sidebar refresh, and total refresh latency.",
+    "comparison": "unfixed: N queries per refresh (one per feed); fixed: 1. With 15+ feeds, sidebar refresh latency after article-open drops accordingly."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 30 app sched disk database -o /data/local/tmp/sr_counts.chtrace",
+    "window_ms": 30000
+  }
+}

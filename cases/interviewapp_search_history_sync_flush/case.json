@@ -1,0 +1,40 @@
+{
+  "id": "interviewapp_search_history_sync_flush",
+  "host_app": {
+    "name": "interview-handbook-project (面试通)",
+    "repository": "https://github.com/HarmonyOS-Next/interview-handbook-project",
+    "bundle_name": "com.itcast.pass_interview",
+    "local_path": "hosts/interviewapp",
+    "base_branch": "ohmbase",
+    "base_commit": "ad61830",
+    "upstream_base_commit": "1e05347 (origin/next)"
+  },
+  "android_source_case": "calculator_deferred_floating_history_save",
+  "android_mechanism": "History persisted eagerly on every change; fix defers the save",
+  "category": "latency",
+  "bug_description": "The search-history HistoryStore calls preferences flush() synchronously on every setItem/delItem (i.e., on every recorded search keyword), forcing a disk write on the caller's thread each time. Rapid successive searches each pay a full synchronous flush, adding avoidable I/O latency to the search flow.",
+  "perf_scenarios": ["状态更新", "数据库读取"],
+  "unfixed_commit": "ad61830",
+  "fixed_commit": "6f1c96f",
+  "fix_summary": "Flushes are debounced: mutations update the in-memory cache synchronously and a single flush runs 2 seconds after the last mutation.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Launch the app and open the search page.",
+    "Start hitrace capture (categories: app, sched, disk, filesystem).",
+    "Submit 10 different keyword searches in quick succession.",
+    "Stop hitrace after 5s idle. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "flush_count_per_search_burst",
+    "definition": "Number of preference flush (fsync/disk write) operations attributable to the history store during a 10-search burst, and their total wall/CPU time from the disk trace.",
+    "comparison": "unfixed: 10 flushes (one per search) on the calling thread; fixed: 1 flush after the burst. unfixed disk-sync time on the search path > fixed by >= 5x for the burst."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 30 app sched disk filesystem -o /data/local/tmp/ia_flush.chtrace",
+    "window_ms": 30000
+  }
+}

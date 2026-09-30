@@ -1,0 +1,39 @@
+{
+  "id": "wanharmony_persisted_home_list_growth",
+  "host_app": {
+    "name": "WanHarmony (WanAndroid 客户端)",
+    "repository": "https://github.com/zjmok/WanHarmony",
+    "bundle_name": "org.example.wan.ohos",
+    "local_path": "hosts/wanharmony",
+    "base_branch": "ohmbase",
+    "base_commit": "dd45ad2"
+  },
+  "android_source_case": "dns66_packet_cache_growth",
+  "android_mechanism": "Packet-factory properties cache grows without bound; fix bounds the retained data",
+  "category": "resource_retention",
+  "bug_description": "The home article list is bound to PersistentStorage ('homeList'). Every load-more during infinite scrolling concatenates another page and rewrites the ENTIRE accumulated list (JSON serialization + preferences write) to disk, so persistent-storage write time and retained memory grow quadratically with scroll depth; the full tail is also re-parsed on every cold start even though it is stale feed data.",
+  "perf_scenarios": ["列表滑动", "状态更新"],
+  "unfixed_commit": "87d63ec",
+  "fixed_commit": "d1618b9",
+  "fix_summary": "Only the first-page home-article snapshot is persisted ('homeListCache') for fast cold-start rendering; pages loaded during the session accumulate in component state without rewriting persistent storage.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Install and launch the app with network access.",
+    "Start hitrace capture (categories: app, sched, disk, filesystem).",
+    "Scroll the home list to trigger at least 10 load-more cycles (200+ accumulated items).",
+    "Stop hitrace; also record app memory (hdc shell hidumper -s 1909 -a '-mem' or similar). Repeat 3 repetitions for unfixed, then install fixed and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "persistent_write_bytes_per_loadmore",
+    "definition": "Bytes written to app preferences/storage attributable to home-list persistence per load-more cycle, from disk/filesystem trace activity (write sizes grow with list length in unfixed, stay constant in fixed).",
+    "comparison": "unfixed: write size per load-more grows linearly with accumulated pages (total write volume quadratic in pages); fixed: writes only at first-page fetch. unfixed_total_write_bytes > fixed by >= 3x after 10 pages; unfixed resident memory higher."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 60 app sched disk filesystem -o /data/local/tmp/wan_persist.chtrace",
+    "window_ms": 60000
+  }
+}

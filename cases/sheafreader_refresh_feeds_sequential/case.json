@@ -1,0 +1,39 @@
+{
+  "id": "sheafreader_refresh_feeds_sequential",
+  "host_app": {
+    "name": "Sheaf-Reader (束阅 RSS 阅读器)",
+    "repository": "https://github.com/simon2137/Sheaf-Reader",
+    "bundle_name": "com.sheafreader.hm",
+    "local_path": "hosts/sheafreader",
+    "base_branch": "ohmbase",
+    "base_commit": "e04ef65"
+  },
+  "android_source_case": "portauthority_scan_scheduling",
+  "android_mechanism": "Worker scheduling not adapted to the workload; fix parallelizes/adapts scheduling",
+  "category": "latency",
+  "bug_description": "refreshAllFeeds fetches every due feed strictly sequentially (await per feed inside a for loop). Each fetch waits for the previous feed's full network round-trip and parse, so refreshing many subscriptions takes the SUM of all per-feed latencies instead of overlapping them.",
+  "perf_scenarios": ["网络结果渲染", "页面启动"],
+  "unfixed_commit": "c3e7b11",
+  "fixed_commit": "cf4f9fb",
+  "fix_summary": "Due feeds are fetched by a bounded worker pool (4 concurrent), overlapping network latency while limiting parallelism.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Subscribe to 10+ feeds on reachable hosts.",
+    "Start hitrace capture (categories: app, sched, network).",
+    "Trigger refresh-all from the sidebar.",
+    "Stop hitrace when refresh completes. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "refresh_all_wall_time_ms",
+    "definition": "Wall time from refresh start to the last feed's completion, from network activity in the trace.",
+    "comparison": "unfixed total ~= sum of per-feed latencies (serialized request timeline); fixed overlaps up to 4 fetches. With 10+ feeds, fixed refresh time <= ~50% of unfixed."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 60 app sched network -o /data/local/tmp/sr_refresh.chtrace",
+    "window_ms": 60000
+  }
+}

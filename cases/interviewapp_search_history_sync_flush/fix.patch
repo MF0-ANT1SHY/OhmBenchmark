@@ -1,0 +1,46 @@
+diff --git a/features/home/src/main/ets/utils/history.ets b/features/home/src/main/ets/utils/history.ets
+index 44ed289..375d60d 100644
+--- a/features/home/src/main/ets/utils/history.ets
++++ b/features/home/src/main/ets/utils/history.ets
+@@ -3,19 +3,32 @@ import { preferences } from '@kit.ArkData'
+ class HistoryStore {
+   KEY = 'historyStore'
+   store = preferences.getPreferencesSync(getContext(), { name: this.KEY })
++  // 落盘做防抖：连续写入时只在停止修改后统一 flush，避免每次搜索都同步刷盘
++  private flushTimer: number = -1
++
++  private scheduleFlush() {
++    if (this.flushTimer > 0) {
++      clearTimeout(this.flushTimer)
++    }
++    this.flushTimer = setTimeout(() => {
++      this.flushTimer = -1
++      this.store.flush()
++    }, 2000)
++  }
+ 
+   setItem(keyword: string) {
+     this.store.putSync(keyword, keyword)
+-    this.store.flush()
++    this.scheduleFlush()
+   }
+ 
+   delItem(keyword: string) {
+     this.store.deleteSync(keyword)
+-    this.store.flush()
++    this.scheduleFlush()
+   }
+ 
+   clear() {
+     this.store.clearSync()
++    this.scheduleFlush()
+   }
+ 
+   getAll() {
+@@ -24,4 +37,4 @@ class HistoryStore {
+   }
+ }
+ 
+-export const historyStore = new HistoryStore()
+\ No newline at end of file
++export const historyStore = new HistoryStore()

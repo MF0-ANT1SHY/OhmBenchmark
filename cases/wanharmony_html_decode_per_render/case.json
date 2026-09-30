@@ -1,0 +1,39 @@
+{
+  "id": "wanharmony_html_decode_per_render",
+  "host_app": {
+    "name": "WanHarmony (WanAndroid 客户端)",
+    "repository": "https://github.com/zjmok/WanHarmony",
+    "bundle_name": "org.example.wan.ohos",
+    "local_path": "hosts/wanharmony",
+    "base_branch": "ohmbase",
+    "base_commit": "dd45ad2"
+  },
+  "android_source_case": "fdroid_precomputed_preferred_metadata",
+  "android_mechanism": "Preferred repository metadata recomputed for every catalog row; fix precomputes it once",
+  "category": "latency",
+  "bug_description": "ArticleComponent calls TextUtils.htmlDecode on title, desc and chapterName every time a list item is built. The feed list uses plain ForEach, so opening the home/search/square lists and every re-render during scrolling re-runs 12 replaceAll passes per field across all accumulated items, multiplying decode work on the render path.",
+  "perf_scenarios": ["列表滑动", "网络结果渲染"],
+  "unfixed_commit": "dd45ad2",
+  "fixed_commit": "85a7398",
+  "fix_summary": "HTML entities are decoded once when article data arrives (TextUtils.decodeArticleList applied in fetchData/search/loadList); list items render the already-decoded fields.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Install and launch the app; ensure network access to wanandroid.com.",
+    "Start hitrace capture (categories: ace, app, sched).",
+    "Scroll the home article list continuously for 30 seconds, loading at least 5 pages (100+ items).",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "scroll_cpu_ms_per_item",
+    "definition": "Total CPU time of the app process during the fixed-duration scroll divided by number of rendered items, from hitrace; supplementary: count of string replaceAll invocations in JS stack samples.",
+    "comparison": "unfixed shows repeated htmlDecode execution on every item build (visible in JS sampling stacks); fixed executes decode only once per item at fetch. unfixed scroll CPU per item > fixed by >= 15%."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 35 ace app sched -o /data/local/tmp/wan_decode.chtrace",
+    "window_ms": 35000
+  }
+}

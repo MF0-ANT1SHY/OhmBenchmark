@@ -1,0 +1,56 @@
+diff --git a/entry/src/main/ets/common/utils/data/RelationalStoreUtils.ets b/entry/src/main/ets/common/utils/data/RelationalStoreUtils.ets
+index c50aa9d..4095a71 100644
+--- a/entry/src/main/ets/common/utils/data/RelationalStoreUtils.ets
++++ b/entry/src/main/ets/common/utils/data/RelationalStoreUtils.ets
+@@ -76,6 +76,27 @@ class RelationalStoreUtils {
+     }
+   }
+ 
++  /**
++   * 按关键词在 SQLite 中过滤歌曲，避免全表物化后在内存中过滤
++   * @param keyword 搜索关键词
++   * @returns LocalSong[]
++   */
++  async getSongsByKeyword(keyword: string): Promise<LocalSong[]> {
++    const columns = ['id', 'songId', 'name', 'artists', 'picFile', 'songFile', 'lyricFile']
++    // 转义 LIKE 通配符，保证关键词按字面匹配
++    const escaped = keyword.replace(/[\\%_]/g, (ch: string) => '\\' + ch)
++    const predicates = new relationalStore.RdbPredicates(TABLE_SONGS)
++      .like('songFile', `%${escaped}%`)
++
++    try {
++      const resultSet = await this.store.query(predicates, columns)
++      return await this.parseResultSet(resultSet)
++    } catch (e) {
++      LogUtil.error(TAG, 'Failed to get songs by keyword: ' + e.message)
++      return []
++    }
++  }
++
+   /**
+    * 解析查询结果
+    * @param resultSet
+diff --git a/entry/src/main/ets/pages/local/LocalSongPage.ets b/entry/src/main/ets/pages/local/LocalSongPage.ets
+index b3560b0..4baa1f2 100644
+--- a/entry/src/main/ets/pages/local/LocalSongPage.ets
++++ b/entry/src/main/ets/pages/local/LocalSongPage.ets
+@@ -241,16 +241,15 @@ export struct LocalSongPage {
+     .backgroundColor($r('app.color.background'))
+   }
+ 
+-  private handelSearch() {
++  private async handelSearch() {
+     try {
+       this.selectedSongs = []
+       if (!this.searchKeyword) {
+         this.dataSourceFiltered.setData([])
+       }
+       const keyword = this.searchKeyword.trim().toLowerCase()
+-      this.dataSourceFiltered.setData(this.localSongs.filter((item: LocalSong) => {
+-        return item.songFile.toString().toLowerCase().includes(keyword)
+-      }))
++      // 直接在 SQLite 中按关键词过滤，避免全表加载后在内存中过滤
++      this.dataSourceFiltered.setData(await RelationalStoreUtils.getSongsByKeyword(keyword))
+     } catch (e) {
+       ToastUtil.showToast('搜索时出错')
+       LogUtil.error(TAG, 'Error while handelSearch: ' + e.message)

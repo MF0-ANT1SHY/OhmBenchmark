@@ -1,0 +1,41 @@
+{
+  "id": "browser_eager_history_load",
+  "host_app": {
+    "name": "browser (小狐狸浏览器)",
+    "repository": "https://github.com/langwudong/browser",
+    "bundle_name": "com.example.nanvision",
+    "local_path": "hosts/browser",
+    "base_branch": "ohmbase",
+    "base_commit": "c42e4b3",
+    "upstream_base_commit": "f44fff7"
+  },
+  "android_source_case": "lightning_history_materialization",
+  "android_mechanism": "Browser search suggestions materialize all matching history rows eagerly",
+  "category": "latency",
+  "bug_description": "On application startup the main page eagerly queries every per-day history table in the RDB database and materializes all browsing-history rows in memory (Index.aboutToAppear -> RdbUtils.queryAllDate + queryHistoriesByDate for each date), even though history is only consumed when the user opens the browsing-history dialog. Cold-start latency and startup CPU grow linearly with the number of recorded history entries.",
+  "perf_scenarios": ["页面启动", "数据库读取"],
+  "unfixed_commit": "c42e4b3",
+  "fixed_commit": "e3c8aa9",
+  "fix_summary": "History is loaded lazily on first open of the history dialog (PagesDialog.loadHistoryData), and RdbUtils.queryHistoriesByDate now actually awaits the RDB query instead of returning an unfilled array.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Install and launch the unfixed HAP; browse ~30 distinct pages to seed per-day history tables; exit the app.",
+    "hdc shell aa force-stop com.example.nanvision; start hitrace capture (categories: ace, app, sched, disk); hdc shell aa start -a EntryAbility -b com.example.nanvision.",
+    "Wait for the main page to finish rendering (logo/search bar visible). Stop hitrace.",
+    "Repeat 3 repetitions for unfixed, then rebuild/install the fixed HAP and repeat 3 repetitions identically without seeding again."
+  ],
+  "test_oracle": {
+    "metric": "startup_cpu_time_ms",
+    "definition": "Sum of CPU time of the app process between process start (first sched wake-up of the ability) and completion of Index.aboutToAppear (last RDB query completion observable in disk/sys traces / hilog marker 项目已启动), measured from the hitrace trace.",
+    "comparison": "unfixed_startup_cpu_time_ms > fixed_startup_cpu_time_ms by >= 20% with 30+ seeded history entries; fixed shows zero history-table SELECT queries during startup, unfixed shows N (one per day table).",
+    "auxiliary": "hilog marker '项目已启动' timestamp delta from process start."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 15 ace app sched disk idle -o /data/local/tmp/browser_eager_startup.chtrace",
+    "window_ms": 15000
+  }
+}

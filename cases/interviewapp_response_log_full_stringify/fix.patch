@@ -1,0 +1,14 @@
+diff --git a/commons/basic/src/main/ets/utils/request.ets b/commons/basic/src/main/ets/utils/request.ets
+index 4efe368..fe7f4f7 100644
+--- a/commons/basic/src/main/ets/utils/request.ets
++++ b/commons/basic/src/main/ets/utils/request.ets
+@@ -54,7 +54,8 @@ class HdHttp {
+       if (res.result) {
+         const result = res.result as HdResponse<T>
+         if (result.code === 10000) {
+-          logger.info(fullUrl, JSON.stringify(res.result).substring(0, 200))
++          // 只记录响应摘要字段，避免为日志序列化整个响应体
++          logger.info(fullUrl, `code=${result.code} message=${result.message ?? ''}`)
+           return result
+         }
+         if (result.code === 401) {

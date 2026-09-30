@@ -1,0 +1,39 @@
+{
+  "id": "ytmusic_history_json_parse_per_row",
+  "host_app": {
+    "name": "Youtube-Music-ArkTS-Clone",
+    "repository": "https://github.com/Charles-Stark/Youtube-Music-ArkTS-Clone",
+    "bundle_name": "com.example.myapplication",
+    "local_path": "hosts/ytmusic",
+    "base_branch": "ohmbase",
+    "base_commit": "5bf6142"
+  },
+  "android_source_case": "fdroid_precomputed_preferred_metadata",
+  "android_mechanism": "Per-row metadata recomputed on every access; fix computes it once",
+  "category": "cpu",
+  "bug_description": "The listening-history page stores each entry as a JSON string and calls JSON.parse(item) four times per row inside the build (cover image URL, name, creator, and click params). Every render of the history list re-parses every entry's JSON four times, wasting UI-thread CPU and growing linearly with history length (plus re-parses on every list mutation).",
+  "perf_scenarios": ["列表滑动", "状态更新", "组件创建"],
+  "unfixed_commit": "5bf6142",
+  "fixed_commit": "1e3d086",
+  "fix_summary": "The item list is mapped to parsed objects once per render and rows read the parsed fields; deletion re-serializes only the affected entry.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Play 30+ different tracks to populate listening history.",
+    "Start hitrace capture (categories: ace, app, sched).",
+    "Open the history page (历史记录) and scroll through all entries; delete one entry.",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "history_page_render_cpu_ms",
+    "definition": "UI-thread CPU time from page-show to last row rendered plus the re-render after one deletion, from the ace trace.",
+    "comparison": "unfixed performs 4*history_size JSON.parse calls per render (visible in JS sampling); fixed performs history_size parses. unfixed_render_cpu_ms > fixed by >= 25% with 30+ entries."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 15 ace app sched -o /data/local/tmp/yt_histjson.chtrace",
+    "window_ms": 15000
+  }
+}

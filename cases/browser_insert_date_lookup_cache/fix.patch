@@ -1,0 +1,50 @@
+diff --git a/entry/src/main/ets/utils/RdbUtils.ets b/entry/src/main/ets/utils/RdbUtils.ets
+index fc11825..3be36c2 100644
+--- a/entry/src/main/ets/utils/RdbUtils.ets
++++ b/entry/src/main/ets/utils/RdbUtils.ets
+@@ -5,6 +5,9 @@ export default class RdbUtils {
+   // 关系型数据库
+   private static rdbStore: relationalStore.RdbStore
+ 
++  // 已确认存在的日期分表，避免每次保存浏览记录都重复查询/建表
++  private static knownDates: Set<string> = new Set()
++
+   static setStore(store: relationalStore.RdbStore) {
+     RdbUtils.rdbStore = store
+   }
+@@ -48,11 +51,16 @@ export default class RdbUtils {
+   }
+ 
+   static async insertDate(date: string) {
++    // 命中缓存时直接返回，跳过查询与建表
++    if (RdbUtils.knownDates.has(date)) {
++      return
++    }
++
+     const predicates = new relationalStore.RdbPredicates("date_table")
+ 
+     predicates.equalTo("date", date);
+ 
+-    let resultSet: relationalStore.ResultSet
++    let resultSet: relationalStore.ResultSet | null = null
+ 
+     try {
+       resultSet = await RdbUtils.getStore().query(predicates, ["date"]);
+@@ -73,6 +81,8 @@ export default class RdbUtils {
+ 
+     // 按天分表
+     await RdbUtils.createHistoryTable(date)
++
++    RdbUtils.knownDates.add(date)
+   }
+ 
+   static async insertHistory(tableName: string, history: History) {
+@@ -162,5 +172,7 @@ export default class RdbUtils {
+     })
+ 
+     RdbUtils.executeSql(`DROP TABLE IF EXISTS date_table`)
++
++    RdbUtils.knownDates.clear()
+   }
+ }
+\ No newline at end of file

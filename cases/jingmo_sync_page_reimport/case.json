@@ -1,0 +1,39 @@
+{
+  "id": "jingmo_sync_page_reimport",
+  "host_app": {
+    "name": "jingmo (京墨文库)",
+    "repository": "https://github.com/hefengbao/jingmo-for-HarmonyOS",
+    "bundle_name": "com.hefengbao.jingmo.hw",
+    "local_path": "hosts/jingmo",
+    "base_branch": "ohmbase",
+    "base_commit": "3eb7686"
+  },
+  "android_source_case": "gdroid_network_98940b96bdd5",
+  "android_mechanism": "Re-download/re-import performed without checking whether the data is already up to date; fix checks first and skips",
+  "category": "latency",
+  "bug_description": "Opening the dataset sync page unconditionally re-downloads the full classic-poem dataset JSON and re-runs the bulk import, even when the (static, versioned) dataset is already fully imported. Every re-import re-attempts thousands of inserts that all conflict with existing rows (id primary key), wasting network transfer, parsing, and database work on each visit.",
+  "perf_scenarios": ["数据库读取", "页面切换"],
+  "unfixed_commit": "d52c391",
+  "fixed_commit": "6d6ad77",
+  "fix_summary": "Before importing, a single COUNT query checks whether the dataset is already present and skips the download/import entirely when the table is populated.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Import the dataset once via settings (数据同步) so the poem table is populated.",
+    "Start hitrace capture (categories: app, sched, network, disk, database).",
+    "Open the 数据同步 page again.",
+    "Stop hitrace after 10 seconds. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "revisit_sync_page_cost",
+    "definition": "Bytes downloaded and database statements executed when re-opening the sync page with data already imported, plus page-open wall time.",
+    "comparison": "unfixed re-downloads the whole dataset and re-attempts all inserts (visible network transfer + DB activity); fixed performs one COUNT and no transfer. unfixed network bytes >> fixed (fixed = 0)."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 15 app sched network disk database -o /data/local/tmp/jingmo_reimport.chtrace",
+    "window_ms": 15000
+  }
+}

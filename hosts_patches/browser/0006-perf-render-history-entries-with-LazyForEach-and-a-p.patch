@@ -1,0 +1,97 @@
+From f9425c47b7306fe7d6031ddc40dc117a80349162 Mon Sep 17 00:00:00 2001
+From: mike <dust@to.com>
+Date: Wed, 23 Sep 2026 12:39:41 +0800
+Subject: [PATCH 6/6] perf: render history entries with LazyForEach and a
+ per-group data source so off-screen rows are not created eagerly
+
+---
+ entry/src/main/ets/view/PagesDialog.ets | 49 ++++++++++++++++++++++++-
+ 1 file changed, 47 insertions(+), 2 deletions(-)
+
+diff --git a/entry/src/main/ets/view/PagesDialog.ets b/entry/src/main/ets/view/PagesDialog.ets
+index b117b24..888f305 100644
+--- a/entry/src/main/ets/view/PagesDialog.ets
++++ b/entry/src/main/ets/view/PagesDialog.ets
+@@ -3,6 +3,40 @@ import { HistoryGroup } from '../common/constants/CommonConstants'
+ import HistoryItem from './HistoryItem'
+ import RdbUtils from '../utils/RdbUtils'
+ 
++// 懒加载数据源：LazyForEach 仅在列表项进入可视区域时才创建组件
++class HistoryDataSource implements IDataSource {
++  private histories: History[] = []
++  private listeners: DataChangeListener[] = []
++
++  totalCount(): number {
++    return this.histories.length
++  }
++
++  getData(index: number): History {
++    return this.histories[index]
++  }
++
++  registerDataChangeListener(listener: DataChangeListener): void {
++    if (this.listeners.indexOf(listener) < 0) {
++      this.listeners.push(listener)
++    }
++  }
++
++  unregisterDataChangeListener(listener: DataChangeListener): void {
++    const pos = this.listeners.indexOf(listener)
++    if (pos >= 0) {
++      this.listeners.splice(pos, 1)
++    }
++  }
++
++  setHistories(histories: History[]): void {
++    this.histories = histories
++    this.listeners.forEach((listener: DataChangeListener) => {
++      listener.onDataReloaded()
++    })
++  }
++}
++
+ @CustomDialog
+ export default struct PagesDialog {
+   @Consume("historyMap") historyMap: Map<string, History[]>
+@@ -10,6 +44,9 @@ export default struct PagesDialog {
+ 
+   @State historyGroups: HistoryGroup[] = []
+ 
++  // 每个日期分组的懒加载数据源
++  private groupDataSources: Map<string, HistoryDataSource> = new Map()
++
+   dialogController: CustomDialogController
+ 
+   async aboutToAppear() {
+@@ -30,6 +67,14 @@ export default struct PagesDialog {
+         date: item[0],
+         histories: item[1]
+       } as HistoryGroup))
++      this.historyGroups.forEach((group: HistoryGroup) => {
++        let ds = this.groupDataSources.get(group.date)
++        if (!ds) {
++          ds = new HistoryDataSource()
++          this.groupDataSources.set(group.date, ds)
++        }
++        ds.setHistories(group.histories)
++      })
+       console.info("成功加载历史记录")
+     } catch (error) {
+       console.error('加载历史数据异常:', error)
+@@ -83,11 +128,11 @@ export default struct PagesDialog {
+       List() {
+         ForEach(this.historyGroups, (group: HistoryGroup) => {
+           ListItemGroup({header: this.ListGroupHeader(group.date)}) {
+-            ForEach(group.histories, (history: History) => {
++            LazyForEach(this.groupDataSources.get(group.date), (history: History) => {
+               ListItem() {
+                 HistoryItem({ title: history.title, url: history.url })
+               }
+-            })
++            }, (history: History) => history.id.toString())
+           }
+         })
+       }
+-- 
+2.34.1
+

@@ -1,0 +1,39 @@
+{
+  "id": "interviewapp_search_history_unbounded",
+  "host_app": {
+    "name": "interview-handbook-project (面试通)",
+    "repository": "https://github.com/HarmonyOS-Next/interview-handbook-project",
+    "bundle_name": "com.itcast.pass_interview",
+    "local_path": "hosts/interviewapp",
+    "base_branch": "ohmbase",
+    "base_commit": "ad61830"
+  },
+  "android_source_case": "dns66_packet_cache_growth",
+  "android_mechanism": "Cache/data structure grows without bound; fix bounds the retained data",
+  "category": "resource_retention",
+  "bug_description": "The search-history store persists every keyword as its own preference key and never bounds the number of entries. The history grows without limit, the history component renders an ever-growing ForEach, and preferences storage/flush volume grows with every search.",
+  "perf_scenarios": ["状态更新", "页面切换"],
+  "unfixed_commit": "4fd3756",
+  "fixed_commit": "9f226e3",
+  "fix_summary": "History is kept as a single ordered JSON list capped at the 20 most recent keywords.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Perform 60 different keyword searches.",
+    "Start hitrace capture (categories: app, sched, disk); open the search page so the history component renders.",
+    "Stop hitrace; record preference file size (hdc shell 'du /data/app/el2/100/base/com.itcast.pass_interview/.../preferences/').",
+    "Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "history_entries_and_render_cost",
+    "definition": "Number of history entries retained after 60 searches, size of the preferences file, and CPU/time to render the history component when the search page opens.",
+    "comparison": "unfixed retains 60+ entries and growing render/storage cost; fixed retains 20. unfixed history-component build cost and preferences size > fixed."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 20 app sched disk ace -o /data/local/tmp/ia_hist.chtrace",
+    "window_ms": 20000
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "interviewapp_response_log_full_stringify",
+  "host_app": {
+    "name": "interview-handbook-project (面试通)",
+    "repository": "https://github.com/HarmonyOS-Next/interview-handbook-project",
+    "bundle_name": "com.itcast.pass_interview",
+    "local_path": "hosts/interviewapp",
+    "base_branch": "ohmbase",
+    "base_commit": "ad61830"
+  },
+  "android_source_case": "fdroid_method_e5d25ae8d0fa",
+  "android_mechanism": "String assembled inefficiently (concatenation) for display; fix builds it efficiently/only what is needed",
+  "category": "cpu",
+  "bug_description": "The shared HTTP client logs every successful API response with JSON.stringify(res.result).substring(0, 200): the ENTIRE response object (large question lists, article payloads) is serialized into a string only to keep the first 200 characters. Every API call pays a full-payload serialization plus a substring copy on its completion path.",
+  "perf_scenarios": ["网络结果渲染", "页面启动"],
+  "unfixed_commit": "6f1c96f",
+  "fixed_commit": "4fd3756",
+  "fix_summary": "The log records only the response code and message fields, removing the full-body JSON.stringify and truncation copy.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Launch the app and browse the home question list (multiple API calls with large list payloads).",
+    "Start hitrace capture (categories: app, sched).",
+    "Scroll through several list pages, triggering 10+ API responses.",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "response_handler_cpu_ms",
+    "definition": "CPU time spent in the HTTP response handling path per API call (between response receipt and promise resolution visible in JS sampling), averaged over >= 10 calls.",
+    "comparison": "unfixed serializes each full response body (O(payload)); fixed logs O(1) fields. With list payloads of tens of KB, unfixed per-response overhead > fixed."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 30 app sched -o /data/local/tmp/ia_resplog.chtrace",
+    "window_ms": 30000
+  }
+}

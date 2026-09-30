@@ -1,0 +1,39 @@
+{
+  "id": "cloudmusic_indexof_in_render",
+  "host_app": {
+    "name": "CloudMusic-HarmonyOSNext (仿网易云音乐)",
+    "repository": "https://github.com/Chenlvin/CloudMusic-HarmonyOSNext",
+    "bundle_name": "cc.chenlvin.cloudmusic",
+    "local_path": "hosts/cloudmusic",
+    "base_branch": "ohmbase",
+    "base_commit": "f8fd90d"
+  },
+  "android_source_case": "fdroid_category_id_cache",
+  "android_mechanism": "Repeated lookup executed per row during import; fix caches the lookup",
+  "category": "cpu",
+  "bug_description": "In the playlist page content list, every song row build passes sid/index to SongCard as this.list.indexOf(item), twice per row. indexOf is a linear scan over the whole (potentially 1000+) song list, so rendering/scrolling the playlist costs O(n) per row and O(n^2) cumulative, wasting UI-thread time as the list grows.",
+  "perf_scenarios": ["列表滑动", "网络结果渲染"],
+  "unfixed_commit": "f8fd90d",
+  "fixed_commit": "a967ef1",
+  "fix_summary": "The index already provided by the LazyForEach item generator is passed to SongCard, removing both per-row linear scans.",
+  "build": {
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "trigger_steps": [
+    "Log in or use a playlist with 500+ songs; open the playlist detail page.",
+    "Start hitrace capture (categories: ace, app, sched).",
+    "Scroll the song list from top to bottom at constant speed.",
+    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
+  ],
+  "test_oracle": {
+    "metric": "row_build_cpu_overhead",
+    "definition": "UI-thread CPU time attributable to list-row building during the scroll (from ace trace component-build events), divided by number of rows rendered.",
+    "comparison": "unfixed per-row build time grows linearly with playlist size (indexOf scan) while fixed stays constant; with >= 500 songs, unfixed scroll CPU > fixed by >= 10% and unfixed shows more dropped frames."
+  },
+  "trace_config": {
+    "tool": "hitrace",
+    "command": "hdc shell hitrace --time 25 ace app sched graphic -o /data/local/tmp/cm_indexof.chtrace",
+    "window_ms": 25000
+  }
+}

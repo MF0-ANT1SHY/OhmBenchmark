@@ -1,0 +1,47 @@
+diff --git a/alatus/src/main/ets/view/cityView.ets b/alatus/src/main/ets/view/cityView.ets
+index bfb53d2..50332c9 100644
+--- a/alatus/src/main/ets/view/cityView.ets
++++ b/alatus/src/main/ets/view/cityView.ets
+@@ -4,21 +4,22 @@ import { cast } from '../viewmodel/cast';
+ export struct cityView{
+   // 获取数据,城市数据
+   casts:Array<cast> = [];
++  // 天气图标使用本地静态资源，避免每次渲染都从远程 CDN 加载
+   @Builder weatherImage(weather:string,width:number,height:number){
+     if(weather === "晴"){
+-      Image("https://i-blog.csdnimg.cn/direct/bf01538113ef4f218fd4495c430e0568.jpeg")
++      Image($rawfile('weather/sunny.img'))
+         .width(width).height(height);
+     }
+     if(weather === "阴"){
+-      Image("https://i-blog.csdnimg.cn/direct/cdccb8075bb8473db2672bed70190ba7.jpeg")
++      Image($rawfile('weather/overcast.img'))
+         .width(width).height(height);
+     }
+     if(weather === "多云"){
+-      Image("https://i-blog.csdnimg.cn/direct/cc6430c2542b4f49b98d33bac2005829.jpeg")
++      Image($rawfile('weather/cloudy.img'))
+         .width(width).height(height);
+     }
+     if(weather.includes("雨")){
+-      Image("https://i-blog.csdnimg.cn/direct/de1260f193c446e7a1e9468140997ae2.jpeg")
++      Image($rawfile('weather/rain.img'))
+         .width(width).height(height);
+     }
+   }
+diff --git a/alatus/src/main/resources/rawfile/weather/cloudy.img b/alatus/src/main/resources/rawfile/weather/cloudy.img
+new file mode 100644
+index 0000000..228d44c
+Binary files /dev/null and b/alatus/src/main/resources/rawfile/weather/cloudy.img differ
+diff --git a/alatus/src/main/resources/rawfile/weather/overcast.img b/alatus/src/main/resources/rawfile/weather/overcast.img
+new file mode 100644
+index 0000000..700a65e
+Binary files /dev/null and b/alatus/src/main/resources/rawfile/weather/overcast.img differ
+diff --git a/alatus/src/main/resources/rawfile/weather/rain.img b/alatus/src/main/resources/rawfile/weather/rain.img
+new file mode 100644
+index 0000000..aa4c832
+Binary files /dev/null and b/alatus/src/main/resources/rawfile/weather/rain.img differ
+diff --git a/alatus/src/main/resources/rawfile/weather/sunny.img b/alatus/src/main/resources/rawfile/weather/sunny.img
+new file mode 100644
+index 0000000..b50ab29
+Binary files /dev/null and b/alatus/src/main/resources/rawfile/weather/sunny.img differ
