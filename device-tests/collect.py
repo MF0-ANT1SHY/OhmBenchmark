@@ -29,6 +29,17 @@ for n in range(1,4):
     time.sleep(4)
     sh(f'aa start -a EntryAbility -b {bundle} --ps bench {case}')
     wait_state('ready')
+    sh('uitest dumpLayout -p /data/local/tmp/ohm-layout.json')
+    hdc('file','recv','/data/local/tmp/ohm-layout.json',str(out/'ui-before.json'))
+    layout=json.loads((out/'ui-before.json').read_text(encoding='utf-8'))
+    pending=[layout]; texts=[]
+    while pending:
+        node=pending.pop(); attrs=node.get('attributes',{})
+        texts.append(attrs.get('text',''));pending.extend(node.get('children',[]))
+    if any(t in ['不允许','允许本次','仅使用时允许'] or ('允许' in t and '通知' in t) for t in texts):
+        raise RuntimeError('Permission dialog present; resolve on phone before collecting')
+    sh('snapshot_display -f /data/local/tmp/ohm-screen.jpeg')
+    hdc('file','recv','/data/local/tmp/ohm-screen.jpeg',str(out/'ui-before.jpeg'))
     pid=sh(f'pidof {bundle}').split()[0]
     (out/'before.txt').write_text(sh(f'cat /proc/{pid}/stat; cat /proc/{pid}/status; cat /sys/class/thermal/thermal_zone0/temp'),encoding='utf-8')
     commands=[]
