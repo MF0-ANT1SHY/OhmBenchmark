@@ -1,0 +1,96 @@
+{
+  "protocol": "All formal outputs are frozen before matching against this file. A hit requires the target mechanism and relevant code location among at most five suspects. Generic slowness/hotspot without the cause is partial, not a hit. Dynamic support is graded separately. No negative cases: do not claim specificity or overall precision. Results are HapRay + its skill + DeepSeek + harness, not CLI rule accuracy alone.",
+  "cases": [
+    {
+      "id": "C01",
+      "case": "jingmo_random_poem_orderby_random",
+      "location": "ClassicPoemDao.readRandomClassicPoem",
+      "mechanism": "ORDER BY RANDOM 对全表生成随机值/排序以取少量行",
+      "remedy": "随机定位/偏移等避免全表随机排序"
+    },
+    {
+      "id": "C02",
+      "case": "browser_history_list_foreach",
+      "location": "History 页 HistoryItem 列表",
+      "mechanism": "ForEach 急切构建不可见历史条目，扩大渲染/组件创建工作",
+      "remedy": "LazyForEach/虚拟化"
+    },
+    {
+      "id": "C03",
+      "case": "browser_eager_history_load",
+      "location": "Index/aboutToAppear 或启动调用的 RdbUtils 历史加载",
+      "mechanism": "启动阶段提前枚举/加载完整历史及逐日期查询，而首屏不需要完整历史",
+      "remedy": "延迟到历史页加载或按需加载"
+    },
+    {
+      "id": "C04",
+      "case": "sheafreader_extract_tag_tolowercase",
+      "location": "FeedParser.extractTag",
+      "mechanism": "每次取标签重复对整段大字符串 toLowerCase，重复分配/扫描",
+      "remedy": "一次转换后复用或避免整段转换"
+    },
+    {
+      "id": "C05",
+      "case": "jingmo_dataset_import_no_transaction",
+      "location": "ClassicPoemDao.createClassicPoem/批量导入调用",
+      "mechanism": "大量单条 insert 自动提交，缺批量事务",
+      "remedy": "batchInsert/事务"
+    },
+    {
+      "id": "C06",
+      "case": "sheafreader_refresh_feeds_sequential",
+      "location": "FeedService.refreshAllFeeds",
+      "mechanism": "顺序 await 每个订阅网络/解析/写入导致刷新串行",
+      "remedy": "有界并发刷新"
+    },
+    {
+      "id": "C07",
+      "case": "browser_history_delete_no_transaction",
+      "location": "RdbUtils.deleteAll/deleteHistory",
+      "mechanism": "逐条删除导致大量数据库操作/自动提交，未使用集合删除和事务",
+      "remedy": "批量或集合删除并包事务"
+    },
+    {
+      "id": "C08",
+      "case": "interviewapp_search_history_unbounded",
+      "location": "HistoryStore.getAll/setItem",
+      "mechanism": "搜索历史无限增长，每次全量读取/处理，与历史规模相关",
+      "remedy": "有界最近历史/裁剪"
+    },
+    {
+      "id": "C09",
+      "case": "wanharmony_history_log_materialization",
+      "location": "HistoryPage.aboutToAppear",
+      "mechanism": "日志输出对完整历史 map/JSON.stringify，产生与历史长度成比例的无必要工作",
+      "remedy": "只记录数量/摘要或删除完整数据日志"
+    },
+    {
+      "id": "C10",
+      "case": "interviewapp_search_history_sync_flush",
+      "location": "HistoryStore.setItem 中 flushSync",
+      "mechanism": "每次历史写入同步刷盘，频繁阻塞主线程",
+      "remedy": "防抖/合并异步 flush"
+    },
+    {
+      "id": "C11",
+      "case": "jingmo_sync_page_reimport",
+      "location": "DatasetViewModel.insertClassicPoemsToDb",
+      "mechanism": "已有相同数据仍重复执行整批插入，产生冲突和数据库工作",
+      "remedy": "导入前检查已存在/版本并跳过"
+    },
+    {
+      "id": "C12",
+      "case": "browser_insert_date_lookup_cache",
+      "location": "RdbUtils.insertDate",
+      "mechanism": "每条新历史重复查询已有日期，在同日期大量插入时产生重复数据库工作",
+      "remedy": "缓存/复用日期存在结果"
+    },
+    {
+      "id": "C13",
+      "case": "sheafreader_unread_counts_n_plus_1",
+      "location": "FeedService.getFeedsWithCounts",
+      "mechanism": "每个订阅单独查询未读数量形成 N+1 查询",
+      "remedy": "GROUP BY 一次统计并映射"
+    }
+  ]
+}
