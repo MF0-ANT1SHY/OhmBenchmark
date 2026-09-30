@@ -11,7 +11,7 @@ export async function runBrowserBench(context: common.UIAbilityContext, name: st
     for (const date of dates) await store.executeSql('DROP TABLE IF EXISTS history_' + date);
     await store.executeSql('DELETE FROM date_table');
     for (let d = 1; d <= 5; d++) {
-      const date = '202609' + (10 + d).toString();
+      const date = (name === 'browser_history_list_foreach' ? '2026_09_' : '202609') + (10 + d).toString();
       await store.executeSql("INSERT INTO date_table(date) VALUES ('" + date + "')");
       await RdbUtils.createHistoryTable(date);
       const values: relationalStore.ValuesBucket[] = [];
@@ -22,6 +22,7 @@ export async function runBrowserBench(context: common.UIAbilityContext, name: st
     }
   }, async (): Promise<number> => {
     if (name === 'browser_eager_history_load') return 10000;
+    if (name === 'browser_history_list_foreach') return 1000;
     if (name === 'browser_history_delete_no_transaction') {
       await RdbUtils.deleteAll();
       const remaining = await RdbUtils.queryAllDate();

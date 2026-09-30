@@ -8,7 +8,7 @@ for p in sorted((root/'measurements').glob('*/*/run*/result.json')):
     trace=p.parent/'trace.txt.gz'
     if not trace.exists():continue
     row=json.loads(p.read_text())
-    pid=row['pid']; tids=set(); events=[]; start=end=None
+    pid=row['pid']; tids=set(); events=[]; start=end=None; components=[]
     with gzip.open(trace,'rt',errors='replace') as f:
         for line in f:
             m=line_re.match(line)
@@ -18,6 +18,9 @@ for p in sorted((root/'measurements').glob('*/*/run*/result.json')):
             if 'OHMB/'+row['case'] in payload:
                 if payload.startswith('S|'):start=ts
                 if payload.startswith('F|'):end=ts
+            if 'OHMB/HistoryItemCount' in payload:
+                count=re.search(r'HistoryItemCount\|(\d+)',payload)
+                if count:components.append(int(count[1]))
             if event=='sched_switch':
                 x=switch_re.search(payload)
                 if x:events.append((ts,int(cpu),int(x[1]),int(x[2])))
@@ -33,6 +36,7 @@ for p in sorted((root/'measurements').glob('*/*/run*/result.json')):
             running[cpu]=(ts,nxt)
         row.update(trace_wall_ms=(end-start)*1000,trace_cpu_ms=cpu_ms,main_thread_cpu_ms=main_ms,trace_context_switches=switches)
     else:row['trace_error']='missing measurement boundary'
+    if components:row['history_components_created']=max(components)
     for line in (p.parent/'perf-stat.txt').read_text().splitlines():
         m=re.match(r'\s*([\d,]+)\s+([\w-]+)',line)
         if m:row['perf_'+m[2]]=int(m[1].replace(',',''))

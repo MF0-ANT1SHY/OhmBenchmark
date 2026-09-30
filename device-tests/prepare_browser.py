@@ -26,6 +26,24 @@ if case=='browser_eager_history_load':
   }
 ''')
     p.write_text(s,encoding='utf-8')
+if case=='browser_history_list_foreach':
+    p=ets/'common/bean/PagesButton.ets'
+    s=p.read_text(encoding='utf-8')
+    s="import hiTraceMeter from '@ohos.hiTraceMeter';\n"+s
+    s=s.replace('          this.dialogController.open()', '''          AppStorage.SetOrCreate('ohmHistoryCount', 0);
+          hiTraceMeter.startTrace('OHMB/browser_history_list_foreach', 1);
+          setTimeout(() => { hiTraceMeter.finishTrace('OHMB/browser_history_list_foreach', 1); }, 10000);
+          this.dialogController.open()''')
+    p.write_text(s,encoding='utf-8')
+    p=ets/'view/HistoryItem.ets';s=p.read_text(encoding='utf-8')
+    s="import hiTraceMeter from '@ohos.hiTraceMeter';\n"+s
+    s=s.replace('export default struct HistoryItem {', '''export default struct HistoryItem {
+  aboutToAppear(): void {
+    const count: number = (AppStorage.Get<number>('ohmHistoryCount') || 0) + 1;
+    AppStorage.SetOrCreate('ohmHistoryCount', count);
+    hiTraceMeter.traceByValue('OHMB/HistoryItemCount', count);
+  }
+''');p.write_text(s,encoding='utf-8')
 subprocess.run(['git','-C',str(host),'add','entry/src/main/ets'],check=True)
 subprocess.run(['git','-C',str(host),'commit','-m',f'test({case}): add identical on-device measurement entry for {variant}'],check=True)
 out=root/'device-tests/patches'/case

@@ -9,17 +9,17 @@
 > hvigor [32mFinished :entry:default@ProcessIntegratedHsp... after 2 ms [39m
 > hvigor [32mFinished :entry:default@BuildNativeWithCmake... after 1 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@MakePackInfo...  [39m
-> hvigor [32mFinished :entry:default@SyscapTransform... after 21 ms [39m
+> hvigor [32mFinished :entry:default@SyscapTransform... after 20 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@ProcessProfile...  [39m
 > hvigor [32mUP-TO-DATE :entry:default@ProcessRouterMap...  [39m
-> hvigor [32mFinished :entry:default@ProcessStartupConfig... after 2 ms [39m
+> hvigor [32mFinished :entry:default@ProcessStartupConfig... after 3 ms [39m
 > hvigor [32mFinished :entry:default@BuildNativeWithNinja... after 1 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@ProcessResource...  [39m
 > hvigor [32mUP-TO-DATE :entry:default@GenerateLoaderJson...  [39m
 > hvigor [32mUP-TO-DATE :entry:default@ProcessLibs...  [39m
 > hvigor [32mUP-TO-DATE :entry:default@CompileResource...  [39m
 > hvigor [32mUP-TO-DATE :entry:default@DoNativeStrip...  [39m
-> hvigor [32mFinished :entry:default@BuildJS... after 5 ms [39m
+> hvigor [32mFinished :entry:default@BuildJS... after 4 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@CacheNativeLibs...  [39m
 > hvigor [32m[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/browser/entry/src/main/ets/utils/OhmProbe.ets:8:18
  The system capacity of this api 'fs' is not supported on all devices
@@ -63,6 +63,15 @@
 [33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/browser/entry/src/main/ets/pages/Start.ets:10:14
  'replaceUrl' has been deprecated.
 [39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/browser/entry/src/main/ets/view/HistoryItem.ets:7:39
+ 'Get' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/browser/entry/src/main/ets/view/HistoryItem.ets:8:16
+ 'SetOrCreate' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/browser/entry/src/main/ets/common/bean/PagesButton.ets:52:22
+ 'SetOrCreate' has been deprecated.
+[39m[39m
 [33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/browser/entry/src/main/ets/pages/Index.ets:10:19
  'PersistProp' has been deprecated.
 [39m[39m
@@ -82,12 +91,12 @@
  To use this API, you need to apply for the permissions: ohos.permission.CONNECT_IME_ABILITY
 [39m[39m
 [39m
-> hvigor [32mFinished :entry:default@CompileArkTS... after 9 s 307 ms [39m
+> hvigor [32mFinished :entry:default@CompileArkTS... after 7 s 725 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@GeneratePkgModuleJson...  [39m
-> hvigor [32mFinished :entry:default@PackageHap... after 751 ms [39m
+> hvigor [32mFinished :entry:default@PackageHap... after 471 ms [39m
 > hvigor WARN: Will skip sign 'hos_hap'. No signingConfigs profile is configured in current project.
              If needed, configure the signingConfigs in D:\OhmBenchmark-main\hosts\browser\build-profile.json5.
-> hvigor [32mFinished :entry:default@SignHap... after 5 ms [39m
-> hvigor [32mFinished :entry:default@CollectDebugSymbol... after 3 ms [39m
+> hvigor [32mFinished :entry:default@SignHap... after 3 ms [39m
+> hvigor [32mFinished :entry:default@CollectDebugSymbol... after 2 ms [39m
 > hvigor [32mFinished :entry:assembleHap... after 1 ms [39m
-> hvigor [32mBUILD SUCCESSFUL in 19 s 928 ms [39m
+> hvigor [32mBUILD SUCCESSFUL in 18 s 368 ms [39m

@@ -1,5 +1,5 @@
-> hvigor [32mFinished :entry:default@PreBuild... after 158 ms [39m
-> hvigor [32mFinished :entry:default@CreateModuleInfo... after 2 ms [39m
+> hvigor [32mFinished :entry:default@PreBuild... after 133 ms [39m
+> hvigor [32mFinished :entry:default@CreateModuleInfo... after 1 ms [39m
 > hvigor [32mFinished :entry:default@GenerateMetadata... after 11 ms [39m
 > hvigor [32mFinished :entry:default@ConfigureCmake... after 1 ms [39m
 > hvigor [32mFinished :entry:default@MergeProfile... after 5 ms [39m
@@ -9,24 +9,24 @@
 > hvigor [32mFinished :entry:default@ProcessIntegratedHsp... after 1 ms [39m
 > hvigor [32mFinished :entry:default@BuildNativeWithCmake... after 1 ms [39m
 > hvigor [32mFinished :entry:default@MakePackInfo... after 12 ms [39m
-> hvigor [32mFinished :entry:default@SyscapTransform... after 19 ms [39m
-> hvigor [32mFinished :entry:default@ProcessProfile... after 134 ms [39m
+> hvigor [32mFinished :entry:default@SyscapTransform... after 22 ms [39m
+> hvigor [32mFinished :entry:default@ProcessProfile... after 135 ms [39m
 > hvigor [32mFinished :entry:default@ProcessRouterMap... after 19 ms [39m
-> hvigor [32mFinished :entry:default@ProcessStartupConfig... after 3 ms [39m
+> hvigor [32mFinished :entry:default@ProcessStartupConfig... after 2 ms [39m
 > hvigor [32mFinished :entry:default@BuildNativeWithNinja... after 1 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@ProcessResource...  [39m
-> hvigor [32mFinished :entry:default@GenerateLoaderJson... after 12 ms [39m
+> hvigor [32mFinished :entry:default@GenerateLoaderJson... after 10 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@ProcessLibs...  [39m
-> hvigor [32mFinished :entry:default@CompileResource... after 428 ms [39m
+> hvigor [32mFinished :entry:default@CompileResource... after 423 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@DoNativeStrip...  [39m
 > hvigor [32mFinished :entry:default@BuildJS... after 4 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@CacheNativeLibs...  [39m
-> hvigor [32mFinished :entry:default@CompileArkTS... after 12 s 32 ms [39m
-> hvigor [32mFinished :entry:default@GeneratePkgModuleJson... after 3 ms [39m
-> hvigor [32mFinished :entry:default@PackageHap... after 523 ms [39m
+> hvigor [32mFinished :entry:default@CompileArkTS... after 8 s 546 ms [39m
+> hvigor [32mFinished :entry:default@GeneratePkgModuleJson... after 2 ms [39m
+> hvigor [32mFinished :entry:default@PackageHap... after 515 ms [39m
 > hvigor WARN: Will skip sign 'hos_hap'. No signingConfigs profile is configured in current project.
              If needed, configure the signingConfigs in D:\OhmBenchmark-main\hosts\sheafreader\build-profile.json5.
-> hvigor [32mFinished :entry:default@SignHap... after 4 ms [39m
+> hvigor [32mFinished :entry:default@SignHap... after 3 ms [39m
 > hvigor [32mFinished :entry:default@CollectDebugSymbol... after 2 ms [39m
 > hvigor [32mFinished :entry:assembleHap... after 1 ms [39m
-> hvigor [32mBUILD SUCCESSFUL in 23 s 160 ms [39m
+> hvigor [32mBUILD SUCCESSFUL in 19 s 256 ms [39m
