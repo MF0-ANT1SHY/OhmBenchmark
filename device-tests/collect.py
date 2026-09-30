@@ -4,6 +4,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 HDC = r'C:\Program Files (x86)\commandline-tools-windows-x64-5.1.1.840\command-line-tools\sdk\default\openharmony\toolchains\hdc.exe'
 case, variant, bundle = sys.argv[1:4]
 module = sys.argv[4] if len(sys.argv) > 4 else 'entry'
+ability = sys.argv[5] if len(sys.argv) > 5 else 'EntryAbility'
 base = f'/data/app/el2/100/base/{bundle}/haps/{module}/files'
 def hdc(*args):
     return subprocess.check_output([HDC,*args],timeout=90).decode('utf-8',errors='replace').strip()
@@ -25,9 +26,9 @@ for n in range(1,4):
     out.mkdir(parents=True,exist_ok=True)
     sh(f'aa force-stop {bundle}')
     sh(f'rm -f {base}/ohm-status.json {base}/ohm-go')
-    sh(f'aa start -a EntryAbility -b {bundle}')
+    sh(f'aa start -a {ability} -b {bundle}')
     time.sleep(4)
-    sh(f'aa start -a EntryAbility -b {bundle} --ps bench {case}')
+    sh(f'aa start -a {ability} -b {bundle} --ps bench {case}')
     wait_state('ready')
     sh('uitest dumpLayout -p /data/local/tmp/ohm-layout.json')
     hdc('file','recv','/data/local/tmp/ohm-layout.json',str(out/'ui-before.json'))

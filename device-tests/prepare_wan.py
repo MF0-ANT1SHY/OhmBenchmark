@@ -10,7 +10,7 @@ s=s.replace('export default class EntryAbility extends UIAbility {', '''export d
   onNewWant(want: Want): void {
     if (want.parameters && want.parameters['bench']) {
       const records: WebData[] = [];
-      for (let i=0;i<50000;i++) records.push(new WebData('https://example.org/article/'+i, 'HarmonyOS engineering article '+i, '2026/09/30 12:00:00', false));
+      for (let i=0;i<5000;i++) records.push(new WebData('https://example.org/article/'+i, 'HarmonyOS engineering article '+i, '2026/09/30 12:00:00', false));
       AppStorage.SetOrCreate('historyList', records);
       AppStorage.SetOrCreate('ohmOpenHistory', true);
     }

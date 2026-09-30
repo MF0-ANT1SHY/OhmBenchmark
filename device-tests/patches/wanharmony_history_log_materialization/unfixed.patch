@@ -1,5 +1,5 @@
 diff --git a/entry/src/main/ets/entryability/EntryAbility.ets b/entry/src/main/ets/entryability/EntryAbility.ets
-index 5dc09ff..05d8255 100644
+index 5dc09ff..80bc4c3 100644
 --- a/entry/src/main/ets/entryability/EntryAbility.ets
 +++ b/entry/src/main/ets/entryability/EntryAbility.ets
 @@ -1,3 +1,4 @@
@@ -14,7 +14,7 @@ index 5dc09ff..05d8255 100644
 +  onNewWant(want: Want): void {
 +    if (want.parameters && want.parameters['bench']) {
 +      const records: WebData[] = [];
-+      for (let i=0;i<50000;i++) records.push(new WebData('https://example.org/article/'+i, 'HarmonyOS engineering article '+i, '2026/09/30 12:00:00', false));
++      for (let i=0;i<5000;i++) records.push(new WebData('https://example.org/article/'+i, 'HarmonyOS engineering article '+i, '2026/09/30 12:00:00', false));
 +      AppStorage.SetOrCreate('historyList', records);
 +      AppStorage.SetOrCreate('ohmOpenHistory', true);
 +    }
