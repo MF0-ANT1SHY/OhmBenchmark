@@ -23,8 +23,13 @@ def run(harness,case,resume=False):
     prefix=''
     if resume:
         events=[json.loads(l) for l in (out/'events.jsonl').read_text(encoding='utf-8').splitlines()]
-        session=next(x['sessionId'] for x in events if x.get('type')=='session')
-        cmd=cmd[:-1]+['--session-id',session,'-']
+        if harness=='dsh':
+            session=next(x['sessionId'] for x in events if x.get('type')=='session')
+            cmd=cmd[:-1]+['--session-id',session,'-']
+        elif harness=='opencode':
+            session=next(x['sessionID'] for x in events if 'sessionID' in x)
+            cmd+=['--session',session]
+        else:raise ValueError('Resume unsupported')
         prompt='继续原有的匿名性能分析任务。上次因传输中断或最终 JSON 截断而未正常交付。不要引用其他运行、答案或新增假设。使用已有证据完成最终 JSON（summary/suspects），并简洁说明证据限制。'
         prefix='resume-'
     with (out/(prefix+'events.jsonl')).open('w',encoding='utf-8') as stdout,(out/(prefix+'stderr.txt')).open('w',encoding='utf-8') as stderr:

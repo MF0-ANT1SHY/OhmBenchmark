@@ -1,0 +1,34 @@
+本机部署与本次评测
+
+工作目录：C:\Users\30422\Documents\Codex\2026-10-01\goal-project-git-pura-70-case\work\hapray-eval
+项目 Git 仓库：D:\OhmBenchmark-main
+HapRay 源码：C:\Users\30422\Documents\Codex\2026-10-01\goal-project-git-pura-70-case\work\hapray-eval\HapRay
+官方 CLI：C:\Users\30422\Documents\Codex\2026-10-01\goal-project-git-pura-70-case\work\hapray-eval\hapray-release\runtime\tools\perf-testing\perf-testing.exe
+OpenCode：C:\Users\30422\Documents\Codex\2026-10-01\goal-project-git-pura-70-case\work\hapray-eval\harnesses\node_modules\opencode-windows-x64\bin\opencode.exe
+Claude Code：C:\Users\30422\Documents\Codex\2026-10-01\goal-project-git-pura-70-case\work\hapray-eval\harnesses\node_modules\@anthropic-ai\claude-code\bin\claude.exe
+DSH：C:\Users\30422\Documents\Codex\2026-10-01\goal-project-git-pura-70-case\work\hapray-eval\harnesses\node_modules\@deepseek-ai\dsh\lib\bin.js（必须使用 Node 24）
+Node 24：C:\Users\30422\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe
+Python：C:\Users\30422\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe
+
+各案例原生配置位于 runs/eval1-<opencode|claude|dsh>-Cxx。
+OpenCode/Claude 的 skill 在 .claude/skills/hapray；DSH 在 .agents/skills/hapray。
+各 harness 的 provider 指向本机 127.0.0.1:18780，由 api_proxy.py 注入 DeepSeek 凭据。
+模型：deepseek-flash。思考 high；最终纯整理关闭 thinking。
+凭据 deepseek.credential.xml 使用当前 Windows 用户 DPAPI 加密，仅供代理读取。
+代理已停止；查看现有报告不需要启动代理或付费调用。
+
+复现解析（不调用 LLM）：查看 run_hapray.py 中 update/root-cause 命令。
+本次结果 results/<harness>/Cxx/；输入 blind/Cxx/；原始数据 raw/Cxx/。
+完整 native 事件 events.jsonl、工具调用 toolcalls.jsonl，恢复记录 resume-*.jsonl。
+出站请求 api-audit/，费用记录 api-usage.json。账户原余额不交付。
+判分脚本 grade_results.py 在冻结后运行；grading-criteria.json 保留预登记原文。
+C10 同步/异步 API 勘误见 graded-results.json.errata。
+
+现有 run_harness.py 是本轮一次性记录脚本，原路径重新运行会覆盖事件文件。
+若要新增实验，应复制 runs/homes/results 到新命名空间，并为代理设置新预算基线；不要覆盖本次冻结数据。
+现有代理预算基线与计数仍保留，因此重新启动不会自动获得新的 50 元额度。
+费用：28.44 元账户减少量，包含试跑及可能的账户其他使用；这不是按请求精确归属账单。
+
+来源：https://github.com/SMAT-Lab/ArkAnalyzer-HapRay
+DeepSeek 接入：https://api-docs.deepseek.com/guides/anthropic_api/
+说明：本轮只运行这三种 harness，没有扩展其他工具。

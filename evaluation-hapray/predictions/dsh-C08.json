@@ -1,0 +1,41 @@
+{
+  "summary": "该负载通过原历史存储接口写入 5,000 条搜索历史并连续读取完整历史 100 次。读取入口 HistoryStore.getAll()（source/features/home/src/main/ets/utils/history.ets:34-37）每次调用都用 store.getAllSync() 把整张 5,000 条 preferences 表重新编组成新的 JS 对象（每个键和值经 napi_create_string_utf8 → panda::StringRef::NewFromUtf8 新建字符串），随后 Object.keys() 再新建 5,000 元素数组，全程无缓存，且 getAllSync 返回的值从未被使用；读取方 SearchHistoryComp.ets:19 仅取 Object.keys 结果。三轮动态证据中 panda::StringRef::NewFromUtf8 自热点始终居首（21.47%/19.69%/17.01%），libnative_preferences.z.so 相关帧三轮合计约 3.3%–7%，与「整表同步编组」的机制一致。另 setItem 把 keyword 同时作为键和值写入（history.ets:19-22），放大了这份从不被读取的值的编组与存取开销。证据限制：采集事件为 sw-cpu-clock，event_count 只是软件 CPU 时钟采样计数，不能解释为 CPU 指令数；应用 .hap 字节码帧符号为 null（/proc/<pid>/root/data/storage/el1/bundle/phone.hap），无应用级符号名与行号级采样；无 trace_frameLoads.json（帧负载）、trace_ipc_binder.json（IPC）、ui_animate.json（UI/内存）证据，无 hapray_report.db/memory_records（未开 --memory），故帧负载、IPC、组件复用、内存类别不作断言；空刷 0、冗余线程 0、GC 0。static 侧：无 SO 静态分析产物（LTO 状态/代码段大小），动静交叉受限；libnative_preferences.z.so 内部地址未恢复符号。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "HistoryStore",
+      "symbol": "getAll()",
+      "file": "source/features/home/src/main/ets/utils/history.ets",
+      "line_start": 34,
+      "line_end": 37,
+      "confidence": "high",
+      "root_cause": "getAll() 每次调用都执行 store.getAllSync()，让原生 preferences 侧把整张 5,000 条记录重新编组为一个全新 JS 对象：每个键与每个值都要经 napi_create_string_utf8 → panda::StringRef::NewFromUtf8 新建 JS 字符串，随后 Object.keys(obj) 再分配一个 5,000 元素数组。100 次连续读取因此重复 100 次全量编组与字符串分配，且返回值本身从未被消费（调用方只用键名）。三轮动态采样中 panda::StringRef::NewFromUtf8 均为最热叶子（21.47%/19.69%/17.01%，1176000000/1231000000/1084000000 采样计数），libnative_preferences.z.so 内帧每轮合计约 3.3%–7%，与整表同步编组机制吻合。",
+      "fix": "1) 不要把同步全量读取放在渲染路径上：将 SearchHistoryComp 的 aboutToAppear 改为只读取一次并缓存在组件/模块状态（如 static cache 或 AppStorage），历史变更时由 setItem/delItem/clear 主动更新缓存。2) 给 HistoryStore 增加只取键的路径：维护一个本地 keys 数组或在原生侧使用 getAllKeys（若版本支持），避免为 5,000 个值创建 JS 字符串；至少避免 Object.keys(getAllSync()) 这种「取值只为丢值」的用法。3) 读取改为异步 getAll() 并对大表分页/限量（如只展示最近 N 条），避免一次编组 5,000 条。示例：getAll(): string[] { if (this.cachedKeys) return this.cachedKeys; this.cachedKeys = Object.keys(this.store.getAllSync()); return this.cachedKeys }，并在 setItem/delItem/clear 后失效缓存。"
+    },
+    {
+      "rank": 2,
+      "category": "cpu-hotspot",
+      "owner": "HistoryStore",
+      "symbol": "setItem()",
+      "file": "source/features/home/src/main/ets/utils/history.ets",
+      "line_start": 19,
+      "line_end": 22,
+      "confidence": "medium",
+      "root_cause": "setItem 使用 putSync(keyword, keyword)，把关键词同时作为键和值写入 preferences，使存储里每个条目的值都是键的冗余副本；该值在读取端从未被使用（只有 Object.keys 被消费），却要在每次写入以及第 1 条所述的整表编组中被序列化、跨 napi 边界传为 JS 字符串并驻留在 preferences 内存表中。写入 5,000 条时这直接把键值两份字符串的开销翻倍，并放大了后续 getAllSync 的编组成本。putSync 为同步落盘路径，配合 2s 防抖 flush（history.ets:9-17）批量写入期间会在主线程上串行执行。",
+      "fix": "1) 让值保持轻量或复用键：若存储只为记录历史存在，写入时使用不会被读取的最小值（或迁移为仅维护键集合的结构），不要在 5,000 条上重复存储同一字符串两份。2) 批量准备 5,000 条时避免逐条 putSync：改为一次性构造对象后批量写入，并在准备阶段避免触发 UI 刷新。3) 保留现有 2s 防抖 flush 思路，但确保批量写入不在 UI 线程上同步执行（可放到 TaskPool/worker）。"
+    },
+    {
+      "rank": 3,
+      "category": "so-load",
+      "owner": "libnative_preferences.z.so",
+      "symbol": "libnative_preferences.z.so+0x23d34/0x23e5c/0x23e70/0x24044",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "medium",
+      "root_cause": "动态采样中应用进程内 libnative_preferences.z.so 的若干未恢复符号地址（+0x23d34、+0x23e5c、+0x23e70、+0x24044）在三轮中稳定出现在热点前列（step1：各 1.19%–2.17%；step3：+0x23d34 约 1.11%），与同一进程内 libark_jsruntime.so 的 napi/ObjectKeys 相关帧共现。调用链证据显示该 SO 的入口来自 OHOS::PreferencesJsKit::BaseContext::SetAction/GetAction 系 napi 回调，即 ArkTS 侧 preferences 同步 API 的编组路径，指向第 1/2 条所述的全量 getAllSync/putSync 调用模式，而非框架自身无条件开销。",
+      "fix": "1) 先减少调用次数与数据量（缓存、只取键、限量），这是对应用侧最直接有效的改法。2) 如仍需精确定位到函数，另外提供该版本 libnative_preferences.z.so 以做符号恢复后再分析；当前无可用的该 SO 静态产物与符号，无法断言具体函数内部行为。3) 若该 SO 未做 LTO/优化，属系统库侧，只能通过减少调用规避。"
+    }
+  ]
+}

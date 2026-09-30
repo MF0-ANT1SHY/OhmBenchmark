@@ -1,0 +1,43 @@
+{
+  "summary": "在“搜索历史 5000 条全量 get 100 次”的负载中，主要浪费来自 SearchHistoryComp.build() 用 ForEach 一次性把全部历史渲染成 5000 个 chip，并逐个调用 Text(keyword) 经由 panda::StringRef::NewFromUtf8 重建字符串——该函数占 step1 全部样本的 21.47%（1.176e9/5.477e9），是最大应用侧热点；其次 history.ets 每次 setItem 都 putSync+flush（无批量写），落盘与 ArkData 序列化在采样中占比明显，setItem/flush 在测试探针与源码中均未出现。无空刷、无冗余线程、无组件复用/帧/内存信号可用（相应事件与 JSON 缺失），因此只报 2 条有证据支持的嫌疑。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "SearchHistoryComp",
+      "symbol": "build / ForEach + Text(keyword)",
+      "file": "source/features/home/src/main/ets/components/SearchHistoryComp.ets",
+      "line_start": 57,
+      "line_end": 83,
+      "confidence": "medium",
+      "root_cause": "SearchHistoryComp 把 historyStore.getAll() 返回的全部键一次性塞进 @State keywords，并用 ForEach 为 5000 个关键词各建一个 Row+Text；Text 的构造需要对每个字符串做一次 JS→native 的 UTF-8 字符串创建，落在 panda::StringRef::NewFromUtf8 上，成为应用进程内最大单一热点。",
+      "fix": "改为懒加载/分批渲染：在 aboutToAppear 只取前 N 条（如 50）并用 LazyForEach + 可滚动容器；把 this.keywords 替换为 IDataSource 实现，滚动到边界再 historyStore.getAll() 追加下一页；删除操作后同样只增量更新可见项而非整体重取。伪代码：`aboutToAppear(){ this.ds = new BasicDataSource(historyStore.getAll().slice(0,50)) }`，build 中 `LazyForEach(this.ds, item => { Row(){ Text(item) } })`。",
+      "evidence": [
+        "native-profile-1.txt: `21.47% 1176000000 com.itcast.pass_interview /system/lib64/platformsdk/libark_jsruntime.so panda::StringRef::NewFromUtf8(...)`（最高项）",
+        "native-profile-2.txt: 同类热点 19.69% 1231000000，跨步复现",
+        "perf.db step1: 采样线程 14231 名称 com.itcast.pass_interview，共 4846 样本 / 4.846e9，即热点确在应用主线程（见 perf_thread 查询结果）",
+        "perf.db step1: 线程 14231(主 com.itcast.pass_interview) 4846 样本，OS_DfxWatchdog 631 样本，全部采样 5477/5.477e9",
+        "逐帧/UI 采样不可用：trace_frameLoads.json 不存在，perf 采样为 1ms 粒度无法区分单帧，故 UI 级定位缺失，属推断"
+      ]
+    },
+    {
+      "rank": 2,
+      "category": "cpu-hotspot",
+      "owner": "HistoryStore",
+      "symbol": "setItem（putSync + scheduleFlush）",
+      "file": "source/features/home/src/main/ets/utils/history.ets",
+      "line_start": 19,
+      "line_end": 22,
+      "confidence": "low",
+      "root_cause": "每条历史写入都走 putSync 同步落盘且无批量写/无分片，5000 条准备阶段产生 5000 次 ArkData 同步写与序列化，偏好库相关 .so 在采样中占比明显，说明写入（而非读取）阶段本身也很重。",
+      "fix": "提供批量写入口，例如 `setItems(list: string[]) { list.forEach(k => this.store.putSync(k, k)); this.scheduleFlush() }`，让准备阶段一次写入并只 flush 一次；读取侧保持 getAll；同时用 preferences 的批量/异步 API 减少同步阻塞。",
+      "evidence": [
+        "native-profile-1.txt: libnative_preferences.z.so+0x24044 = 2.17%/119000000，libnative_preferences.z.so+0x23e70 = 1.94%/106000000（该库符号级条目合计约 8%）",
+        "native-profile-2.txt 同类项 1.26%/1.15%/1.15%，跨步复现",
+        "perf.db 查询 libpreferences\\.z.so: `.plt` 11392 样本为最高行，且 libpreferences_jscommon.z.so 中 `BaseContext::SetAction` 与 `~BaseContext` 各 7006 样本——同一偏好库被高频调用",
+        "perf.db.hap 中（WebArk JS）调用深度 31-39 出现 1.2k~3.2k 帧，与全量 5000 条循环读写的工作量相符",
+        "注意：无 sw 事件明细，无法证明是写入而非读取；setItem/flush 未出现在 workload.json 的测量入口中（该入口为附加探针），故置信度低，需用同版本探针复测 putSync 计数验证"
+      ]
+    }
+  ]
+}

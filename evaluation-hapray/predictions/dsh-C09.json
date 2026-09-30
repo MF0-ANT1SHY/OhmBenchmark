@@ -1,0 +1,97 @@
+{
+  "summary": "C09 是 org.example.wan.ohos 的三轮同版本采集（hiperf 事件实际为 sw-cpu-clock，非指令数）。动态证据集中在 ArkUI 布局测量：叶子帧热点为 FrameNode::Measure、FlexLayoutAlgorithm::Measure/MeasureAndCleanMagicNodes，且采样分布中占主流的 1s 窗口恰出现在 HistoryPage JANK 事件所在时刻，说明历史页首帧布局是本次操作（通过 Navigation 打开历史页）的主要负载来源，候选机制是 historyList（5000 条）驱动的大规模 Flex 子节点测量/遍历。但源码与动态符号之间缺少 Trace/符号名映射——entry.hap 与 stateMgmt.abc 的调用栈帧在 perf.db 中无符号名，无法把 Measure 热点精确归属到 itemLayout 的具体行号，因此 itemLayout（HistoryPage.ets:99-142 的 Flex 布局）仅作为 medium/低置信候选；HistoryPage 日志（JSON.stringify+map）、WebPage 日志与 PersistentStorage 大数组序列化有明确源码证据但不属本次操作测量路径，仅作低置信候选。空缺项：trace.db 的 frame_slice/measure 表为空、trace_frameLoads.json 与 trace_ipc_binder.json 不存在、so_file_load.json 为空数组、trace_componentReuse.json 全 0（组件复用信号不可用）、未采集内存事件（无 memory_records）。空刷 0、冗余线程 0，不作为问题。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "frame-load",
+      "owner": "HistoryPage",
+      "symbol": "build / ListView itemLayout（Flex 布局测量）",
+      "file": "source/entry/src/main/ets/pages/HistoryPage.ets",
+      "line_start": 99,
+      "line_end": 142,
+      "confidence": "medium",
+      "root_cause": "打开历史页时承载 5000 条 historyList 的列表项使用 Flex(wrap) 布局，ArkUI 需要对大量子节点逐节点测量。step1 的 sw-cpu-clock 采样中，1s 量子在 t=0（即 HistoryPage JANK 事件时刻 1790791678295ms）达到峰值 13.42e9，而叶子帧热点正是 OHOS::Ace::NG::FrameNode::Measure 与 FlexLayoutAlgorithm::MeasureAndCleanMagicNodes（全栈聚合 load 3.07e9/1.15e9，step2/step3 同模式），说明历史页布局测量是该操作的主要 CPU 时间去向。",
+      "fix": "确认列表是否真正惰性化（ListView lazyDataSource 是否只构建可见项）；将 itemLayout 的 Flex(wrap) 改为定长 Row/Column 或对 title 用固定两行约束，减少每个 item 的测量节点数；对 5000 条数据在初始化时做分页/裁剪，先在 aboutToAppear 里只放入首屏所需数据。",
+      "evidence": [
+        "perf_report: config_name=sw-cpu-clock, cmdline='hiperf record -p 7828 -f 1000 -e sw-cpu-clock -s fp ...'（软件 CPU 时钟，不能当作 CPU 指令数）",
+        "perf.db(step1) 叶子帧(SQL depth=0) Top: OHOS::Ace::NG::FrameNode::Measure=3.068e9；FlexLayoutAlgorithm::MeasureAndCleanMagicNodes=1.151e9；FlexLayoutAlgorithm::Measure=1.075e9；BoxLayoutAlgorithm::Measure=1.38e8",
+        "perf.db(step1) 每秒采样 load：sec0=13.42e9, sec1=12.66e9, sec2=11.96e9 ... sec6=0.97e9（总 73.75e9）",
+        "htrace(step1) callstack 含 'H:INTERACTION_APP_JANK: sceneId=ABILITY_OR_PAGE_SWITCH, startTime=1790791678295(ms), pageName=HistoryPage|I62'",
+        "历史页 JANK 时刻（t≈0-1s）与采样峰值窗口重合，且该时段 hotspot 为布局测量"
+      ],
+      "trigger_chain": "Navigation 打开 HistoryPage → NavDestination/ListView 首帧构建 → itemLayout 的 Flex 逐项测量 → FrameNode::Measure / FlexLayoutAlgorithm::MeasureAndCleanMagicNodes 成为叶子热点 → JANK(ABILITY_OR_PAGE_SWITCH, pageName=HistoryPage)"
+    },
+    {
+      "rank": 2,
+      "category": "component-reuse",
+      "owner": "HistoryPage/ListView (RefreshDataSource)",
+      "symbol": "ListView itemLayout / dataSource.initData",
+      "file": "source/entry/src/main/ets/pages/HistoryPage.ets",
+      "line_start": 31,
+      "line_end": 71,
+      "confidence": "low",
+      "root_cause": "候选机制：若 ListView 未真正按需构建，5000 条 historyList 会导致大量 item 组件重复构建，与 rank1 的布局测量热点叠加。但本轮 trace_componentReuse.json 全为 0（total_builds=0, reusability_ratio=0.0，step1/2/3 均如此），组件复用信号在本案例不可用，无法用动态证据证实或证伪该项。",
+      "fix": "在设备上确认列表实际build次数（HapRay 重新采集或 Inspector），若确实一次性构建全部 item，改为 LazyForEach + IDataSource（onDataAdd/onDataChange 增量通知）替代在 build 中调用 alsoKt(...it.initData(this.historyList))。",
+      "evidence": [
+        "report/trace_componentReuse.json: {'step1': {'total_builds': 0, 'recycled_builds': 0, 'reusability_ratio': 0.0}}（step2/step3 相同，信号缺失而非健康）",
+        "source/entry/src/main/ets/pages/HistoryPage.ets:33-36 build() 内 alsoKt(this.dataSource, (it) => { it.initData(this.historyList) })",
+        "source/entry/src/main/ets/utils/MyUtils.ets:2-5 alsoKt 在 build 期间同步执行 block"
+      ],
+      "trigger_chain": "HistoryPage.build() → alsoKt → dataSource.initData(historyList) → 列表项构建/复用判断"
+    },
+    {
+      "rank": 3,
+      "category": "cpu-hotspot",
+      "owner": "libace_compatible.z.so (应用主线程 org.example.wan.ohos)",
+      "symbol": "OHOS::Ace::NG::FrameNode::Measure",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "medium",
+      "root_cause": "应用主线程（org.example.wan.ohos，pid 7828）占进程内采样负载 70.9e9/73.75e9，其余线程无显著贡献（GC 线程合计 2.25e9）；主线程热点为 ArkUI 布局测量路径（FrameNode::Measure / FlexLayoutAlgorithm::Measure / BoxLayoutAlgorithm::Measure / FrameNode::CreateLayoutTask），即 UI 布局工作量集中在主线程，未分摊。",
+      "fix": "减少单帧布局节点数量（见 rank1）；对长列表使用固定尺寸 item、避免 wrap 布局的二次测量；若数据量必须为 5000，考虑预计算/缓存文本行数或使用 List 的 cachedCount 与固定 item 高度。",
+      "evidence": [
+        "perf.db(step1) 按线程：org.example.wan.ohos=71.354e9（占进程 96.7%）；OS_GC_Thread 合计 2.249e9；OS_FFRT/OS_IPC 合计 <0.15e9",
+        "perf.db(step1) 全深度聚合：FrameNode::Measure=79.387e9（n=13255）、FlexLayoutAlgorithm::Measure=29.28e9、MeasureAndCleanMagicNodes=30.216e9、FrameNode::Layout()=46.571e9",
+        "perf.db(step1) 全深度聚合：OHOS::Rosen::RSTransactionData::Marshalling=19.556e9、RSSystemProperties::GetAnimationTraceEnabled=8.386e9、SystemReadParam=7.878e9（系统侧路径随布局帧同步放大）"
+      ],
+      "trigger_chain": "VSync → PipelineContext::FlushVsync → FrameNode::CreateLayoutTask → FrameNode::Measure/Layout → RS 事务提交"
+    },
+    {
+      "rank": 4,
+      "category": "cpu-hotspot",
+      "owner": "HistoryPage.aboutToAppear",
+      "symbol": "JSON.stringify(historyList.map(...))",
+      "file": "source/entry/src/main/ets/pages/HistoryPage.ets",
+      "line_start": 21,
+      "line_end": 27,
+      "confidence": "low",
+      "root_cause": "候选：aboutToAppear 中对整个 historyList（5000 条）做 map + JSON.stringify 并写入日志；若 log 未按版本关闭，这会在页面进入时同步产生 O(n) 字符串构造与大量 IO，可能加剧首帧延迟。但采样栈中仅见到 ArkTS 运行时标志帧（RTStub_PushCallRangeAndDispatchNative=14.731e9、BCStub_HandleCallrangeImm8Imm8V8StwCopy=14.523e9），无法证明这些标志帧来自该日志调用，故不能断言此为该操作的主要耗时来源。",
+      "fix": "移除或降级 aboutToAppear 中的全量日志（改为仅打印 historyList.length）；给 log 增加 debug 开关（BuildProfile.DEBUG），生产构建不执行 JSON.stringify。",
+      "evidence": [
+        "source/entry/src/main/ets/pages/HistoryPage.ets:21-27 aboutToAppear 内 log(`historyList = ${JSON.stringify(this.historyList.map(...))}`, \"historyList\")",
+        "source/entry/src/main/ets/pages/WebPage.ets:45-49,62-66 同一 historyList 在更新前后各做一次全量 JSON.stringify+map",
+        "perf.db(step1) ArkTS 解释/调用桩帧：RTStub_PushCallRangeAndDispatchNative=14.731e9、BCStub_HandleCallrangeImm8Imm8V8StwCopy=14.523e9、RTStub_PushCallArgsAndDispatchNative=13.769e9（无源码级符号映射，无法归属到具体行）"
+      ],
+      "trigger_chain": "NavDestination 就绪 → HistoryPage.aboutToAppear → JSON.stringify(map(historyList)) → 日志输出（O(n) 字符串构造 + IO）"
+    },
+    {
+      "rank": 5,
+      "category": "cpu-hotspot",
+      "owner": "HistoryPage.itemLayout",
+      "symbol": "Text(`${index + 1} / ${this.historyList.length}`) 等逐项文本构建",
+      "file": "source/entry/src/main/ets/pages/HistoryPage.ets",
+      "line_start": 100,
+      "line_end": 128,
+      "confidence": "low",
+      "root_cause": "候选：每个列表项在 build 中重复做模板字符串拼接与多次 Text 构建，并依赖 this.historyList.length 参与渲染（长度变化会导致全列表重建）。与 rank1 的测量热点方向一致，但同样缺少 trace 级符号把 Measure 热点精确绑定到 itemLayout，故仅列为待验证候选。",
+      "fix": "将 `${index + 1} / ${this.historyList.length}` 改为不依赖 historyList 长度的常量或 DataSource 提供总数，避免全列表无谓重建；对 stateless item 抽成 @Reusable/@Component 以支持复用。",
+      "evidence": [
+        "source/entry/src/main/ets/pages/HistoryPage.ets:116 Text(`${index + 1} / ${this.historyList.length}`)（依赖 @StorageLink 数组长度）",
+        "source/entry/src/main/ets/pages/HistoryPage.ets:137-138 数据变化后手动 dataSource.initData(this.historyList) 并 scrollToIndex(0)",
+        "perf.db(step1)：FrameNode::Measure 13255 次采样、FlexLayoutAlgorithm::MeasureAndCleanMagicNodes 10480 次采样（大量逐节点测量，与 item 级布局一致，但无符号关联到 itemLayout）"
+      ],
+      "trigger_chain": "historyList 变化(MemMgr/StorageLink) → itemLayout 重新执行 → 文本拼接 + Flex/Row/Column 测量 → 布局负载"
+    }
+  ]
+}

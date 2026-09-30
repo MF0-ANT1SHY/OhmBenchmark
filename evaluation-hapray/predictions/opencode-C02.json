@@ -1,0 +1,64 @@
+{
+  "summary": "操作是在历史记录弹窗(PagesDialog)中浏览/滑动 1000 条记录。动态证据最可靠的问题是：历史列表用嵌套 ForEach 全量构建 HistoryItem，组件复用率恒为 0（三轮 recycled_builds=0、reusability_ratio=0.0），并在观察窗口内产生 16.6ms 的高负载帧；该列表构建是唯一被三类证据(componentReuse/frameLoads/主线程占比)同时指向的目标。注意：本案例采集事件为 sw-cpu-clock（hiperf -e sw-cpu-clock），event_count 不能解释为 CPU 指令数；perf 叶子符号大量无法解析(thread 52224 的 depth0 归到 /system/bin/appspawn 且 symbol 为 null)，因此无法定位 native 符号级热点，只能给主线程时间占比这一事实。空刷 23/33/26 帧的 main_thread_load=0、severity=normal，属正常，不作为问题；无 --memory 采集、无 ui_animate/IPC 事件，相关维度缺失不臆造。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "component-reuse",
+      "owner": "PagesDialog",
+      "symbol": "build / ForEach(group.histories)",
+      "file": "source/entry/src/main/ets/view/PagesDialog.ets",
+      "line_start": 83,
+      "line_end": 93,
+      "confidence": "high",
+      "root_cause": "历史记录弹窗用 List > ForEach(分组) > ForEach(组内记录) 全量构建 HistoryItem，两层 ForEach 均未使用 LazyForEach、未提供 keyGenerator，也没有列表项复用；三轮动态证据显示 HistoryItem 每轮 total_builds=200、recycled_builds=0、reusability_ratio=0.0，即 1000 条记录被反复整体重建而非按需/复用。这是打开的浏览记录页面在滑动与观察期内的主要浪费工作。",
+      "fix": "把内层 ForEach 改为 LazyForEach 并实现 IDataSource（按页/按需 dataSource.getData），外层分组可用 ListItemGroup 保持；为 ForEach/LazyForEach 提供稳定的 keyGenerator（如 history.id 或 url+timestamp）。若沿用 ForEach，也应给 List 配置 cachedCount 并避免在 @State 上重复整体赋值。",
+      "evidence": [
+        "report/trace_componentReuse.json: step1/step2/step3 均为 {\"HistoryItem\":[200,0],\"PagesDialog\":[1,0]}，recycled_builds=0、reusability_ratio=0.0",
+        "root_cause_evidence.md [suspect] 组件复用: step1/2/3 max_component=HistoryItem total_builds=200 recycled_builds=0 reusability_ratio=0.0",
+        "PagesDialog.ets:84-91 List(){ForEach(this.historyGroups){ListItemGroup(){ForEach(group.histories){ListItem(){HistoryItem(...)}}}}}, 无 LazyForEach/无 key",
+        "PagesDialog.ets:28-29 先置 this.historyGroups=[] 再整体赋值 Array.from，触发整表重建",
+        "HistoryItem.ets:5-13 每个实例含 5 个 @State + 3 个 @Consume，HistoryItem.ets:41 每个行还有 shadow，逐行重建代价被放大"
+      ],
+      "trigger_chain": "打开浏览记录弹窗 → PagesDialog.aboutToAppear → loadHistoryData → @State historyGroups 整体赋值 → List/ForEach 全量 build HistoryItem"
+    },
+    {
+      "rank": 2,
+      "category": "frame-load",
+      "owner": "com.example.nanvision (main thread)",
+      "symbol": "List/ForEach 全量构建历史列表帧",
+      "file": "source/entry/src/main/ets/view/PagesDialog.ets",
+      "line_start": 83,
+      "line_end": 93,
+      "confidence": "medium",
+      "root_cause": "观察窗口内出现单个主线程帧负载 frame_load=517000000、dur≈16.6ms（约两个 VSync 周期），step3 同类帧 505000000/16.6ms；这些高负载帧集中在主线程(thread_name=ample.nanvision)且与列表构建/滑动同窗口，最合理的对应机制是第 1 项所述的全量构建列表项导致的长帧。",
+      "fix": "采用第 1 项的 LazyForEach+cachedCount 改造，减少单帧内构建的 HistoryItem 数量；必要时把 HistoryItem 的多 @State 合并、去掉每行 shadow(HistoryItem.ets:41)等高开销样式，降低单行构建成本。",
+      "evidence": [
+        "report/trace_frameLoads.json: step2 top frame callstack_id=13104 frame_load=517000000 dur=16615625ns flag=2 is_main_thread=1",
+        "report/trace_frameLoads.json: step3 top frame callstack_id=15262 frame_load=505000000 dur=16604687ns",
+        "root_cause_evidence.md [suspect] 高负载帧: step2 high_load_frames=18 max_load=517000000; step3 high_load_frames=13 max_load=505000000",
+        "root_cause_evidence.md frame-stats: step2 stutter_rate=0.9649、step3=0.8947（滑动同窗口，仅作参考）"
+      ],
+      "trigger_chain": "滑动历史列表/列表首次构建 → 主线程同一帧内构建大量 HistoryItem → 单帧 16.6ms 长帧"
+    },
+    {
+      "rank": 3,
+      "category": "cpu-hotspot",
+      "owner": "com.example.nanvision",
+      "symbol": "(叶子符号不可解析, 归到 /system/bin/appspawn symbol=null)",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "三轮中主线程 thread 52224 占用约 71.87e9/80.64e9≈89% 的采样量，说明活动集中在 UI 主线程；但采样事件是 sw-cpu-clock（非 raw-instruction-retired），且主线程 depth0 叶子有 69.8e9 样本符号为 null、被归到 /system/bin/appspawn，说明存在符号解析缺口（疑似匿名/未映射到 .so 的可执行区），无法据此断言任何 native 函数级热点，需符号恢复后才能定位。",
+      "fix": "触发可选阶段3 update --so_dir 做符号恢复后重跑 §四.3.B 符号级聚合，再决定是否针对具体函数优化；在此之前不要依据该 null/appspawn 叶子做优化。",
+      "evidence": [
+        "perf.db perf_report: config_name=sw-cpu-clock, cmdline='hiperf record --app com.example.nanvision -d 12 -f 1000 -e sw-cpu-clock -s fp ...'",
+        "perf.db perf_sample: COUNT=80636 全部 event_count=1000000, SUM=80636000000（-f 1000 定周期，不能当指令数）",
+        "perf.db 按线程: thread_id=52224 load=71871000000 占 80636000000 的约 89%",
+        "perf.db 叶子(depth=0)聚合: symbol=null path=/system/bin/appspawn load=69836000000（占 86.6%）→ 符号解析失败，非真实热点",
+        "workload.json notes: '软件 CPU 时钟样本不能作为 CPU 指令数'"
+      ],
+      "trigger_chain": "主线程持续采样（占 89%）→ 可执行区未映射到已知 .so → 叶子符号 null 无法定位"
+    }
+  ]
+}

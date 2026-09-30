@@ -1,0 +1,74 @@
+[
+  {
+    "id": "C05",
+    "db": "hapray\\20261001032212\\htrace\\step1\\trace.db",
+    "query_term": "Insert",
+    "name_count_sum_duration_ns": [
+      [
+        "H:Insert|I36",
+        3000,
+        23725148000
+      ]
+    ]
+  },
+  {
+    "id": "C05",
+    "db": "hapray\\20261001032212\\htrace\\step2\\trace.db",
+    "query_term": "Insert",
+    "name_count_sum_duration_ns": [
+      [
+        "H:Insert|I36",
+        3000,
+        23584866000
+      ]
+    ]
+  },
+  {
+    "id": "C05",
+    "db": "hapray\\20261001032212\\htrace\\step3\\trace.db",
+    "query_term": "Insert",
+    "name_count_sum_duration_ns": [
+      [
+        "H:Insert|I36",
+        3000,
+        22263025000
+      ]
+    ]
+  },
+  {
+    "id": "C13",
+    "db": "hapray\\20261001032640\\htrace\\step1\\trace.db",
+    "query_term": "QuerySql",
+    "name_count_sum_duration_ns": [
+      [
+        "H:QuerySql|I36",
+        201,
+        1932784000
+      ]
+    ]
+  },
+  {
+    "id": "C13",
+    "db": "hapray\\20261001032640\\htrace\\step2\\trace.db",
+    "query_term": "QuerySql",
+    "name_count_sum_duration_ns": [
+      [
+        "H:QuerySql|I36",
+        209,
+        1808285000
+      ]
+    ]
+  },
+  {
+    "id": "C13",
+    "db": "hapray\\20261001032640\\htrace\\step3\\trace.db",
+    "query_term": "QuerySql",
+    "name_count_sum_duration_ns": [
+      [
+        "H:QuerySql|I36",
+        201,
+        1915339000
+      ]
+    ]
+  }
+]

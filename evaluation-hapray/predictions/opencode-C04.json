@@ -1,0 +1,142 @@
+{
+  "summary": "C04 的负载由 FeedParser 对含 100 篇长多语言 HTML 正文的 RSS 逐条解析产生：解析在工作用的主线程上同步执行（FeedFetcher.fetchFeed → FeedParser.parse → parseRssItem），其中 parseDate() 对每个条目的日期串（pubDate 失配后回落 dc:date）整体调用 String.prototype.toLowerCase()，把大部分长多语言正文的代理/UTF-16 字符串送进 ICU 大小写映射（BuiltinStub_StringToLowerCaseStwCopy → icu caseMap/ustrcase_internalToLower），成为单点最大热点；extractTag() 又对整段正文重复 xml.toLowerCase()。因此主要浪费不是“解析正文”本身，而是为日期/标签匹配对整篇长多语言文本做 Unicode 小写转换。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "FeedParser",
+      "symbol": "parseDate",
+      "file": "source/entry/src/main/ets/utils/FeedParser.ets",
+      "line_start": 322,
+      "line_end": 351,
+      "confidence": "medium",
+      "root_cause": "parseDate 对整条日期字符串调用 String.prototype.toLowerCase() 只为匹配英文月份缩写；RSS 条目的日期串（如 pubDate 缺失时回落的 dc:date）在多语言/含大段转义正文的文档里可能很长，toLowerCase 于是对整篇长多语言文本做 Unicode case mapping，经 BuiltinStub_StringToLowerCaseStwCopy 进入 ICU（caseMap/ustrcase_internalToLower）。这与 workload.json 的“解析含 100 篇长多语言 HTML 正文的 RSS 文档”直接对应，且三轮运行稳定复现：step2 该 builtin 11.7 G、ICU caseMap 11.7 G；step3 21.1 G / ICU 11.8 G。",
+      "fix": "只对匹配到的 3 字母月份缩写做大小写归一，不要对整串调用 toLowerCase：例如先匹配 /(\\d{1,2})\\s+([A-Za-z]{3})[a-z]*\\s+(\\d{2,4})…/，随后用 parts[2].slice(0,3).toLowerCase() 再查 MONTHS；并在解析前先剥离 content:encoded/description 的大段文本，避免把正文当日期串传入。",
+      "evidence": [
+        "workload.json: 描述为“解析含 100 篇长多语言 HTML 正文的 RSS 文档”，三轮真实运行(pid 62866/63026/63313)",
+        "源码 FeedParser.ets:336 `const month: number = MONTHS.indexOf(parts[2].toLowerCase());`（对整串日期 toLowerCase）",
+        "源码 FeedParser.ets:332-333 日期正则要求 [A-Za-z]{3}，若正文被当成日期串传入则整串进入 toLowerCase",
+        "perf.db(step2) 符号级 load: BuiltinStub_StringToLowerCaseStwCopy=20,596,000,000；libhmicuuc caseMap=11,720,000,000；ustrcase_internalToLower_72=11,608,000,000；u_strToUTF8WithSub_72=2,451,000,000",
+        "perf.db(step1/step3) 同符号稳定: step1 BuiltinStub_StringToLowerCase=19,813,000,000、ICU caseMap=11,509,000,000；step3=21,090,000,000 / 11,826,000,000",
+        "perf_report(step2): config_name=sw-cpu-clock（软件 CPU 时钟），故 load=SUM(event_count) 只能作相对热点排序，不表示 CPU 指令数"
+      ],
+      "trigger_chain": "业务刷新 → FeedFetcher.fetchFeed(url) → FeedParser.parse → parseRss/parseAtom → parseRssItem(100 items) → parseDate(pubDate 或 dc:date) → String.toLowerCase() → ICU caseMap/ustrcase_internalToLower"
+    },
+    {
+      "rank": 2,
+      "category": "cpu-hotspot",
+      "owner": "FeedParser",
+      "symbol": "extractTag",
+      "file": "source/entry/src/main/ets/utils/FeedParser.ets",
+      "line_start": 179,
+      "line_end": 195,
+      "confidence": "medium",
+      "root_cause": "extractTag 为做大小写无关的闭标签查找，每取一个标签都对整段 xml 执行 xml.toLowerCase()，再对结果做 indexOf。对单篇长多语言正文，这会把同一大串文本整体复制并做一次 Unicode 小写映射；100 篇条目 × 每篇多个标签（title/link/content:encoded/description/pubDate/…）导致 O(items × bytes) 的重复 Unicode 转换，与 parseDate 的 toLowerCase 共同推高 StringToLowerCaseStwCopy/ICU 负载。",
+      "fix": "不要在每次 extractTag 调用里对全文 toLowerCase。改为：对 open/close 标签用带 'i' 标志的 RegExp 一次定位（如 new RegExp('</'+tagName+'\\\\s*>','gi')）并用 exec 的 index/长度截取；或仅在 XML 扫描时做一次大小写归一，之后复用。",
+      "evidence": [
+        "源码 FeedParser.ets:187-188 `const closeTag = '</'.concat(tagName.toLowerCase())…; const closeIndex = xml.toLowerCase().indexOf(closeTag, innerStart);`",
+        "源码调用点密集：FeedParser.ets:40-42、58-75、105-107、123-135（每个条目多次 extractTag）",
+        "perf.db 符号级出现 BuiltinStub_StringToLowerCaseStwCopy 高负载，与全文 toLowerCase 机制一致（step2 20.6 G）",
+        "workload.json: 100 篇长正文 → 重复 toLowerCase 的输入规模最大化"
+      ],
+      "trigger_chain": "FeedParser.parseRss/parseAtom → 循环 parseRssItem/parseAtomEntry(100) → extractTag → xml.toLowerCase()"
+    },
+    {
+      "rank": 3,
+      "category": "thread",
+      "owner": "com.sheafreader.hm (主线程)",
+      "symbol": "FeedFetcher.fetchFeed / FeedParser.parse",
+      "file": "source/entry/src/main/ets/utils/FeedFetcher.ets",
+      "line_start": 35,
+      "line_end": 35,
+      "confidence": "medium",
+      "root_cause": "feed 解析全程在应用主线程/UI 能力线程上同步执行：fetchFeed 在 await 到 body 后直接调用 FeedParser.parse(content,url)（无 taskpool/Worker/异步切线），而解析 100 篇长多语言正文属于 CPU 密集的字符串处理。主线程占用 41.2 G（占应用进程绝大部分）且调用链穿透 FlushVsync/FlushBuild，说明刷新/解析工作挤占 UI 管道，属于可移至 Worker 的浪费。",
+      "fix": "把 FeedParser.parse（或至少逐条 parseRssItem/parseAtomEntry）通过 @ohos.taskpool/@Concurrent 或 Worker 放到后台线程执行，只把解析结果回传主线程更新状态；避免在 UI 线程内做批量正则/大小写/实体解码。",
+      "evidence": [
+        "源码 FeedFetcher.ets:35 `const parsed: ParsedFeed | null = FeedParser.parse(content, url);`（无并发调度，直接主线程调用）",
+        "源码搜索未见 taskpool/@Concurrent/Worker 包装解析（FeedParser.parse 仅被 FeedFetcher.ets:35、FeedService.ets:307 直接调用）",
+        "perf.db(step2) 线程聚合: 主线程 com.sheafreader.hm=41,214,000,000；OS_NET_HttpWork=697,000,000；OS_GC_Thread=3,388,000,000",
+        "perf.db 调用链出现 PipelineContext::FlushVsync=7,697,000,000 / FlushBuild=6,960,000,000 / FlushDirtyNodeUpdate=6,959,000,000，主线程同时承担解析与 UI 刷新",
+        "perf_report: cmdline 为 hiperf record -p 63026 -f 1000 -e sw-cpu-clock（仅采集目标进程，缺失 UI/内存事件，不能据此判断掉帧或内存）"
+      ],
+      "trigger_chain": "刷新/同步 → FeedFetcher.fetchFeed → (await 网络) → 主线程 FeedParser.parse → 长文本同步 CPU 工作"
+    },
+    {
+      "rank": 4,
+      "category": "so-load",
+      "owner": "libhmicuuc.z.so (ICU)",
+      "symbol": "icu_72::UnicodeString::caseMap / ustrcase_internalToLower_72",
+      "file": "source/entry/src/main/ets/utils/FeedParser.ets",
+      "line_start": 336,
+      "line_end": 336,
+      "confidence": "medium",
+      "root_cause": "ICU 的 Unicode 大小写映射本身占用了可观负载（step2 caseMap 11.7 G、ustrcase_internalToLower 11.6 G），这是 rank1/rank2 中 toLowerCase 的底层实现，而非独立业务缺陷；它证明小写转换被作用在了超出必要（日期/标签）的整篇多语言文本上。u_strToUTF8WithSub_72(2.5 G) 提示还有一轮 UTF-16→UTF-8 转换，与长多语言/含代理对文本相关。",
+      "fix": "从源头减少传给 toLowerCase 的数据量（见 rank1/rank2）；若确需大批量大小写/编码转换，改用不触发 ICU 的 ASCII-only 路径（如仅当字符串为 ASCII 时用普通比较），避免对 CJK/emoji 文本调用 Unicode case mapping。",
+      "evidence": [
+        "perf.db(step2) libhmicuuc.z.so: caseMap=11,720,000,000；ustrcase_internalToLower_72=11,608,000,000；u_strToUTF8WithSub_72=2,451,000,000；ucase_toFullLower_72=1,729,000,000",
+        "step1/step3 同 SO 稳定复现（caseMap≈11.5G/11.8G）",
+        "该负载可完全由 FeedParser.ets:336 / 188 的 toLowerCase 调用解释（无其他 ICU 调用点被检索到）"
+      ],
+      "trigger_chain": "FeedParser.parseDate/extractTag → String.toLowerCase → libhmicuuc ICU caseMap"
+    },
+    {
+      "rank": 5,
+      "category": "cpu-hotspot",
+      "owner": "ContentExtractor",
+      "symbol": "extract / dropChrome / splitBlocks",
+      "file": "source/entry/src/main/ets/utils/ContentExtractor.ets",
+      "line_start": 65,
+      "line_end": 178,
+      "confidence": "low",
+      "root_cause": "全文提取是“正则链”实现：对每篇 HTML 依次做 stripComments、dropChrome(13 个 chrome 标签各编译并全局替换一次)、largestOf(article/main/body 各全扫描)、splitBlocks(20 个块级标签各一次全局 replace)，再逐块 visibleText。对 100 篇长多语言正文，这些多次全文/多轮正则会放大字符串扫描与拷贝，与主线程高负载同源。",
+      "fix": "合并正则、避免对同一大文本多轮 replace；或先用单次扫描按标签切分再分类；在 Worker 中执行并考虑对超大正文分块处理。",
+      "evidence": [
+        "源码 ContentExtractor.ets:70-74 (stripComments→dropChrome→mainRegion→splitBlocks 顺序全文处理)",
+        "源码 ContentExtractor.ets:111-117 dropChrome 对每个 CHROME 标签新建 RegExp 全局替换",
+        "源码 ContentExtractor.ets:146-157 largestOf 对同段文本多轮 re.exec；164-169 splitBlocks 对每个 BLOCK_TAG 做一次全局 replace",
+        "workload.json 规模为 100 篇长正文",
+        "说明：未获得显示 ContentExtractor/正文小写回退的直接符号采样，此为机制性推断，置信度 low，需更多证据（如该路径的 cpu-hotspot 采样）确认"
+      ],
+      "trigger_chain": "正文提取入口（Load full content 路径）→ ContentExtractor.extract → dropChrome/splitBlocks 正则链"
+    }
+  ],
+  "observations": [
+    {
+      "category": "frame-stats",
+      "signal": "采样配置/缺失信号",
+      "finding": "perf_report 显示本轮仅采集 sw-cpu-clock 软件 CPU 时钟（period=1000, -p 63026），未采集 UI/内存事件；因此 event_count 只能作相对热点权重，不能当作 CPU 指令数，也无法据此判断掉帧。",
+      "evidence": "perf.db(step2) perf_report: config_name=sw-cpu-clock; cmdline=hiperf record -p 63026 -f 1000 -e sw-cpu-clock -s fp",
+      "related_owner": "",
+      "suggested_direction": "如需指令级/帧级结论，补采 raw-instruction-retired 与 UI（frame_slice/vsync）事件"
+    },
+    {
+      "category": "frame-stats",
+      "signal": "空刷/冗余线程/组件复用/内存 — 缺失或为0",
+      "finding": "trace_emptyFrame 三轮 total_empty_frames=0；redundant_thread_analysis 各 step total_redundant_threads=0（无冗余线程）；trace_componentReuse 各 step total_builds=0、reusability_ratio=0（本场景无 UI 组件构建）；so_file_load.json 为 []（SO 级聚合空）。因此空刷/冗余线程/组件复用/内存无信号，不能假设存在这些问题。",
+      "evidence": "trace_emptyFrame.json: step1-3 total_empty_frames=0/severity normal; redundant_thread_analysis.json: has_redundancy=false; trace_componentReuse.json: total_builds=0; so_file_load.json: []",
+      "related_owner": "",
+      "suggested_direction": "本任务聚焦 CPU 侧；如需内存结论需以 --memory 采集"
+    },
+    {
+      "category": "fault-hilog",
+      "signal": "GC 压力轻微",
+      "finding": "GC 状态 OK，三轮 SharedGC=3/PartialGC=2，GC 占 perf 百分比仅 0.07–0.08%，与本轮解析负载相比可忽略（且 sw-cpu-clock 下该比例仅为相对参考）。",
+      "evidence": "trace_gc_thread.json: step1-3 GCStatus=OK, perf_percentage≈0.069–0.084",
+      "related_owner": "",
+      "suggested_direction": "无需针对 GC 优化"
+    }
+  ],
+  "caveats": [
+    "采样事件为 sw-cpu-clock，event_count/LOAD 是软件 CPU 时钟样本的加权计数，不能解释为 CPU 指令数。",
+    "主线程调用链中大量符号为 null（appspawn、entry.hap）与 bytecode 解释器（RTStub_AsmInterpreterEntry 13.36 G），ArkTS 字节码自身不做 100% 归因，Hot 排名依赖可见的 builtin/ICU/SO 符号，故符号级占比只能视作下界。",
+    "rank1/rank2 的“日期串/标签处理作用于整篇长文本”为基于源码与符号分布的机制推断，缺少单样本变量级验证；rank5 无直接采样支撑，置信度 low。",
+    "未获得 UI 事件（frame_slice/vsync）与内存（memory_records）数据，未采集 native_hook/jsheap，相关结论无法给出。",
+    "root_cause.md 中为 Pending Agent Inference 占位（无本地 LLM API Key），本回答的 suspects 为 Agent 依据证据独立推断，非 CLI 检测结果。"
+  ],
+  "needs_more_data": [
+    "raw-instruction-retired 事件采集，以把相对 LOAD 换算为指令级占比",
+    "带符号（update --so_dir）或未 strip 的 entry.hap / 应用 .so，以恢复 ArkTS 业务帧（parseRssItem/parseDate/ContentExtractor 的具体帧）",
+    "逐条文章与日期字段的实测长度分布，验证 toLowerCase 输入规模与热点归一",
+    "--memory 采集（memory_records/jsheap）以判断长正文字符串与实体解码是否带来内存峰值/未释放"
+  ]
+}

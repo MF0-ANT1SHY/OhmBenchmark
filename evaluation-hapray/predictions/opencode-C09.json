@@ -1,0 +1,97 @@
+{
+  "summary": "C09（org.example.wan.ohos）为只读已完成采集任务：sw-cpu-clock（非指令计数）显示约 97% 采样落在应用主线程 org.example.wan.ohos（71354/73754，全为 main thread），业务侧热点集中在布局（FrameNode::Measure / FlexLayoutAlgorithm）与 FrameNode 重布局链；HistoryPage 通过 JSON.stringify 打印 5000 条历史、aboutToAppear(()=>JSON.stringify)（第22行）/ onRefresh initData(第63行)/ 点击回调 initData+scrollToIndex(第137-138行) 属同源待验证风险。报告未提供 UI/内存信号，空刷/冗余线程/组件复用均为 0，无足够证据断言根因，以下为按把握排序的源码+动态证据支持的嫌疑点。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "HistoryPage",
+      "symbol": "aboutToAppear / JSON.stringify(historyList)",
+      "file": "source/entry/src/main/ets/pages/HistoryPage.ets",
+      "line_start": 21,
+      "line_end": 27,
+      "confidence": "medium",
+      "root_cause": "HistoryPage.aboutToAppear 每次进入历史页都会对 @StorageLink('historyList') 做 JSON.stringify(historyList.map(...)) 并 log，5000 条记录时构造了 5000 项的字符串数组与完整 JSON 字符串，属一次性大字符串分配+主线程同步执行；动态证据显示应用主线程占 71354/73754 个 sw-cpu-clock 样本且存在 entry.hap 应用帧与大量 GC 线程采样（OS_GC_Thread 多次出现），与大批量字符串分配相符。",
+      "fix": "仅在调试构建或显式日志级别下打印；改为 log(`historyList length=${this.historyList.length}`) 之类 O(1) 输出；若必须落日志，改为分片/懒加载并在 Worker 或异步任务中序列化，不要在 aboutToAppear 主线程对全量列表做 map+JSON.stringify。",
+      "evidence": [
+        "HistoryPage.ets:22-26 `log(`historyList = ${JSON.stringify(this.historyList.map(it => ...))}`, \"historyList\")`",
+        "perf.db step1: 71354/73754 样本（约 96.8%）属 org.example.wan.ohos 线程（process 7828），说明负载在主线程",
+        "perf.db step1: OS_GC_Thread 多次采样（619/575/552/503），trace_gc_thread PartialGC step1=3/step2=3/step3=4",
+        "caveat: 采样事件为 sw-cpu-clock，样本数/耗时不能解释为 CPU 指令数"
+      ]
+    },
+    {
+      "rank": 2,
+      "category": "cpu-hotspot",
+      "owner": "ArkUI/Layout",
+      "symbol": "OHOS::Ace::NG::FrameNode::Measure / FlexLayoutAlgorithm::MeasureAndCleanMagicNodes",
+      "file": "source/entry/src/main/ets/pages/HistoryPage.ets",
+      "line_start": 98,
+      "line_end": 128,
+      "confidence": "medium",
+      "root_cause": "itemLayout 使用 Flex(wrap:FlexWrap.Wrap) 且每项三个 100% 宽度子节点，5000 项列表项均走 Flexible 布局；hiperf 叶子热点中 libace_compatible.z.so 的 FrameNode::Measure 3068 样本、FlexLayoutAlgorithm::MeasureAndCleanMagicNodes 1151、FlexLayoutAlgorithm::Measure 1075、BoxLayoutAlgorithm::Measure 138，均属 FrameNode 主线程 Measure 链，与每项 Flex 布局成本相关。",
+      "symbol_owner": "libace_compatible.z.so",
+      "fix": "列表项改用更轻的 Row/Column（去掉 wrap 换行与多余嵌套，每个 cell 减少一层 Flex）；对固定高度 cell 设置固定宽高避免逐项 Measure；长列表确保走 LazyForEach/LazyDataSource 虚拟化（当前已用 RefreshDataSource，但仍应核查只有可见项参与布局）。",
+      "evidence": [
+        "perf.db step1 depth=0 聚合：libace_compatible.z.so FrameNode::Measure=3068 样本；FlexLayoutAlgorithm::MeasureAndCleanMagicNodes=1151；FlexLayoutAlgorithm::Measure=1075；BoxLayoutAlgorithm::Measure=138",
+        "callchain depth<=6 中 FrameNode::CreateLayoutTask=55、PipelineContext::FlushVsync=98，属主线程渲染布局链",
+        "HistoryPage.ets:100-128 itemLayout 为 Flex+Wrap，每项 height 120",
+        "caveat: sw-cpu-clock 为 CPU 时钟事件，样本计数不代表指令数；libace 为系统库无应用行号"
+      ]
+    },
+    {
+      "rank": 3,
+      "category": "cpu-hotspot",
+      "owner": "HistoryPage / RefreshDataSource",
+      "symbol": "initData(this.historyList)",
+      "file": "source/entry/src/main/ets/pages/HistoryPage.ets",
+      "line_start": 59,
+      "line_end": 64,
+      "confidence": "low",
+      "root_cause": "onRefresh 与点击回调（第137-138行）都调用 this.dataSource.initData(this.historyList) 重灌全量 5000 条数据源，随后还可能触发重建/重排；若 initData 内部逐项处理或触发大量刷新，会放大主线程负载。当前证据仅能定位到调用点，未取得 initData 内部实现，故置信度低。",
+      "fix": "下拉刷新/详情页返回后只做增量更新或差异刷新，避免每次全量 initData；在返回回调中仅更新受影响的条目，或使用 dataSource 的局部更新 API；scrollToIndex(0) 前判断列表是否已变化。",
+      "evidence": [
+        "HistoryPage.ets:63 `this.dataSource.initData(this.historyList)`（onRefresh）",
+        "HistoryPage.ets:137-138 点击进入 WebPage 的 pop 回调中再次 `initData(...)` + `scrollToIndex(0)`",
+        "workload.json run2 elapsed 45.7ms 明显高于 run1 8.2ms、run3 7.3ms，提示该路径存在非稳定开销",
+        "caveat: 三轮 pid 不同且样本偏稀疏，未直接证明 initData 为热点"
+      ]
+    },
+    {
+      "rank": 4,
+      "category": "cpu-hotspot",
+      "owner": "JSON.stringify 调用链（entry.hap 应用帧）",
+      "symbol": "JSON.stringify / entry.hap user frames",
+      "file": "source/entry/src/main/ets/pages/HistoryPage.ets",
+      "line_start": 22,
+      "line_end": 26,
+      "confidence": "low",
+      "root_cause": "perf_callchain 显示 824 个样本的 depth=6 帧、220 个 depth=0 叶子帧落在 /proc/7828/.../entry.hap（应用 HAP），与 stateMgmt.abc 状态管理帧交替，表明确有应用层 JS/ArkTS 代码进入 CPU 时钟采样；但该版本 HAP 未做符号恢复，无法把 entry.hap 帧映射到具体函数，故只能作为方向性证据而非定论。",
+      "symbol_owner": "entry.hap",
+      "fix": "如确认为序列化热点按第1条修复；建议按需触发符号恢复（update --so_dir）以获得 entry.hap 帧的源码级符号，再精确定位。",
+      "evidence": [
+        "perf.db step1: entry.hap depth=6 帧 824 样本、depth=0 220 样本、depth=5 535、depth=3 416、depth=2 373、depth=1 263",
+        "perf.db: stateMgmt.abc depth=6 576、depth=4 507，libark_jsruntime FunctionRef::Call 多层出现",
+        "perf_files 中 entry.hap 符号为空（symbol=null, serial_id=-1），无 ArkTS 源码行",
+        "caveat: 无符号恢复，不能把 entry.hap 帧断言为某个具体函数"
+      ]
+    },
+    {
+      "rank": 5,
+      "category": "so-load",
+      "owner": "libace_compatible.z.so",
+      "symbol": "OHOS::Ace::NG::FrameNode 布局/测量族",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "若第2条布局热点成立，其物理归属是系统库 libace_compatible.z.so 的 FrameNode/FlexLayout 测量链，属框架侧布局引擎负载，应用侧可通过简化 item 布局降低调用量；此为对第2条的 SO 级归属说明，非独立新根因。",
+      "symbol_owner": "libace_compatible.z.so",
+      "fix": "优化应用侧组件树结构（减少 Flex/Wrap 嵌套、固定尺寸、虚拟化）即可减少进入该库的 Measure 次数，无需修改系统库。",
+      "evidence": [
+        "perf.db step1 叶子帧 libace_compatible.z.so 合计约 6000+ 样本，集中在 FrameNode::Measure、FlexLayoutAlgorithm::Measure/MagicNodes、BoxLayoutAlgorithm、FrameNode::Layout",
+        "so_file_load.json 为空 []（该维度无可提取的应用 SO 负载条目）",
+        "caveat: 系统库无应用源码行；so_file_load 为空说明无明确应用 SO 高负载"
+      ]
+    }
+  ]
+}

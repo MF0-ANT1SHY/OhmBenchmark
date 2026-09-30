@@ -1,0 +1,99 @@
+{
+  "summary": "浏览记录弹窗（PagesDialog）用 ForEach 一次性构建全部 1000 条 HistoryItem（三轮各 200 次 build、0 次复用、reusability_ratio=0.0），1000 个组件同时挂在 List 上，滑动时需要每帧对全部列表项做布局/渲染（三方一致：CreateTaskLayout[List] 1122 次、RenderTask 1125 次、GenerateCmdlist 1177 次，而 JSListItem::ExecuteDeepRender 仅 200 次），主线程承担了约 99.7% 的采样事件（71.87e9/72.08e9，采样事件为 sw-cpu-clock，不能当作 CPU 指令数），导致三轮均出现约 16.6ms 的满帧/超帧负载（step2 max 517e9、step3 505e9，平均负载 0.664e6–0.724e6，step1 仅 0.260e6）与 665+ 次渲染卡顿。核心浪费机制是缺 LazyForEach + @Reusable 造成的「构建一次、永不复用、滑动全量重排」。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "component-reuse",
+      "owner": "PagesDialog",
+      "symbol": "PagesDialog.build / ForEach(group.histories)",
+      "file": "source/entry/src/main/ets/view/PagesDialog.ets",
+      "line_start": 83,
+      "line_end": 93,
+      "confidence": "high",
+      "root_cause": "渲染列表用嵌套 ForEach 一次性为全部历史记录创建 HistoryItem，既无 LazyForEach 懒加载也无 @Reusable 复用标记，也没有 cachedCount 限制；1000 条记录意味着 1000 个列表项组件全部实例化并常驻渲染树。三轮 trace_componentReuse.json 完全一致地给出 HistoryItem total_builds=200、recycled_builds=0、reusability_ratio=0.0，说明滑动复用率为 0，每个进入视口的项都是重新构建而不是复用。",
+      "fix": "改为懒加载数据源 + 组件复用：实现 IDataSources（BasicDataSource）并在 List 中使用 LazyForEach，同时给 HistoryItem 加 @Reusable 与 reuseId（需把 HistoryItem 从 @State 内部字段改为 @Prop/参数驱动，避免复用后状态串味），List 设置 cachedCount 为一屏条目数的量级；HistoryItem 中未使用的 SwipeGesture/translateX/deleteIcon 状态可下沉为按需渲染。",
+      "evidence": [
+        "trace_componentReuse.json step1/step2/step3 均为 {\"max_component\":\"HistoryItem\",\"total_builds\":200,\"recycled_builds\":0,\"reusability_ratio\":0.0}",
+        "页面结构：List(){ ForEach(this.historyGroups, g => ListItemGroup(...){ ForEach(g.histories, h => ListItem(){ HistoryItem(...) }) }) }",
+        "source/**/*.ets 中搜索 LazyForEach / @Reusable / IDataSource / BasicDataSource / reuseId / cachedCount 无任何匹配",
+        "workload.json：数据库已有 1,000 条浏览记录，三轮同版本运行复现同一模式"
+      ],
+      "trigger_chain": "打开历史页面 → PagesDialog.loadHistoryData() 全量载入 1000 条 → build() 中 ForEach 一次性构建 1000 个 HistoryItem → 滑动时无复用、全部列表项参与布局/渲染"
+    },
+    {
+      "rank": 2,
+      "category": "frame-load",
+      "owner": "List / HistoryItem（List 容器层）",
+      "symbol": "List[id:57]::RenderTask / ListLayoutAlgorithm::MeasureListItem / CreateTaskLayout[List]",
+      "file": "source/entry/src/main/ets/view/PagesDialog.ets",
+      "line_start": 83,
+      "line_end": 96,
+      "confidence": "high",
+      "root_cause": "由于 rank1 的全量挂载，List 每帧都要对全部列表项执行布局与渲染任务，产生约 16.6ms 的满帧负载尖峰（16.6ms 恰好是一个 60Hz 显示周期），主要成本落在框架侧 List 布局/渲染而非应用 JS。三轮各出现 11/18/13 个高负载帧，step2 max 517e9、step3 max 505e9。",
+      "fix": "根因同上：LazyForEach + @Reusable + cachedCount 限制屏幕外构建数量；另外为每项固定高度（.height() 明确像素）使 List 能走预测量/跳测量路径，避免 list predict 反复测算；HistoryItem 的 shadow(radius:5) 在每个 item 上绘制，屏幕内条目多时可考虑降级或仅保留边框。",
+      "evidence": [
+        "trace_frameLoads.json：step2 max_load=517000000、dur=16615625ns、high_load_frames=18；step3 max_load=505000000、dur=16604687ns、high_load_frames=13；step1 max_load=72000000",
+        "step2/3 平均帧负载 723936 / 663052，step1 仅 260452（高负载帧全部 is_main_thread=1、thread_name=ample.nanvision）",
+        "trace.db callstack：H:CreateTaskLayout[List][...][depth:6] 1122 次 / 4249273000ns；H:FrameNode[List][id:60]::RenderTask 1125 次 / 60105000ns；H:GenerateCmdlist 1177 次；H:List predict v2 119 次"
+      ],
+      "trigger_chain": "VSync → List 滑动手势（HandleDragUpdate/HandleScroll）→ ListLayoutAlgorithm::MeasureListItem → List::RenderTask，逐帧对全部挂载项生效"
+    },
+    {
+      "rank": 3,
+      "category": "thread",
+      "owner": "主线程 com.example.nanvision（tid 52224）",
+      "symbol": "EventRunner::Run / MainThread::Start / FlushVsync",
+      "file": "source/entry/src/main/ets/view/PagesDialog.ets",
+      "line_start": 83,
+      "line_end": 93,
+      "confidence": "medium",
+      "root_cause": "全部组件构建、布局与渲染都压在主线程，应用进程采样事件中主线程占 71.871e9 / 72.082e9 ≈ 99.7%（同期 FFRT 池、GC 线程各不足 1.2e9），而 JS 侧仅承担 JSListItem::ExecuteDeepRender 200 次；说明工作量既没有分线程也没有被懒加载削减，而是集中在框架布局/渲染路径串行完成。采样事件为 sw-cpu-clock（软件 CPU 时钟），此处仅表示样本权重占比，不能解释为 CPU 指令数。",
+      "fix": "没有可搬移的纯计算任务，正确修复方向是减少一帧内的组件数量（LazyForEach + 复用）与固定条目高度；如列表项包含耗时格式化，可下沉到 Worker 或提前在数据层完成。不要用 goTaskPool 承担 UI 布局本身。",
+      "evidence": [
+        "step2 perf.db 线程聚合：tid 52224 total=71,871,000,000；最大的非主线程为 OS_EVENT_POLL 1.518e9、OS_FFRT_Delay 0.862e9、OS_GC_Thread 合计约 1.63e9，均 <2%",
+        "主线程 leaf 热点为 EventRunner::Run 0.98e8、MainThread::Start 0.89e8、VSyncCallBackListener::OnReadable 0.79e8、PipelineContext::FlushVsync 0.15e8，剩余近 699e8 的主线程样本 SO 记录为 /system/bin/appspawn 符号缺失",
+        "perf_report：config_name=sw-cpu-clock（非 raw-instruction-retired），因此 event_count 不可当作 CPU 指令数",
+        "trace_gc_thread.json：PartialGC=4/轮、GC 占比约 1.5%–2.2%，GC 不是主因"
+      ],
+      "trigger_chain": "VSync → EventRunner::Run → MainThread / VsyncStation → FlushVsync → FlushBuild/FlushDirtyNodeUpdate → FrameNode::Measure/List 布局与渲染（全部在主线程）"
+    },
+    {
+      "rank": 4,
+      "category": "so-load",
+      "owner": "系统框架 SO（libace_compatible.z.so / libeventhandler.z.so / libappkit_native.z.so）",
+      "symbol": "PipelineContext::FlushVsync / FlushDirtyNodeUpdate / FrameNode::Measure",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "SO 级负载无法可靠归因：so_file_load.json 为空数组 []（未产出应用 SO 聚合），且 perf.db 中 86.6% 的样本 leaf SO 被记录为 /system/bin/appspawn 且 symbol 为 null，属符号/映射未恢复的聚合噪声，不能据此断言热点在 appspawn 或 libace。去除该噪声后可用的框架热点仅为 FlushVsync 0.15e8、FrameNode::Measure 0.12e8、FlushDirtyNodeUpdate 0.11e8、FlexLayoutAlgorithm::MeasureAndCleanMagicNodes 0.10e8 等百毫秒级碎片，单独看均不构成主因。",
+      "fix": "需要恢复符号（hapray update --so_dir，或应用构建时保留 .so 符号）后重跑 SO/符号级聚合，或补齐 so_file_load.json 的生成条件，再判定框架 SO 是否为优化面；在此之前不建议以 SO 为单位做优化决策。",
+      "evidence": [
+        "report/so_file_load.json 内容为 []（空，无 step × .so 聚合）",
+        "step2 leaf SO 聚合：/system/bin/appspawn 69,836,000,000 (86.61%)，symbol 为 null；其次 libeventhandler.z.so 0.12%、libappkit_native.z.so 0.11%、libace_compatible.z.so 0.09%",
+        "perf.db.ohos.ts / trace_conversion.log 存在，说明转换已完成，但应用侧 .so 未出现在聚合结果中",
+        "missing：本轮未采集 UI/内存类事件，也无 memory_records，因此不对内存维度下结论"
+      ],
+      "trigger_chain": "—"
+    },
+    {
+      "rank": 5,
+      "category": "cpu-hotspot",
+      "owner": "com.example.nanvision（应用）：RdbUtils.insertHistory / RdbUtils.insertDate 调用点 Index.onSaveHistory",
+      "symbol": "Web.onPageEnd → Index.onSaveHistory",
+      "file": "source/entry/src/main/ets/pages/Index.ets",
+      "line_start": 160,
+      "line_end": 170,
+      "confidence": "low",
+      "root_cause": "Index.onPageEnd 在每次页面加载结束时 await onSaveHistory()，串行执行 insertDate（未命中缓存时先 query date_table + insert + createHistoryTable）再 insertHistory，即每次加载 1 次查询 + 2 次写；insertDate/insertHistory 内部对 insert 与 executeSql 未 await，写的完成时序不受控。该路径与「三次滑动」无直接关系，本轮也未捕获到对应的高负载帧或交易计数，仅作为与本次操作可能交叠的次级风险列出。",
+      "fix": "把 insertDate/insertHistory 内的 insert/executeSql 改为 await 并统一放入事务；insertDate 已经是「查-插-建表」三步，可改为先查 knownDates 缓存 + CREATE TABLE IF NOT EXISTS 后直接 insert，减少一次 query；onPageEnd 中用 catch 包裹的异步保存不要阻塞页面完成回调。",
+      "evidence": [
+        "Index.ets:160-170 onPageEnd(async () => { ... await this.onSaveHistory() })；Index.ets:82-109 onSaveHistory 内 await RdbUtils.insertDate(date) 与 await RdbUtils.insertHistory(date, history)",
+        "RdbUtils.ets:53-86 insertDate 未命中缓存时执行 query(date_table) → insert(date_table) → createHistoryTable(date)；RdbUtils.ets:88-96 insertHistory 直接 insert，二者内部 insert/executeSql 均未 await",
+        "未找到：trace_ipc_binder.json（IPC/Binder 维度缺失），无法用交易计数印证该路径频率",
+        "说明：滑动手势触发的 H:HandleDragUpdate 569+385 次、H:HandleScroll 569+385 次属正常拖拽事件流，不作为浪费证据"
+      ],
+      "trigger_chain": "Web.onPageEnd → Index.onSaveHistory → RdbUtils.insertDate/insertHistory → relationalStore 查询/写入"
+    }
+  ]
+}

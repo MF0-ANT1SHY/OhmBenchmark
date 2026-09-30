@@ -1,0 +1,123 @@
+{
+  "summary": "本轮实际测量窗口是 Navigation 打开浏览历史页（HistoryPage/NavDestination 首帧构建，5,000 条 @StorageLink historyList）。sw-cpu-clock 采样显示总负载 7.375e10 中约 72.7% 落在主线程（org.example.wan.ohos，713.54e9/737.54e9），叶子热点集中在 ArkUI 布局与 build 管线（FrameNode::Measure 30.68e9、FlexLayoutAlgorithm::MeasureAndCleanMagicNodes 11.51e9），说明成本由一次性构建/布局/刷新驱动，而非线程模型或空刷。最有把握的可修复浪费有两条：HistoryPage.build() 第 31–35 行把 `alsoKt(this.dataSource, it => it.initData(this.historyList))` 直接写在 build() 内，每次 build 都重新灌入 5,000 条数据；以及 itemLayout 第 116 行每行读取 `this.historyList.length`，使列表对可变数组形成依赖（ArkTS 刷新范围内最宽），并把全部 5,000 项 URL 暴露给 ArkWeb 解析。同时该组件用的是 `@abner/refresh` 第三方 ListView 而非原生 LazyForEach/List，缺少组件复用信号，5,000 项长列表有非懒加载/全量布局风险。空刷 0、冗余线程 0、GC 线程合计仅约 3% 采样，SO/IPC/组件复用/内存证据缺失（so_file_load.json 为空数组、componentReuse 全 0），因此未据此下结论。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "HistoryPage",
+      "symbol": "build / alsoKt → RefreshDataSource.initData",
+      "file": "entry/src/main/ets/pages/HistoryPage.ets",
+      "line_start": 29,
+      "line_end": 45,
+      "confidence": "medium",
+      "root_cause": "在 build() 内用 alsoKt 包裹 `this.dataSource.initData(this.historyList)`：alsoKt（MyUtils.ets:2-5）会立即执行 block，因此每次进入/重建 HistoryPage 的 build 阶段都会把 5,000 条浏览记录重新灌入数据源，属于“在渲染函数里做数据初始化”的典型浪费；该初始化与随后的列表全量布局直接推高了本轮主线程负载。",
+      "fix": "把数据初始化移出 build()：在 aboutToAppear()（或 @StorageLink 变化回调）里只做一次 `this.dataSource.initData(this.historyList)`；build() 只保留 `lazyDataSource: this.dataSource`。例如：aboutToAppear(){ this.dataSource.initData(this.historyList) }，build(){ ListView({ lazyDataSource: this.dataSource, ... }) }。",
+      "evidence": [
+        "源码 HistoryPage.ets:29-35 `build() { NavDestination() { ListView({ ... lazyDataSource: alsoKt(this.dataSource, (it) => { it.initData(this.historyList) }) })`",
+        "源码 MyUtils.ets:2-5 `export function alsoKt<T>(obj: T, block: (it: T) => void): T { block(obj); return obj; }` —— block 在 build 求值期立即执行，非惰性",
+        "perf.db(step1) `SELECT thread_name, SUM(event_count) ... GROUP BY thread_id`：主线程 71354000000 / 总计 73754000000 ≈ 72.7%，主线程承载全部 UI 构建负载",
+        "perf.db(step1) 叶子热点（symbol_id=serial_id 关联后）：OHOS::Ace::NG::FrameNode::Measure 3.068e9、FlexLayoutAlgorithm::MeasureAndCleanMagicNodes 1.151e9、FlexLayoutAlgorithm::Measure 1.075e9、BoxLayoutAlgorithm::Measure 1.38e8，与 HistoryPage itemLayout 使用的 Flex(wrap: FlexWrap.Wrap) 布局一致",
+        "caveats：采样事件为 sw-cpu-clock（cmdline: hiperf record -p 7828 -f 1000 -e sw-cpu-clock），event_count 不可解释为 CPU 指令数；elapsed_ms（8.2/45.7/7.3）为原业务方法或固定观察窗口，≠ 本次采集窗口"
+      ],
+      "trigger_chain": "Navigation.pushPathByName('HistoryPage') → NavDestination 首帧 → HistoryPage.build() → alsoKt(this.dataSource, …) 同步执行 initData(5000) → 列表刷新 → FrameNode::Measure/FlexLayoutAlgorithm::Measure 全量布局"
+    },
+    {
+      "rank": 2,
+      "category": "frame-load",
+      "owner": "HistoryPage",
+      "symbol": "itemLayout (@Builder)",
+      "file": "entry/src/main/ets/pages/HistoryPage.ets",
+      "line_start": 98,
+      "line_end": 142,
+      "confidence": "medium",
+      "root_cause": "itemLayout 内第 116 行 `Text(`${index + 1} / ${this.historyList.length}`)` 让每一行的构建函数读取 @StorageLink 的可变数组属性 length；ArkTS 状态依赖按数组变量粒度收集，该读取使列表项对 historyList 整体变化敏感，historyList 任何一次写入（WebPage.onTitleReceive 中的 `this.historyList = this.historyList.filter(...)` + `splice(0,0,webData)`，WebPage.ets:54-60）都会触发 5,000 项行内容的失效重算；WebPage.ets:62-66 还会对全量 5,000 项做 map+JSON.stringify 记日志放大该开销。历史页自身 onRefresh（HistoryPage.ets:59-64）也只调用了第 63 行的 `this.dataSource.initData(this.historyList)`。",
+      "fix": "不要在行内读取整个数组长度：用数据源自身的总数（如 `this.dataSource.totalCount()`）或把总条数缓存为独立 `@State itemCount: number`，在数据变更时一次性赋值；同时删除 WebPage.ets:45-49、62-66 中对全量历史列表的 map+JSON.stringify 日志。",
+      "evidence": [
+        "源码 HistoryPage.ets:116 `Text(`${index + 1} / ${this.historyList.length}`)`",
+        "源码 WebPage.ets:54-60 `this.historyList = this.historyList.filter(v => v.url != this.url)` 后 `this.historyList.splice(0, 0, webData)` —— 同一 @StorageLink 数组被整体替换/原地插入",
+        "源码 WebPage.ets:62-66 `log(`更新后 historyList = ${JSON.stringify(this.historyList.map(...))}`)`（以及 45-49 的更新前版本）对全量列表做序列化",
+        "perf.db 叶子热点中 FrameNode::SetActiveChildRange / ViewStackProcessor::Push / GetAllChildrenWithBuild 与 TextModel/RowModel::GetInstance 等构建期符号同值出现（各 1.3822e10，与采样上限一致，说明为构建/布局路径的系统侧栈）",
+        "caveats：trace.db(step1) 的 frame_slice 为空（n=0），trace_frameLoads.json 未在 report/ 中产出，故无法给出逐帧高负载帧清单，本条的“帧负载”只能由 perf 侧主线程占比与布局热点支撑"
+      ],
+      "trigger_chain": "@StorageLink historyList 变更 → 行状态依赖失效 → 5,000 项 itemLayout 重建 → 布局/测量峰值 → 主线程帧超时"
+    },
+    {
+      "rank": 3,
+      "category": "component-reuse",
+      "owner": "HistoryPage / @abner/refresh ListView",
+      "symbol": "lazyDataSource + itemLayout 复用配置",
+      "file": "entry/src/main/ets/pages/HistoryPage.ets",
+      "line_start": 31,
+      "line_end": 45,
+      "confidence": "low",
+      "root_cause": "5,000 条记录的浏览历史页使用第三方组件 `@abner/refresh` 的 ListView/RefreshDataSource 承载列表，而非系统 LazyForEach + List；组件复用分析未产出任何复用数据（reusability_ratio 全 0、details 为空），因此无法证明存在按需回收与组件复用。若该封装未实现真正的 lazy 渲染，5,000 项会在首次 build 时全量构建/布局，与第 1 条观测到的构建+布局主线程负载一致。",
+      "fix": "改用系统原生 LazyForEach + List（或 List + cachedCount），并让数据源实现 IDataSource.lazyLoad/onDataReloaded，仅按视口构建行；若必须保留 @abner/refresh，确认其 lazyDataSource 确实触发懒加载并在版本内支持组件复用（无复用数据不应视为已优化）。",
+      "evidence": [
+        "源码 HistoryPage.ets:1-2 `import { ListView, RefreshController, RefreshDataSource } from '@abner/refresh'`；31-35 行使用 `ListView({ lazyDataSource: alsoKt(this.dataSource, (it) => { it.initData(this.historyList) }) })`",
+        "report/trace_componentReuse.json：step1/step2/step3 均 `total_builds:0, recycled_builds:0, reusability_ratio:0.0, details:{}`，max_component 为空 —— 无任何复用测点数据，不能据此判定复用良好",
+        "workload.json：本用例准备 5,000 条浏览记录，属长列表场景",
+        "caveats：本轮为 Update/符号恢复产线生成的报告（hapray-tool-result.json action=update），组件复用与帧信号缺失，该条置信度低，需补采或补分析确认"
+      ],
+      "trigger_chain": "HistoryPage 首帧 → ListView(lazyDataSource) → 一次性数据源初始化 → 行构建/布局（复用比例未知）"
+    },
+    {
+      "rank": 4,
+      "category": "frame-load",
+      "owner": "WebPage",
+      "symbol": "onTitleReceive → historyList 全量替换/插入",
+      "file": "entry/src/main/ets/pages/WebPage.ets",
+      "line_start": 41,
+      "line_end": 68,
+      "confidence": "low",
+      "root_cause": "WebPage.onTitleReceive 每次标题回调都会对收藏/历史数组做 filter + splice 的整体变更并整体赋值给 @StorageLink historyList，使所有依赖该数组的页面（含本轮的 HistoryPage）进入刷新；同时更新前/后各做一次全量 map+JSON.stringify 日志，属可移除的额外开销。",
+      "fix": "增量化更新 historyList（只改变化项，或改用可观察的 List 数据源 insert/delete 通知）；删除 45-49、62-66 的全量序列化日志，必要时改为 log(`historyList size = ${this.historyList.length}`)。",
+      "evidence": [
+        "源码 WebPage.ets:54-60 filter + splice(0,0,...) 后赋值 historyList",
+        "源码 WebPage.ets:45-49、62-66 两次全量 `this.historyList.map(...)` + JSON.stringify",
+        "perf.db(step1) 叶子热点含 panda::FunctionRef::Call（1.11e8）、RTStub_PushCallRangeAndDispatchNative（2.15e8）、BCStub_HandleCallrangeImm8Imm8V8StwCopy（1.84e8），说明 ArkTS 侧存在可观调用/字节码执行，与列表项构建频繁触发相符",
+        "caveats：本轮采集窗口为“Navigation 打开历史页”片段，未直接观测到 onTitleReceive 触发时刻，属机制推断，置信度低"
+      ],
+      "trigger_chain": "Web 标题回调 → historyList 全量变更 → @StorageLink 分发 → HistoryPage 行依赖失效 → 重建/布局"
+    }
+  ],
+  "observations": [
+    {
+      "category": "frame-stats",
+      "signal": "主线程负载占比",
+      "finding": "step1 sw-cpu-clock 采样 73,754 个、总 event_count 7.3754e10，其中应用主线程 7.1354e10（72.7%）；GC 线程 4 条 OS_GC_Thread 合计约 2.249e9（≈3.0%）；FFRT/IPC/DfxWatchdog 等线程单项均 ≤3.6e7，整体线程模型健康。",
+      "evidence": "hiperf/step1/perf.db: SELECT thread_name, process_id, SUM(event_count) FROM perf_sample JOIN perf_thread GROUP BY thread_id；perf_report: event=sw-cpu-clock",
+      "related_owner": "org.example.wan.ohos",
+      "suggested_direction": "负载高度集中在主线程 UI 构建/布局，优先削减 build 期工作与列表规模，而不是调线程"
+    },
+    {
+      "category": "frame-stats",
+      "signal": "空刷/VSync",
+      "finding": "空刷 0 帧（占比 0.0%，severity normal），direct_only/rs_traced_only/both 均为 0，RS skip 事件 0，VSync 异常 0；无空刷问题。",
+      "evidence": "report/trace_emptyFrame.json（三 step 均 total_empty_frames=0，top_frames=[]）；root_cause_evidence.md 空刷摘要",
+      "related_owner": "",
+      "suggested_direction": "空刷方向无需继续；聚焦构建/布局成本"
+    },
+    {
+      "category": "fault-hilog",
+      "signal": "故障树",
+      "finding": "故障树仅给出分类名（arkui/RS/av_codec/Audio），metrics 为空，无量化指标。",
+      "evidence": "report/trace_fault_tree.json → root_cause_evidence.md 中 fault-hilog 条目 metrics={}",
+      "related_owner": "",
+      "suggested_direction": "如需结论需重新采集并导出故障树明细"
+    }
+  ],
+  "caveats": [
+    "采样事件为 sw-cpu-clock（非 raw-instruction-retired），event_count 为按 1000Hz 采样的权重值，不能解释为 CPU 指令数；因此各热点数值只能作为相对占比。",
+    "trace.db(step1) 的 frame_slice 表为空（COUNT(*)=0），trace_frameLoads.json 未出现在 report/ 下，缺少逐帧高负载数据，帧类结论只能由 perf 侧主线程占比与布局热点间接支撑。",
+    "报告由 update/符号恢复产线生成（hapray-tool-result.json action=update），so_file_load.json 为空数组 []，组件复用全 0，无 trace_ipc_binder.json、无内存/UI 动画产物；内存与 IPC 维度本轮无证据，未做任何推断。",
+    "leaf 符号解析必须按 pc.symbol_id = perf_files.serial_id 关联；若按 file_id 单键关联，同一 SO 下所有符号会被赋成同一个名字（本轮曾得到 1.38e10 的大量同值符号即为此类联接伪影），已修正。",
+    "elapsed_ms 8.2/45.7/7.3 是原业务方法或固定观察窗口的耗时，与本次剖面的采样窗口不是同一段，不能用它推断本剖面耗时。",
+    "第 3、4 条置信度低：组件复用与 onTitleReceive 触发时刻均缺少直接动态观测，需补充“列表首帧/滑动”片段或组件复用测点验证。"
+  ],
+  "needs_more_data": [
+    "重新采集时使用 raw-instruction-retired（或 hw-cpu-cycles）以得到可比的 CPU 指令数口径。",
+    "补充 frame_slice/帧级产物（trace_frameLoads.json、trace_frames.json）以量化逐帧负载与卡顿。",
+    "启用组件复用与 UI 快照测点，确认 @abner/refresh ListView 是否真正懒加载/复用 5,000 项。",
+    "补充 --memory 采集（trace_gc_thread.json 存在但 memory_records/meminfo 未在本报告产物中）以评估 Profile 场景内存分配压力。"
+  ]
+}

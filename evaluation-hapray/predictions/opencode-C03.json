@@ -1,0 +1,91 @@
+{
+  "summary": "启动阶段主线程约 9.1s/16.9s 的 CPU 时钟样本集中在 RdbUtils 历史库读取路径：Index.aboutToAppear 对全部日期逐日调用 queryHistoriesByDate，每次全量 RdbStore.Query 后再逐行 napi 取值，libnative_rdb.z.so 的 Query+GetString/GoToNextRow 在总样本中 inclusive 占比最高；相对 10s 观测窗口，启动即被历史库读取阻塞。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "RdbUtils",
+      "symbol": "queryHistoriesByDate / RdbStore.Query",
+      "file": "source/entry/src/main/ets/utils/RdbUtils.ets",
+      "line_start": 113,
+      "line_end": 145,
+      "confidence": "medium",
+      "root_cause": "启动时 Index.aboutToAppear 先 queryAllDate 再对每个日期调用 queryHistoriesByDate，每次都对 history_<date> 表做无条件全表 RdbStore.Query（predicates 无 equalTo 过滤），再 goToNextRow 逐行 getColumnIndex+getString+getLong 经 napi 回传 ArkTS。样本中 RdbStore::Query 系列 inclusive 约 5.09e9（占 16.9e9 约 30%），GetString/GoToNextRow/GetColumnIndex 等逐行取值函数高频出现，与 10s 窗口内启动卡顿方向一致（sw-cpu-clock 为 CPU 时钟样本，非指令数）。",
+      "fix": "不要在启动时同步全量加载历史：1) queryHistoriesByDate 增加分页/limit，如按日期只取最近 N 条（predicates.limitAs 或 predicates.limit）；2) 用 @Concurrent/Worker 或 RdbStore async 回调把查询移出主线程，先渲染页面；3) 合并查询，避免 O(天数) 次 Query，可用一次 SQL 或按需懒加载（打开 PagesDialog 时再查该日期）；4) 用 getRow()/批量取值替代循环内 getColumnIndex 逐列查找。",
+      "evidence": [
+        "perf.db(step1) 线程分布：com.example.nanvision(主线程) load=9.122e9，占 16.929e9 总样本 53.9%",
+        "perf.db 符号 inclusive：OHOS::NativeRdb::RdbStore::Query(...)=5.093e9；NativeAsyncWork::AsyncWorkCallback=5.099e9；ffrt::CPUWorker 调度链=5.13e9",
+        "perf_files 命中 libnative_rdb.z.so：AbsResultSet::GetString/GetLong/GetColumnIndex/GoToNextRow、AbsRdbPredicates 等逐行取值函数",
+        "源码 RdbUtils.ets:119 RdbUtils.getStore().query(predicates, []) 无过滤条件，123-134 循环 goToNextRow()+getColumnIndex+getString",
+        "源码 Index.ets:64-68 aboutToAppear 中 `const allDate = await RdbUtils.queryAllDate()` 后 `allDate.forEach(async date => this.historyMap.set(date, await RdbUtils.queryHistoriesByDate(date)))`",
+        "events 说明：cmdline `hiperf record ... -e sw-cpu-clock`，无法据此断言指令数，仅代表 CPU 时钟样本分布"
+      ]
+    },
+    {
+      "rank": 2,
+      "category": "cpu-hotspot",
+      "owner": "RdbUtils",
+      "symbol": "queryAllDate",
+      "file": "source/entry/src/main/ets/utils/RdbUtils.ets",
+      "line_start": 88,
+      "line_end": 111,
+      "confidence": "low",
+      "root_cause": "queryAllDate 读取 date_table 全部日期行并 unshift 构建数组，配合 50,000 条/100 天的数据规模，为随后的逐日全表查询提供放大因子；本身负载低于 queryHistoriesByDate，但属同一启动读取链的上游。",
+      "fix": "对 date_table 查询加排序+分页，或直接在需要时按日期查询，不必启动即全部取出。",
+      "evidence": [
+        "源码 RdbUtils.ets:96-102 `RdbUtils.getStore().query(predicates)` 后 while goToNextRow() 逐行 getString 并 unshift",
+        "源码 Index.ets:64 启动即 await queryAllDate()",
+        "workload.json: 数据库已有 50,000 条浏览记录、跨 100 天"
+      ]
+    },
+    {
+      "rank": 3,
+      "category": "frame-load",
+      "owner": "ample.nanvision",
+      "symbol": "main thread frame",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "step2 存在 max_load=9.6e7、dur≈11.07ms 的主线程高负载帧(flag=2)，恰为 60Hz 一帧预算 16.7ms 的约 66%，与启动期历史库读取竞争主线程相符；但 perf 符号无法直接落到具体源码行，属表现层证据。",
+      "fix": "将上述 RDB 读取移出主线程/延迟加载，降低首帧主线程占用。",
+      "evidence": [
+        "trace_frameLoads/root_cause_evidence：step2 frame_load=96000000, dur_ns=11065508, is_main_thread=1",
+        "frame-stats：step1/2/3 avg_fps=9.33/2.43/3.43，stutter_rate≈0.91-0.94（启动期低帧率）"
+      ]
+    },
+    {
+      "rank": 4,
+      "category": "thread",
+      "owner": "ThreadPoolForeg",
+      "symbol": "ThreadPoolForeg",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "step1 检测到 8 个 ThreadPoolForeg 线程为 frequent_immediate_sleep（waiting_ratio 93.7%），表现为被频繁唤醒立即睡眠的无效调度，估计占用约 8.19MB；但 redundant_instructions=0，未转化为实测 CPU 负载，无法据此认定为主要性能因素。",
+      "fix": "若确认为应用自建线程池，复核线程池 QOS 与任务粒度，避免空唤醒；需先确认线程来源再优化。",
+      "evidence": [
+        "redundant_thread_analysis/summary：ThreadPoolForeg total_thread_count=11, redundant_count=8, type=frequent_immediate_sleep, waiting_ratio=93.7%, redundant_instructions=0",
+        "root_cause_evidence thread 章节：has_redundancy=true 但各 step redundant_instructions=0"
+      ]
+    },
+    {
+      "rank": 5,
+      "category": "so-load",
+      "owner": "libarkweb_core_loader.z.so / libace_napi.z.so",
+      "symbol": "OHOS::ArkWeb::ArkWebEngineWrapper::CreateNWeb / NativeAsyncWork",
+      "file": "source/entry/src/main/ets/pages/Index.ets",
+      "line_start": 154,
+      "line_end": 160,
+      "confidence": "low",
+      "root_cause": "Web 组件在构建/初始化阶段触发 ArkWeb 引擎与 NAPI 桥接（CreateNWeb≈1.2e9、ArkNativeEngine/napi_* 系列、NativeAsyncWork::AsyncWorkCallback≈5.1e9 同时承载 RDB 异步回调），属启动期固有的引擎加载成本；其中 NativeAsyncWork 的高占比很可能由历史库异步查询驱动，而非 Web 本身，故此项与 rank1 存在证据重叠，仅作共存现象记录。",
+      "fix": "延迟 Web 组件挂载或复用引擎实例；先解决 RDB 启动读取，再评估 ArkWeb 加载开销。",
+      "evidence": [
+        "perf_files：OHOS::ArkWeb::ArkWebEngineWrapper::CreateNWeb≈1.198e9、NWebHelper/NWebAdapterHelper::CreateNWeb 同级 1.17-1.18e9",
+        "perf_files：libace_napi.z.so 的 napi_* 与 ArkNativeEngine::* 系列高频出现",
+        "perf.db：NativeAsyncWork::AsyncWorkCallback=5.099e9，与 RdbUtils 异步查询路径同源"
+      ]
+    }
+  ]
+}

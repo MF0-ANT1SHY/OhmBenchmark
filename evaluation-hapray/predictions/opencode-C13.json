@@ -1,0 +1,90 @@
+{
+  "summary": "C13 的「读取 200 个订阅 + 10,000 篇未读数量」操作约 2.9–4.1s，全部成本集中在数据库读取路径：每轮采集到 201 次 Rdb QuerySql（合计约 1.93s，单次最高 24ms），且 native 栈明确落到 OHOS::NativeRdb::AbsSharedResultSet::GoToRow/UpdateBlockPos 与 SQLite 热点；缺少 ArkTS 符号行号、帧负载与内存事件，无法进一步精确到源码行或断言指令数，以下基于可核对的动态/SQL 证据给出结论。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "OHOS::NativeRdb::AbsSharedResultSet",
+      "symbol": "AbsSharedResultSet::GoToRow(int) / UpdateBlockPos(int,int)",
+      "file": "source/entry/src/main/ets/data/DatabaseManager.ets",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "medium",
+      "root_cause": "读操作期间 native 栈覆盖在 AbsSharedResultSet::UpdateBlockPos/GoToRow 上：两帧各带 ~8.5e9（约占总样本 25%）的加载量，即结果集逐行游标推进与按需填充块的成本主导了本次操作；同时 libsqlite.z.so 热地址 +0x544b4 / +0x474fc 逐轮出现。本质是 Rdb 结果集被逐行/分块读取而非一次性聚合读取。",
+      "fix": "对订阅数、未读数这类计数/列表场景改用一次性返回结果集合（querySql 后一次性 getRows 或 SQL 聚合 COUNT）+ rowset 批量取列，避免每行 GoToRow/UpdateBlockPos；同时在 (read)/(feed_id) 组合上确认索引可用（idx_articles_read / idx_articles_feed 已建）。",
+      "evidence": [
+        "perf.db step1 调用链 SQL：depth=40 libnative_rdb.z.so AbsSharedResultSet::GoToRow load=8497000000 n=8497；depth=41 UpdateBlockPos load=8496000000 n=8496",
+        "native-profile-1/2/3.txt：sw-cpu-clock 采样 Top 热点均为 libsqlite.z.so+0x544b4/0x474fc/0x471a0/0x471ac，comm 为 com.sheafreader.hm 或 OS_FFRT_3_*",
+        "trace.db step1：H:QuerySql|I36 出现 201 次，合计 dur=1932784000ns，单次最大 24021000ns（均运行在 OS_FFRT_3_0/3_1/3_2 工作线程）"
+      ]
+    },
+    {
+      "rank": 2,
+      "category": "cpu-hotspot",
+      "owner": "OS_FFRT 工作线程池（libffrt.so）",
+      "symbol": "ffrt::CPUWorker::WrapDispatch / RunTask / ExecuteTask",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "medium",
+      "root_cause": "所有 201 次 QuerySql 均运行在 OS_FFRT_3_0/3_1/3_2 三个并行工作线程上，主线程仅承载 AsyncAfterWorkCallback 回调；FFRT 调度栈（WrapDispatch→Dispatch→WorkerLooper→RunTask→ExecuteTask，各约 2.27e9 加载）是查询任务的主要执行路径，说明读操作被拆成多批异步查询并发执行，未做批量化。",
+      "fix": "把「读取订阅列表 + 未读数」合并为更少的批次查询；若必须异步，合并同一 RdbStore 上的多个 query 调用，减少 FFRT 任务提交/调度次数。",
+      "evidence": [
+        "perf.db step1：depth=1 ffrt::CPUWorker::WrapDispatch load=22753000000；depth=4 RunTask、depth=5 ExecuteTask 均 ~2.26e9",
+        "perf.db step1 线程聚合：OS_FFRT_3_0/3_1/3_2 合计约 22.8e9 加载，com.sheafreader.hm 主线程 10.3e9",
+        "trace.db step1：QuerySql 的 thread 字段全部为 OS_FFRT_3_*"
+      ]
+    },
+    {
+      "rank": 3,
+      "category": "cpu-hotspot",
+      "owner": "libnative_rdb.z.so（Rdb 查询入口）",
+      "symbol": "Rdb QuerySql / ExecuteSql 路径（trace 计数 H:QuerySql|I36 = 201）",
+      "file": "source/entry/src/main/ets/data/DatabaseManager.ets",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "medium",
+      "root_cause": "读该工作负载时执行了 201 条 SQL 查询，合计约 1.93s 的 trace 时长，几乎填满了 2.9–4.1s 的观察窗口；单条最长 24ms。查询数量远多于「200 订阅 + 1 个未读计数」的最小需求，提示按订阅/分组逐条循环查询（N+1 查询模式）。",
+      "fix": "用一条带 GROUP BY 的 SQL 或一次 querySql 批量获取 200 个订阅及各自未读数；在 DatabaseManager 中集中提供批量方法，避免上层循环调用单条查询。",
+      "evidence": [
+        "trace.db step1：H:QuerySql|I36 count=201 total_dur=1932784000ns max_dur=24021000ns",
+        "trace.db step1 总窗口 H:WORKLOAD/span dur=2928421000ns（与 workload.json run1 elapsed 2927ms 一致）",
+        "perf.db step1 depth=19 napi_resolve_deferred / depth=20 PromiseCapabilityRef::Resolve 各约 9.06e9，反映大量 Promise 化的异步查询回调"
+      ]
+    },
+    {
+      "rank": 4,
+      "category": "thread",
+      "owner": "Rdb 异步查询线程（FFRT + AsyncWorkCallback）",
+      "symbol": "NativeAsyncWork::AsyncWorkCallback / AsyncAfterWorkCallback",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "查询经 libace_napi 的 NativeAsyncWork 回调返回（AsyncWorkCallback 2.228e9、AsyncAfterWorkCallback 0.924e9），即每次查询都以独立异步任务 + 主线程回调形式完成；201 次查询对应约 201 组异步调度/回调开销，叠加在真实 SQL 成本之上。",
+      "fix": "减少异步查询次数（合并查询），并核对是否在主线程回调中做了逐行处理；把结果处理移出主线程或合并为单次回调批量处理。",
+      "evidence": [
+        "perf.db step1：depth=8 NativeAsyncWork::AsyncWorkCallback load=22278000000 n=22278",
+        "perf.db step1：depth=17 AsyncAfterWorkCallback load=9240000000 n=9240",
+        "redundant_thread_analysis.json：total_redundant_threads=0（未检出冗余线程模式，仅说明线程模型未命中冗余判据）"
+      ]
+    },
+    {
+      "rank": 5,
+      "category": "so-load",
+      "owner": "/system/lib64/platformsdk/libsqlite.z.so",
+      "symbol": "libsqlite.z.so+0x544b4 / +0x474fc / +0x471a0（未符号化）",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "三轮采样中 libsqlite.z.so 的同一组偏移（0x544b4、0x474fc/0x471ac、0x471a0）反复成为全进程最高热点（单条 1.5%–1.7% 采样），与 Rdb 结果集读取路径吻合，指向 SQLite 语句执行/VM 步进成本；因该 SO 已 strip 且无应用侧符号名，无法进一步定位到具体 SQL 或函数。",
+      "fix": "在应用侧减少查询条数与扫描行数（合并查询、限制列、用 COUNT 聚合）；如需函数级定位，建议对该 SO 触发可选的符号恢复（update --so_dir）后重分析。",
+      "evidence": [
+        "native-profile-1.txt：1.56% libsqlite.z.so+0x54504、1.56% +0x474fc，comm=com.sheafreader.hm",
+        "native-profile-2.txt：1.53% +0x544b4、1.09% +0x471a0、1.05% +0x471ac",
+        "native-profile-3.txt：1.71% +0x544b4（com.sheafreader.hm）、1.09% +0x544b4（OS_FFRT_3_0）、1.01% +0x471ac"
+      ]
+    }
+  ]
+}

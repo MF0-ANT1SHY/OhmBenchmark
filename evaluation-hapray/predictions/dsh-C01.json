@@ -1,0 +1,94 @@
+{
+  "summary": "案例 C01（com.hefengbao.jingmo.hw，「数据库已有 50,000 首诗；请求随机诗歌 10 次」，三轮 elapsed 422.6/361.5/552.4 ms）最值得修复的是 ClassicPoemDao.readRandomClassicPoem，其执行 DbCRUDConst.READ_RANDOM_CLASSICPOEM：`where id = (select p.id from classicalliterature_classicpoem p order by random() limit 1) limit 1`，在 50,000 行表上做全表扫描并对每一行求 random()，且页面每次 aboutToAppear/工具栏刷新都重新执行、无缓存；其次同一函数对 querySql 返回的 ResultSet 从未 close()，存在结果集/游标泄漏。动态证据限制必须说明：perf_report 显示采样事件为 sw-cpu-clock（hiperf record -p 32262 -f 1000 -e sw-cpu-clock），step1 perf_sample 共 5082 条、SUM(event_count)=5,082,000,000=5082×1,000,000，即 event_count 恒等于 1 ms 采样周期量，属软件 CPU 时钟而非 CPU 指令数（raw-instruction-retired），不能做指令级或函数耗时归因；so_file_load.json 为 []；summary.json 中 empty_frame=0、total_redundant_threads=0、component_reuse total_builds=0/reusability_ratio=0、tech_stack 全 0；未发现 trace_frameLoads.json / trace_ipc_binder.json / ui_animate.json，也没有任何内存（memory_*）事件。因此未做帧级、线程、IPC、内存交叉，也未把函数名或单次耗时单独立为根因。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "ClassicPoemDao",
+      "symbol": "readRandomClassicPoem → relationalStore.querySql(READ_RANDOM_CLASSICPOEM)",
+      "file": "source/commons/constants/src/main/ets/DbConst.ets",
+      "line_start": 29,
+      "line_end": 31,
+      "confidence": "medium",
+      "root_cause": "随机取诗 SQL 采用 `where id = (select p.id from classicalliterature_classicpoem p order by random() limit 1) limit 1`：SQLite 必须在 50,000 行上扫描并对每一行计算 random()，没有主键/索引可用（id 主键对该子查询的排序无帮助），属 O(N) 随机排序，是「50,000 首诗库随机取诗」这一操作的核心浪费点。依据为源码与 workload 描述（数据库 50,000 首、固定观察窗口 361–552 ms 内完成 10 次请求）；这是机制性推断，未取得该 SQL 本身的指令级/耗时级动态证据（本机 sw-cpu-clock 采样不可折算为指令数）。",
+      "fix": "用 O(1) 的随机行策略替换整表 random() 排序，例如：① `select * from classicalliterature_classicpoem where id >= (abs(random()) % (select max(id) from classicalliterature_classicpoem)) order by id limit 1`（并在 0 行时回退到 `order by id limit 1`）；或 ② `select * from classicalliterature_classicpoem limit 1 offset abs(random()) % (select count(*) from classicalliterature_classicpoem)`（预先维护 count）；③ 在应用侧缓存 id 列表并用 random() 取样。改动后保留结果集 close()。",
+      "evidence": [
+        "workload.json: description=\"数据库已有 50,000 首诗；请求随机诗歌 10 次。\"，rounds elapsed 422.596/361.526/552.440 ms（三轮同版本）",
+        "source/commons/constants/src/main/ets/DbConst.ets:29-31 DBCRUDConst.READ_RANDOM_CLASSICPOEM = 'select * from classicalliterature_classicpoem where id = (select p.id from classicalliterature_classicpoem p order by random() limit 1) limit 1'",
+        "source/features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets:43 DbUtil.objectiveRDB?.querySql(DbCRUDConst.READ_RANDOM_CLASSICPOEM)",
+        "hapray/20261001031808/hiperf/step1/perf.db: perf_report report_type/config_name=sw-cpu-clock，cmdline='hiperf record -p 32262 -f 1000 -e sw-cpu-clock -s fp -o /data/local/tmp/ohm-perf.data --control prepare'（事件为软件 CPU 时钟，非 raw-instruction-retired）",
+        "hapray/20261001031808/hiperf/step1/perf.db: SELECT COUNT(*), SUM(event_count) FROM perf_sample → 5082 行 / 5,082,000,000，即 event_count 恒为 1,000,000（1 ms 周期量），不能解释为 CPU 指令数",
+        "hapray/20261001031808/report/so_file_load.json 为 []（无 SO 级负载数据）；report/summary.json 中 empty_frame count=0、total_redundant_threads=0、component_reuse total_builds=0、tech_stack 全 0"
+      ]
+    },
+    {
+      "rank": 2,
+      "category": "cpu-hotspot",
+      "owner": "ClassicPoem",
+      "symbol": "refresh() / aboutToAppear()",
+      "file": "source/features/classicalliterature/classicpoem/src/main/ets/pages/ClassicPoem.ets",
+      "line_start": 16,
+      "line_end": 26,
+      "confidence": "medium",
+      "root_cause": "页面在 aboutToAppear() 中调用 refresh()，工具栏刷新 action 又调用同一 refresh()，每次都直接触发上面的重量级随机查询且没有任何缓存或去重（并发重复调用也不会复用结果）。在「请求随机诗歌 10 次」的操作下，重复进入/刷新同一页面会成倍放大整表随机排序开销。属源码机制性推断，缺少该页面的帧级/指令级动态证据支撑（本案例无 trace_frameLoads.json、采样为软件时钟）。",
+      "fix": "为随机诗结果增加短时缓存或惰性刷新（例如记录上次结果的时间戳/由用户显式点击才重新随机），并对 refresh() 加在途请求去重标志（isLoading）避免并发重复查询；若产品需要每次刷新都换诗，也应配合 rank 1 的 O(1) 取行策略。",
+      "evidence": [
+        "source/features/classicalliterature/classicpoem/src/main/ets/pages/ClassicPoem.ets:16-18 aboutToAppear(){ this.refresh() }",
+        "source/features/classicalliterature/classicpoem/src/main/ets/pages/ClassicPoem.ets:20-26 refresh(){ dao.readRandomClassicPoem().then(...) }（无缓存、无在途去重）",
+        "source/features/classicalliterature/classicpoem/src/main/ets/pages/ClassicPoem.ets:73-79 toolbarConfiguration 中 action: () => { this.refresh() }（可反复触发同一重量级查询）",
+        "source 检索结果：readRandomClassicPoem 仅被 ClassicPoem.ets:21 调用，readRandom/READ_RANDOM_CLASSICPOEM 无其他调用点（无缓存层）"
+      ]
+    },
+    {
+      "rank": 3,
+      "category": "cpu-hotspot",
+      "owner": "ClassicPoemDao",
+      "symbol": "readRandomClassicPoem (ResultSet 未关闭)",
+      "file": "source/features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets",
+      "line_start": 44,
+      "line_end": 77,
+      "confidence": "medium",
+      "root_cause": "querySql 的回调里对 resultSet 只做了 goToNextRow()/getColumnIndex()/getString() 读取，循环内 `return` 提前退出后既没有 resultSet.close()，也没有在 catch 路径关闭；每次随机取诗都会遗留一个未释放的 ResultSet（游标与底层资源），在「10 次请求」这类重复调用下会累积资源并增加后续查询成本。这是源码可证的资源泄漏机制，非仅命名异味；未取得内存/nativehook 证据（本案例无 memory_* 事件）。",
+      "fix": "用 try/finally 保证关闭：`const resultSet = await DbUtil.objectiveRDB?.querySql(sql); try { if (resultSet?.goToNextRow()) { ... } } finally { resultSet?.close(); }`；同时把 `order by random()` 的 SQL 改为 O(1) 取行，并避免在 while 内直接 return 而不关闭。",
+      "evidence": [
+        "source/features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets:44-67 querySql(...).then((resultSet) => { try { while (resultSet.goToNextRow()) { ... classicPoem = temp; return } } catch ... })",
+        "source/features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets:68-77 catch 分支仅记日志，无 resultSet.close()；全文件无 close() 调用",
+        "hapray/20261001031808/hiperf/step1/perf.db 内存类表（native_hook、memory_cpu、memory_profile 等）无对应记录，summary.json 各 step 无内存指标（该轮未开 --memory），故仅有源码侧证据"
+      ]
+    },
+    {
+      "rank": 4,
+      "category": "cpu-hotspot",
+      "owner": "DbUtil",
+      "symbol": "createObjectRDB (getRdbStore 回调中 error 未先判)",
+      "file": "source/commons/utils/src/main/ets/database/DbUtil.ets",
+      "line_start": 15,
+      "line_end": 34,
+      "confidence": "low",
+      "root_cause": "getRdbStore 回调中先执行 `this.objectiveRDB = rdbStore; let storeVersion = rdbStore.version;` 再判断 error，若获取 RdbStore 失败会先解引用 rdbStore/tokenizer 初始化结果；且建表只在 storeVersion == 0 时执行，并未在 error 分支返回前处理。风险是该路径下 RDBStore 不可用/未建表，会让后续 readRandomClassicPoem 的 querySql 落到异常或全表扫描的降级路径。该条目为静态风险，缺乏本案例动态证据（无 DB 相关故障树指标，fault_tree 各计数均为 0）。",
+      "fix": "在回调首行先判断 error 并 return，再赋值 this.objectiveRDB；对 getRdbStore 失败做重试/上报；建表迁移改为按 version 逐级迁移（`if (storeVersion < DbConfigConst.DB_VERSION)`）而非仅 `== 0`。",
+      "evidence": [
+        "source/commons/utils/src/main/ets/database/DbUtil.ets:15-34 createObjectRDB 内 `this.objectiveRDB = rdbStore; let storeVersion: number = rdbStore.version;` 位于 `if (error)` 判断之前",
+        "source/commons/utils/src/main/ets/database/DbUtil.ets:26-33 建表仅在 `if (storeVersion == 0)` 内执行，error 分支只记日志",
+        "hapray/20261001031808/report/summary.json: 各 step fault_tree 的 arkui/RS/av_codec/Audio 计数全为 0，无该风险实际触发的动态证据"
+      ]
+    },
+    {
+      "rank": 5,
+      "category": "so-load",
+      "owner": "App 进程 (com.hefengbao.jingmo.hw)",
+      "symbol": "so_file_load 空数据集",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "so_file_load.json 为空数组、summary.json 的 tech_stack（ArkUI/Web/RN/Flutter/KMP/APP_Processes）全为 0，说明本轮分析器未把应用进程的 SO 负载关联出来；同时采样事件为 sw-cpu-clock 且 event_count 恒为 1 ms 周期量、perf_sample 仅 5082 条（step1），无法据此判定是业务 .so 热点还是采样范围问题。按 skill 规则，此维度只能标注「数据缺失/不可用」，不作根因断言。",
+      "fix": "若需 SO/符号级结论，应改用 raw-instruction-retired 等硬件指令事件（或按需执行符号恢复）重新采集/解析，使 so_file_load.json 产出应用进程条目后再做动静交叉；在此之前不应基于空数据集下结论。",
+      "evidence": [
+        "hapray/20261001031808/report/so_file_load.json 内容为 []（无 file/file_path/load/step_id 条目）",
+        "hapray/20261001031808/report/summary.json 各 step tech_stack 全为 0，component_reuse total_builds=0",
+        "hapray/20261001031808/hiperf/step1/perf.db perf_sample 仅 5082 条样本；perf_report config_name=sw-cpu-clock（软件时钟，非指令事件）"
+      ]
+    }
+  ]
+}

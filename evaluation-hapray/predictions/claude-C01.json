@@ -1,0 +1,120 @@
+{
+  "summary": "场景为 ClassicPoem 页面连续 10 次随机读诗（每次点刷新/重进触发 dao.readRandomClassicPoem）。主线程（2462/5082 样本）基本全部耗在数据库读取链路上：sw-cpu-clock 采样显示 libsqlite.z.so、libnative_rdb.z.so 与 librelationalstore.z.so 合计占应用线程采样约一半，几乎每个主线程栈都经过 OHOS::NativeRdb::AbsSharedResultSet::GoToRow / UpdateBlockPos 与 promise 回调派发；根因是 SQL `select * ... where id=(select p.id from classicalliterature_classicpoem p order by random() limit 1)` 对 50,000 行表做全表扫描 + random() 排序，并把 `select *`（含 writer_introduction/content/翻译等大文本）由 relationalstore 读回、经 arraybuffer/N-API 拷贝后才在 ArkTS 侧用 getColumnIndex/getString 取其中十几个字段，而 ArkTS 侧用位图数量而非结果集迭代次数判断行存在，每次刷新都多取 1 行并多走一次 C++ 回拷。空刷、冗余线程、组件复用、内存信号均为 0（且内存事件本轮未采集，缺失，不作结论）。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "DbCRUDConst",
+      "symbol": "READ_RANDOM_CLASSICPOEM",
+      "file": "source/commons/constants/src/main/ets/DbConst.ets",
+      "line_start": 29,
+      "line_end": 31,
+      "confidence": "high",
+      "root_cause": "随机取诗 SQL 用 `id = (select p.id from classicalliterature_classicpoem p order by random() limit 1)` 实现「随机」，SQLite 必须对 classicalliterature_classicpoem 全表（工作负载为 50,000 行）求值 random() 并排序，无法用主键索引随机定位；同一 select 又投影全部列（含 writer_introduction/content/annotation/translation/creative_background/explain/comment 等长文本），使随机行的代价进一步放大。sw-cpu-clock 采样（period=1000，共 5082 个样本）中 libsqlite.z.so 占 748 个采样栈、librelationalstore.z.so 占 829 个采样栈，是本场景最大的可归因平台侧开销，且与「10 次随机请求」的入口一一对应。",
+      "fix": "改为按主键随机取行，避免全表排序与全列回读：① 取行数 N 后 `SELECT id FROM classicalliterature_classicpoem LIMIT 1 OFFSET ?`（offset=random 整数），或 `SELECT * FROM classicalliterature_classicpoem WHERE id >= ? ORDER BY id LIMIT 1`；② 显式列出 UI 真正需要的列（id/dynasty/writer/title/preface/content/annotation/translation/creative_background/explain/comment）而非 `select *`，减少 RDB 侧文本拷贝；③ 若需命中同一行，可先用一条只读 id 的轻量 SQL 再按主键取全字段。",
+      "evidence": [
+        "工作负载：数据库已有 50,000 首诗，请求随机诗歌 10 次（workload.json）",
+        "源码 DbCRUDConst.READ_RANDOM_CLASSICPOEM = 'select * from classicalliterature_classicpoem where id = (select p.id from classicalliterature_classicpoem p order by random() limit 1) limit 1'（DbConst.ets:29-31）",
+        "perf.db(step1) perf_sample 汇总：5082 个样本 / Σevent_count = 5,082,000,000（即 5,082×1e6，采样周期 1000）",
+        "inclusive 聚合：/system/lib64/platformsdk/libsqlite.z.so 748 个采样栈；/system/lib64/module/data/librelationalstore.z.so 829 个采样栈；libnative_rdb.z.so 出现 AbsSharedResultSet::GoToRow(2223000000/398 采样)、AbsSharedResultSet::UpdateBlockPos(2219000000/397 采样)",
+        "主线程 com.hefengbao.jingmo.hw(tid 32262) 仅 2462/5082 样本；FFRT 线程 OS_FFRT_3_0/3_1 合计 2608 样本，说明工作被派发到 FFRT 上执行（与 relationalstore/libffrt CPUWorker 采样一致）"
+      ],
+      "problematic_lines": [
+        "'select * from ' + DbTableConst.ClassicPoemTable + ' where id = (select p.id from classicalliterature_classicpoem p order by random() limit 1) limit 1'",
+        "全表投影：表结构含 content/additional 长文本列（DbMigrationConst 建表语句 DbConst.ets:20-25）"
+      ],
+      "trigger_chain": "UI 点击/进入页面 → ClassicPoem.aboutToAppear/refresh() → ClassicPoemDao.readRandomClassicPoem() → DbUtil.objectiveRDB.querySql(READ_RANDOM_CLASSICPOEM) → librelationalstore.z.so → FFRT 线程 → libsqlite.z.so 全表 random() 排序 + 全列回读"
+    },
+    {
+      "rank": 2,
+      "category": "cpu-hotspot",
+      "owner": "ClassicPoemDao",
+      "symbol": "readRandomClassicPoem",
+      "file": "source/features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets",
+      "line_start": 40,
+      "line_end": 80,
+      "confidence": "high",
+      "root_cause": "readRandomClassicPoem 用 `while (resultSet.goToNextRow())` 迭代结果集，但循环体中只处理第一行就 `return`（只赋值给局部变量 classicPoem 后提前退出），实际每次查询从 C++ 侧多取、多拷贝 1 行；同时又用「第一行已取到」作为循环终止条件，而不是用 resultSet 的返回/行数判断，语义与实现不一致。此外函数内用 `await` + .then 混用，函数体在 .then 真正赋值给 classicPoem 之前就 `return classicPoem`（第 79 行），页面在 aboutToAppear 里只做 `.then(value => this.classicPoem = value)` 而不 await，刷新时序与返回值不可控。",
+      "fix": "① 只在需要一行时用 `if (resultSet.goToFirstRow()) { ... }`，或保留 while 但去掉提前 return，用 goToFirstRow 判定行存在；② 不要混用 await 与 .then，统一为 `const resultSet = await DbUtil.objectiveRDB.querySql(sql)` 后在 try/finally 中 close() 结果集；③ 若 1 行语义成立，SQL 层加 LIMIT 1 并在 ArkTS 侧显式判空。",
+      "evidence": [
+        "ClassicPoemDao.readRandomClassicPoem 第 46-67 行：`while (resultSet.goToNextRow())` 内构造 temp 后 `classicPoem = temp; return`",
+        "ClassicPoem.ets:20-26 refresh() 只 `.then` 回填，不等待；ClassicPoemDao.ets:79 `return classicPoem` 位于 .then 之外",
+        "perf.db 应用栈中 libnative_rdb.z.so 的 AbsSharedResultSet::GoToRow(398 采样) / UpdateBlockPos(397 采样) 各占约 2.2e9 采样值，说明结果集逐行/块定位被反复调用",
+        "ResultSet 无 close() 调用（源码 40-80 行可见），行数据来自 ResultSet 内部 block 缓存拷贝"
+      ],
+      "problematic_lines": [
+        "while (resultSet.goToNextRow()) { let temp: ClassicPoem = new ClassicPoem(... ); classicPoem = temp; return }",
+        "await DbUtil.objectiveRDB?.querySql(...).then(...) ... return classicPoem;  // 早于 then 回调执行",
+        "构造函数经 getColumnIndex('id'/'dynasty'/'writer'/'writer_introduction'/...) 逐列取值（第 47-63 行）"
+      ],
+      "trigger_chain": "ClassicPoem.aboutToAppear → refresh() → readRandomClassicPoem → ResultSet.goToNextRow/GoToRow/UpdateBlockPos → getColumnIndex×15 → new ClassicPoem"
+    },
+    {
+      "rank": 3,
+      "category": "cpu-hotspot",
+      "owner": "ClassicPoemDao / ClassicPoemModel",
+      "symbol": "readRandomClassicPoem → ClassicPoem constructor",
+      "file": "source/features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets",
+      "line_start": 47,
+      "line_end": 63,
+      "confidence": "medium",
+      "root_cause": "取列方式用 `resultSet.getColumnIndex(name)` 每次刷新都做列名到索引的查找，并被调用 15 次（7 个非空列 + 8 个可空列），且列在 `select *` 的结果集中位置固定，完全可以缓存索引或改为按索引直接取值；同时为 50,000 行表中随机一行的所有长文本字段都构造了 ArkTS 对象（model.ClassicPoem 构造函数逐字段赋值），其中 writer_introduction/subtitle 等字段在 build() 中并未渲染。该开销发生在每次 refresh 的回调里，属于随随机查询重复发生的可避免拷贝/查找成本，证据为采样栈中 relationalstore/N-API 回拷占比高，但没有单独归因到 getColumnIndex 的符号（属推断，故置信度为 medium）。",
+      "fix": "① 用 SQL 显式列名对齐 getColumnIndex，或在首次查询后缓存 `resultSet.getColumnIndex(name)` 的结果；② 只 SELECT 与只构造 UI 实际渲染的字段，writer_introduction/subtitle 等未渲染字段不取；③ 大文本字段可用 getString 之前先判断列索引有效性，避免重复查找。",
+      "evidence": [
+        "ClassicPoemDao.ets:47-63 构造函数入参中 15 次调用 resultSet.getColumnIndex(...)",
+        "ClassicPoem.ets:32-66 build() 仅渲染 title/dynasty/writer/preface/content/annotation/translation/creative_background/explain/comment，未渲染 writer_introduction/subtitle",
+        "libnative_rdb.z.so / librelationalstore.z.so 采样占比（398/829 采样栈）显示主线程回调内有大量 RDB→ArkTS 数据搬运"
+      ],
+      "problematic_lines": [
+        "resultSet.getColumnIndex('writer_introduction') 等 15 次逐列索引查找",
+        "select * 取回 content/annotation/translation/creative_background/explain/comment 等长文本后全部构造进 ClassicPoem"
+      ],
+      "trigger_chain": "RDB querySql 返回 → ResultSet 回调 → 逐列 getColumnIndex/getString → new ClassicPoem 15 个字段"
+    },
+    {
+      "rank": 4,
+      "category": "so-load",
+      "owner": "/system/lib64/ndk/libffrt.so (OS_FFRT_3_0 / OS_FFRT_3_1)",
+      "symbol": "ffrt::CPUWorker::WorkerLooper/RunTask/ExecuteTask",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "medium",
+      "root_cause": "数据查询被 relationalstore/FFRT 派发到 OS_FFRT_3_0（1138 个采样）与 OS_FFRT_3_1（1470 个采样），libffrt.so 的 CPUWorker::WorkerLooper→RunTask→ExecuteTask 链路各占约 2.608e9 采样值；两个 FFRT 线程合计 2608/5082 采样，超过主线程 2462 采样。也就是说同一批随机查询工作在主线程与 FFRT 之间都产生了软件 CPU 采样，属于「不可避免派发」+「被 SQL 自身成本放大」的组合；本条不构成独立缺陷，仅作为随机查询成本被放大的证据。",
+      "fix": "优先修 #1 的 SQL 全表扫描后，FFRT 侧负载会随之下降；如后续仍高，再评估 RDB 查询是否可合并批量执行（一次取多首/预取下一首），减少 10 次串行随机查询的次数。",
+      "evidence": [
+        "perf_thread 聚合：OS_FFRT_3_0(32584) 1138 采样、OS_FFRT_3_1(32594) 1470 采样、OS_FFRT_Delay 12 采样",
+        "perf_callchain 聚合：libffrt.so CPUWorker::WrapDispatch/Dispatch/RunTask/WorkerLooper/ExecuteTask 各 2608000000 采样值（379 个采样栈）",
+        "libace_napi.z.so NativeAsyncWork::AsyncWorkCallback/AsyncAfterWorkCallback、napi_resolve_deferred、libark_jsruntime PromiseCapabilityRef::Resolve 在应用栈中占 2.2–2.6e9 采样值（在约 2.0e9 的栈上近似全量，仅能作定性证据）"
+      ],
+      "problematic_lines": [],
+      "trigger_chain": "readRandomClassicPoem → RDB async → FFRT CPUWorker → SQLite 查询 → promise resolve → 主线程回调"
+    }
+  ],
+  "observations": [
+    {
+      "category": "thread",
+      "signal": "冗余线程",
+      "finding": "三步骤 redundant_threads 均为 0，has_redundancy=false，线程模型未见冗余（step1 的 apppool 仅出现在 below_threshold_patterns，max_score 20，未达阈值）",
+      "evidence": "redundant_thread_analysis.json / root_cause_evidence.md",
+      "related_owner": "",
+      "suggested_direction": "无需处理"
+    },
+    {
+      "category": "frame-stats",
+      "signal": "空刷/VSync",
+      "finding": "三轮空刷均为 0（0.0%），VSync 异常 0 次；无 UI 事件与内存事件，本轮未采集 memory 信号，故不对内存/UI 渲染维度下结论",
+      "evidence": "trace_rsSkip.json、summary.json、root_cause_evidence.md",
+      "related_owner": "",
+      "suggested_direction": "若关注渲染侧，需补采 UI 事件与 --memory 采集"
+    }
+  ],
+  "caveats": [
+    "本轮采样事件为 sw-cpu-clock（perf_report: config_name=sw-cpu-clock, cmdline=hiperf record -p 32262 -f 1000 -e sw-cpu-clock），event_count 为软件 CPU 时钟计数，不能解释为 CPU 指令数或周期数；所有占比均为采样占比。",
+    "perf.db 的 perf_callchain 已丢失调用栈层级信息：同一线程多个 leaf（malloc/memcpy/read/epoll_wait 等）事件值完全相同（2945000000 / 2945），符号通过 file_id/serial_id 关联 perf_files 得到，因此无法区分展开栈中哪一帧是真实热点，只能给出 inclusive 定性结论。",
+    "so_file_load.json 为空数组，无法按 SO 负载 JSON 交叉；trace_componentReuse.json 三项均为 0（total_builds=0），说明 trace 侧未捕获到 ArkUI 组件 build 事件，组件复用维度无证据。",
+    "缺失：UI 事件（trace_ui 相关）与内存事件（memory_records / --memory 未启用）均未采集，GC 统计为 0，无法评估内存分配与 GC。",
+    "嫌疑 3 的 getColumnIndex 开销为源码推断（medium），未在采样栈中单独归因到该符号；嫌疑 1/2 的 SQL 与 ResultSet 机制有源码行与 inclusive 采样双重支撑。",
+    "工作负载共 3 轮真实运行（step1/2/3），本轮完整交叉验证了 step1；step2/step3 未逐条复核，结论以 step1 为主，轮次间差异未评估。"
+  ]
+}

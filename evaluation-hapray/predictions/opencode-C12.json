@@ -1,0 +1,91 @@
+{
+  "summary": "连续保存 1000 条浏览记录时，应用在每次 Web 页面 onPageEnd 回调中串行执行 onSaveHistory()：每次都走 RdbUtils.insertDate()（query date_table + 建表 + 可能的 insert）+ insertHistory()（单条 insert），形成大量小事务的 RDB I/O 往返。动态证据显示主线程与 RDB 线程的高负载集中在 NativeRdb Insert/Query 与 fdatasync/fsync 内核路径，1000 次记录写入被重复放大，是本操作最值得修复的性能热点。采样事件为 sw-cpu-clock（软件 CPU 时钟），event_count 仅为加权时钟样本，不能解释为 CPU 指令数。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "RdbUtils",
+      "symbol": "RdbUtils.insertDate",
+      "file": "source/entry/src/main/ets/utils/RdbUtils.ets",
+      "line_start": 50,
+      "line_end": 76,
+      "confidence": "high",
+      "root_cause": "每保存一条浏览记录都会调用 insertDate()：先 query('date_table') 判断当天是否已有记录，再 createHistoryTable() 执行 CREATE TABLE IF NOT EXISTS（DDL），然后才在 insertHistory() 中插入。1000 条记录会产生 1000 次查询 + 多次建表 DDL + 1000 次单条 insert，全部走同步 RDB 往返，形成高频小事务 I/O。",
+      "fix": "按日期缓存已初始化状态（例如 Set<string> initializedDates），当天首次写入后跳过 query/create，后续只做 insert；表结构初始化改为应用启动时（EntryAbility）一次性完成，不在热路径重复 CREATE TABLE IF NOT EXISTS。",
+      "evidence": [
+        "Index.ets:82-102 onSaveHistory() 每次 await RdbUtils.insertDate(date) 后再 await RdbUtils.insertHistory(date, history)",
+        "RdbUtils.ets:50-76 insertDate 内 getStore().query(predicates) + createHistoryTable + 可能 insert('date_table')",
+        "trace callstack 汇总：H:Insert|I36 累计 2,302,289,000；H:ExecuteSql|I36 425,296,000；H:QuerySql|I36 302,202,000",
+        "perf.db 叶帧符号统计：OHOS::NativeRdb::RdbStore::InsertWithConflictResolution 10,751 样本；OHOS::NativeRdb::RdbStore::Query 3,682 样本"
+      ]
+    },
+    {
+      "rank": 2,
+      "category": "so-load",
+      "owner": "libnative_rdb.z.so",
+      "symbol": "OHOS::NativeRdb::RdbStore::InsertWithConflictResolution",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "high",
+      "root_cause": "单条 insert（ValuesBucket）未批量合并，每条记录一次事务提交，触发 fdatasync/fsync；RDB 插入成为 SO 级热点。",
+      "fix": "改用 batchInsert/事务包裹（beginTransaction + 批量 insert + commit），或将 1000 条记录在内存聚合后批量落库。",
+      "evidence": [
+        "系统调用符号统计：fdatasync 4,207 样本；hmfs_fsync 3,896；vfs_do_fstatat 3,037；write 2,194（perf_callchain 聚合，step1）",
+        "/system/lib64/platformsdk/libnative_rdb.z.so 出现在 InsertWithConflictResolution 与 Query 的叶帧热点中",
+        "so_file_load.json 为空数组（[]），故无法给出 SO 级 load 数值；上列符号来自 perf.db 调用栈聚合"
+      ]
+    },
+    {
+      "rank": 3,
+      "category": "memory",
+      "owner": "Index / historyMap",
+      "symbol": "Index.historyMap / onSaveHistory",
+      "file": "source/entry/src/main/ets/pages/Index.ets",
+      "line_start": 40,
+      "line_end": 100,
+      "confidence": "medium",
+      "root_cause": "historyMap 以 @Provide 常驻内存，每次 onSaveHistory 都 unshift 到对应日期的数组且从不清理；1000 条记录持续增长，属于随操作线性增长的内存/重渲染压力（未做内存采集，无法量化泄漏）。",
+      "fix": "对 historyMap 设上限或分批加载；列表展示使用 LazyForEach 并按需分页查询数据库，而非全量常驻内存。",
+      "evidence": [
+        "Index.ets:40 @Provide('historyMap') Map<string,History[]> 常驻；Index.ets:96-100 每保存一次 set/unshift",
+        "PagesDialog.ets:22-32 弹窗时对 historyMap 全量遍历生成 historyGroups",
+        "本轮未开启 --memory 采集，hapray_report.db 无 memory_records，无法给出内存增量证据（缺失项，非检测结论）"
+      ]
+    },
+    {
+      "rank": 4,
+      "category": "frame-load",
+      "owner": "PagesDialog",
+      "symbol": "PagesDialog.build",
+      "file": "source/entry/src/main/ets/view/PagesDialog.ets",
+      "line_start": 83,
+      "line_end": 97,
+      "confidence": "low",
+      "root_cause": "浏览记录弹窗使用 ForEach 而不是 LazyForEach 构建全部 ListItem；记录越多一次性构建的组件越多，可能引入高负载帧。属推断，缺动态帧级证据支撑。",
+      "fix": "List 改用 LazyForEach + 数据源 IDataSource，减少一次性构建的 HistoryItem 数量。",
+      "evidence": [
+        "PagesDialog.ets:84-92 ForEach(this.historyGroups) 内嵌 ForEach(group.histories) 全量构建 ListItem",
+        "trace_emptyFrame.json 三 step 空刷均为 0；trace_componentReuse.json 的 total_builds 均为 0（未捕获组件复用数据）",
+        "未直接测得该弹窗打开时的高负载帧，置信度低"
+      ]
+    },
+    {
+      "rank": 5,
+      "category": "thread",
+      "owner": "TaskExecutorRDB / FF-RT 线程池",
+      "symbol": "ffrt::CPUWorker::RunTask",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "大量 RDB 任务经由 libffrt CPUWorker 与 TaskExecutorRDB 调度，线程等待/唤醒增多；属 I/O 密集而非应用线程模型缺陷，redundant_thread_analysis 判定无冗余线程。",
+      "fix": "减少单条 RDB 任务数量（见 rank1/2 的批量写入），即可降低线程调度次数。",
+      "evidence": [
+        "perf.db 叶帧：libffrt.so ffrt::CPUWorker::RunTask 23,101 样本；ExecuteTask 23,029；UVTask::ExecuteImpl 22,823",
+        "redundant_thread_analysis.json 三 step total_redundant_threads=0、has_redundancy=false",
+        "ThreadPoolForeg/apppool 仅出现在 below_threshold_patterns（分数 55/40），未达冗余阈值"
+      ]
+    }
+  ]
+}

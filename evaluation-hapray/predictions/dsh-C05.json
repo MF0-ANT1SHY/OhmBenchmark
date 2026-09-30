@@ -1,0 +1,77 @@
+{
+  "summary": "该操作把 3000 首诗导入空数据库，三轮 elapsed 约 3.04s/3.04s/2.86s。动态证据显示绝对主热点是 ClassicPoemDao.createClassicPoem 逐条执行的 3000 次单行 relationalStore.insert：trace.db 每轮恰好 3000 个 H:Insert 切片，聚合 22.26–23.73e9 采样，占该轮总采样（42.862–45.377e9）的约 52–53%，且切片起始时间高度重叠（首 3 个仅相隔 <2ms）说明是 3000 次并发独立写入。根因是缺少 batchInsert / 显式事务的批量写入，且 createClassicPoem 虽为 async 却未 await/返回 insert 的 Promise（fire-and-forget），使逐条 insert 无法串行、无背压、失败仅记日志。SyncData.aboutToAppear 另在主线程同步 JSON.parse + 3000 次 map + 逐条 logger.info，但主线程符号被 appspawn(null)/RTStub_AsmInterpreterEntry 主导，无法精确归因，故置信度低。证据限制：采样事件为 sw-cpu-clock，event_count 只能作为 CPU 时间样本权重，不能解释为 CPU 指令数；report/ 下缺失 trace_frameLoads.json、trace_ipc_binder.json、trace_frames.json，且未启用 --memory（无 memory_records），因此 frame-load、ipc、memory 维度无法评估，不应杜撰。空刷=0、组件复用 total_builds=0、冗余线程=0、GC 仅 PartialGC=3（perf 占比约 0.03–0.04%），这些维度未见问题。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "ClassicPoemDao",
+      "symbol": "createClassicPoem",
+      "file": "source/features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets",
+      "line_start": 31,
+      "line_end": 37,
+      "confidence": "high",
+      "root_cause": "导入 3000 首诗时逐条调用 relationalStore.insert 写入单行，没有 batchInsert 或显式事务，产生 3000 次独立写入；trace.db 三轮各含 3000 个 H:Insert 切片，聚合采样占该轮总采样约 52–53%，是本次导入耗时的绝对主热点。",
+      "fix": "新增批量写入：用 relationalStore.ValuesBucket[] 一次性 batchInsert(DbTableConst.ClassicPoemTable, buckets)，或把 3000 次 insert 包进 beginTransaction/commit 并按每 500 条分批；调用方先收集全部 buckets 再写入，将 3000 次往返降为 1 次或数次分批。",
+      "evidence": [
+        "trace.db step1/step2/step3 各含恰好 3000 个 `H:Insert|I36` 切片（等于导入诗数 3000），聚合时长 23.725e9 / 23.585e9 / 22.263e9 ns。",
+        "同轮总采样 total_load 分别为 44.619e9 / 45.377e9 / 42.862e9（sw-cpu-clock 样本），Insert 占比 ≈53.2% / 52.0% / 51.9%。",
+        "单次 Insert 平均 7.4–7.9ms；首批切片 25.737/27.308/26.728 ms 且起始时间相差 <2ms，说明写入并发/重叠而非单批。",
+        "`H:WORKLOAD/span` 仅 1 个，时长 3.043056e9 ns ≈ 本轮 elapsed 3.0428s，与 Insert 并发度 23.7e9/3.04s≈7.8 倍相印证。",
+        "源码检索 batchInsert|beginTransaction|executeSql 无命中；`insert(` 仅 ClassicPoemDao.ets:31 一处。"
+      ]
+    },
+    {
+      "rank": 2,
+      "category": "cpu-hotspot",
+      "owner": "ClassicPoemDao",
+      "symbol": "createClassicPoem",
+      "file": "source/features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets",
+      "line_start": 31,
+      "line_end": 37,
+      "confidence": "high",
+      "root_cause": "createClassicPoem 声明为 async，但只对 insert 挂 .then()/.catch() 就返回，未 return/await 该 Promise，函数立即 resolve；调用方的 await 等待的是已完成的 Promise，3000 次 insert 实际并发下发，无串行与背压，写入失败只写日志。",
+      "fix": "让写入可被等待：`return await DbUtil.objectiveRDB.insert(DbTableConst.ClassicPoemTable, valuesBucket)`（或在 catch 中重新抛出），使 await 真正等到写入完成；再配合分批/事务控制并发度，避免 3000 个写入同时排队。",
+      "evidence": [
+        "ClassicPoemDao.ets:31-37：`DbUtil.objectiveRDB?.insert(...).then(...).catch(...)`，未 return 该 Promise，async 函数随即 resolve。",
+        "DatasetViewModel.ets:49-53：`await this.classicPoemDao.createClassicPoem(classicPoem).catch(...)`，await 对象已立即 resolve，不构成串行。",
+        "SyncData.ets:30-33：`wrapper.data.map(... DatasetViewModel.insertClassicPoemToDb(classicPoem))` 内亦未 await，进一步放大并发。",
+        "并发度旁证（同一快照不同步次，仅为佐证趋势）：perf.db step1 中 8 个 OS_FFRT_3_0..OS_FFRT_3_8 工作线程合计 28.267e9 采样（63.4%），主线程 12.409e9（27.8%）。",
+        "错误处理：ClassicPoemDao.ets:35-37 仅 logger.error，调用方无法感知失败或施加背压。"
+      ]
+    },
+    {
+      "rank": 3,
+      "category": "cpu-hotspot",
+      "owner": "SyncData",
+      "symbol": "aboutToAppear",
+      "file": "source/features/settings/src/main/ets/pages/SyncData.ets",
+      "line_start": 26,
+      "line_end": 33,
+      "confidence": "low",
+      "root_cause": "aboutToAppear 在 UI 主线程同步 JSON.parse 整页 3000 首诗的 JSON，并同步执行 3000 次 wrapper.data.map 循环、每次调用 logger.info，属主线程上的同步解析与逐条日志开销；但主线程 depth=0 符号被 appspawn(null) 与 RTStub_AsmInterpreterEntry 主导，无法把主线程采样精确归因到该循环，故置信度低。",
+      "fix": "把 JSON.parse 与遍历移出主线程（taskpool/Worker 或分页/流式解析）；删除循环内逐条 logger.info（改为聚合日志）；map 仅做副作用应改为 for 循环，避免创建 3000 元素中间数组。",
+      "evidence": [
+        "SyncData.ets:28 `JSON.parse(data)`、:30 `wrapper.data.map(...)`、:31 `this.logger.info(`index = ${index}`)` 均位于 aboutToAppear（UI 主线程）。",
+        "perf.db step1 主线程 tid=46306 采样 12.409e9，占进程总采样 44.619e9 的 27.8%，为单线程最高（线程名与应用包名一致）。",
+        "主线程 depth=0 叶子帧以 /system/bin/appspawn（symbol 为 null）11.189e9 与 RTStub_AsmInterpreterEntry 0.166e9 为主，ArkTS 侧符号不可见，故无法确认主线程时间来自该解析循环。"
+      ]
+    },
+    {
+      "rank": 4,
+      "category": "thread",
+      "owner": "OS_FFRT（应用进程内 FFRT 工作线程组）",
+      "symbol": "FFRT worker threads（OS_FFRT_3_0…3_8 / OS_FFRT_Delay）",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "导入期间应用进程内出现 8 个同名 OS_FFRT_3_x 工作线程并承担约 63% 采样，符合逐条 insert 并发派发到 FFRT 线程池的形态；但自动分析（redundant_thread_analysis.json / root_cause_evidence.md）判定冗余线程为 0，故不能断言线程创建本身是缺陷，只能说明并发写入的线程侧表现。",
+      "fix": "若采用批量写入/事务方案，写入任务数量下降后应复核 FFRT 线程占用；如需限制并发度，可将批量任务提交为单个串行任务队列，避免 3000 个写入任务同时占用线程池。",
+      "evidence": [
+        "perf.db step1 线程采样：com.hefengbao.jingmo.hw 12.409e9；OS_FFRT_3_0..3_8 合计 28.267e9（63.4%）；OS_FFRT_Delay 2.468e9；OS_GC_Thread ×4 合计 1.307e9。",
+        "OS_FFRT 线程 depth=0 符号仅 libffrt.so 的 `ffrt::CPUWorker::WorkerLooper` 2e6、`ffrt::ExecuteTask` 1e6、`ffrt::CPUWorker::WrapDispatch` 1e6，无法进一步下钻到具体任务。",
+        "redundant_thread_analysis.json / root_cause_evidence.md 三个 step 的 total_redundant_threads 均为 0（has_redundancy=false）。"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "summary": "本案例为「向空库导入 3000 首诗」的写事务场景：perf 采样事件为 sw-cpu-clock（非 CPU 指令数），唯一明确可见的业务热点是探针切片 H:Insert|I36（3000 次，累计 23.7s，平均 7.9ms/次），对应源码 SyncData.aboutToAppear 用 wrapper.data.map() 对 3000 条记录逐条 fire-and-forget 调用 DatasetViewModel.insertClassicPoemToDb → ClassicPoemDao.createClassicPoem → relationalStore.insert（无 await、无事务、无批量、无失败重试），在 aboutToAppear 内同时发起 HTTP 拉取被导入数据；数据库侧耗时被下沉到 4 个命名不同的 fork-join FFRT 工作线程（3.58s/Goroutine 级并发），使主线程无法通过 await 观察进度。建议改为 batchInsert + 显式事务并 await 串行化，同时把同步入口移出 aboutToAppear。空刷/冗余线程信号为 0，组件复用与帧负载数据缺失，内存与 UI 事件未采集，均不能据以判定问题。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "ClassicPoemDao.createClassicPoem / DatasetViewModel.insertClassicPoemToDb（调用方 SyncData.aboutToAppear 的 map 循环）",
+      "symbol": "H:Insert|I36 / datasetViewModel.insertClassicPoemToDb / classicPoemDao.createClassicPoem",
+      "file": "source/features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets",
+      "line_start": 12,
+      "line_end": 38,
+      "confidence": "high",
+      "root_cause": "导入 3000 条记录用的是「一条一事务」的逐行 insert：createClassicPoem 内 DbUtil.objectiveRDB?.insert(...) 既没有 await、也没有包在 rdbStore.beginTransaction/commit 中，每次插入都要独立走一遍 RDB 语句准备、SQLite WAL/日志提交与写入同步。探针证据显示 3000 次 H:Insert|I36 累计 23.7s、平均 7.9ms/次，且该切片占导出 callstack 总时长（23.725s / 约 23.76s）的绝大部分；perf（sw-cpu-clock）中 32192/44619 个样本落在 ld-musl-aarch64 的 write/writev/pwrite64 及锁原语上，即 CPU 时间大量消耗在每行插入触发的文件写入与锁竞争，而不是业务逻辑本身。",
+      "fix": "把逐条插入改为批量 + 单事务：收集完 wrapper.data 后用 relationalStore 的 batchInsert(table, valuesBuckets) 一次写入，或对所有 insert 显式包进 this.store.beginTransaction() / commit()；并把 Dao 改为真正 async（await rdbStore.insert(...)）以便调用方能串行与观测。示例：const buckets = wrapper.data.map(toBucket); await store.beginTransaction(); try { await store.batchInsert(TABLE, buckets); await store.commit(); } catch (e) { await store.rollBack(); }",
+      "evidence": [
+        "trace.db(htrace/step1) callstack: 名称 'H:Insert|I36' 共 3000 条，SUM(dur)=23725148000ns，AVG=7.9ms，MAX=49.8ms，窗口 ts 1237832976677000→1237835999111000（约 3.02s）——与 workload.json 每轮 elapsed ~2.86–3.04s、导入 3000 首完全对应",
+        "trace.db 全表 callstack 按 SUM(dur) 排序：H:Insert|I36 = 23,725,148,000ns 远高于第二项 H:WORKLOAD/span 3,043,056,000ns；同类 QuerySql 仅 2 次 3.9ms，说明耗时集中在写路径",
+        "hiperf/step1 perf.db（sw-cpu-clock，1000Hz，period=1e6）：perf_sample 共 44619 条、SUM(event_count)=4.4619e10，其中 32192 条 leaf callchain 指向 /system/lib/ld-musl-aarch64.so.1（write/writev/pwrite64/read/open64 及 pthread_mutex_*、pthread_rwlock_*）——大量采样停在文件写入与锁原语上",
+        "源码 ClassicPoemDao.ets:31 `DbUtil.objectiveRDB?.insert(DbTableConst.ClassicPoemTable, valuesBucket).then(...)`：无 await、无 beginTransaction、无 batchInsert，是逐行隐式事务",
+        "源码 DatasetViewModel.ets:49-53 `async insertClassicPoemToDb(...){ await this.classicPoemDao.createClassicPoem(...) }` 内层 insert 未返回 Promise，await 实际等待的是同步建桶完成，对调用方无效"
+      ],
+      "trigger_chain": "SyncData.aboutToAppear → DatasetViewModel.getClassicPoemList(HTTP 拉 3000 条) → wrapper.data.map(...) 逐条 → DatasetViewModel.insertClassicPoemToDb → ClassicPoemDao.createClassicPoem → relationalStore.insert（隐式单行事务）→ SQLite 写入/WAL 提交"
+    },
+    {
+      "rank": 2,
+      "category": "thread",
+      "owner": "ClassicPoemDao / DatasetViewModel（调用点为 SyncData.aboutToAppear）",
+      "symbol": "OS_FFRT_3_0/3_1/3_2/3_4/3_5/3_6/3_7/3_8 + OS_FFRT_Delay",
+      "file": "source/features/settings/src/main/ets/pages/SyncData.ets",
+      "line_start": 26,
+      "line_end": 37,
+      "confidence": "high",
+      "root_cause": "3000 次插入是 fire-and-forget 地并发打出去的，数据库把工作下沉到 8 个命名互不相同的 fork-join FFRT 工作线程（并发上限恰好是 8，说明确实同时压着约 8 个插入在飞），且写入需要串行化，导致线程在 SQLite 锁上自旋/等待。perf 线程级证据：9 个 FFRT 线程（含 OS_FFRT_Delay）合计承载约 32k 个样本，同时 1307 个样本落在 GC 线程——大量并发创建临时 ValuesBucket 字符串对象造成额外 GC 压力。因为代码没有 await 真正的插入，主线程既排队不到、也观测不到进度，UI 侧表现就是「点了同步后长时间无反馈」。",
+      "fix": "用 await 串行化或显式并发上限（例如 4–8 个 worker 的 taskpool）代替无节制的并发插入；配合 rank 1 的批量/事务写法，把 3000 次独立提交压缩为少量批次，FFRT 线程将不再因锁等待而占满；同时为插入进度加一个 @Local 计数器驱动 UI。",
+      "evidence": [
+        "perf.db(step1) 线程聚合：主线程 com.hefengbao.jingmo.hw 12409 样本；OS_FFRT_3_8=3606、3_5=3577、3_2=3559、3_7=3530、3_4=3438、3_6=3421、3_1=3415、3_0=3721、OS_FFRT_Delay=2468（共 9 个 FFRT 线程、约 32k 样本）",
+        "perf.db(step1) 线程×leaf SO 交叉：FFRT 线程 30803 个样本落在 ld-musl（write/pwrite64/锁原语），libffrt.so 自身仅 100 个样本——线程在等 I/O 与锁，不是在算 ffτ 调度",
+        "GC 线程证据：OS_GC_Thread 5 个实例合计 1607 样本（350+336+321+300+…），对应并发插入时 ValuesBucket 临时对象造成的分配压力",
+        "trace.db：H:GC::ProcessWorkloads|M47 12 次 29.3ms、H:ConcurrentSweeper::Sweep|M47 9 次 5.8ms 与导入窗口重叠",
+        "redundant_thread_analysis.json 为 0 冗余线程——说明 FFRT 线程确实在执行被投递的插入任务，属「必要但过量的并发」，不是空转冗余线程"
+      ],
+      "trigger_chain": "SyncData.aboutToAppear → map 循环 3000 次不 await → FFRT 任务队列（8 并发）→ relationalStore.insert 串行化冲突 → 线程阻塞在 SQLite 写锁"
+    },
+    {
+      "rank": 3,
+      "category": "ipc",
+      "owner": "relationalStore / 应用进程 com.hefengbao.jingmo.hw（pid 46306）",
+      "symbol": "leaf-SO = /system/bin/appspawn（11098 样本）",
+      "file": "source/commons/utils/src/main/ets/database/DbUtil.ets",
+      "line_start": 13,
+      "line_end": 35,
+      "confidence": "medium",
+      "root_cause": "第二个高频 leaf 栈是 /system/bin/appspawn（step1 11098、step2 11653、step3 10767 样本，三轮高度一致；perf_files 中另有 /proc/46306/root/data/storage/el1/bundle/default.hap）。appspawn 自身也是进程孵化器/沙箱代理，采样落在它上面通常表示进程正在做孵化/沙箱 IPC 委托类的同步调用。在「空库导入」这个写密集场景里，最可能的解读是部分 I/O / 沙箱或数据库文件的委托调用被打到代理进程。此外 DbUtil.createObjectRDB 的回调里即使 error 非空也先赋值 this.objectiveRDB = rdbStore，且建表 execute 未 await，会留下「store 已就绪但表尚未建好」的竞态窗口，使部分 insert 以失败/重试路径收场。受限于 sw-cpu-clock 事件与缺失符号，本条只能算中等把握，需要结合 hilog/RDB 日志确认。",
+      "fix": "1) 在 createObjectRDB 中先判 error 再赋值，并把建表/迁移 execute 改成 await 后再对外暴露 ready 状态（例如返回 Promise 或加 ready 标志位）；2) 用一个明确的 ready Promise 门面住所有 Dao 调用，杜绝表未建好就开始 insert；3) 插入失败要做聚合重试与计数，而不是每条仅打印一条日志。",
+      "evidence": [
+        "perf_files 路径常量：perf_files.path 含 '/system/bin/appspawn' 与 '/proc/46306/root/data/storage/el1/bundle/default.hap'",
+        "perf.db(step1) 按 file_id 的 leaf 分组：file_id=1 '/system/bin/appspawn' 11098 样本；step2 11653；step3 10767——三轮同量级复现",
+        "perf.db(step1) 选中 file_id=2 'ld-musl' 且 symbol_id=-1 时，perf_files.symbol 为 null 而 perf_callchain.name 是数字字符串（如 '1371'），即该 SO 未带符号名，符号级归因只能依赖源码+探针交叉",
+        "源码 DbUtil.ets:16-23：回调内 `this.objectiveRDB = rdbStore` 在 `if (error)` 判空之前执行；DbUtil.ets:28 的 `await rdbStore.execute(CREATE_...TABLE)` 位于回调内且未向调用方暴露完成信号"
+      ],
+      "trigger_chain": "app 启动 → EntryAbility → DbUtil.createObjectRDB（异步回调，error 先忽略）→ SyncData 导入立即开始 → 表可能尚未建好 / 调用被委托到 appspawn"
+    },
+    {
+      "rank": 4,
+      "category": "frame-load",
+      "owner": "SyncData（@ComponentV2 struct）",
+      "symbol": "aboutToAppear / getClassicPoemList / insertClassicPoemToDb",
+      "file": "source/features/settings/src/main/ets/pages/SyncData.ets",
+      "line_start": 18,
+      "line_end": 37,
+      "confidence": "medium",
+      "root_cause": "同步入口挂在 aboutToAppear 里：界面一创建就同时发起 HTTP 拉全量数据并立即开始 3000 次写库，网络返回与写库高峰全部压在页面首次渲染窗口内，写事务把 I/O 与 FFRT 线程占满，与首帧渲染争抢资源。更关键的是 build() 只渲染了一个空 Column（第 42-44 行），没有任何进度/结果反馈；再加上每条插入只打印一条日志（this.logger.info(`index = ${index}`) 与 Dao 内的 info 日志），3000 条会产生数千条 hilog，进一步加重 I/O。这里也解释了为什么帧/空刷信号全 0——页面没有内容可刷，用户看到的只是「卡住」。",
+      "fix": "把数据同步从 aboutToAppear 移出到用户显式触发的动作（按钮/任务），并放到 taskpool 或独立 worker 中执行；UI 侧用 @Local 计数展示进度；同时删除 per-item 的 info 日志（或降级为 debug 并采样打印），避免 3000 条 hilog 与写库争 I/O。",
+      "evidence": [
+        "源码 SyncData.ets:18-37：aboutToAppear 内既调 DatasetViewModel.getDatasetList()，又在 getClassicPoemList().then 中对 wrapper.data.map 逐条 insertClassicPoemToDb，且第 31 行每条打印一次 `index = ${index}`",
+        "源码 SyncData.ets:39-49：build() 仅有空 Scroll/Column，没有任何进度或结果绑定",
+        "root_cause_evidence.md / trace_emptyFrame.json：空刷 0 帧、占比 0.0%、severity normal；VSync 异常 0 次——页面确无内容刷新，与空 Column 一致",
+        "callstack 中同场景仅 2 条 QuerySql（3.9ms），说明读路径不是瓶颈，帧窗口压力来自写路径"
+      ],
+      "trigger_chain": "页面创建 → aboutToAppear → HTTP 全量拉取 + 3000 次并发 insert（同窗口）→ I/O 与 FFRT 线程饱和 → 首帧渲染被挤压 + 无任何 UI 反馈"
+    },
+    {
+      "rank": 5,
+      "category": "so-load",
+      "owner": "libark_jsruntime.so / stub.an（ArkTS 侧）",
+      "symbol": "panda::FunctionRef::CallForNapi / RTStub_AsmInterpreterEntry",
+      "file": "source/features/settings/src/main/ets/pages/SyncData.ets",
+      "line_start": 30,
+      "line_end": 33,
+      "confidence": "low",
+      "root_cause": "ArkTS 侧存在可观测但量级小得多的开销：stub.an 上 RTStub_AsmInterpreterEntry 166 样本（1.66e8）、libark_jsruntime 上 CallForNapi 7 样本，属于 3000 次 map 回调 + 每条一次 NAPI 跨界（JS 对象 → ValuesBucket → NAPI → RDB）的解释执行与跨界成本。它远小于写在写路径上的开销（约占总样本的 0.4%），因此不作为主因，只作为「先批量、再谈减少跨界次数」的佐证。注意：本轮采集事件是 sw-cpu-clock，不能把这些样本数当成 CPU 指令数。",
+      "fix": "与 rank 1 合并处理：批量插入后 NAPI 跨界次数从 3000 降到 1（或按批），跨界限定对象的构造改为一次性预分配数组，避免每条重复构造 15 字段的 ValuesBucket。",
+      "evidence": [
+        "perf.db(step1) 符号级：'/system/lib64/module/arkcompiler/stub.an' RTStub_AsmInterpreterEntry 166 样本 = 1.66e8；'/system/lib64/platformsdk/libark_jsruntime.so' panda::FunctionRef::CallForNapi(...) 7 样本 = 7e6",
+        "按 file_id 聚合：stub.an 166 样本（1.66e8）、libark_jsruntime.so 105 样本（1.05e8），相比 ld-musl 的 32192 样本（3.2192e10）小两个数量级",
+        "perf_report：config_name='sw-cpu-clock'，cmdline='hiperf record -p 46306 -f 1000 -e sw-cpu-clock -s fp ...'——禁止将 event_count 解释为 CPU 指令数",
+        "perf_files.symbols 表为空、no .so symbol 恢复产物；应用自身 .so/HAP 未出现在 perf_files 中（仅 default.hap 路径），符号级归因在此采集下不可靠"
+      ],
+      "trigger_chain": "wrapper.data.map（3000 次 ArkTS 回调）→ new ValuesBucket（15 字段）→ NAPI 跨界 → ArkData relationalStore"
+    }
+  ]
+}

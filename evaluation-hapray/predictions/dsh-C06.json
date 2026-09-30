@@ -1,0 +1,101 @@
+{
+  "summary": "在 C06（刷新 40 个本地 HTTP RSS 订阅、每源 25 篇）中，采集事件为 sw-cpu-clock（53765 个样本、period≈1000ns，仅 1 个 CPU 核），不能当作 CPU 指令数；证据显示主要浪费来自 FeedService.refreshAllFeeds 对 40 个源『串行 await 刷新』，且每个源内部又对 25 篇文章逐条 await 单行 insert，把网络与 DB 往返全部串在同一条 JS 异步链上（elapsed 6.6–7.4s），这是本场景最值得修复的执行模型问题；其余高频系统库/开放运行时符号（musl、appspawn、FFRT、GC）属平台开销，不宜作为应用根因。注意：perf 事件非指令计数、UI/内存采集事件缺失（trace_ui/trace_frames/hapray_report.db:memory_records 均未见），故空刷/帧率/内存类别只能给出『无可用数据』而非结论。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "FeedService",
+      "symbol": "refreshAllFeeds",
+      "file": "source/entry/src/main/ets/services/FeedService.ets",
+      "line_start": 144,
+      "line_end": 179,
+      "confidence": "high",
+      "root_cause": "刷新 40 个源使用 for 循环『串行 await』this.refreshFeed(feeds[i].id, outcome)（第 161–174 行），每个源的 HTTP 往返完全串行；服务器无人工延时的情况下，40 次请求的网络等待被叠加成 6.6–7.4s 的墙钟时间。所有取值先执行、再判断频率（第 169–171 行 `await` 位于条件内），单源失败或慢响应都会阻塞后续源。",
+      "fix": "改为有界并发：按批（如 4–8 个）执行 `await Promise.all(batch.map(f => this.refreshFeed(f.id, outcome)))`，或把 fetch+parse+insert 放到 taskpool/ffrt 工作线程，主线程只做汇总与 UI 进度回调；并把 DbManager 的写入合并成批量事务（见 rank 2）。",
+      "evidence": [
+        "source/entry/src/main/ets/services/FeedService.ets:161-174 `for (let i = 0; i < feeds.length; i++) { ... outcome.inserted += await this.refreshFeed(feeds[i].id, outcome); onProgress(i + 1, feeds.length); }` — 串行 await 调用点",
+        "workload.json: description=『刷新 40 个本地 HTTP RSS 订阅，各返回 25 篇文章；服务器没有人工延时』；rounds elapsed_ms = 7313.7 / 6626.2 / 7436.4（三轮一致，说明是稳定的串行成本而非偶发抖动）",
+        "perf.db(step1) perf_report: config_name=sw-cpu-clock，cmdline=`hiperf record -p 65322 -f 1000 -e sw-cpu-clock -s fp`（1ms 周期、单进程、非 raw-instruction-retired，事件数≠指令数）",
+        "perf.db(step1) 线程样本分布：com.sheafreader.hm 17496 样本(约 19%)、OS_FFRT_3_0/3_1/3_2 合计约 38%、OS_NET_HttpWork 2952 样本(约 3.2%)、OS_GC_Thread×4 仅约 710 样本(约 0.8%)——等待时间集中在主线程与 FFRT 工作线程，HTTP 工作线程实际 CPU 占比很低"
+      ],
+      "trigger_chain": "用户在 Index.ets:962 / 1061 触发 onRefresh → AppStore.refreshFeeds (AppStore.ets:881) → FeedService.refreshAllFeeds (FeedService.ets:144) → 逐源 await refreshFeed → FeedFetcher.fetchUrl"
+    },
+    {
+      "rank": 2,
+      "category": "cpu-hotspot",
+      "owner": "DatabaseManager",
+      "symbol": "insertArticle",
+      "file": "source/entry/src/main/ets/data/DatabaseManager.ets",
+      "line_start": 314,
+      "line_end": 341,
+      "confidence": "medium",
+      "root_cause": "每个源 25 篇文章在 FeedService.refreshFeed 中逐条 `await this.db.insertArticle(article)`（FeedService.ets:122-133），即 40×25≈1000 次独立的单行 await 写库（另有每条文章的 updateFeed），没有使用批量插入/事务。DatabaseManager 虽已有 insertArticles(第 342 行)，但刷新路径未使用，导致 1000 次跨线程 DB 往返串行叠加。",
+      "fix": "在 refreshFeed 内先收集 articles 数组，调用已有的 `db.insertArticles(articles)` 一次性批量写入（或包在显式事务/批量 executeSql 中），把 1000 次 await 降为 40 次。",
+      "evidence": [
+        "source/entry/src/main/ets/services/FeedService.ets:122-133 `for (const article of parsed.articles) { ... const id: number = await this.db.insertArticle(article); ... }`",
+        "source/entry/src/main/ets/data/DatabaseManager.ets:314 `async insertArticle(article: Article)` 与 :342 `async insertArticles(articles: Article[])` 并存，刷新路径只用了前者",
+        "source/entry/src/main/ets/services/FeedService.ets:119 `await this.db.updateFeed(feed)` — 每源一次额外写库",
+        "perf.db(step1) leaf 符号：librelationalstore.z.so 仅 15 样本(约 0.03%)、napi_resolve_deferred 206 样本(约 0.38%) — 说明 DB 成本主要体现为 await 等待而非 CPU 采样，单看采样占比会低估（采样为定时器周期样本，等待不产生样本）"
+      ],
+      "trigger_chain": "refreshAllFeeds → refreshFeed → 循环 25 次 await db.insertArticle → librelationalstore"
+    },
+    {
+      "rank": 3,
+      "category": "so-load",
+      "owner": "libffrt.so / libcurl_shared_http3.z.so",
+      "symbol": "ffrt::CPUWorker::Dispatch / curl_multi_socket_action",
+      "file": "source/entry/src/main/ets/utils/FeedFetcher.ets",
+      "line_start": 48,
+      "line_end": 80,
+      "confidence": "medium",
+      "root_cause": "每个源每次刷新都调用 `http.createHttp()` 新建 HttpRequest（第 49 行）、finally 中 destroy（第 78 行），40 个源串行 = 40 次连接/请求对象建立销毁，且无复用；FFRT 工作线程承担了约 38% 的样本（OS_FFRT_3_0/3_1/3_2），HTTP 侧 leaf 为 curl_multi_socket_action 26 样本。这是执行模型问题（连接与 worker 复用不足），而非某个应用函数热点。",
+      "fix": "复用一个 HttpRequest/会话或提高并发流水线，减少 createHttp/destroy 次数；把并发上限与 FFRT 工作线程（当前 3 个 CPUWorker）匹配，避免线程池被串行任务占满。",
+      "evidence": [
+        "source/entry/src/main/ets/utils/FeedFetcher.ets:48-80 `const request = http.createHttp(); ... finally { request.destroy(); }`",
+        "perf.db(step1) 线程样本：OS_FFRT_3_0=10932、OS_FFRT_3_2=10510、OS_FFRT_3_1=9580（合计约 38%），leaf 符号集中于 ffrt::CPUWorker::Dispatch(4 样本)、ffrt::UVTask::ExecuteImpl(3 样本)、ffrt::ExecuteTask 等框架函数",
+        "perf.db(step1) so_file_load 原始查询：libcurl_shared_http3.z.so 2492 万、libhttp.z.so 12.8 万 事件（sw-cpu-clock 时段，非指令数）"
+      ],
+      "trigger_chain": "refreshAllFeeds → FeedFetcher.fetchUrl → http.HttpRequest → libcurl/libhttp → FFRT UV 任务"
+    },
+    {
+      "rank": 4,
+      "category": "cpu-hotspot",
+      "owner": "FeedFetcher/FeedParser",
+      "symbol": "fetchFeed + FeedParser.parse",
+      "file": "source/entry/src/main/ets/utils/FeedParser.ets",
+      "line_start": 17,
+      "line_end": 95,
+      "confidence": "low",
+      "root_cause": "FeedParser 用多处正则对整篇 XML 反复扫描（extractTag 每次 `new RegExp` + `substring` 物化子串，见 179-198 行；joinCdata 207-216 行；stripHtml 与 htmlDecode 对每条 item 各做两轮 replace+decode，235-281 行），40 源 ×25 篇≈1000 篇文章解析全在主线程串行执行，是解析侧的 CPU 放大点。注意：本环境仅有 sw-cpu-clock 定时样本，缺少 raw-instruction-retired 与符号恢复，无法给出解析器的指令数占比，故置信度低。",
+      "fix": "缓存/预编译正则（避免每字段 new RegExp），extractTag 改为基于 index 的切片而不逐次 substring 复制；stripHtml 与 htmlDecode 共用一次解码；解析可下放到 taskpool，主线程只接收结构化结果。",
+      "evidence": [
+        "source/entry/src/main/ets/utils/FeedParser.ets:180-198 `new RegExp('<'+tagName+'...')` + `xml.substring(innerStart)` 每次取值重新建正则并复制字符串",
+        "source/entry/src/main/ets/utils/FeedParser.ets:204-217 joinCdata 对片段再扫一遍 CDATA",
+        "source/entry/src/main/ets/utils/FeedParser.ets:235-281 stripHtml/htmlDecode 各含两轮 `text.replace(/<[^>]*>/g,' ')` + decodeEntities",
+        "perf.db(step1) leaf 符号统计中存在 libace_napi.z.so: napi_resolve_deferred=206 样本、NativeAsyncWork::AsyncAfterWorkCallback=50 样本，panda::PromiseCapabilityRef::Resolve=55 样本（全部在主线程 com.sheafreader.hm 上）——说明 JS/Promise 回调在主线程串行推进，但样本量小，不足以量化解析成本"
+      ],
+      "trigger_chain": "refreshAllFeeds → FeedFetcher.fetchFeed → FeedParser.parse → 每源 25 次 parseRssItem/parseAtomEntry，全部同步占用主线程"
+    },
+    {
+      "rank": 5,
+      "category": "thread",
+      "owner": "OS_GC_Thread / FFRT 线程池",
+      "symbol": "OS_FFRT_3_0..3_2 / OS_GC_Thread",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "FFRT CPUWorker 三个线程占总样本约 38%，GC 线程仅约 0.8%（trace_gc_thread: 每轮 PartialGC=1、FullGC=0、perf_percentage 0.3%~1.3%），redundant_thread_analysis 三轮 total_redundant_threads 均为 0。即：线程模型未命中冗余模式，GC 压力不高；FFRT 的高占比很可能是 rank 1/3 串行刷新带来的派发/唤醒开销，属于次生现象而非独立缺陷。仅凭线程名与样本量不能断言忙等。",
+      "fix": "先修复 rank 1 的串行刷新（有界并发 + 批量写库），再复测 FFRT 线程样本占比；若仍偏高，再评估 FFRT 任务粒度（把小任务合并提交，减少 Dispatch/Looper 唤醒次数）。",
+      "evidence": [
+        "redundant_thread_analysis.json: step1/step2/step3 均 total_redundant_threads=0、redundant_instructions_ratio=0.0，has_redundancy=false（CLI 结论：线程模型健康）",
+        "trace_rsSkip.json / trace_emptyFrame.json: 三轮 total_empty_frames=0、total_skip_frames=0、severity=normal（无空刷）",
+        "trace_gc_thread.json: step1/2/3 各 PartialGC=1、FullGC=0、GCStatus=OK、perf_percentage 0.0131/0.0032/0.0030",
+        "perf.db(step1) 线程样本：OS_FFRT_3_0=10932、OS_FFRT_3_2=10510、OS_FFRT_3_1=9580；OS_GC_Thread×4 合计约 710（约 0.8%）",
+        "so_file_load.json = []（应用进程 SO 聚合为空），trace_componentReuse.json 三轮 total_builds=0 —— 组件复用维度本案例无数据，未做推断"
+      ],
+      "trigger_chain": "refreshAllFeeds 的 40 次串行 fetch → FFRT 任务派发 → CPUWorker 唤醒（次生）"
+    }
+  ],
+  "missing_evidence_note": "缺失/不可用证据（未杜撰）：1) 采集事件为 sw-cpu-clock（period≈1000ns，单进程 65322，单核），event_count 不能解释为 CPU 指令数；2) 无 raw-instruction-retired 事件，且符号大量为系统库/`null` 地址，未做符号恢复（stripped），无法给指令级占比；3) 未发现 UI/帧率产物（trace_ui_animate.json、trace_frames.json、trace_frameLoads.json 均不在 report/ 目录列表中），帧负载/UI 离树节点无法分析；4) 未做 --memory 采集，hapray_report.db:memory_records 不存在，内存类别无数据；5) trace_ipc_binder.json 缺失，IPC 类别无数据；6) so_file_load.json 为空数组、trace_componentReuse.json 三轮 total_builds=0，故未产出 so-load（应用侧）与 component-reuse 结论。root_cause.md 中所有条目均为 'Pending Agent Inference'，未被当作检测结果使用。"
+}

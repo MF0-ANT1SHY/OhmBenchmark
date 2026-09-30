@@ -1,0 +1,104 @@
+{
+  "summary": "在对匿名应用 C02（包名 com.example.nanvision，打开历史弹窗后滑动三轮）的只读分析中，最值得修复的嫌疑是 PagesDialog.ets:83-93 —— 历史列表使用「List + 双层 ForEach（ForEach 嵌套 ForEach）」而非 LazyForEach，导致组件无法复用（trace_componentReuse: HistoryItem 每轮 build 200 次、recycled 0 次、reusability_ratio=0），配合 List.height(\"90%\") 使全部 200 条记录一次性构建与布局，造成 step2/step3 各出现单帧 16.6ms 的整帧超时（frame_load 5.17e8 / 5.05e8）与主线程 CPU 时钟样本集中；其次 loadHistoryData() 在每次打开/状态变更时对 date_table 全表扫描并对每个日期分表全表读 1000 条记录、且用 unshift 逐条头插（O(n²) 搬移），HistoryItem 的 SwipeGesture 又在全部 200 个条目上全量注册手势。所有结论均为结构性证据＋动态证据的交叉推断，未做符号恢复，故不等同于函数级已完成归因。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "component-reuse",
+      "owner": "PagesDialog",
+      "symbol": "build / ForEach(双层嵌套)",
+      "file": "source/entry/src/main/ets/view/PagesDialog.ets",
+      "line_start": 83,
+      "line_end": 93,
+      "confidence": "high",
+      "root_cause": "历史列表用 List 包「外层 ForEach(historyGroups) + 内层 ForEach(group.histories)」渲染，未使用 LazyForEach/IDataSource，节点不具备复用能力；加上 List.height(\"90%\") 使可视区高达屏幕 90%，滚动时不会卸载/回收条目，导致每个 HistoryItem 都在首次布局时被真实创建一次。动态证据显示三轮每轮 total_builds=200、recycled_builds=0、reusability_ratio=0.0，即 1000 条浏览记录场景下 200 个 HistoryItem 被各构建一次并全部保留，构建/布局成本直接叠加到首帧与滑动帧。",
+      "fix": "改用 LazyForEach + 实现 IDataSource 的 HistoryDataSource（或 LazyForEach(this.dataSource, (item) => ListItem(){ HistoryItem(...) }, item => item.id))；按日期分组改用 ListItemGroup 时，内层同样改为 LazyForEach，并为 HistoryItem 加 @Reusable 与 aboutToReuse() 复写字段；避免在 item 上直接挂 @State 多字段（复用失效）。示例：class HistoryDataSource implements IDataSource { private data: History[]; totalCount(){return this.data.length} getData(i){return this.data[i]} registerDataChangeListener(){} unregisterDataChangeListener(){} }，build 内 LazyForEach(this.ds, (h)=> ListItem(){ HistoryItem({title:h.title,url:h.url}) }, (h)=>h.id.toString())。",
+      "evidence": [
+        "trace_componentReuse.json: step1/step2/step3 均为 {\"max_component\":\"HistoryItem\",\"total_builds\":200,\"recycled_builds\":0,\"reusability_ratio\":0.0}，details 中 HistoryItem 为 [200, 0]（构建 200 次、复用 0 次）",
+        "PagesDialog.ets:83-93 使用 List(){ ForEach(this.historyGroups, ...=> ListItemGroup(...){ ForEach(group.histories, ...=> ListItem(){ HistoryItem(...) }) }) }，全文未出现 LazyForEach / IDataSource（源码检索仅命中 PagesDialog.ets:83-87 的 List/ForEach）",
+        "PagesDialog.ets:29-32 将 historyMap 全量展开为 historyGroups（Array.from(...).map(...)），每次打开弹窗/状态变更都重建整个分组数组",
+        "workload.json: 数据库已有 1,000 条浏览记录，执行三次滑动 —— 与 200 次构建/轮的量级一致（可视区内条目被全量实例化）"
+      ],
+      "trigger_chain": "打开历史弹窗 → PagesDialog.aboutToAppear → loadHistoryData → historyGroups 赋值触发 build → List + 双层 ForEach 一次性实例化可视区全部 HistoryItem(200) → 无复用、无懒加载 → 首帧与滚动帧同时承担全部建树与布局成本"
+    },
+    {
+      "rank": 2,
+      "category": "frame-load",
+      "owner": "ample.nanvision (主线程)",
+      "symbol": "主线程 UI 帧（16.6ms 整帧超时）",
+      "file": "source/entry/src/main/ets/view/PagesDialog.ets",
+      "line_start": 83,
+      "line_end": 95,
+      "confidence": "medium",
+      "root_cause": "主线程出现整整一帧（16.6ms）的超时帧，且三轮重复出现，与历史列表一次性构建/布局 200 个条目属于同一机制。证据显示 step2 有 vsync=541888 的帧 dur=16615625ns、frame_load=5.17e8；step3 有 vsync=543203 的帧 dur=16604687ns、frame_load=5.05e8，两帧均为主线程（is_main_thread=1）。step2 高负载帧 18 个、step3 13 个、step1 11 个，平均负载从 2.6e5 升到 7.2e5/6.6e5，说明列表构建后滚动阶段负载显著抬升。注意：本采样事件为 sw-cpu-clock（软件 CPU 时钟，已由 perf_report 核实），frame_load 为负载代理量，不能解释为 CPU 指令数。",
+      "fix": "优先落实 suspect#1 的 LazyForEach 改造；此外把 List.height(\"90%\") 改为 layoutWeight(1) 由父 Column 约束，配合 .cachedCount(2~3) 控制预加载数量；列表项内的 shadow({radius:5}) 与 borderRadius 在复用后可保留，但应避免每帧重建。",
+      "evidence": [
+        "trace_frameLoads.json step2: {vsync:541888, dur:16615625ns(=16.6ms), frame_load:517000000, is_main_thread:1, thread_id:52224}",
+        "trace_frameLoads.json step3: {vsync:543203, dur:16604687ns(=16.6ms), frame_load:505000000, is_main_thread:1, thread_id:52583}",
+        "trace_frameLoads.json 统计: step1 avg=260452/high=11, step2 avg=723936/high=18, step3 avg=663052/high=13；step/2、3 合计 31 个高负载帧，集中在列表页滑动阶段",
+        "PagesDialog.ets:95 List().height(\"90%\") —— 列表高度占满屏幕 90%，长列表可视区大，滚动时构建与布局负担不降",
+        "perf_report (step2): config_name=sw-cpu-clock，故 event_count 为采样事件计数，不可当作 CPU 指令数解读"
+      ],
+      "trigger_chain": "滑动历史列表 → List 可视区(90% 屏高)内条目持续参与布局/绘制 → 主线程单帧预算 16.6ms 被 200 条目的建树/布局耗尽 → 出现整帧超时（step2 vsync 541888 / step3 vsync 543203）"
+    },
+    {
+      "rank": 3,
+      "category": "cpu-hotspot",
+      "owner": "PagesDialog / RdbUtils",
+      "symbol": "loadHistoryData / queryAllDate / queryHistoriesByDate",
+      "file": "source/entry/src/main/ets/view/PagesDialog.ets",
+      "line_start": 19,
+      "line_end": 37,
+      "confidence": "medium",
+      "root_cause": "历史数据加载走「先查 date_table 全表 → 再对每个日期分表各做一次全表查询」的 N+1 模式，且每次打开弹窗都重新执行并重建分组数组，属可避免的重复工作。queryAllDate() 使用无谓词的 RdbPredicates 全表扫描；随后 for (const date of allDate) 逐个 await queryHistoriesByDate(date)，每个日期一次独立 RDB 查询并逐行 goToNextRow() 构造 History；1000 条记录意味着 1000 次 JS 侧行构造 + 多次 IPC 式查询往返。RdbUtils.insertDate 已有 knownDates 缓存，说明该模式作者已识别到重复查询成本，但查询侧未做任何缓存。动态证据方面：主线程（thread_id=52224）在 step2 的 sw-cpu-clock 采样样本合计 7.19e10，占绝对主导；但需说明本事件是 sw-cpu-clock 而非 CPU 指令计数，且 perf 符号对应用自身 SO 基本为 [unknown]，故无法把该耗时精确归属到本函数行号，置信度定为 medium。",
+      "fix": "① 一次查询取回全部需要的历史：改为 JOIN 或对 date_table 加 LIMIT/分页，避免按日期逐个全表查询；② 增加内存缓存（与 knownDates 对称的 loadedDates），loadHistoryData 已判断 historyMap.size===0，应改为「增量补齐缺失日期」而非仅在空时加载；③ 复用 this.historyGroups，避免 `this.historyGroups = []` 后立即整体重建（PagesDialog.ets:28-32）造成的二次渲染。示例：const rows = await store.querySql('SELECT date,id,title,url,timestamp FROM ... ORDER BY id DESC') 一次性构建 Map。",
+      "evidence": [
+        "PagesDialog.ets:22-27 `if (this.historyMap.size === 0) { const allDate = await RdbUtils.queryAllDate(); for (const date of allDate) { this.historyMap.set(date, await RdbUtils.queryHistoriesByDate(date)) } }` —— 按日期串行 N+1 查询",
+        "PagesDialog.ets:28-32 每次加载都 `this.historyGroups = []` 再整体重新 map 赋值，触发全量重建（与 suspect#1 叠加）",
+        "RdbUtils.ets:98-120 queryAllDate 使用空谓词全表扫描；RdbUtils.ets:123-153 queryHistoriesByDate 对每个分表全表查询并逐行 new History + histories.unshift",
+        "RdbUtils.ets:53-86 insertDate 已有 knownDates Set 缓存跳过重复查询/建表，而查询路径无任何对应缓存，形成不对称",
+        "perf.db(step2) 按线程聚合: sample 线程 \"com.example.nanvision\" 合计 71871000000，为全部线程最高，说明主线程承担主要采样负载（sw-cpu-clock 事件）",
+        "workload.json: 数据库 1,000 条浏览记录，加载需覆盖全部日期分表"
+      ],
+      "trigger_chain": "打开历史弹窗 → PagesDialog.aboutToAppear → loadHistoryData → queryAllDate(全表) → 逐日期 queryHistoriesByDate(各自全表 + 逐行构造) → historyGroups 全量重建 → List 重建 200 个 HistoryItem"
+    },
+    {
+      "rank": 4,
+      "category": "cpu-hotspot",
+      "owner": "HistoryItem",
+      "symbol": "build / SwipeGesture.onAction",
+      "file": "source/entry/src/main/ets/view/HistoryItem.ets",
+      "line_start": 1,
+      "line_end": 85,
+      "confidence": "medium",
+      "root_cause": "HistoryItem 每个实例在 build() 中都注册一次 SwipeGesture（手势识别器 + onAction 闭包），并持有 5 个 @State（title/url/translateX/deleteIcon/showDeleteIcon）与 3 个 @Consume。在缺少复用（suspect#1）的前提下，200 个条目即意味着 200 份手势识别器与 200 份状态订阅在滚动期间持续参与命中测试与手势仲裁；同时 @Consume(\"pagesDialogShowed\") 的每次取反都会让全部条目的依赖关系参与刷新评估。由于没有 LazyForEach/@Reusable，translateX/showDeleteIcon 等滑动中间态也无法被回收重置，条目只增不减。注意：该判定基于源码结构 + componentReuse 的 0 复用证据，perf 侧应用自身符号为 [unknown]，未获得该组件函数级样本，故不作函数级耗时断言。",
+      "fix": "① 配合 suspect#1 的 LazyForEach 后给 HistoryItem 加 @Reusable 并实现 aboutToReuse(params) 重置 translateX=0/showDeleteIcon=false；② 把逐条 SwipeGesture 改为在 List 级使用 .onScrollIndex 或统一的手势代理（单一 panGesture 结合命中项索引）以降低识别器数量；③ 将 deleteIcon 等常量移出 @State（用 private readonly 或直接 $r 内联），减少状态订阅面。",
+      "evidence": [
+        "HistoryItem.ets:68-83 每个组件实例内 `.gesture(SwipeGesture({direction: SwipeDirection.Horizontal}).onAction((event)=>{...}))`，随条目数量线性增长",
+        "HistoryItem.ets:5-13 定义 5 个 @State + 3 个 @Consume（pagesDialogShowed / webIsSearched / webviewController）",
+        "HistoryItem.ets:11 `@Consume(\"pagesDialogShowed\") isClicked: boolean`，PagesDialog.ets:9 中该值为 @Watch(\"onClicked\") 触发源，点击任一条目会取反并可导致弹窗关闭+列表刷新",
+        "trace_componentReuse.json: HistoryItem total_builds=200, recycled_builds=0 —— 200 份实例与对应手势/状态长期共存",
+        "perf.db(step2) 应用线程样本最高但应用自身 SO 符号多为 [unknown]（libace_compatible.z.so / libeventhandler.z.so 等系统库为主），未获得 HistoryItem 的函数级样本"
+      ],
+      "trigger_chain": "滑动/点击历史列表 → 200 个 HistoryItem 各自的手势识别器参与命中测试仲裁 → @Consume(pagesDialogShowed) 变化 → 全列表刷新评估 → 主线程负载抬升"
+    },
+    {
+      "rank": 5,
+      "category": "thread",
+      "owner": "ample.nanvision 进程（FFRT / GC 线程）",
+      "symbol": "OS_FFRT_* / OS_GC_Thread 线程组",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "排除性结论：冗余线程信号在三轮中均为零，不构成性能问题。redundant_thread_analysis.json 显示 step1/step2/step3 的 total_redundant_threads=0、total_redundant_instructions=0、redundant_instructions_ratio=0.0，无任一命中 frequent_immediate_sleep / never_woken / busy_waiting / busy_wait 模式；below_threshold 中 ThreadPoolForeg 的 redundant_count=1、avg_score=55 仍低于判定阈值，且这些线程属系统 Chrome 网络栈（Chrome_InProcGp / NetworkService / ThreadPoolService / HangWatcher / MemoryInfra）。perf.db 按线程聚合显示 OS_FFRT_Delay 8.62e8、OS_FFRT_4_0..5_4 合计约 3.8e9、OS_GC_Thread 约 1.4e9，相对主线程 7.19e10 属小量级，仅列为待观察项，不主张其为本轮操作的瓶颈。",
+      "fix": "无需针对线程做修改。若后续仍观察到设备层调度开销，可在采集侧增加 FFRT 任务粒度埋点后再评估；本轮不建议为降低 FFRT/GC 线程样本而改动业务代码。",
+      "evidence": [
+        "redundant_thread_analysis.json: step1/step2/step3 均 `\"total_redundant_threads\": 0, \"total_redundant_instructions\": 0, \"redundant_instructions_ratio\": 0.0` 且 redundant_threads 为空数组",
+        "redundant_thread_analysis.json below_threshold_patterns 中仅 ThreadPoolForeg 有 redundant_count=1、avg_score=55.0，其余为 max_score=20~30 的系统线程",
+        "perf.db(step2) 线程聚合: OS_EVENT_POLL 1.518e9、OS_FFRT_Delay 8.62e8、OS_FFRT_4_0..5_4 合计约 3.79e9、OS_GC_Thread 0.562e9+0.508e9+0.361e9=1.43e9，均远低于主线程 7.19e10",
+        "事件为 sw-cpu-clock，这些数值是采样事件计数，不能解释为 CPU 指令数"
+      ],
+      "trigger_chain": "不适用（未发现构成问题的触发链路）"
+    }
+  ]
+}

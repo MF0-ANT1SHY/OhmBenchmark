@@ -1,0 +1,155 @@
+{
+  "summary": "启动 10 秒内的主瓶颈是 Index.aboutToAppear（页面切换后）按天串行执行的 100 次历史记录读取：Index.ets:66-68 用 `forEach(async ...)` 而非 `await Promise.all`，且 RdbUtils.queryHistoriesByDate（RdbUtils.ets:119-144）在 `.then()` 内异步填充数组后立即 `return histories`（未 await promise），导致所有 RDB 查询脱离页面构建流程并行/串行堆积，trace 侧 `H:QuerySql` 共 104 次、累计 1.16 s（约占主线程可见 QuerySql 负载 92%），三轮实测平均 FPS 仅 2.4–9.3、卡顿率 91–94%。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "RdbUtils",
+      "symbol": "queryHistoriesByDate",
+      "file": "source/entry/src/main/ets/utils/RdbUtils.ets",
+      "line_start": 119,
+      "line_end": 144,
+      "confidence": "high",
+      "root_cause": "该函数发起 `RdbUtils.getStore().query(predicates, [])` 后只在 `.then()` 回调里同步遍历 resultSet 并填充局部数组 `histories`，然后立刻 `return histories`（返回时数组仍为空）。调用方既拿不到数据，也无法通过 await 感知查询完成，等于把一次数据库读取变成“发射后不管”的异步任务；配合 Index.aboutToAppear 的按天遍历，启动时就同时压入上百次查询，直接占据启动窗口的 RDB/FFRT 线程与 IPC 负载。",
+      "fix": "改为真正返回数据并 await：`static async queryHistoriesByDate(date: string): Promise<History[]> { const resultSet = await RdbUtils.getStore().query(new relationalStore.RdbPredicates('history_'+date), []); const histories: History[] = []; try { while (resultSet.goToNextRow()) {...} } finally { resultSet.close() } return histories }`，使调用方可等待、可串行/可控并发，并在异常路径也保证 close。",
+      "evidence": [
+        "源码 RdbUtils.ets:119-142：`RdbUtils.getStore().query(predicates, []).then(async (resultSet) => {...})` 之后第 144 行直接 `return histories`，未 await 该 promise。",
+        "trace.db(step1) callstack：`H:QuerySql|I36` 共 104 次、SUM(dur)=1,162,834,000 ns(1.16s)、单次均值 11.18 ms、最大 21.35 ms；同库内 `H:GetRdbStore` 8 次/103 ms。QuerySql 占总可见 QuerySql+Rdb 相关切片时长的约 92%。",
+        "QuerySql 分布线程为 OS_FFRT_3_0..3_7（每线程 10-15 次，141-150 ms），时间窗 ts≈1238861263–1238861425（约 163 ms 密集窗口），非主线程执行但由主线程查询请求驱动。",
+        "证据口径说明：采样事件为 sw-cpu-clock（perf_report: config_name=sw-cpu-clock，cmdline `hiperf record -e sw-cpu-clock -f 1000`），每样本 event_count 恒为 1,000,000，perf.db 中为均匀值，不能解读为 CPU 指令数。"
+      ],
+      "problematic_lines": [
+        "`.then(async (resultSet: relationalStore.ResultSet) => { ... histories.unshift(history) })`",
+        "`return histories`  // 在 then 回调之外同步返回空数组"
+      ],
+      "trigger_chain": "启动 → Start.ets setTimeout 2000ms → router.replaceUrl(pages/Index) → Index.aboutToAppear → RdbUtils.queryAllDate → 按天 queryHistoriesByDate ×100 → H:QuerySql on OS_FFRT_3_x"
+    },
+    {
+      "rank": 2,
+      "category": "cpu-hotspot",
+      "owner": "Index",
+      "symbol": "aboutToAppear",
+      "file": "source/entry/src/main/ets/pages/Index.ets",
+      "line_start": 61,
+      "line_end": 83,
+      "confidence": "high",
+      "root_cause": "启动时一次性把全部 100 天的查询全部发出：`allDate.forEach(async date => { this.historyMap.set(date, await RdbUtils.queryHistoriesByDate(date)) })`。forEach 不会等待 async 回调，100 个 async 任务被同时创建（而不是串行/限流），既不阻塞也不受控；同时每个回调都对 @Provide historyMap 做 set，会在启动窗口触发大量状态写入。这是 QuerySql 次数=104 的直接来源。",
+      "fix": "批量并发/合并查询并等待完成：`const entries = await Promise.all(allDate.map(async d => [d, await RdbUtils.queryHistoriesByDate(d)] as const)); entries.forEach(([d,h]) => this.historyMap.set(d,h));` 更彻底的改法是按日期表一次性查询（单条 SQL + GROUP BY date 或按需分页），避免 100 次独立 query；并对 historyMap 做一次性赋值而不是逐条 set。",
+      "evidence": [
+        "源码 Index.ets:66-68：`allDate.forEach(async date => { this.historyMap.set(date, await RdbUtils.queryHistoriesByDate(date)) })`。",
+        "trace.db(step1)：QuerySql 调用数 104 次，与 workload.json 描述的「数据库已有 50,000 条浏览记录，跨 100 天」（≈100 天分表）数量级一致。",
+        "RdbUtils.ets:20-31/33-48 每个日期对应一张 `history_<date>` 分表，Index.aboutToAppear 对每个日期表各发一次查询。",
+        "frame-stats 三轮：step1 avg_fps=9.33 / stutter_rate=0.9259；step2 avg_fps=2.43 / 0.9419；step3 avg_fps=3.43 / 0.9112，与启动窗口 RDB 洪泛时段重合。"
+      ],
+      "problematic_lines": [
+        "`allDate.forEach(async date => {`",
+        "`  this.historyMap.set(date, await RdbUtils.queryHistoriesByDate(date))`",
+        "`})`  // forEach 不 await，100 个 async 查询同时排队"
+      ],
+      "trigger_chain": "VSync/页面切换 → Index.aboutToAppear → allDate(100) → forEach → 100× queryHistoriesByDate → RDB QuerySql"
+    },
+    {
+      "rank": 3,
+      "category": "frame-load",
+      "owner": "Index / StartPage",
+      "symbol": "StartPage.aboutToAppear",
+      "file": "source/entry/src/main/ets/pages/Start.ets",
+      "line_start": 7,
+      "line_end": 18,
+      "confidence": "medium",
+      "root_cause": "启动页用 `setTimeout(...,2000)` 无条件延迟 2 秒再 replaceUrl 到 Index，把「启动后最初 10 秒」的前 2 秒变成固定白屏空转，随后 Index 的 100 次 RDB 查询又集中在剩余窗口内爆发，形成“先空窗、后拥塞”的帧负载分布：step1/step2 各出现 1 帧高负载（max_load 26,000,000 / 96,000,000，dur ≈11.07 ms，flag=2），说明关键帧在启动窗口内被拉长到 11 ms 量级。",
+      "fix": "去掉固定 2 秒延时，改为首帧渲染完成（onPageShow/首帧回调）后立即跳转；若必须展示 Logo，用短动画并并行预取历史数据（见 rank 1/2 的批量查询改造），把 RDB 查询与页面切换重叠，避免集中在同一窗口。",
+      "evidence": [
+        "源码 Start.ets:9-17：`setTimeout(() => { router.replaceUrl({url: 'pages/Index'}, ...) }, 2000)`。",
+        "trace_frames.json(step1) fps_windows：0-1s fps=11，1-2s fps=0（frame_count=0，与 2 秒延时窗口对应）。",
+        "root_cause_evidence.md frame-load：step1 高负载帧 1 帧 max_load=26,000,000、dur_ns=11,074,536、flag=2、主线程；step2 高负载帧 1 帧 max_load=96,000,000、dur_ns=11,065,508、flag=2、主线程；step3 0 帧。",
+        "说明：flag=1/2 帧的 frame_load 在 evidence 中多为 0，属该分析器口径限制，仅以 max_load 与 dur≥11 ms 作为帧被拉长的支撑，不作为指令数结论。"
+      ],
+      "problematic_lines": [
+        "`setTimeout(() => {`, ",
+        "router.replaceUrl({ url: \"pages/Index\" }",
+        "router.RouterMode.Single",
+        "`}, 2000);`  // 固定 2s 空窗"
+      ],
+      "trigger_chain": "启动 → StartPage.aboutToAppear → setTimeout 2000ms → 空白帧 → router.replaceUrl → Index.aboutToAppear"
+    },
+    {
+      "rank": 4,
+      "category": "cpu-hotspot",
+      "owner": "RdbUtils",
+      "symbol": "queryAllDate",
+      "file": "source/entry/src/main/ets/utils/RdbUtils.ets",
+      "line_start": 88,
+      "line_end": 111,
+      "confidence": "medium",
+      "root_cause": "启动时先全表读取 date_table 并按 `dateList.unshift(...)` 逐条前插，把 100 天的日期全部读回内存后，再据此对每个日期分表逐次查询（rank 2）。该全表扫描是整个 RDB 负载的入口，其返回顺序还被 unshift 反转，属于在冷启动路径上做无分页、无缓存的完整读取。",
+      "fix": "启动路径只取所需（如最近 N 天，或先探测 rowCount 再按需加载）；用 `ORDER BY date DESC LIMIT n` 让数据库排序代替 `unshift` 反插；或与 rank 2 的批量方案合并为一次 `SELECT date, COUNT(*) ... GROUP BY date` 查询，避免 N+1 次开表访问。",
+      "evidence": [
+        "源码 RdbUtils.ets:96-105：`resultSet = await RdbUtils.getStore().query(predicates)` 后 `while (resultSet.goToNextRow()) { dateList.unshift(resultSet.getString(...)) }`，无 LIMIT/分页。",
+        "trace.db(step1)：`H:QuerySql|I36` 104 次、总计 1.16 s，其中包含 date_table 与 100 张 history_* 分表的逐表查询。",
+        "workload.json 描述本次运行前数据库已有 50,000 条浏览记录、跨 100 天，因此 date_table 与分表数量均随数据规模线性增长。"
+      ],
+      "problematic_lines": [
+        "`resultSet = await RdbUtils.getStore().query(predicates)`",
+        "`dateList.unshift(resultSet.getString(resultSet.getColumnIndex(\"date\")))`"
+      ],
+      "trigger_chain": "Index.aboutToAppear (Index.ets:64) → RdbUtils.queryAllDate → date_table 全表读取 → 100× 分表查询"
+    },
+    {
+      "rank": 5,
+      "category": "component-reuse",
+      "owner": "PagesDialog / HistoryItem",
+      "symbol": "List/ForEach",
+      "file": "source/entry/src/main/ets/view/PagesDialog.ets",
+      "line_start": 75,
+      "line_end": 85,
+      "confidence": "low",
+      "root_cause": "历史列表用嵌套 `ForEach`（外层日期分组 100 项、内层 history 项）且 ListItem 内未配置复用（无 reuseId/@Reusable），历史记录条目 HistoryItem 每次构建都新建。trace_componentReuse.json 显示本次采样的 8 个组件（StartPage、Index、FunctionButtons、BackButton、ForwardButton、PagesButton、PrivateButton、SettingButton）total_builds=3、recycled_builds=0、reusability_ratio=0.0，说明采样窗口内该列表组件树没有发生任何复用。",
+      "fix": "为列表项声明 `@Reusable` 并在 ListItem 上配置 reuseId；内层 ForEach 改用 LazyForEach + IDataSource 以支持按需构建；日期分组可用 ListItemGroup 的懒加载。",
+      "evidence": [
+        "trace_componentReuse.json：per_step 中 StartPage total_builds=1、recycled_builds=0、reusability_ratio=0.0（step1/2/3 相同）；明细 8 个 owner 均为 total_builds=3、recycled_builds=0、reusability_ratio=0.0。",
+        "PagesDialog.ets:75-85：`List() { ForEach(this.historyGroups, ...) { ListItemGroup(...) { ForEach(group.histories, ...) } } }`，无 LazyForEach/reuseId。",
+        "局限性：本次采样未出现 PagesDialog/HistoryItem 的 build 记录（对话框在 10 秒窗口内未被打开），故该条按「复用配置缺失」给出低置信度，不能断言它在本次运行中已造成实测开销。"
+      ],
+      "problematic_lines": [
+        "`ForEach(this.historyGroups, (group: HistoryGroup) => {`",
+        "`  ForEach(group.histories, (history: History) => { ListItem() { HistoryItem({...}) } })`"
+      ],
+      "trigger_chain": "PagesDialog 打开 → loadHistoryData → historyGroups(100 组) → 嵌套 ForEach 全量 build"
+    }
+  ],
+  "observations": [
+    {
+      "category": "frame-stats",
+      "signal": "帧率与卡顿",
+      "finding": "三轮启动 10 秒窗口帧率极低且卡顿率超过 91%：step1 avg_fps=9.33 (162 帧/150 卡顿, 0.9259)、step2 avg_fps=2.43 (155/146, 0.9419)、step3 avg_fps=3.43 (169/154, 0.9112)；step1 fps 窗口显示 1-2s 为 0 帧。",
+      "evidence": "trace_frames.json / root_cause_evidence.md frame-stats 各 step 明细。",
+      "related_owner": "Index/StartPage",
+      "suggested_direction": "先修 rank 1/2 的 RDB 查询洪泛与 rank 3 的 2 秒延时，再复测帧率与卡顿率。"
+    },
+    {
+      "category": "frame-stats",
+      "signal": "空刷与 RS skip",
+      "finding": "空刷判定为正常：step1/2 各 6 帧、step3 4 帧，占比 0.0%，severity=normal；RS skip 帧数 step1=70、step2=75、step3=69，RS 反向追溯精度仅 20%–31%。",
+      "evidence": "trace_emptyFrame.json 与 root_cause_evidence.md 空刷检测摘要（traced=22/70）。",
+      "related_owner": "",
+      "suggested_direction": "不要把空刷当作本次瓶颈；RS 追溯精度低，相关结论只作补充证据。"
+    },
+    {
+      "category": "ui-animate",
+      "signal": "UI/内存事件缺失",
+      "finding": "本次报告目录中不存在 trace_ipc_binder.json 与 ui_animate.json，也未启用 --memory（无 hapray_report.db / memory_records），因此 IPC、UI 动画与内存维度本次无法评估，未作推断。",
+      "evidence": "report/ 文件枚举（仅 so_file_load.json、trace_emptyFrame.json、trace_frameLoads.json、trace_componentReuse.json、trace_frames.json、trace_rsSkip.json、trace_vsyncAnomaly.json 等）；so_file_load.json 内容为空数组 []。",
+      "related_owner": "",
+      "suggested_direction": "如需 IPC/内存结论，需补采 --memory 或开启对应分析器。"
+    }
+  ],
+  "caveats": [
+    "采样事件为 sw-cpu-clock（perf_report.cmdline 明示 `hiperf record -e sw-cpu-clock`），perf.db 中每个样本 event_count 恒为 1,000,000（16929 样本 × 1e6 = 16,929,000,000，等于空刷检测中的 total_load），因此 event_count 只能作为采样点权重，不能当作 CPU 指令数或耗时。",
+    "so_file_load.json 为空（[]），无法做 SO 级负载交叉；perf_files 中应用自身只有 arkwebcore 的第三方 so（libarkweb_engine.so、libffmpeg.so），未出现 entry.hap/ArkTS 业务符号，热点符号均为系统库与 appspawn（BCStub_*、stub.an、libmusl），故未做符号级归因。",
+    "rank 3 的帧负载证据来自 root_cause_evidence.md（max_load 26M/96M、dur≈11 ms、flag=2），但同批明细中 flag=1/2 帧的 frame_load 多为 0，字段口径不一致，故只主张“帧时长被拉长”，不主张指令数。",
+    "trace 侧 QuerySql 为 HiTrace 打点（104 次/1.16 s），其中仅 103 次可确定归属应用查询（另 1 次带异步 trace 前缀、ns 级）；OS_FFRT_3_x 的 8 线程各 10–15 次且时间窗高度重叠，但 trace.db 中没有 QuerySql 的调用栈/入参，未能直接证明每次 QuerySql 都来自 queryHistoriesByDate——该对应关系由「数量 104 ≈ 100 张日期分表」「无其他业务查询入口（源码仅 RdbUtils 调用 relationalStore）」推断，属强但非直证的关联。",
+    "本轮证据无法区分 detail：QuerySql 集中时段的 100 次查询是并发还是排队执行（8 个 FFRT 线程窗口重叠，倾向并发但未验证），也未测量 50,000 行的实际扫描时间。",
+    "未采集内存/GC 数据（无 hapray_report.db），故未给出 memory 类结论；tool 预算耗尽，未做第 2/3 轮 trace.db 的 QuerySql 复核与 per-day 分表行数差异验证。"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "account_decrease_cny": 28.44,
+  "budget_cny": 50,
+  "stop_threshold_cny": 45,
+  "includes_pilot_and_possible_other_account_usage": true,
+  "observed_at": "2026-10-01T03:47:56.880388"
+}

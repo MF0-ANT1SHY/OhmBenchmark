@@ -1,0 +1,101 @@
+{
+  "summary": "C05 场景为「向空库导入 3000 首诗」，源码走的是 SyncData.aboutToAppear 中一行一次 insertClassicPoemToDb / ClassicPoemDao.createClassicPoem 的逐条 insert 路径（未使用批量 insert），3 秒窗口内该操作在应用主链路造成 CPU 指令数高负载；但当前只读产物中 so_file_load.json 为空、缺少 trace_frameLoads.json / trace_ipc_binder.json，且 sw-cpu-clock 采样下 perf_files 未能提供 .so/ArkTS 符号与行号（用户态帧缺失），因此逐条 insert 只到源码级（中置信度），尚未被动态符号证据直接确认。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "SyncData / DatasetViewModel / ClassicPoemDao",
+      "symbol": "SyncData.aboutToAppear → DatasetViewModel.insertClassicPoemToDb → ClassicPoemDao.createClassicPoem",
+      "file": "source/features/settings/src/main/ets/pages/SyncData.ets",
+      "line_start": 26,
+      "line_end": 37,
+      "confidence": "medium",
+      "root_cause": "导入 3000 首诗时在 aboutToAppear 内对 wrapper.data 逐条 map 调用 insertClassicPoemToDb，每条触发一次 ClassicPoemDao.createClassicPoem 的 DbUtil.objectiveRDB?.insert(...)，即 3000 次独立 RDB insert（无事务、无 batchInsert），是本次「导入」操作的主 CPU 负载来源。",
+      "fix": "改为 relationalStore 的 batchInsert 或把整批写入包在单个事务/单次 executeSql 中（例如分批 200~500 条 batchInsert + 显式 beginTransaction/commit），避免 3000 次独立 insert 事务开销；同时把创建/插入从 aboutToAppear 中移出到一次性后台任务并在结束后回读。",
+      "evidence": [
+        "workload.json: 「向空数据库导入 3,000 首诗，等待数据库操作完成」，3 轮 elapsed 约 2.86–3.04s",
+        "source/features/settings/src/main/ets/pages/SyncData.ets:30-33 wrapper.data.map(... DatasetViewModel.insertClassicPoemToDb(classicPoem))",
+        "source/features/settings/src/main/ets/viewmodel/DatasetViewModel.ets:49-53 insertClassicPoemToDb → classicPoemDao.createClassicPoem",
+        "source/features/classicalliterature/classicpoem/src/main/ets/database/ClassicPoemDao.ets:31 DbUtil.objectiveRDB?.insert(DbTableConst.ClassicPoemTable, valuesBucket) 每条一次 insert"
+      ]
+    },
+    {
+      "rank": 2,
+      "category": "cpu-hotspot",
+      "owner": "TaskExecutorRDB / RDB 写入线程",
+      "symbol": "RDB insert（ipc/runtime 侧热点）",
+      "file": "source/commons/utils/src/main/ets/database/DbUtil.ets",
+      "line_start": 13,
+      "line_end": 35,
+      "confidence": "low",
+      "root_cause": "perf_thread 显示应用进程内除主线程外 OS_FFRT_* 工作线程占大量样本，并存在 TaskExecutorRDB 线程，符合 RDB 写入/IO 线程被 3000 次 insert 高频调度；但 perf_files 未提供对应 .so/符号，无法在本环境将线程样本精确归因到 RDB 实现。",
+      "fix": "先在源码侧消除逐条 insert（见 rank1），再复测确认 TaskExecutorRDB 与 FFRT 线程指令数是否随之下降；如需符号级确认应执行符号恢复（update --so_dir）后重分析。",
+      "evidence": [
+        "perf.db perf_thread(step1): com.hefengbao.jingmo.hw=12,409,000,000；OS_FFRT_3_0..3_8 各约 3.4–3.7e9；TaskExecutorRDB(46418) 存在",
+        "perf.db perf_report: sw-cpu-clock, hiperf record -p 46306（应用进程）",
+        "perf.db perf_files 顶层无应用 .so/ArkTS 符号，无法逐条追到 RDB 实现"
+      ]
+    },
+    {
+      "rank": 3,
+      "category": "so-load",
+      "owner": "libappspawn_ace.z.so / ark_jsruntime / entry.hap（appspawn 用户态）",
+      "symbol": "[unknown] 用户态（symbol_id=-1）",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "step1 顶层调用链样本 11.1e9（约占该 step 总指令数 44.6e9 的 25%）落在 /system/bin/appspawn 下且 symbol 为 NULL，perf_files 未解析出 ArkTS/entry.hap 符号，无法把这段高负载映射到具体业务函数；这与「应用进程内存在大量用户态执行但符号缺失」一致，不能据此断言具体代码根因。",
+      "fix": "如需符号级定位，按 skill 阶段3 执行 update --so_dir 符号恢复后重新聚合 cpu-hotspot；否则以源码级 rank1 结论为准。",
+      "evidence": [
+        "perf.db(step1) 调用链聚合: /system/bin/appspawn symbol=NULL = 11,098,000,000；RTStub_AsmInterpreterEntry=166,000,000",
+        "perf.db perf_callchain: 大量帧 symbol_id=-1、vaddr_in_file=0（用户态未符号化）",
+        "report/so_file_load.json = []（应用 SO 级负载未产出）"
+      ]
+    },
+    {
+      "rank": 4,
+      "category": "thread",
+      "owner": "OS_FFRT_* 工作线程池",
+      "symbol": "ffrt::CPUWorker::WorkerLooper / ExecuteTask",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "多个 OS_FFRT_3_x 线程各占约 3.4–3.7e9 指令数，可能承载 RDB/JSON 解析等异步任务；但冗余线程分析显示 total_redundant_threads=0，说明没有可判定的无效唤醒/忙等模式，因此仅作为高占用线程记录，不能断定为「冗余浪费」。",
+      "fix": "先优化 rank1 的批量写入，观察 FFRT 线程占用是否同步下降；若仍高，再检查是否有可合并的异步任务派发。",
+      "evidence": [
+        "report/redundant_thread_analysis.json: step1/2/3 total_redundant_threads=0, has_redundancy=false",
+        "perf.db perf_thread: OS_FFRT_3_1..3_8 各 3.4–3.7e9，OS_FFRT_Delay=2.47e9"
+      ]
+    },
+    {
+      "rank": 5,
+      "category": "frame-load",
+      "owner": "应用主线程（com.hefengbao.jingmo.hw）",
+      "symbol": "主线程消息处理（导入期间）",
+      "file": "source/features/settings/src/main/ets/pages/SyncData.ets",
+      "line_start": 18,
+      "line_end": 37,
+      "confidence": "low",
+      "root_cause": "主线程是应用进程内指令数最高的线程（12.4e9），与 3 秒导入窗口内主线程执行 JSON.parse/遍历并派发插入一致；但 trace_frameLoads.json 未随产物提供，无法用帧级证据量化卡顿/掉帧，不能把它判定为帧问题根因。",
+      "fix": "如需帧级结论，需要补采集含帧数据的 trace（本项目缺少 trace_frameLoads.json）；当前不建议据此下帧负载结论。",
+      "evidence": [
+        "perf.db perf_thread: com.hefengbao.jingmo.hw=12,409,000,000（应用进程内最高）",
+        "source/features/settings/src/main/ets/pages/SyncData.ets:18-37 aboutToAppear 内同步遍历 + 派发插入",
+        "缺失：report/trace_frameLoads.json 未产出（无法做帧级量化）"
+      ]
+    }
+  ],
+  "observations": [
+    "采样事件为 sw-cpu-clock（perf_report.config_name），event_count 不能解释为 CPU 指令数；报告中出现的 4.4e10 类数值仅为采样加权值，须注明口径。",
+    "缺失证据：report/so_file_load.json 为空数组；无 trace_frameLoads.json / trace_ipc_binder.json / hapray_report.db，故 frame-load、ipc、memory 信号无法评估，本报告未据此做任何断言。",
+    "report/root_cause_evidence.md 与 root_cause.md 显示 empty-frame=0、冗余线程=0，均为 CLI 自动证据；root_cause.md 仍为 Pending Agent Inference，未作为检测结论使用。",
+    "workload.json notes 明确测量入口为附加探针、源码为未修改原始应用，elapsed 为固定观察窗口，故仅凭耗时不能等同于根因。"
+  ],
+  "caveats": [
+    "rank1 的逐条 insert 结论来自源码调用链（medium），未获 perf_files 符号级动态证据直接确认，因用户态符号缺失。",
+    "rank2/3/4/5 为低置信度，仅基于线程/调用链加权与缺失产物说明，不得当作已确认根因。",
+    "内存/UI 事件缺失，未做内存或动画结论。"
+  ]
+}

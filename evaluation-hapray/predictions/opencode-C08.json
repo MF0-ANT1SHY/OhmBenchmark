@@ -1,0 +1,81 @@
+{
+  "summary": "C08 工作负载（5000 条搜索历史、整表同步读取）在应用主线程触发集中且低效的 Preferences/ArkTS 同步读取：叶子热点约 21% 为 panda::StringRef::NewFromUtf8（由 NAPI 构造大量结果对象时按字符串键/值创建 String 触发），历史读取路径 historyStore.getAll() 用 getAllSync() 一次性物化全量 5000 条并 Object.keys() 生成数组，配合 SearchHistoryComp 的 ForEach 非懒加载与删除后整表重读，放大 CPU 与对象/字符串分配；另有 SearchComp.setItem 在同一次搜索中同步 putSync + 2s flush 防抖，属可避免的同步写盘。空刷/冗余线程/组件复用/内存信号均为 0 或缺失，未作为问题。缺失证据：无 UI 帧率与内存分配事件，sw-cpu-clock 为软件 CPU 时钟采样，不能解释为 CPU 指令数。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "HistoryStore",
+      "symbol": "getAll() / getAllSync()",
+      "file": "source/features/home/src/main/ets/utils/history.ets",
+      "line_start": 34,
+      "line_end": 37,
+      "confidence": "medium",
+      "root_cause": "getAll() 通过 preferences.getAllSync() 一次性同步物化全部 5000 条历史为 JS 对象，再用 Object.keys() 再复制一遍键数组；工作负载连续读取完整历史 100 次时，每次都会同步反序列化并创建大量 String 对象，与叶子热点 panda::StringRef::NewFromUtf8 高度吻合（栈：RTStub→BCStub→ArkNativeFunctionCallBack→napi_create_object_with_properties→panda::StringRef::NewFromUtf8，表明 NAPI 正构造含大量字符串属性的对象）。",
+      "fix": "分页/限长读取历史（如仅取最近 N 条），避免 getAllSync 全量物化；加载放到 TaskPool 异步执行，或用 getAll() 异步接口配合缓存与增量更新（setItem 后本地维护数组，不再整表 Object.keys 重建）。",
+      "evidence": [
+        "leaf 热点 step1：panda::StringRef::NewFromUtf8 = 1,176,000,000 / 5,477,000,000 ≈ 21.5%；step2 19.69%、step3 17.01%",
+        "调用栈 callchain_id=46（深度由栈底到 Leaf）：OHOSLoopHandler::OnTriggered→uv_run→napi_call_function→FunctionRef::CallForNapi→RTStub_AsmInterpreterEntry→...→ArkNativeFunctionCallBack→napi_create_object_with_properties→NapiCreateObjectWithProperties→panda::StringRef::NewFromUtf8，路径含 /proc/14231/root/.../phone.hap，证明为应用 JS 发起",
+        "源码 history.ets:34-37 `getAll(){ const obj = this.store.getAllSync(); return Object.keys(obj) }`，workload.json 描述为 5,000 条历史整体读取 100 次"
+      ],
+      "trigger_chain": "业务操作(读取完整历史×100) → HistoryStore.getAll() → preferences.getAllSync() → NAPI 构造结果对象 → panda::StringRef::NewFromUtf8"
+    },
+    {
+      "rank": 2,
+      "category": "cpu-hotspot",
+      "owner": "SearchHistoryComp",
+      "symbol": "build() / ForEach 全量渲染",
+      "file": "source/features/home/src/main/ets/components/SearchHistoryComp.ets",
+      "line_start": 57,
+      "line_end": 83,
+      "confidence": "medium",
+      "root_cause": "aboutToAppear 调用 historyStore.getAll() 返回 5000 条后，build() 用 ForEach 一次性为非懒加载地创建全部历史 Chip（每个含 Text+Row），并在删除/清空后再次 `this.keywords = historyStore.getAll()` 触发整表重建；5000 个组件节点的构建与高频字符串比较/排序放大主线程工作量。",
+      "fix": "改用 LazyForEach + IDataSource，只渲染可视区域；setItem/delItem 后做增量更新（本地数组增删）而非整表重读重建；为数据源配置稳定 keyGenerator。",
+      "evidence": [
+        "源码 SearchHistoryComp.ets:19 `this.keywords = historyStore.getAll()`；57 `ForEach(this.keywords, ...)`；35、69 删除/清空后再次调用 getAll()",
+        "trace_componentReuse.json 全 step total_builds=0，组件复用数据缺失，无法据其判定复用率（未杜撰）"
+      ],
+      "trigger_chain": "读取/删除历史 → getAll() 得到 5000 条 → @State keywords 变更 → ForEach 全量重建"
+    },
+    {
+      "rank": 3,
+      "category": "cpu-hotspot",
+      "owner": "SearchComp",
+      "symbol": "HdSearch.onSubmit → historyStore.setItem()",
+      "file": "source/features/home/src/main/ets/views/SearchComp.ets",
+      "line_start": 45,
+      "line_end": 48,
+      "confidence": "low",
+      "root_cause": "每次搜索提交都在主线程同步执行 historyStore.setItem()（putSync）并调度 2s flush 防抖；workload 若伴随重复输入/搜索，会累积同步写与定时器 flush，同时与历史读取争用 Preferences 内部互斥锁。",
+      "fix": "写操作改用异步 put()；合并多次输入为一次落盘；避免搜索热路径同步写 Preferences。",
+      "evidence": [
+        "源码 SearchComp.ets:45-48 `this.isSearching = true; historyStore.setItem(this.keyword)`",
+        "history.ets:19-22 setItem→store.putSync→scheduleFlush(2000ms)",
+        "perf.db step1 非叶子聚合可见 OHOS::PreferencesJsKit::BaseContext::SetAction / ~BaseContext（7,006,000,000）与 libnative_preferences.z.so+0x24044 等 Preferences 帧，说明 Preferences 路径确有可观耗时"
+      ],
+      "trigger_chain": "搜索提交 → HdSearch.onSubmit → setItem → putSync + 2s flush"
+    },
+    {
+      "rank": 4,
+      "category": "cpu-hotspot",
+      "owner": "system/libs",
+      "symbol": "pthread_mutex_trylock/unlock, memcpy（Preferences/NAPI 锁与拷贝）",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "非叶子高阶聚合中 libnative_preferences/datashare 的 .plt 与 BaseContext::SetAction、PreferencesValue 拷贝等帧占比可观（各约 1.6%-2.1%），提示同步 Preferences 访问伴随锁竞争与字符串/对象拷贝；但该部分为系统库，需符号恢复才能进一步归因，当前不作为独立主因。",
+      "fix": "减少同步 Preferences 调用频次与数据量（分页/缓存），从调用侧降低锁与拷贝压力；如需深入定位建议对相关 SO 做符号恢复。",
+      "evidence": [
+        "perf.db step1 非叶子聚合：libnative_preferences.z.so+0x24044/0x23e70/0x23d34 各约 1.7%-2.2%，libpreferences.z.so .plt 约 2.1%",
+        "native-profile-1/2/3.txt 一致出现 pthread_mutex_unlock/trylock、memcpy 约 1-2.6%",
+        "perf_report: config_name=sw-cpu-clock（软件 CPU 时钟），event_count 不代表 CPU 指令数"
+      ],
+      "trigger_chain": "业务同步读取/写入 → Preferences 系统库 → 锁竞争与内存拷贝"
+    }
+  ],
+  "observations": [
+    "empty-frame=0、redundant_threads=0、trace_componentReuse total_builds=0、trace_gc_thread PartialGC=0（step 内无 GC 样本）；trace_emptyFrame/redundant/compose 数据未显示与本操作相关的问题",
+    "缺失信号：无 UI 帧率/掉帧、无内存分配（未开 --memory）事件；native-profile 采样事件为 sw-cpu-clock，不能解释为 CPU 指令数",
+    "step1 采样窗口为被测进程，但 perf.db 中出现 appspawn/启动栈，需注意采集窗口可能包含应用启动阶段，热点占比为混合结果"
+  ]
+}

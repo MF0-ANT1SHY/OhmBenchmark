@@ -1,0 +1,109 @@
+{
+  "summary": "本轮证据不足以在源码级定位 C06（40 个本地 RSS 刷新、各 25 篇）的性能根因：perf 侧在应用签名/字节码符号上完全未恢复（所有 ArkTS 帧仅匿名 entry.hap），trace 侧仅有 GC/ArkTS 内部槽位与 'H:Insert'，无法把任何热点归因到具体业务函数；唯一确定的操作期信号是刷新窗口内 GC 压力突出（SuspendTime::WaitGCFinished 27.5ms、FullGC::Mark 20.0ms、SharedFullGC::Mark 21.4ms，占总样本 1% 以下）。识别出两处源码级的串行/重复工作结构（顺序刷新 + 每篇文章一次 insert、插入后全量重载），但缺少把它们与采样关联的动态证据，故按低置信度列出，不作断言。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "thread",
+      "owner": "FeedService",
+      "symbol": "refreshAllFeeds / refreshFeed",
+      "file": "source/entry/src/main/ets/services/FeedService.ets",
+      "line_start": 161,
+      "line_end": 174,
+      "confidence": "low",
+      "root_cause": "刷新以串行 await 逐源处理：'for (let i = 0; i < feeds.length; i++) { outcome.inserted += await this.refreshFeed(feeds[i].id, outcome); }'。每个源内部还要等 HTTP + 解析 + 逐篇入库全部完成后才发起下一个源的请求，40 个源无法并发（网络往返与数据库写入完全串行化）。这是与 workload 直接对应的结构性浪费，但本轮动态证据（sw-cpu-clock 事件、无应用符号）无法量化其 CPU 占比，故仅列为低置信度线索。",
+      "fix": "把 refreshAllFeeds 改为受限并发（如并发 4–6）：用 Promise.all 分批处理 feeds 切片，或引入任务队列（worker/FFRT）并发执行 refreshFeed，但保持每个 feed 内文章写入的顺序；同时让刷新整体进度回调按完成计数更新。",
+      "evidence": [
+        "workload.json: 刷新 40 个本地 HTTP RSS 订阅，各返回 25 篇文章，服务器无人工延时；三轮 elapsed 6.63–7.44s",
+        "FeedService.ets:161-174 顺序 for-await 调用 refreshFeed；FeedFetcher.fetchUrl 在 finally 中 destroy 请求，单请求单连接",
+        "perf 证据仅显示线程 'OS_NET_HttpWork' 2.95e9 采样权重（2952 样本），无法反证或证实并发度；perf_files 中应用符号未恢复（entry.hap 全部 symbol=null），不能从此断言根因"
+      ],
+      "trigger_chain": "用户点击刷新 → AppStore.refreshFeeds → FeedService.refreshAllFeeds → 逐个 await refreshFeed → FeedFetcher.fetchUrl → 逐篇 db.insertArticle"
+    },
+    {
+      "rank": 2,
+      "category": "cpu-hotspot",
+      "owner": "FeedService",
+      "symbol": "refreshFeed → db.insertArticle 循环",
+      "file": "source/entry/src/main/ets/services/FeedService.ets",
+      "line_start": 122,
+      "line_end": 133,
+      "confidence": "low",
+      "root_cause": "每篇文章一次独立的 'await this.db.insertArticle(article)'（共 40×25 = 1000 篇），无批量事务；动态证据侧 trace 中 'H:Insert|I36' 出现 1002 次、累计 3.859s（单次约 3.9ms），与 1000 篇文章数量级吻合，说明插入是刷新窗口内最长的可观测业务阶段之一。但 trace 侧未提供 Insert 的调用方，无法确认该计数完全来自本应用刷新路径，也不代表 sw-cpu-clock 采样权重。",
+      "fix": "将 insertArticle 改为批量接口：单次事务内用 RelationStore 的 batchInsert（或 ValuesBucket 数组）写入一篇源的全部文章；对 (feed_id, guid) 唯一冲突用 INSERT OR IGNORE 语义，避免逐条 await 的往返开销。",
+      "evidence": [
+        "FeedService.ets:122-133 每篇文章一次 await insertArticle，仅对 id>0 计数",
+        "trace.db callstack: 'H:Insert|I36' count=1002, sum(dur)=3.859e9 ns（占 7.31s 窗口约 53%，但为多次插入累计时长，非 CPU 占用）",
+        "perf.db: 事件为 sw-cpu-clock（hiperf cmdline '-e sw-cpu-clock -p 65322'），共 53998 样本、18 线程；event_count 不能解释为 CPU 指令数",
+        "perf_files: /proc/65322/root/data/storage/el1/bundle/entry.hap 的 symbol 全部为 null，ArkTS 符号未恢复，无法把插入热点落到具体函数"
+      ],
+      "trigger_chain": "refreshFeed → 解析后 for(article) → DatabaseManager.insertArticle（逐条 await）"
+    },
+    {
+      "rank": 3,
+      "category": "cpu-hotspot",
+      "owner": "FeedService",
+      "symbol": "refreshAllFeeds → db.getAllFeeds + 逐源 getFeedById",
+      "file": "source/entry/src/main/ets/services/FeedService.ets",
+      "line_start": 153,
+      "line_end": 171,
+      "confidence": "low",
+      "root_cause": "一次刷新对订阅表做了重复读取：refreshAllFeeds 先 'await this.db.getAllFeeds()' 取全量 Feed 对象，随后对每个源再 'await this.db.getFeedById(feedId)'（refreshFeed:91）重新取一次同一行；40 个源即为 1 次全量 + 40 次单行查询。属于同一操作路径内的冗余 I/O，但单次开销小，仅是噪声级浪费，不能解释 6.6–7.4s 的耗时。",
+      "fix": "refreshAllFeeds 已持有 Feed 对象，直接把 feed 传入 refreshFeed(feed, outcome) 重载，去掉每源一次的 getFeedById 查询；getAllFeeds 也不应重复调用（refreshFeeds 中 feeds 状态已存在）。",
+      "evidence": [
+        "FeedService.ets:153 'const all: Feed[] = await this.db.getAllFeeds();'",
+        "FeedService.ets:171 循环内 await this.refreshFeed(feeds[i].id, outcome) → FeedService.ets:91 'await this.db.getFeedById(feedId)'",
+        "trace.db: 'H:QuerySql|I36' count=43, sum(dur)=27.1ms（量级小，且调用方未知，不能据此断言来自本路径）"
+      ],
+      "trigger_chain": "AppStore.refreshFeeds → FeedService.refreshAllFeeds → getAllFeeds → 循环 refreshFeed → getFeedById"
+    },
+    {
+      "rank": 4,
+      "category": "cpu-hotspot",
+      "owner": "AppStore",
+      "symbol": "refreshFeeds → refreshData（整表重载）",
+      "file": "source/entry/src/main/ets/state/AppStore.ets",
+      "line_start": 917,
+      "line_end": 918,
+      "confidence": "low",
+      "root_cause": "刷新结束后无条件 'await this.refreshData()' 重载列表数据，而插入量在多数轮次为 0（第二轮环境为“无新文章”场景），此时仍然执行整表重载与界面数据替换，属于无谓工作；另外若 refreshFeeds(false) 走到 scoped 分支会经 line 384 的 refreshFeeds(false, scopeIds) 再触发一次刷新入口，存在重复触发风险。二者均未在动态证据中得到验证。",
+      "fix": "仅当 outcome.inserted > 0（或 unreadCount 变化）时才刷新列表数据；对 refreshFeeds 增加进行中的委托去重（已有 isFetching 早退，但需确认 scope 分支不会二次进入）。",
+      "evidence": [
+        "AppStore.ets:917-918 'await this.recordRefresh(outcome, background); await this.refreshData();'",
+        "AppStore.ets:384 'return await this.refreshFeeds(false, scopeIds);' 与 881 行入口并存（需确认调用关系，未在本轮证实）",
+        "perf.db step1 顶层符号集中在 appspawn(1.61e10 权重)、libappspawn_ace(1.17e8)、libace_napi.z(napi_resolve_deferred 2.06e8)、libark_jsruntime(PromiseCapabilityRef::Resolve 5.5e7)，均为框架/运行时层，无法归因到该源码行"
+      ],
+      "trigger_chain": "refreshFeeds → recordRefresh → refreshData → 列表/角标数据重算"
+    },
+    {
+      "rank": 5,
+      "category": "memory",
+      "owner": "OS_GC_Thread / ArkTS 运行时",
+      "symbol": "SharedFullGC / PartialGC",
+      "file": "source/entry/src/main/ets/services/FeedService.ets",
+      "line_start": 122,
+      "line_end": 133,
+      "confidence": "low",
+      "root_cause": "刷新窗口内存在明显 GC 压力：trace 中 SuspendTime::WaitGCFinished 27.5ms、SharedFullGC::Mark 21.4ms、FullGC::Mark 20.0ms、PartialGC::Evacuate 15.2ms 等，且线程级 perf 显示 4 个 OS_GC_Thread（合计 7.09e8 采样权重）。机制上最合理的关联是“全量 feed 文档 + 逐篇字符串解析/入库”在短时间内制造大量短命字符串对象（本轮无 --memory 采集，memory 类别信号缺失，无法给出分配热点），该关联未经证据证实。",
+      "fix": "降低单次刷新期间的短期对象分配：批量插入（见 rank 2）减少中间对象；解析完成后显式释放大的 xml 字符串引用；必要时对长文章内容做长度上限或分片解析，避免一次性大字符串驻留。",
+      "evidence": [
+        "trace.db: 'H:SuspendTime::WaitGCFinished|M47' 1 次 27.455ms；'H:SharedFullGC::Mark|M47' 21.411ms；'H:FullGC::Mark|M47' 2 次 20.048ms；'H:PartialGC::Evacuate|M47' 2 次 15.163ms",
+        "perf.db thread: OS_GC_Thread ×4（65423/65424/65425/65426）合计 709×1e6 采样权重；主线程 65322 权重 1.75e10，OS_FFRT_3_0/3_1/3_2 合计 3.10e10",
+        "本轮未开 --memory，无 ui_animate/memory 事件，memory 类证据缺失，不得据此断言内存泄漏"
+      ],
+      "trigger_chain": "refreshAllFeeds → 解析/入库产生大量短命对象 → ArkTS 堆增长 → FullGC/PartialGC 暂停"
+    }
+  ],
+  "caveats": [
+    "本轮采样事件为 sw-cpu-clock（hiperf cmdline: '-p 65322 -f 1000 -e sw-cpu-clock'），event_count 是软件 CPU 时钟采样权重，**不能解释为 CPU 指令数**；所有 load 数值只能用于相对比较。",
+    "应用侧符号未恢复：entry.hap 的 perf_files.symbol 全部为 null，ArkTS/TS 源码行不可得；顶层可见符号只有 appspawn / libappspawn_ace / libace_napi.z / libark_jsruntime / libcurl_shared_http3 / libffrt 等框架与系统库，无法把热点落到 .ets 文件或函数。",
+    "trace 侧只有 GC/ArkTS 内部槽位（H:*, |M47）与应用进程内框架符号（I36/I62），'H:Insert' 与 'H:QuerySql' 未带调用方，无法确认属于 FeedService 路径。",
+    "缺失信号：trace_emptyFrame 摘要显示空刷 0、空刷检测未产出 top_frames；trace_componentReuse 三轮 total_builds/reusability_ratio 全为 0（UI 复用数据缺失）；so_file_load.json 为空数组（应用进程 SO 未聚合）；未开 --memory，memory/ui_animate 信号不可用。因此 empty-frame / component-reuse / ui-animate / memory 类别无法给出有效结论。",
+    "'线程是否冗余' 无法独立核实：redundant_thread_analysis 三轮 total_redundant_threads=0，但 perf_samples 显示主线程 65322 与 OS_FFRT_3_0/3_1/3_2 合计约 3.10e10 权重，需符号恢复后才能判定是计算还是阻塞。"
+  ],
+  "needs_more_data": [
+    "对 entry.hap / ark 字节码做符号恢复（update --so_dir 或 symbol_recovery），以获得 ArkTS 函数级与源码行级热点，这是本轮结论升级为 high 置信的前提。",
+    "改用 raw-instruction-retired 事件重采，或在同一 sw-cpu-clock 采集下补充主线程 wall-clock/阻塞栈信息，以便区分 CPU 计算与等待。",
+    "在 htrace 中为 FeedService.refreshFeed / FeedFetcher.fetchUrl / DatabaseManager.insertArticle 打点，获得各阶段耗时并关联 40 个源的并发度。",
+    "加采 --memory 或 native_hook，验证 GC 压力是否源于刷新期间的大量短命字符串对象，并排除内存泄漏。"
+  ]
+}

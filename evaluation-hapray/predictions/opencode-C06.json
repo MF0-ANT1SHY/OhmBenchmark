@@ -1,0 +1,90 @@
+{
+  "summary": "刷新 40 个 RSS 源耗时约 6.6–7.4 s，动态证据（sw-cpu-clock 采样，step1 样本总量 53.998e9/53998 样本）显示负载集中在 OS_FFRT_3_* 线程上，其中 OHOS::NativeRdb::RdbStore::InsertWithConflictResolution 跨线程合计约 26.2e9（step1），三线程（OS_FFRT_3_0/3_1/3_2，runtask_id==任务 id 说明同类型任务）分担；该路径来自 FeedService.refreshFeed / SyncManager 的“每篇文章一次 await db.insertArticle()”循环（FeedService.ets:122-133），单条 awaited 事务、串行为每源插入放大了跨线程调度与事务开销。",
+  "suspects": [
+    {
+      "rank": 1,
+      "category": "cpu-hotspot",
+      "owner": "DatabaseManager",
+      "symbol": "insertArticle / FeedService.refreshFeed 逐条插入循环",
+      "file": "source/entry/src/main/ets/services/FeedService.ets",
+      "line_start": 121,
+      "line_end": 134,
+      "confidence": "high",
+      "root_cause": "每篇文章一次 await db.insertArticle()（内部 store.insert('articles',…)）执行单行同步事务；40 源×25 文≈1000 次单条插入。动态证据显示 libnative_rdb.z.so 的 OHOS::NativeRdb::RdbStore::InsertWithConflictResolution 跨线程工作量最大（step1≈26.2e9、step2≈22.6e9、step3≈25.6e9），集中在 OS_FFRT_3_0/3_1/3_2 三个线程（step1 分别 8.4e9/8.3e9/9.5e9），无符号显示其为同一类向量化 RDB 任务反复入队，而不是批量写入。",
+      "fix": "改用批量写入以摊薄每行的调度/事务开销：调用 relationalStore 的 batchInsert，或把 insertArticle 改为在单个事务（beginTransaction/commit）内累积后一次提交；insertArticles（DatabaseManager.ets:342-350）目前仍逐条 await insertArticle，也应一并批量化。",
+      "evidence": [
+        "step1 perf.db: ffrt 命中 311.47e9；RdbStore::InsertWithConflictResolution 单符号 26.207e9/53.998e9 样本",
+        "step2/step3 复现：step2 RdbInsert≈22.604e9、step3≈25.561e9（ffrt 162.5e9/183.8e9）",
+        "该插入工作由线程 OS_FFRT_3_2=9.534e9、OS_FFRT_3_0=8.375e9、OS_FFRT_3_1=8.298e9 分担（step1，线程名 runtask_id 与 rdb 任务 id 一致）",
+        "源码：FeedService.refreshFeed 循环 await this.db.insertArticle(article)（FeedService.ets:126）；DatabaseManager.insertArticle 内 store.insert('articles', values)（DatabaseManager.ets:334）",
+        "sw-cpu-clock 事件，event_count 为软时钟周期权重，不能解释为 CPU 指令数"
+      ]
+    },
+    {
+      "rank": 2,
+      "category": "so-load",
+      "owner": "libnative_rdb.z.so",
+      "symbol": "OHOS::NativeRdb::RdbStore::InsertWithConflictResolution / UpdateWithConflictResolution",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "medium",
+      "root_cause": "原生 RDB 库在刷新窗口内是应用侧最重的 SO 之一（插入 26.2e9+更新 1.52e9，step1）。InsertWithConflictResolution 的“冲突解决”语义说明为了满足 articles 表的 UNIQUE(feed_id,guid)（DatabaseManager.ets:79），重复项是异常返回 -1 处理（DatabaseManager.ets:333-339）。本轮探针源码无法证明每篇文章确实存在冲突写入，因此『冲突查询被重复执行』只是可疑方向，不是既证缺失索引根因。",
+      "fix": "确认 UNIQUE(feed_id,guid) 索引可用（避免回表/全表判重）；对已存在项改用 upsert/insert-with-conflict-resolution 显式接口而非依赖隐式冲突；若刷新必然覆盖已有文章，考虑改为批量 upsert。",
+      "evidence": [
+        "step1 perf.db：libnative_rdb.z.so Insert 26.207e9、Update 1.523e9",
+        "DatabaseManager.ets:79 UNIQUE(feed_id, guid)；:333-339 insert 失败吞掉异常返回 -1",
+        "无堆分配/指令级证据区分‘重复冲突’与‘正常插入’，需补采或代码审查确认"
+      ]
+    },
+    {
+      "rank": 3,
+      "category": "thread",
+      "owner": "rt（应用主线程）",
+      "symbol": "panda::PromiseCapabilityRef::Resolve / EventRunner::Run",
+      "file": "source/entry/src/main/ets/state/AppStore.ets",
+      "line_start": 881,
+      "line_end": 911,
+      "confidence": "medium",
+      "root_cause": "主线程 com.sheafreader.hm 在 step1 承担 17.496e9（约占该进程样本 32%），其中 appspawn 内 15.898e9 归为字节码/JIT 执行，另见 EventRunner::Run 16.857e9、PromiseCapabilityRef::Resolve 14.822e9/NativeAsyncWork::AsyncWorkCallback 28.4e9。与每篇文章 await insertArticle 的模式一致：每个 await 都要跨线程唤醒并 resolve Promise，大量微任务/事件回主线程，而 RDB 工作却在 FFRT 线程完成——即刷新开始时若整批插入在主线程上发起，主线程被大量 Promise 解析与事件分发占满。注意 appspawn 叶帧属正常字节码执行，不作为独立根因计数。",
+      "fix": "把每源插入/解析移出主线程（TaskPool/worker），避免在主线程上逐条 await；用 insertArticles 聚合一次 await，减少 Promise 往返。",
+      "evidence": [
+        "step1 perf.db：线程 com.sheafreader.hm=17.496e9（主线程）",
+        "符号：EventRunner::Run 16.857e9、PromiseCapabilityRef::Resolve 14.822e9、NativeAsyncWork::AsyncWorkCallback 28.4e9（inclusive，含子帧）",
+        "/system/bin/appspawn 叶帧 15.898e9 属字节码/JIT，仅作说明不作为独立 suspect"
+      ]
+    },
+    {
+      "rank": 4,
+      "category": "ipc",
+      "owner": "relationalStore",
+      "symbol": "OHOS::NativeRdb 跨线程 RDB 任务（无 IPC/Binder 事件表）",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "report/ 目录无 trace_ipc_binder.json（未生成/无该采集），无法量化 Binder 事务；可见的是三个 OS_FFRT_3_* 线程各承载约 8–10e9 的 RDB 插入任务，形似同一工作被派发到多个线程执行，而不是单一 DB 线程。此为数量级证据，非 IPC 根因定论。",
+      "fix": "如需确认，补采 Binder/IPC 跟踪（trace_ipc_binder）并核对 relationalStore 客户端是否跨线程重复提交同一批插入。",
+      "evidence": [
+        "缺失：report/trace_ipc_binder.json（本案例 report 目录无该文件）",
+        "线程级：OS_FFRT_3_0/3_1/3_2 在 step1 各 8.4e9/8.3e9/9.5e9，且 runtask_id 与 rdb 任务 id 相同"
+      ]
+    },
+    {
+      "rank": 5,
+      "category": "memory",
+      "owner": "—",
+      "symbol": "—",
+      "file": "",
+      "line_start": 0,
+      "line_end": 0,
+      "confidence": "low",
+      "root_cause": "本案例非 --memory 采集：report 目录无 hapray_report.db，未找到 memory_records/memory_* 证据，因此无法给出内存根因；OS_GC_Thread 仅约 0.2e9 级别（step1），不构成内存压力信号。",
+      "fix": "如需内存结论，请以 --memory 重新采集（memory-collect）后按 memory-analysis 复核。",
+      "evidence": [
+        "缺失：hapray_report.db / memory_records（未启用 --memory）",
+        "step1 OS_GC_Thread 采样 ≈2.04e8，属低量级"
+      ]
+    }
+  ]
+}
