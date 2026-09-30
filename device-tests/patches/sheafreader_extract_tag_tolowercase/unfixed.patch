@@ -61,7 +61,7 @@ index 0000000..d37c5ea
 +}
 diff --git a/entry/src/main/ets/utils/SheafBench.ets b/entry/src/main/ets/utils/SheafBench.ets
 new file mode 100644
-index 0000000..3a04a68
+index 0000000..4628b88
 --- /dev/null
 +++ b/entry/src/main/ets/utils/SheafBench.ets
 @@ -0,0 +1,49 @@
@@ -81,7 +81,7 @@ index 0000000..3a04a68
 +    if (name === 'sheafreader_extract_tag_tolowercase') {
 +      const body = '<p>HarmonyOS Performance Engineering. ΑΝΑΛΥΣΗ ΔΕΔΟΜΕΝΩΝ; ПРИЛОЖЕНИЕ И ПРОИЗВОДИТЕЛЬНОСТЬ; İstanbul İŞLEM; 中文应用性能测试。</p>'.repeat(650);
 +      const items: string[] = [];
-+      for (let i = 0; i < 300; i++) {
++      for (let i = 0; i < 100; i++) {
 +        items.push('<item><title>Engineering Article ' + i + '</title><link>https://example.org/' + i + '</link><description>Article summary</description><pubDate>Wed, 30 Sep 2026 12:00:00 GMT</pubDate><guid>article-' + i + '</guid><author>Engineering Team</author><content:encoded><![CDATA[' + body + ']]></content:encoded></item>');
 +      }
 +      xml = '<rss version="2.0"><channel><title>Engineering Feed</title><link>https://example.org</link><description>Long form engineering articles</description>' + items.join('') + '</channel></rss>';

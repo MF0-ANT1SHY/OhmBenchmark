@@ -1,10 +1,11 @@
 """Summarize measured spans and on-CPU time from scheduler events, retaining all runs."""
-import collections,csv,gzip,json,pathlib,re,statistics
+import collections,csv,gzip,json,pathlib,re,statistics,sys
 root=pathlib.Path(__file__).resolve().parents[1]
 rows=[]
 line_re=re.compile(r'\s*(.+)-(\d+)\s+\(\s*(\d+|-----)\)\s+\[(\d+)\].*?\s(\d+\.\d+):\s+(\w+):\s+(.*)')
 switch_re=re.compile(r'prev_pid=(\d+).*?next_pid=(\d+)')
 for p in sorted((root/'measurements').glob('*/*/run*/result.json')):
+    if len(sys.argv)>1 and p.parent.parent.parent.name not in sys.argv[1:]:continue
     trace=p.parent/'trace.txt.gz'
     if not trace.exists():continue
     row=json.loads(p.read_text())
@@ -41,7 +42,8 @@ for p in sorted((root/'measurements').glob('*/*/run*/result.json')):
         m=re.match(r'\s*([\d,]+)\s+([\w-]+)',line)
         if m:row['perf_'+m[2]]=int(m[1].replace(',',''))
     row['path']=str(p.parent.relative_to(root)); rows.append(row)
-(root/'measurements/summary.json').write_text(json.dumps(rows,indent=2))
+destination='summary.json' if len(sys.argv)==1 else 'summary-selected.json'
+(root/'measurements'/destination).write_text(json.dumps(rows,indent=2))
 for case in sorted({r['case'] for r in rows}):
     print(case)
     for variant in ['unfixed','fixed']:

@@ -1,0 +1,443 @@
+> hvigor WARN: The current module 'wanharmony' has dependency which is not installed at its oh-package.json5.
+> hvigor WARN: The project has not explicitly set the 'targetSdkVersion' version at build-profile.json5. It is recommended to configure it. Reference: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-hvigor-build-profile-app#section45865492619
+> hvigor [32mUP-TO-DATE :entry:default@PreBuild...  [39m
+> hvigor [32mFinished :entry:default@CreateModuleInfo... after 2 ms [39m
+> hvigor [32mUP-TO-DATE :entry:default@GenerateMetadata...  [39m
+> hvigor [32mFinished :entry:default@ConfigureCmake... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :entry:default@MergeProfile...  [39m
+> hvigor [32mUP-TO-DATE :entry:default@CreateBuildProfile...  [39m
+> hvigor [32mFinished :entry:default@PreCheckSyscap... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :entry:default@GeneratePkgContextInfo...  [39m
+> hvigor [32mFinished :entry:default@ProcessIntegratedHsp... after 1 ms [39m
+> hvigor [32mFinished :entry:default@BuildNativeWithCmake... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :entry:default@MakePackInfo...  [39m
+> hvigor [32mFinished :entry:default@SyscapTransform... after 22 ms [39m
+> hvigor [32mUP-TO-DATE :entry:default@ProcessProfile...  [39m
+> hvigor [32mUP-TO-DATE :entry:default@ProcessRouterMap...  [39m
+> hvigor [32mFinished :entry:default@ProcessStartupConfig... after 6 ms [39m
+> hvigor [32mFinished :entry:default@BuildNativeWithNinja... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :entry:default@ProcessResource...  [39m
+> hvigor [32mUP-TO-DATE :entry:default@GenerateLoaderJson...  [39m
+> hvigor [32mUP-TO-DATE :entry:default@ProcessLibs...  [39m
+> hvigor [32mUP-TO-DATE :entry:default@CompileResource...  [39m
+> hvigor [32mUP-TO-DATE :entry:default@DoNativeStrip...  [39m
+> hvigor [32mFinished :entry:default@BuildJS... after 6 ms [39m
+> hvigor [32mUP-TO-DATE :entry:default@CacheNativeLibs...  [39m
+> hvigor [32m[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-dialog@1.0.3/oh_modules/@pura/harmony-dialog/src/main/ets/utils/AnimationHelper.d.ets:17:78
+ Object literals cannot be used as type declarations (arkts-no-obj-literals-as-types)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-dialog@1.0.3/oh_modules/@pura/harmony-dialog/src/main/ets/utils/AnimationHelper.d.ets:18:135
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-dialog@1.0.3/oh_modules/@pura/harmony-dialog/src/main/ets/utils/AnimationHelper.d.ets:19:138
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-dialog@1.0.3/oh_modules/@pura/harmony-dialog/src/main/ets/utils/AnimationHelper.d.ets:26:80
+ Object literals cannot be used as type declarations (arkts-no-obj-literals-as-types)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-dialog@1.0.3/oh_modules/@pura/harmony-dialog/src/main/ets/utils/AnimationHelper.d.ets:27:135
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-dialog@1.0.3/oh_modules/@pura/harmony-dialog/src/main/ets/utils/AnimationHelper.d.ets:28:138
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-dialog@1.0.3/oh_modules/@pura/harmony-dialog/src/main/ets/utils/AnimationHelper.d.ets:35:80
+ Object literals cannot be used as type declarations (arkts-no-obj-literals-as-types)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-dialog@1.0.3/oh_modules/@pura/harmony-dialog/src/main/ets/utils/AnimationHelper.d.ets:36:135
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-dialog@1.0.3/oh_modules/@pura/harmony-dialog/src/main/ets/utils/AnimationHelper.d.ets:37:138
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-dialog@1.0.3/oh_modules/@pura/harmony-dialog/src/main/ets/utils/AnimationHelper.d.ets:44:81
+ Object literals cannot be used as type declarations (arkts-no-obj-literals-as-types)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-dialog@1.0.3/oh_modules/@pura/harmony-dialog/src/main/ets/utils/AnimationHelper.d.ets:45:135
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-dialog@1.0.3/oh_modules/@pura/harmony-dialog/src/main/ets/utils/AnimationHelper.d.ets:46:138
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@tencent+mmkv@2.0.0/oh_modules/@tencent/mmkv/src/main/ets/utils/MMKV.ets:413:13
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@tencent+mmkv@2.0.0/oh_modules/@tencent/mmkv/src/main/ets/utils/MMKV.ets:422:13
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@tencent+mmkv@2.0.0/oh_modules/@tencent/mmkv/src/main/ets/utils/MMKV.ets:431:13
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@tencent+mmkv@2.0.0/oh_modules/@tencent/mmkv/src/main/ets/utils/MMKV.ets:440:13
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@tencent+mmkv@2.0.0/oh_modules/@tencent/mmkv/src/main/ets/utils/MMKV.ets:449:13
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@tencent+mmkv@2.0.0/oh_modules/@tencent/mmkv/src/main/ets/utils/MMKV.ets:458:13
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@tencent+mmkv@2.0.0/oh_modules/@tencent/mmkv/src/main/ets/utils/MMKV.ets:467:13
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@tencent+mmkv@2.0.0/oh_modules/@tencent/mmkv/src/main/ets/utils/MMKV.ets:476:13
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@tencent+mmkv@2.0.0/oh_modules/@tencent/mmkv/src/main/ets/utils/MMKV.ets:485:13
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@tencent+mmkv@2.0.0/oh_modules/@tencent/mmkv/src/main/ets/utils/MMKV.ets:494:13
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@tencent+mmkv@2.0.0/oh_modules/@tencent/mmkv/src/main/ets/utils/MMKV.ets:503:13
+ Use explicit types instead of "any", "unknown" (arkts-no-any-unknown)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/entry/src/main/ets/pages/test/SecondPage.ets:190:33
+ Argument of type 'string | undefined' is not assignable to parameter of type 'string | Resource'.
+  Type 'undefined' is not assignable to type 'string | Resource'.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN: For details about ArkTS syntax errors, see FAQs[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/StrUtil.ets:250:30
+ 'decodeWithStream' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ResUtil.ets:203:43
+ 'getPluralStringValueSync' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ResUtil.ets:205:43
+ 'getPluralStringValueSync' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ResUtil.ets:216:49
+ 'getPluralStringValue' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ResUtil.ets:218:49
+ 'getPluralStringValue' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ResUtil.ets:228:41
+ 'getPluralStringByNameSync' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ResUtil.ets:237:47
+ 'getPluralStringByName' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/DeviceUtil.ets:262:21
+ To use this API, you need to apply for the permissions: ohos.permission.VIBRATE
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/DeviceUtil.ets:269:21
+ To use this API, you need to apply for the permissions: ohos.permission.VIBRATE
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/AppUtil.ets:59:25
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/AppUtil.ets:243:26
+ To use this API, you need to apply for the permissions: ohos.permission.PRIVACY_WINDOW
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/action/ToastUtil.ets:56:20
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/action/ToastUtil.ets:74:20
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/action/ToastUtil.ets:92:20
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PermissionUtil.ets:76:28
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PermissionUtil.ets:92:28
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PermissionUtil.ets:112:28
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:48:28
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:48:52
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:74:28
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:74:52
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:100:28
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:100:51
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ImageUtil.ets:210:24
+ 'packing' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ImageUtil.ets:227:24
+ 'packing' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ImageUtil.ets:293:65
+ 'packing' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ImageUtil.ets:330:52
+ 'packing' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/NotificationUtil.ets:87:23
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/NotificationUtil.ets:511:19
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/AuthUtil.ets:50:16
+ To use this API, you need to apply for the permissions: ohos.permission.ACCESS_BIOMETRIC
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/AuthUtil.ets:86:33
+ To use this API, you need to apply for the permissions: ohos.permission.ACCESS_BIOMETRIC
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/AuthUtil.ets:146:33
+ To use this API, you need to apply for the permissions: ohos.permission.ACCESS_BIOMETRIC
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/AuthUtil.ets:161:35
+ To use this API, you need to apply for the permissions: ohos.permission.ACCESS_BIOMETRIC
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:66:21
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:88:30
+ 'PhotoSelectOptions' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:90:20
+ 'MIMEType' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:91:17
+ 'MIMEType' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:91:35
+ 'PhotoViewMIMETypes' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:91:54
+ 'IMAGE_TYPE' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:93:20
+ 'maxSelectNumber' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:94:17
+ 'maxSelectNumber' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:96:36
+ 'PhotoViewPicker' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:97:75
+ 'select' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:98:50
+ 'photoUris' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:98:81
+ 'photoUris' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:99:34
+ 'photoUris' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:117:36
+ 'PhotoViewPicker' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:119:49
+ 'save' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:126:43
+ 'PhotoSaveOptions' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:127:26
+ 'newFileNames' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:128:49
+ 'save' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:156:20
+ The system capacity of this api 'selectMode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:157:17
+ The system capacity of this api 'selectMode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:157:37
+ The system capacity of this api 'DocumentSelectMode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PickerUtil.ets:157:56
+ The system capacity of this api 'FILE' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/photo/PhotoHelper.ets:90:64
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/photo/PhotoHelper.ets:91:32
+ To use this API, you need to apply for the permissions: ohos.permission.WRITE_IMAGEVIDEO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/photo/PhotoHelper.ets:119:67
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/photo/PhotoHelper.ets:128:107
+ To use this API, you need to apply for the permissions: ohos.permission.READ_IMAGEVIDEO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/SnapshotUtil.ets:48:30
+ 'get' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/SnapshotUtil.ets:58:30
+ 'get' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/SnapshotUtil.ets:72:30
+ 'createFromBuilder' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ScanUtil.ets:56:12
+ The system capacity of this api 'scanBarcode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ScanUtil.ets:56:24
+ The system capacity of this api 'startScanForResult' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ScanUtil.ets:88:36
+ 'PhotoSelectOptions' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ScanUtil.ets:89:19
+ 'MIMEType' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ScanUtil.ets:89:37
+ 'PhotoViewMIMETypes' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ScanUtil.ets:89:56
+ 'IMAGE_TYPE' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ScanUtil.ets:90:19
+ 'maxSelectNumber' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ScanUtil.ets:91:36
+ 'PhotoViewPicker' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ScanUtil.ets:92:36
+ 'select' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ScanUtil.ets:119:12
+ The system capacity of this api 'detectBarcode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/ScanUtil.ets:119:26
+ The system capacity of this api 'decode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/LocationUtil.ets:76:26
+ To use this API, you need to apply for the permissions: ohos.permission.APPROXIMATELY_LOCATION
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/LocationUtil.ets:99:36
+ To use this API, you need to apply for the permissions: ohos.permission.APPROXIMATELY_LOCATION
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/LocationUtil.ets:118:26
+ To use this API, you need to apply for the permissions: ohos.permission.APPROXIMATELY_LOCATION
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/LocationUtil.ets:137:26
+ To use this API, you need to apply for the permissions: ohos.permission.APPROXIMATELY_LOCATION
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/LocationUtil.ets:155:28
+ To use this API, you need to apply for the permissions: ohos.permission.APPROXIMATELY_LOCATION
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/LocationUtil.ets:158:30
+ To use this API, you need to apply for the permissions: ohos.permission.APPROXIMATELY_LOCATION
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/LocationUtil.ets:160:30
+ To use this API, you need to apply for the permissions: ohos.permission.APPROXIMATELY_LOCATION
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PasteboardUtil.ets:77:49
+ To use this API, you need to apply for the permissions: ohos.permission.READ_PASTEBOARD
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/PasteboardUtil.ets:111:55
+ To use this API, you need to apply for the permissions: ohos.permission.READ_PASTEBOARD
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:47:23
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:54:23
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:62:32
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:63:44
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:76:32
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:77:44
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:87:33
+ To use this API, you need to apply for the permissions: ohos.permission.GET_WIFI_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:112:31
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/action/DialogUtil.ets:65:17
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/action/DialogUtil.ets:115:17
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/action/DialogUtil.ets:166:17
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/action/DialogUtil.ets:216:17
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/action/DialogUtil.ets:314:22
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/action/DialogUtil.ets:347:22
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@pura+harmony-utils@1.2.1/oh_modules/@pura/harmony-utils/src/main/ets/action/DialogUtil.ets:387:22
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/oh_modules/.ohpm/@tencent+mmkv@2.0.0/oh_modules/@tencent/mmkv/src/main/ets/utils/MMKV.ets:21:20
+ Currently module for 'libmmkv.so' is not verified. If you're importing napi, its verification will be enabled in later SDK version. Please make sure the corresponding .d.ts file is provided and the napis are correctly declared.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/entry/src/main/ets/pages/test/SecondPage.ets:56:27
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/entry/src/main/ets/pages/test/SecondPage.ets:84:27
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/entry/src/main/ets/pages/test/SecondPage.ets:98:57
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/entry/src/main/ets/pages/test/SecondPage.ets:113:27
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/entry/src/main/ets/pages/test/SecondPage.ets:125:39
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/entry/src/main/ets/utils/ToastUtils.ets:5:16
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/entry/src/main/ets/pages/SettingsPage.ets:171:27
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/entry/src/main/ets/pages/HistoryPage.ets:24:22
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/entry/src/main/ets/pages/WebPage.ets:108:33
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/entry/src/main/ets/entryability/EntryAbility.ets:15:18
+ 'SetOrCreate' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/entry/src/main/ets/entryability/EntryAbility.ets:16:18
+ 'SetOrCreate' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/entry/src/main/ets/pages/PersonPage.ets:70:25
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/wanharmony/entry/src/main/ets/pages/test/FirstPage.ets:106:27
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33m[39m [33mArkTS:WARN Property 'sourceMapsPath' not found in '@pura/harmony-dialog'.[39m [33m[39m[39m[39m
+[39m
+> hvigor [32mFinished :entry:default@CompileArkTS... after 10 s 667 ms [39m
+> hvigor [32mUP-TO-DATE :entry:default@GeneratePkgModuleJson...  [39m
+> hvigor [32mFinished :entry:default@PackageHap... after 565 ms [39m
+> hvigor WARN: Will skip sign 'hos_hap'. No signingConfigs profile is configured in current project.
+             If needed, configure the signingConfigs in D:\OhmBenchmark-main\hosts\wanharmony\build-profile.json5.
+> hvigor [32mFinished :entry:default@SignHap... after 3 ms [39m
+> hvigor [32mFinished :entry:default@CollectDebugSymbol... after 2 ms [39m
+> hvigor [32mFinished :entry:assembleHap... after 1 ms [39m
+> hvigor [32mBUILD SUCCESSFUL in 21 s 170 ms [39m
