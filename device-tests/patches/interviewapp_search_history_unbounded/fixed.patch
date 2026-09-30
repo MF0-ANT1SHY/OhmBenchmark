@@ -94,20 +94,16 @@ index 0000000..d37c5ea
 +  }
 +}
 diff --git a/products/phone/src/main/ets/phoneability/PhoneAbility.ets b/products/phone/src/main/ets/phoneability/PhoneAbility.ets
-index 92ce7ee..3457f61 100644
+index 92ce7ee..1620014 100644
 --- a/products/phone/src/main/ets/phoneability/PhoneAbility.ets
 +++ b/products/phone/src/main/ets/phoneability/PhoneAbility.ets
-@@ -1,3 +1,4 @@
-+import { runInterviewBench } from '@itcast/home';
- import AbilityConstant from '@ohos.app.ability.AbilityConstant';
- import UIAbility from '@ohos.app.ability.UIAbility';
- import Want from '@ohos.app.ability.Want';
-@@ -39,6 +40,11 @@ export default class PhoneAbility extends UIAbility {
+@@ -39,6 +39,12 @@ export default class PhoneAbility extends UIAbility {
    }
  
    onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): void {
 +    if (want.parameters && want.parameters['bench']) {
-+      runInterviewBench(this.context, want.parameters['bench'].toString());
++      const name = want.parameters['bench'].toString();
++      import('@itcast/home').then((bench) => { bench.runInterviewBench(this.context, name); });
 +      return;
 +    }
 +

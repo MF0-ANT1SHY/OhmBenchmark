@@ -1,0 +1,689 @@
+> hvigor [32mFinished :entry:clean... after 2 ms [39m
+> hvigor WARN: The project has not explicitly set the 'targetSdkVersion' version at build-profile.json5. It is recommended to configure it. Reference: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-hvigor-build-profile-app#section45865492619
+> hvigor [32mFinished :entry:default@PreBuild... after 154 ms [39m
+> hvigor [32mFinished :entry:default@CreateModuleInfo... after 2 ms [39m
+> hvigor [32mFinished :entry:default@GenerateMetadata... after 12 ms [39m
+> hvigor [32mFinished :entry:default@ConfigureCmake... after 1 ms [39m
+> hvigor [32mFinished :entry:default@MergeProfile... after 146 ms [39m
+> hvigor [32mFinished :entry:default@CreateBuildProfile... after 4 ms [39m
+> hvigor [32mFinished :entry:default@PreCheckSyscap... after 1 ms [39m
+> hvigor [32mFinished :entry:default@GeneratePkgContextInfo... after 14 ms [39m
+> hvigor [32mFinished :entry:default@ProcessIntegratedHsp... after 1 ms [39m
+> hvigor [32mFinished :entry:default@BuildNativeWithCmake... after 1 ms [39m
+> hvigor [32mFinished :entry:default@MakePackInfo... after 12 ms [39m
+> hvigor [32mFinished :entry:default@SyscapTransform... after 4 ms [39m
+> hvigor [32mFinished :entry:default@ProcessProfile... after 152 ms [39m
+> hvigor [32mFinished :entry:default@ProcessRouterMap... after 23 ms [39m
+> hvigor [32mFinished :entry:default@ProcessStartupConfig... after 3 ms [39m
+> hvigor [32mFinished :entry:default@BuildNativeWithNinja... after 3 ms [39m
+> hvigor [32mFinished :entry:default@ProcessResource... after 13 ms [39m
+> hvigor [32mFinished :entry:default@GenerateLoaderJson... after 20 ms [39m
+> hvigor [32mFinished :entry:default@ProcessLibs... after 13 ms [39m
+> hvigor [32mFinished :entry:default@CompileResource... after 499 ms [39m
+> hvigor [32mFinished :entry:default@DoNativeStrip... after 4 ms [39m
+> hvigor [32mFinished :entry:default@BuildJS... after 5 ms [39m
+> hvigor [32mFinished :entry:default@CacheNativeLibs... after 15 ms [39m
+> hvigor [32m[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/EmitterUtil.ets:47:16
+ Argument of type 'T | undefined' is not assignable to parameter of type 'T'.
+  'T' could be instantiated with an arbitrary type which could be unrelated to 'T | undefined'.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/EmitterUtil.ets:59:16
+ Argument of type 'T | undefined' is not assignable to parameter of type 'T'.
+  'T' could be instantiated with an arbitrary type which could be unrelated to 'T | undefined'.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN: For details about ArkTS syntax errors, see FAQs[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/ResUtil.ets:194:43
+ 'getPluralStringValueSync' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/ResUtil.ets:196:43
+ 'getPluralStringValueSync' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/ResUtil.ets:207:43
+ 'getPluralStringValue' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/ResUtil.ets:209:43
+ 'getPluralStringValue' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/ResUtil.ets:219:41
+ 'getPluralStringByNameSync' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/ResUtil.ets:228:41
+ 'getPluralStringByName' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/DeviceUtil.ets:152:23
+ To use this API, you need to apply for the permissions: ohos.permission.APP_TRACKING_CONSENT
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/AppUtil.ets:50:25
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/AppUtil.ets:232:24
+ To use this API, you need to apply for the permissions: ohos.permission.PRIVACY_WINDOW
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/action/ToastUtil.ets:48:20
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/action/ToastUtil.ets:72:20
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/action/ToastUtil.ets:96:20
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/PermissionUtil.ets:67:30
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/PermissionUtil.ets:83:30
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/PermissionUtil.ets:103:30
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:38:28
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:38:52
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:64:28
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:64:52
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:90:28
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:90:51
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:832:39
+ The system capacity of this api 'OperationMode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:832:53
+ The system capacity of this api 'READ_MODE' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:832:75
+ The system capacity of this api 'OperationMode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:832:89
+ The system capacity of this api 'WRITE_MODE' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:838:22
+ The system capacity of this api 'persistPermission' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:838:22
+ To use this API, you need to apply for the permissions: ohos.permission.FILE_ACCESS_PERSIST
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:846:22
+ The system capacity of this api 'persistPermission' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:846:22
+ To use this API, you need to apply for the permissions: ohos.permission.FILE_ACCESS_PERSIST
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:857:39
+ The system capacity of this api 'OperationMode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:857:53
+ The system capacity of this api 'READ_MODE' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:857:75
+ The system capacity of this api 'OperationMode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:857:89
+ The system capacity of this api 'WRITE_MODE' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:863:22
+ The system capacity of this api 'revokePermission' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:863:22
+ To use this API, you need to apply for the permissions: ohos.permission.FILE_ACCESS_PERSIST
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:871:22
+ The system capacity of this api 'revokePermission' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:871:22
+ To use this API, you need to apply for the permissions: ohos.permission.FILE_ACCESS_PERSIST
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:882:39
+ The system capacity of this api 'OperationMode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:882:53
+ The system capacity of this api 'READ_MODE' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:882:75
+ The system capacity of this api 'OperationMode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:882:89
+ The system capacity of this api 'WRITE_MODE' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:888:22
+ The system capacity of this api 'activatePermission' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:888:22
+ To use this API, you need to apply for the permissions: ohos.permission.FILE_ACCESS_PERSIST
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:896:22
+ The system capacity of this api 'activatePermission' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:896:22
+ To use this API, you need to apply for the permissions: ohos.permission.FILE_ACCESS_PERSIST
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:907:39
+ The system capacity of this api 'OperationMode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:907:53
+ The system capacity of this api 'READ_MODE' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:907:75
+ The system capacity of this api 'OperationMode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:907:89
+ The system capacity of this api 'WRITE_MODE' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:913:22
+ The system capacity of this api 'deactivatePermission' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:913:22
+ To use this API, you need to apply for the permissions: ohos.permission.FILE_ACCESS_PERSIST
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:921:22
+ The system capacity of this api 'deactivatePermission' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:921:22
+ To use this API, you need to apply for the permissions: ohos.permission.FILE_ACCESS_PERSIST
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/FileUtil.ets:932:22
+ The system capacity of this api 'checkPersistentPermission' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/ImageUtil.ets:185:24
+ 'packing' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/ImageUtil.ets:202:24
+ 'packing' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/ImageUtil.ets:267:65
+ 'packing' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/ImageUtil.ets:305:52
+ 'packing' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NotificationUtil.ets:428:21
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/AuthUtil.ets:43:16
+ To use this API, you need to apply for the permissions: ohos.permission.ACCESS_BIOMETRIC
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/AuthUtil.ets:110:33
+ To use this API, you need to apply for the permissions: ohos.permission.ACCESS_BIOMETRIC
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/AuthUtil.ets:127:35
+ To use this API, you need to apply for the permissions: ohos.permission.ACCESS_BIOMETRIC
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/SnapshotUtil.ets:39:30
+ 'get' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/SnapshotUtil.ets:49:30
+ 'get' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/SnapshotUtil.ets:63:30
+ 'createFromBuilder' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/LocationUtil.ets:69:33
+ To use this API, you need to apply for the permissions: ohos.permission.APPROXIMATELY_LOCATION
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/LocationUtil.ets:71:33
+ To use this API, you need to apply for the permissions: ohos.permission.APPROXIMATELY_LOCATION
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/LocationUtil.ets:90:26
+ To use this API, you need to apply for the permissions: ohos.permission.APPROXIMATELY_LOCATION
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/LocationUtil.ets:109:26
+ To use this API, you need to apply for the permissions: ohos.permission.APPROXIMATELY_LOCATION
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/LocationUtil.ets:127:28
+ To use this API, you need to apply for the permissions: ohos.permission.APPROXIMATELY_LOCATION
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/LocationUtil.ets:129:28
+ To use this API, you need to apply for the permissions: ohos.permission.APPROXIMATELY_LOCATION
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/PasteboardUtil.ets:67:49
+ To use this API, you need to apply for the permissions: ohos.permission.READ_PASTEBOARD
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/PasteboardUtil.ets:101:55
+ To use this API, you need to apply for the permissions: ohos.permission.READ_PASTEBOARD
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:38:23
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:45:23
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:54:23
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:62:23
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:70:23
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:78:23
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:87:30
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:101:16
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:107:31
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:121:18
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:145:32
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:146:44
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:159:32
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:160:44
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:170:33
+ To use this API, you need to apply for the permissions: ohos.permission.GET_WIFI_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/utils/NetworkUtil.ets:195:31
+ To use this API, you need to apply for the permissions: ohos.permission.GET_NETWORK_INFO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/action/DialogUtil.ets:56:17
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/action/DialogUtil.ets:106:17
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/action/DialogUtil.ets:157:17
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/action/DialogUtil.ets:207:17
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/action/DialogUtil.ets:287:22
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/action/DialogUtil.ets:308:22
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+harmony-utils@1.3.0/oh_modules/@pura/harmony-utils/src/main/ets/action/DialogUtil.ets:336:22
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/constants/Constants.ets:140:53
+ 'vp2px' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/functions/common/convert.ets:148:18
+ 'decode' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/data/RelationalStoreUtils.ets:18:54
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/play/AudioCacheUtils.ets:19:32
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/functions/app/appInit.ets:143:18
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/system/WindowUtils.ets:50:95
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/utils/CloudBench.ets:13:16
+ 'SetOrCreate' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/file/FileUtils.ets:19:13
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/file/FileUtils.ets:192:27
+ The system capacity of this api 'getUserDownloadDir' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/play/ContinuousTask.ets:12:30
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/play/ContinuousTask.ets:28:7
+ The system capacity of this api 'backgroundTaskManager' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/play/ContinuousTask.ets:29:9
+ The system capacity of this api 'backgroundTaskManager' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/play/ContinuousTask.ets:37:5
+ The system capacity of this api 'backgroundTaskManager' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/settings/ApiSetPage.ets:45:142
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/settings/ApiSetPage.ets:155:13
+ 'animateTo' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/view/Explore.ets:39:5
+ 'animateTo' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/view/Explore.ets:223:21
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/view/Explore.ets:249:24
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/components/sheets/PlayQueueSheet.ets:106:29
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/components/sheets/PlayListAddSheet.ets:100:31
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/components/sheets/TimerSheet.ets:59:24
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/components/sheets/TimerSheet.ets:89:24
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/file/FileDownloadUtils.ets:21:13
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/components/sheets/PlayerActionSheet.ets:146:27
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/components/sheets/ArtistsSheet.ets:33:15
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/components/sheets/SongInfoSheet.ets:176:25
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/list/CommentPage.ets:74:30
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/list/CommentPage.ets:103:31
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/art/AlbumPage.ets:59:30
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/art/AlbumPage.ets:91:33
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/art/ArtistPage.ets:128:21
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/art/ArtistPage.ets:139:11
+ 'animateTo' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/components/sheets/MatchSongSheet.ets:67:27
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:53:48
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:67:28
+ 'PhotoSelectOptions' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:68:15
+ 'MIMEType' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:68:33
+ 'PhotoViewMIMETypes' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:68:52
+ 'IMAGE_TYPE' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:69:15
+ 'maxSelectNumber' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:71:36
+ 'PhotoViewPicker' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:71:52
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:72:73
+ 'select' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:73:30
+ 'photoUris' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:83:36
+ 'PhotoViewPicker' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:83:52
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:84:41
+ 'PhotoSaveOptions' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:86:24
+ 'newFileNames' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:88:24
+ 'save' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:106:15
+ The system capacity of this api 'selectMode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:106:35
+ The system capacity of this api 'DocumentSelectMode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:106:54
+ The system capacity of this api 'FILE' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PickerUtil.ets:144:58
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PhotoHelper.ets:77:64
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PhotoHelper.ets:78:33
+ To use this API, you need to apply for the permissions: ohos.permission.WRITE_IMAGEVIDEO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PhotoHelper.ets:92:64
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PhotoHelper.ets:140:21
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PhotoHelper.ets:144:23
+ To use this API, you need to apply for the permissions: ohos.permission.WRITE_IMAGEVIDEO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PhotoHelper.ets:169:64
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/PhotoHelper.ets:178:102
+ To use this API, you need to apply for the permissions: ohos.permission.READ_IMAGEVIDEO
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/ScanUtil.ets:45:12
+ The system capacity of this api 'scanBarcode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/ScanUtil.ets:45:24
+ The system capacity of this api 'startScanForResult' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/ScanUtil.ets:45:43
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/ScanUtil.ets:104:12
+ The system capacity of this api 'detectBarcode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/oh_modules/.ohpm/@pura+picker_utils@1.0.0/oh_modules/@pura/picker_utils/src/main/ets/ScanUtil.ets:104:26
+ The system capacity of this api 'decode' is not supported on all devices
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/local/LocalSongPage.ets:77:19
+ 'Get' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/local/LocalSongPage.ets:84:22
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/local/LocalSongPage.ets:177:29
+ 'animateTo' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/local/LocalSongPage.ets:220:27
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/local/LocalSongPage.ets:337:10
+ 'key' can only be used for testing directories 
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/local/LocalSongPage.ets:351:11
+ 'animateTo' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/local/LocalSongPage.ets:355:11
+ 'animateTo' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/playlist/CloudPage.ets:138:33
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/playlist/DailyListPage.ets:112:16
+ 'key' can only be used for testing directories 
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/playlist/DailyListPage.ets:115:29
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/playlist/DjRadioPage.ets:98:23
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/playlist/DjRadioPage.ets:148:47
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/playlist/PlayListPage.ets:194:31
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/playlist/PlayListPage.ets:206:13
+ 'animateTo' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/playlist/PlayListPage.ets:414:51
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/playlist/PlayListPage.ets:480:5
+ 'animateTo' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/search/SearchPlayListsList.ets:38:26
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/search/SearchPlayListsList.ets:71:27
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/search/SearchSongsList.ets:48:26
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/search/SearchSongsList.ets:82:27
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/search/SearchArtistsList.ets:37:26
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/search/SearchArtistsList.ets:54:27
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/search/SearchDjRadioList.ets:37:26
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/search/SearchDjRadioList.ets:54:27
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/search/SearchAlbumList.ets:37:26
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/search/SearchAlbumList.ets:54:27
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/system/SystemAppUtils.ets:11:8
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/system/SystemAppUtils.ets:12:21
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/settings/CacheManagePage.ets:198:13
+ 'animateTo' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/settings/DonatePage.ets:46:28
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/components/settings/LyricSettings.ets:248:13
+ 'animateTo' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/settings/FloatLyricPage.ets:16:38
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/settings/SettingsPage.ets:44:33
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/settings/SongClickActionPage.ets:110:19
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/view/Player.ets:80:7
+ 'animateTo' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/view/Player.ets:97:5
+ 'animateTo' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/view/Player.ets:351:21
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/view/Player.ets:398:42
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/view/Player.ets:473:27
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/view/Player.ets:478:16
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/view/Player.ets:486:9
+ 'animateTo' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/components/play/BottomBarComponent.ets:28:5
+ 'animateTo' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/view/userLists/UserPlayLists.ets:141:25
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/view/userLists/UserDjRadioList.ets:86:27
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/view/userLists/UserAlbumList.ets:72:27
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/view/Me.ets:125:47
+ 'px2vp' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/system/BreakpointUtils.ets:60:36
+ 'matchMediaSync' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/system/BreakpointUtils.ets:62:36
+ 'matchMediaSync' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/system/BreakpointUtils.ets:64:36
+ 'matchMediaSync' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/system/BreakpointUtils.ets:66:36
+ 'matchMediaSync' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/system/BreakpointUtils.ets:68:36
+ 'matchMediaSync' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/common/utils/system/BreakpointUtils.ets:70:36
+ 'matchMediaSync' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/lyrics/FloatingLyrics.ets:10:23
+ 'vp2px' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/lyrics/FloatingLyrics.ets:11:19
+ 'vp2px' has been deprecated.
+[39m[39m
+[33mWARN: [33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/cloudmusic/entry/src/main/ets/pages/lyrics/FloatingLyrics.ets:85:1
+ It's not a recommended way to export struct with '@Entry' decorator, which may cause ACE Engine error in component preview mode.[39m[39m
+[33mWARN: [33m[33m[39m [33mArkTS:WARN Property 'sourceMapsPath' not found in '@sj/mediacache'.[39m [33m[39m[39m[39m
+[33mWARN: [33m[33m[39m [33mArkTS:WARN Property 'sourceMapsPath' not found in '@hw-agconnect/ui-skeleton'.[39m [33m[39m[39m[39m
+[39m
+> hvigor [32mFinished :entry:default@CompileArkTS... after 28 s 458 ms [39m
+> hvigor [32mFinished :entry:default@GeneratePkgModuleJson... after 5 ms [39m
+> hvigor [32mFinished :entry:default@PackageHap... after 1 s 228 ms [39m
+> hvigor WARN: No signingConfig found for product default
+> hvigor [32mFinished :entry:default@SignHap... after 2 ms [39m
+> hvigor [32mFinished :entry:default@CollectDebugSymbol... after 2 ms [39m
+> hvigor [32mFinished :entry:assembleHap... after 1 ms [39m
+> hvigor [32mBUILD SUCCESSFUL in 40 s 461 ms [39m

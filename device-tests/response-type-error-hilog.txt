@@ -1,0 +1,393 @@
+10-01 02:33:44.683 23861 23861 I A00000/com.itcast.pass_interview/JS_HOOK: [servermain.cpp(newArkNativeEngine:81)]newArkNativeEngine:vm:0x5a29a05800,jsengine:0x5a286ecf00,ArkNativeEngine:0x5a24e82000
+10-01 02:33:44.684 23861 23861 D A00000/com.itcast.pass_interview/JS_HOOK: [servermain.cpp(operator():100)]try start native hook mgr
+10-01 02:33:44.684 23861 23861 I A00000/com.itcast.pass_interview/JS_HOOK: [logUtil.cpp(Init:36)]packageName:com.itcast.pass_interview
+10-01 02:33:44.684 23861 23861 D A00000/com.itcast.pass_interview/JS_HOOK: [main.h(getProcessname:39)]s_packageName:com.itcast.pass_interview
+10-01 02:33:44.684 23861 23861 I A00000/com.itcast.pass_interview/JS_HOOK: [nativeHookMgr.cpp(Init:44)]soFilePath:0
+10-01 02:33:44.684 23861 23861 D A00000/com.itcast.pass_interview/JS_HOOK: [servermain.cpp(operator():107)]try execJsBin
+10-01 02:33:44.685 23861 23861 D A00000/com.itcast.pass_interview/JS_HOOK: [main.h(getProcessname:39)]s_packageName:com.itcast.pass_interview
+10-01 02:33:44.687 23861 23861 D A00000/com.itcast.pass_interview/JS_HOOK: [jsvmproxy.cpp(loadJsHookSync:230)]exec js path:/system/etc/hookfile/file.abc ret = 0
+10-01 02:33:44.687 23861 23861 I A00000/com.itcast.pass_interview/JS_HOOK: [jsvmproxy.cpp(Init:136)]abcFilePath:1
+10-01 02:33:44.687 23861 23861 D A00000/com.itcast.pass_interview/JSHookFramework: [JSHookFramework]: try to  find @ohos.application.WindowStage in imported lib
+10-01 02:33:44.687 23861 23861 D A00000/com.itcast.pass_interview/JSHookFramework: [JSHookFramework]: not find @ohos.application.WindowStage in imported lib,insert in delay hook
+10-01 02:33:44.687 23861 23861 D A00000/com.itcast.pass_interview/JSHookFramework: [JSHookFramework] after insert hook: [{"type":"around"}]
+10-01 02:33:44.687 23861 23861 D A00000/com.itcast.pass_interview/JSHookFramework: [JSHookFramework]: @ohos.application.WindowStage loadContent finish hook
+10-01 02:33:44.687 23861 23861 D A00000/com.itcast.pass_interview/JSHookFramework: [JSHookFramework]: try to  find @ohos.application.WindowStage in imported lib
+10-01 02:33:44.687 23861 23861 D A00000/com.itcast.pass_interview/JSHookFramework: [JSHookFramework]: not find @ohos.application.WindowStage in imported lib,insert in delay hook
+10-01 02:33:44.688 23861 23861 D A00000/com.itcast.pass_interview/JSHookFramework: [JSHookFramework] after insert hook: [{"type":"around"}]
+10-01 02:33:44.688 23861 23861 D A00000/com.itcast.pass_interview/JSHookFramework: [JSHookFramework]: @ohos.application.WindowStage loadContentByName finish hook
+10-01 02:33:44.688 23861 23861 I A00000/com.itcast.pass_interview/JSHookFramework: [JSHookFramework]: hookModule RpcHookload finish
+10-01 02:33:44.688 23861 23861 D A00000/com.itcast.pass_interview/JS_HOOK: [jsvmproxy.cpp(loadJsHookSync:230)]exec js path:/system/etc/hookfile/comhook//buildnode.abc ret = 0
+10-01 02:33:44.706 23861 23861 I A00000/com.itcast.pass_interview/JSHookFramework: [JSHookFramework] requireNapi: arkui.uicontext
+10-01 02:33:44.707 23861 23861 D A00000/com.itcast.pass_interview/JSHookFramework: [JSHookFramework] try found moduleName arkui.uicontext in hookModule: test
+10-01 02:33:44.707 23861 23861 D A00000/com.itcast.pass_interview/JSHookFramework: [JSHookFramework] try found moduleName arkui.uicontext in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.707 23861 23861 D A00000/com.itcast.pass_interview/JSHookFramework: [JSHookFramework] insert arkui.uicontext into importedLib
+10-01 02:33:44.762 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: application.AbilityStageContext
+10-01 02:33:44.762 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: application.Context
+10-01 02:33:44.763 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.Context in hookModule: test
+10-01 02:33:44.763 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.Context in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.763 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.AbilityStageContext in hookModule: test
+10-01 02:33:44.763 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.AbilityStageContext in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.764 23861 23861 I A00000/com.itcast.pass_interview/JS_HOOK: [servermain.cpp(new_JsRuntime_LoadModuleFunc_v2:170)]moduleName:phone::PhoneAbility,modulePath:phone/./ets/phoneability/PhoneAbility.abc,hapPath:/data/app/el1/bundle/public/com.itcast.pass_interview/phone.hap
+10-01 02:33:44.764 23861 23861 I A00000/com.itcast.pass_interview/JS_HOOK: [servermain.cpp(new_JsRuntime_LoadModuleFunc_v2:177)]abilityName:PhoneAbility,abilityPath:PhoneAbility.abc,bundleName:com.itcast.pass_interview,module:phone
+10-01 02:33:44.764 23861 23861 I A00000/com.itcast.pass_interview/JS_HOOK: [servermain.cpp(new_JsRuntime_LoadModuleFunc_v2:192)]JsRuntime:0x5a286ecf00,start ability:PhoneAbility
+10-01 02:33:44.764 23861 23861 I A00000/com.itcast.pass_interview/JS_HOOK: [servermain.cpp(hook_RunScript_v2:273)]JsRuntime:0x5a286ecf00,hook_RunScript:/data/storage/el1/bundle/phone/ets/phoneability/PhoneAbility.abc
+10-01 02:33:44.765 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: app.ability.UIAbility
+10-01 02:33:44.766 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: application.Callee
+10-01 02:33:44.766 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: rpc
+10-01 02:33:44.766 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName rpc in hookModule: test
+10-01 02:33:44.766 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName rpc in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.766 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert rpc into importedLib
+10-01 02:33:44.766 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: abilityAccessCtrl
+10-01 02:33:44.767 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName abilityAccessCtrl in hookModule: test
+10-01 02:33:44.767 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName abilityAccessCtrl in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.767 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert abilityAccessCtrl into importedLib
+10-01 02:33:44.767 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: hilog
+10-01 02:33:44.767 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName hilog in hookModule: test
+10-01 02:33:44.767 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName hilog in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.767 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert hilog into importedLib
+10-01 02:33:44.767 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.Callee in hookModule: test
+10-01 02:33:44.767 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.Callee in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.767 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: app.ability.AbilityConstant
+10-01 02:33:44.767 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName app.ability.AbilityConstant in hookModule: test
+10-01 02:33:44.767 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName app.ability.AbilityConstant in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.767 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert app.ability.AbilityConstant into importedLib
+10-01 02:33:44.767 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: hilog
+10-01 02:33:44.767 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName hilog in hookModule: test
+10-01 02:33:44.767 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName hilog in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.768 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert hilog into importedLib
+10-01 02:33:44.768 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName app.ability.UIAbility in hookModule: test
+10-01 02:33:44.768 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName app.ability.UIAbility in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.768 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: router
+10-01 02:33:44.769 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName router in hookModule: test
+10-01 02:33:44.769 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName router in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.769 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert router into importedLib
+10-01 02:33:44.769 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: web.webview
+10-01 02:33:44.785 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: file.fs
+10-01 02:33:44.789 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.fs in hookModule: test
+10-01 02:33:44.789 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.fs in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.789 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert file.fs into importedLib
+10-01 02:33:44.789 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: file.fileuri
+10-01 02:33:44.790 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.fileuri in hookModule: test
+10-01 02:33:44.790 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.fileuri in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.790 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert file.fileuri into importedLib
+10-01 02:33:44.790 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: file.picker
+10-01 02:33:44.791 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.picker in hookModule: test
+10-01 02:33:44.791 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.picker in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.791 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert file.picker into importedLib
+10-01 02:33:44.791 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: file.photoAccessHelper
+10-01 02:33:44.791 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: file.photoAccessHelperNative
+10-01 02:33:44.807 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.photoAccessHelperNative in hookModule: test
+10-01 02:33:44.807 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.photoAccessHelperNative in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.807 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert file.photoAccessHelperNative into importedLib
+10-01 02:33:44.808 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: bundle.bundleManager
+10-01 02:33:44.810 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName bundle.bundleManager in hookModule: test
+10-01 02:33:44.810 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName bundle.bundleManager in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.810 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert bundle.bundleManager into importedLib
+10-01 02:33:44.810 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.photoAccessHelper in hookModule: test
+10-01 02:33:44.810 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.photoAccessHelper in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.810 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert file.photoAccessHelper into importedLib
+10-01 02:33:44.810 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: multimedia.cameraPicker
+10-01 02:33:44.811 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName multimedia.cameraPicker in hookModule: test
+10-01 02:33:44.811 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName multimedia.cameraPicker in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.811 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert multimedia.cameraPicker into importedLib
+10-01 02:33:44.811 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: multimedia.camera
+10-01 02:33:44.815 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName multimedia.camera in hookModule: test
+10-01 02:33:44.815 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName multimedia.camera in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.815 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert multimedia.camera into importedLib
+10-01 02:33:44.815 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: abilityAccessCtrl
+10-01 02:33:44.815 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName abilityAccessCtrl in hookModule: test
+10-01 02:33:44.815 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName abilityAccessCtrl in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.815 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert abilityAccessCtrl into importedLib
+10-01 02:33:44.815 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: promptAction
+10-01 02:33:44.816 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName promptAction in hookModule: test
+10-01 02:33:44.816 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName promptAction in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.816 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert promptAction into importedLib
+10-01 02:33:44.816 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: data.dataShare
+10-01 02:33:44.817 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName data.dataShare in hookModule: test
+10-01 02:33:44.817 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName data.dataShare in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.817 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert data.dataShare into importedLib
+10-01 02:33:44.817 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: web.webnativemessagingextensionmanager_napi
+10-01 02:33:44.817 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName web.webnativemessagingextensionmanager_napi in hookModule: test
+10-01 02:33:44.817 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName web.webnativemessagingextensionmanager_napi in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.817 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert web.webnativemessagingextensionmanager_napi into importedLib
+10-01 02:33:44.817 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName web.webview in hookModule: test
+10-01 02:33:44.817 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName web.webview in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.817 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert web.webview into importedLib
+10-01 02:33:44.817 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: hilog
+10-01 02:33:44.817 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName hilog in hookModule: test
+10-01 02:33:44.817 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName hilog in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.817 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert hilog into importedLib
+10-01 02:33:44.818 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: hiTraceMeter
+10-01 02:33:44.818 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName hiTraceMeter in hookModule: test
+10-01 02:33:44.818 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName hiTraceMeter in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.818 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert hiTraceMeter into importedLib
+10-01 02:33:44.818 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: net.http
+10-01 02:33:44.822 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName net.http in hookModule: test
+10-01 02:33:44.823 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName net.http in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.823 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert net.http into importedLib
+10-01 02:33:44.823 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: data.preferences
+10-01 02:33:44.823 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName data.preferences in hookModule: test
+10-01 02:33:44.824 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName data.preferences in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.824 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert data.preferences into importedLib
+10-01 02:33:44.824 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: promptAction
+10-01 02:33:44.824 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName promptAction in hookModule: test
+10-01 02:33:44.824 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName promptAction in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.824 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert promptAction into importedLib
+10-01 02:33:44.824 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: app.ability.ConfigurationConstant
+10-01 02:33:44.824 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName app.ability.ConfigurationConstant in hookModule: test
+10-01 02:33:44.824 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName app.ability.ConfigurationConstant in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.824 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert app.ability.ConfigurationConstant into importedLib
+10-01 02:33:44.824 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: window
+10-01 02:33:44.825 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName window in hookModule: test
+10-01 02:33:44.825 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName window in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.825 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert window into importedLib
+10-01 02:33:44.825 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: events.emitter
+10-01 02:33:44.826 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName events.emitter in hookModule: test
+10-01 02:33:44.826 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName events.emitter in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.826 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert events.emitter into importedLib
+10-01 02:33:44.826 23861 23861 I A00000/com.itcast.pass_interview/JS_HOOK: [jsvmproxy.cpp(hookAbility:426)]abilityName:PhoneAbility,abilityPath:PhoneAbility.abc,bundleName:com.itcast.pass_interview,module:phone
+10-01 02:33:44.826 23861 23861 I A00000/com.itcast.pass_interview/JS_HOOK: [jsvmproxy.cpp(hookAbility:427)]filename:/data/storage/el1/bundle/phone/ets/phoneability/PhoneAbility.abc,
+10-01 02:33:44.826 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: application.AbilityContext
+10-01 02:33:44.827 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: application.Context
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.Context in hookModule: test
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.Context in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.827 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: application.Caller
+10-01 02:33:44.827 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: rpc
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName rpc in hookModule: test
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName rpc in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert rpc into importedLib
+10-01 02:33:44.827 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: hilog
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName hilog in hookModule: test
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName hilog in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert hilog into importedLib
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.Caller in hookModule: test
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.Caller in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.827 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: hilog
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName hilog in hookModule: test
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName hilog in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert hilog into importedLib
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.AbilityContext in hookModule: test
+10-01 02:33:44.827 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.AbilityContext in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.832 23861 23861 I A0FF09/com.itcast.pass_interview/PASS_INTERVIEW_LOGGER: Ability onCreate, %{public}s
+10-01 02:33:44.846 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: application.WindowStage
+10-01 02:33:44.847 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.WindowStage in hookModule: test
+10-01 02:33:44.847 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.WindowStage in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.847 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] found moduleName application.WindowStage in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.847 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] found target method loadContent in moduleName: application.WindowStage
+10-01 02:33:44.847 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] found target method loadContentByName in moduleName: application.WindowStage
+10-01 02:33:44.847 23861 23861 I A0FF09/com.itcast.pass_interview/PASS_INTERVIEW_LOGGER: Ability onWindowStageCreate, %{public}s
+10-01 02:33:44.850 23861 23861 I A0FF09/com.itcast.pass_interview/PASS_INTERVIEW_LOGGER: Ability onForeground, %{public}s
+10-01 02:33:44.874 23861 23861 I A0FF09/com.itcast.pass_interview/PASS_INTERVIEW_LOGGER: Succeeded in loading the content. Data: %{public}s, 
+10-01 02:33:44.876 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: file.fs
+10-01 02:33:44.876 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.fs in hookModule: test
+10-01 02:33:44.876 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.fs in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.876 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert file.fs into importedLib
+10-01 02:33:44.876 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: systemDateTime
+10-01 02:33:44.877 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName systemDateTime in hookModule: test
+10-01 02:33:44.877 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName systemDateTime in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.877 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert systemDateTime into importedLib
+10-01 02:33:44.878 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: application.ApplicationContext
+10-01 02:33:44.878 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.ApplicationContext in hookModule: test
+10-01 02:33:44.878 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName application.ApplicationContext in hookModule: @ohos.application.WindowStage
+10-01 02:33:44.899 23861 23861 I A0FF09/com.itcast.pass_interview/PASS_INTERVIEW_LOGGER: ===, {"language":"zh-Hans-CN","locale":{},"colorMode":1,"time24":0,"direction":0,"screenDensity":640,"displayId":0,"hasPointerDevice":false,"fontSizeScale":1,"fontId":"","fontWeightScale":1,"mcc":"","mnc":""}
+10-01 02:33:46.889 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: util
+10-01 02:33:46.891 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName util in hookModule: test
+10-01 02:33:46.891 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName util in hookModule: @ohos.application.WindowStage
+10-01 02:33:46.891 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert util into importedLib
+10-01 02:33:46.891 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: multimedia.media
+10-01 02:33:46.896 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName multimedia.media in hookModule: test
+10-01 02:33:46.896 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName multimedia.media in hookModule: @ohos.application.WindowStage
+10-01 02:33:46.896 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert multimedia.media into importedLib
+10-01 02:33:46.896 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: request
+10-01 02:33:46.897 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName request in hookModule: test
+10-01 02:33:46.898 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName request in hookModule: @ohos.application.WindowStage
+10-01 02:33:46.898 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert request into importedLib
+10-01 02:33:46.898 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: bundle.bundleManager
+10-01 02:33:46.898 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName bundle.bundleManager in hookModule: test
+10-01 02:33:46.898 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName bundle.bundleManager in hookModule: @ohos.application.WindowStage
+10-01 02:33:46.898 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert bundle.bundleManager into importedLib
+10-01 02:33:46.898 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: file.storageStatistics
+10-01 02:33:46.898 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.storageStatistics in hookModule: test
+10-01 02:33:46.898 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.storageStatistics in hookModule: @ohos.application.WindowStage
+10-01 02:33:46.898 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert file.storageStatistics into importedLib
+10-01 02:33:46.899 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: file.picker
+10-01 02:33:46.899 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.picker in hookModule: test
+10-01 02:33:46.899 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName file.picker in hookModule: @ohos.application.WindowStage
+10-01 02:33:46.899 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert file.picker into importedLib
+10-01 02:33:46.899 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] requireNapi: mediaquery
+10-01 02:33:46.899 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName mediaquery in hookModule: test
+10-01 02:33:46.899 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] try found moduleName mediaquery in hookModule: @ohos.application.WindowStage
+10-01 02:33:46.899 23861 23861 D A03D00/com.itcast.pass_interview/JSAPP: [JSHookFramework] insert mediaquery into importedLib
+10-01 02:33:46.905 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [lxzHook] wait for gc
+10-01 02:33:46.906 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [lxzHook] wait for gc
+10-01 02:33:47.574 23861 23861 I A0FF09/com.itcast.pass_interview/PASS_INTERVIEW_LOGGER: https://api-harmony-teach.itheima.net/hm/question/type, {"success":true,"code":10000,"message":"success","data":[{"id":401,"name":"ArkTS","displayNewestFlag":1},{"id":402,"name":"ArkUI","displayNewestFlag":1},{"id":403,"name":"鸿蒙架构","displayNewestFlag":1},
+10-01 02:33:47.583 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [lxzHook] wait for gc
+10-01 02:33:47.584 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [lxzHook] wait for gc
+10-01 02:33:47.584 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [lxzHook] wait for gc
+10-01 02:33:47.584 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: [lxzHook] wait for gc
+10-01 02:33:47.779 23861 23861 I A0FF09/com.itcast.pass_interview/PASS_INTERVIEW_LOGGER: https://api-harmony-teach.itheima.net/hm/question/list?questionBankType=10&type=401&page=1&sort=0&keyword=, {"success":true,"code":10000,"message":"success","data":{"total":12,"pageTotal":2,"rows":[{"id":"41292","questionNo":"P202509021848112612","stem":"如何合并两个对象?\n","content":"","subjectName":"前端与移动开发","qu
+10-01 02:33:48.862 23861 24237 I C01332/com.itcast.pass_interview/UIAbility: [a92ab1560cc77f6 3ca8f31 b587f6][ui_ability_thread317]name:PhoneAbility,targeState:5,isNewWant:1
+10-01 02:33:48.862 23861 23861 I C01332/com.itcast.pass_interview/UIAbility: [a92ab1560cc77f6 17d1bd6 3ca8f31][ui_ability_thread236]Lifecycle:name PhoneAbility
+10-01 02:33:48.862 23861 23861 I C04200/com.itcast.pass_interview/WindowSessionImpl: [a92ab1560cc77f6 17d1bd6 3ca8f31]OnNewWant: [name:pass_interview0, id:313]
+10-01 02:33:48.862 23861 23861 I C03900/com.itcast.pass_interview/Ace: [a92ab1560cc77f6 17d1bd6 3ca8f31][(-2:100000:singleton)] [com.itcast.pass_interview][phone][100000]: UIContent OnNewWant
+10-01 02:33:48.863 23861 23861 I C01332/com.itcast.pass_interview/UIAbility: [a92ab1560cc77f6 17d1bd6 3ca8f31][JUA1853]JsUIAbility call js, name: onNewWant
+10-01 02:33:48.864 23861 23861 I C01332/com.itcast.pass_interview/UIAbility: [a92ab1560cc77f6 17d1bd6 3ca8f31][JUA1898]end, name: onNewWant, time: 2
+10-01 02:33:48.864 23861 23861 W C01332/com.itcast.pass_interview/UIAbility: [a92ab1560cc77f6 17d1bd6 3ca8f31][JUA1162]not in continuation
+10-01 02:33:48.864 23861 23861 I C01332/com.itcast.pass_interview/UIAbility: [a92ab1560cc77f6 17d1bd6 3ca8f31][JUA1139]called
+10-01 02:33:48.864 23861 23861 I C04202/com.itcast.pass_interview/WMSMain: [a92ab1560cc77f6 17d1bd6 3ca8f31]GoForeground: reason: 4
+10-01 02:33:48.864 23861 23861 I C0420A/com.itcast.pass_interview/WMSLife: [a92ab1560cc77f6 17d1bd6 3ca8f31]Show: Window show [name: pass_interview0, id: 313, type: 1], reason: 4, state:2, requestState:2
+10-01 02:33:48.864 23861 23861 I C03900/com.itcast.pass_interview/Ace: [a92ab1560cc77f6 17d1bd6 3ca8f31][(-2:100000:singleton)] [com.itcast.pass_interview][phone][100000]: UpdateWindowVisible: 0, hasDecor: 0
+10-01 02:33:48.864 23861 23861 I C0420A/com.itcast.pass_interview/WMSLife: [a92ab1560cc77f6 17d1bd6 3ca8f31]Show: window is already shown [name:pass_interview0, id:313, type: 1]
+10-01 02:33:48.864 23861 23861 I C01332/com.itcast.pass_interview/UIAbility: [a92ab1560cc77f6 17d1bd6 3ca8f31][ui_ability_impl430]wnd call, AfterForeground
+10-01 02:33:48.864 23861 23861 W C0420A/com.itcast.pass_interview/WMSLife: [a92ab1560cc77f6 17d1bd6 3ca8f31]GetAttachStateSyncResult: lifecycleCallback is null
+10-01 02:33:48.864 23861 23861 I C0420A/com.itcast.pass_interview/WMSLife: [a92ab1560cc77f6 17d1bd6 3ca8f31]NotifyAfterDidForeground: reason: 4
+10-01 02:33:48.864 23861 23861 I C01332/com.itcast.pass_interview/UIAbility: [a92ab1560cc77f6 17d1bd6 3ca8f31][JUA1155]end
+10-01 02:33:48.866 23861 23861 I C0420A/com.itcast.pass_interview/WMSLife: [a92ab1560cc77f6 17c0a1a 17d1bd6]NotifyAfterDidForeground execute
+10-01 02:33:48.866 23861 23861 I C01332/com.itcast.pass_interview/UIAbility: [a92ab1560cc77f6 17c0a1a 17d1bd6][JUA1853]JsUIAbility call js, name: onDidForeground
+10-01 02:33:48.866 23861 23861 I C01332/com.itcast.pass_interview/UIAbility: [a92ab1560cc77f6 17c0a1a 17d1bd6][JUA1898]end, name: onDidForeground, time: 0
+10-01 02:33:48.866 23861 23861 I C04202/com.itcast.pass_interview/WMSMain: [a92ab1560cc77f6 17c0a1a 17d1bd6]GoResume: in
+10-01 02:33:48.866 23861 23861 I C0420A/com.itcast.pass_interview/WMSLife: [a92ab1560cc77f6 17c0a1a 17d1bd6]Resume: in, isColdStart: 0, isDidForeground: 1
+10-01 02:33:48.866 23861 23861 I C0420A/com.itcast.pass_interview/WMSLife: [a92ab1560cc77f6 17c0a1a 17d1bd6]NotifyAfterLifecycleResumed: in
+10-01 02:33:48.866 23861 23861 I C0420A/com.itcast.pass_interview/WMSLife: [a92ab1560cc77f6 17c0a1a 17d1bd6]NotifyAfterLifecycleResumed: window has been in interactive status
+10-01 02:33:49.216 23861 24237 I C01D02/com.itcast.pass_interview/accessibility_asacfwk: [(NotifyStateChanged:601)]observers size is 1
+10-01 02:33:49.216 23861 24237 I C01D02/com.itcast.pass_interview/accessibility_asacfwk: [(NotifyStateChanged:601)]observers size is 0
+10-01 02:33:49.216 23861 24237 I C01D02/com.itcast.pass_interview/accessibility_asacfwk: [(NotifyStateChanged:601)]observers size is 1
+10-01 02:33:49.217 23861 23861 I C01D02/com.itcast.pass_interview/accessibility_asacfwk: [(RegisterElementOperator:282)]Register windowId[313] start
+10-01 02:33:49.960 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:0
+10-01 02:33:49.960 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:33:49.960 23861 24314 I C02B61/com.itcast.pass_interview/ImageCode: ImageSource::UpdateXmageCoordinatesFromExif cost 24 us
+10-01 02:33:49.961 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 0, targetIndex: 1, id:61
+10-01 02:33:49.962 23861 24250 I C03924/com.itcast.pass_interview/AceAccessibility: [(100000:100000:scope)] send accessibility componentType:Swiper event:67108864 accessibilityId:58
+10-01 02:33:49.964 23861 24314 I C02B61/com.itcast.pass_interview/ImageSource: CreatePixelMap success, id:1790793229960385,dSize:0,0,sSize:656,252,dHdr:1,sHdr:1,memType:2,cost 4197 us
+10-01 02:33:49.976 23861 24237 I C01D02/com.itcast.pass_interview/accessibility_asacfwk: [(NotifyStateChanged:601)]observers size is 1
+10-01 02:33:49.976 23861 24237 I C01D02/com.itcast.pass_interview/accessibility_asacfwk: [(NotifyStateChanged:601)]observers size is 0
+10-01 02:33:49.976 23861 24237 I C01D02/com.itcast.pass_interview/accessibility_asacfwk: [(NotifyStateChanged:601)]observers size is 1
+10-01 02:33:49.977 23861 23861 I C01D02/com.itcast.pass_interview/accessibility_asacfwk: [(DeregisterElementOperator:363)]Deregister windowId[313] start
+10-01 02:33:50.434 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:33:50.438 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 1, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:33:51.902 23861 23861 I C03F00/com.itcast.pass_interview/LOGLIMIT: 2373 line(s) dropped in a second!
+10-01 02:33:51.902 23861 23861 I C03F00/com.itcast.pass_interview/ArkCompiler: [ecmascript] PandaFileSnapshotInterfaces::Serialize: /data/storage/system_optimize/ark_startup_cache/
+10-01 02:33:51.902 23861 23861 I C03F00/com.itcast.pass_interview/ArkCompiler: [ecmascript] PandaFileSnapshotInterfaces::Serialize: /data/storage/system_optimize/ark_startup_cache/ is not exists
+10-01 02:33:51.902 23861 23861 I C03F00/com.itcast.pass_interview/ArkCompiler: [ecmascript] ModuleSnapshotInterfaces::Serialize: /data/storage/system_optimize/ark_startup_cache/
+10-01 02:33:51.902 23861 23861 I C03F00/com.itcast.pass_interview/ArkCompiler: [ecmascript] ModuleSnapshotInterface::Serialize: /data/storage/system_optimize/ark_startup_cache/ is not exists
+10-01 02:33:52.288 23861 23861 I C03F01/com.itcast.pass_interview/NAPI: ID: 7, cnt: 7
+10-01 02:33:52.535 23861 24309 I C015B0/com.itcast.pass_interview/NETSTACK: [http_exec.cpp:499] taskid=-2147483646, size:3477818, dns:0.170, connect:1.409, tls:0.000, firstSend:0.681, firstRecv:24.518, total:235.017, redirect:0.000, no handover, errCode:0, RespCode:200, httpVer:1, method:GET, osErr:0, saddr:127.0.*.*, sport:60002, daddr:127.0.*.*, dport:18766
+10-01 02:33:52.557 23861 23861 E A0FF09/com.itcast.pass_interview/PASS_INTERVIEW_LOGGER: http://127.0.0.1:18766/response, undefined
+10-01 02:33:52.557 23861 23861 W C03926/com.itcast.pass_interview/AceTheme: [(-2:100000:singleton)] style ohos_shadow_pattern not contains shadow_style_default_md_radius!
+10-01 02:33:52.588 23861 23861 W C03926/com.itcast.pass_interview/AceTheme: [(100000:100000:scope)] style 125829872 not contains toast_pattern!
+10-01 02:33:52.590 23861 23861 I C0390D/com.itcast.pass_interview/AceOverlay: [(100000:100000:scope)] Toast node mount to root node
+10-01 02:33:52.591 23861 23861 I C03900/com.itcast.pass_interview/Ace: [(100000:100000:scope)] Put node level order. nodeId: 485, levelOrder: 0.000000
+10-01 02:33:52.591 23861 23861 I C0390D/com.itcast.pass_interview/AceOverlay: [(100000:100000:scope)] open toast animation enter, containerId:100000
+10-01 02:33:52.591 23861 23861 E A03D00/com.itcast.pass_interview/JSAPP: [lxzHook] [Leak Detected] Page: HdSkeleton | Unique: 4 | TotalAccess: 4
+10-01 02:33:52.591 23861 23861 I A03D00/com.itcast.pass_interview/JSAPP: -----------------------------------------
+10-01 02:33:52.605 23861 23861 W C03926/com.itcast.pass_interview/AceTheme: [(100000:100000:scope)] style 125829872 not contains dialog_pattern!
+10-01 02:33:52.606 23861 23861 W C03926/com.itcast.pass_interview/AceTheme: [(100000:100000:scope)] style dialog_pattern not contains shadow_dialog!
+10-01 02:33:52.606 23861 23861 W C03926/com.itcast.pass_interview/AceTheme: [(100000:100000:scope)] style dialog_pattern not contains button_bottom_top_margin!
+10-01 02:33:52.606 23861 23861 W C03926/com.itcast.pass_interview/AceTheme: [(100000:100000:scope)] style dialog_pattern not contains title_padding_horizontal!
+10-01 02:33:52.606 23861 23861 W C03926/com.itcast.pass_interview/AceTheme: [(100000:100000:scope)] style dialog_pattern not contains dialog_content_top_padding!
+10-01 02:33:52.606 23861 23861 W C03926/com.itcast.pass_interview/AceTheme: [(100000:100000:scope)] style dialog_pattern get attr dialog_padding_actions_left error!
+10-01 02:33:52.606 23861 23861 W C03926/com.itcast.pass_interview/AceTheme: [(100000:100000:scope)] style dialog_pattern get attr dialog_padding_actions_top error!
+10-01 02:33:52.606 23861 23861 W C03926/com.itcast.pass_interview/AceTheme: [(100000:100000:scope)] style dialog_pattern get attr dialog_padding_actions_right error!
+10-01 02:33:52.606 23861 23861 W C03926/com.itcast.pass_interview/AceTheme: [(100000:100000:scope)] style dialog_pattern get attr dialog_padding_actions_bottom error!
+10-01 02:33:53.046 23861 24268 I C02B61/com.itcast.pass_interview/ImageCode: ImageSource::UpdateXmageCoordinatesFromExif cost 59 us
+10-01 02:33:53.046 23861 24268 W C014C0/com.itcast.pass_interview/GRALLOC: Plateform not support noipc
+10-01 02:33:53.047 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:1
+10-01 02:33:53.048 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:33:53.051 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 1, targetIndex: 2, id:61
+10-01 02:33:53.083 23861 24268 I C02B61/com.itcast.pass_interview/ImageSource: CreatePixelMap success, id:1790793233045589,dSize:0,0,sSize:2760,1040,dHdr:1,sHdr:1,memType:4,cost 37125 us
+10-01 02:33:53.524 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:33:53.531 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 2, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:33:54.215 23861 23861 I C0390D/com.itcast.pass_interview/AceOverlay: [(100000:100000:scope)] pop toast enter
+10-01 02:33:54.215 23861 23861 I C03900/com.itcast.pass_interview/Ace: [(100000:100000:scope)] Pop node level order. nodeId: 485, levelOrder: 0.000000
+10-01 02:33:54.334 23861 23861 I C0390D/com.itcast.pass_interview/AceOverlay: [(100000:100000:scope)] toast remove from root
+10-01 02:33:56.151 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:2
+10-01 02:33:56.152 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:33:56.154 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 2, targetIndex: 0, id:61
+10-01 02:33:56.620 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:33:56.631 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 0, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:33:59.260 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:0
+10-01 02:33:59.261 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:33:59.264 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 0, targetIndex: 1, id:61
+10-01 02:33:59.733 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:33:59.738 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 1, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:02.354 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:1
+10-01 02:34:02.357 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:02.358 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 1, targetIndex: 2, id:61
+10-01 02:34:02.822 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:02.829 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 2, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:05.448 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:2
+10-01 02:34:05.449 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:05.451 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 2, targetIndex: 0, id:61
+10-01 02:34:05.918 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:05.926 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 0, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:08.560 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:0
+10-01 02:34:08.561 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:08.565 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 0, targetIndex: 1, id:61
+10-01 02:34:09.054 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:09.062 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 1, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:11.694 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:1
+10-01 02:34:11.695 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:11.697 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 1, targetIndex: 2, id:61
+10-01 02:34:12.173 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:12.183 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 2, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:14.812 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:2
+10-01 02:34:14.813 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:14.817 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 2, targetIndex: 0, id:61
+10-01 02:34:15.280 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:15.289 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 0, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:16.914 23861 24243 W C01719/com.itcast.pass_interview/ffrt: 4:RecordTimeoutTask:323 appevent_refresh|43|2|0|SUB|2026-10-01 02:33:46.913|PND|30|1
+10-01 02:34:16.914 23861 24243 W C01719/com.itcast.pass_interview/ffrt: 5:RecordTimeoutTask:323 appevent_refresh|42|2|0|CRB|2026-10-01 02:33:46.913|EXE|30|1
+10-01 02:34:16.949 23861 24243 W C01719/com.itcast.pass_interview/ffrt: 6:RecordTimeoutTask:323 appevent_timeout|52|2|0|SUB|2026-10-01 02:33:46.932|PND|30|1
+10-01 02:34:17.924 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:0
+10-01 02:34:17.925 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:17.926 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 0, targetIndex: 1, id:61
+10-01 02:34:18.417 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:18.426 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 1, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:21.055 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:1
+10-01 02:34:21.056 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:21.059 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 1, targetIndex: 2, id:61
+10-01 02:34:21.536 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:21.544 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 2, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:24.160 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:2
+10-01 02:34:24.161 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:24.164 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 2, targetIndex: 0, id:61
+10-01 02:34:24.638 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:24.646 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 0, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:27.266 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:0
+10-01 02:34:27.267 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:27.269 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 0, targetIndex: 1, id:61
+10-01 02:34:27.752 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:27.761 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 1, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:30.383 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:1
+10-01 02:34:30.384 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:30.387 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 1, targetIndex: 2, id:61
+10-01 02:34:30.857 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:30.864 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 2, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:33.500 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:2
+10-01 02:34:33.500 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:33.503 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 2, targetIndex: 0, id:61
+10-01 02:34:33.993 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:34.003 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 0, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:36.633 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:0
+10-01 02:34:36.634 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:36.637 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 0, targetIndex: 1, id:61
+10-01 02:34:37.126 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:37.134 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 1, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:39.749 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:1
+10-01 02:34:39.750 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:39.754 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 1, targetIndex: 2, id:61
+10-01 02:34:40.221 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:40.231 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 2, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:42.866 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:2
+10-01 02:34:42.867 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:42.870 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 2, targetIndex: 0, id:61
+10-01 02:34:43.361 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:43.370 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 0, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:44.677 23861 24243 W C01719/com.itcast.pass_interview/ffrt: 7:WorkerStatus:489 0|1|24256 2|7|24242,24265,24311,24312,24530,24531,24532 3|3|24250,24263,24264 5|7|24266,24267,24269,24268,24270,24313,24314
+10-01 02:34:44.677 23861 24243 W C01719/com.itcast.pass_interview/ffrt: 8:WorkerStatus:492 0|1|24256 2|7|24242,24312,24265,24311,24531,24530,24532 3|2|24263,24250 5|4|24267,24268,24270,24266
+10-01 02:34:45.998 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper FireUnselectedEvent id:61, index:0
+10-01 02:34:45.999 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper start property animation with offsetX: -1260.000000, offsetY: 0.000000, id: 61
+10-01 02:34:46.001 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationStartEvent, index: 0, targetIndex: 1, id:61
+10-01 02:34:46.484 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] Swiper finish property animation with offsetX: -1260.000000, offsetY: 0.000000 isVerifiedSuc 1, id: 61
+10-01 02:34:46.488 23861 23861 I C03915/com.itcast.pass_interview/AceSwiper: [(100000:100000:scope)] FireAnimationEndEvent index: 1, currentOffset: has_value 1, value 0.000000vp, isForce: 0, aniStartCalledCount 1, id:61
+10-01 02:34:46.970 23861 24243 W C01719/com.itcast.pass_interview/ffrt: 9:RecordTimeoutTask:323 appevent_timeout|207|2|0|SUB|2026-10-01 02:34:16.968|PND|30|1

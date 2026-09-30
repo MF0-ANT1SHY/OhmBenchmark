@@ -1,0 +1,7 @@
+ohpm [37mINFO: [39m[37mfetch package done 1 @hw-agconnect/ui-skeleton from https://ohpm.openharmony.cn/ohpm/@hw-agconnect/ui-skeleton/-/ui-skeleton-1.0.0.har[39m
+ohpm [37mINFO: [39m[37mfetch package done 2 @ohos/axios from https://ohpm.openharmony.cn/ohpm/@ohos/axios/-/axios-2.2.6.har[39m
+ohpm [37mINFO: [39m[37mfetch package done 3 @pura/picker_utils from https://ohpm.openharmony.cn/ohpm/@pura/picker_utils/-/picker_utils-1.0.0.har[39m
+ohpm [37mINFO: [39m[37mfetch package done 4 @pie/lazy-data from https://ohpm.openharmony.cn/ohpm/@pie/lazy-data/-/lazy-data-1.0.0.har[39m
+ohpm [37mINFO: [39m[37mfetch package done 5 @pura/harmony-utils from https://ohpm.openharmony.cn/ohpm/@pura/harmony-utils/-/harmony-utils-1.3.0.har[39m
+ohpm [37mINFO: [39m[37mfetch package done 6 @sj/mediacache from https://ohpm.openharmony.cn/ohpm/@sj/mediacache/-/mediacache-1.0.3.har[39m
+[32minstall completed in 1s 698ms[39m

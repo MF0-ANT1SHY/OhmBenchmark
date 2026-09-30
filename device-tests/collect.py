@@ -17,7 +17,9 @@ def wait_state(state, seconds=180):
     while time.monotonic()<until:
         value=status()
         if value.get('state')==state: return value
-        if value.get('state')=='error': raise RuntimeError(value)
+        if value.get('state')=='error':
+            (out/'error.json').write_text(json.dumps(value),encoding='utf-8')
+            raise RuntimeError(str(value)[:500])
         time.sleep(.25)
     raise TimeoutError(f'{state}: {status()}')
 
@@ -42,20 +44,33 @@ for n in range(1,4):
     sh('snapshot_display -f /data/local/tmp/ohm-screen.jpeg')
     hdc('file','recv','/data/local/tmp/ohm-screen.jpeg',str(out/'ui-before.jpeg'))
     pid=sh(f'pidof {bundle}').split()[0]
+    if case=='weatherassistant_http_session_leak':
+        fd_before=int(sh(f'ls /proc/{pid}/fd | wc -l'))
+        (out/'fd-before.txt').write_text(sh(f'ls -l /proc/{pid}/fd'),encoding='utf-8')
     (out/'before.txt').write_text(sh(f'cat /proc/{pid}/stat; cat /proc/{pid}/status; cat /sys/class/thermal/thermal_zone0/temp'),encoding='utf-8')
     commands=[]
     for cmd in [
       f'hiperf record -p {pid} -f 1000 -e sw-cpu-clock -s fp -o /data/local/tmp/ohm-perf.data --control prepare',
       f'hiperf stat -p {pid} -e hw-cpu-cycles,hw-instructions,sw-task-clock,sw-context-switches -o /data/local/tmp/ohm-stat.txt --control prepare',
-      'hitrace --trace_begin -b 65536 app sched disk distributeddatamgr ark',
+      'hitrace --trace_begin -b 65536 app sched disk distributeddatamgr ark'+(' ace graphic' if case=='sheafreader_article_list_foreach' else ''),
       'hiperf record --control start', 'hiperf stat --control start']:
         commands.append(cmd+'\n'+sh(cmd))
     sh(f'touch {base}/ohm-go')
+    if case=='sheafreader_article_list_foreach':
+        time.sleep(2)
+        for swipe in range(3):
+            sh('uitest uiInput swipe 630 2300 630 850 800')
+            time.sleep(.5)
     result=wait_state('done')
+    if case=='sheafreader_article_list_foreach':
+        result['metric']='CPU and component appearances in 10-second UI update/scroll window, not completion latency'
     for cmd in ['hiperf stat --control stop','hiperf record --control stop','hitrace --trace_finish -o /data/local/tmp/ohm-trace.txt']:
         commands.append(cmd+'\n'+sh(cmd))
     (out/'after.txt').write_text(sh(f'cat /proc/{pid}/stat; cat /proc/{pid}/status'),encoding='utf-8')
     result.update(variant=variant,run=n,pid=int(pid),bundle=bundle)
+    if case=='weatherassistant_http_session_leak':
+        result.update(fd_before=fd_before,fd_after=int(sh(f'ls /proc/{pid}/fd | wc -l')))
+        (out/'fd-after.txt').write_text(sh(f'ls -l /proc/{pid}/fd'),encoding='utf-8')
     (out/'result.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
     (out/'capture.txt').write_text('\n'.join(commands),encoding='utf-8')
     for remote,local in [('ohm-perf.data','perf.data'),('ohm-stat.txt','perf-stat.txt'),('ohm-trace.txt','trace.txt')]:

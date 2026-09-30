@@ -1,0 +1,52 @@
+> hvigor WARN: The project has not explicitly set the 'targetSdkVersion' version at build-profile.json5. It is recommended to configure it. Reference: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-hvigor-build-profile-app#section45865492619
+> hvigor [32mUP-TO-DATE :alatus:default@PreBuild...  [39m
+> hvigor [32mFinished :alatus:default@CreateModuleInfo... after 2 ms [39m
+> hvigor [32mUP-TO-DATE :alatus:default@GenerateMetadata...  [39m
+> hvigor [32mFinished :alatus:default@ConfigureCmake... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :alatus:default@MergeProfile...  [39m
+> hvigor [32mUP-TO-DATE :alatus:default@CreateBuildProfile...  [39m
+> hvigor [32mFinished :alatus:default@PreCheckSyscap... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :alatus:default@GeneratePkgContextInfo...  [39m
+> hvigor [32mFinished :alatus:default@ProcessIntegratedHsp... after 1 ms [39m
+> hvigor [32mFinished :alatus:default@BuildNativeWithCmake... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :alatus:default@MakePackInfo...  [39m
+> hvigor [32mFinished :alatus:default@SyscapTransform... after 19 ms [39m
+> hvigor [32mUP-TO-DATE :alatus:default@ProcessProfile...  [39m
+> hvigor [32mUP-TO-DATE :alatus:default@ProcessRouterMap...  [39m
+> hvigor [32mFinished :alatus:default@ProcessStartupConfig... after 2 ms [39m
+> hvigor [32mFinished :alatus:default@BuildNativeWithNinja... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :alatus:default@ProcessResource...  [39m
+> hvigor [32mUP-TO-DATE :alatus:default@GenerateLoaderJson...  [39m
+> hvigor [32mUP-TO-DATE :alatus:default@ProcessLibs...  [39m
+> hvigor [32mUP-TO-DATE :alatus:default@CompileResource...  [39m
+> hvigor [32mUP-TO-DATE :alatus:default@DoNativeStrip...  [39m
+> hvigor [32mFinished :alatus:default@BuildJS... after 4 ms [39m
+> hvigor [32mUP-TO-DATE :alatus:default@CacheNativeLibs...  [39m
+> hvigor [32m[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/weatherassistant/alatus/src/main/ets/pages/Index.ets:23:32
+ 'getParams' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/weatherassistant/alatus/src/main/ets/pages/Index.ets:54:20
+ 'pushUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/weatherassistant/alatus/src/main/ets/pages/Index.ets:72:25
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/weatherassistant/alatus/src/main/ets/pages/Index.ets:92:33
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/weatherassistant/alatus/src/main/ets/pages/AddCity.ets:13:32
+ 'getParams' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/OhmBenchmark-main/hosts/weatherassistant/alatus/src/main/ets/pages/AddCity.ets:25:18
+ 'back' has been deprecated.
+[39m[39m
+[39m
+> hvigor [32mFinished :alatus:default@CompileArkTS... after 7 s 222 ms [39m
+> hvigor [32mUP-TO-DATE :alatus:default@GeneratePkgModuleJson...  [39m
+> hvigor [32mFinished :alatus:default@PackageHap... after 468 ms [39m
+> hvigor WARN: Will skip sign 'hos_hap'. No signingConfigs profile is configured in current project.
+             If needed, configure the signingConfigs in D:\OhmBenchmark-main\hosts\weatherassistant\build-profile.json5.
+> hvigor [32mFinished :alatus:default@SignHap... after 2 ms [39m
+> hvigor [32mFinished :alatus:default@CollectDebugSymbol... after 2 ms [39m
+> hvigor [32mFinished :alatus:assembleHap... after 1 ms [39m
+> hvigor [32mBUILD SUCCESSFUL in 17 s 377 ms [39m

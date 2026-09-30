@@ -19,8 +19,8 @@ for p in sorted((root/'measurements').glob('*/*/run*/result.json')):
             if 'OHMB/'+row['case'] in payload:
                 if payload.startswith('S|'):start=ts
                 if payload.startswith('F|'):end=ts
-            if 'OHMB/HistoryItemCount' in payload:
-                count=re.search(r'HistoryItemCount\|(\d+)',payload)
+            if 'OHMB/HistoryItemCount' in payload or 'OHMB/ArticleCardCount' in payload:
+                count=re.search(r'(?:HistoryItemCount|ArticleCardCount)\|(\d+)',payload)
                 if count:components.append(int(count[1]))
             if event=='sched_switch':
                 x=switch_re.search(payload)
@@ -37,7 +37,7 @@ for p in sorted((root/'measurements').glob('*/*/run*/result.json')):
             running[cpu]=(ts,nxt)
         row.update(trace_wall_ms=(end-start)*1000,trace_cpu_ms=cpu_ms,main_thread_cpu_ms=main_ms,trace_context_switches=switches)
     else:row['trace_error']='missing measurement boundary'
-    if components:row['history_components_created']=max(components)
+    if components:row['history_components_created' if row['case']=='browser_history_list_foreach' else 'article_components_created']=max(components)
     for line in (p.parent/'perf-stat.txt').read_text().splitlines():
         m=re.match(r'\s*([\d,]+)\s+([\w-]+)',line)
         if m:row['perf_'+m[2]]=int(m[1].replace(',',''))
