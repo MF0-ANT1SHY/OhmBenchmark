@@ -9,10 +9,10 @@
 > hvigor [32mFinished :entry:default@ProcessIntegratedHsp... after 1 ms [39m
 > hvigor [32mFinished :entry:default@BuildNativeWithCmake... after 1 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@MakePackInfo...  [39m
-> hvigor [32mFinished :entry:default@SyscapTransform... after 23 ms [39m
+> hvigor [32mFinished :entry:default@SyscapTransform... after 20 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@ProcessProfile...  [39m
 > hvigor [32mUP-TO-DATE :entry:default@ProcessRouterMap...  [39m
-> hvigor [32mFinished :entry:default@ProcessStartupConfig... after 3 ms [39m
+> hvigor [32mFinished :entry:default@ProcessStartupConfig... after 2 ms [39m
 > hvigor [32mFinished :entry:default@BuildNativeWithNinja... after 1 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@ProcessResource...  [39m
 > hvigor [32mUP-TO-DATE :entry:default@GenerateLoaderJson...  [39m
@@ -82,12 +82,12 @@
  To use this API, you need to apply for the permissions: ohos.permission.CONNECT_IME_ABILITY
 [39m[39m
 [39m
-> hvigor [32mFinished :entry:default@CompileArkTS... after 7 s 955 ms [39m
+> hvigor [32mFinished :entry:default@CompileArkTS... after 7 s 974 ms [39m
 > hvigor [32mUP-TO-DATE :entry:default@GeneratePkgModuleJson...  [39m
-> hvigor [32mFinished :entry:default@PackageHap... after 493 ms [39m
+> hvigor [32mFinished :entry:default@PackageHap... after 505 ms [39m
 > hvigor WARN: Will skip sign 'hos_hap'. No signingConfigs profile is configured in current project.
              If needed, configure the signingConfigs in D:\OhmBenchmark-main\hosts\browser\build-profile.json5.
 > hvigor [32mFinished :entry:default@SignHap... after 3 ms [39m
 > hvigor [32mFinished :entry:default@CollectDebugSymbol... after 2 ms [39m
 > hvigor [32mFinished :entry:assembleHap... after 1 ms [39m
-> hvigor [32mBUILD SUCCESSFUL in 17 s 964 ms [39m
+> hvigor [32mBUILD SUCCESSFUL in 18 s 663 ms [39m

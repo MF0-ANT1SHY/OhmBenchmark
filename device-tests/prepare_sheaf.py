@@ -14,7 +14,9 @@ s=s.replace('onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): vo
       runSheafBench(this.context, want.parameters['bench'].toString());
     }''')
 p.write_text(s,encoding='utf-8')
-subprocess.run(['git','-C',str(host),'add','entry/src/main/ets'],check=True)
+manifest=host/'entry/src/main/module.json5'
+manifest.write_text(manifest.read_text(encoding='utf-8').replace('"deviceTypes": [','"deviceTypes": ["phone",'),encoding='utf-8')
+subprocess.run(['git','-C',str(host),'add','entry/src/main'],check=True)
 subprocess.run(['git','-C',str(host),'commit','-m',f'test({case}): add identical on-device measurement entry for {variant}'],check=True)
 out=root/'device-tests/patches'/case
 out.mkdir(parents=True,exist_ok=True)

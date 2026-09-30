@@ -1,0 +1,106 @@
+diff --git a/entry/src/main/ets/entryability/EntryAbility.ets b/entry/src/main/ets/entryability/EntryAbility.ets
+index 5cd10ed..bb919d4 100644
+--- a/entry/src/main/ets/entryability/EntryAbility.ets
++++ b/entry/src/main/ets/entryability/EntryAbility.ets
+@@ -1,3 +1,5 @@
++import { Want } from '@kit.AbilityKit';
++import { runBrowserBench } from '../utils/BrowserBench';
+ import UIAbility from '@ohos.app.ability.UIAbility';
+ import window from '@ohos.window';
+ import { relationalStore } from '@kit.ArkData';
+@@ -5,6 +7,12 @@ import CommonConstants from '../common/constants/CommonConstants'
+ import RdbUtils from '../utils/RdbUtils';
+ 
+ export default class EntryAbility extends UIAbility {
++  onNewWant(want: Want): void {
++    if (want.parameters && want.parameters['bench']) {
++      runBrowserBench(this.context, want.parameters['bench'].toString());
++    }
++  }
++
+   onWindowStageCreate(windowStage: window.WindowStage) {
+     relationalStore.getRdbStore(this.context, CommonConstants.STORE_CONFIG, async (err, store) => {
+       if (err) {
+diff --git a/entry/src/main/ets/utils/BrowserBench.ets b/entry/src/main/ets/utils/BrowserBench.ets
+new file mode 100644
+index 0000000..149daba
+--- /dev/null
++++ b/entry/src/main/ets/utils/BrowserBench.ets
+@@ -0,0 +1,35 @@
++import { common } from '@kit.AbilityKit';
++import { relationalStore } from '@kit.ArkData';
++import RdbUtils from './RdbUtils';
++import History from '../common/bean/History';
++import { OhmProbe } from './OhmProbe';
++
++export async function runBrowserBench(context: common.UIAbilityContext, name: string): Promise<void> {
++  await OhmProbe.measure(context, name, async (): Promise<void> => {
++    const store = RdbUtils.getStore();
++    const dates = await RdbUtils.queryAllDate();
++    for (const date of dates) await store.executeSql('DROP TABLE IF EXISTS history_' + date);
++    await store.executeSql('DELETE FROM date_table');
++    for (let d = 1; d <= 5; d++) {
++      const date = '202609' + (10 + d).toString();
++      await store.executeSql("INSERT INTO date_table(date) VALUES ('" + date + "')");
++      await RdbUtils.createHistoryTable(date);
++      const values: relationalStore.ValuesBucket[] = [];
++      for (let i = 0; i < 200; i++) {
++        values.push({title: 'HarmonyOS performance article ' + i, url: 'https://example.org/article/' + i, timestamp: '12:00:00'});
++      }
++      await store.batchInsert('history_' + date, values);
++    }
++  }, async (): Promise<number> => {
++    if (name === 'browser_history_delete_no_transaction') {
++      await RdbUtils.deleteAll();
++      const remaining = await RdbUtils.queryAllDate();
++      return remaining.length;
++    }
++    for (let i = 0; i < 1000; i++) {
++      await RdbUtils.insertDate('20260915');
++      await RdbUtils.insertHistory('20260915', new History('Article ' + i, 'https://example.org/' + i, '12:00:00'));
++    }
++    return 1000;
++  });
++}
+diff --git a/entry/src/main/ets/utils/OhmProbe.ets b/entry/src/main/ets/utils/OhmProbe.ets
+new file mode 100644
+index 0000000..d37c5ea
+--- /dev/null
++++ b/entry/src/main/ets/utils/OhmProbe.ets
+@@ -0,0 +1,36 @@
++import fs from '@ohos.file.fs';
++import systemDateTime from '@ohos.systemDateTime';
++import hiTraceMeter from '@ohos.hiTraceMeter';
++import { common } from '@kit.AbilityKit';
++
++export class OhmProbe {
++  static write(context: common.UIAbilityContext, value: string): void {
++    const file = fs.openSync(context.filesDir + '/ohm-status.json', fs.OpenMode.CREATE | fs.OpenMode.WRITE_ONLY | fs.OpenMode.TRUNC);
++    fs.writeSync(file.fd, value);
++    fs.closeSync(file);
++  }
++
++  static async measure(context: common.UIAbilityContext, name: string,
++    prepare: () => Promise<void>, action: () => Promise<number>): Promise<void> {
++    try {
++      OhmProbe.write(context, '{"state":"preparing"}');
++      await prepare();
++      const go = context.filesDir + '/ohm-go';
++      if (fs.accessSync(go)) fs.unlinkSync(go);
++      OhmProbe.write(context, '{"state":"ready"}');
++      await new Promise<void>((resolve) => {
++        const timer = setInterval(() => {
++          if (fs.accessSync(go)) { clearInterval(timer); resolve(); }
++        }, 100);
++      });
++      hiTraceMeter.startTrace('OHMB/' + name, 1);
++      const start = systemDateTime.getUptime(systemDateTime.TimeType.STARTUP, true);
++      const result = await action();
++      const elapsed = (systemDateTime.getUptime(systemDateTime.TimeType.STARTUP, true) - start) / 1000000;
++      hiTraceMeter.finishTrace('OHMB/' + name, 1);
++      OhmProbe.write(context, '{"state":"done","case":"' + name + '","elapsed_ms":' + elapsed + ',"result":' + result + '}');
++    } catch (e) {
++      OhmProbe.write(context, '{"state":"error","message":' + JSON.stringify(String(e)) + '}');
++    }
++  }
++}

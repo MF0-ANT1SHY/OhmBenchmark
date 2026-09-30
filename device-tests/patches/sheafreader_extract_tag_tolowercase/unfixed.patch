@@ -114,3 +114,23 @@ index 0000000..bcccc24
 +    return inserted;
 +  });
 +}
+diff --git a/entry/src/main/module.json5 b/entry/src/main/module.json5
+index fd38517..77f4b1f 100644
+--- a/entry/src/main/module.json5
++++ b/entry/src/main/module.json5
+@@ -4,7 +4,7 @@
+     "type": "entry",
+     "description": "$string:module_desc",
+     "mainElement": "EntryAbility",
+-    "deviceTypes": [
++    "deviceTypes": ["phone",
+       "tablet",
+       "2in1"
+     ],
+@@ -40,4 +40,4 @@
+       }
+     ]
+   }
+-}
+\ No newline at end of file
++}
