@@ -65,7 +65,7 @@ index b3560b0..195bd59 100644
    }
 diff --git a/entry/src/main/ets/utils/CloudBench.ets b/entry/src/main/ets/utils/CloudBench.ets
 new file mode 100644
-index 0000000..5cfdd95
+index 0000000..b506b45
 --- /dev/null
 +++ b/entry/src/main/ets/utils/CloudBench.ets
 @@ -0,0 +1,23 @@
@@ -80,7 +80,7 @@ index 0000000..5cfdd95
 +    await RelationalStoreUtils.init();
 +    const db=await relationalStore.getRdbStore(context,{name:'LocalSongs.db',securityLevel:relationalStore.SecurityLevel.S1});
 +    await db.executeSql('DELETE FROM songs');
-+    await db.executeSql("WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x+1 FROM n WHERE x<10000) INSERT INTO songs(songId,name,artists,songFile,picFile,lyricFile) SELECT x,'Song '||x,'Artist','/music/song-'||printf('%05d',x)||'.flac','','' FROM n");
++    await db.executeSql("WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x+1 FROM n WHERE x<1000) INSERT INTO songs(songId,name,artists,songFile,picFile,lyricFile) SELECT x,'Song '||x,'Artist','/music/song-'||printf('%05d',x)||'.flac','','' FROM n");
 +    AppStorage.SetOrCreate('ohmLocalBench',true);
 +    return;
 +  }
@@ -134,3 +134,23 @@ index 0000000..d37c5ea
 +    }
 +  }
 +}
+diff --git a/entry/src/main/module.json5 b/entry/src/main/module.json5
+index 5ee1eb2..668f197 100644
+--- a/entry/src/main/module.json5
++++ b/entry/src/main/module.json5
+@@ -43,15 +43,6 @@
+           "name": "ohos.permission.INTERNET",
+           "reason": '$string:REASON_INTERNET_PERMISSION'
+         },
+-        {
+-          "name" : "ohos.permission.SYSTEM_FLOAT_WINDOW",
+-          "usedScene": {
+-            "abilities": [
+-              "EntryAbility"
+-            ],
+-            "when":"inuse"
+-          }
+-        },
+         {
+           "name": "ohos.permission.KEEP_BACKGROUND_RUNNING",
+           "reason": '$string:REASON_KEEP_BACKGROUND_RUNNING'

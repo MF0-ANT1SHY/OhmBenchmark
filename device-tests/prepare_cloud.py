@@ -2,6 +2,12 @@ import pathlib,subprocess,sys
 root=pathlib.Path(__file__).resolve().parents[1];host=root/'hosts/cloudmusic'
 case,variant=sys.argv[1:3]
 subprocess.run(['git','-C',str(host),'checkout','--detach',f'case/{case}/{variant}'],check=True)
+manifest=host/'entry/src/main/module.json5'
+import re
+s=manifest.read_text(encoding='utf-8')
+s,n=re.subn(r'\s*\{\s*"name"\s*:\s*"ohos.permission.SYSTEM_FLOAT_WINDOW"[\s\S]*?\n        \},','',s)
+assert n==1, 'Expected exactly one floating-window permission'
+manifest.write_text(s,encoding='utf-8')
 ets=host/'entry/src/main/ets';(ets/'utils').mkdir(exist_ok=True)
 for name in ['OhmProbe.ets','CloudBench.ets']:(ets/'utils'/name).write_bytes((root/'device-tests'/name).read_bytes())
 p=ets/'entryability/EntryAbility.ets';s=p.read_text(encoding='utf-8')

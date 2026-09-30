@@ -9,7 +9,7 @@ export async function runCloudBench(context: common.UIAbilityContext,name: strin
     await RelationalStoreUtils.init();
     const db=await relationalStore.getRdbStore(context,{name:'LocalSongs.db',securityLevel:relationalStore.SecurityLevel.S1});
     await db.executeSql('DELETE FROM songs');
-    await db.executeSql("WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x+1 FROM n WHERE x<10000) INSERT INTO songs(songId,name,artists,songFile,picFile,lyricFile) SELECT x,'Song '||x,'Artist','/music/song-'||printf('%05d',x)||'.flac','','' FROM n");
+    await db.executeSql("WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x+1 FROM n WHERE x<1000) INSERT INTO songs(songId,name,artists,songFile,picFile,lyricFile) SELECT x,'Song '||x,'Artist','/music/song-'||printf('%05d',x)||'.flac','','' FROM n");
     AppStorage.SetOrCreate('ohmLocalBench',true);
     return;
   }

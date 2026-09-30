@@ -1,0 +1,17 @@
+HarmonyOS API 19 environment active (JDK 17 / bundled Node 18).
+10-01 02:52:48.771  INFO - Start sign-profile
+10-01 02:52:48.817  INFO - C:\Users\30422\Documents\Codex\2026-10-01\goal-project-git-pura-70-case\work\signing\dev.p12 is exist. Try to load it with given passwd
+10-01 02:52:49.371  INFO - sign-profile success
+10-01 02:52:50.017  INFO - Start sign-app
+10-01 02:52:50.266  INFO - certificate in profile: OpenHarmony Application Release
+10-01 02:52:50.376  INFO - Start to sign code.
+10-01 02:52:50.380  INFO - profile type is: debug
+10-01 02:52:50.403  INFO - C:\Users\30422\Documents\Codex\2026-10-01\goal-project-git-pura-70-case\work\signing\dev.p12 is exist. Try to load it with given passwd
+10-01 02:52:50.735  INFO - Create a sign info successfully.
+10-01 02:52:50.751  INFO - Create a sign info successfully.
+10-01 02:52:50.761  INFO - No native libs.
+10-01 02:52:50.763  INFO - Sign successfully.
+10-01 02:52:50.797  INFO - Add sign data in sign info list success.
+10-01 02:52:50.805  INFO - Generate signing block success, begin write it to output file
+10-01 02:52:50.818  INFO - Sign Hap success!
+10-01 02:52:50.818  INFO - sign-app success

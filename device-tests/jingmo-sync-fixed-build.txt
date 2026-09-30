@@ -1,0 +1,84 @@
+> hvigor [32mFinished :default:default@PreBuild... after 153 ms [39m
+> hvigor [32mUP-TO-DATE :home:default@PreBuild...  [39m
+> hvigor [32mUP-TO-DATE :constants:default@PreBuild...  [39m
+> hvigor [32mUP-TO-DATE :settings:default@PreBuild...  [39m
+> hvigor [32mUP-TO-DATE :utils:default@PreBuild...  [39m
+> hvigor [32mUP-TO-DATE :classicpoem:default@PreBuild...  [39m
+> hvigor [32mUP-TO-DATE :uicomponents:default@PreBuild...  [39m
+> hvigor [32mFinished :default:default@CreateModuleInfo... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :default:default@GenerateMetadata...  [39m
+> hvigor [32mFinished :default:default@PreCheckSyscap... after 1 ms [39m
+> hvigor [32mFinished :default:default@GeneratePkgContextInfo... after 10 ms [39m
+> hvigor [32mFinished :default:default@ProcessIntegratedHsp... after 2 ms [39m
+> hvigor [32mUP-TO-DATE :constants:default@CreateHarBuildProfile...  [39m
+> hvigor [32mFinished :constants:default@ConfigureCmake... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :constants:default@MergeProfile...  [39m
+> hvigor [32mFinished :default:default@SyscapTransform... after 19 ms [39m
+> hvigor [32mFinished :default:default@ProcessRouterMap... after 7 ms [39m
+> hvigor [32mFinished :default:default@ProcessStartupConfig... after 2 ms [39m
+> hvigor [32mUP-TO-DATE :utils:default@CreateHarBuildProfile...  [39m
+> hvigor [32mUP-TO-DATE :uicomponents:default@CreateHarBuildProfile...  [39m
+> hvigor [32mFinished :constants:default@BuildNativeWithCmake... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :utils:default@MergeProfile...  [39m
+> hvigor [32mUP-TO-DATE :uicomponents:default@MergeProfile...  [39m
+> hvigor [32mFinished :default:default@GenerateLoaderJson... after 16 ms [39m
+> hvigor [32mUP-TO-DATE :classicpoem:default@CreateHarBuildProfile...  [39m
+> hvigor [32mFinished :utils:default@ConfigureCmake... after 1 ms [39m
+> hvigor [32mFinished :uicomponents:default@ConfigureCmake... after 1 ms [39m
+> hvigor [32mFinished :constants:default@BuildNativeWithNinja... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :classicpoem:default@MergeProfile...  [39m
+> hvigor [32mUP-TO-DATE :settings:default@CreateHarBuildProfile...  [39m
+> hvigor [32mFinished :utils:default@BuildNativeWithCmake... after 1 ms [39m
+> hvigor [32mFinished :uicomponents:default@BuildNativeWithCmake... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :constants:default@ProcessLibs...  [39m
+> hvigor [32mUP-TO-DATE :settings:default@MergeProfile...  [39m
+> hvigor [32mUP-TO-DATE :home:default@CreateHarBuildProfile...  [39m
+> hvigor [32mFinished :classicpoem:default@ConfigureCmake... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :constants:default@DoNativeStrip...  [39m
+> hvigor [32mUP-TO-DATE :home:default@MergeProfile...  [39m
+> hvigor [32mUP-TO-DATE :default:default@CreateBuildProfile...  [39m
+> hvigor [32mFinished :classicpoem:default@BuildNativeWithCmake... after 1 ms [39m
+> hvigor [32mFinished :utils:default@BuildNativeWithNinja... after 1 ms [39m
+> hvigor [32mFinished :uicomponents:default@BuildNativeWithNinja... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :default:default@MergeProfile...  [39m
+> hvigor [32mFinished :settings:default@ConfigureCmake... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :utils:default@ProcessLibs...  [39m
+> hvigor [32mUP-TO-DATE :uicomponents:default@ProcessLibs...  [39m
+> hvigor [32mUP-TO-DATE :default:default@MakePackInfo...  [39m
+> hvigor [32mUP-TO-DATE :default:default@ProcessProfile...  [39m
+> hvigor [32mFinished :settings:default@BuildNativeWithCmake... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :utils:default@DoNativeStrip...  [39m
+> hvigor [32mUP-TO-DATE :uicomponents:default@DoNativeStrip...  [39m
+> hvigor [32mUP-TO-DATE :default:default@ProcessResource...  [39m
+> hvigor [32mFinished :home:default@ConfigureCmake... after 1 ms [39m
+> hvigor [32mFinished :classicpoem:default@BuildNativeWithNinja... after 1 ms [39m
+> hvigor WARN: Warning: the media of 'app_icon.png' does not have a base resource.
+Warning: the media of 'icon.png' does not have a base resource.
+Warning: the media of 'icon_startwindow.png' does not have a base resource.
+
+> hvigor [32mFinished :default:default@CompileResource... after 319 ms [39m
+> hvigor [32mFinished :home:default@BuildNativeWithCmake... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :classicpoem:default@ProcessLibs...  [39m
+> hvigor [32mFinished :default:default@BuildJS... after 4 ms [39m
+> hvigor [32mFinished :default:default@ConfigureCmake... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :classicpoem:default@DoNativeStrip...  [39m
+> hvigor [32mFinished :default:default@BuildNativeWithCmake... after 1 ms [39m
+> hvigor [32mFinished :settings:default@BuildNativeWithNinja... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :settings:default@ProcessLibs...  [39m
+> hvigor [32mUP-TO-DATE :settings:default@DoNativeStrip...  [39m
+> hvigor [32mFinished :home:default@BuildNativeWithNinja... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :home:default@ProcessLibs...  [39m
+> hvigor [32mUP-TO-DATE :home:default@DoNativeStrip...  [39m
+> hvigor [32mFinished :default:default@BuildNativeWithNinja... after 1 ms [39m
+> hvigor [32mUP-TO-DATE :default:default@ProcessLibs...  [39m
+> hvigor [32mUP-TO-DATE :default:default@DoNativeStrip...  [39m
+> hvigor [32mUP-TO-DATE :default:default@CacheNativeLibs...  [39m
+> hvigor [32mFinished :default:default@CompileArkTS... after 7 s 857 ms [39m
+> hvigor [32mFinished :default:default@GeneratePkgModuleJson... after 3 ms [39m
+> hvigor [32mFinished :default:default@PackageHap... after 497 ms [39m
+> hvigor WARN: Will skip sign 'hos_hap'. No signingConfigs profile is configured in current project.
+             If needed, configure the signingConfigs in D:\OhmBenchmark-main\hosts\jingmo\build-profile.json5.
+> hvigor [32mFinished :default:default@SignHap... after 3 ms [39m
+> hvigor [32mFinished :default:default@CollectDebugSymbol... after 2 ms [39m
+> hvigor [32mFinished :default:assembleHap... after 1 ms [39m
+> hvigor [32mBUILD SUCCESSFUL in 20 s 480 ms [39m
