@@ -23,6 +23,12 @@ SDK_LIB = TOOLCHAIN_LIB if (TOOLCHAIN_LIB / 'hap-sign-tool.jar').exists() else F
 SIGNING_ASSETS = Path('/home/research/OhmBenchmark-backup/signing-assets')
 
 
+TC_BIN = (REPO / 'toolchain' / 'command-line-tools' / 'bin')
+if TC_BIN.exists():
+    import os
+    os.environ['PATH'] = f'{TC_BIN}{os.pathsep}' + os.environ.get('PATH', '')
+
+
 def run(cmd, timeout=60):
     try:
         p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)

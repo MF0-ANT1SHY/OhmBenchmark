@@ -108,7 +108,24 @@ re-declared to match, with the old name and reason kept in `test_oracle.oracle_r
 - `cloudmusic_local_song_memory_filter` — declares per-search latency; only ~10 method calls
   were made, so the fixture must reach ≥300 songs and many searches to clear the noise floor
 
-## D. Needs a rebuild to instrument (needs a JRE; see SIGNING.md) — 12
+## D. Needs a rebuild to instrument — 12 (BLOCKER CLEARED)
+
+**Both blockers are now resolved.** The missing build toolchain was restored from the URL
+the README already names, and HAP signing works (the fault was the wrong
+`hap-sign-tool.jar`, not keys or JRE — see SIGNING.md). Verified:
+
+```
+hvigorw --mode module -p product=default -p buildMode=debug assembleHap --no-daemon
+  -> BUILD SUCCESSFUL in 6 s, entry-default-unsigned.hap produced
+sign_hap.py sign <unsigned> <signed> <bundle>   -> sign-app success
+hdc uninstall <bundle> && hdc install <signed>  -> install bundle successfully
+```
+
+So the 12 cases below are now actionable rather than blocked. Each still needs a counter
+added to its bench entry (or, for the two proof-loop-only cases, a bench entry written from
+scratch), then a rebuild, sign, install and measure.
+
+
 
 These `never-run` cases need either a new counter in the bench entry or a first successful
 measurement. **A rebuilt HAP cannot be signed on this machine until a Java runtime is
