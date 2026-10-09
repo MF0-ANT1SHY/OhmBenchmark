@@ -200,7 +200,8 @@ for variant in ('unfixed', 'fixed'):
                         continue
                     for kv in str(rec.get('v', '')).split():
                         if kv.startswith(diag_key + '='):
-                            got = int(kv.split('=', 1)[1])
+                            # metrics may be averages, so accept fractions too
+                            got = float(kv.split('=', 1)[1])
                 if got is not None:
                     vals.append(got)
         elif use_result:
