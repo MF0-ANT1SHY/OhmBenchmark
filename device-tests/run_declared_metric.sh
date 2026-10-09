@@ -34,34 +34,8 @@ print(json.load(open(f'cases/{sys.argv[1]}/case.json'))['host_app']['bundle_name
 PY
 }
 BUNDLE=$(bundle)
-# The module directory under haps/ is the *product* module that becomes the HAP, not any
-# library module. Verified on the device: interviewapp -> phone, browser -> entry,
-# sheafreader -> entry, weatherassistant -> alatus.
-MODULE=$(python3 - "$CASE" <<'PY'
-import json, sys
-from pathlib import Path
-case = sys.argv[1]
-host = json.load(open(f'cases/{case}/case.json'))['host_app']
-root = Path(host.get('local_path', ''))
-if not root.exists():
-    print('entry'); raise SystemExit
-cands = []
-# a product module lives under products/, or is the only top-level source module
-for m in root.glob('products/*/src/main/module.json5'):
-    cands.append(m.parts[-4])
-if not cands:
-    for m in root.glob('*/src/main/module.json5'):
-        cands.append(m.parts[-4])
-# library modules live under commons/ or features/; prefer anything else, then `entry`
-preferred = [c for c in cands if c not in ('calendar', 'basic', 'constants', 'uicomponents')]
-if 'entry' in preferred:
-    print('entry')
-elif preferred:
-    print(sorted(preferred)[0])
-else:
-    print('entry')
-PY
-)
+MODULE=$(python3 "$ROOT/device-tests/host_module.py" "$CASE")
+[ -n "$MODULE" ] || { echo "ABORT: could not resolve the host module"; exit 1; }
 echo "host module: $MODULE" 
 
 run_variant() {
