@@ -22,10 +22,16 @@ ROOT=/home/research/OhmBenchmark-main
 cd "$ROOT" || exit 1
 H="hosts/$HOST"
 
-export PATH="$HOME/.local/bin:$PATH"
-TC=/home/research/OhmBenchmark-toolchain/command-line-tools
-export PATH="$TC/bin:$PATH"
-export DEVECO_SDK_HOME="$TC/sdk"
+# The toolchain is chosen per host. 5.1.0 applies strict ArkTS rules (arkts-no-any-unknown,
+# arkts-no-implicit-return-types, arkts-no-spread) that pre-5.1 source violates: interviewapp
+# declares compatibleSdkVersion 5.0.0(12) and shows 38 such errors under 5.1.0 while building
+# unmodified under 5.0.5. See device-tests/host_toolchain.txt.
+HOST_NAME=$(python3 -c "import json,sys;from pathlib import Path;print(Path(json.loads(Path(f'cases/{sys.argv[1]}/case.json').read_text())['host_app'].get('local_path','')).name)" "$CASE")
+TC_VERSION=$(awk -v h="$HOST_NAME" '$1==h {print $2}' "$ROOT/device-tests/host_toolchain.txt" 2>/dev/null | head -1)
+[ -n "$TC_VERSION" ] || TC_VERSION=5.1.0
+# shellcheck disable=SC1090
+source "$ROOT/device-tests/toolchain.sh" "$TC_VERSION"
+echo "host: $HOST_NAME   toolchain: $TC_VERSION"
 
 bundle() {
   python3 - "$CASE" <<'PY'
