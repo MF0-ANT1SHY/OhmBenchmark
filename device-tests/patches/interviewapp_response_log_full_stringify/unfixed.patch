@@ -1,139 +1,6 @@
-diff --git a/commons/basic/Index.ets b/commons/basic/Index.ets
-index d34547f..4a10cd7 100644
---- a/commons/basic/Index.ets
-+++ b/commons/basic/Index.ets
-@@ -26,4 +26,5 @@ export { logger } from './src/main/ets/utils/logger'
- 
- export { getTimeText, getPercentText } from './src/main/ets/utils/base'
- 
--export { themeManager } from './src/main/ets/utils/themeManager'
-\ No newline at end of file
-+export { themeManager } from './src/main/ets/utils/themeManager'
-+export { ohmHttp } from './src/main/ets/utils/request';
-diff --git a/commons/basic/src/main/ets/utils/request.ets b/commons/basic/src/main/ets/utils/request.ets
-index 4efe368..175f96b 100644
---- a/commons/basic/src/main/ets/utils/request.ets
-+++ b/commons/basic/src/main/ets/utils/request.ets
-@@ -1,3 +1,4 @@
-+import hiTraceMeter from '@ohos.hiTraceMeter';
- import { http } from '@kit.NetworkKit';
- import { authStore } from './auth';
- import { promptAction, router } from '@kit.ArkUI';
-@@ -54,7 +55,9 @@ class HdHttp {
-       if (res.result) {
-         const result = res.result as HdResponse<T>
-         if (result.code === 10000) {
-+          hiTraceMeter.startTrace('OHMB/response_logging', 1);
-           logger.info(fullUrl, JSON.stringify(res.result).substring(0, 200))
-+          hiTraceMeter.finishTrace('OHMB/response_logging', 1);
-           return result
-         }
-         if (result.code === 401) {
-@@ -93,4 +96,5 @@ class HdHttp {
- }
- 
- 
--export const hdHttp = new HdHttp({ baseURL: 'https://api-harmony-teach.itheima.net/hm/' })
-\ No newline at end of file
-+export const hdHttp = new HdHttp({ baseURL: 'https://api-harmony-teach.itheima.net/hm/' })
-+export const ohmHttp = new HdHttp({baseURL: 'http://127.0.0.1:18766/'});
-diff --git a/features/home/Index.ets b/features/home/Index.ets
-index 02d47e5..a2fc3c4 100644
---- a/features/home/Index.ets
-+++ b/features/home/Index.ets
-@@ -11,3 +11,5 @@ export { SearchComp } from './src/main/ets/views/SearchComp'
- export { BootView } from './src/main/ets/views/BootView'
- 
- export { QuestionItem } from './src/main/ets/models/QuestionItemModel'
-+
-+export { runInterviewBench } from './src/main/ets/utils/InterviewBench';
-diff --git a/features/home/src/main/ets/utils/Diag.ets b/features/home/src/main/ets/utils/Diag.ets
-new file mode 100644
-index 0000000..1111111
---- /dev/null
-+++ b/features/home/src/main/ets/utils/Diag.ets
-@@ -0,0 +1,27 @@
-+import fs from '@ohos.file.fs';
-+import { common } from '@kit.AbilityKit';
-+
-+/**
-+ * Append-only diagnostic log, separate from `ohm-status.json`.
-+ *
-+ * The status file is overwritten by the state machine (`ready`, then `done`), so a diagnostic
-+ * written into it during `prepare()` is destroyed within milliseconds. That is exactly what
-+ * happened when the bench tried to report what the history page saw, and it left the
-+ * parse-counter reading of 0 ambiguous between "the page never built its rows" and "the bench
-+ * read a different module instance than the page writes".
-+ *
-+ * This file is only ever appended to, so every checkpoint survives until it is read.
-+ */
-+export class Diag {
-+  static log(context: common.UIAbilityContext, label: string, value: string): void {
-+    try {
-+      const path = context.filesDir + '/ohm-diag.json';
-+      const line = '{"t":"' + label + '","v":' + JSON.stringify(value) + '}\n';
-+      const file = fs.openSync(path, fs.OpenMode.CREATE | fs.OpenMode.APPEND | fs.OpenMode.WRITE_ONLY);
-+      fs.writeSync(file.fd, line);
-+      fs.closeSync(file);
-+    } catch (e) {
-+      // diagnostics must never break the measurement
-+    }
-+  }
-+}
-diff --git a/features/home/src/main/ets/utils/InterviewBench.ets b/features/home/src/main/ets/utils/InterviewBench.ets
-new file mode 100644
-index 0000000..413e700
---- /dev/null
-+++ b/features/home/src/main/ets/utils/InterviewBench.ets
-@@ -0,0 +1,45 @@
-+import { common } from '@kit.AbilityKit';
-+import { historyStore } from './history';
-+import { ohmHttp } from '@itcast/basic';
-+import { OhmProbe } from './OhmProbe';
-+import { ohmResponseStringifyReset, ohmResponseStringifyTotal, ohmDiag } from '@itcast/basic';
-+
-+interface FixtureRow { id: number; title: string; description: string; }
-+
-+export async function runInterviewBench(context: common.UIAbilityContext, name: string): Promise<void> {
-+  await OhmProbe.measure(context, name, async (): Promise<void> => {
-+    if (name === 'interviewapp_response_log_full_stringify') {
-+      ohmHttp.baseURL = 'http://127.0.0.1:18766/';
-+      return;
-+    }
-+    historyStore.clear();
-+    if (name === 'interviewapp_search_history_unbounded') {
-+      for (let i=0;i<5000;i++) historyStore.setItem('HarmonyOS interview question '+i);
-+    }
-+    await new Promise<void>((resolve) => { setTimeout(resolve, 2500); });
-+  }, async (): Promise<number> => {
-+    if (name === 'interviewapp_search_history_unbounded') {
-+      let total=0;
-+      for (let i=0;i<100;i++) total+=historyStore.getAll().length;
-+      return total;
-+    }
-+    if (name === 'interviewapp_response_log_full_stringify') {
-+      // count how many full response bodies the handler serializes for logging: the fixture
-+      // returns a 345 KB body, so this is the oracle's O(payload) cost driver
-+      ohmResponseStringifyReset();
-+      let total=0;
-+      for (let i=0;i<5;i++) {
-+        const response = await ohmHttp.get<FixtureRow[]>('response');
-+        total+=response.data.length;
-+      }
-+      const stringifies = ohmResponseStringifyTotal();
-+      ohmDiag(context, 'after-wait', 'calls=5 serializes=' + stringifies +
-+        ' rowsPerResponse=' + (total / 5));
-+      return stringifies;
-+    }
-+    for (let i=0;i<1000;i++) historyStore.setItem('HarmonyOS interview question '+i);
-+    // Include the application's own deferred flush (2 seconds) in both windows.
-+    await new Promise<void>((resolve) => { setTimeout(resolve, 3000); });
-+    return historyStore.getAll().length;
-+  });
-+}
 diff --git a/features/home/src/main/ets/utils/OhmProbe.ets b/features/home/src/main/ets/utils/OhmProbe.ets
 new file mode 100644
-index 0000000..d37c5ea
+index 0000000..1111111
 --- /dev/null
 +++ b/features/home/src/main/ets/utils/OhmProbe.ets
 @@ -0,0 +1,86 @@
@@ -223,20 +90,58 @@ index 0000000..d37c5ea
 +    hiTraceMeter.traceByValue('OHMB/PlayerUpdateCount', OhmCounters.playerUpdates);
 +  }
 +}
-diff --git a/products/phone/src/main/ets/phoneability/PhoneAbility.ets b/products/phone/src/main/ets/phoneability/PhoneAbility.ets
-index 92ce7ee..1620014 100644
---- a/products/phone/src/main/ets/phoneability/PhoneAbility.ets
-+++ b/products/phone/src/main/ets/phoneability/PhoneAbility.ets
-@@ -39,6 +39,12 @@ export default class PhoneAbility extends UIAbility {
-   }
- 
-   onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-+    if (want.parameters && want.parameters['bench']) {
-+      const name = want.parameters['bench'].toString();
-+      import('@itcast/home').then((bench) => { bench.runInterviewBench(this.context, name); });
+
+diff --git a/features/home/src/main/ets/utils/InterviewBench.ets b/features/home/src/main/ets/utils/InterviewBench.ets
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/features/home/src/main/ets/utils/InterviewBench.ets
+@@ -0,0 +1,48 @@
++import { common } from '@kit.AbilityKit';
++import { historyStore } from './history';
++import { ohmHttp } from '@itcast/basic';
++import { OhmProbe } from './OhmProbe';
++import { ohmResponseStringifyReset, ohmResponseStringifyTotal, ohmDiag } from '@itcast/basic';
++import { OHM_FIXTURE_HOST } from './OhmFixtureHost';
++
++interface FixtureRow { id: number; title: string; description: string; }
++
++export async function runInterviewBench(context: common.UIAbilityContext, name: string): Promise<void> {
++  await OhmProbe.measure(context, name, async (): Promise<void> => {
++    if (name === 'interviewapp_response_log_full_stringify') {
++      // OHM_FIXTURE_HOST is written by tools/instrument_response_stringify.py, so the fixture
++      // can be pointed at whatever address the device can actually reach
++      ohmHttp.baseURL = 'http://' + OHM_FIXTURE_HOST + ':18766/';
 +      return;
 +    }
-+
-     logger.info('Ability onNewWant')
-     // router form
-     emitter.emit({
++    historyStore.clear();
++    if (name === 'interviewapp_search_history_unbounded') {
++      for (let i=0;i<5000;i++) historyStore.setItem('HarmonyOS interview question '+i);
++    }
++    await new Promise<void>((resolve) => { setTimeout(resolve, 2500); });
++  }, async (): Promise<number> => {
++    if (name === 'interviewapp_search_history_unbounded') {
++      let total=0;
++      for (let i=0;i<100;i++) total+=historyStore.getAll().length;
++      return total;
++    }
++    if (name === 'interviewapp_response_log_full_stringify') {
++      // count how many full response bodies the handler serializes for logging: the fixture
++      // returns a 345 KB body, so this is the oracle's O(payload) cost driver
++      ohmResponseStringifyReset();
++      let total=0;
++      for (let i=0;i<5;i++) {
++        const response = await ohmHttp.get<FixtureRow[]>('response');
++        total+=response.data.length;
++      }
++      const stringifies = ohmResponseStringifyTotal();
++      ohmDiag(context, 'after-wait', 'calls=5 serializes=' + stringifies +
++        ' rowsPerResponse=' + (total / 5));
++      return stringifies;
++    }
++    for (let i=0;i<1000;i++) historyStore.setItem('HarmonyOS interview question '+i);
++    // Include the application's own deferred flush (2 seconds) in both windows.
++    await new Promise<void>((resolve) => { setTimeout(resolve, 3000); });
++    return historyStore.getAll().length;
++  });
++}

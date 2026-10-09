@@ -31,6 +31,11 @@ REPO = Path(__file__).resolve().parent.parent
 COUNTER_MODULE = 'commons/basic/src/main/ets/utils/OhmResponseCount.ets'
 COUNTER_PACKAGE = './OhmResponseCount'
 
+# Where the fixture lives. The default assumes the device can reach its own loopback
+# through an hdc forward; set --fixture-host when it cannot (for example when the
+# fixture runs in WSL and the device is a physical phone on Windows).
+DEFAULT_FIXTURE_HOST = '127.0.0.1'
+
 COUNTER_TEXT = '// OHMB response-stringify counter (measurement only)\nimport fs from \'@ohos.file.fs\';\nimport { common } from \'@kit.AbilityKit\';\n\nexport let ohmResponseStringifyCount: number = 0;\n\nexport function ohmResponseStringifyReset(): void {\n  ohmResponseStringifyCount = 0;\n}\n\nexport function ohmResponseStringifyTotal(): number {\n  return ohmResponseStringifyCount;\n}\n\nexport function ohmResponseStringify(value: Object): string {\n  ohmResponseStringifyCount++;\n  return JSON.stringify(value);\n}\n\n/** Append a checkpoint to ohm-diag.json: the status file overwrites, this does not. */\nexport function ohmDiag(context: common.UIAbilityContext, label: string, value: string): void {\n  try {\n    const path = context.filesDir + \'/ohm-diag.json\';\n    const file = fs.openSync(path, fs.OpenMode.CREATE | fs.OpenMode.APPEND | fs.OpenMode.WRITE_ONLY);\n    fs.writeSync(file.fd, \'{"t":"\' + label + \'","v":\' + JSON.stringify(value) + \'}\\n\');\n    fs.closeSync(file);\n  } catch (e) {\n    // diagnostics must never break the measurement\n  }\n}\n'
 
 
@@ -67,6 +72,8 @@ def instrument(request_file: Path) -> int:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--hosts', default=str(REPO / 'hosts'))
+    ap.add_argument('--fixture-host', default=DEFAULT_FIXTURE_HOST,
+                    help='host the bench should send fixture requests to')
     a = ap.parse_args()
     root = Path(a.hosts) / 'interviewapp'
     cands = [c for c in root.glob('**/request.ets') if 'oh_modules' not in str(c)]
@@ -77,6 +84,13 @@ def main():
     mod.parent.mkdir(parents=True, exist_ok=True)
     mod.write_text(COUNTER_TEXT, encoding='utf-8')
     print(f'    wrote {mod.relative_to(root)}')
+
+    # the bench's own module needs the constant it now references
+    const = root / 'features/home/src/main/ets/utils/OhmFixtureHost.ets'
+    const.write_text(
+        '// OHMB fixture host (measurement only)\n'
+        f"export const OHM_FIXTURE_HOST: string = '{a.fixture_host}';\n", encoding='utf-8')
+    print(f'    wrote {const.relative_to(root)} (fixture host {a.fixture_host})')
     n = instrument(cands[0])
 
     # publish the counter through the package index: consumers import '@itcast/basic', and a
