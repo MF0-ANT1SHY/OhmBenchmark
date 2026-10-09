@@ -15,7 +15,11 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-SDK_LIB = Path('/mnt/c/Users/research/hdc/lib')
+TOOLCHAIN_LIB = (REPO / 'toolchain' / 'command-line-tools' / 'sdk' / 'default' /
+                 'openharmony' / 'toolchains' / 'lib')
+FALLBACK_LIB = Path.home() / 'OhmBenchmark-toolchain' / 'command-line-tools' / 'sdk' / \
+    'default' / 'openharmony' / 'toolchains' / 'lib'
+SDK_LIB = TOOLCHAIN_LIB if (TOOLCHAIN_LIB / 'hap-sign-tool.jar').exists() else FALLBACK_LIB
 SIGNING_ASSETS = Path('/home/research/OhmBenchmark-backup/signing-assets')
 
 
@@ -58,7 +62,7 @@ def main():
         line(rc3 == 0 and 'hitrace' in hitrace, 'hitrace on device', hitrace.strip()[:40])
 
     print('\n== signing ==')
-    line(SDK_LIB.exists(), 'SDK signing lib', str(SDK_LIB))
+    line(SDK_LIB.exists(), 'signing lib (toolchain)', str(SDK_LIB))
     line((SDK_LIB / 'OpenHarmony.p12').exists(), 'keystore OpenHarmony.p12')
     line((SDK_LIB / 'hap-sign-tool.jar').exists(), 'hap-sign-tool.jar')
     line(SIGNING_ASSETS.exists(), 'checksummed backup copy', str(SIGNING_ASSETS))
@@ -67,8 +71,8 @@ def main():
     # A JRE is not the same as a working signer. Exercise sign-app with the identity
     # prepared by sign_hap_wsl.py, on a real unsigned HAP, so this reports the true
     # capability instead of a proxy.
-    hs = Path.home() / '.local' / 'ohsign'
-    chain = hs / 'app-signing.pem'
+    hs = Path.home() / '.local' / 'ohsign2'
+    chain = hs / 'app.pem'
     profile = next(iter(hs.glob('*.p7b')), None) if hs.exists() else None
     unsigned = next((REPO / 'hosts').rglob('*-unsigned.hap'), None)
     if java_ok != 0:
@@ -80,10 +84,10 @@ def main():
         try:
             r = subprocess.run(
                 ['java', '-jar', str(SDK_LIB / 'hap-sign-tool.jar'), 'sign-app',
-                 '-mode', 'localSign', '-keyAlias', 'oh-bench-key-v1', '-keyPwd', '123456',
+                 '-mode', 'localSign', '-keyAlias', 'oh-bench2', '-keyPwd', '123456',
                  '-appCertFile', str(chain), '-profileFile', str(profile),
                  '-inFile', str(unsigned), '-signAlg', 'SHA256withECDSA',
-                 '-keystoreFile', str(hs / 'OpenHarmony.p12'), '-keystorePwd', '123456',
+                 '-keystoreFile', str(hs / 'ks.p12'), '-keystorePwd', '123456',
                  '-outFile', '/tmp/doctor-probe.hap'],
                 capture_output=True, text=True, timeout=180)
             blob = r.stdout + r.stderr
