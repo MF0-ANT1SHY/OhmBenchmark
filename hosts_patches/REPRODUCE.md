@@ -36,7 +36,7 @@ patch series reconstructs the code without duplicating that history.
 that was built and measured. Check your rebuild with the bundled tool:
 
 ```bash
-python3 tools/verify_reconstruction.py browser hosts/browser
+python3 tools/verify_reconstruction.py browser hosts/browser   # or ./tools/verify_reconstruction.py
 ```
 
 It walks every case tag for that host and reports whether the expected tree is present,

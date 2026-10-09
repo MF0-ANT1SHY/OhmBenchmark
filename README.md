@@ -18,14 +18,17 @@ config, and a test oracle.
 ## Layout
 
 ```
-hosts/            cloned host repos (gitignored here; each has ohmbase branch + case/* tags)
+hosts/            rebuilt host repos (gitignored; recreate from hosts_patches/, see REPRODUCE.md)
   <host>/           e.g. hosts/browser — base + adapt + unfixed/fixed commits, tags case/<id>/{unfixed,fixed}
 cases/<id>/
   case.json       bundle name, commits, bug description, android source case, trigger steps,
                   test oracle (metric + comparison), hitrace capture config
   fix.patch       the unfixed→fixed diff
-hosts_patches/    per-host git format-patch series (upstream base → all dataset commits),
-                  see hosts_patches/README.md for full reconstruction instructions
+hosts_patches/    per-host git format-patch series (upstream base → all dataset commits)
+  README.md         upstream repo + base commit per host
+  REPRODUCE.md      how to rebuild a host and verify the result
+  host-reconstruction.json  per case tag: upstream base or patch-series commit + exact tree hash
+tools/verify_reconstruction.py  checks a rebuilt host against that tree map
 measurements/     raw device measurements (NOT in this repo; see DATA.md)
 experiments/      exploratory runs (NOT in this repo; see DATA.md)
 manifest.json     machine-readable index of all 30 cases
