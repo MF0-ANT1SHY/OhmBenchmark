@@ -26,11 +26,14 @@ CASE = 'cloudmusic_play_time_high_frequency_update'
 COUNTER_SRC = REPO / 'device-tests' / 'harness' / 'OhmPlayTimeCount.ets'
 TARGET = 'entry/src/main/ets/common/utils/play/AVPlayerUtils.ets'
 # cloudmusic keeps shared code under common/utils; there is no entry/.../ets/utils/
-COUNTER_DEST = 'entry/src/main/ets/common/utils/OhmPlayTimeCount.ets'
+# Verified by A/B test: a module at the root of common/utils/ is not resolved, while the same
+# file beside StorageConstants in common/constants/ resolves from play/ exactly as the host's
+# own imports do. So the counter lives in constants/.
+COUNTER_DEST = 'entry/src/main/ets/common/constants/OhmPlayTimeCount.ets'
 # AVPlayerUtils.ets already imports '../../constants/...' and '../../functions/...', which
 # places common/utils/ two levels up from common/utils/play/ - where the counter lives
-COUNTER_FROM_PLAY = '../../OhmPlayTimeCount'
-COUNTER_FROM_ABILITY = '../common/utils/OhmPlayTimeCount'
+COUNTER_FROM_PLAY = '../../constants/OhmPlayTimeCount'
+COUNTER_FROM_ABILITY = '../common/constants/OhmPlayTimeCount'
 
 BENCH = '''
   async onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): Promise<void> {
