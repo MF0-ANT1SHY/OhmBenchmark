@@ -50,6 +50,8 @@ def main():
     ap.add_argument('--hold-seconds', type=float, default=0.0,
                     help='drive UI interactions during the measurement window instead of waiting')
     ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--force', action='store_true',
+                    help='overwrite an existing run directory (the original collection is evidence)')
     args = ap.parse_args()
 
     if not HDC:
@@ -88,6 +90,9 @@ def main():
         print(f'  status file {base}/ohm-status.json')
         return 0
 
+    if out.exists() and any(out.iterdir()) and not args.force:
+        sys.exit(f'refusing to overwrite existing run directory:\n  {out}\n'
+                 f'It already holds collected evidence. Pass --force to overwrite, or pick --run N.')
     out.mkdir(parents=True, exist_ok=True)
     rec(f'aa force-stop {bundle}')
     rec(f'rm -f {base}/ohm-status.json {base}/ohm-go')
