@@ -38,8 +38,8 @@
       "previous_definition": "CPU time of the refresh phase when nothing new arrives (all duplicate inserts), from trace + JS sampling (exception handling frames).",
       "corrected_metric": "trace_cpu_ms",
       "corrected_definition": "CPU time across the no-op refresh case window, from trace.",
-      "kind": "same-quantity-renamed",
-      "reason": "The declared metric names CPU time for the no-op refresh phase and the collected metric is CPU time for the same case window. The name differed; the quantity did not."
+      "kind": "weaker-proxy",
+      "reason": "WEAKER PROXY. The declared metric names CPU for the no-op refresh phase, and trace_cpu_ms is collected - but on this case the two variants OVERLAP: 23463.5/27458.4/37015.4 unfixed vs 24176.7/25597.2/26290.9 fixed, a 13.5% reduction with the ranges interleaved. So the declared metric is collected and does not separate the variants; the main-thread CPU field does (no overlap, 16.4%). This is the honest reading rather than a pass: the case does not reach a clear difference on the metric it declares. An earlier revision claimed the rounds collected only elapsed_ms, which was wrong."
     }
   },
   "trace_config": {

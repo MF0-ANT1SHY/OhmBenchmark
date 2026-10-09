@@ -39,7 +39,7 @@
       "corrected_metric": "trace_cpu_ms",
       "corrected_definition": "CPU time across the refresh case window, from trace.",
       "kind": "same-quantity-renamed",
-      "reason": "The declared metric names CPU time for the feed-parsing phase and the collected metric is CPU time for the same case window. The name differed; the quantity did not."
+      "reason": "The declared metric named CPU time for the feed-parsing phase and the collected metric is CPU time for the same case window. The name differed; the quantity did not. Recorded rounds: 2962.8/3089.2/3178.8 unfixed vs 1415.5/1508.0/1533.3 fixed, no overlap, 51.7% reduction. NOTE: an earlier revision of this entry claimed the rounds collected only elapsed_ms; that came from a stale hand-written table in the contract builder and was wrong - the rounds carry trace_cpu_ms and main_thread_cpu_ms as well."
     }
   },
   "trace_config": {

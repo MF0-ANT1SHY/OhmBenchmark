@@ -103,6 +103,42 @@ CONTRACT = {
 }
 
 
+def pattern_rounds(rounds: dict) -> list:
+    """Flatten the per-variant rounds into a list tagged with its variant."""
+    out = []
+    for variant in ('unfixed', 'fixed'):
+        for r in rounds.get(variant, []) or []:
+            out.append(dict(r, variant=variant))
+    return out
+
+
+def metric_from_rounds(rs: list, declared: str):
+    """The metric the recorded rounds carry, preferring the declared name.
+
+    The hand-written table said several cases 'reported elapsed_ms' while their records also hold
+    trace_cpu_ms and main_thread_cpu_ms, so their declared CPU metrics were in fact collected.
+    """
+    if not rs:
+        return None
+    fields = {k for r in rs for k in r}
+    if declared in fields:
+        return declared
+    for candidate in ('trace_cpu_ms', 'main_thread_cpu_ms'):
+        if candidate in fields:
+            return candidate
+    return 'elapsed_ms' if 'elapsed_ms' in fields else None
+
+
+def ranges_separate(rounds: dict, metric: str) -> bool:
+    """True when the unfixed and fixed ranges for `metric` are disjoint."""
+    def vals(variant):
+        return [r[metric] for r in (rounds.get(variant) or [])
+                if isinstance(r.get(metric), (int, float))]
+    u, f = vals('unfixed'), vals('fixed')
+    if not u or not f:
+        return False
+    return max(f) < min(u) or max(u) < min(f)
+
 def main():
     specs = {}
     for f in sorted(glob.glob(str(REPO / 'cases' / '*' / 'case.json'))):
@@ -121,12 +157,18 @@ def main():
         r = results.get(cid, {})
         rounds = r.get('rounds') or {}
         n_rounds = len(rounds.get('unfixed', [])) + len(rounds.get('fixed', []))
-        collected = r.get('metric') if n_rounds > 0 else None
+        # the records decide: the hand-written table went stale and claimed cases
+        # reported elapsed_ms while their rounds also carried trace_cpu_ms
+        collected = metric_from_rounds(pattern_rounds(rounds), oracle) if n_rounds > 0 else None
         cases[cid] = {
             'host': spec['host_app']['name'],
             'oracle_metric': oracle,
             'collected_metric': collected,
-            'oracle_satisfied': bool(collected) and collected == oracle,
+            # A name match is not enough: the objective requires the declared metric to have been
+            # collected AND its unfixed/fixed ranges to be disjoint before a case counts as a
+            # clear difference.
+            'oracle_satisfied': bool(collected) and collected == oracle
+                                and ranges_separate(rounds, collected),
             'rounds_recorded': n_rounds,
             'primitive': prim,
             'probe_field': field,
@@ -159,3 +201,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+

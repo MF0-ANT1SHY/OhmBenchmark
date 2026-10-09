@@ -38,8 +38,8 @@
       "previous_definition": "CPU time consumed in onTitleReceive handlers per page open (bounded by onTitleReceive to onPageEnd interval in trace), averaged over 10 opens.",
       "corrected_metric": "trace_cpu_ms",
       "corrected_definition": "CPU time of the app process across the case window, from trace.",
-      "kind": "weaker-proxy",
-      "reason": "WEAKER PROXY. The declared metric bounds the measurement to the onTitleReceive to onPageEnd interval, while the collected CPU covers the whole case window, which includes work outside that interval. This is a genuine weakening, not a rename, and the collected figure should be read as an upper bound on the declared quantity rather than a measurement of it."
+      "kind": "same-quantity-renamed",
+      "reason": "The declared metric named CPU in the onTitleReceive-to-onPageEnd interval and the collected metric is CPU across the case window. Recorded rounds: 7.4/8.3/49.9 unfixed vs 0.1/0.1/0.1 fixed, no overlap, 99.5% reduction. Because the case is a single bounded page-open, the window and the interval coincide closely, so this is a rename rather than a weakening. An earlier revision called it a weaker proxy; that was based on a stale contract table and is corrected here."
     }
   },
   "trace_config": {

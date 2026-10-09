@@ -50,7 +50,7 @@
     "browser_insert_date_lookup_cache": {
       "host": "browser (小狐狸浏览器)",
       "oracle_metric": "rdb_statements_per_page_save",
-      "collected_metric": "elapsed_ms",
+      "collected_metric": "trace_cpu_ms",
       "oracle_satisfied": false,
       "rounds_recorded": 6,
       "primitive": "count",
@@ -79,7 +79,7 @@
       "host": "CloudMusic-HarmonyOSNext (仿网易云音乐)",
       "oracle_metric": "elapsed_ms",
       "collected_metric": "elapsed_ms",
-      "oracle_satisfied": true,
+      "oracle_satisfied": false,
       "rounds_recorded": 6,
       "primitive": "elapsed",
       "probe_field": "search_result_latency_ms",
@@ -162,7 +162,7 @@
     "interviewapp_search_history_unbounded": {
       "host": "interview-handbook-project (面试通)",
       "oracle_metric": "history_entries_and_render_cost",
-      "collected_metric": "elapsed_ms",
+      "collected_metric": "trace_cpu_ms",
       "oracle_satisfied": false,
       "rounds_recorded": 6,
       "primitive": "count",
@@ -232,7 +232,7 @@
     "sheafreader_article_list_foreach": {
       "host": "Sheaf-Reader (束阅 RSS 阅读器)",
       "oracle_metric": "article_row_build_count",
-      "collected_metric": "elapsed_ms",
+      "collected_metric": "trace_cpu_ms",
       "oracle_satisfied": false,
       "rounds_recorded": 6,
       "primitive": "cpu",
@@ -248,8 +248,8 @@
     "sheafreader_extract_tag_tolowercase": {
       "host": "Sheaf-Reader (束阅 RSS 阅读器)",
       "oracle_metric": "trace_cpu_ms",
-      "collected_metric": "elapsed_ms",
-      "oracle_satisfied": false,
+      "collected_metric": "trace_cpu_ms",
+      "oracle_satisfied": true,
       "rounds_recorded": 6,
       "primitive": "cpu",
       "probe_field": "feed_parse_cpu_ms",
@@ -262,7 +262,7 @@
     "sheafreader_insert_duplicate_exception": {
       "host": "Sheaf-Reader (束阅 RSS 阅读器)",
       "oracle_metric": "trace_cpu_ms",
-      "collected_metric": "elapsed_ms",
+      "collected_metric": "trace_cpu_ms",
       "oracle_satisfied": false,
       "rounds_recorded": 6,
       "primitive": "cpu",
@@ -290,7 +290,7 @@
     "sheafreader_unread_counts_n_plus_1": {
       "host": "Sheaf-Reader (束阅 RSS 阅读器)",
       "oracle_metric": "sidebar_count_queries_per_refresh",
-      "collected_metric": "elapsed_ms",
+      "collected_metric": "trace_cpu_ms",
       "oracle_satisfied": false,
       "rounds_recorded": 6,
       "primitive": "count",
@@ -304,8 +304,8 @@
     "wanharmony_history_log_materialization": {
       "host": "WanHarmony (WanAndroid 客户端)",
       "oracle_metric": "trace_cpu_ms",
-      "collected_metric": "elapsed_ms",
-      "oracle_satisfied": false,
+      "collected_metric": "trace_cpu_ms",
+      "oracle_satisfied": true,
       "rounds_recorded": 6,
       "primitive": "cpu",
       "probe_field": "title_event_cpu_ms",
@@ -360,7 +360,7 @@
     "weatherassistant_http_session_leak": {
       "host": "HarmonyOS-Next-Weather-Assistant",
       "oracle_metric": "retained_fds_and_connections",
-      "collected_metric": "elapsed_ms",
+      "collected_metric": "trace_cpu_ms",
       "oracle_satisfied": false,
       "rounds_recorded": 6,
       "primitive": "external",
