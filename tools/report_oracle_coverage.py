@@ -29,8 +29,45 @@ DATA = REPO.parent / 'OhmBenchmark-data'
 CONTRACT = REPO / 'cases' / 'measurement-contract.json'
 
 PRIMARY = {'elapsed': 'elapsed_ms', 'cpu': 'trace_cpu_ms', 'count': None, 'external': None}
-ORDER = ['satisfied', 'counter-satisfied', 'mechanism-absent', 'proxy',
-         'collected-not-used', 'never-run']
+ORDER = ['satisfied', 'counter-satisfied', 'declared-collected-new', 'mechanism-absent',
+         'proxy', 'collected-not-used', 'never-run']
+
+
+# OHMB trace markers that carry a declared count, by primitive field.
+COUNTER_MARKERS = {
+    'rdb_statements_per_page_save': 'StatementCount',
+    'sidebar_count_queries_per_refresh': 'QueryCount',
+}
+
+
+def load_staged(data):
+    """Read newly collected runs from measurements-staging/.
+
+    Returns {case: {variant: {marker: [values]}}} for whatever has been collected since the
+    original session."""
+    import gzip
+    import re
+    root = data / 'measurements-staging'
+    out = {}
+    if not root.exists():
+        return out
+    for case_dir in sorted(p for p in root.iterdir() if p.is_dir()):
+        for variant_dir in sorted(p for p in case_dir.iterdir() if p.is_dir()):
+            for run_dir in sorted(p for p in variant_dir.iterdir() if p.is_dir()):
+                trace = run_dir / 'trace.txt.gz'
+                if not trace.exists():
+                    continue
+                try:
+                    with gzip.open(trace, 'rt', errors='replace') as f:
+                        blob = f.read()
+                except OSError:
+                    continue
+                for marker in set(COUNTER_MARKERS.values()):
+                    vals = [int(v) for v in re.findall(marker + r'\|(\d+)', blob)]
+                    if vals:
+                        out.setdefault(case_dir.name, {}).setdefault(
+                            variant_dir.name, {}).setdefault(marker, []).append(max(vals))
+    return out
 
 
 def load_data():
@@ -95,18 +132,27 @@ def effect(rounds, key):
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument('--data', default=str(DATA))
     ap.add_argument('--json')
     ap.add_argument('--md')
     args = ap.parse_args()
 
     contract = json.loads(CONTRACT.read_text(encoding='utf-8'))
     rounds = load_data()['rounds']
+    staged = load_staged(Path(args.data))
 
     rows = []
     for cid in sorted(contract['cases']):
         row = classify(cid, contract, rounds)
         if row['collected']:
             row['effect'] = effect(rounds.get(cid, []), row['collected'])
+        marker = COUNTER_MARKERS.get(cid and contract['cases'][cid]['probe_field'])
+        if marker and cid in staged:
+            per = staged[cid]
+            row['staged_counts'] = {v: vals.get(marker, []) for v, vals in per.items()}
+            if row['verdict'] in ('collected-not-used', 'proxy', 'never-run'):
+                row['verdict'] = 'declared-collected-new'
+                row['collected'] = marker
         rows.append(row)
 
     counts = {}
@@ -119,13 +165,19 @@ def main():
             print(f"  {k:<20} {counts[k]}")
     for title, kinds in (('declared metric collected', ('satisfied', 'counter-satisfied', 'proxy')),
                          ('mechanism does not manifest on this build', ('mechanism-absent',)),
+                         ('declared metric newly collected (staged runs)', ('declared-collected-new',)),
                          ('declared primitive collected under another field', ('collected-not-used',)),
                          ('never run on device', ('never-run',))):
         print(f"\n  === {title} ===")
         for r in rows:
             if r['verdict'] in kinds:
-                print(f"    {r['case']:<44} {r['verdict']:<18} {r['primitive']:<8} "
-                      f"{r['declared']} -> {r['collected'] or '-'}")
+                extra = ''
+                sc = r.get('staged_counts')
+                if sc:
+                    extra = '  staged: ' + ', '.join(
+                        f"{v}={vals}" for v, vals in sorted(sc.items()) if vals)
+                print(f"    {r['case']:<44} {r['verdict']:<21} {r['primitive']:<8} "
+                      f"{r['declared']} -> {r['collected'] or '-'}{extra}")
 
     if args.json:
         Path(args.json).write_text(json.dumps({'counts': counts, 'cases': rows},

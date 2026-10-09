@@ -1,13 +1,13 @@
 # Oracle coverage
 
-Of 30 cases: 4 satisfied, 1 counter-satisfied, 2 mechanism-absent, 6 proxy, 4 collected-not-used, 13 never-run.
+Of 30 cases: 4 satisfied, 1 counter-satisfied, 2 declared-collected-new, 2 mechanism-absent, 6 proxy, 2 collected-not-used, 13 never-run.
 
 | case | verdict | primitive | declared metric | collected metric |
 | --- | --- | --- | --- | --- |
 | `browser_eager_history_load` | proxy | cpu | `startup_cpu_time_ms` | `trace_cpu_ms` |
 | `browser_history_delete_no_transaction` | satisfied | elapsed | `elapsed_ms` | `elapsed_ms` |
 | `browser_history_list_foreach` | counter-satisfied | count | `component_build_count_and_first_frame_ms` | `history_components_created` |
-| `browser_insert_date_lookup_cache` | collected-not-used | count | `rdb_statements_per_page_save` | — |
+| `browser_insert_date_lookup_cache` | declared-collected-new | count | `rdb_statements_per_page_save` | `StatementCount` |
 | `cloudmusic_indexof_in_render` | never-run | elapsed | `row_build_cpu_overhead` | — |
 | `cloudmusic_local_song_memory_filter` | proxy | elapsed | `search_result_latency_ms` | `elapsed_ms` |
 | `cloudmusic_play_time_high_frequency_update` | never-run | count | `player_page_rerenders_per_minute` | — |
@@ -24,7 +24,7 @@ Of 30 cases: 4 satisfied, 1 counter-satisfied, 2 mechanism-absent, 6 proxy, 4 co
 | `sheafreader_extract_tag_tolowercase` | proxy | cpu | `feed_parse_cpu_ms` | `trace_cpu_ms` |
 | `sheafreader_insert_duplicate_exception` | proxy | cpu | `no_op_refresh_cpu_ms` | `trace_cpu_ms` |
 | `sheafreader_refresh_feeds_sequential` | satisfied | elapsed | `elapsed_ms` | `elapsed_ms` |
-| `sheafreader_unread_counts_n_plus_1` | collected-not-used | count | `sidebar_count_queries_per_refresh` | — |
+| `sheafreader_unread_counts_n_plus_1` | declared-collected-new | count | `sidebar_count_queries_per_refresh` | `QueryCount` |
 | `wanharmony_history_log_materialization` | proxy | cpu | `title_event_cpu_ms` | `trace_cpu_ms` |
 | `wanharmony_html_decode_per_render` | never-run | cpu | `scroll_cpu_ms_per_item` | — |
 | `wanharmony_persisted_home_list_growth` | never-run | count | `persistent_write_bytes_per_loadmore` | — |
