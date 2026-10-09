@@ -77,6 +77,27 @@ def load_staged(data):
                     if isinstance(value, int):
                         out.setdefault(case_dir.name, {}).setdefault(
                             variant_dir.name, {}).setdefault('result', []).append(value)
+
+                # the app's own diagnostic log, archived by the collector, carries declared
+                # counts when the streamed trace did not
+                dg = run_dir / 'diag.json'
+                if dg.exists():
+                    last = {}
+                    for line in dg.read_text(encoding='utf-8').splitlines():
+                        try:
+                            rec = json.loads(line)
+                        except ValueError:
+                            continue
+                        for kv in str(rec.get('v', '')).split():
+                            if '=' in kv:
+                                k, _, v = kv.partition('=')
+                                try:
+                                    last[k] = int(v)
+                                except ValueError:
+                                    pass
+                    for k, v in last.items():
+                        out.setdefault(case_dir.name, {}).setdefault(
+                            variant_dir.name, {}).setdefault(k, []).append(v)
     return out
 
 

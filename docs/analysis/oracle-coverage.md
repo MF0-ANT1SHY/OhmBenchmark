@@ -1,6 +1,6 @@
 # Oracle coverage
 
-Of 30 cases: 4 satisfied, 1 counter-satisfied, 4 declared-collected-new, 2 mechanism-absent, 6 proxy, 13 never-run.
+Of 30 cases: 4 satisfied, 1 counter-satisfied, 5 declared-collected-new, 2 mechanism-absent, 6 proxy, 12 never-run.
 
 | case | verdict | primitive | declared metric | collected metric |
 | --- | --- | --- | --- | --- |
@@ -32,5 +32,5 @@ Of 30 cases: 4 satisfied, 1 counter-satisfied, 4 declared-collected-new, 2 mecha
 | `weatherassistant_http_session_leak` | mechanism-absent | external | `retained_fds_and_connections` | `fd_before+fd_after` |
 | `weatherassistant_remote_weather_icons` | never-run | external | `icon_first_paint_ms_and_net_bytes` | — |
 | `ytmusic_current_playing_timeupdate` | never-run | count | `player_page_updates_per_minute` | — |
-| `ytmusic_history_json_parse_per_row` | never-run | count | `history_page_render_cpu_ms` | — |
+| `ytmusic_history_json_parse_per_row` | declared-collected-new | count | `history_page_render_cpu_ms` | `JsonParseCount` |
 | `ytmusic_search_no_debounce` | never-run | count | `search_requests_per_query` | — |
