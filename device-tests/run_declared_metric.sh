@@ -117,15 +117,18 @@ run_variant() {
   esac
 
 
-  # locate OhmProbe wherever this host keeps it, rather than assuming a path
+  # A harness may name its file anything; what matters is that something writes the state file
+  # the collector waits for. Checking for the capability rather than a filename keeps harnesses
+  # like the wanharmony progress-log one (which signals from OhmLogCount.ets) usable.
   local probe
-  probe=$(find "$H" -name 'OhmProbe.ets' -not -path '*/oh_modules/*' 2>/dev/null | head -1)
+  probe=$(grep -rl 'ohm-status.json' "$H" --include='*.ets' 2>/dev/null \
+          | grep -v oh_modules | head -1)
   if [ -z "$probe" ]; then
-    echo "  ABORT: no OhmProbe.ets anywhere in the host after applying the patch;"
-    echo "         the bench cannot signal state, so every run would time out"
+    echo "  ABORT: nothing in the host writes ohm-status.json, so the collector would wait"
+    echo "         forever; the harness is not installed"
     return 1
   fi
-  echo "  OhmProbe: ${probe#$H/}"
+  echo "  state writer: ${probe#$H/}"
 
   echo "  installing ohpm dependencies (some hosts need this before they compile)..."
   ( cd "$H" && timeout 1800 ohpm install --all 2>&1 | tail -1 )
