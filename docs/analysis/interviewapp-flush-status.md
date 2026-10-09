@@ -1,61 +1,69 @@
-# interviewapp_search_history_sync_flush: instrumentation done, measurement blocked
+# interviewapp_search_history_sync_flush: root cause found
 
-## Where this case stands
+## The failure
 
-The declared metric `flush_count_per_search_burst` now has an instrumenter
-(`tools/instrument_flush_count.py`, emits `OHMB/FlushCount`). The **unfixed build compiles
-with it** (BUILD SUCCESSFUL) and the counter is correctly placed in the search-burst branch.
+The collector reported, verbatim:
 
-The **measurement has not run**: the driver's second (fixed) pass applied
-`device-tests/patches/interviewapp_search_history_sync_flush/fixed.patch` incompletely, so
-no `OhmProbe.ets` appeared, the bench could not signal `state=ready`, and all three runs timed
-out. No declared-metric values were collected for this case.
+```
+cold-start result : 'error: failed to start ability.
+Error Code:10104001  Error Message:The specified ability does not exist
+Error cause: The specified Ability is not installed
+Error Code:10104001  Error Message:The specified ability does not exist
+...
+files dir         : 'total 28672 ... persistent_storage'
+pid               : ''
+```
 
-## An oracle correction this case needs
+So the app is not installed when the collector tries to start it, even though the driver's
+own install step printed `install bundle successfully` moments earlier. That is why every
+collection timed out at `ready`: `aa start` failed, nothing wrote `ohm-status.json`, and the
+status probe returned an empty object.
 
-The oracle states:
+## Why driving it by hand worked
 
-> unfixed: 10 flushes (one per search); fixed: 1 flush after the burst
+Every manual test ran against an app that was **already installed and warm** from earlier in
+the session, and succeeded within ~25s. The collector runs immediately after the driver's
+`hdc uninstall` + `hdc install`, so it depends on that install actually taking effect. The
+hand-driven tests incidentally bypassed the very step that is broken.
 
-but the harness drives **1000** `setItem` calls per burst, and unfixed `setItem` calls
-`this.store.flush()` on every one. The expected unfixed count is therefore **1000**, not 10;
-the oracle's figure is written for a 10-search burst this fixture does not use. The
-comparison's *direction* (unfixed flushes once per search, fixed flushes once after the
-burst) is still right. This needs an `oracle_revision` entry once the measurement confirms
-the numbers, in the same style as the four equivalent-oracle renames.
+Note the files directory exists (it holds a `persistent_storage` from an earlier install)
+while the ability does not resolve - consistent with a partially applied install rather than
+a missing bundle.
 
-## The open problem
+## What is fixed regardless
 
-`git apply --check` **succeeds** for both the unfixed and fixed patches against their
-respective commits when run by hand from a clean tree, yet the driver's fixed pass reported
-`WARNING: no OhmProbe after applying the patch` and the instrumenter then found only 1 of the
-2 flush call sites (the fixed source has two: `scheduleFlush`'s timer callback and
-`delItem`/`setItem` through it). So the apply is failing in the driver's context for a reason
-not yet identified.
+These were real defects, each confirmed by the output above and now corrected:
 
-Candidate causes to check next, in order of likelihood:
+- the collector read `haps/entry/files` because the module name was never passed through;
+  interviewapp installs under `haps/phone`. The value is now resolved by
+  `device-tests/host_module.py` (phone / entry / entry / alatus, matching the device);
+- the host module lookup had matched `calendar`, a library module, before that;
+- the cold-start settle window of 4s was far too short (interviewapp needs ~20s);
+- the instrumenter asserted 2 flush call sites, which is only true for the unfixed source;
+- `git checkout`/`clean`/`apply` failures were silent, and the driver's OhmProbe check
+  hardcoded paths that do not cover interviewapp's layout.
 
-1. **`git -C "$H" apply` resolves the patch path before the `cd`** - the driver builds an
-   absolute path, so this should be safe, but the earlier relative-path bug was the same
-   class, so verify by echoing the path and `ls -l` on it at that point.
-2. **`git clean -fd` removing a directory the patch expects to create into.** The fixed patch
-   creates `features/home/src/main/ets/utils/OhmProbe.ets`; if `clean` removes an empty
-   parent directory that the checkout left behind, the apply could fail.
-3. **The unfixed pass leaving the tree dirty in a way that survives into the fixed pass** -
-   the driver checks out `--force` and cleans, so this should not happen, but the
-   instrumenter's added files are untracked and `clean` handles them only if `-x` is used
-   (it is not). An untracked `history.ets` companion from the unfixed pass could collide.
+## Next step
 
-The quickest diagnostic is to make the driver print `git apply`'s own exit code and stderr
-instead of swallowing them, then re-run the fixed pass alone.
+Investigate the install itself, which is now the only thing between this case and a result:
 
-## Verified so far for this case
+1. after `hdc install`, immediately query `bm dump -n com.itcast.pass_interview` and check
+   that `mainElementName` is `PhoneAbility` and that `haps/phone` is present - do not trust
+   the install exit line alone;
+2. check whether the signed HAP actually contains the `phone` module
+   (`unzip -l /tmp/interviewapp_search_history_sync_flush-<variant>.hap`);
+3. if the module is missing, the `find ... -name '*-unsigned.hap'` selection in the driver
+   may be picking the wrong artifact for this multi-module host - interviewapp builds
+   `products/phone/.../phone-default-unsigned.hap`, and a stale or different HAP would
+   install a bundle without the phone ability;
+4. if the module is present, the uninstall/install cycle may need a settling delay before
+   `aa start`, since the collector starts the ability within the same second.
 
-- `tools/instrument_flush_count.py` is idempotent and rewrites exactly the 2 unfixed flush
-  call sites, routing them through a counting wrapper that does not recurse.
-- `HistoryStore` is module-private in `history.ets`; the count is exposed through exported
-  `resetOhmFlushCount()` / `getOhmFlushCount()` accessors because the bench cannot reference
-  a class static.
-- The reset and marker land in the search-burst branch, identified by the deferred-flush
-  wait that only that branch has.
-- The host needs `ohpm install --all` before it compiles; the driver now does this.
+## Evidence already collected for this case
+
+- the unfixed build compiles with the flush counter and the counter is placed in the
+  search-burst branch;
+- the instrumenter is idempotent;
+- the oracle needs correcting: it claims "10 flushes (one per search)" while the harness
+  drives 1000 `setItem` calls, each flushing in the unfixed build, so the expected count is
+  1000 and the fixed build should settle to 1.
