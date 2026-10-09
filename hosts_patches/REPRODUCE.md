@@ -25,10 +25,33 @@ recorded base commit; this has been verified for all 8 hosts.
 
 ### ytmusic
 
-`ytmusic` has no upstream-base row in the bundle metadata because its upstream repository
-carries ~350 MB of rawfile audio at tip. Use the same procedure with
-`URL=https://github.com/Charles-Stark/Youtube-Music-ArkTS-Clone` and `BASE=f925981`; the
-patch series reconstructs the code without duplicating that history.
+`ytmusic` was the one host with no git bundle, because its upstream repository carries
+~350 MB of rawfile audio at tip. It has since been reconstructed with the same procedure,
+fetching only the base commit:
+
+```bash
+NAME=ytmusic
+URL=https://github.com/Charles-Stark/Youtube-Music-ArkTS-Clone
+BASE=f925981            # this is the tip of upstream `main`
+git init hosts/$NAME && cd hosts/$NAME
+git remote add origin "$URL"
+git fetch --depth 1 origin main      # sidesteps the 350 MB audio history
+git checkout FETCH_HEAD
+git checkout -b ohmbase
+git am ../../hosts_patches/ytmusic/*.patch
+```
+
+All four patches apply cleanly. The resulting dataset states are:
+
+| reconstructed commit | subject | role |
+| --- | --- | --- |
+| `b708e3855768` | build: strip signing, move screenshots | unfixed for `history_json_parse_per_row` |
+| `6e5d4f8c79e7` | parse each history entry's JSON once | fixed for `json_parse`, unfixed for `search_no_debounce` |
+| `73d702e49b2e` | debounce search by 300ms | fixed for `search_no_debounce`, unfixed for `current_playing_timeupdate` |
+| `f80bfeac1b99` | update progress only on second change | fixed for `current_playing_timeupdate` |
+
+(The values above are tree hashes, which is what `host-reconstruction.json` records and what
+`tools/verify_reconstruction.py` checks; `git am` rewrites commit SHAs.)
 
 ## Verifying a reconstruction
 

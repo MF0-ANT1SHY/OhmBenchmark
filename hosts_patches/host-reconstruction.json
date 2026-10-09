@@ -1,5 +1,5 @@
 {
-  "$comment": "Minimal metadata that replaces hosts_bundles/*.bundle. Each case tag maps to either the upstream base commit or one commit in hosts_patches/<host>/. Commits are not byte-reproducible (git am uses a fresh committer timestamp), so verification is by TREE equality, which is the exact code each build used.",
+  "$comment": "Minimal metadata that replaces hosts_bundles/*.bundle. Each case tag maps to either the upstream base commit or one commit in hosts_patches/<host>/. Commits are not byte-reproducible (git am uses a fresh committer timestamp), so verification is by TREE equality, which is the exact code each build used. ytmusic was reconstructed from its patch series rather than a bundle.",
   "hosts": {
     "browser": {
       "upstream_repository": "https://github.com/langwudong/browser",
@@ -272,10 +272,43 @@
           "tree": "4085ad189b70ef72a88ddc0010fdf6890b12aa49"
         }
       }
+    },
+    "ytmusic": {
+      "upstream_repository": "https://github.com/Charles-Stark/Youtube-Music-ArkTS-Clone",
+      "upstream_base_commit": "f925981",
+      "upstream_base_tree": "59f7c7538d8daa4032f04b3922761c9d12ef5493",
+      "ohmbase_commit": "e1758178dcb4c0e7fa7e42f2d9d5067e173e6692",
+      "case_tags": {
+        "case/ytmusic_history_json_parse_per_row/unfixed": {
+          "state": "patch-series commit 1",
+          "tree": "b708e385576817b0291209da9dde6190c4d4f672"
+        },
+        "case/ytmusic_history_json_parse_per_row/fixed": {
+          "state": "patch-series commit 2",
+          "tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d"
+        },
+        "case/ytmusic_search_no_debounce/unfixed": {
+          "state": "patch-series commit 2",
+          "tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d"
+        },
+        "case/ytmusic_search_no_debounce/fixed": {
+          "state": "patch-series commit 3",
+          "tree": "73d702e49b2e7ec1974e5035e8eaf2c70ebb4d82"
+        },
+        "case/ytmusic_current_playing_timeupdate/unfixed": {
+          "state": "patch-series commit 3",
+          "tree": "73d702e49b2e7ec1974e5035e8eaf2c70ebb4d82"
+        },
+        "case/ytmusic_current_playing_timeupdate/fixed": {
+          "state": "patch-series commit 4",
+          "tree": "f80bfeac1b993798db6b531e59b3ad90eb6def64"
+        }
+      },
+      "note": "Reconstructed from hosts_patches/ytmusic/ (4 patches) rather than a git bundle: the upstream repository carries ~350 MB of rawfile audio at tip. git am rewrites the commits, so the SHAs differ from cases/*/case.json; the TREES are the stable verification key. States verified on device-ready checkouts."
     }
   },
   "totals": {
-    "hosts": 8,
-    "case_tags": 54
+    "hosts": 9,
+    "case_tags": 60
   }
 }
