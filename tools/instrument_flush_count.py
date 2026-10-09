@@ -42,9 +42,12 @@ ACCESSOR = (
     '  return ohmFlushCount\n'
     '}\n'
 )
-# `setItem` and `delItem` flush; `clear` does not. The wrapper's own flush is
-# excluded, so two is the correct number of call sites to rewrite.
-EXPECTED_CALL_SITES = 2
+# The number of `this.store.flush()` sites depends on the variant:
+#   unfixed: setItem and delItem each flush directly            -> 2
+#   fixed:   both go through scheduleFlush, whose timer flushes  -> 1
+# So require at least one rather than a fixed number, and verify below that none is left
+# unrouted.
+MIN_CALL_SITES = 1
 
 
 def strip_previous(t: str) -> str:
@@ -77,9 +80,9 @@ def instrument_history(path: Path) -> None:
     def repl(mm):
         return 'this.ohmFlush()'
     t, n = re.subn(r'this\.store\.flush\(\)(?!\s*/\* OHMB_HELPER \*/)', repl, t)
-    if n != EXPECTED_CALL_SITES:
-        raise SystemExit(f'  FAILED: rewrote {n} call site(s), expected {EXPECTED_CALL_SITES}; '
-                         f'refusing to leave a half-instrumented tree')
+    if n < MIN_CALL_SITES:
+        raise SystemExit(f'  FAILED: rewrote {n} call site(s), expected at least '
+                         f'{MIN_CALL_SITES}; refusing to leave a half-instrumented tree')
 
     t = t.replace('this.store.flush() /* OHMB_HELPER */', 'this.store.flush()')
     t = t.rstrip('\n') + '\n' + ACCESSOR
