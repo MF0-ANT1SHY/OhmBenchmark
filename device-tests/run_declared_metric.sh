@@ -34,12 +34,22 @@ print(json.load(open(f'cases/{sys.argv[1]}/case.json'))['host_app']['bundle_name
 PY
 }
 BUNDLE=$(bundle)
+# The module directory under haps/ differs per host: interviewapp builds `phone`, the
+# weather assistant `alatus`, the rest `entry`. Read the host layout rather than guessing.
 MODULE=$(python3 - "$CASE" <<'PY'
-import json,sys,os
-d=json.load(open(f'cases/{sys.argv[1]}/case.json'))
-print('alatus' if 'weatherassistant' in sys.argv[1] else 'entry')
+import json, sys
+from pathlib import Path
+case = sys.argv[1]
+host = json.load(open(f'cases/{case}/case.json'))['host_app']
+local = host.get('local_path', '')
+cands = []
+if local and Path(local).exists():
+    for mod in Path(local).glob('*/src/main/module.json5'):
+        cands.append(mod.parts[-4])
+print(cands[0] if cands else 'entry')
 PY
 )
+echo "host module: $MODULE" 
 
 run_variant() {
   local variant=$1 commit=$2
@@ -106,7 +116,8 @@ run_variant() {
 
   for r in $(seq 1 "$REPS"); do
     echo "  --- run $r ---"
-    timeout 600 python3 device-tests/collect_wsl.py "$CASE" "$variant" --run "$r" 2>&1 | tail -2
+    timeout 600 python3 device-tests/collect_wsl.py "$CASE" "$variant" --run "$r" \
+        --module "$MODULE" --bundle "$BUNDLE" 2>&1 | tail -2
   done
 }
 
