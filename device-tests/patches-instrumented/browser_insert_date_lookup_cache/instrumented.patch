@@ -1,0 +1,114 @@
+diff --git a/entry/src/main/ets/utils/BrowserBench.ets b/entry/src/main/ets/utils/BrowserBench.ets
+index 0d3a23c..3ca92bd 100644
+--- a/entry/src/main/ets/utils/BrowserBench.ets
++++ b/entry/src/main/ets/utils/BrowserBench.ets
+@@ -3,6 +3,7 @@ import { relationalStore } from '@kit.ArkData';
+ import RdbUtils from './RdbUtils';
+ import History from '../common/bean/History';
+ import { OhmProbe } from './OhmProbe';
++import hiTraceMeter from '@ohos.hiTraceMeter';
+ 
+ export async function runBrowserBench(context: common.UIAbilityContext, name: string): Promise<void> {
+   await OhmProbe.measure(context, name, async (): Promise<void> => {
+@@ -29,10 +30,12 @@ export async function runBrowserBench(context: common.UIAbilityContext, name: st
+       const remaining = await RdbUtils.queryAllDate();
+       return remaining.length;
+     }
++    RdbUtils.ohmStatements = 0;
+     for (let i = 0; i < 1000; i++) {
+       await RdbUtils.insertDate('20260915');
+       await RdbUtils.insertHistory('20260915', new History('Article ' + i, 'https://example.org/' + i, '12:00:00'));
+     }
+-    return 1000;
++    hiTraceMeter.traceByValue('OHMB/StatementCount', RdbUtils.ohmStatements);
++    return RdbUtils.ohmStatements;
+   });
+ }
+diff --git a/entry/src/main/ets/utils/RdbUtils.ets b/entry/src/main/ets/utils/RdbUtils.ets
+index fc11825..be23ced 100644
+--- a/entry/src/main/ets/utils/RdbUtils.ets
++++ b/entry/src/main/ets/utils/RdbUtils.ets
+@@ -2,9 +2,20 @@ import relationalStore from '@ohos.data.relationalStore'
+ import History from '../common/bean/History'
+ 
+ export default class RdbUtils {
++  // OHMB statement counter (measurement only)
++  static ohmStatements: number = 0
++
++  // OHMB statement counter (measurement only)
++  private static ohmCount(n: number = 1): void {
++    RdbUtils.ohmStatements += n
++  }
++
+   // 关系型数据库
+   private static rdbStore: relationalStore.RdbStore
+ 
++  // 已确认存在的日期分表，避免每次保存浏览记录都重复查询/建表
++  private static knownDates: Set<string> = new Set()
++
+   static setStore(store: relationalStore.RdbStore) {
+     RdbUtils.rdbStore = store
+   }
+@@ -40,6 +51,7 @@ export default class RdbUtils {
+     )`
+ 
+     try {
++      RdbUtils.ohmCount();
+       await RdbUtils.executeSql(sql)
+     } catch (error) {
+       // TODO: Implement error handling.
+@@ -48,13 +60,19 @@ export default class RdbUtils {
+   }
+ 
+   static async insertDate(date: string) {
++    // 命中缓存时直接返回，跳过查询与建表
++    if (RdbUtils.knownDates.has(date)) {
++      return
++    }
++
+     const predicates = new relationalStore.RdbPredicates("date_table")
+ 
+     predicates.equalTo("date", date);
+ 
+-    let resultSet: relationalStore.ResultSet
++    let resultSet: relationalStore.ResultSet | null = null
+ 
+     try {
++      RdbUtils.ohmCount();
+       resultSet = await RdbUtils.getStore().query(predicates, ["date"]);
+ 
+       if (resultSet.rowCount <= 0) {
+@@ -63,6 +81,7 @@ export default class RdbUtils {
+         }
+ 
+         // 在日期表中插入当前日期
++        RdbUtils.ohmCount();
+         RdbUtils.getStore().insert("date_table", valueBucket)
+       }
+ 
+@@ -73,6 +92,8 @@ export default class RdbUtils {
+ 
+     // 按天分表
+     await RdbUtils.createHistoryTable(date)
++
++    RdbUtils.knownDates.add(date)
+   }
+ 
+   static async insertHistory(tableName: string, history: History) {
+@@ -82,6 +103,7 @@ export default class RdbUtils {
+       "url": history.url,
+       "timestamp": history.timestamp
+     }
++    RdbUtils.ohmCount();
+     return RdbUtils.getStore().insert(tableName, valueBucket)
+   }
+ 
+@@ -162,5 +184,7 @@ export default class RdbUtils {
+     })
+ 
+     RdbUtils.executeSql(`DROP TABLE IF EXISTS date_table`)
++
++    RdbUtils.knownDates.clear()
+   }
+ }
+\ No newline at end of file
