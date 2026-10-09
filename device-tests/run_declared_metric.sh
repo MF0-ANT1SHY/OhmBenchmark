@@ -44,15 +44,25 @@ PY
 run_variant() {
   local variant=$1 commit=$2
   echo "================= $CASE / $variant (commit $commit) ================="
+  # Clean FIRST, then apply the harness: the harness files are untracked additions from
+  # the measurement patch, so a later `git clean -fd` would delete them again.
   git -C "$H" checkout --quiet --force "$commit" || { echo "  checkout failed"; return 1; }
   git -C "$H" clean --quiet -fd
   echo "  HEAD: $(git -C "$H" rev-parse --short HEAD)"
 
-  local patch="device-tests/patches/$CASE/$variant.patch"
+  local patch="$ROOT/device-tests/patches/$CASE/$variant.patch"
   if [ -f "$patch" ]; then
-    git -C "$H" apply "$patch" && echo "  measurement patch applied" || echo "  PATCH FAILED"
+    git -C "$H" apply "$patch" && echo "  measurement patch applied" || {
+      echo "  PATCH FAILED - the harness may already exist, or line numbers moved"
+    }
   else
-    echo "  no measurement patch at $patch - the harness must already exist at this commit"
+    echo "  NO HARNESS PATCH at $patch"
+    echo "  -> this case needs a bench entry written from scratch; cannot measure it yet"
+    return 1
+  fi
+  if [ ! -f "$H/entry/src/main/ets/utils/OhmProbe.ets" ] && \
+     [ ! -f "$H/alatus/src/main/ets/utils/OhmProbe.ets" ]; then
+    echo "  WARNING: no OhmProbe after applying the patch; the bench cannot signal state"
   fi
 
   echo "  instrumenting:"
