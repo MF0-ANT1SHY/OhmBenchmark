@@ -34,6 +34,24 @@ print(json.load(open(f'cases/{sys.argv[1]}/case.json'))['host_app']['bundle_name
 PY
 }
 BUNDLE=$(bundle)
+ABILITY=$(python3 - "$CASE" <<'PY'
+import json, sys, glob, re
+from pathlib import Path
+case = sys.argv[1]
+host = json.load(open(f'cases/{case}/case.json'))['host_app']
+root = Path(host.get('local_path', ''))
+name = 'EntryAbility'
+if root.exists():
+    for mod in root.glob('*/src/main/module.json5'):
+        txt = mod.read_text(encoding='utf-8')
+        if '"type": "entry"' in txt or "'type': 'entry'" in txt:
+            m = re.search(r'"mainElement"\s*:\s*"([^"]+)"', txt)
+            if m:
+                name = m.group(1); break
+print(name)
+PY
+)
+echo "ability: $ABILITY"
 MODULE=$(python3 "$ROOT/device-tests/host_module.py" "$CASE")
 [ -n "$MODULE" ] || { echo "ABORT: could not resolve the host module"; exit 1; }
 echo "host module: $MODULE" 
@@ -94,9 +112,25 @@ run_variant() {
   ( cd "$H" && timeout 1800 hvigorw --mode module -p product=default -p buildMode=debug \
       assembleHap --no-daemon 2>&1 | tail -1 )
 
+  # Prefer the HAP whose output directory matches the module the device installs under
+  # (phone/entry/alatus). Do NOT filter by mtime: hvigor leaves an unchanged HAP's timestamp
+  # alone, so a successful build can produce no "fresh" file at all.
   local hap
-  hap=$(find "$H" -name '*-unsigned.hap' -newermt '-20 minutes' | head -1)
-  [ -n "$hap" ] || { echo "  no fresh HAP produced"; return 1; }
+  hap=$(find "$H" -name "*-unsigned.hap" -path "*$MODULE*" -not -path '*/oh_modules/*' \
+        2>/dev/null | head -1)
+  if [ -z "$hap" ]; then
+    # fall back to any artifact this host produces, newest first
+    hap=$(find "$H" -name '*-unsigned.hap' -not -path '*/oh_modules/*' -printf '%T@ %p\n' \
+          2>/dev/null | sort -rn | head -1 | cut -d' ' -f2-)
+  fi
+  [ -n "$hap" ] || { echo "  ABORT: no unsigned HAP anywhere in $H"; return 1; }
+  echo "  hap: ${hap#$H/}"
+  # the HAP must contain the ability the collector will start, or every run will fail with
+  # "The specified ability does not exist"
+  if command -v unzip >/dev/null 2>&1; then
+    unzip -p "$hap" module.json 2>/dev/null | grep -q "$ABILITY" \
+      || echo "  WARNING: module.json in this HAP does not mention $ABILITY"
+  fi
   timeout 300 python3 device-tests/sign_hap.py sign "$hap" "/tmp/$CASE-$variant.hap" "$BUNDLE" 2>&1 | tail -1
   timeout 120 hdc uninstall "$BUNDLE" >/dev/null 2>&1
   timeout 240 hdc install "/tmp/$CASE-$variant.hap" 2>&1 | grep -o 'install bundle successfully\|error:.*' | head -1
@@ -104,7 +138,7 @@ run_variant() {
   for r in $(seq 1 "$REPS"); do
     echo "  --- run $r ---"
     timeout 600 python3 device-tests/collect_wsl.py "$CASE" "$variant" --run "$r" \
-        --module "$MODULE" --bundle "$BUNDLE" 2>&1 | tail -2
+        --module "$MODULE" --bundle "$BUNDLE" --ability "$ABILITY" 2>&1 | tail -2
   done
 }
 
