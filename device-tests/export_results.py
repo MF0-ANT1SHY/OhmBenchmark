@@ -62,7 +62,7 @@ for item in case_rows:
     if not p.exists():continue
     files=list(p.rglob('*'))+list((root/'device-tests/patches'/name).glob('*'))+list((root/'cases'/name).glob('*'))
     package(out/(name+'.zip'),files)
-package(out/'methods-and-source.zip',list((root/'device-tests').rglob('*'))+list((root/'hosts_bundles').glob('*.bundle'))+list((root/'cases').rglob('*'))+[root/'measurements/README.md',root/'measurements/native-rdb-events.json',root/'measurements/summary.json',root/'measurements/results.json'])
+package(out/'methods-and-source.zip',list((root/'device-tests').rglob('*'))+list((root/'hosts_patches').rglob('*.patch'))+[root/'hosts_patches/host-reconstruction.json',root/'hosts_patches/REPRODUCE.md']+list((root/'cases').rglob('*'))+[root/'measurements/README.md',root/'measurements/native-rdb-events.json',root/'measurements/summary.json',root/'measurements/results.json'])
 package(out/'excluded-experiments.zip',list((root/'experiments').rglob('*')))
 
 esc=html.escape
