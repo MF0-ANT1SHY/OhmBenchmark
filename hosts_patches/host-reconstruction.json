@@ -1,0 +1,281 @@
+{
+  "$comment": "Minimal metadata that replaces hosts_bundles/*.bundle. Each case tag maps to either the upstream base commit or one commit in hosts_patches/<host>/. Commits are not byte-reproducible (git am uses a fresh committer timestamp), so verification is by TREE equality, which is the exact code each build used.",
+  "hosts": {
+    "browser": {
+      "upstream_repository": "https://github.com/langwudong/browser",
+      "upstream_base_commit": "f44fff7",
+      "ohmbase_commit": "f9425c47b7306fe7d6031ddc40dc117a80349162",
+      "case_tags": {
+        "case/browser_eager_history_load/fixed": {
+          "state": "perf: load browsing history lazily when the history dialog first opens instead of eagerly querying all history tables during app startup",
+          "tree": "0ba445d9e65201d8b2c135dc64f17cafa5c4a2ee"
+        },
+        "case/browser_eager_history_load/unfixed": {
+          "state": "build: refresh ohpm lockfile for headless CI build",
+          "tree": "4a496ee498c760e81d3c36c685bbd441c9a43372"
+        },
+        "case/browser_history_delete_no_transaction/fixed": {
+          "state": "perf: batch all clear-history DELETE statements into a single RDB transaction",
+          "tree": "83229456c247987eaa418ea094b8b65cddb02c22"
+        },
+        "case/browser_history_delete_no_transaction/unfixed": {
+          "state": "feat: clear browsing history row by row, keeping per-day table schema after cleanup",
+          "tree": "46f3821de88c3d309552d55308c95eaba7c3ad67"
+        },
+        "case/browser_history_list_foreach/fixed": {
+          "state": "perf: render history entries with LazyForEach and a per-group data source so off-screen rows are not created eagerly",
+          "tree": "ca8cdb46a27f193e2d1e80db3cb72c0f3efc63a4"
+        },
+        "case/browser_history_list_foreach/unfixed": {
+          "state": "perf: batch all clear-history DELETE statements into a single RDB transaction",
+          "tree": "83229456c247987eaa418ea094b8b65cddb02c22"
+        },
+        "case/browser_insert_date_lookup_cache/fixed": {
+          "state": "perf: cache known per-day history tables in memory so saving a browsing record skips the repeated date lookup and CREATE TABLE statements",
+          "tree": "b5f933274bab9a3518b4b572da64957f3f9e9e87"
+        },
+        "case/browser_insert_date_lookup_cache/unfixed": {
+          "state": "perf: load browsing history lazily when the history dialog first opens instead of eagerly querying all history tables during app startup",
+          "tree": "0ba445d9e65201d8b2c135dc64f17cafa5c4a2ee"
+        }
+      }
+    },
+    "wanharmony": {
+      "upstream_repository": "https://github.com/zjmok/WanHarmony",
+      "upstream_base_commit": "dd45ad2",
+      "ohmbase_commit": "cb8a8ea61b6b0fc4d744d7ec9298f0a391910e12",
+      "case_tags": {
+        "case/wanharmony_history_log_materialization/fixed": {
+          "state": "perf: log browsing-history size instead of materializing and stringifying the whole list on every page visit",
+          "tree": "4335f38febb7059d241de4f6ef22ade69767e729"
+        },
+        "case/wanharmony_history_log_materialization/unfixed": {
+          "state": "perf: decode HTML entities once when article data arrives instead of on every list-item build",
+          "tree": "41efd76077ad95ba36a279f8d4874c6d2310bca7"
+        },
+        "case/wanharmony_html_decode_per_render/fixed": {
+          "state": "perf: decode HTML entities once when article data arrives instead of on every list-item build",
+          "tree": "41efd76077ad95ba36a279f8d4874c6d2310bca7"
+        },
+        "case/wanharmony_html_decode_per_render/unfixed": {
+          "state": "upstream-base:dd45ad2",
+          "tree": "88b368cc0c7d5f07755f64a4a3aa7152208a5ac6"
+        },
+        "case/wanharmony_persisted_home_list_growth/fixed": {
+          "state": "perf: persist only the first-page home-article snapshot; accumulated load-more pages stay in memory instead of rewriting the whole list to persistent storage on every scroll",
+          "tree": "892d60f0762ef9cbf11fc32972f2b4116df74aa1"
+        },
+        "case/wanharmony_persisted_home_list_growth/unfixed": {
+          "state": "perf: log browsing-history size instead of materializing and stringifying the whole list on every page visit",
+          "tree": "4335f38febb7059d241de4f6ef22ade69767e729"
+        },
+        "case/wanharmony_web_progress_log_storm/fixed": {
+          "state": "perf: log web page load progress only at milestones instead of on every high-frequency progress event",
+          "tree": "99dcfd702c28ecbaf6386036450985be31f31735"
+        },
+        "case/wanharmony_web_progress_log_storm/unfixed": {
+          "state": "perf: persist only the first-page home-article snapshot; accumulated load-more pages stay in memory instead of rewriting the whole list to persistent storage on every scroll",
+          "tree": "892d60f0762ef9cbf11fc32972f2b4116df74aa1"
+        }
+      }
+    },
+    "jingmo": {
+      "upstream_repository": "https://github.com/hefengbao/jingmo-for-HarmonyOS",
+      "upstream_base_commit": "ddca186",
+      "ohmbase_commit": "6d6ad777f109124852e5c2374ea77edfc2347cea",
+      "case_tags": {
+        "case/jingmo_dataset_import_no_transaction/fixed": {
+          "state": "perf: import the classic-poem dataset with a single batchInsert transaction instead of one autocommit insert per row",
+          "tree": "ac69e4f9f62a10ea28840c83cc0f8741788ec151"
+        },
+        "case/jingmo_dataset_import_no_transaction/unfixed": {
+          "state": "perf: pick a random poem via a random id range scan instead of order by random() which sorts the whole table on every refresh",
+          "tree": "2eadaf75ff4f636cd8f04ca1ac52c6f3279b622a"
+        },
+        "case/jingmo_random_poem_orderby_random/fixed": {
+          "state": "perf: pick a random poem via a random id range scan instead of order by random() which sorts the whole table on every refresh",
+          "tree": "2eadaf75ff4f636cd8f04ca1ac52c6f3279b622a"
+        },
+        "case/jingmo_random_poem_orderby_random/unfixed": {
+          "state": "build: downgrade hvigor modelVersion/targetSdk to 5.1.0(API18) and drop API19-only toolbar option for headless build",
+          "tree": "1f27352d8d13c42ec52161b1696aad64e437f95c"
+        },
+        "case/jingmo_sync_page_reimport/fixed": {
+          "state": "perf: skip re-importing the classic-poem dataset when it is already present instead of re-running the full import on every sync-page open",
+          "tree": "8101cbf9b28e027904a750305aedeeec43a74202"
+        },
+        "case/jingmo_sync_page_reimport/unfixed": {
+          "state": "perf: import the classic-poem dataset with a single batchInsert transaction instead of one autocommit insert per row",
+          "tree": "ac69e4f9f62a10ea28840c83cc0f8741788ec151"
+        }
+      }
+    },
+    "cloudmusic": {
+      "upstream_repository": "https://github.com/Chenlvin/CloudMusic-HarmonyOSNext",
+      "upstream_base_commit": "724702c",
+      "ohmbase_commit": "ff15a9947c7438848de730bc46b02d5573b7583d",
+      "case_tags": {
+        "case/cloudmusic_indexof_in_render/fixed": {
+          "state": "perf: pass the LazyForEach index to song cards instead of calling list.indexOf(item) twice per row build",
+          "tree": "a668180b0569859ca1d7fa7ccb3eb16e9ab7e1f5"
+        },
+        "case/cloudmusic_indexof_in_render/unfixed": {
+          "state": "build: strip local signing configs for headless CI build",
+          "tree": "21ed09da100d1dba53df5043b1dc50f24d22bc09"
+        },
+        "case/cloudmusic_local_song_memory_filter/fixed": {
+          "state": "perf: filter local songs in SQLite with a LIKE predicate instead of materializing the whole table and filtering in memory",
+          "tree": "2846ea4d65fe74a0290de6c36b3d5815be288073"
+        },
+        "case/cloudmusic_local_song_memory_filter/unfixed": {
+          "state": "perf: pass the LazyForEach index to song cards instead of calling list.indexOf(item) twice per row build",
+          "tree": "a668180b0569859ca1d7fa7ccb3eb16e9ab7e1f5"
+        },
+        "case/cloudmusic_play_time_high_frequency_update/fixed": {
+          "state": "perf: update the global play-time state only when the displayed second changes instead of on every high-frequency timeUpdate callback",
+          "tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a"
+        },
+        "case/cloudmusic_play_time_high_frequency_update/unfixed": {
+          "state": "perf: filter local songs in SQLite with a LIKE predicate instead of materializing the whole table and filtering in memory",
+          "tree": "2846ea4d65fe74a0290de6c36b3d5815be288073"
+        },
+        "case/cloudmusic_search_result_foreach/fixed": {
+          "state": "perf: render song search results with LazyForEach and a data source so off-screen result rows are not created eagerly",
+          "tree": "9fce0f474edb3690c2c562d83cc82629ae42fb24"
+        },
+        "case/cloudmusic_search_result_foreach/unfixed": {
+          "state": "perf: update the global play-time state only when the displayed second changes instead of on every high-frequency timeUpdate callback",
+          "tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a"
+        },
+        "case/cloudmusic_songcard_artists_concat/fixed": {
+          "state": "perf: assemble artist names with a single join instead of repeated string concatenation in a loop",
+          "tree": "61388725820d06db64e66e57edb504321b12ba6c"
+        },
+        "case/cloudmusic_songcard_artists_concat/unfixed": {
+          "state": "perf: render song search results with LazyForEach and a data source so off-screen result rows are not created eagerly",
+          "tree": "9fce0f474edb3690c2c562d83cc82629ae42fb24"
+        }
+      }
+    },
+    "sheafreader": {
+      "upstream_repository": "https://github.com/simon2137/Sheaf-Reader",
+      "upstream_base_commit": "e04ef65",
+      "ohmbase_commit": "ba9a953d20c146d20aa26ba337ba0cee026a3693",
+      "case_tags": {
+        "case/sheafreader_article_list_foreach/fixed": {
+          "state": "perf: render the article list and card grid with LazyForEach over a data source so off-screen articles are not built eagerly",
+          "tree": "012f18c7b80113b0119917ca97a5d6a6536650f7"
+        },
+        "case/sheafreader_article_list_foreach/unfixed": {
+          "state": "perf: locate closing tags with a case-insensitive regex instead of lowercasing a copy of the whole fragment per extracted tag",
+          "tree": "914c45be73bbdd599cf09029098f0ea6bff961e4"
+        },
+        "case/sheafreader_extract_tag_tolowercase/fixed": {
+          "state": "perf: locate closing tags with a case-insensitive regex instead of lowercasing a copy of the whole fragment per extracted tag",
+          "tree": "914c45be73bbdd599cf09029098f0ea6bff961e4"
+        },
+        "case/sheafreader_extract_tag_tolowercase/unfixed": {
+          "state": "upstream-base:e04ef65",
+          "tree": "afc2ecbc7de30ebdf0580018ab615aba7590a3de"
+        },
+        "case/sheafreader_insert_duplicate_exception/fixed": {
+          "state": "perf: let SQLite ignore duplicate article inserts via conflict resolution instead of throwing and catching a constraint exception per existing row",
+          "tree": "7ea7f7cfd78e0f1a97b76a48171a643c59f4892e"
+        },
+        "case/sheafreader_insert_duplicate_exception/unfixed": {
+          "state": "perf: fetch all feed unread counts with one GROUP BY query instead of one COUNT per feed",
+          "tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40"
+        },
+        "case/sheafreader_refresh_feeds_sequential/fixed": {
+          "state": "perf: refresh feeds with bounded concurrency (4 workers) instead of fetching every source strictly sequentially",
+          "tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf"
+        },
+        "case/sheafreader_refresh_feeds_sequential/unfixed": {
+          "state": "perf: render the article list and card grid with LazyForEach over a data source so off-screen articles are not built eagerly",
+          "tree": "012f18c7b80113b0119917ca97a5d6a6536650f7"
+        },
+        "case/sheafreader_unread_counts_n_plus_1/fixed": {
+          "state": "perf: fetch all feed unread counts with one GROUP BY query instead of one COUNT per feed",
+          "tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40"
+        },
+        "case/sheafreader_unread_counts_n_plus_1/unfixed": {
+          "state": "perf: refresh feeds with bounded concurrency (4 workers) instead of fetching every source strictly sequentially",
+          "tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf"
+        }
+      }
+    },
+    "sepweather": {
+      "upstream_repository": "https://github.com/SeaEpoch/SepWeather",
+      "upstream_base_commit": "e7b92b4",
+      "ohmbase_commit": "e720e2150a6a062c85ccbe8269399d4edc6e7300",
+      "case_tags": {
+        "case/sepweather_font_register_per_page/fixed": {
+          "state": "perf: register custom fonts once per process instead of re-loading the TTFs on every MainPage creation",
+          "tree": "3264b46ab990081c90469f9095e6a1bf96f717d7"
+        },
+        "case/sepweather_font_register_per_page/unfixed": {
+          "state": "build: refresh ohpm lockfile for headless CI build",
+          "tree": "370125e32dcc9e352b052fbe25a8098878ad0ac7"
+        }
+      }
+    },
+    "weatherassistant": {
+      "upstream_repository": "https://github.com/AlatusLee/HarmonyOS-Next-Weather-Assistant",
+      "upstream_base_commit": "d3c7060",
+      "ohmbase_commit": "c181b312ec1c31ad1ea13641b2953fa2efd4778f",
+      "case_tags": {
+        "case/weatherassistant_http_session_leak/fixed": {
+          "state": "fix: destroy the HTTP session after each weather request to avoid leaking connections and fds",
+          "tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0"
+        },
+        "case/weatherassistant_http_session_leak/unfixed": {
+          "state": "build: refresh ohpm lockfile for headless CI build",
+          "tree": "bed692ed0c78126d91a798a62409886b83da1ee4"
+        },
+        "case/weatherassistant_remote_weather_icons/fixed": {
+          "state": "perf: bundle weather icons as local raw resources instead of fetching static glyphs from a remote CDN on every render",
+          "tree": "9542890dec7276586992a10a72fe723731107419"
+        },
+        "case/weatherassistant_remote_weather_icons/unfixed": {
+          "state": "fix: destroy the HTTP session after each weather request to avoid leaking connections and fds",
+          "tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0"
+        }
+      }
+    },
+    "interviewapp": {
+      "upstream_repository": "https://github.com/HarmonyOS-Next/interview-handbook-project",
+      "upstream_base_commit": "1e05347",
+      "ohmbase_commit": "9f226e3d8793bf1a9396221d5c518debd7b8bde5",
+      "case_tags": {
+        "case/interviewapp_response_log_full_stringify/fixed": {
+          "state": "perf: log only the response code and message instead of JSON.stringify-ing the whole response body to truncate it to 200 chars",
+          "tree": "4085ad189b70ef72a88ddc0010fdf6890b12aa49"
+        },
+        "case/interviewapp_response_log_full_stringify/unfixed": {
+          "state": "perf: debounce search-history preference flushes instead of flushing to disk synchronously on every keyword save",
+          "tree": "382c9d77994a2b3aa5e42dcac0f81fbae280b8cf"
+        },
+        "case/interviewapp_search_history_sync_flush/fixed": {
+          "state": "perf: debounce search-history preference flushes instead of flushing to disk synchronously on every keyword save",
+          "tree": "382c9d77994a2b3aa5e42dcac0f81fbae280b8cf"
+        },
+        "case/interviewapp_search_history_sync_flush/unfixed": {
+          "state": "build: strip local signing configs and refresh lockfiles for headless CI build",
+          "tree": "e77617182614753257cf10aff3244973254c2c97"
+        },
+        "case/interviewapp_search_history_unbounded/fixed": {
+          "state": "perf: keep search history as a bounded, ordered list (max 20 entries) instead of an ever-growing key set",
+          "tree": "6ead8b753ec2a2f67ecdbc52bd53a454f2942b9f"
+        },
+        "case/interviewapp_search_history_unbounded/unfixed": {
+          "state": "perf: log only the response code and message instead of JSON.stringify-ing the whole response body to truncate it to 200 chars",
+          "tree": "4085ad189b70ef72a88ddc0010fdf6890b12aa49"
+        }
+      }
+    }
+  },
+  "totals": {
+    "hosts": 8,
+    "case_tags": 54
+  }
+}
