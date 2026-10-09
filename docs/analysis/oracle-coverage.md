@@ -1,6 +1,6 @@
 # Oracle coverage
 
-Of 30 cases: 4 satisfied, 1 counter-satisfied, 2 declared-collected-new, 2 mechanism-absent, 6 proxy, 2 collected-not-used, 13 never-run.
+Of 30 cases: 4 satisfied, 1 counter-satisfied, 4 declared-collected-new, 2 mechanism-absent, 6 proxy, 13 never-run.
 
 | case | verdict | primitive | declared metric | collected metric |
 | --- | --- | --- | --- | --- |
@@ -14,8 +14,8 @@ Of 30 cases: 4 satisfied, 1 counter-satisfied, 2 declared-collected-new, 2 mecha
 | `cloudmusic_search_result_foreach` | never-run | count | `search_list_render_cpu_and_jank` | — |
 | `cloudmusic_songcard_artists_concat` | never-run | cpu | `row_appear_cpu_overhead` | — |
 | `interviewapp_response_log_full_stringify` | never-run | cpu | `response_handler_cpu_ms` | — |
-| `interviewapp_search_history_sync_flush` | collected-not-used | count | `flush_count_per_search_burst` | — |
-| `interviewapp_search_history_unbounded` | collected-not-used | count | `history_entries_and_render_cost` | — |
+| `interviewapp_search_history_sync_flush` | declared-collected-new | count | `flush_count_per_search_burst` | `FlushCount` |
+| `interviewapp_search_history_unbounded` | declared-collected-new | count | `history_entries_and_render_cost` | `result` |
 | `jingmo_dataset_import_no_transaction` | satisfied | elapsed | `elapsed_ms` | `elapsed_ms` |
 | `jingmo_random_poem_orderby_random` | satisfied | elapsed | `elapsed_ms` | `elapsed_ms` |
 | `jingmo_sync_page_reimport` | proxy | elapsed | `revisit_sync_page_cost` | `elapsed_ms` |

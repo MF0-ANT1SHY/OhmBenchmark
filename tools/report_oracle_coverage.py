@@ -65,6 +65,18 @@ def load_staged(data):
                 for marker, value in re.findall(MARKER_RE, blob):
                     out.setdefault(case_dir.name, {}).setdefault(
                         variant_dir.name, {}).setdefault(marker, []).append(int(value))
+
+                # The bench's own `result` is a declared-metric source too: some cases return
+                # the oracle quantity directly and emit no marker at all.
+                rj = run_dir / 'result.json'
+                if rj.exists():
+                    try:
+                        value = json.loads(rj.read_text(encoding='utf-8')).get('result')
+                    except ValueError:
+                        value = None
+                    if isinstance(value, int):
+                        out.setdefault(case_dir.name, {}).setdefault(
+                            variant_dir.name, {}).setdefault('result', []).append(value)
     return out
 
 
