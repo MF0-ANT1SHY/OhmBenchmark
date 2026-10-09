@@ -103,10 +103,22 @@ def main():
     rec(f'aa force-stop {bundle}')
     rec(f'rm -f {base}/ohm-status.json {base}/ohm-go')
     rec(f'aa start -a {args.ability} -b {bundle}')
-    time.sleep(4)
-    rec(f'aa start -a {args.ability} -b {bundle} --ps bench {args.case}')
-    v = wait_state('ready')
-    print(f'  ready: {v}')
+
+    # A fresh install has no app data directory yet, so the first cold start is slower than
+    # a warm one. Give the ability time to come up, then trigger `onNewWant`; if nothing
+    # answers, the ability was not up yet, so wait longer and try again.
+    v = None
+    for attempt in range(1, 4):
+        time.sleep(4 if attempt == 1 else 8)
+        rec(f'aa start -a {args.ability} -b {bundle} --ps bench {args.case}')
+        try:
+            v = wait_state('ready', seconds=25)
+            print(f'  ready on attempt {attempt}: {v}')
+            break
+        except TimeoutError:
+            print(f'  attempt {attempt}: no ready state yet, retrying')
+    if v is None:
+        raise TimeoutError(f'never reached ready after 3 trigger attempts; last={status()}')
 
     pid = sh(f'pidof {bundle}').split()[0]
     print(f'  pid={pid}')
