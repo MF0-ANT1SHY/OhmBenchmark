@@ -44,6 +44,29 @@ export function ohmDiag(context: common.UIAbilityContext, label: string, value: 
   }
 }
 
+/** Write the `ready` status and block until the collector touches ohm-go. */
+export async function ohmAwaitGo(context: common.UIAbilityContext): Promise<void> {
+  const go = context.filesDir + '/ohm-go';
+  try {
+    if (fs.accessSync(go)) {
+      fs.unlinkSync(go);
+    }
+  } catch (e) {
+  }
+  ohmTerminalWrite(context, '{"state":"ready"}');
+  await new Promise<void>((resolve) => {
+    const timer = setInterval(() => {
+      try {
+        if (fs.accessSync(go)) {
+          clearInterval(timer);
+          resolve();
+        }
+      } catch (e) {
+      }
+    }, 100);
+  });
+}
+
 /** Write the terminal status the collector waits for. */
 export function ohmTerminalWrite(context: common.UIAbilityContext, value: string): void {
   try {

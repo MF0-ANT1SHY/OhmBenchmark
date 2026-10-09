@@ -24,8 +24,12 @@ CASE_NAME = 'wanharmony_web_progress_log_storm'
 COUNTER_SRC = REPO / 'device-tests' / 'harness' / 'OhmLogCount.ets'
 
 BENCH = '''
-  onNewWant(want: Want): void {
+  async onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): Promise<void> {
     if (want.parameters && want.parameters['bench']) {
+      // Signal ready, then wait for the collector to start tracing and touch ohm-go, so the
+      // measured window is the collector's rather than a race against it.
+      const ohmCtx0 = this.context as common.UIAbilityContext;
+      await ohmAwaitGo(ohmCtx0);
       // OHMB measurement: the variant's progress-log guard applied to the sequence a page load
       // produces. The guard is the only difference between the variants, so the count of events
       // it admits IS the declared log_calls_per_pageload.
@@ -48,7 +52,7 @@ BENCH = '''
 IMPORTS = (
     "import { common } from '@kit.AbilityKit';\n"
     "import { ohmProgressLogReset, ohmProgressLogBump, ohmProgressLogWouldLog, ohmDiag, "
-    "ohmTerminalWrite } from '../utils/OhmLogCount';\n"
+    "ohmTerminalWrite, ohmAwaitGo } from '../utils/OhmLogCount';\n"
     f"const OHM_CASE = '{CASE_NAME}';\n"
 )
 
