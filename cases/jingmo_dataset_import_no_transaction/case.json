@@ -12,7 +12,10 @@
   "android_mechanism": "OUI CSV import commits each row separately; fix batches all inserts into one transaction",
   "category": "latency",
   "bug_description": "The dataset-sync page imports the classic-poem dataset by iterating the parsed JSON array and issuing one standalone RDB INSERT per poem (each in its own autocommit transaction, all fired concurrently via a non-awaited map). Importing thousands of rows generates thousands of individual journal/fsync cycles, saturating the DB writer and freezing the sync page for a long time.",
-  "perf_scenarios": ["数据库读取", "网络结果渲染"],
+  "perf_scenarios": [
+    "数据库读取",
+    "网络结果渲染"
+  ],
   "unfixed_commit": "caf0823",
   "fixed_commit": "d52c391",
   "fix_summary": "Dataset import uses RdbStore.batchInsert so the whole array is inserted in a single transaction; the per-row debug logging is removed.",
@@ -27,9 +30,14 @@
     "Wait until import completes (row count stable in hilog). Stop hitrace. Repeat 3 repetitions for unfixed (clear app data between repetitions), then install fixed and repeat 3 repetitions."
   ],
   "test_oracle": {
-    "metric": "dataset_import_wall_time_ms",
+    "metric": "elapsed_ms",
     "definition": "Time from dataset JSON parse completion to the last INSERT commit observed in disk/database trace activity.",
-    "comparison": "unfixed: one sqlite journal/fsync cycle per row (thousands of small commits); fixed: single batched commit. unfixed_import_ms > fixed_import_ms by >= 3x for a multi-thousand-row dataset."
+    "comparison": "unfixed: one sqlite journal/fsync cycle per row (thousands of small commits); fixed: single batched commit. unfixed_import_ms > fixed_import_ms by >= 3x for a multi-thousand-row dataset.",
+    "oracle_revision": {
+      "previous_metric": "dataset_import_wall_time_ms",
+      "reason": "The definition is the wall time of the import, measured between the OHMB markers. That is exactly what the harness records as elapsed_ms.",
+      "note": "Renamed only. The definition, comparison rule and every recorded measurement are unchanged; no number changed meaning."
+    }
   },
   "trace_config": {
     "tool": "hitrace",
