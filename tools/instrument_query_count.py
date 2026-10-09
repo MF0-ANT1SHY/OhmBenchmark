@@ -33,11 +33,16 @@ def store_field(src: str) -> str:
     return m.group(1)
 
 
+def strip_previous(t: str) -> str:
+    """Remove earlier instrumentation so the tool is idempotent."""
+    t = re.sub(r'[ \t]*// OHMB query counter \(measurement only\)\n', '', t)
+    t = re.sub(r'[ \t]*\w+\.ohmQueries\+\+;\n', '', t)
+    t = re.sub(r'[ \t]*static ohmQueries: number = 0\n\n?', '', t)
+    return t
+
+
 def instrument_db(path: Path) -> None:
-    t = path.read_text(encoding='utf-8')
-    if MARK in t:
-        print(f'  {path.name}: already instrumented')
-        return
+    t = strip_previous(path.read_text(encoding='utf-8'))
     field = store_field(t)
     cls = re.search(r'export class (\w+)', t).group(1)
 
@@ -108,10 +113,19 @@ def instrument_bench(path: Path, cls: str) -> None:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--file', required=True)
-    ap.add_argument('--bench', required=True)
+    ap.add_argument('--file')
+    ap.add_argument('--bench')
+    ap.add_argument('--hosts', help='hosts dir; derives the sheafreader paths when given')
     ap.add_argument('--class', dest='cls', default='DatabaseManager')
     a = ap.parse_args()
+
+    if a.hosts and not (a.file and a.bench):
+        base = Path(a.hosts) / 'sheafreader' / 'entry' / 'src' / 'main' / 'ets'
+        a.file = str(base / 'data' / 'DatabaseManager.ets')
+        a.bench = str(base / 'utils' / 'SheafBench.ets')
+    if not (a.file and a.bench):
+        sys.exit('give either --hosts, or both --file and --bench')
+
     db, bench = Path(a.file), Path(a.bench)
     for p in (db, bench):
         if not p.exists():
