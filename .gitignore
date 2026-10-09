@@ -7,3 +7,7 @@ hosts/*/
 # slash so the symlink itself is matched (git does not follow it).
 /measurements
 /experiments
+
+# Fresh collection goes here; the original evidence lives in the data directory
+# (see DATA.md) and must never be overwritten by a new session.
+measurements-staging/

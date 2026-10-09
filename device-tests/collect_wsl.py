@@ -50,6 +50,9 @@ def main():
     ap.add_argument('--hold-seconds', type=float, default=0.0,
                     help='drive UI interactions during the measurement window instead of waiting')
     ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--outroot', default=str(ROOT / 'measurements-staging'),
+                    help='where to write runs; defaults to measurements-staging/ so the '
+                         'original collected evidence under the data directory is untouched')
     ap.add_argument('--force', action='store_true',
                     help='overwrite an existing run directory (the original collection is evidence)')
     args = ap.parse_args()
@@ -60,7 +63,7 @@ def main():
     spec = json.loads((ROOT / 'cases' / args.case / 'case.json').read_text(encoding='utf-8'))
     bundle = args.bundle or spec['host_app']['bundle_name']
     base = f'/data/app/el2/100/base/{bundle}/haps/{args.module}/files'
-    out = ROOT / 'measurements' / args.case / args.variant / f'run{args.run}'
+    out = Path(args.outroot) / args.case / args.variant / f'run{args.run}'
 
     def status():
         try:
