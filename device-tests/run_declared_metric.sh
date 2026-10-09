@@ -34,23 +34,8 @@ print(json.load(open(f'cases/{sys.argv[1]}/case.json'))['host_app']['bundle_name
 PY
 }
 BUNDLE=$(bundle)
-ABILITY=$(python3 - "$CASE" <<'PY'
-import json, sys, glob, re
-from pathlib import Path
-case = sys.argv[1]
-host = json.load(open(f'cases/{case}/case.json'))['host_app']
-root = Path(host.get('local_path', ''))
-name = 'EntryAbility'
-if root.exists():
-    for mod in root.glob('*/src/main/module.json5'):
-        txt = mod.read_text(encoding='utf-8')
-        if '"type": "entry"' in txt or "'type': 'entry'" in txt:
-            m = re.search(r'"mainElement"\s*:\s*"([^"]+)"', txt)
-            if m:
-                name = m.group(1); break
-print(name)
-PY
-)
+ABILITY=$(python3 "$ROOT/device-tests/host_module.py" "$CASE" --ability)
+[ -n "$ABILITY" ] || { echo "ABORT: could not resolve the ability"; exit 1; }
 echo "ability: $ABILITY"
 MODULE=$(python3 "$ROOT/device-tests/host_module.py" "$CASE")
 [ -n "$MODULE" ] || { echo "ABORT: could not resolve the host module"; exit 1; }
