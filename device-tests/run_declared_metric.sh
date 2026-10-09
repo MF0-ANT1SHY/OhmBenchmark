@@ -84,15 +84,6 @@ run_variant() {
       ;;
   esac
 
-  # locate OhmProbe wherever this host keeps it, rather than assuming a path
-  local probe
-  probe=$(find "$H" -name 'OhmProbe.ets' -not -path '*/oh_modules/*' 2>/dev/null | head -1)
-  if [ -z "$probe" ]; then
-    echo "  ABORT: no OhmProbe.ets anywhere in the host after applying the patch;"
-    echo "         the bench cannot signal state, so every run would time out"
-    return 1
-  fi
-  echo "  OhmProbe: ${probe#$H/}"
 
   case "$INSTRUMENTER" in
     result:*)
@@ -108,6 +99,17 @@ run_variant() {
                            return 1; }
       ;;
   esac
+
+
+  # locate OhmProbe wherever this host keeps it, rather than assuming a path
+  local probe
+  probe=$(find "$H" -name 'OhmProbe.ets' -not -path '*/oh_modules/*' 2>/dev/null | head -1)
+  if [ -z "$probe" ]; then
+    echo "  ABORT: no OhmProbe.ets anywhere in the host after applying the patch;"
+    echo "         the bench cannot signal state, so every run would time out"
+    return 1
+  fi
+  echo "  OhmProbe: ${probe#$H/}"
 
   echo "  installing ohpm dependencies (some hosts need this before they compile)..."
   ( cd "$H" && timeout 1800 ohpm install --all 2>&1 | tail -1 )
