@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+# Run the 3-repetition measurement protocol for a case whose declared metric we instrument.
+#
+# Steps per variant:
+#   1. hard-reset the host clone to the case's recorded commit for that variant
+#   2. apply the repo's measurement patch for that variant (the harness entry)
+#   3. apply the case's declared-metric instrumentation
+#   4. build -> sign -> install
+#   5. collect N runs, staged under measurements-staging/ so original evidence is untouched
+#
+# Usage: run_declared_metric.sh <case> <host> <unfixed-commit> <fixed-commit> <instrumenter> <reps>
+set -uo pipefail
+
+CASE=${1:?case}
+HOST=${2:?host}
+UNFIXED=${3:?unfixed commit}
+FIXED=${4:?fixed commit}
+INSTRUMENTER=${5:?instrumenter tool}
+REPS=${6:-3}
+
+ROOT=/home/research/OhmBenchmark-main
+cd "$ROOT" || exit 1
+H="hosts/$HOST"
+
+export PATH="$HOME/.local/bin:$PATH"
+TC=/home/research/OhmBenchmark-toolchain/command-line-tools
+export PATH="$TC/bin:$PATH"
+export DEVECO_SDK_HOME="$TC/sdk"
+
+bundle() {
+  python3 - "$CASE" <<'PY'
+import json,sys
+print(json.load(open(f'cases/{sys.argv[1]}/case.json'))['host_app']['bundle_name'])
+PY
+}
+BUNDLE=$(bundle)
+MODULE=$(python3 - "$CASE" <<'PY'
+import json,sys,os
+d=json.load(open(f'cases/{sys.argv[1]}/case.json'))
+print('alatus' if 'weatherassistant' in sys.argv[1] else 'entry')
+PY
+)
+
+run_variant() {
+  local variant=$1 commit=$2
+  echo "================= $CASE / $variant (commit $commit) ================="
+  git -C "$H" checkout --quiet --force "$commit" || { echo "  checkout failed"; return 1; }
+  git -C "$H" clean --quiet -fd
+  echo "  HEAD: $(git -C "$H" rev-parse --short HEAD)"
+
+  local patch="device-tests/patches/$CASE/$variant.patch"
+  if [ -f "$patch" ]; then
+    git -C "$H" apply "$patch" && echo "  measurement patch applied" || echo "  PATCH FAILED"
+  else
+    echo "  no measurement patch at $patch - the harness must already exist at this commit"
+  fi
+
+  echo "  instrumenting:"
+  python3 "$INSTRUMENTER" --hosts "$ROOT/hosts" 2>&1 | sed 's/^/  /'
+
+  echo "  building..."
+  ( cd "$H" && timeout 1800 hvigorw --mode module -p product=default -p buildMode=debug \
+      assembleHap --no-daemon 2>&1 | tail -1 )
+
+  local hap
+  hap=$(find "$H" -name '*-unsigned.hap' -newermt '-20 minutes' | head -1)
+  [ -n "$hap" ] || { echo "  no fresh HAP produced"; return 1; }
+  timeout 300 python3 device-tests/sign_hap.py sign "$hap" "/tmp/$CASE-$variant.hap" "$BUNDLE" 2>&1 | tail -1
+  timeout 120 hdc uninstall "$BUNDLE" >/dev/null 2>&1
+  timeout 240 hdc install "/tmp/$CASE-$variant.hap" 2>&1 | grep -o 'install bundle successfully\|error:.*' | head -1
+
+  for r in $(seq 1 "$REPS"); do
+    echo "  --- run $r ---"
+    timeout 600 python3 device-tests/collect_wsl.py "$CASE" "$variant" --run "$r" 2>&1 | tail -2
+  done
+}
+
+run_variant unfixed "$UNFIXED"
+run_variant fixed "$FIXED"
+
+echo
+echo "================= SUMMARY ================="
+python3 - "$CASE" "$REPS" <<'PY'
+import gzip, json, re, sys, statistics
+from pathlib import Path
+case, reps = sys.argv[1], int(sys.argv[2])
+root = Path('/home/research/OhmBenchmark-main/measurements-staging') / case
+markers = ('StatementCount', 'QueryCount')
+for variant in ('unfixed', 'fixed'):
+    vals, times = [], []
+    for r in range(1, reps + 1):
+        d = root / variant / f'run{r}'
+        t = d / 'trace.txt.gz'
+        if t.exists():
+            with gzip.open(t, 'rt', errors='replace') as f:
+                blob = f.read()
+            for m in markers:
+                got = [int(v) for v in re.findall(m + r'\|(\d+)', blob)]
+                if got:
+                    vals.append(max(got)); break
+        rj = d / 'result.json'
+        if rj.exists():
+            times.append(json.loads(rj.read_text())['elapsed_ms'])
+    if vals:
+        print(f"  {variant:<8} n={len(vals)}  declared-metric={vals}  median={statistics.median(vals):g}"
+              f"  elapsed_median={statistics.median(times):.0f}ms")
+    else:
+        print(f"  {variant:<8} no declared-metric values collected")
+PY
