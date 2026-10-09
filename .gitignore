@@ -1,4 +1,6 @@
-toolchain/
+# SDK/toolchain checkout; a symlink here, so anchor without a trailing
+# slash (git does not follow it when matching)
+/toolchain
 hosts/*/
 *.log
 # Raw measurement data lives outside the repository (see DATA.md):
