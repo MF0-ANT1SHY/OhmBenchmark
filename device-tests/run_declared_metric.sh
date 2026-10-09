@@ -68,6 +68,9 @@ run_variant() {
   echo "  instrumenting:"
   python3 "$INSTRUMENTER" --hosts "$ROOT/hosts" 2>&1 | sed 's/^/  /'
 
+  echo "  installing ohpm dependencies (some hosts need this before they compile)..."
+  ( cd "$H" && timeout 1800 ohpm install --all 2>&1 | tail -1 )
+
   echo "  building..."
   ( cd "$H" && timeout 1800 hvigorw --mode module -p product=default -p buildMode=debug \
       assembleHap --no-daemon 2>&1 | tail -1 )
