@@ -158,6 +158,16 @@ and `pack.info` (valid JSON, no stray spaces).
 The same keystore, certificates and PEM material are accepted by `sign-profile` and
 `verify-profile` in the same session, so this is specific to `sign-app` in this tool build.
 
+Additional checks: the failure is **deterministic** (three identical invocations from a
+single directory with short filenames all fail the same way), and it is **not** a line-ending
+problem (the offending character is `0x20`, a space, while the files use `0x0a`/`0x0d`).
+Variant H produced a *different* error only because it used a pristine keystore whose
+`openharmony application release` key does not pair with the certificate chain supplied;
+that variant at least reached alias/certificate validation, so the base64 failure precedes it.
+
+Attempts to fix this locally are now stopped: eleven variants across two JDKs all fail, and
+further guessing inside a 2021 tool build is not a good use of time.
+
 ### Conclusion and next step
 
 This is a **tool-build** problem, not a key-material, JRE or HAP problem. The decisive next
