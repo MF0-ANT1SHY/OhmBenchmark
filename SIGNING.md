@@ -79,15 +79,76 @@ not carried over.
    `device-tests/sign_hap_wsl.py` implements the two-step recipe against these files
    (`sign-profile` then `sign-app`).
 
-## The blocker for signing new builds
+## Status: JRE installed, signing identity prepared, `sign-app` still failing
 
-`hap-sign-tool.jar` is a Java program, and **there is no Java runtime on this machine** —
-neither on the WSL `PATH` nor under `C:\Program Files`. So:
+### Done
 
-- the 47 already-signed HAPs **can** be installed, so cases can be **re-measured** with the
-  harnesses as they were built;
-- a **newly built** HAP (needed if a probe/harness is edited) **cannot be signed here**
-  until a JRE is available.
+A portable Temurin JRE 21 was installed without root (the machine has no `sudo`):
+
+```
+~/.local/jre          OpenJDK 21.0.12.1+1 (Temurin), checksum-verified against the
+                      Adoptium API SHA-256, fetched through the configured proxy
+~/.local/bin/java     symlink so it is on PATH
+```
+
+`device-tests/sign_hap_wsl.py prepare` then succeeds end to end. It:
+
+1. exports `rootCA.cer` and `subCA.cer` from the SDK keystore with `keytool`;
+2. copies the keystore to `~/.local/ohsign/OpenHarmony.p12` (mode 600) so the shared SDK
+   file is not modified;
+3. `generate-keypair -keyAlias oh-bench-key-v1` (ECC NIST-P-256);
+4. `generate-app-cert` issuing a chain from the keystore's intermediate CA.
+
+Result: `~/.local/ohsign/app-signing.pem`, a verified 3-certificate chain
+(entity `CN=OpenHarmony Application Release` -> `CN=OpenHarmony Application CA` ->
+`CN=OpenHarmony Application Root CA`), with clean base64 and correct order.
+
+`sign-profile` also succeeds: the debug profile is generated with the right bundle name,
+the device UDID in `debug-info.device-ids`, and the app signing certificate embedded as
+`development-certificate` (verified: base64 well-formed, no stray whitespace).
+
+### Not done: `sign-app` fails
+
+Every `sign-app` invocation fails immediately with:
+
+```
+ERROR: 11010001 Unknown error
+Error Message: Illegal base64 character 20
+```
+
+Tried and ruled out (all fail identically):
+
+- certificate chain as generated (entity, CA, root)
+- leaf certificate only
+- signed `.p7b` profile, and the raw `.json` profile with `-profileSigned 0`
+- with and without `-compatibleVersion`
+
+`verify-app` on a known-good HAP fails differently — `ERROR: 11011005 Param is not
+trusted` — while the same input HAPs install on the device without complaint. The unsigned
+HAP is a valid 23-member ZIP.
+
+The tool reports version **1.0.0**, and it is running on **JDK 21**. This version predates
+that JDK, so the most likely cause is a tool/runtime incompatibility rather than missing
+key material: the failure is in argument or base64 parsing before any crypto happens.
+
+### Candidate next steps
+
+1. Try an older JRE (JDK 8 or 11) — the tool is from 2021. `~/.local/jre` can hold a second
+   runtime and `JAVA_HOME` can select it.
+2. Obtain a newer `hap-sign-tool.jar` from a current SDK, which would also supply the
+   matching `OpenHarmonyApplication.pem` chain and remove the need to generate one.
+3. Use DevEco Studio automatic signing on a Huawei developer account.
+
+The original blocker is recorded below for reference.
+
+## Earlier blocker (now partly lifted)
+
+`hap-sign-tool.jar` is a Java program, and there was **no Java runtime on this machine**.
+That is now installed, so:
+
+- the 47 already-signed HAPs **can** be installed and re-measured (confirmed);
+- a **newly built** HAP still cannot be signed, but now because of the `sign-app` failure
+  above rather than a missing runtime.
 
 ## Recovery paths, in order of preference
 
