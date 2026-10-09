@@ -82,13 +82,20 @@ run_variant() {
   fi
   echo "  OhmProbe: ${probe#$H/}"
 
-  echo "  instrumenting:"
-  python3 "$INSTRUMENTER" --hosts "$ROOT/hosts" 2>&1 | sed 's/^/  /'
-  rc=${PIPESTATUS[0]}
-  echo "  instrumenter exit=$rc"
-  [ "$rc" -eq 0 ] || { echo "  ABORT: instrumentation failed; refusing to measure a build"
-                       echo "         whose declared metric is not being counted"
-                       return 1; }
+  case "$INSTRUMENTER" in
+    result:*)
+      echo "  no instrumentation needed: the declared metric is the bench's own result field"
+      ;;
+    *)
+      echo "  instrumenting:"
+      python3 "$INSTRUMENTER" --hosts "$ROOT/hosts" 2>&1 | sed 's/^/  /'
+      rc=${PIPESTATUS[0]}
+      echo "  instrumenter exit=$rc"
+      [ "$rc" -eq 0 ] || { echo "  ABORT: instrumentation failed; refusing to measure a build"
+                           echo "         whose declared metric is not being counted"
+                           return 1; }
+      ;;
+  esac
 
   echo "  installing ohpm dependencies (some hosts need this before they compile)..."
   ( cd "$H" && timeout 1800 ohpm install --all 2>&1 | tail -1 )
@@ -132,27 +139,33 @@ run_variant fixed "$FIXED"
 
 echo
 echo "================= SUMMARY ================="
-python3 - "$CASE" "$REPS" <<'PY'
+python3 - "$CASE" "$REPS" "$INSTRUMENTER" <<'PY'
 import gzip, json, re, sys, statistics
 from pathlib import Path
-case, reps = sys.argv[1], int(sys.argv[2])
+case, reps, instrumenter = sys.argv[1], int(sys.argv[2]), sys.argv[3]
 root = Path('/home/research/OhmBenchmark-main/measurements-staging') / case
-markers = ('StatementCount', 'QueryCount')
+use_result = instrumenter.startswith('result:')
 for variant in ('unfixed', 'fixed'):
     vals, times = [], []
     for r in range(1, reps + 1):
         d = root / variant / f'run{r}'
-        t = d / 'trace.txt.gz'
-        if t.exists():
-            with gzip.open(t, 'rt', errors='replace') as f:
-                blob = f.read()
-            for m in markers:
-                got = [int(v) for v in re.findall(m + r'\|(\d+)', blob)]
-                if got:
-                    vals.append(max(got)); break
         rj = d / 'result.json'
-        if rj.exists():
-            times.append(json.loads(rj.read_text())['elapsed_ms'])
+        res = json.loads(rj.read_text()) if rj.exists() else {}
+        if use_result:
+            if 'result' in res:
+                vals.append(res['result'])
+        else:
+            t = d / 'trace.txt.gz'
+            if t.exists():
+                with gzip.open(t, 'rt', errors='replace') as f:
+                    blob = f.read()
+                # any OHMB/<Name>|<int> marker, so new instrumenters need no edit here
+                found = [(m, int(v)) for m, v in re.findall(r'OHMB/([A-Za-z]+)\|(\d+)', blob)]
+                if found:
+                    name = found[0][0]
+                    vals.append(max(v for n, v in found if n == name))
+        if 'elapsed_ms' in res:
+            times.append(res['elapsed_ms'])
     if vals:
         print(f"  {variant:<8} n={len(vals)}  declared-metric={vals}  median={statistics.median(vals):g}"
               f"  elapsed_median={statistics.median(times):.0f}ms")
