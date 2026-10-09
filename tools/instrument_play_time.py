@@ -27,8 +27,9 @@ COUNTER_SRC = REPO / 'device-tests' / 'harness' / 'OhmPlayTimeCount.ets'
 TARGET = 'entry/src/main/ets/common/utils/play/AVPlayerUtils.ets'
 # cloudmusic keeps shared code under common/utils; there is no entry/.../ets/utils/
 COUNTER_DEST = 'entry/src/main/ets/common/utils/OhmPlayTimeCount.ets'
-# AVPlayerUtils.ets is at common/utils/play/, so the counter at common/utils/ is three up
-COUNTER_FROM_PLAY = '../../../OhmPlayTimeCount'
+# AVPlayerUtils.ets already imports '../../constants/...' and '../../functions/...', which
+# places common/utils/ two levels up from common/utils/play/ - where the counter lives
+COUNTER_FROM_PLAY = '../../OhmPlayTimeCount'
 COUNTER_FROM_ABILITY = '../common/utils/OhmPlayTimeCount'
 
 BENCH = '''
@@ -72,6 +73,38 @@ def guard_body(src: str) -> str:
     return 'return true;'
 
 
+
+def remove_permission(text: str, name: str) -> str:
+    """Cut a requestPermissions entry out by matching braces, so JSON5 spacing cannot defeat it."""
+    key = f'"{name}"'
+    i = text.find(key)
+    if i == -1:
+        return text
+    # walk back to the opening brace of this entry
+    start = text.rfind('{', 0, i)
+    if start == -1:
+        return text
+    # walk forward to its matching close
+    depth = 0
+    for j in range(start, len(text)):
+        if text[j] == '{':
+            depth += 1
+        elif text[j] == '}':
+            depth -= 1
+            if depth == 0:
+                end = j + 1
+                break
+    else:
+        return text
+    # also consume a following comma and any surrounding blank line
+    tail = text[end:]
+    m = re.match(r'\s*,', tail)
+    if m:
+        end += m.end()
+    out = text[:start] + text[end:]
+    return re.sub(r',(\s*[\]}])', r'\1', out)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument('--hosts', default=str(REPO / 'hosts'))
@@ -80,6 +113,18 @@ def main() -> int:
     target = host / TARGET
     if not target.exists():
         raise SystemExit(f'  FAILED: {target} missing')
+
+    # remove the install-blocking system permission, identically for both variants
+    mod = host / 'entry/src/main/module.json5'
+    if mod.exists():
+        mt = mod.read_text(encoding='utf-8')
+        if 'SYSTEM_FLOAT_WINDOW' in mt:
+            mt = remove_permission(mt, 'ohos.permission.SYSTEM_FLOAT_WINDOW')
+            mod.write_text(mt, encoding='utf-8')
+            still = 'SYSTEM_FLOAT_WINDOW' in mod.read_text(encoding='utf-8')
+            print(f'    module.json5: SYSTEM_FLOAT_WINDOW removed (still present: {still})')
+            if still:
+                raise SystemExit('  FAILED: could not remove the install-blocking permission')
 
     print('  instrumenting the PLAY_TIME write path:')
     src = target.read_text(encoding='utf-8')

@@ -1,8 +1,6 @@
 # cloudmusic cannot be installed from a self-signed build
 
-## The finding
-
-Installing the instrumented cloudmusic build fails outright:
+## The blocker, confirmed twice
 
 ```
 error: failed to install bundle. code:9568289
@@ -10,50 +8,81 @@ error: install failed due to grant request permissions failed.
 PermissionName: ohos.permission.SYSTEM_FLOAT_WINDOW
 ```
 
-`ohos.permission.SYSTEM_FLOAT_WINDOW` is a **system-grant** permission: it is only available to
-applications signed with a system-level profile. A locally signed debug build cannot be granted
-it, so the HAP is rejected at install time and every run times out for want of an app to drive.
+`ohos.permission.SYSTEM_FLOAT_WINDOW` is a **system-grant** permission: only applications signed
+with a system-level profile can be granted it, so a locally signed debug build is rejected at
+install. Every run then times out for want of an app to drive.
 
-This is the same class of environment constraint already recorded for the fixture-dependent cases,
-and it blocks **all four cloudmusic cases**, since they share one bundle and one permission set.
-Those cases are `cloudmusic_indexof_in_render`, `cloudmusic_play_result_latency`,
-`cloudmusic_play_time_high_frequency_update`, `cloudmusic_search_result_foreach` and
-`cloudmusic_songcard_artists_concat` - whatever the case measures, it must be installed first.
+This blocks **all the cloudmusic cases**, which share one bundle and permission set. It is the same
+class of environment constraint as the fixture-reachability limit, and is recorded once rather than
+rediscovered per case.
 
-## What is nonetheless built and correct
+## Attempted mitigation, and why it did not land
+
+`SYSTEM_FLOAT_WINDOW` gates `WindowUtils.ets`' float-window creation, which is unrelated to the
+`PLAY_TIME` writes this case declares, so removing the request is a defensible minimal deviation -
+applied identically to both variants, so the comparison stays fair.
+
+`tools/instrument_play_time.py` therefore removes the entry from `entry/src/main/module.json5` by
+matching braces (a rigid regex did not match and silently left it in place, which is why the first
+attempt produced the identical install error). The removal itself is verified:
+
+- `module.json5` no longer mentions `SYSTEM_FLOAT_WINDOW`;
+- the file still parses and its braces balance.
+
+It did **not** reach the installed artifact, because the build failed before packaging, and
+`hdc install` then installed the **stale HAP from the previous build** - which still carried the
+permission. That is worth stating plainly: the install error in that run says nothing about whether
+the removal works.
+
+## The build failure that masked it
+
+```
+Error Message: Cannot find module '../../OhmPlayTimeCount' or its corresponding type declarations.
+  At File: .../common/utils/play/AVPlayerUtils.ets:11:29
+```
+
+The counter module is not present at build time. Two candidate causes, not yet distinguished:
+
+1. **Clean-after-instrument ordering.** The driver checks out, cleans, applies the harness patch,
+   then runs the instrumenter - correct. But the instrumenter's own untracked additions are made
+   after that clean, and any later `git clean` in the same variant would remove them. Worth
+   confirming the driver never cleans again before building.
+2. **The module is written outside the build's source root.** It is written to
+   `entry/src/main/ets/common/utils/`, which is inside the module, so this is less likely - but the
+   resolve failure names the importing file and the path it tried, and the file's presence at that
+   moment has not been verified in the same shell invocation as the build.
+
+The next diagnostic is small: after the instrumenter runs and immediately before the build, list
+the counter file and print `git status --porcelain` for the host. If the file is present and the
+build still fails, the resolution is the problem; if absent, the ordering is.
+
+## What is built and correct regardless
 
 `tools/instrument_play_time.py` prepares `cloudmusic_play_time_high_frequency_update`
-(`player_page_rerenders_per_minute`) following the pattern that worked for ytmusic and wanharmony:
+(`player_page_rerenders_per_minute`) following the pattern proven on ytmusic and wanharmony:
 
-- counts the actual `AppStorage.setOrCreate(StorageConstants.PLAY_TIME, time)` write site, so a
-  real playback is also measured;
-- writes `OhmPlayTimeCount.ets` under `entry/src/main/ets/common/utils/` - **not**
-  `entry/src/main/ets/utils/`, which does not exist in this host - carrying the variant's own
-  guard as a callable and the `ready`/`ohm-go` handshake;
+- counts the actual `AppStorage.setOrCreate(StorageConstants.PLAY_TIME, time)` write site, so real
+  playback would also be measured;
+- writes `OhmPlayTimeCount.ets` under `common/utils/` - there is no `entry/.../ets/utils/` in this
+  host - carrying the variant's guard as a callable, the guard's state commit (without which the
+  fixed variant would admit every tick and the two would be indistinguishable), and the
+  `ready`/`ohm-go` handshake;
 - installs a bench on `EntryAbility.onNewWant` that drives the guard over the 600 ticks one minute
-  of playback produces, commits each admitted second (without which the fixed variant would admit
-  every tick and the two would be indistinguishable), and writes the terminal status.
+  of playback produces and writes the terminal status.
 
-The expected result, once a host that installs is available: unfixed **600** writes, fixed **60** -
-the oracle's 10/s versus 1/s.
+Expected once installable: unfixed **600** writes, fixed **60** - the oracle's 10/s versus 1/s.
 
-## Three build errors fixed on the way
-
-1. **Wrong counter location** - cloudmusic has no `entry/src/main/ets/utils/`; shared code lives
-   under `common/utils/`.
-2. **Imports placed after code** - `EntryAbility.ets` has a statement before its imports, so
-   anchoring on the *first* import produced "import statements after other statements are not
-   allowed". Both edit sites now anchor on the last import line.
-3. **Relative depth** - `AVPlayerUtils.ets` is at `common/utils/play/`, so the counter at
-   `common/utils/` is three levels up, not two.
+Three build errors were fixed on the way: the counter's location (no `ets/utils/` in this host);
+imports inserted after code, because `EntryAbility.ets` has a statement before its imports, so both
+edit sites now anchor on the last import line; and the relative depth, which the host's own
+`'../../constants/...'` imports settle at two levels.
 
 ## What would unblock it
 
-Either a signing profile entitled to `ohos.permission.SYSTEM_FLOAT_WINDOW`, or a build variant
-with that permission removed for measurement purposes. The second is a change to the artifact
-being measured and should be recorded as such if used; the first is preferable.
+A signing profile entitled to `SYSTEM_FLOAT_WINDOW`, or the permission removed and the build made
+to succeed - which is what the code above attempts and what the build failure currently prevents.
 
-## Re-run command, once installable
+## Re-run command
 
 ```bash
 cd /home/research/OhmBenchmark-main
