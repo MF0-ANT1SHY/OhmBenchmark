@@ -115,9 +115,11 @@ def instrument_bench(path: Path) -> None:
     reset = "    resetOhmFlushCount();\n" + burst_loop
     t = t.replace(burst_loop, reset, 1)
     marker = "    hiTraceMeter.traceByValue('OHMB/FlushCount', getOhmFlushCount());\n"
-    t = t.replace(burst_wait, marker + burst_wait, 1)
+    # The marker must come AFTER the deferred-flush wait: the fixed build debounces with a 2s
+    # timer and only flushes during that wait, so sampling before it always read 0 for fixed.
+    t = t.replace(burst_wait + "\n", burst_wait + "\n" + marker, 1)
     path.write_text(t, encoding='utf-8')
-    print(f'    {path.name}: reset + OHMB/FlushCount placed in the search-burst branch')
+    print(f'    {path.name}: reset + OHMB/FlushCount placed after the deferred-flush wait')
 
 
 def main():
