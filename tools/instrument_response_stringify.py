@@ -36,6 +36,7 @@ COUNTER_TEXT = '// OHMB response-stringify counter (measurement only)\nimport fs
 
 def instrument(request_file: Path) -> int:
     t = request_file.read_text(encoding='utf-8')
+    before = t
     if 'ohmResponseStringify(' in t:
         print(f'    {request_file.name}: already instrumented')
         return 0
@@ -49,8 +50,15 @@ def instrument(request_file: Path) -> int:
     m = re.search(r'^(import .*\n)', t, re.M)
     if not m:
         raise SystemExit(f'  FAILED: no imports found in {request_file}')
-    t = t[:m.end()] + f"import {{ ohmResponseStringify }} from '{COUNTER_PACKAGE}';\n"
+    # INSERT the import; the rest of the file must survive. Losing the tail here once
+    # truncated request.ets to two lines and broke every consumer of the package.
+    t = t[:m.end()] + f"import {{ ohmResponseStringify }} from '{COUNTER_PACKAGE}';\n" + t[m.end():]
 
+    added = len(t.splitlines()) - len(before.splitlines())
+    if added < 1 or len(t.splitlines()) < len(before.splitlines()):
+        raise SystemExit(
+            f'  FAILED: instrumentation would lose code in {request_file.name} '
+            f'({len(before.splitlines())} lines -> {len(t.splitlines())}). Refusing to write.')
     request_file.write_text(t, encoding='utf-8')
     print(f'    {request_file.name}: routed {n} full-body serialization(s) through the counter')
     return n

@@ -85,7 +85,7 @@ new file mode 100644
 index 0000000..413e700
 --- /dev/null
 +++ b/features/home/src/main/ets/utils/InterviewBench.ets
-@@ -0,0 +1,37 @@
+@@ -0,0 +1,45 @@
 +import { common } from '@kit.AbilityKit';
 +import { historyStore } from './history';
 +import { ohmHttp } from '@itcast/basic';
@@ -93,6 +93,7 @@ index 0000000..413e700
 +import { ohmResponseStringifyReset, ohmResponseStringifyTotal, ohmDiag } from '@itcast/basic';
 +
 +interface FixtureRow { id: number; title: string; description: string; }
++
 +export async function runInterviewBench(context: common.UIAbilityContext, name: string): Promise<void> {
 +  await OhmProbe.measure(context, name, async (): Promise<void> => {
 +    if (name === 'interviewapp_response_log_full_stringify') {
@@ -111,6 +112,8 @@ index 0000000..413e700
 +      return total;
 +    }
 +    if (name === 'interviewapp_response_log_full_stringify') {
++      // count how many full response bodies the handler serializes for logging: the fixture
++      // returns a 345 KB body, so this is the oracle's O(payload) cost driver
 +      ohmResponseStringifyReset();
 +      let total=0;
 +      for (let i=0;i<5;i++) {
@@ -133,15 +136,27 @@ new file mode 100644
 index 0000000..d37c5ea
 --- /dev/null
 +++ b/features/home/src/main/ets/utils/OhmProbe.ets
-@@ -0,0 +1,36 @@
+@@ -0,0 +1,86 @@
 +import fs from '@ohos.file.fs';
 +import systemDateTime from '@ohos.systemDateTime';
 +import hiTraceMeter from '@ohos.hiTraceMeter';
 +import { common } from '@kit.AbilityKit';
 +
++/**
++ * Device measurement harness shared by the ytmusic cases.
++ *
++ * The bench entry runs inside the app, prepares a deterministic fixture, signals
++ * `state=ready`, waits for the host to touch `ohm-go` (so profiling starts before the region
++ * of interest), performs the measured action, then reports `state=done` with the elapsed time
++ * and a result value.
++ *
++ * Counters for a case's declared oracle are emitted as `OHMB/<Name>` trace markers, the same
++ * mechanism tools/device/analyze.py reads for the other hosts.
++ */
 +export class OhmProbe {
 +  static write(context: common.UIAbilityContext, value: string): void {
-+    const file = fs.openSync(context.filesDir + '/ohm-status.json', fs.OpenMode.CREATE | fs.OpenMode.WRITE_ONLY | fs.OpenMode.TRUNC);
++    const file = fs.openSync(context.filesDir + '/ohm-status.json',
++      fs.OpenMode.CREATE | fs.OpenMode.WRITE_ONLY | fs.OpenMode.TRUNC);
 +    fs.writeSync(file.fd, value);
 +    fs.closeSync(file);
 +  }
@@ -164,10 +179,48 @@ index 0000000..d37c5ea
 +      const result = await action();
 +      const elapsed = (systemDateTime.getUptime(systemDateTime.TimeType.STARTUP, true) - start) / 1000000;
 +      hiTraceMeter.finishTrace('OHMB/' + name, 1);
-+      OhmProbe.write(context, '{"state":"done","case":"' + name + '","elapsed_ms":' + elapsed + ',"result":' + result + '}');
++      OhmProbe.write(context, '{"state":"done","case":"' + name + '","elapsed_ms":' + elapsed +
++        ',"result":' + result + '}');
 +    } catch (e) {
-+      OhmProbe.write(context, '{"state":"error","message":' + JSON.stringify(String(e)) + '}');
++      // String(e) alone gives "[object Object]" for a BusinessError, which hides the cause;
++      // include the fields that identify it
++      const err = e as Record<string, Object>;
++      let detail = String(e);
++      try {
++        const name = err['name'] !== undefined ? String(err['name']) : '';
++        const code = err['code'] !== undefined ? String(err['code']) : '';
++        const msg = err['message'] !== undefined ? String(err['message']) : '';
++        if (name !== '' || code !== '' || msg !== '') {
++          detail = name + ' code=' + code + ' message=' + msg;
++        }
++      } catch (inner) {
++        // fall back to the string form
++      }
++      OhmProbe.write(context, '{"state":"error","message":' + JSON.stringify(detail) + '}');
 +    }
++  }
++}
++
++/** Counters for the declared oracles, one per case, emitted as trace markers. */
++export class OhmCounters {
++  // ytmusic_history_json_parse_per_row: history_page_render_cpu_ms
++  static jsonParses: number = 0;
++  // ytmusic_search_no_debounce: search_requests_per_query
++  static searchRequests: number = 0;
++  // ytmusic_current_playing_timeupdate: player_page_updates_per_minute
++  static playerUpdates: number = 0;
++
++  static reset(): void {
++    OhmCounters.jsonParses = 0;
++    OhmCounters.searchRequests = 0;
++    OhmCounters.playerUpdates = 0;
++  }
++
++
++  static emit(): void {
++    hiTraceMeter.traceByValue('OHMB/JsonParseCount', OhmCounters.jsonParses);
++    hiTraceMeter.traceByValue('OHMB/SearchRequestCount', OhmCounters.searchRequests);
++    hiTraceMeter.traceByValue('OHMB/PlayerUpdateCount', OhmCounters.playerUpdates);
 +  }
 +}
 diff --git a/products/phone/src/main/ets/phoneability/PhoneAbility.ets b/products/phone/src/main/ets/phoneability/PhoneAbility.ets

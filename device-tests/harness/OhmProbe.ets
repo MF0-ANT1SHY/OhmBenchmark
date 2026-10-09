@@ -43,7 +43,21 @@ export class OhmProbe {
       OhmProbe.write(context, '{"state":"done","case":"' + name + '","elapsed_ms":' + elapsed +
         ',"result":' + result + '}');
     } catch (e) {
-      OhmProbe.write(context, '{"state":"error","message":' + JSON.stringify(String(e)) + '}');
+      // String(e) alone gives "[object Object]" for a BusinessError, which hides the cause;
+      // include the fields that identify it
+      const err = e as Record<string, Object>;
+      let detail = String(e);
+      try {
+        const name = err['name'] !== undefined ? String(err['name']) : '';
+        const code = err['code'] !== undefined ? String(err['code']) : '';
+        const msg = err['message'] !== undefined ? String(err['message']) : '';
+        if (name !== '' || code !== '' || msg !== '') {
+          detail = name + ' code=' + code + ' message=' + msg;
+        }
+      } catch (inner) {
+        // fall back to the string form
+      }
+      OhmProbe.write(context, '{"state":"error","message":' + JSON.stringify(detail) + '}');
     }
   }
 }
