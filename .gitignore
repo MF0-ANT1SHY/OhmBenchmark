@@ -13,3 +13,5 @@ hosts/*/
 # Fresh collection goes here; the original evidence lives in the data directory
 # (see DATA.md) and must never be overwritten by a new session.
 measurements-staging/
+
+__pycache__/
