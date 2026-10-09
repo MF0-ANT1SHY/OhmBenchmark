@@ -180,15 +180,20 @@ for variant in ('unfixed', 'fixed'):
         if use_diag:
             dg = d / 'diag.json'
             if dg.exists():
+                # take the LAST checkpoint carrying the key: earlier checkpoints log the same
+                # key before the work happens (parseTotal=0 before routing), so matching every
+                # line would report both the pre- and post-measurement readings
+                got = None
                 for line in dg.read_text(encoding='utf-8').splitlines():
                     try:
                         rec = json.loads(line)
                     except ValueError:
                         continue
-                    blob = str(rec.get('v', ''))
-                    for kv in blob.split():
+                    for kv in str(rec.get('v', '')).split():
                         if kv.startswith(diag_key + '='):
-                            vals.append(int(kv.split('=', 1)[1]))
+                            got = int(kv.split('=', 1)[1])
+                if got is not None:
+                    vals.append(got)
         elif use_result:
             if 'result' in res:
                 vals.append(res['result'])
