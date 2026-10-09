@@ -13,7 +13,10 @@
   "android_mechanism": "History persisted eagerly on every change; fix defers the save",
   "category": "latency",
   "bug_description": "The search-history HistoryStore calls preferences flush() synchronously on every setItem/delItem (i.e., on every recorded search keyword), forcing a disk write on the caller's thread each time. Rapid successive searches each pay a full synchronous flush, adding avoidable I/O latency to the search flow.",
-  "perf_scenarios": ["状态更新", "数据库读取"],
+  "perf_scenarios": [
+    "状态更新",
+    "数据库读取"
+  ],
   "unfixed_commit": "ad61830",
   "fixed_commit": "6f1c96f",
   "fix_summary": "Flushes are debounced: mutations update the in-memory cache synchronously and a single flush runs 2 seconds after the last mutation.",
@@ -30,7 +33,12 @@
   "test_oracle": {
     "metric": "flush_count_per_search_burst",
     "definition": "Number of preference flush (fsync/disk write) operations attributable to the history store during a 10-search burst, and their total wall/CPU time from the disk trace.",
-    "comparison": "unfixed: 10 flushes (one per search) on the calling thread; fixed: 1 flush after the burst. unfixed disk-sync time on the search path > fixed by >= 5x for the burst."
+    "comparison": "unfixed: 10 flushes (one per search) on the calling thread; fixed: 1 flush after the burst. unfixed disk-sync time on the search path > fixed by >= 5x for the burst.",
+    "oracle_revision": {
+      "previous_comparison": "unfixed: 10 flushes (one per search); fixed: 1 flush after the burst",
+      "corrected_comparison": "unfixed: 1 flush per save (1000 for the harness burst of 1000 saves); fixed: 1 flush after the burst",
+      "reason": "The original wording assumed a 10-search burst, but the harness drives 1000 setItem calls and unfixed setItem calls store.flush() on every one. Measured on device: unfixed 1000 flushes in all three runs, fixed 1 in all three. The direction of the claim (per-save flush vs single deferred flush) is unchanged; only the count written for a 10-search burst was wrong for this fixture."
+    }
   },
   "trace_config": {
     "tool": "hitrace",
