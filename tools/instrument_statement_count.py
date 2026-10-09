@@ -110,17 +110,27 @@ def instrument_bench(path: Path) -> None:
         if old in t:
             t = t.replace(old, new, 1)
 
-    # drop any previous marker, then emit the measured tally
-    t = re.sub(r"[ \t]*hiTraceMeter\.traceByValue\('OHMB/StatementCount'[^\n]*\n", '', t)
-    old_tail = "    return 1000;\n  });\n}"
-    new_tail = ("    hiTraceMeter.traceByValue('OHMB/StatementCount', RdbUtils.ohmStatements);\n"
-                "    return RdbUtils.ohmStatements;\n  });\n}")
-    if old_tail in t:
-        t = t.replace(old_tail, new_tail, 1)
-    elif 'OHMB/StatementCount' in t:
-        pass  # already emits the measured tally; nothing to do
+    # Decide the anchor FIRST, then strip any previous marker, then re-emit once.
+    # (Stripping before checking made the marker test always fail on a second run.)
+    marker = "hiTraceMeter.traceByValue('OHMB/StatementCount', RdbUtils.ohmStatements);\n"
+    virgin_tail = "    return 1000;\n  });\n}"
+    already_tail = ("    hiTraceMeter.traceByValue('OHMB/StatementCount', RdbUtils.ohmStatements);\n"
+                    "    return RdbUtils.ohmStatements;\n  });\n}")
+    if virgin_tail in t:
+        tail, repl = virgin_tail, ("    " + marker +
+                                   "    return RdbUtils.ohmStatements;\n  });\n}")
+    elif already_tail in t:
+        tail, repl = already_tail, already_tail
     else:
         raise SystemExit(f'  FAILED: cannot find the bench tail in {path}')
+
+    t = re.sub(r"[ \t]*hiTraceMeter\.traceByValue\('OHMB/StatementCount'[^\n]*\n", '', t)
+    # after stripping, the anchor is either the virgin tail or the same tail without the marker
+    stripped = ("    return RdbUtils.ohmStatements;\n  });\n}")
+    if tail == already_tail:
+        t = t.replace(stripped, repl, 1) if stripped in t else t
+    else:
+        t = t.replace(tail, repl, 1)
     path.write_text(t, encoding='utf-8')
     print(f'    {path.name}: emits OHMB/StatementCount')
 
