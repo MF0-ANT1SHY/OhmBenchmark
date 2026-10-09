@@ -30,7 +30,7 @@ CONTRACT = REPO / 'cases' / 'measurement-contract.json'
 
 PRIMARY = {'elapsed': 'elapsed_ms', 'cpu': 'trace_cpu_ms', 'count': None, 'external': None}
 ORDER = ['satisfied', 'counter-satisfied', 'declared-collected-new', 'mechanism-absent',
-         'proxy', 'collected-not-used', 'never-run']
+         'proxy', 'collected-not-used', 'unsatisfied-overlap', 'never-run']
 
 
 # Any OHMB/<Name> marker with an integer value counts as a declared-metric reading, so the
@@ -129,7 +129,20 @@ def classify(case_id, contract, rounds):
                     detail=f'needs a {prim} primitive; {c["gap"]}')
 
     if any(declared in r for r in rs):
-        return dict(**base, collected=declared, verdict='satisfied', detail='')
+        # The declared metric is collected. That is necessary but not sufficient: a case is only a
+        # clear difference when the unfixed and fixed ranges do not overlap, so a name match alone
+        # must not report satisfied.
+        u = [r[declared] for r in rs if r.get('variant') == 'unfixed'
+             and isinstance(r.get(declared), (int, float))]
+        f = [r[declared] for r in rs if r.get('variant') == 'fixed'
+             and isinstance(r.get(declared), (int, float))]
+        if u and f and (max(f) < min(u) or max(u) < min(f)):
+            return dict(**base, collected=declared, verdict='satisfied', detail='')
+        return dict(**base, collected=declared, verdict='unsatisfied-overlap',
+                    detail=(f'declared metric {declared} collected, but the ranges interleave '
+                            f'(unfixed {sorted(round(x, 1) for x in u)}, '
+                            f'fixed {sorted(round(x, 1) for x in f)}), so the case is not a '
+                            f'clear difference'))
 
     aux = c.get('aux_counters') or []
     if aux and all(all(k in r for k in aux) for r in rs):
