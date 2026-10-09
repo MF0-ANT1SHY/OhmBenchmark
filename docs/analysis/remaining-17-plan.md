@@ -12,11 +12,19 @@ Current coverage over all 30 cases:
 
 | verdict | n | meaning |
 | --- | --- | --- |
+| `satisfied` | 4 | the declared metric is the one collected |
 | `counter-satisfied` | 1 | declared counter collected and discriminating |
 | `mechanism-absent` | 2 | counter collected, but the mechanism cannot separate the variants |
-| `proxy` | 10 | a different metric was collected; contract records why |
+| `proxy` | 6 | a different, documented quantity was collected |
 | `collected-not-used` | 4 | the declared count exists in the run data but was not reported |
 | `never-run` | 13 | no rounds; the contract names the primitive needed |
+
+### Progress
+
+`satisfied` went from 0 to 4 and `proxy` from 10 to 6 by re-declaring the four oracles
+whose *definition* is the OHMB-marker wall time recorded as `elapsed_ms`
+(`tools/redeclare_equivalent_oracles.py`). Those renames are recorded per case in
+`test_oracle.oracle_revision`; semantics and every recorded number are unchanged.
 
 ## A. Mechanism absent — not fixable by more measurement (2)
 
@@ -78,12 +86,14 @@ which requires a rebuild (see D).
 The collected metric is a different quantity from the declared one. Split by whether the
 collected proxy is the same *kind* of thing:
 
-**Same quantity under a different name** — re-declare the oracle to match what is measured:
+**Same quantity under a different name** — DONE. These four declared a metric whose
+definition is the OHMB-marker wall time recorded as `elapsed_ms`; the metric name was
+re-declared to match, with the old name and reason kept in `test_oracle.oracle_revision`:
 
-- `browser_history_delete_no_transaction` — `clear_history_wall_time_ms` vs `elapsed_ms`
-- `jingmo_dataset_import_no_transaction` — `dataset_import_wall_time_ms` vs `elapsed_ms`
-- `jingmo_random_poem_orderby_random` — `random_read_query_ms` vs `elapsed_ms`
-- `sheafreader_refresh_feeds_sequential` — `refresh_all_wall_time_ms` vs `elapsed_ms`
+- `browser_history_delete_no_transaction` — was `clear_history_wall_time_ms`
+- `jingmo_dataset_import_no_transaction` — was `dataset_import_wall_time_ms`
+- `jingmo_random_poem_orderby_random` — was `random_read_query_ms`
+- `sheafreader_refresh_feeds_sequential` — was `refresh_all_wall_time_ms`
 
 **Genuinely different quantity** — keep both, report the declared one when collected:
 
