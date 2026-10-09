@@ -39,8 +39,15 @@ ABILITY=$(python3 "$ROOT/device-tests/host_module.py" "$CASE" --ability)
 echo "ability: $ABILITY"
 SELF_INSTALL=0
 case "$INSTRUMENTER" in
-  self-installing:*) SELF_INSTALL=1; INSTRUMENTER="${INSTRUMENTER#self-installing:}" ;;
+  self-installing:*)
+    SELF_INSTALL=1
+    INSTRUMENTER="${INSTRUMENTER#self-installing:}"
+    ;;
 esac
+# The metric may come from a different place than the harness came from. A case whose count is
+# logged by the app to its diag file sets SUMMARY_SOURCE=diag:<key> while its harness is
+# installed by the instrumenter above.
+SUMMARY_SOURCE="$SUMMARY_SOURCE"
 MODULE=$(python3 "$ROOT/device-tests/host_module.py" "$CASE")
 [ -n "$MODULE" ] || { echo "ABORT: could not resolve the host module"; exit 1; }
 echo "host module: $MODULE" 
@@ -88,6 +95,9 @@ run_variant() {
   case "$INSTRUMENTER" in
     result:*)
       echo "  no instrumentation needed: the declared metric is the bench's own result field"
+      ;;
+    diag:*)
+      echo "  no further instrumentation: the declared metric is read from the app's diag log"
       ;;
     *)
       echo "  instrumenting:"
@@ -153,19 +163,33 @@ run_variant fixed "$FIXED"
 
 echo
 echo "================= SUMMARY ================="
-python3 - "$CASE" "$REPS" "$INSTRUMENTER" <<'PY'
+python3 - "$CASE" "$REPS" "${SUMMARY_SOURCE:-$INSTRUMENTER}" <<'PY'
 import gzip, json, re, sys, statistics
 from pathlib import Path
 case, reps, instrumenter = sys.argv[1], int(sys.argv[2]), sys.argv[3]
 root = Path('/home/research/OhmBenchmark-main/measurements-staging') / case
 use_result = instrumenter.startswith('result:')
+use_diag = instrumenter.startswith('diag:')
+diag_key = instrumenter.split(':', 1)[1] if use_diag else ''
 for variant in ('unfixed', 'fixed'):
     vals, times = [], []
     for r in range(1, reps + 1):
         d = root / variant / f'run{r}'
         rj = d / 'result.json'
         res = json.loads(rj.read_text()) if rj.exists() else {}
-        if use_result:
+        if use_diag:
+            dg = d / 'diag.json'
+            if dg.exists():
+                for line in dg.read_text(encoding='utf-8').splitlines():
+                    try:
+                        rec = json.loads(line)
+                    except ValueError:
+                        continue
+                    blob = str(rec.get('v', ''))
+                    for kv in blob.split():
+                        if kv.startswith(diag_key + '='):
+                            vals.append(int(kv.split('=', 1)[1]))
+        elif use_result:
             if 'result' in res:
                 vals.append(res['result'])
         else:

@@ -133,6 +133,12 @@ def main():
             print(f'    log: {ln[:160]}')
         raise TimeoutError(f'never reached ready after 4 trigger attempts; last={status()}')
 
+    # keep the app's own diagnostic log with the run: the declared count for some cases is
+    # written there rather than into the bench result field
+    diag = sh(f'cat {base}/ohm-diag.json')
+    (out / 'diag.json').write_text(diag, encoding='utf-8')
+    print(f'  diag: {len(diag.splitlines())} checkpoint line(s) archived')
+
     pid = sh(f'pidof {bundle}').split()[0]
     print(f'  pid={pid}')
 
