@@ -11,28 +11,14 @@ Each row gives the exact command. `unfixed`/`fixed` are the commits to build; fo
 ytmusic they are the *reconstructed* SHAs, because `git am` rewrote the recorded ones
 and only trees are stable (`hosts_patches/REPRODUCE.md`).
 
-**20 cases outstanding.**
+**6 cases outstanding.**
 
 ## What each case needs
 
 | case | verdict | declared metric | host | harness patch | instrumenter |
 | --- | --- | --- | --- | --- | --- |
-| `browser_eager_history_load` | proxy | startup_cpu_time_ms | ok | yes | **missing** |
-| `cloudmusic_indexof_in_render` | never-run | row_build_cpu_overhead | ok | no | **missing** |
-| `cloudmusic_local_song_memory_filter` | proxy | search_result_latency_ms | ok | yes | **missing** |
-| `cloudmusic_play_time_high_frequency_update` | never-run | player_page_rerenders_per_minute | ok | no | **missing** |
-| `cloudmusic_search_result_foreach` | never-run | search_list_render_cpu_and_jank | ok | no | **missing** |
-| `cloudmusic_songcard_artists_concat` | never-run | row_appear_cpu_overhead | ok | no | **missing** |
 | `interviewapp_response_log_full_stringify` | never-run | response_handler_cpu_ms | ok | yes | **missing** |
-| `jingmo_sync_page_reimport` | proxy | revisit_sync_page_cost | ok | yes | **missing** |
-| `sepweather_font_register_per_page` | never-run | mainpage_build_ms | ok | no | **missing** |
 | `sheafreader_article_list_foreach` | mechanism-absent | article_row_build_count | ok | yes | **missing** |
-| `sheafreader_extract_tag_tolowercase` | proxy | feed_parse_cpu_ms | ok | yes | **missing** |
-| `sheafreader_insert_duplicate_exception` | proxy | no_op_refresh_cpu_ms | ok | yes | **missing** |
-| `wanharmony_history_log_materialization` | proxy | title_event_cpu_ms | ok | yes | **missing** |
-| `wanharmony_html_decode_per_render` | never-run | scroll_cpu_ms_per_item | ok | no | **missing** |
-| `wanharmony_persisted_home_list_growth` | never-run | persistent_write_bytes_per_loadmore | ok | no | **missing** |
-| `wanharmony_web_progress_log_storm` | never-run | log_calls_per_pageload | ok | no | **missing** |
 | `weatherassistant_http_session_leak` | mechanism-absent | retained_fds_and_connections | ok | yes | **missing** |
 | `weatherassistant_remote_weather_icons` | never-run | icon_first_paint_ms_and_net_bytes | ok | no | **missing** |
 | `ytmusic_current_playing_timeupdate` | never-run | player_page_updates_per_minute | ok | no | self-installing:tools/instrument_ytmusic.py |
@@ -62,34 +48,12 @@ SUMMARY_SOURCE=diag:<key> bash device-tests/run_declared_metric.sh ...
 
 ## Work remaining, by category
 
-- **needs an instrumenter written**: 18 cases
-  - `browser_eager_history_load`
-  - `cloudmusic_indexof_in_render`
-  - `cloudmusic_local_song_memory_filter`
-  - `cloudmusic_play_time_high_frequency_update`
-  - `cloudmusic_search_result_foreach`
-  - `cloudmusic_songcard_artists_concat`
+- **needs an instrumenter written**: 4 cases
   - `interviewapp_response_log_full_stringify`
-  - `jingmo_sync_page_reimport`
-  - `sepweather_font_register_per_page`
   - `sheafreader_article_list_foreach`
-  - `sheafreader_extract_tag_tolowercase`
-  - `sheafreader_insert_duplicate_exception`
-  - `wanharmony_history_log_materialization`
-  - `wanharmony_html_decode_per_render`
-  - `wanharmony_persisted_home_list_growth`
-  - `wanharmony_web_progress_log_storm`
   - `weatherassistant_http_session_leak`
   - `weatherassistant_remote_weather_icons`
-- **needs a harness built before anything else**: 9 cases
-  - `cloudmusic_indexof_in_render`
-  - `cloudmusic_play_time_high_frequency_update`
-  - `cloudmusic_search_result_foreach`
-  - `cloudmusic_songcard_artists_concat`
-  - `sepweather_font_register_per_page`
-  - `wanharmony_html_decode_per_render`
-  - `wanharmony_persisted_home_list_growth`
-  - `wanharmony_web_progress_log_storm`
+- **needs a harness built before anything else**: 1 cases
   - `weatherassistant_remote_weather_icons`
 - **host clone missing**: 0 cases
 
