@@ -1,0 +1,82 @@
+#!/usr/bin/env python3
+"""Count full-response serializations on HTTP response paths, and report them.
+
+`interviewapp_response_log_full_stringify` declares `response_handler_cpu_ms`: CPU time in the
+HTTP response handling path per API call. The unfixed handler logs
+`JSON.stringify(res.result).substring(0, 200)`, serializing the entire body to keep 200
+characters; the fixed handler logs two fields.
+
+The oracle's own comparison states the cost driver: "unfixed serializes each full response body
+(O(payload)); fixed logs O(1) fields". The local fixture returns a 345 KB body with 1000 rows, so
+each serialization is expensive. The counter records how many occur.
+
+Where the pieces live, and why:
+
+  commons/basic/.../OhmResponseCount.ets  counter state plus an append-only diag writer
+  commons/basic/.../request.ets           imports the counter by relative path (same module)
+  features/home/.../InterviewBench.ets    imports it as '@itcast/basic', which it already uses
+
+The counter cannot live in features/home: commons/basic importing from home would be circular,
+and ArkTS rejected '@itcast/home' from that direction.
+
+Idempotent; reports when the fixed shape has nothing left to count.
+
+Usage: python3 tools/instrument_response_stringify.py [--hosts DIR]
+"""
+import argparse
+import re
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parent.parent
+COUNTER_MODULE = 'commons/basic/src/main/ets/utils/OhmResponseCount.ets'
+COUNTER_PACKAGE = './OhmResponseCount'
+
+COUNTER_TEXT = '// OHMB response-stringify counter (measurement only)\nimport fs from \'@ohos.file.fs\';\nimport { common } from \'@kit.AbilityKit\';\n\nexport let ohmResponseStringifyCount: number = 0;\n\nexport function ohmResponseStringifyReset(): void {\n  ohmResponseStringifyCount = 0;\n}\n\nexport function ohmResponseStringifyTotal(): number {\n  return ohmResponseStringifyCount;\n}\n\nexport function ohmResponseStringify(value: Object): string {\n  ohmResponseStringifyCount++;\n  return JSON.stringify(value);\n}\n\n/** Append a checkpoint to ohm-diag.json: the status file overwrites, this does not. */\nexport function ohmDiag(context: common.UIAbilityContext, label: string, value: string): void {\n  try {\n    const path = context.filesDir + \'/ohm-diag.json\';\n    const file = fs.openSync(path, fs.OpenMode.CREATE | fs.OpenMode.APPEND | fs.OpenMode.WRITE_ONLY);\n    fs.writeSync(file.fd, \'{"t":"\' + label + \'","v":\' + JSON.stringify(value) + \'}\\n\');\n    fs.closeSync(file);\n  } catch (e) {\n    // diagnostics must never break the measurement\n  }\n}\n'
+
+
+def instrument(request_file: Path) -> int:
+    t = request_file.read_text(encoding='utf-8')
+    if 'ohmResponseStringify(' in t:
+        print(f'    {request_file.name}: already instrumented')
+        return 0
+
+    t, n = re.subn(r'JSON\.stringify\(res\.result\)', 'ohmResponseStringify(res.result)', t)
+    if n == 0:
+        print(f'    {request_file.name}: no full-body serialization on this path '
+              f'(the fixed shape); counting 0 is correct')
+        return 0
+
+    m = re.search(r'^(import .*\n)', t, re.M)
+    if not m:
+        raise SystemExit(f'  FAILED: no imports found in {request_file}')
+    t = t[:m.end()] + f"import {{ ohmResponseStringify }} from '{COUNTER_PACKAGE}';\n"
+    # re-export so consumers that already import this module can reach the counter,
+    # since a new file under this package is not automatically part of '@itcast/basic'
+    t = (t.rstrip('\n') + "\n\n"
+         "export { ohmResponseStringifyReset, ohmResponseStringifyTotal, ohmDiag }"
+         " from './OhmResponseCount';\n")
+    request_file.write_text(t, encoding='utf-8')
+    print(f'    {request_file.name}: routed {n} full-body serialization(s) through the counter')
+    return n
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--hosts', default=str(REPO / 'hosts'))
+    a = ap.parse_args()
+    root = Path(a.hosts) / 'interviewapp'
+    cands = [c for c in root.glob('**/request.ets') if 'oh_modules' not in str(c)]
+    if not cands:
+        raise SystemExit('  FAILED: cannot find request.ets in the interviewapp host')
+    print('  instrumenting the HTTP response path:')
+    mod = root / COUNTER_MODULE
+    mod.parent.mkdir(parents=True, exist_ok=True)
+    mod.write_text(COUNTER_TEXT, encoding='utf-8')
+    print(f'    wrote {mod.relative_to(root)}')
+    n = instrument(cands[0])
+    print(f'  done - {n} site(s) counted; rebuild, sign and install to measure')
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
