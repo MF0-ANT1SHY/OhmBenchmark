@@ -28,6 +28,33 @@ Only a case redesign changes the outcome.
 | `sheafreader_article_list_foreach` | fixture loads **600** articles; only **37** cards build in *both* variants. Control case `browser_history_list_foreach` changes the same `ForEach`→`LazyForEach` and separates cleanly at **200 vs 59** builds over 1000 rows. The unfixed `ForEach` over `List` is already virtualised. | Redesign: either re-declare the oracle to `trace_cpu_ms` (the only field that separates the variants: +11.79%, non-overlapping), or move the counter to the same build stage the browser counter uses and re-verify. Do **not** re-run as-is expecting a difference. |
 | `weatherassistant_http_session_leak` | 120 requests through a fresh process; fd counts flat in both variants (71→71, 79→79) against a declared ≥5× growth. | Redesign the fixture: raise request count / force session churn until fd growth is observable, then re-measure; or re-declare the oracle to a quantity that does respond. |
 
+### Re-measurement attempted, and it did not rescue the case
+
+The obvious remedy for `sheafreader_article_list_foreach` — drive real scrolling so that
+more rows are built — was tried on the device with the recorded signed builds, staged under
+`measurements-staging/` so the original evidence was untouched. It did not work:
+
+| Session | unfixed cards built | fixed cards built |
+| --- | --- | --- |
+| original 2026-10-01 (3 runs each, no swipes) | 37, 37, 37 | 37, 37, 37 |
+| fresh, 3 swipes of `630 2300 -> 630 850` | **31** | **37** |
+| control `browser_history_list_foreach` (same change, 1000 rows) | 200, 200, 200 | 59, 59, 59 |
+
+The fresh pair moves in the **wrong direction** (unfixed builds *fewer* cards) and by only
+6 cards, against a control that separates by 141. The counter is monotonic in both, so it is
+measuring real builds; the variation is scroll-timing dependent, not mechanism dependent.
+
+Conclusion: the scroll drive adds variance, not signal. `List` already defers off-screen row
+creation in the unfixed `ForEach` build, so the two variants produce the same
+viewport-sized number of cards no matter how the list is scrolled. **The counter is taken at
+a stage that cannot separate them**, which is a harness/stage problem, not a
+measurement-duration problem. Fixing it means moving the counter (or adding one) to the
+stage the control case uses — `ForEach` iterating its data source — and that needs a
+rebuild, hence a JRE.
+
+The CPU proxy remains the only collected field that separates the variants
+(`trace_cpu_ms`: 4943 ms unfixed vs 4361 ms fixed, +11.79%, non-overlapping).
+
 ## B. Declared count already in the run data — offline fix (4)
 
 Each declares a **count**; the run data holds the corresponding quantity, but
