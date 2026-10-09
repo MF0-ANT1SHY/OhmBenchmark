@@ -11,7 +11,7 @@ Each row gives the exact command. `unfixed`/`fixed` are the commits to build; fo
 ytmusic they are the *reconstructed* SHAs, because `git am` rewrote the recorded ones
 and only trees are stable (`hosts_patches/REPRODUCE.md`).
 
-**6 cases outstanding.**
+**5 cases outstanding.**
 
 ## What each case needs
 
@@ -21,7 +21,6 @@ and only trees are stable (`hosts_patches/REPRODUCE.md`).
 | `sheafreader_article_list_foreach` | mechanism-absent | article_row_build_count | ok | yes | **missing** |
 | `weatherassistant_http_session_leak` | mechanism-absent | retained_fds_and_connections | ok | yes | **missing** |
 | `weatherassistant_remote_weather_icons` | never-run | icon_first_paint_ms_and_net_bytes | ok | no | **missing** |
-| `ytmusic_current_playing_timeupdate` | never-run | player_page_updates_per_minute | ok | no | self-installing:tools/instrument_ytmusic.py |
 | `ytmusic_search_no_debounce` | never-run | search_requests_per_query | ok | no | self-installing:tools/instrument_ytmusic.py |
 
 ## Exact commands

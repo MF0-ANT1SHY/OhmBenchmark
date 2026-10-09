@@ -5,7 +5,7 @@ by a committed document or data file named alongside it.
 
 ## The measurement outcome
 
-**Thirteen cases now have their declared oracle metric collected, with non-overlapping run ranges** -
+**Fourteen cases now have their declared oracle metric collected, with non-overlapping run ranges** -
 verified under the rule the objective states: declared metric collected **and** ranges disjoint.
 
 | case | declared metric | unfixed | fixed | evidence |
@@ -23,6 +23,7 @@ verified under the rule the objective states: declared metric collected **and** 
 | `cloudmusic_songcard_artists_concat` | concat allocations | 8 x3 | 0 x3 | `measurement-artists-concat.md` |
 | `cloudmusic_search_result_foreach` | row builds | 150 x3 | 12 x3 | `measurement-search-foreach.md` |
 | `sepweather_font_register_per_page` | registrations/creation | 2.0 | 0.1 | `measurement-font-register.md` |
+| `ytmusic_current_playing_timeupdate` | updates/min | 600 x3 | 60 x3 | `measurement-player-updates.md` |
 
 Plus `sheafreader_extract_tag_tolowercase` (trace CPU 2962.8/3089.2/3178.8 vs 1415.5/1508.0/1533.3,
 51.7%) and `wanharmony_history_log_materialization` (7.4/8.3/49.9 vs 0.1/0.1/0.1, 99.5%), both
@@ -31,10 +32,10 @@ satisfied under the corrected rule - `oracle-satisfaction-rule.md`. Coverage acr
 ```
 satisfied              8
 counter-satisfied      1
-declared-collected-new 13
+declared-collected-new 14
 mechanism-absent       2
 unsatisfied-overlap    2
-never-run              4
+never-run              3
 ```
 
 ## Cases that do NOT reach a clear difference, with the reason
@@ -60,7 +61,7 @@ Finished answers, not open work:
 | `interviewapp_response_log_full_stringify` | fixture unreachable from the device (`fixture-reachability-limit.md`) |
 | `weatherassistant_remote_weather_icons` | same |
 | `ytmusic_search_no_debounce` | counts work in `TextInput.onChange`, which a bench cannot synthesise |
-| `ytmusic_current_playing_timeupdate` | needs synthetic `timeUpdate` events; the SDK is not locatable to confirm the API |
+| `ytmusic_search_no_debounce` | counts work in `TextInput.onChange`; a bench cannot synthesise the typing |
 
 `fixture-reachability-limit.md` records the measurements behind the first two: with the fixture in
 WSL, `hdc rport` registers `[Reverse]` and the app reports `code=2300056`; `hdc fport` registers
