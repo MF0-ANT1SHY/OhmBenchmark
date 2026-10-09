@@ -5,6 +5,7 @@ import { Diag } from './Diag';
 // the instrumented page exposes its running parse total; reading it here avoids
 // a cycle, since History.ets must not import the bench back
 import { ohmParseTotal } from '../pages/History';
+import { ohmRunPlayerUpdateBench } from './OhmUpdateCount';
 
 /**
  * Bench entry for the ytmusic cases.
@@ -57,6 +58,13 @@ export async function runYtMusicBench(context: common.UIAbilityContext, name: st
         ' expectedUnfixed=' + (FIXTURE_ROWS * 4) + ' expectedFixed=' + FIXTURE_ROWS);
       OhmCounters.emit();
       return total;
+    }
+    if (name === 'ytmusic_current_playing_timeupdate') {
+      // player-page state updates for the ticks one minute of playback produces; the variant's own
+      // same-second guard decides how many land
+      const updates = ohmRunPlayerUpdateBench();
+      OhmCounters.emit();
+      return updates;
     }
     OhmCounters.emit();
     return 0;
