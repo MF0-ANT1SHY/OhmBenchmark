@@ -48,7 +48,10 @@ def main():
     ap.add_argument('--ability', default='EntryAbility')
     ap.add_argument('--trace-cats', default='app sched disk distributeddatamgr ark')
     ap.add_argument('--hold-seconds', type=float, default=0.0,
-                    help='drive UI interactions during the measurement window instead of waiting')
+                    help='extra wait before the bench action is expected to finish')
+    ap.add_argument('--scroll', type=int, default=0,
+                    help='perform N swipe-up gestures after releasing ohm-go (list-scroll cases: '
+                         'the original collection used 3 swipes of 630 2300 -> 630 850 over 800ms)')
     ap.add_argument('--dry-run', action='store_true')
     ap.add_argument('--outroot', default=str(ROOT / 'measurements-staging'),
                     help='where to write runs; defaults to measurements-staging/ so the '
@@ -128,6 +131,11 @@ def main():
 
     rec(f'touch {base}/ohm-go')
     started = time.time()
+    if args.scroll:
+        time.sleep(2)
+        for i in range(args.scroll):
+            rec('uitest uiInput swipe 630 2300 630 850 800')
+            time.sleep(0.5)
     if args.hold_seconds:
         time.sleep(args.hold_seconds)
     result = wait_state('done')
