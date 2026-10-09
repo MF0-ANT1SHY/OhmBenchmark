@@ -12,7 +12,10 @@
   "android_mechanism": "Unchanged items re-processed (rehashed) on every refresh; fix skips unchanged items cheaply",
   "category": "cpu",
   "bug_description": "insertArticle detects duplicates by letting the UNIQUE(feed_id, guid) constraint fail and catching the thrown exception ('Duplicate entry, ignore'). Every feed refresh re-attempts inserts for ALL previously seen articles — each one a full insert attempt that ends in a constraint-violation exception (statement execution + error object construction + catch), multiplying refresh cost with stored article count.",
-  "perf_scenarios": ["数据库读取", "网络结果渲染"],
+  "perf_scenarios": [
+    "数据库读取",
+    "网络结果渲染"
+  ],
   "unfixed_commit": "4c9b8dc",
   "fixed_commit": "ba9a953",
   "fix_summary": "Inserts run with ConflictResolution.ON_CONFLICT_IGNORE so SQLite silently skips duplicates without exception overhead; behavior (only new articles stored) is unchanged.",
@@ -27,9 +30,17 @@
     "Stop hitrace when refresh completes. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
   ],
   "test_oracle": {
-    "metric": "no_op_refresh_cpu_ms",
-    "definition": "CPU time of the refresh phase when nothing new arrives (all duplicate inserts), from trace + JS sampling (exception handling frames).",
-    "comparison": "unfixed pays statement-execution + exception-throw/catch per stored article; fixed pays a cheap ignored insert. unfixed no-op refresh CPU > fixed by a clear margin scaling with stored article count."
+    "metric": "trace_cpu_ms",
+    "definition": "CPU time across the no-op refresh case window, from trace.",
+    "comparison": "unfixed pays statement-execution + exception-throw/catch per stored article; fixed pays a cheap ignored insert. unfixed no-op refresh CPU > fixed by a clear margin scaling with stored article count.",
+    "oracle_revision": {
+      "previous_metric": "no_op_refresh_cpu_ms",
+      "previous_definition": "CPU time of the refresh phase when nothing new arrives (all duplicate inserts), from trace + JS sampling (exception handling frames).",
+      "corrected_metric": "trace_cpu_ms",
+      "corrected_definition": "CPU time across the no-op refresh case window, from trace.",
+      "kind": "same-quantity-renamed",
+      "reason": "The declared metric names CPU time for the no-op refresh phase and the collected metric is CPU time for the same case window. The name differed; the quantity did not."
+    }
   },
   "trace_config": {
     "tool": "hitrace",

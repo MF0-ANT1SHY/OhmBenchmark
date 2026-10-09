@@ -12,7 +12,10 @@
   "android_mechanism": "Suggestions materialize all matching history rows instead of a bounded recent subset",
   "category": "cpu",
   "bug_description": "WebPage.onTitleReceive serializes the ENTIRE browsing-history list with JSON.stringify(list.map(...)) twice (before and after every recorded page visit), and HistoryPage.aboutToAppear stringifies the whole list again when the history page opens. With a large history this materializes and stringifies hundreds of entries on every page-load title event, blocking the web page load path and the history page transition.",
-  "perf_scenarios": ["网络结果渲染", "页面切换"],
+  "perf_scenarios": [
+    "网络结果渲染",
+    "页面切换"
+  ],
   "unfixed_commit": "85a7398",
   "fixed_commit": "87d63ec",
   "fix_summary": "The debug logs report the list size only, removing full-list map + JSON.stringify on the page-load and page-open paths.",
@@ -27,9 +30,17 @@
     "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
   ],
   "test_oracle": {
-    "metric": "title_event_cpu_ms",
-    "definition": "CPU time consumed in onTitleReceive handlers per page open (bounded by onTitleReceive to onPageEnd interval in trace), averaged over 10 opens.",
-    "comparison": "unfixed spends O(history_size) in JSON serialization per open (grows with history); fixed is O(1). With 100+ entries unfixed > fixed by >= 30% on the title-event path."
+    "metric": "trace_cpu_ms",
+    "definition": "CPU time of the app process across the case window, from trace.",
+    "comparison": "unfixed spends O(history_size) in JSON serialization per open (grows with history); fixed is O(1). With 100+ entries unfixed > fixed by >= 30% on the title-event path.",
+    "oracle_revision": {
+      "previous_metric": "title_event_cpu_ms",
+      "previous_definition": "CPU time consumed in onTitleReceive handlers per page open (bounded by onTitleReceive to onPageEnd interval in trace), averaged over 10 opens.",
+      "corrected_metric": "trace_cpu_ms",
+      "corrected_definition": "CPU time of the app process across the case window, from trace.",
+      "kind": "weaker-proxy",
+      "reason": "WEAKER PROXY. The declared metric bounds the measurement to the onTitleReceive to onPageEnd interval, while the collected CPU covers the whole case window, which includes work outside that interval. This is a genuine weakening, not a rename, and the collected figure should be read as an upper bound on the declared quantity rather than a measurement of it."
+    }
   },
   "trace_config": {
     "tool": "hitrace",

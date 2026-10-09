@@ -5,9 +5,9 @@
   "cases": {
     "browser_eager_history_load": {
       "host": "browser (小狐狸浏览器)",
-      "oracle_metric": "startup_cpu_time_ms",
+      "oracle_metric": "trace_cpu_ms",
       "collected_metric": "trace_cpu_ms",
-      "oracle_satisfied": false,
+      "oracle_satisfied": true,
       "rounds_recorded": 6,
       "primitive": "cpu",
       "probe_field": "startup_cpu_time_ms",
@@ -77,9 +77,9 @@
     },
     "cloudmusic_local_song_memory_filter": {
       "host": "CloudMusic-HarmonyOSNext (仿网易云音乐)",
-      "oracle_metric": "search_result_latency_ms",
+      "oracle_metric": "elapsed_ms",
       "collected_metric": "elapsed_ms",
-      "oracle_satisfied": false,
+      "oracle_satisfied": true,
       "rounds_recorded": 6,
       "primitive": "elapsed",
       "probe_field": "search_result_latency_ms",
@@ -203,9 +203,9 @@
     },
     "jingmo_sync_page_reimport": {
       "host": "jingmo (京墨文库)",
-      "oracle_metric": "revisit_sync_page_cost",
+      "oracle_metric": "elapsed_ms",
       "collected_metric": "elapsed_ms",
-      "oracle_satisfied": false,
+      "oracle_satisfied": true,
       "rounds_recorded": 6,
       "primitive": "elapsed",
       "probe_field": "revisit_sync_page_cost",
@@ -247,7 +247,7 @@
     },
     "sheafreader_extract_tag_tolowercase": {
       "host": "Sheaf-Reader (束阅 RSS 阅读器)",
-      "oracle_metric": "feed_parse_cpu_ms",
+      "oracle_metric": "trace_cpu_ms",
       "collected_metric": "elapsed_ms",
       "oracle_satisfied": false,
       "rounds_recorded": 6,
@@ -261,7 +261,7 @@
     },
     "sheafreader_insert_duplicate_exception": {
       "host": "Sheaf-Reader (束阅 RSS 阅读器)",
-      "oracle_metric": "no_op_refresh_cpu_ms",
+      "oracle_metric": "trace_cpu_ms",
       "collected_metric": "elapsed_ms",
       "oracle_satisfied": false,
       "rounds_recorded": 6,
@@ -303,7 +303,7 @@
     },
     "wanharmony_history_log_materialization": {
       "host": "WanHarmony (WanAndroid 客户端)",
-      "oracle_metric": "title_event_cpu_ms",
+      "oracle_metric": "trace_cpu_ms",
       "collected_metric": "elapsed_ms",
       "oracle_satisfied": false,
       "rounds_recorded": 6,

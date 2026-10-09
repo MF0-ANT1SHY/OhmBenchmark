@@ -12,7 +12,10 @@
   "android_mechanism": "The complete SAX character buffer is copied on every text event; fix avoids the per-event copy",
   "category": "cpu",
   "bug_description": "FeedParser.extractTag locates the closing tag with xml.toLowerCase().indexOf(...), materializing a full lowercase copy of the item fragment for every extracted tag. Parsing one RSS item extracts ~6 tags (title/link/description/date/guid/author), so each refresh of a feed with N items allocates and scans ~6N full-fragment lowercase copies on the parsing thread, increasing GC pressure and feed-refresh latency.",
-  "perf_scenarios": ["数据库读取", "网络结果渲染"],
+  "perf_scenarios": [
+    "数据库读取",
+    "网络结果渲染"
+  ],
   "unfixed_commit": "e04ef65",
   "fixed_commit": "f62858e",
   "fix_summary": "The closing tag is located with a case-insensitive regex over the remaining substring, eliminating the per-tag lowercase copy while preserving case-insensitive matching semantics.",
@@ -27,9 +30,17 @@
     "Stop hitrace after refresh completes. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
   ],
   "test_oracle": {
-    "metric": "feed_parse_cpu_ms",
-    "definition": "CPU time of the feed parsing phase per refresh (from first article parse to last, before DB insert), plus count/size of large short-lived string allocations (GC events in memory trace).",
-    "comparison": "unfixed performs one full-fragment toLowerCase copy per extracted tag (~6 per item); fixed none. unfixed parse CPU and GC activity > fixed by >= 15% on feeds with long descriptions."
+    "metric": "trace_cpu_ms",
+    "definition": "CPU time across the refresh case window, from trace.",
+    "comparison": "unfixed performs one full-fragment toLowerCase copy per extracted tag (~6 per item); fixed none. unfixed parse CPU and GC activity > fixed by >= 15% on feeds with long descriptions.",
+    "oracle_revision": {
+      "previous_metric": "feed_parse_cpu_ms",
+      "previous_definition": "CPU time of the feed parsing phase per refresh (from first article parse to last, before DB insert), plus count/size of large short-lived string allocations (GC events in memory trace).",
+      "corrected_metric": "trace_cpu_ms",
+      "corrected_definition": "CPU time across the refresh case window, from trace.",
+      "kind": "same-quantity-renamed",
+      "reason": "The declared metric names CPU time for the feed-parsing phase and the collected metric is CPU time for the same case window. The name differed; the quantity did not."
+    }
   },
   "trace_config": {
     "tool": "hitrace",

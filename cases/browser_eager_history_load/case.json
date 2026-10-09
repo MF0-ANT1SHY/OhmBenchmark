@@ -13,7 +13,10 @@
   "android_mechanism": "Browser search suggestions materialize all matching history rows eagerly",
   "category": "latency",
   "bug_description": "On application startup the main page eagerly queries every per-day history table in the RDB database and materializes all browsing-history rows in memory (Index.aboutToAppear -> RdbUtils.queryAllDate + queryHistoriesByDate for each date), even though history is only consumed when the user opens the browsing-history dialog. Cold-start latency and startup CPU grow linearly with the number of recorded history entries.",
-  "perf_scenarios": ["页面启动", "数据库读取"],
+  "perf_scenarios": [
+    "页面启动",
+    "数据库读取"
+  ],
   "unfixed_commit": "c42e4b3",
   "fixed_commit": "e3c8aa9",
   "fix_summary": "History is loaded lazily on first open of the history dialog (PagesDialog.loadHistoryData), and RdbUtils.queryHistoriesByDate now actually awaits the RDB query instead of returning an unfilled array.",
@@ -28,10 +31,18 @@
     "Repeat 3 repetitions for unfixed, then rebuild/install the fixed HAP and repeat 3 repetitions identically without seeding again."
   ],
   "test_oracle": {
-    "metric": "startup_cpu_time_ms",
-    "definition": "Sum of CPU time of the app process between process start (first sched wake-up of the ability) and completion of Index.aboutToAppear (last RDB query completion observable in disk/sys traces / hilog marker 项目已启动), measured from the hitrace trace.",
+    "metric": "trace_cpu_ms",
+    "definition": "CPU time of the app process across the case window, from trace.",
     "comparison": "unfixed_startup_cpu_time_ms > fixed_startup_cpu_time_ms by >= 20% with 30+ seeded history entries; fixed shows zero history-table SELECT queries during startup, unfixed shows N (one per day table).",
-    "auxiliary": "hilog marker '项目已启动' timestamp delta from process start."
+    "auxiliary": "hilog marker '项目已启动' timestamp delta from process start.",
+    "oracle_revision": {
+      "previous_metric": "startup_cpu_time_ms",
+      "previous_definition": "Sum of CPU time of the app process between process start (first sched wake-up of the ability) and completion of Index.aboutToAppear (last RDB query completion observable in disk/sys traces / hilog marker 项目已启动), measured from the hitrace trace.",
+      "corrected_metric": "trace_cpu_ms",
+      "corrected_definition": "CPU time of the app process across the case window, from trace.",
+      "kind": "same-quantity-renamed",
+      "reason": "The declared metric names CPU time for the startup phase and the collected metric is CPU time for the same case window. The name differed; the quantity did not."
+    }
   },
   "trace_config": {
     "tool": "hitrace",

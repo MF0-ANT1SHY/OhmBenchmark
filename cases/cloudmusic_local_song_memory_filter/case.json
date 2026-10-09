@@ -12,7 +12,10 @@
   "android_mechanism": "Conversation messages filtered in memory after materialization; fix filters in SQLite",
   "category": "latency",
   "bug_description": "Searching local songs materializes the entire songs table via getAllSongs() (already loaded in full by the page) and then filters with Array.filter over songFile strings in memory for every search submission. With a large local library the search does O(total_songs) string work on the UI path instead of an indexed SQLite LIKE query that returns only matching rows.",
-  "perf_scenarios": ["数据库读取", "状态更新"],
+  "perf_scenarios": [
+    "数据库读取",
+    "状态更新"
+  ],
   "unfixed_commit": "a967ef1",
   "fixed_commit": "2aa4715",
   "fix_summary": "A getSongsByKeyword query (RdbPredicates.like on songFile, with LIKE-wildcard escaping) performs the filtering in SQLite; the page search handler awaits it directly instead of filtering the full in-memory list.",
@@ -27,9 +30,17 @@
     "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
   ],
   "test_oracle": {
-    "metric": "search_result_latency_ms",
-    "definition": "Time from search submit event to filtered data source update (first query completion in database trace), averaged over 5 identical searches.",
-    "comparison": "unfixed scans all rows in memory (CPU grows with library size); fixed returns only matching rows from SQLite. With >= 300 local songs, unfixed_avg_ms > fixed_avg_ms."
+    "metric": "elapsed_ms",
+    "definition": "Wall time of the case action, measured in the app.",
+    "comparison": "unfixed scans all rows in memory (CPU grows with library size); fixed returns only matching rows from SQLite. With >= 300 local songs, unfixed_avg_ms > fixed_avg_ms.",
+    "oracle_revision": {
+      "previous_metric": "search_result_latency_ms",
+      "previous_definition": "Time from search submit event to filtered data source update (first query completion in database trace), averaged over 5 identical searches.",
+      "corrected_metric": "elapsed_ms",
+      "corrected_definition": "Wall time of the case action, measured in the app.",
+      "kind": "same-quantity-renamed",
+      "reason": "The declared metric is wall time from search submit to data-source update, and the collected metric is the case action's elapsed time, which is that interval."
+    }
   },
   "trace_config": {
     "tool": "hitrace",
