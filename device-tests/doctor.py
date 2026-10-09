@@ -63,7 +63,37 @@ def main():
     line((SDK_LIB / 'hap-sign-tool.jar').exists(), 'hap-sign-tool.jar')
     line(SIGNING_ASSETS.exists(), 'checksummed backup copy', str(SIGNING_ASSETS))
     java_ok, _ = run(['java', '-version'])
-    line(java_ok == 0, 'can actually run the signer', 'needs a JRE (see SIGNING.md)')
+    line(java_ok == 0, 'java runtime present')
+    # A JRE is not the same as a working signer. Exercise sign-app with the identity
+    # prepared by sign_hap_wsl.py, on a real unsigned HAP, so this reports the true
+    # capability instead of a proxy.
+    hs = Path.home() / '.local' / 'ohsign'
+    chain = hs / 'app-signing.pem'
+    profile = next(iter(hs.glob('*.p7b')), None) if hs.exists() else None
+    unsigned = next((REPO / 'hosts').rglob('*-unsigned.hap'), None)
+    if java_ok != 0:
+        line(False, 'sign-app actually works', 'no JRE')
+    elif not (chain.exists() and profile and unsigned):
+        line(None, 'sign-app actually works',
+             'not probed: need sign_hap_wsl.py prepare and an unsigned HAP')
+    else:
+        try:
+            r = subprocess.run(
+                ['java', '-jar', str(SDK_LIB / 'hap-sign-tool.jar'), 'sign-app',
+                 '-mode', 'localSign', '-keyAlias', 'oh-bench-key-v1', '-keyPwd', '123456',
+                 '-appCertFile', str(chain), '-profileFile', str(profile),
+                 '-inFile', str(unsigned), '-signAlg', 'SHA256withECDSA',
+                 '-keystoreFile', str(hs / 'OpenHarmony.p12'), '-keystorePwd', '123456',
+                 '-outFile', '/tmp/doctor-probe.hap'],
+                capture_output=True, text=True, timeout=180)
+            blob = r.stdout + r.stderr
+            if r.returncode == 0 and Path('/tmp/doctor-probe.hap').exists():
+                line(True, 'sign-app actually works', 'signed a HAP successfully')
+            else:
+                msg = [l for l in blob.strip().splitlines() if l.strip()][-1][:64]
+                line(False, 'sign-app actually works', msg)
+        except Exception as e:  # noqa: BLE001
+            line(None, 'sign-app actually works', str(e)[:64])
 
     print('\n== recorded builds and harnesses ==')
     patches = sorted(p.name for p in (REPO / 'device-tests' / 'patches').iterdir() if p.is_dir())
