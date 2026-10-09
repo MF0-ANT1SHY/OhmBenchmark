@@ -28,10 +28,14 @@ MARK = '// OHMB json parse counter (measurement only)'
 
 PARSER_HELPER = f'''
 {MARK}
-let ohmJsonParsesLocal: number = 0;
+export let ohmJsonParseCount: number = 0;
+{MARK}
+export function ohmParseTotal(): number {{
+  return ohmJsonParseCount;
+}}
 {MARK}
 export function ohmParse(text: string): Record<string, string> {{
-  ohmJsonParsesLocal++;
+  ohmJsonParseCount++;
   return JSON.parse(text) as Record<string, string>;
 }}
 '''

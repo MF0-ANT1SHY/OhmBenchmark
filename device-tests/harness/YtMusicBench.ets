@@ -1,33 +1,46 @@
 import { common } from '@kit.AbilityKit';
+import { router } from '@kit.ArkUI';
 import { OhmProbe, OhmCounters } from './OhmProbe';
-
-interface HistoryRow { id: number; title: string; subtitle: string; }
+// the instrumented page exposes its running parse total; reading it here avoids
+// a cycle, since History.ets must not import the bench back
+import { ohmParseTotal } from '../pages/History';
 
 /**
  * Bench entry for the ytmusic cases.
  *
- * ytmusic_history_json_parse_per_row - counts JSON.parse calls while the history list renders.
- * The unfixed page parses each entry's payload four times per row build; the fixed page parses
- * it once. Both variants get the identical counter, so the comparison is fair.
+ * ytmusic_history_json_parse_per_row - counts JSON.parse calls made by the history page while
+ * it builds its list. The page reads its entries from the AppStorage key `history` and parses
+ * each entry's JSON per property access inside ForEach; the fixed page parses once per entry.
+ *
+ * The counter is emitted *after* the render, and the instrumented helper keeps a running total
+ * rather than a per-measurement one, because ForEach runs on the UI thread during the page
+ * transition - by the time this async function resumes, the parses have already happened.
  */
+const FIXTURE_ROWS = 200;
+
+function makeEntry(i: number): string {
+  return JSON.stringify({ img: 'cover/' + i + '.png', name: 'Track ' + i, creator: 'Artist ' + i });
+}
+
 export async function runYtMusicBench(context: common.UIAbilityContext, name: string): Promise<void> {
   await OhmProbe.measure(context, name, async (): Promise<void> => {
     OhmCounters.reset();
+    if (name === 'ytmusic_history_json_parse_per_row') {
+      const rows = new Set<string>();
+      for (let i = 0; i < FIXTURE_ROWS; i++) {
+        rows.add(makeEntry(i));
+      }
+      AppStorage.setOrCreate('history', rows);
+    }
     return;
   }, async (): Promise<number> => {
     if (name === 'ytmusic_history_json_parse_per_row') {
-      // Deterministic rows shaped like the history payload, so the page's own parsing path
-      // runs the same number of times regardless of what is stored on the device.
-      const rows: HistoryRow[] = [];
-      for (let i = 0; i < 200; i++) {
-        rows.push({ id: i, title: 'Track ' + i, subtitle: 'Artist ' + i });
-      }
-      let total = 0;
-      for (const row of rows) {
-        // The page under test parses this payload; counting the calls the page makes is what
-        // the oracle asks for, and the counter is bumped from the instrumented call site.
-        total += JSON.parse(JSON.stringify(row)).id >= 0 ? 1 : 0;
-      }
+      // Drive the page under test: route to it so its own ForEach builds the rows. The parses
+      // the page performs are what the oracle counts.
+      router.pushUrl({ url: 'pages/History' });
+      await new Promise<void>((resolve) => { setTimeout(resolve, 2500); });
+      // the page parsed on the UI thread; read its own running total
+      const total = ohmParseTotal();
       OhmCounters.emit();
       return total;
     }

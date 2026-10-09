@@ -63,6 +63,7 @@ export class OhmCounters {
     OhmCounters.playerUpdates = 0;
   }
 
+
   static emit(): void {
     hiTraceMeter.traceByValue('OHMB/JsonParseCount', OhmCounters.jsonParses);
     hiTraceMeter.traceByValue('OHMB/SearchRequestCount', OhmCounters.searchRequests);

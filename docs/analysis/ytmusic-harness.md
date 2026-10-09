@@ -50,18 +50,29 @@ The helper's return type had to be found by compiling, twice:
 3. `Record<string, string>` compiles, and is accurate: the payload's `img`, `name` and
    `creator` are all strings.
 
-## Known limitation, not yet measured
+## Driving the real render path
 
-The bench entry currently parses fixture rows itself instead of driving the history page's
-own render path, so the instrumented call sites in `History.ets` are **not yet exercised** and
-the counter would read 0 for both variants. Before this case can be measured, the bench must
-make the history page build its list - either by seeding real history entries in `prepare()`
-and navigating to the page, or by extracting the page's row-building into something the bench
-can call directly. This is written down rather than papered over: the harness is a
-prerequisite, not the measurement.
+The first version of the bench parsed fixture rows itself, so the instrumented call sites in
+`History.ets` were never exercised and the counter would have read 0 for both variants - the
+same trap that produced "unfixed 1000, fixed 0" on the flush case.
+
+The bench now drives the page under test:
+
+1. `prepare()` seeds AppStorage key `history` with 200 distinct entries, which is where the
+   page reads its rows from (`@StorageLink('history')`);
+2. the measured action routes to `pages/History` and waits, so the page's own `ForEach` builds
+   the rows;
+3. the counter is read **after** the render, and the instrumented helper keeps a running total
+   rather than a per-measurement one, because `ForEach` runs on the UI thread during the page
+   transition - by the time the async action resumes, the parses have already happened.
+
+The running total is read by the bench from the instrumented page rather than from `OhmProbe`,
+because `History.ets` is imported by the bench and having the probe import it back would be a
+cycle.
 
 ## Status
 
 - harness: **done and building**
-- instrumentation: **done for the json_parse case (4 sites)**
-- measurement: **not yet run**
+- instrumentation: **done for the json_parse case (4 sites, running total)**
+- render path: **driven**
+- measurement: **not yet run on device**
