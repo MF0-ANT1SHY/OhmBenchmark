@@ -33,9 +33,27 @@ AUX_COUNTERS = {
     'weatherassistant_http_session_leak': ['fd_before', 'fd_after'],
 }
 
+# Cases where the declared mechanism was tested and does NOT manifest on this OS build,
+# so no amount of extra measurement on these builds will separate the variants.
+MECHANISM_ABSENT = {
+    'sheafreader_article_list_foreach': (
+        'the unfixed ForEach over List is already virtualised on this OS build: the fixture '
+        'loads 600 articles but only 37 cards build in BOTH variants, while the control case '
+        'browser_history_list_foreach (same ForEach->LazyForEach change, 1000 rows) separates '
+        'cleanly at 200 vs 59'),
+    'weatherassistant_http_session_leak': (
+        'the leak does not reproduce at 120 requests: fd counts were flat in both variants'),
+}
+
 CONTRACT = {
-    'sheafreader_article_list_foreach': ('count', 'article_components_created',
-        'declared counter IS collected (article_components_created) but was 37 in BOTH variants, so the mechanism does not manifest; the exporter also reported elapsed_ms, which a fixed 10s window makes constant'),
+    'sheafreader_article_list_foreach': ('cpu', 'article_components_created',
+        'MECHANISM ABSENT, proven by control: the fixture loads 600 articles yet only 37 cards '
+        'build in BOTH variants, because the unfixed ForEach over List is already virtualised on '
+        'this OS build. browser_history_list_foreach changes the same construct and DOES '
+        'discriminate (200 vs 59 builds, 1000 rows), so the fix is sound but this case cannot '
+        'show it. Only trace CPU separates the variants (+11.79%, non-overlapping). elapsed_ms is '
+        'constant by construction (fixed 10s window). Needs oracle re-declaration to trace_cpu_ms '
+        'or a counter taken at the same stage the browser counter uses.'),
     'sheafreader_insert_duplicate_exception': ('cpu', 'no_op_refresh_cpu_ms',
         'a 22-36s elapsed window dominated by fixture work; must isolate the no-op refresh phase and read trace CPU'),
     'weatherassistant_http_session_leak': ('external', 'fd_before+fd_after',
@@ -113,6 +131,8 @@ def main():
             'primitive': prim,
             'probe_field': field,
             'aux_counters': AUX_COUNTERS.get(cid, []),
+            'mechanism': 'absent' if cid in MECHANISM_ABSENT else 'present',
+            'mechanism_note': MECHANISM_ABSENT.get(cid, ''),
             'measurement_status': r.get('status', '未完成测试'),
             'gap': why,
         }

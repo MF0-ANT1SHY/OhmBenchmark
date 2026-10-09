@@ -12,6 +12,8 @@
       "primitive": "cpu",
       "probe_field": "startup_cpu_time_ms",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "明确差异",
       "gap": "declared startup CPU; reported trace_cpu_ms over a fixed 10s window"
     },
@@ -24,6 +26,8 @@
       "primitive": "elapsed",
       "probe_field": "clear_history_wall_time_ms",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "明确差异",
       "gap": "reported elapsed_ms - same quantity"
     },
@@ -38,6 +42,8 @@
       "aux_counters": [
         "history_components_created"
       ],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "明确差异",
       "gap": "declared component builds; the probe DID emit history_components_created (200 unfixed vs 59 fixed) but the exporter reported trace_cpu_ms instead"
     },
@@ -50,6 +56,8 @@
       "primitive": "count",
       "probe_field": "rdb_statements_per_page_save",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "明确差异",
       "gap": "declared RDB statement count; reported elapsed_ms. The count is observable in the probe"
     },
@@ -62,6 +70,8 @@
       "primitive": "elapsed",
       "probe_field": "search_result_latency_ms",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "未完成测试",
       "gap": "never measured: host trigger/install instability"
     },
@@ -74,6 +84,8 @@
       "primitive": "elapsed",
       "probe_field": "search_result_latency_ms",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "未复现稳定改善",
       "gap": "only ~10 method calls measured; fixture must reach >=300 songs and many searches to clear the noise floor"
     },
@@ -86,6 +98,8 @@
       "primitive": "count",
       "probe_field": "player_page_updates_per_minute",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "未完成测试",
       "gap": "never measured: host instability; state-update count is countable in the probe"
     },
@@ -98,6 +112,8 @@
       "primitive": "count",
       "probe_field": "search_list_render_cpu_and_jank",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "未完成测试",
       "gap": "never measured: host instability; needs component count + trace CPU"
     },
@@ -110,6 +126,8 @@
       "primitive": "cpu",
       "probe_field": "row_build_cpu_overhead",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "未完成测试",
       "gap": "never measured: host instability"
     },
@@ -122,6 +140,8 @@
       "primitive": "cpu",
       "probe_field": "response_handler_cpu_ms",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "阻塞",
       "gap": "blocked: local fixture response arrives as a string and is rejected before the logging path"
     },
@@ -134,6 +154,8 @@
       "primitive": "count",
       "probe_field": "flush_count_per_search_burst",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "明确差异",
       "gap": "declared flush count; reported trace_cpu_ms. The count is observable in the probe"
     },
@@ -146,6 +168,8 @@
       "primitive": "count",
       "probe_field": "history_entries_and_render_cost",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "明确差异",
       "gap": "declared entry count + render cost; reported elapsed_ms"
     },
@@ -158,6 +182,8 @@
       "primitive": "elapsed",
       "probe_field": "dataset_import_wall_time_ms",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "明确差异",
       "gap": "reported elapsed_ms - same quantity"
     },
@@ -170,6 +196,8 @@
       "primitive": "elapsed",
       "probe_field": "random_read_query_ms",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "明确差异",
       "gap": "reported elapsed_ms - same quantity"
     },
@@ -182,6 +210,8 @@
       "primitive": "elapsed",
       "probe_field": "revisit_sync_page_cost",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "明确差异",
       "gap": "reported elapsed_ms - proxy for revisit cost"
     },
@@ -194,6 +224,8 @@
       "primitive": "elapsed",
       "probe_field": "mainpage_build_ms",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "未完成测试",
       "gap": "never measured: launched cleanly 6x but no formal round (budget)"
     },
@@ -203,13 +235,15 @@
       "collected_metric": "elapsed_ms",
       "oracle_satisfied": false,
       "rounds_recorded": 6,
-      "primitive": "count",
+      "primitive": "cpu",
       "probe_field": "article_components_created",
       "aux_counters": [
         "article_components_created"
       ],
+      "mechanism": "absent",
+      "mechanism_note": "the unfixed ForEach over List is already virtualised on this OS build: the fixture loads 600 articles but only 37 cards build in BOTH variants, while the control case browser_history_list_foreach (same ForEach->LazyForEach change, 1000 rows) separates cleanly at 200 vs 59",
       "measurement_status": "未复现稳定改善",
-      "gap": "declared counter IS collected (article_components_created) but was 37 in BOTH variants, so the mechanism does not manifest; the exporter also reported elapsed_ms, which a fixed 10s window makes constant"
+      "gap": "MECHANISM ABSENT, proven by control: the fixture loads 600 articles yet only 37 cards build in BOTH variants, because the unfixed ForEach over List is already virtualised on this OS build. browser_history_list_foreach changes the same construct and DOES discriminate (200 vs 59 builds, 1000 rows), so the fix is sound but this case cannot show it. Only trace CPU separates the variants (+11.79%, non-overlapping). elapsed_ms is constant by construction (fixed 10s window). Needs oracle re-declaration to trace_cpu_ms or a counter taken at the same stage the browser counter uses."
     },
     "sheafreader_extract_tag_tolowercase": {
       "host": "Sheaf-Reader (束阅 RSS 阅读器)",
@@ -220,6 +254,8 @@
       "primitive": "cpu",
       "probe_field": "feed_parse_cpu_ms",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "明确差异",
       "gap": "declared parse CPU; reported elapsed_ms"
     },
@@ -232,6 +268,8 @@
       "primitive": "cpu",
       "probe_field": "no_op_refresh_cpu_ms",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "未复现稳定改善",
       "gap": "a 22-36s elapsed window dominated by fixture work; must isolate the no-op refresh phase and read trace CPU"
     },
@@ -244,6 +282,8 @@
       "primitive": "elapsed",
       "probe_field": "refresh_all_wall_time_ms",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "明确差异",
       "gap": "reported elapsed_ms - same quantity"
     },
@@ -256,6 +296,8 @@
       "primitive": "count",
       "probe_field": "sidebar_count_queries_per_refresh",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "明确差异",
       "gap": "declared query count (201->2 observed); reported elapsed_ms. The count is observable in the probe"
     },
@@ -268,6 +310,8 @@
       "primitive": "cpu",
       "probe_field": "title_event_cpu_ms",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "明确差异",
       "gap": "declared title-event CPU; reported elapsed_ms over the lifecycle-log phase only"
     },
@@ -280,6 +324,8 @@
       "primitive": "cpu",
       "probe_field": "scroll_cpu_ms_per_item",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "未完成测试",
       "gap": "never measured: launched cleanly 9x but no formal round (budget)"
     },
@@ -292,6 +338,8 @@
       "primitive": "count",
       "probe_field": "persistent_write_bytes_per_loadmore",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "未完成测试",
       "gap": "never measured (budget); declared bytes per load-more needs an I/O counter"
     },
@@ -304,6 +352,8 @@
       "primitive": "count",
       "probe_field": "log_calls_per_pageload",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "未完成测试",
       "gap": "never measured (budget); log call count is countable"
     },
@@ -319,6 +369,8 @@
         "fd_before",
         "fd_after"
       ],
+      "mechanism": "absent",
+      "mechanism_note": "the leak does not reproduce at 120 requests: fd counts were flat in both variants",
       "measurement_status": "未复现稳定改善",
       "gap": "fd counts ARE collected (fd_before/fd_after) and were flat in both variants, so the leak does not reproduce at 120 requests"
     },
@@ -331,6 +383,8 @@
       "primitive": "external",
       "probe_field": "icon_first_paint_ms_and_net_bytes",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "未完成测试",
       "gap": "never measured: injected .cjs error; declared metric needs network byte accounting"
     },
@@ -343,6 +397,8 @@
       "primitive": "count",
       "probe_field": "player_page_updates_per_minute",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "未完成测试",
       "gap": "never measured: host repo absent; rerender count is countable"
     },
@@ -355,6 +411,8 @@
       "primitive": "count",
       "probe_field": "history_page_render_cpu_ms",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "未完成测试",
       "gap": "never measured: host repo absent"
     },
@@ -367,6 +425,8 @@
       "primitive": "count",
       "probe_field": "search_requests_per_query",
       "aux_counters": [],
+      "mechanism": "present",
+      "mechanism_note": "",
       "measurement_status": "未完成测试",
       "gap": "never measured: host repo absent; request count is countable/loggable"
     }

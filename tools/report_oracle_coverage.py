@@ -29,7 +29,8 @@ DATA = REPO.parent / 'OhmBenchmark-data'
 CONTRACT = REPO / 'cases' / 'measurement-contract.json'
 
 PRIMARY = {'elapsed': 'elapsed_ms', 'cpu': 'trace_cpu_ms', 'count': None, 'external': None}
-ORDER = ['satisfied', 'counter-satisfied', 'proxy', 'collected-not-used', 'never-run']
+ORDER = ['satisfied', 'counter-satisfied', 'mechanism-absent', 'proxy',
+         'collected-not-used', 'never-run']
 
 
 def load_data():
@@ -63,8 +64,10 @@ def classify(case_id, contract, rounds):
     aux = c.get('aux_counters') or []
     if aux and all(all(k in r for k in aux) for r in rs):
         got = '+'.join(aux)
-        return dict(**base, collected=got, verdict='counter-satisfied',
-                    detail=c['gap'] or f'declared counter collected as {got}')
+        verdict = 'mechanism-absent' if c.get('mechanism') == 'absent' else 'counter-satisfied'
+        return dict(**base, collected=got, verdict=verdict,
+                    detail=(c.get('mechanism_note') or c['gap'] or
+                            f'declared counter collected as {got}'))
 
     have = sorted({k for r in rs for k in ('elapsed_ms', 'trace_cpu_ms') if k in r})
     want = PRIMARY.get(prim)
@@ -115,6 +118,7 @@ def main():
         if counts.get(k):
             print(f"  {k:<20} {counts[k]}")
     for title, kinds in (('declared metric collected', ('satisfied', 'counter-satisfied', 'proxy')),
+                         ('mechanism does not manifest on this build', ('mechanism-absent',)),
                          ('declared primitive collected under another field', ('collected-not-used',)),
                          ('never run on device', ('never-run',))):
         print(f"\n  === {title} ===")

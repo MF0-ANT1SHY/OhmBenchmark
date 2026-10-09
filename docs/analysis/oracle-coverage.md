@@ -1,6 +1,6 @@
 # Oracle coverage
 
-Of 30 cases: 3 counter-satisfied, 10 proxy, 4 collected-not-used, 13 never-run.
+Of 30 cases: 1 counter-satisfied, 2 mechanism-absent, 10 proxy, 4 collected-not-used, 13 never-run.
 
 | case | verdict | primitive | declared metric | collected metric |
 | --- | --- | --- | --- | --- |
@@ -20,7 +20,7 @@ Of 30 cases: 3 counter-satisfied, 10 proxy, 4 collected-not-used, 13 never-run.
 | `jingmo_random_poem_orderby_random` | proxy | elapsed | `random_read_query_ms` | `elapsed_ms` |
 | `jingmo_sync_page_reimport` | proxy | elapsed | `revisit_sync_page_cost` | `elapsed_ms` |
 | `sepweather_font_register_per_page` | never-run | elapsed | `mainpage_build_ms` | — |
-| `sheafreader_article_list_foreach` | counter-satisfied | count | `article_row_build_count` | `article_components_created` |
+| `sheafreader_article_list_foreach` | mechanism-absent | cpu | `article_row_build_count` | `article_components_created` |
 | `sheafreader_extract_tag_tolowercase` | proxy | cpu | `feed_parse_cpu_ms` | `trace_cpu_ms` |
 | `sheafreader_insert_duplicate_exception` | proxy | cpu | `no_op_refresh_cpu_ms` | `trace_cpu_ms` |
 | `sheafreader_refresh_feeds_sequential` | proxy | elapsed | `refresh_all_wall_time_ms` | `elapsed_ms` |
@@ -29,7 +29,7 @@ Of 30 cases: 3 counter-satisfied, 10 proxy, 4 collected-not-used, 13 never-run.
 | `wanharmony_html_decode_per_render` | never-run | cpu | `scroll_cpu_ms_per_item` | — |
 | `wanharmony_persisted_home_list_growth` | never-run | count | `persistent_write_bytes_per_loadmore` | — |
 | `wanharmony_web_progress_log_storm` | never-run | count | `log_calls_per_pageload` | — |
-| `weatherassistant_http_session_leak` | counter-satisfied | external | `retained_fds_and_connections` | `fd_before+fd_after` |
+| `weatherassistant_http_session_leak` | mechanism-absent | external | `retained_fds_and_connections` | `fd_before+fd_after` |
 | `weatherassistant_remote_weather_icons` | never-run | external | `icon_first_paint_ms_and_net_bytes` | — |
 | `ytmusic_current_playing_timeupdate` | never-run | count | `player_page_updates_per_minute` | — |
 | `ytmusic_history_json_parse_per_row` | never-run | count | `history_page_render_cpu_ms` | — |
