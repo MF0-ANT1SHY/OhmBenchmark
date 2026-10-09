@@ -12,7 +12,11 @@
   "android_mechanism": "Per-row metadata recomputed on every access; fix computes it once",
   "category": "cpu",
   "bug_description": "The listening-history page stores each entry as a JSON string and calls JSON.parse(item) four times per row inside the build (cover image URL, name, creator, and click params). Every render of the history list re-parses every entry's JSON four times, wasting UI-thread CPU and growing linearly with history length (plus re-parses on every list mutation).",
-  "perf_scenarios": ["列表滑动", "状态更新", "组件创建"],
+  "perf_scenarios": [
+    "列表滑动",
+    "状态更新",
+    "组件创建"
+  ],
   "unfixed_commit": "5bf6142",
   "fixed_commit": "1e3d086",
   "fix_summary": "The item list is mapped to parsed objects once per render and rows read the parsed fields; deletion re-serializes only the affected entry.",
@@ -29,7 +33,12 @@
   "test_oracle": {
     "metric": "history_page_render_cpu_ms",
     "definition": "UI-thread CPU time from page-show to last row rendered plus the re-render after one deletion, from the ace trace.",
-    "comparison": "unfixed performs 4*history_size JSON.parse calls per render (visible in JS sampling); fixed performs history_size parses. unfixed_render_cpu_ms > fixed by >= 25% with 30+ entries."
+    "comparison": "unfixed performs 4*history_size JSON.parse calls per render (visible in JS sampling); fixed performs history_size parses. unfixed_render_cpu_ms > fixed by >= 25% with 30+ entries.",
+    "oracle_revision": {
+      "previous_comparison": "unfixed performs 4*history_size JSON.parse calls per render (visible in JS sampling); fixed performs history_size parses.",
+      "corrected_comparison": "unfixed performs 3*history_size JSON.parse calls per render; fixed performs history_size parses. Measured: 600 vs 200 for a 200-entry list.",
+      "reason": "The page has four JSON.parse call sites, but only three run during a render: Image(JSON.parse(item).img), Text(JSON.parse(item).name) and Text(JSON.parse(item).creator). The fourth sits inside the row's onClick handler and only fires on a tap, which this bench never performs. Measured on device: unfixed 600 parses (200 x 3), fixed 200 (200 x 1). The claim's direction is unchanged."
+    }
   },
   "trace_config": {
     "tool": "hitrace",
