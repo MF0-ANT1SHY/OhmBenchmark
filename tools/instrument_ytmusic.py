@@ -46,6 +46,7 @@ def install_probe(base: Path) -> None:
     utils = base / 'utils'
     utils.mkdir(parents=True, exist_ok=True)
     for name, src in (('OhmProbe.ets', REPO / 'device-tests' / 'harness' / 'OhmProbe.ets'),
+                      ('Diag.ets', REPO / 'device-tests' / 'harness' / 'Diag.ets'),
                       ('YtMusicBench.ets', REPO / 'device-tests' / 'harness' / 'YtMusicBench.ets')):
         dst = utils / name
         if not src.exists():

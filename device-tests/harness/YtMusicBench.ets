@@ -1,6 +1,7 @@
 import { common } from '@kit.AbilityKit';
 import { router } from '@kit.ArkUI';
 import { OhmProbe, OhmCounters } from './OhmProbe';
+import { Diag } from './Diag';
 // the instrumented page exposes its running parse total; reading it here avoids
 // a cycle, since History.ets must not import the bench back
 import { ohmParseTotal } from '../pages/History';
@@ -32,26 +33,28 @@ export async function runYtMusicBench(context: common.UIAbilityContext, name: st
       }
       AppStorage.setOrCreate('history', rows);
       const seen = AppStorage.get<Set<string>>('history');
-      OhmProbe.write(context, '{"state":"preparing","seeded":' + rows.size +
-        ',"seenBack":' + (seen ? seen.size : -1) + '}');
+      Diag.log(context, 'prepared', 'seeded=' + rows.size + ' seenBack=' + (seen ? seen.size : -1));
     }
     return;
   }, async (): Promise<number> => {
     if (name === 'ytmusic_history_json_parse_per_row') {
       // Drive the page under test: route to it so its own ForEach builds the rows. The parses
       // the page performs are what the oracle counts.
+      Diag.log(context, 'before-route', 'parseTotal=' + ohmParseTotal() +
+        ' rowsInStorage=' + (AppStorage.get<Set<string>>('history')?.size ?? -1));
       let routed = 'ok';
       try {
         router.pushUrl({ url: 'pages/History' });
       } catch (e) {
         routed = 'threw:' + String(e);
       }
-      await new Promise<void>((resolve) => { setTimeout(resolve, 2500); });
-      // the page parsed on the UI thread; read its own running total
+      Diag.log(context, 'routed', routed);
+      await new Promise<void>((resolve) => { setTimeout(resolve, 3000); });
       const total = ohmParseTotal();
-      const seenAfter = AppStorage.get<Set<string>>('history');
-      OhmProbe.write(context, '{"state":"preparing","routed":"' + routed +
-        '","parseTotal":' + total + ',"rowsVisible":' + (seenAfter ? seenAfter.size : -1) + '}');
+      // 4 parses per row on the unfixed page, 1 on the fixed page, so this ratio is the
+      // measurement: if the page built its rows, total is a multiple of FIXTURE_ROWS.
+      Diag.log(context, 'after-wait', 'parseTotal=' + total + ' rows=' + FIXTURE_ROWS +
+        ' expectedUnfixed=' + (FIXTURE_ROWS * 4) + ' expectedFixed=' + FIXTURE_ROWS);
       OhmCounters.emit();
       return total;
     }

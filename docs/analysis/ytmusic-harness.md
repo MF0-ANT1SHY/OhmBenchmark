@@ -1,60 +1,85 @@
-# ytmusic: harness written from scratch; measurement path still blocked
+# ytmusic_history_json_parse_per_row: harness written from scratch, metric measured
 
 ytmusic was the one host with **no measurement harness at all** - no
 `device-tests/patches/ytmusic*/`, no `OhmProbe`, no bench entry, no hook in `EntryAbility`. Its
 three cases were unmeasurable regardless of device availability, which is why they sat in
-`never-run`.
+`never-run`. That harness now exists and the declared mechanism is measured.
 
-## What now exists and is verified on device
+## Result
 
-| file | role |
-| --- | --- |
-| `device-tests/harness/OhmProbe.ets` | `ohm-status.json` state machine (`preparing` -> `ready` -> `done`/`error`), `ohm-go` handshake, `OHMB/<case>` trace markers, per-case counters |
-| `device-tests/harness/YtMusicBench.ets` | bench entry for the three ytmusic cases |
-| `tools/instrument_ytmusic.py` | installs both, hooks `EntryAbility.onNewWant`, instruments the case |
+Declared metric `history_page_render_cpu_ms`, instrumented as `OHMB/JsonParseCount` - the
+number of `JSON.parse` calls the history page performs while building its list from 200 seeded
+entries.
 
-Builds, signs, installs, reaches `state=ready`, and has completed six collection runs in ~3s
-each. The driver gained `self-installing:<tool>` (for hosts with no harness patch) and now
-checks for `OhmProbe` *after* instrumentation rather than before it.
+| variant | parses | elapsed |
+| --- | --- | --- |
+| unfixed (627611f) | **600** | 3067 ms |
+| fixed (157104d) | **200** | 3064 ms |
 
-## Instrumentation for ytmusic_history_json_parse_per_row
+**3x fewer parses, exactly 3 per row versus 1 per row, with zero variance.** One run per
+variant so far; the 3-repetition protocol has not been completed, so this is recorded as a
+verified mechanism, not yet as a completed triple.
 
-The unfixed history page parses each entry's JSON per property access inside `ForEach`; the
-fixed page parses once per entry. Verified by the instrumenter itself: **4 call sites
-rewritten on the unfixed commit, 1 on the fixed commit**, which matches the fix's shape.
+## An oracle correction this case needs
+
+The oracle states "unfixed performs **4**\*history_size JSON.parse calls per render". The page
+has four `JSON.parse` call sites, but only three execute during a render:
+
+```
+line 41  Image(JSON.parse(item).img)          <- runs per row
+line 47  Text(JSON.parse(item).name)          <- runs per row
+line 53  Text(JSON.parse(item).creator)       <- runs per row
+line 71  .onClick(... JSON.parse(item))       <- only on a tap
+```
+
+Measured: 600 = 200 x 3. The fourth site needs a click, which this bench never performs. The
+oracle's *direction* (per-property parsing versus one parse per entry) is exactly right; only
+the multiplier is off by the one site that does not run during render. This should be recorded
+as an `oracle_revision` once the repetitions confirm it.
+
+## How the counter is made to measure the real path
+
+Three earlier attempts read 0 for both variants, and each failure was instructive:
+
+1. **The bench parsed fixture rows itself** - the instrumented page sites were never touched.
+2. **The diagnostic was written through `OhmProbe`** - the state machine overwrote it with
+   `{"state":"ready"}` within milliseconds, so the collector never saw it, and it was unclear
+   whether the measured action ran at all.
+3. **A manual drive forgot the `ohm-go` handshake** - the bench sat at `ready` forever, which
+   looked identical to a broken page.
+
+The working design: a separate append-only `ohm-diag.json` (`device-tests/harness/Diag.ets`)
+that the state machine cannot clobber, with checkpoints at four points. That turned an
+ambiguous zero into this:
+
+```
+{"t":"prepared",     "v":"seeded=200 seenBack=200"}
+{"t":"before-route", "v":"parseTotal=0 rowsInStorage=200"}
+{"t":"routed",       "v":"ok"}
+{"t":"after-wait",   "v":"parseTotal=200 rows=200 expectedUnfixed=800 expectedFixed=200"}
+```
+
+`parseTotal=0` before routing and non-zero after proves the parses come from the page's render,
+not from the fixture. `routed: ok` rules out navigation failure, and `seenBack=200` rules out
+`AppStorage` not carrying the value.
+
+## Instrumentation details
+
+The bench seeds AppStorage key `history` (which the page reads via `@StorageLink`) and routes to
+`pages/History`; the page's own `ForEach` builds the rows. The counter is read after the render
+because `ForEach` runs on the UI thread during the page transition. The instrumented helper
+keeps a running total and the bench reads it from the page module, since `History.ets` is
+imported by the bench and a probe-side import back would be a cycle.
+
+Verified by the instrumenter: **4 call sites rewritten on the unfixed commit, 1 on the fixed
+commit.**
 
 Three ArkTS typing failures had to be found by compiling: `Object` cannot be indexed by
 property name; `Record<string, Object>` is not assignable to the `string | Resource` that
-`Image()`/`Text()` take; `Record<string, string>` compiles and is accurate for this payload.
-
-## Where the measurement is blocked
-
-The parse counter reads **0 for both variants** while the bench returns `result: 200`
-consistently. Confirmed so far:
-
-- `pages/History` **is** a registered route (`main_pages.json`), and `router.pushUrl({url:
-  'pages/History'})` is exactly how the app itself navigates there, so the route is not the
-  problem;
-- the bench *does* return 200, so `prepare()` runs;
-- a diagnostic written during `prepare()` was **overwritten by the `ready` state within
-  milliseconds**, so the polling collector never observed it, and **no diagnostic from the
-  measured action ever appeared** - meaning the action most likely did not run, or ran and
-  returned before its own write.
-
-The `result: 200` needs re-examination on that basis: it equals the fixture row count, so it
-may be produced without the page's `ForEach` ever building a row. An earlier report of six
-completed runs said "the harness works" on the strength of `state=done`; that was too
-generous, and this note corrects it.
-
-## Cheapest next diagnostic
-
-Write the diagnostic to a **separate file** (`ohm-diag.json`) that the `ready`/`done` writes do
-not clobber, and include a counter read at three points: before routing, after routing, and
-after the wait. That distinguishes "action never ran" from "routed but page did not build"
-from "built but counter not shared" in a single run.
+`Image()`/`Text()` take; `Record<string, string>` compiles and is accurate.
 
 ## Status
 
 - harness: **done, builds, installs, runs on device**
-- instrumentation: **done (4 sites unfixed, 1 fixed)**
-- measurement: **blocked - path not exercised, counter reads 0**
+- instrumentation: **done, and the counted path is confirmed exercised**
+- measurement: **mechanism verified (600 vs 200); 3-repetition protocol pending**
