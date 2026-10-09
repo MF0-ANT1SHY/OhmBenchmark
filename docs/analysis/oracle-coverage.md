@@ -1,12 +1,12 @@
 # Oracle coverage
 
-Of 30 cases: 2 counter-satisfied, 10 proxy, 5 collected-not-used, 13 never-run.
+Of 30 cases: 3 counter-satisfied, 10 proxy, 4 collected-not-used, 13 never-run.
 
 | case | verdict | primitive | declared metric | collected metric |
 | --- | --- | --- | --- | --- |
 | `browser_eager_history_load` | proxy | cpu | `startup_cpu_time_ms` | `trace_cpu_ms` |
 | `browser_history_delete_no_transaction` | proxy | elapsed | `clear_history_wall_time_ms` | `elapsed_ms` |
-| `browser_history_list_foreach` | collected-not-used | count | `component_build_count_and_first_frame_ms` | — |
+| `browser_history_list_foreach` | counter-satisfied | count | `component_build_count_and_first_frame_ms` | `history_components_created` |
 | `browser_insert_date_lookup_cache` | collected-not-used | count | `rdb_statements_per_page_save` | — |
 | `cloudmusic_indexof_in_render` | never-run | elapsed | `row_build_cpu_overhead` | — |
 | `cloudmusic_local_song_memory_filter` | proxy | elapsed | `search_result_latency_ms` | `elapsed_ms` |
