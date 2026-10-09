@@ -33,11 +33,11 @@ ORDER = ['satisfied', 'counter-satisfied', 'declared-collected-new', 'mechanism-
          'proxy', 'collected-not-used', 'never-run']
 
 
-# OHMB trace markers that carry a declared count, by primitive field.
-COUNTER_MARKERS = {
-    'rdb_statements_per_page_save': 'StatementCount',
-    'sidebar_count_queries_per_refresh': 'QueryCount',
-}
+# Any OHMB/<Name> marker with an integer value counts as a declared-metric reading, so the
+# report picks up new instrumentation without needing a list entry. The values below are the
+# markers already seen, kept only for readable output.
+KNOWN_MARKERS = ('StatementCount', 'QueryCount', 'FlushCount')
+MARKER_RE = r'OHMB/([A-Za-z]+)\|(\d+)'
 
 
 def load_staged(data):
@@ -62,11 +62,9 @@ def load_staged(data):
                         blob = f.read()
                 except OSError:
                     continue
-                for marker in set(COUNTER_MARKERS.values()):
-                    vals = [int(v) for v in re.findall(marker + r'\|(\d+)', blob)]
-                    if vals:
-                        out.setdefault(case_dir.name, {}).setdefault(
-                            variant_dir.name, {}).setdefault(marker, []).append(max(vals))
+                for marker, value in re.findall(MARKER_RE, blob):
+                    out.setdefault(case_dir.name, {}).setdefault(
+                        variant_dir.name, {}).setdefault(marker, []).append(int(value))
     return out
 
 
@@ -146,13 +144,19 @@ def main():
         row = classify(cid, contract, rounds)
         if row['collected']:
             row['effect'] = effect(rounds.get(cid, []), row['collected'])
-        marker = COUNTER_MARKERS.get(cid and contract['cases'][cid]['probe_field'])
-        if marker and cid in staged:
+        if cid in staged:
             per = staged[cid]
-            row['staged_counts'] = {v: vals.get(marker, []) for v, vals in per.items()}
+            # report every marker found for this case, keyed by marker name
+            found = {}
+            for variant, markers in per.items():
+                for marker, values in markers.items():
+                    found.setdefault(marker, {})[variant] = [max(values)]
+            if found:
+                row['staged_counts'] = found
+                marker = sorted(found)[0]
+                row['collected'] = marker
             if row['verdict'] in ('collected-not-used', 'proxy', 'never-run'):
                 row['verdict'] = 'declared-collected-new'
-                row['collected'] = marker
         rows.append(row)
 
     counts = {}
@@ -174,8 +178,11 @@ def main():
                 extra = ''
                 sc = r.get('staged_counts')
                 if sc:
-                    extra = '  staged: ' + ', '.join(
-                        f"{v}={vals}" for v, vals in sorted(sc.items()) if vals)
+                    parts = []
+                    for marker, per_variant in sorted(sc.items()):
+                        got = ', '.join(f'{v}={vals}' for v, vals in sorted(per_variant.items()))
+                        parts.append(f'{marker}[{got}]')
+                    extra = '  staged: ' + ' '.join(parts)
                 print(f"    {r['case']:<44} {r['verdict']:<21} {r['primitive']:<8} "
                       f"{r['declared']} -> {r['collected'] or '-'}{extra}")
 
