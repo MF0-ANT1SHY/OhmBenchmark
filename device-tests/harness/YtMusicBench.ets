@@ -31,16 +31,27 @@ export async function runYtMusicBench(context: common.UIAbilityContext, name: st
         rows.add(makeEntry(i));
       }
       AppStorage.setOrCreate('history', rows);
+      const seen = AppStorage.get<Set<string>>('history');
+      OhmProbe.write(context, '{"state":"preparing","seeded":' + rows.size +
+        ',"seenBack":' + (seen ? seen.size : -1) + '}');
     }
     return;
   }, async (): Promise<number> => {
     if (name === 'ytmusic_history_json_parse_per_row') {
       // Drive the page under test: route to it so its own ForEach builds the rows. The parses
       // the page performs are what the oracle counts.
-      router.pushUrl({ url: 'pages/History' });
+      let routed = 'ok';
+      try {
+        router.pushUrl({ url: 'pages/History' });
+      } catch (e) {
+        routed = 'threw:' + String(e);
+      }
       await new Promise<void>((resolve) => { setTimeout(resolve, 2500); });
       // the page parsed on the UI thread; read its own running total
       const total = ohmParseTotal();
+      const seenAfter = AppStorage.get<Set<string>>('history');
+      OhmProbe.write(context, '{"state":"preparing","routed":"' + routed +
+        '","parseTotal":' + total + ',"rowsVisible":' + (seenAfter ? seenAfter.size : -1) + '}');
       OhmCounters.emit();
       return total;
     }
