@@ -84,8 +84,8 @@ installed**, so they are blocked on that, not on the device.
 | `cloudmusic_search_result_foreach` | component count + CPU | host trigger unstable |
 | `cloudmusic_songcard_artists_concat` | CPU | host trigger unstable |
 | `interviewapp_response_log_full_stringify` | CPU | blocked: fixture response arrives as a string and is rejected before the logging path |
-| `sepweather_font_register_per_page` | elapsed | launched cleanly 6×, no formal round (budget) |
-| `wanharmony_html_decode_per_render` | CPU | launched cleanly 9×, no formal round (budget) |
+| `sepweather_font_register_per_page` | elapsed | no harness, no signed build; proof-loop only |
+| `wanharmony_html_decode_per_render` | CPU | no harness, no signed build; proof-loop only |
 | `wanharmony_persisted_home_list_growth` | I/O bytes per load-more | budget |
 | `wanharmony_web_progress_log_storm` | log call count | budget |
 | `weatherassistant_remote_weather_icons` | first-paint + net bytes | injected `.cjs` error |
@@ -93,9 +93,25 @@ installed**, so they are blocked on that, not on the device.
 | `ytmusic_history_json_parse_per_row` | CPU | as above |
 | `ytmusic_search_no_debounce` | request count | as above |
 
-Note `sepweather` and `wanharmony_html_decode_per_render` need **no new instrumentation** —
-their existing signed builds launched fine and simply never produced formal rounds. They
-need measurement time, not code.
+### Correction: the two "measurement time only" cases are not actually ready
+
+An earlier note here claimed `sepweather` and `wanharmony_html_decode_per_render` needed only
+measurement time. **That was wrong.** Verified inventory:
+
+- `device-tests/patches/` contains **18** case directories, and neither of those two is among
+  them. The formal measurement harness (the `OhmProbe` bench entry that writes
+  `ohm-status.json` and emits `OHMB/*` trace markers) was only ever built for those 18.
+- signed HAPs exist for **23** case/variant combinations, and again neither of those two is
+  among them.
+- What did launch cleanly 9x / 6x for those cases was the **macOS proof loop**
+  (`dev/proof-loop` → `tools/device/`), a different harness. Its traces are the 182 release
+  assets, and they contain **zero** `OHMB/` markers, so they cannot yield harness-equivalent
+  metrics.
+
+Therefore those two cases need a bench entry built and signed like the other group D cases,
+and are blocked on the same JRE. The genuinely device-ready work is limited to the 18 cases
+that already have both a harness and a signed build — which is exactly the set the earlier
+27-case analysis covered.
 
 ## Order of work
 
