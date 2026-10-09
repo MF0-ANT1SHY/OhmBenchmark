@@ -1,3 +1,7 @@
 toolchain/
 hosts/*/
 *.log
+# Raw measurement data lives outside the repository (see DATA.md):
+#   /home/research/OhmBenchmark-data/{measurements,experiments}
+measurements/
+experiments/
