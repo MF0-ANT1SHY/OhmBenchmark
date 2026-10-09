@@ -46,27 +46,49 @@ run_variant() {
   echo "================= $CASE / $variant (commit $commit) ================="
   # Clean FIRST, then apply the harness: the harness files are untracked additions from
   # the measurement patch, so a later `git clean -fd` would delete them again.
-  git -C "$H" checkout --quiet --force "$commit" || { echo "  checkout failed"; return 1; }
-  git -C "$H" clean --quiet -fd
+  git -C "$H" checkout --force "$commit" 2>&1 | tail -2
+  local rc=$?
+  echo "  checkout exit=$rc"
+  [ "$rc" -eq 0 ] || { echo "  ABORT: checkout failed"; return 1; }
+
+  git -C "$H" clean -fd 2>&1 | tail -3
+  echo "  clean exit=$?"
   echo "  HEAD: $(git -C "$H" rev-parse --short HEAD)"
+  echo "  dirty after reset: $(git -C "$H" status --porcelain | wc -l) file(s)"
+  if [ "$(git -C "$H" status --porcelain | wc -l)" -ne 0 ]; then
+    echo "  ABORT: the tree is not clean after checkout+clean; the reset is not doing its job"
+    git -C "$H" status --porcelain | head -5 | sed 's/^/      /'
+    return 1
+  fi
 
   local patch="$ROOT/device-tests/patches/$CASE/$variant.patch"
-  if [ -f "$patch" ]; then
-    git -C "$H" apply "$patch" && echo "  measurement patch applied" || {
-      echo "  PATCH FAILED - the harness may already exist, or line numbers moved"
-    }
-  else
+  if [ ! -f "$patch" ]; then
     echo "  NO HARNESS PATCH at $patch"
     echo "  -> this case needs a bench entry written from scratch; cannot measure it yet"
     return 1
   fi
-  if [ ! -f "$H/entry/src/main/ets/utils/OhmProbe.ets" ] && \
-     [ ! -f "$H/alatus/src/main/ets/utils/OhmProbe.ets" ]; then
-    echo "  WARNING: no OhmProbe after applying the patch; the bench cannot signal state"
+  git -C "$H" apply "$patch" 2>&1 | sed 's/^/      /'
+  rc=$?
+  echo "  apply exit=$rc"
+  [ "$rc" -eq 0 ] || { echo "  ABORT: measurement patch did not apply"; return 1; }
+
+  # locate OhmProbe wherever this host keeps it, rather than assuming a path
+  local probe
+  probe=$(find "$H" -name 'OhmProbe.ets' -not -path '*/oh_modules/*' 2>/dev/null | head -1)
+  if [ -z "$probe" ]; then
+    echo "  ABORT: no OhmProbe.ets anywhere in the host after applying the patch;"
+    echo "         the bench cannot signal state, so every run would time out"
+    return 1
   fi
+  echo "  OhmProbe: ${probe#$H/}"
 
   echo "  instrumenting:"
   python3 "$INSTRUMENTER" --hosts "$ROOT/hosts" 2>&1 | sed 's/^/  /'
+  rc=${PIPESTATUS[0]}
+  echo "  instrumenter exit=$rc"
+  [ "$rc" -eq 0 ] || { echo "  ABORT: instrumentation failed; refusing to measure a build"
+                       echo "         whose declared metric is not being counted"
+                       return 1; }
 
   echo "  installing ohpm dependencies (some hosts need this before they compile)..."
   ( cd "$H" && timeout 1800 ohpm install --all 2>&1 | tail -1 )
