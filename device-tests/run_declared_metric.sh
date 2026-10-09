@@ -37,6 +37,10 @@ BUNDLE=$(bundle)
 ABILITY=$(python3 "$ROOT/device-tests/host_module.py" "$CASE" --ability)
 [ -n "$ABILITY" ] || { echo "ABORT: could not resolve the ability"; exit 1; }
 echo "ability: $ABILITY"
+SELF_INSTALL=0
+case "$INSTRUMENTER" in
+  self-installing:*) SELF_INSTALL=1; INSTRUMENTER="${INSTRUMENTER#self-installing:}" ;;
+esac
 MODULE=$(python3 "$ROOT/device-tests/host_module.py" "$CASE")
 [ -n "$MODULE" ] || { echo "ABORT: could not resolve the host module"; exit 1; }
 echo "host module: $MODULE" 
@@ -61,16 +65,24 @@ run_variant() {
     return 1
   fi
 
-  local patch="$ROOT/device-tests/patches/$CASE/$variant.patch"
-  if [ ! -f "$patch" ]; then
-    echo "  NO HARNESS PATCH at $patch"
-    echo "  -> this case needs a bench entry written from scratch; cannot measure it yet"
-    return 1
-  fi
-  git -C "$H" apply "$patch" 2>&1 | sed 's/^/      /'
-  rc=$?
-  echo "  apply exit=$rc"
-  [ "$rc" -eq 0 ] || { echo "  ABORT: measurement patch did not apply"; return 1; }
+  case "$SELF_INSTALL" in
+    1)
+      echo "  no harness patch for this host; the instrumenter installs the harness itself"
+      ;;
+    *)
+      local patch="$ROOT/device-tests/patches/$CASE/$variant.patch"
+      if [ ! -f "$patch" ]; then
+        echo "  NO HARNESS PATCH at $patch"
+        echo "  -> pass self-installing:<tool> if that tool creates the harness, otherwise"
+        echo "     this case needs a bench entry written from scratch"
+        return 1
+      fi
+      git -C "$H" apply "$patch" 2>&1 | sed 's/^/      /'
+      rc=$?
+      echo "  apply exit=$rc"
+      [ "$rc" -eq 0 ] || { echo "  ABORT: measurement patch did not apply"; return 1; }
+      ;;
+  esac
 
   # locate OhmProbe wherever this host keeps it, rather than assuming a path
   local probe
