@@ -108,17 +108,30 @@ def main():
     # a warm one. Give the ability time to come up, then trigger `onNewWant`; if nothing
     # answers, the ability was not up yet, so wait longer and try again.
     v = None
-    for attempt in range(1, 4):
-        time.sleep(4 if attempt == 1 else 8)
+    for attempt in range(1, 5):
+        # interviewapp needed ~20s after the cold start before the bench entry would answer,
+        # so allow a generous settle window and back off further on each retry.
+        time.sleep(20 if attempt == 1 else 12)
         rec(f'aa start -a {args.ability} -b {bundle} --ps bench {args.case}')
         try:
-            v = wait_state('ready', seconds=25)
+            v = wait_state('ready', seconds=30)
             print(f'  ready on attempt {attempt}: {v}')
             break
         except TimeoutError:
+            raw = sh(f'cat {base}/ohm-status.json')
+            exists = sh(f'ls -la {base}/ohm-status.json')
             print(f'  attempt {attempt}: no ready state yet, retrying')
+            print(f'    raw status output : {raw!r}')
+            print(f'    file probe        : {exists[:120]!r}')
     if v is None:
-        raise TimeoutError(f'never reached ready after 3 trigger attempts; last={status()}')
+        print('  app never reached ready; collecting diagnostics:')
+        print(f"    cold-start result : {sh(f'aa start -a {args.ability} -b {bundle}')!r}")
+        print(f"    pid               : {sh(f'pidof {bundle}')!r}")
+        print(f"    files dir         : {sh(f'ls -la {base} 2>&1')[:200]!r}")
+        log = sh('hilog -x -T ohm 2>/dev/null').splitlines()[-15:]
+        for ln in log:
+            print(f'    log: {ln[:160]}')
+        raise TimeoutError(f'never reached ready after 4 trigger attempts; last={status()}')
 
     pid = sh(f'pidof {bundle}').split()[0]
     print(f'  pid={pid}')
