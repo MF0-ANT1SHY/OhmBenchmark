@@ -3,5 +3,7 @@ hosts/*/
 *.log
 # Raw measurement data lives outside the repository (see DATA.md):
 #   /home/research/OhmBenchmark-data/{measurements,experiments}
-measurements/
-experiments/
+# These are repo-root symlinks to that directory; anchor without a trailing
+# slash so the symlink itself is matched (git does not follow it).
+/measurements
+/experiments
