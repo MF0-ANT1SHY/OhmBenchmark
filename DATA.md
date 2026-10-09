@@ -29,7 +29,9 @@ file with its size as of the relocation.
 
 ```bash
 git clone <repo> && cd <repo>
-git clone --no-checkout /path/to/data measurements   # or simply symlink:
 ln -s /path/to/OhmBenchmark-data/measurements measurements
 ln -s /path/to/OhmBenchmark-data/experiments  experiments
 ```
+
+The symlinks are intentionally untracked (gitignored), so a fresh clone simply starts
+without them; create them only when you have the data directory available.

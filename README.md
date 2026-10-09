@@ -26,6 +26,8 @@ cases/<id>/
   fix.patch       the unfixed→fixed diff
 hosts_patches/    per-host git format-patch series (upstream base → all dataset commits),
                   see hosts_patches/README.md for full reconstruction instructions
+measurements/     raw device measurements (NOT in this repo; see DATA.md)
+experiments/      exploratory runs (NOT in this repo; see DATA.md)
 manifest.json     machine-readable index of all 30 cases
 tools/
   strip_signing.py  removes local signing configs for headless builds
