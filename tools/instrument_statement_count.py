@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
 """Instrument browser_insert_date_lookup_cache so the harness counts RDB statements per save.
 
-The case declares `rdb_statements_per_page_save` and its oracle states the expected shape
-exactly:
+The case declares `rdb_statements_per_page_save`, and its oracle states the shape:
 
     unfixed: >= 3 statements per page save after the first (SELECT + CREATE TABLE + INSERT)
     fixed:    1 statement per page save (INSERT only)
 
-`RdbUtils.insertDate` is the hot path: it runs a date_table SELECT, a conditional INSERT,
-and `createHistoryTable` (CREATE TABLE IF NOT EXISTS) on every call. The fix adds a
-`knownDates` cache, so after the first save per date only the history INSERT remains.
+`RdbUtils.insertDate` runs a date_table SELECT, a conditional INSERT and
+`createHistoryTable` (CREATE TABLE IF NOT EXISTS) on every call; the fix adds a
+`knownDates` cache so after the first save only the history INSERT remains.
 
-This patch adds a measurement-only counter around the store operations and emits the tally
-as an `OHMB/StatementCount` trace marker, which is the same mechanism the existing
-ArticleCardCount / HistoryItemCount markers use, so tools/device/analyze.py can read it.
+The counter is measurement-only: it prepends an increment and changes no SQL, control flow
+or caching, and both variants are instrumented identically. The tally is emitted as an
+`OHMB/StatementCount` trace marker, the same mechanism ArticleCardCount / HistoryItemCount
+use, so the existing trace analysis can read it.
 
-The counter is pure instrumentation: it wraps calls that already happen and changes no
-control flow, no SQL and no caching behaviour. Both variants get the identical counter, so
-the comparison stays fair.
+Idempotent: re-running strips any previous counters first, so a half-instrumented tree
+cannot accumulate. It verifies the expected site count and exits non-zero if it cannot
+reach it, rather than leaving a tree that fails to compile.
 
-Usage: python3 tools/instrument_statement_count.py [--hosts DIR] [--revert]
+Usage: python3 tools/instrument_statement_count.py [--hosts DIR]
 """
 import argparse
 import re
@@ -27,114 +27,113 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 MARK = '// OHMB statement counter (measurement only)'
+FIELD = 'RdbUtils.ohmCount();'
+EXPECTED_SITES = 4
 
-COUNTER_FIELD = f"""  {MARK}
-  static ohmStatements: number = 0
-
-"""
-
-COUNT_HELPER = f"""  {MARK}
-  private static ohmCount(n: number = 1): void {{
-    RdbUtils.ohmStatements += n
-  }}
-
-"""
+COUNTER_BLOCK = (
+    f'  {MARK}\n'
+    '  static ohmStatements: number = 0\n\n'
+    f'  {MARK}\n'
+    '  private static ohmCount(n: number = 1): void {\n'
+    '    RdbUtils.ohmStatements += n\n'
+    '  }\n\n'
+)
 
 
-def instrument_rdb(path: Path) -> bool:
-    """Add the counter field and bump it around the store operations."""
-    t = path.read_text(encoding='utf-8')
-    if MARK in t:
-        print(f'    {path.name}: already instrumented')
-        return False
+def strip_previous(t: str) -> str:
+    """Remove any earlier instrumentation so this tool is idempotent."""
+    t = re.sub(r'[ \t]*// OHMB statement counter \(measurement only\)\n', '', t)
+    t = re.sub(r'[ \t]*RdbUtils\.ohmCount\(\);\n', '', t)
+    t = re.sub(r'[ \t]*static ohmStatements: number = 0\n\n?', '', t)
+    t = re.sub(r'[ \t]*private static ohmCount\([^)]*\): void \{\n'
+               r'[ \t]*RdbUtils\.ohmStatements \+= n\n'
+               r'[ \t]*\}\n\n?', '', t)
+    return t
 
-    # 1. counter field + helper, just after the class opening
+
+def instrument_rdb(path: Path) -> None:
+    t = strip_previous(path.read_text(encoding='utf-8'))
+
     m = re.search(r'(export default class RdbUtils \{\n)', t)
     if not m:
-        raise SystemExit(f'cannot find class opening in {path}')
-    t = t[:m.end()] + COUNTER_FIELD + COUNT_HELPER + t[m.end():]
+        raise SystemExit(f'cannot find the class opening in {path}')
+    t = t[:m.end()] + COUNTER_BLOCK + t[m.end():]
 
-    # 2. count the date_table SELECT
-    t = t.replace(
-        'resultSet = await RdbUtils.getStore().query(predicates, ["date"]);',
-        'RdbUtils.ohmCount();\n      resultSet = await RdbUtils.getStore().query(predicates, ["date"]);',
-        1)
+    sites = 0
 
-    # 3. count the conditional INSERT
-    t = t.replace(
-        'RdbUtils.getStore().insert("date_table", valueBucket)',
-        'RdbUtils.ohmCount();\n        RdbUtils.getStore().insert("date_table", valueBucket)',
-        1)
+    # 1. the date_table SELECT
+    t, n = re.subn(r'(\n[ \t]*)(resultSet = await RdbUtils\.getStore\(\)\.query\()',
+                   r'\1RdbUtils.ohmCount();\1\2', t, count=1)
+    sites += n
 
-    # 4. count CREATE TABLE inside createHistoryTable
-    before = t
-    t = re.sub(r'(\n\s*)(await RdbUtils\.executeSql\("CREATE TABLE)',
-               r'\1RdbUtils.ohmCount();\1\2', t, count=1)
-    if t == before:
-        # executeSql may be non-await or shaped differently; count at the call site instead
-        t = t.replace('RdbUtils.executeSql("CREATE TABLE',
-                      'RdbUtils.ohmCount(); RdbUtils.executeSql("CREATE TABLE', 1)
+    # 2. the conditional INSERT
+    t, n = re.subn(r'(\n[ \t]*)(RdbUtils\.getStore\(\)\.insert\("date_table")',
+                   r'\1RdbUtils.ohmCount();\1\2', t, count=1)
+    sites += n
 
-    # 5. count the history INSERT
-    t = re.sub(r'(\n\s*)return RdbUtils\.getStore\(\)\.insert\(tableName, valueBucket\)',
-               r'\1RdbUtils.ohmCount();\1return RdbUtils.getStore().insert(tableName, valueBucket)',
-               t, count=1)
+    # 3. CREATE TABLE inside createHistoryTable (indentation varies, so do not assume width)
+    m = re.search(r'static async createHistoryTable\([^)]*\)\s*\{', t)
+    if m:
+        end = t.find('\n  }', m.end())
+        body = t[m.end():end if end != -1 else len(t)]
+        patched, n = re.subn(r'(\n[ \t]*)(await RdbUtils\.executeSql\()',
+                             r'\1RdbUtils.ohmCount();\1\2', body, count=1)
+        if n:
+            t = t[:m.end()] + patched + t[end if end != -1 else len(t):]
+            sites += n
 
+    # 4. the history INSERT
+    t, n = re.subn(r'(\n[ \t]*)(return RdbUtils\.getStore\(\)\.insert\(tableName)',
+                   r'\1RdbUtils.ohmCount();\1\2', t, count=1)
+    sites += n
+
+    if sites != EXPECTED_SITES:
+        raise SystemExit(f'  FAILED: instrumented {sites} site(s), expected {EXPECTED_SITES}; '
+                         f'refusing to leave a half-instrumented tree')
     path.write_text(t, encoding='utf-8')
-    n = t.count('RdbUtils.ohmCount();')
-    print(f'    {path.name}: counter added at {n} call site(s)')
-    return True
+    print(f'    {path.name}: {sites} counter sites (verified)')
 
 
-def instrument_bench(path: Path) -> bool:
-    """Emit the tally from the bench entry instead of a hardcoded 1000."""
+def instrument_bench(path: Path) -> None:
     t = path.read_text(encoding='utf-8')
-    if 'OHMB/StatementCount' in t and 'ohmStatements' in t:
-        print(f'    {path.name}: already emitting the real count')
-        return False
-    if 'OhmStatementCount' in t:
-        print(f'    {path.name}: has the placeholder marker; replacing with the real count')
+    if "import hiTraceMeter" not in t:
+        m = re.search(r'^(import .*\n)', t, re.M)
+        t = t[:m.end()] + "import hiTraceMeter from '@ohos.hiTraceMeter';\n" + t[m.end():]
 
-    # reset at the start of the measured action for this case
-    old_loop = """    for (let i = 0; i < 1000; i++) {
-      await RdbUtils.insertDate('20260915');"""
-    new_loop = """    RdbUtils.ohmStatements = 0;
-    for (let i = 0; i < 1000; i++) {
-      await RdbUtils.insertDate('20260915');"""
-    if old_loop in t:
-        t = t.replace(old_loop, new_loop, 1)
+    # reset before the measured loop
+    if 'RdbUtils.ohmStatements = 0;' not in t:
+        old = ("    for (let i = 0; i < 1000; i++) {\n"
+               "      await RdbUtils.insertDate('20260915');")
+        new = ("    RdbUtils.ohmStatements = 0;\n"
+               "    for (let i = 0; i < 1000; i++) {\n"
+               "      await RdbUtils.insertDate('20260915');")
+        if old in t:
+            t = t.replace(old, new, 1)
 
-    # replace any existing marker with the measured value
-    t = re.sub(r"\s*//[^\n]*measurement-only marker[^\n]*\n\s*hiTraceMeter\.traceByValue\('OHMB/StatementCount',[^\n]*\n",
-               '\n', t)
-    t = re.sub(r"\s*hiTraceMeter\.traceByValue\('OHMB/StatementCount',[^\n]*\n", '\n', t)
-
-    anchor = """    return 1000;
-  });
-}"""
-    repl = """    hiTraceMeter.traceByValue('OHMB/StatementCount', RdbUtils.ohmStatements);
-    return RdbUtils.ohmStatements;
-  });
-}"""
-    if anchor in t:
-        t = t.replace(anchor, repl, 1)
+    # drop any previous marker, then emit the measured tally
+    t = re.sub(r"[ \t]*hiTraceMeter\.traceByValue\('OHMB/StatementCount'[^\n]*\n", '', t)
+    old_tail = "    return 1000;\n  });\n}"
+    new_tail = ("    hiTraceMeter.traceByValue('OHMB/StatementCount', RdbUtils.ohmStatements);\n"
+                "    return RdbUtils.ohmStatements;\n  });\n}")
+    if old_tail in t:
+        t = t.replace(old_tail, new_tail, 1)
+    elif 'OHMB/StatementCount' in t:
+        pass  # already emits the measured tally; nothing to do
     else:
-        raise SystemExit(f'cannot find the bench tail to instrument in {path}')
+        raise SystemExit(f'  FAILED: cannot find the bench tail in {path}')
     path.write_text(t, encoding='utf-8')
-    print(f'    {path.name}: now emits the measured statement count')
-    return True
+    print(f'    {path.name}: emits OHMB/StatementCount')
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--hosts', default=str(REPO / 'hosts'))
-    args = ap.parse_args()
-    base = Path(args.hosts) / 'browser' / 'entry' / 'src' / 'main' / 'ets'
-    rdb = base / 'utils' / 'RdbUtils.ets'
-    bench = base / 'utils' / 'BrowserBench.ets'
+    a = ap.parse_args()
+    base = Path(a.hosts) / 'browser' / 'entry' / 'src' / 'main' / 'ets'
+    rdb, bench = base / 'utils' / 'RdbUtils.ets', base / 'utils' / 'BrowserBench.ets'
     for p in (rdb, bench):
         if not p.exists():
-            raise SystemExit(f'missing {p}')
+            raise SystemExit(f'  FAILED: missing {p}')
     print('  instrumenting browser host:')
     instrument_rdb(rdb)
     instrument_bench(bench)
