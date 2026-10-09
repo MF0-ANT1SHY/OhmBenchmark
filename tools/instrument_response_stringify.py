@@ -50,11 +50,7 @@ def instrument(request_file: Path) -> int:
     if not m:
         raise SystemExit(f'  FAILED: no imports found in {request_file}')
     t = t[:m.end()] + f"import {{ ohmResponseStringify }} from '{COUNTER_PACKAGE}';\n"
-    # re-export so consumers that already import this module can reach the counter,
-    # since a new file under this package is not automatically part of '@itcast/basic'
-    t = (t.rstrip('\n') + "\n\n"
-         "export { ohmResponseStringifyReset, ohmResponseStringifyTotal, ohmDiag }"
-         " from './OhmResponseCount';\n")
+
     request_file.write_text(t, encoding='utf-8')
     print(f'    {request_file.name}: routed {n} full-body serialization(s) through the counter')
     return n
@@ -74,6 +70,22 @@ def main():
     mod.write_text(COUNTER_TEXT, encoding='utf-8')
     print(f'    wrote {mod.relative_to(root)}')
     n = instrument(cands[0])
+
+    # publish the counter through the package index: consumers import '@itcast/basic', and a
+    # new file under the package is not part of that surface on its own
+    index = root / 'commons/basic/Index.ets'
+    if index.exists():
+        it = index.read_text(encoding='utf-8')
+        line = ("export { ohmResponseStringifyReset, ohmResponseStringifyTotal, ohmDiag }"
+                " from './src/main/ets/utils/OhmResponseCount';\n")
+        if 'OhmResponseCount' not in it:
+            index.write_text(it.rstrip('\n') + '\n' + line, encoding='utf-8')
+            print(f'    {index.relative_to(root)}: counter exported from the package index')
+        else:
+            print(f'    {index.relative_to(root)}: counter already exported')
+    else:
+        print(f'    WARNING: no package index at {index}; consumers cannot import the counter')
+
     print(f'  done - {n} site(s) counted; rebuild, sign and install to measure')
     return 0
 

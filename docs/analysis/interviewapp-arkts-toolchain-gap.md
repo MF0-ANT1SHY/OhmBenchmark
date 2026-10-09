@@ -1,76 +1,76 @@
-# interviewapp: the host does not compile under the available toolchain
+# interviewapp: solved by installing the 5.0.5 toolchain
 
-## The finding
+## The gap, and the fix
 
-Building `interviewapp` with the toolchain in use here produces **38 ArkTS strict-rule errors
-across 15 files**, all in application code:
+Building `interviewapp` with the 5.1.0 command-line tools produced **38 ArkTS strict-rule errors
+across 15 application files** (`arkts-no-any-unknown`, `arkts-no-implicit-return-types`,
+`arkts-no-spread`). The host declares `compatibleSdkVersion: 5.0.0(12)`, so the 5.1 compiler was
+applying rules the source predates.
+
+**Fixed by installing the matching toolchain**, not by editing the app:
 
 ```
-commons/basic/Index.ets
-components/InterviewListComp.ets      components/QuestionListComp.ets
-services/InterviewService.ets         services/ProjectService.ets
-utils/InterviewBench.ets              views/ClockedComp.ets
-views/HomeComp.ets                    views/InterviewDetailComp.ets
-views/MineComp.ets                    views/OptionalComp.ets
-views/ProfileEditComp.ets             views/ProjectComp.ets
-views/QuestionDetailComp.ets          views/StudyTimeComp.ets
+commandline-tools-linux-x64-5.0.5.310.zip   3,240,302,021 bytes
+sha256  f5b4240807c24457294b6469c6d39c1c00b5d9e06c391852d633a5da7ff28c6d
+        (verified against the published .sha256)
+from    https://repo.huaweicloud.com/harmonyos/ohpm/5.0.5/
 ```
 
-The rules are `arkts-no-any-unknown`, `arkts-no-implicit-return-types` and `arkts-no-spread`.
+Installed at `/home/research/OhmBenchmark-toolchain-5.0.5`, beside the 5.1.0 tools.
 
-## Why this is a toolchain gap rather than a code defect
+**Verified**: a clean checkout of the unfixed commit, with no source changes, builds with
+`BUILD SUCCESSFUL` under 5.0.5. The same tree yields 38 errors under 5.1.0. The app was never
+broken.
 
-The host declares `"compatibleSdkVersion": "5.0.0(12)"`, while the toolchain available here is
-the 5.1.0 command-line tools (`commandline-tools-linux-x64-5.1.0.840`). The 5.1 compiler applies
-strict rules the 5.0-era source predates. The app is not broken; it was written against an older,
-laxer compiler than the one installed.
+## Wiring
 
-This also explains why earlier rounds got further: the browser, sheafreader, ytmusic and the
-interviewapp *history* cases all compiled, because the files they pull in happen to be clean. The
-response-log case reaches further into `commons/basic` and `features/home`, which is where the
-violations live.
+| file | role |
+| --- | --- |
+| `device-tests/toolchain.sh` | selects a toolchain version and exports `PATH` + `DEVECO_SDK_HOME` |
+| `device-tests/host_toolchain.txt` | which hosts need which version; 5.1.0 remains the default |
 
-## What I tried, and what it cost
+The driver derives the host from the case spec, looks the version up, and sources it before
+`ohpm` and `hvigor` run. Hosts not listed keep using 5.1.0.
 
-Fixing these individually is whack-a-mole: two fixes in `QuestionService.ets` and
-`QuestionListComp.ets` did not reduce the total, which is 38. Two of my own mistakes along the
-way are worth recording:
+## Why not patch the 38 errors
 
-1. **Wrong place for the package re-export.** I appended it to `request.ets`, but the package's
-   public surface is `commons/basic/Index.ets`, which is itself one of the failing files. That is
-   the correct place, and it is currently blocked.
-2. **A duplicated counter module** from injecting the same text twice, which produced "Cannot
-   redeclare block-scoped variable". Fixed by giving the counter a single source.
+The unfixed and fixed commits do not contain identical code, so every edit would need making
+twice and keeping consistent. Editing 15 application files to satisfy a compiler the case was
+never written for changes the artifact being measured. Installing the right compiler is both
+smaller and more faithful.
 
-## Why I stopped rather than patching all 38
+**This likely helps other hosts too.** Any host declaring a pre-5.1 `compatibleSdkVersion` will
+hit the same wall, and should be added to `host_toolchain.txt` rather than patched.
 
-The objective requires keeping the repository reproducible and the measurements honest. Editing
-15 application files to satisfy a compiler the case was never written for changes the artifact
-being measured, and does so *differently for the unfixed and fixed commits* - they do not contain
-identical code, so any edit has to be made twice and kept consistent. That is a real risk of
-measuring something other than the case.
+## What now works for interviewapp_response_log_full_stringify
 
-The right fix is a toolchain matching the host's declared `compatibleSdkVersion: 5.0.0(12)`. The
-5.1.0 tools came from `https://repo.huaweicloud.com/harmonyos/ohpm/5.1.0/`; the equivalent 5.0.0
-command-line tools should be the target, and installing them would very likely make this host -
-and any other host with the same gap - build unmodified.
+- builds under 5.0.5, signs, installs, and reaches `state=ready` on the device;
+- the instrumenter finds the one full-body serialization on the unfixed shape and correctly
+  reports none on the fixed shape;
+- the counter is published through `commons/basic/Index.ets`, the package's public surface -
+  not by re-exporting from `request.ets`, which perturbed module initialisation and made the app
+  fail before the bench logged anything;
+- the fixture serves a **345,818-byte** body with 1000 rows on `127.0.0.1:18766`, reachable over
+  `hdc rport`.
 
-## What is ready for that moment
+## The remaining problem
 
-Everything except the compile:
+The bench reaches `ready`, is released, then reports `{"state":"error","message":"[object
+Object]"}` with an **empty diag log** - so the failure is in the measured action, before its
+first checkpoint. The action performs five HTTP GETs against the fixture.
 
-- `device-tests/response_server.py` serves a **345,818-byte** body with 1000 rows on
-  `127.0.0.1:18766`, verified reachable from the device over `hdc rport tcp:18766 tcp:18766`;
-- `tools/instrument_response_stringify.py` rewrites the one full-body serialization on the
-  response path and reports 0 sites on the fixed shape, which is correct;
-- the harness patch emits the tally through the append-only diag channel;
-- `SUMMARY_SOURCE=diag:serializes` reports it.
+Most likely causes:
 
-Expected result once the host compiles: unfixed `serializes=5` with a 345 KB body per call,
-fixed `serializes=0` - the oracle's O(payload) versus O(1) distinction.
+1. **The device cannot reach the fixture.** `hdc fport ls` shows the reverse forward registered
+   (`tcp:18766 tcp:18766 [Reverse]`), but a second `hdc rport` for the same port is rejected
+   with "TCP Port listen failed", so the forward may be stale from an earlier session. Removing
+   it (`hdc fport rm`) and re-adding it, then confirming the device can fetch the URL, is the
+   first check.
+2. **The response shape does not satisfy the handler.** It requires `code === 10000`; the
+   fixture returns exactly that, so this is less likely but cheap to rule out.
+3. **`ohmHttp.baseURL` set in `prepare()` is not the instance the call uses.** The harness sets
+   it on the imported singleton; worth confirming the request actually goes to 127.0.0.1.
 
-## The exact next step
-
-Either install the 5.0.0 command-line tools matching `compatibleSdkVersion: 5.0.0(12)`, or apply
-the 38 strict-rule fixes consistently to both commits and record that the measured artifact was
-compiler-adjusted. The first is strongly preferable.
+The error message is `[object Object]` because the probe stringifies the exception with
+`String(e)`; capturing `e.message` as well would make the next failure self-describing, which is
+the same lesson as the ytmusic diagnostic.
