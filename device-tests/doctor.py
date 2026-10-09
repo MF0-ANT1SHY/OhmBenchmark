@@ -23,8 +23,22 @@ SDK_LIB = TOOLCHAIN_LIB if (TOOLCHAIN_LIB / 'hap-sign-tool.jar').exists() else F
 SIGNING_ASSETS = Path('/home/research/OhmBenchmark-backup/signing-assets')
 
 
-TC_BIN = (REPO / 'toolchain' / 'command-line-tools' / 'bin')
-if TC_BIN.exists():
+def _toolchain_bin():
+    """Locate the SDK bin dir. `toolchain/` is a symlink and its target depth varies
+    (it may point at the bundle root or at command-line-tools itself)."""
+    cands = [
+        REPO / 'toolchain' / 'bin',
+        REPO / 'toolchain' / 'command-line-tools' / 'bin',
+        Path.home() / 'OhmBenchmark-toolchain' / 'command-line-tools' / 'bin',
+    ]
+    for c in cands:
+        if (c / 'hvigorw').exists():
+            return c
+    return None
+
+
+TC_BIN = _toolchain_bin()
+if TC_BIN:
     import os
     os.environ['PATH'] = f'{TC_BIN}{os.pathsep}' + os.environ.get('PATH', '')
 
