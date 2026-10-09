@@ -54,17 +54,19 @@ def load_staged(data):
     for case_dir in sorted(p for p in root.iterdir() if p.is_dir()):
         for variant_dir in sorted(p for p in case_dir.iterdir() if p.is_dir()):
             for run_dir in sorted(p for p in variant_dir.iterdir() if p.is_dir()):
+                # Each evidence source is read independently: a run with no trace stream still
+                # has a result.json and a diag.json, and skipping the whole run because the trace
+                # is absent discards measurements that were in fact collected.
                 trace = run_dir / 'trace.txt.gz'
-                if not trace.exists():
-                    continue
-                try:
-                    with gzip.open(trace, 'rt', errors='replace') as f:
-                        blob = f.read()
-                except OSError:
-                    continue
-                for marker, value in re.findall(MARKER_RE, blob):
-                    out.setdefault(case_dir.name, {}).setdefault(
-                        variant_dir.name, {}).setdefault(marker, []).append(int(value))
+                if trace.exists():
+                    try:
+                        with gzip.open(trace, 'rt', errors='replace') as f:
+                            blob = f.read()
+                        for marker, value in re.findall(MARKER_RE, blob):
+                            out.setdefault(case_dir.name, {}).setdefault(
+                                variant_dir.name, {}).setdefault(marker, []).append(float(value))
+                    except OSError:
+                        pass
 
                 # The bench's own `result` is a declared-metric source too: some cases return
                 # the oracle quantity directly and emit no marker at all.
