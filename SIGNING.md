@@ -131,13 +131,43 @@ The tool reports version **1.0.0**, and it is running on **JDK 21**. This versio
 that JDK, so the most likely cause is a tool/runtime incompatibility rather than missing
 key material: the failure is in argument or base64 parsing before any crypto happens.
 
-### Candidate next steps
+### Exhaustive isolation of the `sign-app` failure
 
-1. Try an older JRE (JDK 8 or 11) — the tool is from 2021. `~/.local/jre` can hold a second
-   runtime and `JAVA_HOME` can select it.
-2. Obtain a newer `hap-sign-tool.jar` from a current SDK, which would also supply the
-   matching `OpenHarmonyApplication.pem` chain and remove the need to generate one.
-3. Use DevEco Studio automatic signing on a Huawei developer account.
+Everything below was tried against this `hap-sign-tool.jar`; all fail with
+`Illegal base64 character 20` (or a different error in variant H):
+
+| # | Variable changed | Result |
+| --- | --- | --- |
+| A | generated certChain (entity, CA, root) | base64 error |
+| B | raw `.json` profile with `-profileSigned 0` | base64 error |
+| C | leaf certificate only | base64 error |
+| D | keystore's own `openharmony application release` key + hand-built chain | base64 error |
+| E | profile signed with the *release* profile key instead of debug | base64 error |
+| F | `-signCode 0` | base64 error |
+| G | pristine SDK keystore (no generated key added) | base64 error |
+| H | SDK release-template profile | **different** error: `keyAlias parameter is incorrect` / `certificate is incorrect` |
+| — | JDK 11 instead of JDK 21 | base64 error |
+| — | trivial 1-file zip instead of a HAP | base64 error |
+| — | minimal zip containing `pack.info` | base64 error |
+
+Ruled out as causes: the JRE version, the app key, the key alias, the profile (it
+`verify-profile`s as `verifiedPassed: true`), the certificate chain (3 certs, correct
+entity→CA→root order, clean base64, OpenSSL-parseable), the HAP (a valid 23-member zip),
+and `pack.info` (valid JSON, no stray spaces).
+
+The same keystore, certificates and PEM material are accepted by `sign-profile` and
+`verify-profile` in the same session, so this is specific to `sign-app` in this tool build.
+
+### Conclusion and next step
+
+This is a **tool-build** problem, not a key-material, JRE or HAP problem. The decisive next
+step is a **newer `hap-sign-tool.jar`** from a current SDK, which would also ship the
+matching `OpenHarmonyApplication.pem` and remove the need to generate a chain at all.
+`~/hdc/lib` holds an old 1.0.0 copy; the project's own README references
+`toolchain/command-line-tools` 5.1.0.840, which is not present on this machine and would be
+a ~1 GB download.
+
+Falling back options: DevEco Studio automatic signing on a Huawei developer account.
 
 The original blocker is recorded below for reference.
 
