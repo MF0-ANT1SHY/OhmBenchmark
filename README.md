@@ -5,6 +5,14 @@ from an Android performance-bug benchmark. Each case is a pair of builds —
 unfixed (buggy) and fixed — of a real open-source HarmonyOS app, plus trigger
 steps and a device-test oracle.
 
+## Dataset at a glance
+
+![bug cases per host app](assets/cases-by-app.png)
+
+![test oracle metrics](assets/oracle-metrics.png)
+
+![performance scenarios](assets/perf-scenarios.png)
+
 ## Layout
 
 - `cases/<id>/case.json` — host app, unfixed/fixed commits, trigger steps, oracle
