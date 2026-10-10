@@ -173,3 +173,36 @@ The repository is intentionally reproducible without the signing material: `host
 plus `hosts_patches/host-reconstruction.json` rebuild every measured source state exactly
 (see `hosts_patches/REPRODUCE.md`). Signing is only needed to get those builds onto a
 physical device.
+
+## DevEco Studio backup signing (added 2026-10-10, verified end to end)
+
+A third signing path now exists: a DevEco Studio automatic-signing backup exported
+from `~/.ohos/config` on a DevEco machine, stored outside the repository at
+`~/OhmBenchmark-backup/signing-assets/hap-signing-backup/`.
+
+- Three suites (`default_<App>_<hash>.{p12,cer,p7b,csr}`) for bundle names
+  `com.example.myapplication2`, `com.seagazer.player`,
+  `com.example.harmonyos_clock_demo`. All three `.p7b` are **debug** profiles
+  that whitelist this device's UDID and are valid until mid/late 2027.
+- `material/` decrypts the encrypted `keyPassword`/`storePassword` strings DevEco
+  writes into `build-profile.json5`. It is **not machine-bound** (the README in
+  the backup claims otherwise — wrong): `device-tests/sign_deveco.py` reimplements
+  `hvigor-ohos-plugin/src/utils/decipher-util.js` (fd-component XOR -> PBKDF2 root
+  key -> AES-128-GCM work key) and decrypts on the fly.
+- `passwords.json` in the same dir maps suite -> encrypted password strings.
+  Only MyApplication2's pair was preserved; to enable another suite, add its
+  `keyPassword`/`storePassword` strings from that project's `build-profile.json5`.
+- A `.p7b` only accepts a HAP whose `bundleName` equals its `bundle-info`, so
+  `sign` rewrites `module.json` + `pack.info` inside the zip when they differ.
+
+```bash
+python3 device-tests/sign_deveco.py suites                 # list suites + usable?
+python3 device-tests/sign_deveco.py sign in.hap out.hap    # repack+sign+verify
+python3 device-tests/sign_deveco.py install out.hap        # hdc install -r, auto-reinstall
+python3 device-tests/sign_deveco.py run in.hap out.hap     # both
+```
+
+Verified 2026-10-10: an unsigned host HAP repacked as `com.example.myapplication2`,
+signed with the DevEco material, installed on the Pura 70 Ultra and launched via
+`aa start`. A same-name app already on the phone under a different signing
+identity still requires `hdc uninstall` first (handled automatically by `install`).
