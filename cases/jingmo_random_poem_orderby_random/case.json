@@ -24,25 +24,63 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Install the app, import the classic-poem dataset via settings (数据同步) so the table holds thousands of rows.",
-    "Start hitrace capture (categories: app, sched, disk, database).",
-    "Navigate to the classic-poem page (随机一首) and tap the refresh toolbar action 10 times.",
-    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
+  "testcase": {
+    "name": "PerfLoad_jingmo_0020",
+    "py_file": "testcase/PerfLoad_jingmo_0020.py",
+    "descriptor": "testcase/PerfLoad_jingmo_0020.json",
+    "install_dir": "perf_testing/hapray/testcases/com.hefengbao.jingmo.hw",
+    "driver": "DeviceTest",
+    "module": "default",
+    "ability": "EntryAbility",
+    "trigger": "bench"
+  },
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 20,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
   "test_oracle": {
-    "metric": "elapsed_ms",
-    "definition": "Wall time of each random-poem SELECT execution (from query start to resultSet ready, visible in database/disk trace activity and hilog), averaged over 10 refreshes.",
-    "comparison": "unfixed query time grows with row count (full scan + sort of N rows); fixed is near-constant. With >= 5000 rows, unfixed_avg_ms > fixed_avg_ms by >= 5x.",
-    "oracle_revision": {
-      "previous_metric": "random_read_query_ms",
-      "reason": "The definition is the duration of the random-read query as timed by the probe between the OHMB markers, i.e. elapsed_ms.",
-      "note": "Renamed only. The definition, comparison rule and every recorded measurement are unchanged; no number changed meaning."
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "measured",
+      "measured_as": "perf_hw-instructions / trace_cpu_ms",
+      "unfixed": [
+        959038530,
+        926492371,
+        961287782
+      ],
+      "fixed": [
+        7484806,
+        7461810,
+        7890165
+      ],
+      "note": "959M vs 7.5M instructions (128x); cpu 426 vs 40 ms"
+    },
+    "mechanism_oracle": {
+      "metric": "elapsed_ms",
+      "definition": "Wall time of each random-poem SELECT execution (from query start to resultSet ready, visible in database/disk trace activity and hilog), averaged over 10 refreshes.",
+      "comparison": "unfixed query time grows with row count (full scan + sort of N rows); fixed is near-constant. With >= 5000 rows, unfixed_avg_ms > fixed_avg_ms by >= 5x."
     }
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 20 app sched disk database -o /data/local/tmp/jingmo_random.chtrace",
-    "window_ms": 20000
-  }
+  "reproduction": [
+    "git -C hosts/jingmo checkout case/jingmo_random_poem_orderby_random/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/jingmo_random_poem_orderby_random/testcase/PerfLoad_jingmo_0020.* perf_testing/hapray/testcases/com.hefengbao.jingmo.hw/",
+    "python -m scripts.main perf --run_testcases PerfLoad_jingmo_0020 --round 3",
+    "git -C hosts/jingmo checkout case/jingmo_random_poem_orderby_random/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

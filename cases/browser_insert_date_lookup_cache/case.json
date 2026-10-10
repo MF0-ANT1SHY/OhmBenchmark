@@ -12,7 +12,10 @@
   "android_mechanism": "Repeated category-ID lookup executed for every imported row; fix caches IDs in memory",
   "category": "latency",
   "bug_description": "Every time a page finishes loading, onSaveHistory -> RdbUtils.insertDate re-queries the date_table for the current date and re-runs CREATE TABLE IF NOT EXISTS for the per-day history table, even though the same date is looked up on every save within a session. The redundant query + DDL run on each page navigation and add avoidable RDB round-trips to the page-save path.",
-  "perf_scenarios": ["状态更新", "数据库读取"],
+  "perf_scenarios": [
+    "状态更新",
+    "数据库读取"
+  ],
   "unfixed_commit": "e3c8aa9",
   "fixed_commit": "9138921",
   "fix_summary": "Cache already-verified per-day tables in an in-memory Set (RdbUtils.knownDates); insertDate returns early on cache hit, and deleteAll clears the cache.",
@@ -20,19 +23,63 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Install and launch the app; start hitrace capture (categories: ace, app, disk).",
-    "Browse 20 pages sequentially through the address bar (each page load triggers onSaveHistory).",
-    "Stop hitrace; repeat 3 repetitions for unfixed; then install the fixed HAP and repeat 3 repetitions identically."
-  ],
-  "test_oracle": {
-    "metric": "rdb_statements_per_page_save",
-    "definition": "Count of RDB statement executions attributable to history saving (date_table SELECT + CREATE TABLE + history INSERT) per page load, from disk/sqlite activity in the hitrace trace or RDB debug logs.",
-    "comparison": "unfixed: >= 3 statements per page save after the first (SELECT + CREATE TABLE + INSERT); fixed: 1 statement per page save (INSERT only). Overall page-save wall time in trace drops accordingly."
+  "testcase": {
+    "name": "PerfLoad_browser_0040",
+    "py_file": "testcase/PerfLoad_browser_0040.py",
+    "descriptor": "testcase/PerfLoad_browser_0040.json",
+    "install_dir": "perf_testing/hapray/testcases/com.example.nanvision",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "bench"
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 30 ace app sched disk -o /data/local/tmp/browser_insertdate.chtrace",
-    "window_ms": 30000
-  }
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 30,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "measured",
+      "measured_as": "perf_hw-instructions / trace_cpu_ms",
+      "unfixed": [
+        980370663,
+        930619863,
+        988330253
+      ],
+      "fixed": [
+        427037015,
+        425730609,
+        428455155
+      ],
+      "note": "980M vs 427M instructions (2.3x); cpu 5949 vs 2495 ms; 3000 vs 1002 statements"
+    },
+    "mechanism_oracle": {
+      "metric": "rdb_statements_per_page_save",
+      "definition": "Count of RDB statement executions attributable to history saving (date_table SELECT + CREATE TABLE + history INSERT) per page load, from disk/sqlite activity in the hitrace trace or RDB debug logs.",
+      "comparison": "unfixed: >= 3 statements per page save after the first (SELECT + CREATE TABLE + INSERT); fixed: 1 statement per page save (INSERT only). Overall page-save wall time in trace drops accordingly."
+    }
+  },
+  "reproduction": [
+    "git -C hosts/browser checkout case/browser_insert_date_lookup_cache/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/browser_insert_date_lookup_cache/testcase/PerfLoad_browser_0040.* perf_testing/hapray/testcases/com.example.nanvision/",
+    "python -m scripts.main perf --run_testcases PerfLoad_browser_0040 --round 3",
+    "git -C hosts/browser checkout case/browser_insert_date_lookup_cache/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

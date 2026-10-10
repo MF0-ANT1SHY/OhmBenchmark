@@ -1,0 +1,16 @@
+{
+    "description": "wanharmony_html_decode_per_render",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_wanharmony_0020.py"
+        ]
+    },
+    "kits": []
+}

@@ -1,0 +1,16 @@
+{
+    "description": "browser_insert_date_lookup_cache",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_browser_0040.py"
+        ]
+    },
+    "kits": []
+}

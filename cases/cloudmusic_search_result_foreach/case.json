@@ -12,7 +12,11 @@
   "android_mechanism": "List rows eagerly created / not recycled while scrolling",
   "category": "latency",
   "bug_description": "The song search-result tab renders results with a plain ForEach inside List. Loading several result pages (30 per page) eagerly creates SongCard components for every accumulated result — including off-screen ones — and rebuilds them as the array grows, slowing search-result display and scrolling.",
-  "perf_scenarios": ["列表滑动", "网络结果渲染", "组件创建"],
+  "perf_scenarios": [
+    "列表滑动",
+    "网络结果渲染",
+    "组件创建"
+  ],
   "unfixed_commit": "d755085",
   "fixed_commit": "153f8c7",
   "fix_summary": "Results render through LazyForEach backed by a LazyData data source (already used elsewhere in the app), so rows are created on demand and recycled.",
@@ -20,20 +24,63 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Search a broad keyword (e.g. a popular artist) yielding many pages of results.",
-    "Start hitrace capture (categories: ace, app, sched).",
-    "Load 5+ result pages via the load-more button, then scroll the list up and down.",
-    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
-  "test_oracle": {
-    "metric": "search_list_render_cpu_and_jank",
-    "definition": "(a) UI-thread CPU from results display to end of scroll; (b) count of SongCard component builds; (c) dropped frames while scrolling.",
-    "comparison": "unfixed builds all accumulated rows (150+ after 5 pages) at once; fixed builds only visible rows. unfixed first-paint after load-more and scroll CPU measurably higher; more jank frames."
+  "testcase": {
+    "name": "PerfLoad_cloudmusic_0040",
+    "py_file": "testcase/PerfLoad_cloudmusic_0040.py",
+    "descriptor": "testcase/PerfLoad_cloudmusic_0040.json",
+    "install_dir": "perf_testing/hapray/testcases/cc.chenlvin.cloudmusic",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "bench_ui"
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 30 ace app sched graphic -o /data/local/tmp/cm_searchlist.chtrace",
-    "window_ms": 30000
-  }
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 30,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "supporting",
+      "measured_as": "SongCard builds",
+      "unfixed": [
+        150,
+        150,
+        150
+      ],
+      "fixed": [
+        12,
+        12,
+        12
+      ],
+      "note": "150 vs 12 row builds (docs/analysis/measurement-search-foreach.md)"
+    },
+    "mechanism_oracle": {
+      "metric": "search_list_render_cpu_and_jank",
+      "definition": "(a) UI-thread CPU from results display to end of scroll; (b) count of SongCard component builds; (c) dropped frames while scrolling.",
+      "comparison": "unfixed builds all accumulated rows (150+ after 5 pages) at once; fixed builds only visible rows. unfixed first-paint after load-more and scroll CPU measurably higher; more jank frames."
+    }
+  },
+  "reproduction": [
+    "git -C hosts/cloudmusic checkout case/cloudmusic_search_result_foreach/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/cloudmusic_search_result_foreach/testcase/PerfLoad_cloudmusic_0040.* perf_testing/hapray/testcases/cc.chenlvin.cloudmusic/",
+    "python -m scripts.main perf --run_testcases PerfLoad_cloudmusic_0040 --round 3",
+    "git -C hosts/cloudmusic checkout case/cloudmusic_search_result_foreach/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

@@ -1,0 +1,16 @@
+{
+    "description": "jingmo_dataset_import_no_transaction",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_jingmo_0010.py"
+        ]
+    },
+    "kits": []
+}

@@ -12,7 +12,10 @@
   "android_mechanism": "Network resource (socket/stream) not released after use; fix closes/releases it",
   "category": "resource_retention",
   "bug_description": "getWeatherUtil.getWeather creates a new http.createHttp() session for every weather request but never calls request.destroy(). Each city refresh leaks an HTTP session (connection and file descriptors) until GC finalization, so repeated refreshes and multi-city loads accumulate retained sockets/fds and slowly degrade networking.",
-  "perf_scenarios": ["网络结果渲染", "页面切换"],
+  "perf_scenarios": [
+    "网络结果渲染",
+    "页面切换"
+  ],
   "unfixed_commit": "167ca48",
   "fixed_commit": "20e8e16",
   "fix_summary": "The request session is destroyed in a finally handler after the response/error callback completes.",
@@ -20,20 +23,56 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Launch the app (it fetches weather for the default city list), then add several cities and switch between city tabs, triggering 30+ weather requests total.",
-    "Start hitrace capture (categories: app, sched, network, net) for the last 10 refreshes.",
-    "Record open-fd count of the app process before and after (hdc shell 'ls /proc/<pid>/fd | wc -l').",
-    "Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
-  "test_oracle": {
-    "metric": "retained_fds_and_connections",
-    "definition": "Growth of the app process fd count and ESTABLISHED/TIME_WAIT socket count attributable to weather requests after N refreshes.",
-    "comparison": "unfixed retains roughly one session (fd) per request after requests complete; fixed returns to baseline. unfixed_fd_growth > fixed_fd_growth by >= 5x over 30 requests."
+  "testcase": {
+    "name": "MemLoad_weatherassistant_0010",
+    "py_file": "testcase/MemLoad_weatherassistant_0010.py",
+    "descriptor": "testcase/MemLoad_weatherassistant_0010.json",
+    "install_dir": "perf_testing/hapray/testcases/com.alatus.futureweather",
+    "driver": "DeviceTest",
+    "module": "alatus",
+    "ability": "AlatusAbility",
+    "trigger": "bench"
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 60 app sched network net -o /data/local/tmp/wa_leak.chtrace",
-    "window_ms": 60000
-  }
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf",
+      "memory"
+    ],
+    "step_duration_s": 60,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "nativehook_retained_bytes",
+    "definition": "bytes still allocated at step end (malloc/free matching) from the nativehook plugin stream in trace.htrace.",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "expected",
+      "measured_as": "retained session/response objects",
+      "unfixed": [],
+      "fixed": [],
+      "note": "unfixed retains every created http session plus its full response in memory; fd counts were flat because sessions are pooled, so the oracle is retained bytes, not fds"
+    },
+    "mechanism_oracle": {
+      "metric": "retained_fds_and_connections",
+      "definition": "Growth of the app process fd count and ESTABLISHED/TIME_WAIT socket count attributable to weather requests after N refreshes.",
+      "comparison": "unfixed retains roughly one session (fd) per request after requests complete; fixed returns to baseline. unfixed_fd_growth > fixed_fd_growth by >= 5x over 30 requests."
+    }
+  },
+  "reproduction": [
+    "git -C hosts/weatherassistant checkout case/weatherassistant_http_session_leak/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/weatherassistant_http_session_leak/testcase/MemLoad_weatherassistant_0010.* perf_testing/hapray/testcases/com.alatus.futureweather/",
+    "python -m scripts.main perf --run_testcases MemLoad_weatherassistant_0010 --round 3 --memory",
+    "git -C hosts/weatherassistant checkout case/weatherassistant_http_session_leak/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

@@ -12,7 +12,10 @@
   "android_mechanism": "UI state (paint) updated when nothing visually changed; fix skips redundant updates",
   "category": "cpu",
   "bug_description": "The now-playing page assigns the raw millisecond position from AVPlayer's timeUpdate callback into a page-level @State on every callback (~10/s). The whole player page (cover image, title, slider, controls) re-renders at callback frequency although the slider position and time labels only visibly change once per second, wasting UI-thread CPU throughout playback.",
-  "perf_scenarios": ["动画", "状态更新"],
+  "perf_scenarios": [
+    "动画",
+    "状态更新"
+  ],
   "unfixed_commit": "b32b720",
   "fixed_commit": "b140b41",
   "fix_summary": "The state is assigned only when the whole-second part of the position changes.",
@@ -20,20 +23,63 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Play a track and stay on the now-playing page.",
-    "Start hitrace capture (categories: ace, app, sched, graphic).",
-    "Let it play untouched for 60 seconds.",
-    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
-  "test_oracle": {
-    "metric": "player_page_updates_per_minute",
-    "definition": "Count of page state updates / render passes attributable to currentValue during 60s idle playback, plus UI-thread CPU time.",
-    "comparison": "unfixed ~600 updates/minute vs fixed ~60/minute; unfixed UI CPU during playback > fixed."
+  "testcase": {
+    "name": "PerfLoad_ytmusic_0010",
+    "py_file": "testcase/PerfLoad_ytmusic_0010.py",
+    "descriptor": "testcase/PerfLoad_ytmusic_0010.json",
+    "install_dir": "perf_testing/hapray/testcases/com.example.myapplication",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "bench"
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 70 ace app sched graphic -o /data/local/tmp/yt_timeupdate.chtrace",
-    "window_ms": 70000
-  }
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 70,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "supporting",
+      "measured_as": "page updates/minute",
+      "unfixed": [
+        600,
+        600,
+        600
+      ],
+      "fixed": [
+        60,
+        60,
+        60
+      ],
+      "note": "600 vs 60 state updates/minute (docs/analysis/measurement-player-updates.md)"
+    },
+    "mechanism_oracle": {
+      "metric": "player_page_updates_per_minute",
+      "definition": "Count of page state updates / render passes attributable to currentValue during 60s idle playback, plus UI-thread CPU time.",
+      "comparison": "unfixed ~600 updates/minute vs fixed ~60/minute; unfixed UI CPU during playback > fixed."
+    }
+  },
+  "reproduction": [
+    "git -C hosts/ytmusic checkout case/ytmusic_current_playing_timeupdate/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/ytmusic_current_playing_timeupdate/testcase/PerfLoad_ytmusic_0010.* perf_testing/hapray/testcases/com.example.myapplication/",
+    "python -m scripts.main perf --run_testcases PerfLoad_ytmusic_0010 --round 3",
+    "git -C hosts/ytmusic checkout case/ytmusic_current_playing_timeupdate/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

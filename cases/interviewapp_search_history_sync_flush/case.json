@@ -24,25 +24,63 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Launch the app and open the search page.",
-    "Start hitrace capture (categories: app, sched, disk, filesystem).",
-    "Submit 10 different keyword searches in quick succession.",
-    "Stop hitrace after 5s idle. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
+  "testcase": {
+    "name": "PerfLoad_interviewapp_0020",
+    "py_file": "testcase/PerfLoad_interviewapp_0020.py",
+    "descriptor": "testcase/PerfLoad_interviewapp_0020.json",
+    "install_dir": "perf_testing/hapray/testcases/com.itcast.pass_interview",
+    "driver": "DeviceTest",
+    "module": "phone",
+    "ability": "PhoneAbility",
+    "trigger": "bench"
+  },
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 30,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
   "test_oracle": {
-    "metric": "flush_count_per_search_burst",
-    "definition": "Number of preference flush (fsync/disk write) operations attributable to the history store during a 10-search burst, and their total wall/CPU time from the disk trace.",
-    "comparison": "unfixed: 10 flushes (one per search) on the calling thread; fixed: 1 flush after the burst. unfixed disk-sync time on the search path > fixed by >= 5x for the burst.",
-    "oracle_revision": {
-      "previous_comparison": "unfixed: 10 flushes (one per search); fixed: 1 flush after the burst",
-      "corrected_comparison": "unfixed: 1 flush per save (1000 for the harness burst of 1000 saves); fixed: 1 flush after the burst",
-      "reason": "The original wording assumed a 10-search burst, but the harness drives 1000 setItem calls and unfixed setItem calls store.flush() on every one. Measured on device: unfixed 1000 flushes in all three runs, fixed 1 in all three. The direction of the claim (per-save flush vs single deferred flush) is unchanged; only the count written for a 10-search burst was wrong for this fixture."
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "measured",
+      "measured_as": "perf_hw-instructions / trace_cpu_ms",
+      "unfixed": [
+        3288553707,
+        3090556140,
+        3384493157
+      ],
+      "fixed": [
+        165929778,
+        165402478,
+        171054649
+      ],
+      "note": "3.29G vs 166M instructions (20x); cpu 6867 vs 328 ms; 1000 vs 1 flushes"
+    },
+    "mechanism_oracle": {
+      "metric": "flush_count_per_search_burst",
+      "definition": "Number of preference flush (fsync/disk write) operations attributable to the history store during a 10-search burst, and their total wall/CPU time from the disk trace.",
+      "comparison": "unfixed: 10 flushes (one per search) on the calling thread; fixed: 1 flush after the burst. unfixed disk-sync time on the search path > fixed by >= 5x for the burst."
     }
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 30 app sched disk filesystem -o /data/local/tmp/ia_flush.chtrace",
-    "window_ms": 30000
-  }
+  "reproduction": [
+    "git -C hosts/interviewapp checkout case/interviewapp_search_history_sync_flush/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/interviewapp_search_history_sync_flush/testcase/PerfLoad_interviewapp_0020.* perf_testing/hapray/testcases/com.itcast.pass_interview/",
+    "python -m scripts.main perf --run_testcases PerfLoad_interviewapp_0020 --round 3",
+    "git -C hosts/interviewapp checkout case/interviewapp_search_history_sync_flush/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

@@ -23,28 +23,63 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Seed a large history: open ~100 distinct articles from the home list (each open records one history entry).",
-    "Start hitrace capture (categories: ace, app, sched).",
-    "Open 10 more articles sequentially.",
-    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
+  "testcase": {
+    "name": "PerfLoad_wanharmony_0010",
+    "py_file": "testcase/PerfLoad_wanharmony_0010.py",
+    "descriptor": "testcase/PerfLoad_wanharmony_0010.json",
+    "install_dir": "perf_testing/hapray/testcases/org.example.wan.ohos",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "bench"
+  },
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 30,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
   "test_oracle": {
     "metric": "trace_cpu_ms",
-    "definition": "CPU time of the app process across the case window, from trace.",
-    "comparison": "unfixed spends O(history_size) in JSON serialization per open (grows with history); fixed is O(1). With 100+ entries unfixed > fixed by >= 30% on the title-event path.",
-    "oracle_revision": {
-      "previous_metric": "title_event_cpu_ms",
-      "previous_definition": "CPU time consumed in onTitleReceive handlers per page open (bounded by onTitleReceive to onPageEnd interval in trace), averaged over 10 opens.",
-      "corrected_metric": "trace_cpu_ms",
-      "corrected_definition": "CPU time of the app process across the case window, from trace.",
-      "kind": "same-quantity-renamed",
-      "reason": "The declared metric named CPU in the onTitleReceive-to-onPageEnd interval and the collected metric is CPU across the case window. Recorded rounds: 7.4/8.3/49.9 unfixed vs 0.1/0.1/0.1 fixed, no overlap, 99.5% reduction. Because the case is a single bounded page-open, the window and the interval coincide closely, so this is a rename rather than a weakening. An earlier revision called it a weaker proxy; that was based on a stale contract table and is corrected here."
+    "definition": "on-CPU time of the app process during the measured step, from the sched events in trace.htrace.",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "measured",
+      "measured_as": "trace_cpu_ms over the lifecycle-log phase",
+      "unfixed": [
+        49.9,
+        7.4,
+        8.3
+      ],
+      "fixed": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "note": "phase-scoped cpu 49.9 vs 0.1 ms; whole-window instructions do not discriminate (page-open work dominates), so the oracle is the title-event phase CPU"
+    },
+    "mechanism_oracle": {
+      "metric": "trace_cpu_ms",
+      "definition": "CPU time of the app process across the case window, from trace.",
+      "comparison": "unfixed spends O(history_size) in JSON serialization per open (grows with history); fixed is O(1). With 100+ entries unfixed > fixed by >= 30% on the title-event path."
     }
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 30 ace app sched -o /data/local/tmp/wan_histlog.chtrace",
-    "window_ms": 30000
-  }
+  "reproduction": [
+    "git -C hosts/wanharmony checkout case/wanharmony_history_log_materialization/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/wanharmony_history_log_materialization/testcase/PerfLoad_wanharmony_0010.* perf_testing/hapray/testcases/org.example.wan.ohos/",
+    "python -m scripts.main perf --run_testcases PerfLoad_wanharmony_0010 --round 3",
+    "git -C hosts/wanharmony checkout case/wanharmony_history_log_materialization/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

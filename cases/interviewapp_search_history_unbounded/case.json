@@ -12,7 +12,10 @@
   "android_mechanism": "Cache/data structure grows without bound; fix bounds the retained data",
   "category": "resource_retention",
   "bug_description": "The search-history store persists every keyword as its own preference key and never bounds the number of entries. The history grows without limit, the history component renders an ever-growing ForEach, and preferences storage/flush volume grows with every search.",
-  "perf_scenarios": ["状态更新", "页面切换"],
+  "perf_scenarios": [
+    "状态更新",
+    "页面切换"
+  ],
   "unfixed_commit": "4fd3756",
   "fixed_commit": "9f226e3",
   "fix_summary": "History is kept as a single ordered JSON list capped at the 20 most recent keywords.",
@@ -20,20 +23,64 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Perform 60 different keyword searches.",
-    "Start hitrace capture (categories: app, sched, disk); open the search page so the history component renders.",
-    "Stop hitrace; record preference file size (hdc shell 'du /data/app/el2/100/base/com.itcast.pass_interview/.../preferences/').",
-    "Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
-  "test_oracle": {
-    "metric": "history_entries_and_render_cost",
-    "definition": "Number of history entries retained after 60 searches, size of the preferences file, and CPU/time to render the history component when the search page opens.",
-    "comparison": "unfixed retains 60+ entries and growing render/storage cost; fixed retains 20. unfixed history-component build cost and preferences size > fixed."
+  "testcase": {
+    "name": "MemLoad_interviewapp_0030",
+    "py_file": "testcase/MemLoad_interviewapp_0030.py",
+    "descriptor": "testcase/MemLoad_interviewapp_0030.json",
+    "install_dir": "perf_testing/hapray/testcases/com.itcast.pass_interview",
+    "driver": "DeviceTest",
+    "module": "phone",
+    "ability": "PhoneAbility",
+    "trigger": "bench"
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 20 app sched disk ace -o /data/local/tmp/ia_hist.chtrace",
-    "window_ms": 20000
-  }
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf",
+      "memory"
+    ],
+    "step_duration_s": 20,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "app_pss_bytes",
+    "definition": "Pss of the app process after the workload, from the periodic smaps_rollup snapshots in memory/.",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "supporting",
+      "measured_as": "history entries retained",
+      "unfixed": [
+        500000,
+        500000,
+        500000
+      ],
+      "fixed": [
+        2000,
+        2000,
+        2000
+      ],
+      "note": "500000 vs 2000 retained entries; 2.30G vs 2.47M instructions on the read path"
+    },
+    "mechanism_oracle": {
+      "metric": "history_entries_and_render_cost",
+      "definition": "Number of history entries retained after 60 searches, size of the preferences file, and CPU/time to render the history component when the search page opens.",
+      "comparison": "unfixed retains 60+ entries and growing render/storage cost; fixed retains 20. unfixed history-component build cost and preferences size > fixed."
+    }
+  },
+  "reproduction": [
+    "git -C hosts/interviewapp checkout case/interviewapp_search_history_unbounded/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/interviewapp_search_history_unbounded/testcase/MemLoad_interviewapp_0030.* perf_testing/hapray/testcases/com.itcast.pass_interview/",
+    "python -m scripts.main perf --run_testcases MemLoad_interviewapp_0030 --round 3 --memory",
+    "git -C hosts/interviewapp checkout case/interviewapp_search_history_unbounded/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

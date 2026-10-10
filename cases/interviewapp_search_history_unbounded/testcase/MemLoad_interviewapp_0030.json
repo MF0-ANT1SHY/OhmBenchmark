@@ -1,0 +1,16 @@
+{
+    "description": "interviewapp_search_history_unbounded",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "MemLoad_interviewapp_0030.py"
+        ]
+    },
+    "kits": []
+}

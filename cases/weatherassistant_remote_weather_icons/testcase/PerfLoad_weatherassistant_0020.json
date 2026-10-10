@@ -1,0 +1,16 @@
+{
+    "description": "weatherassistant_remote_weather_icons",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_weatherassistant_0020.py"
+        ]
+    },
+    "kits": []
+}

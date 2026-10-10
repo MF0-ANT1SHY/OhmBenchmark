@@ -1,0 +1,16 @@
+{
+    "description": "wanharmony_persisted_home_list_growth",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "MemLoad_wanharmony_0030.py"
+        ]
+    },
+    "kits": []
+}

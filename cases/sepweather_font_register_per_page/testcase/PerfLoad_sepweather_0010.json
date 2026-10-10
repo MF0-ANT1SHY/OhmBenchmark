@@ -1,0 +1,16 @@
+{
+    "description": "sepweather_font_register_per_page",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_sepweather_0010.py"
+        ]
+    },
+    "kits": []
+}

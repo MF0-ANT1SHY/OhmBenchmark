@@ -12,7 +12,10 @@
   "android_mechanism": "Every scanned port enqueues UI work without throttling; fix moves/throttles the work",
   "category": "cpu",
   "bug_description": "The search input's onChange handler fires a network search request to the backend for every single keystroke with no debounce or cancellation. Typing a 10-character query issues 10 requests, most of which are obsolete by the time they return; their responses race and each response re-assigns the result state, re-rendering the result list repeatedly and wasting radio/CPU and UI-thread time.",
-  "perf_scenarios": ["网络结果渲染", "状态更新"],
+  "perf_scenarios": [
+    "网络结果渲染",
+    "状态更新"
+  ],
   "unfixed_commit": "1e3d086",
   "fixed_commit": "b32b720",
   "fix_summary": "Search-as-you-type is debounced by 300ms (timer reset on each keystroke, cleared on submit), so one request is issued per paused query instead of one per keystroke.",
@@ -20,20 +23,55 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Ensure the device can reach the app's search backend.",
-    "Start hitrace capture (categories: app, sched, network, net).",
-    "Type a 10-character search keyword at normal speed, then submit.",
-    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
-  "test_oracle": {
-    "metric": "search_requests_per_query",
-    "definition": "Count of outbound HTTP search requests observed in the network trace while typing one 10-character query (plus submit).",
-    "comparison": "unfixed: ~11 requests per typed query (one per keystroke + submit); fixed: 1-2 requests. Corresponding CPU/radio activity and result-list re-renders drop proportionally."
+  "testcase": {
+    "name": "PerfLoad_ytmusic_0030",
+    "py_file": "testcase/PerfLoad_ytmusic_0030.py",
+    "descriptor": "testcase/PerfLoad_ytmusic_0030.json",
+    "install_dir": "perf_testing/hapray/testcases/com.example.myapplication",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "ui"
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 30 app sched network net -o /data/local/tmp/yt_debounce.chtrace",
-    "window_ms": 30000
-  }
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 30,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "expected",
+      "measured_as": "search requests per query",
+      "unfixed": [],
+      "fixed": [],
+      "note": "unfixed issues ~11 requests per typed query vs 1-2 fixed; each extra request costs serialise+send+parse+render instructions"
+    },
+    "mechanism_oracle": {
+      "metric": "search_requests_per_query",
+      "definition": "Count of outbound HTTP search requests observed in the network trace while typing one 10-character query (plus submit).",
+      "comparison": "unfixed: ~11 requests per typed query (one per keystroke + submit); fixed: 1-2 requests. Corresponding CPU/radio activity and result-list re-renders drop proportionally."
+    }
+  },
+  "reproduction": [
+    "git -C hosts/ytmusic checkout case/ytmusic_search_no_debounce/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/ytmusic_search_no_debounce/testcase/PerfLoad_ytmusic_0030.* perf_testing/hapray/testcases/com.example.myapplication/",
+    "python -m scripts.main perf --run_testcases PerfLoad_ytmusic_0030 --round 3",
+    "git -C hosts/ytmusic checkout case/ytmusic_search_no_debounce/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

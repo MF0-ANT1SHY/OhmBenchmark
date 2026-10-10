@@ -1,0 +1,16 @@
+{
+    "description": "jingmo_random_poem_orderby_random",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_jingmo_0020.py"
+        ]
+    },
+    "kits": []
+}

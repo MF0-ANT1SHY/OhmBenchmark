@@ -12,7 +12,11 @@
   "android_mechanism": "List rows are re-created during scrolling instead of being recycled",
   "category": "latency",
   "bug_description": "The browsing-history dialog renders each day's entries with a plain ForEach inside ListItemGroup, so when the dialog opens, HistoryItem components for every recorded entry (including off-screen ones) are created eagerly, and scrolling re-creates components instead of recycling them. Opening the history dialog and scrolling it is slow once history grows.",
-  "perf_scenarios": ["列表滑动", "组件创建", "页面切换"],
+  "perf_scenarios": [
+    "列表滑动",
+    "组件创建",
+    "页面切换"
+  ],
   "unfixed_commit": "52bc232",
   "fixed_commit": "f9425c4",
   "fix_summary": "History entries are rendered with LazyForEach backed by a per-group IDataSource implementation, so row components are created on demand as they enter the viewport and recycled while scrolling.",
@@ -20,20 +24,63 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Seed the app with a large history (browse ~100 pages in one day).",
-    "Start hitrace capture (categories: ace, app, sched).",
-    "Open the pages/history dialog (bottom bar history button) and scroll the list from top to bottom at constant speed.",
-    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
-  "test_oracle": {
-    "metric": "component_build_count_and_first_frame_ms",
-    "definition": "(a) Time from dialog-open event to first rendered history frame; (b) count of HistoryItem component build/attach operations in the ace trace during the whole scroll; (c) dropped-frame count while scrolling.",
-    "comparison": "unfixed builds all N components at open (N = seeded entries) vs fixed builds only visible rows (~10-15); unfixed_first_frame_ms > fixed_first_frame_ms; unfixed shows more jank frames during scroll."
+  "testcase": {
+    "name": "PerfLoad_browser_0030",
+    "py_file": "testcase/PerfLoad_browser_0030.py",
+    "descriptor": "testcase/PerfLoad_browser_0030.json",
+    "install_dir": "perf_testing/hapray/testcases/com.example.nanvision",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "bench_ui"
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 20 ace app sched graphic -o /data/local/tmp/browser_histlist.chtrace",
-    "window_ms": 20000
-  }
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 20,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "measured",
+      "measured_as": "perf_hw-instructions / trace_cpu_ms",
+      "unfixed": [
+        9637608919,
+        9630561356,
+        9725313176
+      ],
+      "fixed": [
+        2789693645,
+        2751031972,
+        2799537880
+      ],
+      "note": "9.64G vs 2.79G instructions (3.5x); cpu 5986 vs 4041 ms; builds 200 vs 59"
+    },
+    "mechanism_oracle": {
+      "metric": "component_build_count_and_first_frame_ms",
+      "definition": "(a) Time from dialog-open event to first rendered history frame; (b) count of HistoryItem component build/attach operations in the ace trace during the whole scroll; (c) dropped-frame count while scrolling.",
+      "comparison": "unfixed builds all N components at open (N = seeded entries) vs fixed builds only visible rows (~10-15); unfixed_first_frame_ms > fixed_first_frame_ms; unfixed shows more jank frames during scroll."
+    }
+  },
+  "reproduction": [
+    "git -C hosts/browser checkout case/browser_history_list_foreach/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/browser_history_list_foreach/testcase/PerfLoad_browser_0030.* perf_testing/hapray/testcases/com.example.nanvision/",
+    "python -m scripts.main perf --run_testcases PerfLoad_browser_0030 --round 3",
+    "git -C hosts/browser checkout case/browser_history_list_foreach/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

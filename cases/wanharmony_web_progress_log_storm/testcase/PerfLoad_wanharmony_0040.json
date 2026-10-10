@@ -1,0 +1,16 @@
+{
+    "description": "wanharmony_web_progress_log_storm",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_wanharmony_0040.py"
+        ]
+    },
+    "kits": []
+}

@@ -1,0 +1,16 @@
+{
+    "description": "sheafreader_extract_tag_tolowercase",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_sheafreader_0020.py"
+        ]
+    },
+    "kits": []
+}

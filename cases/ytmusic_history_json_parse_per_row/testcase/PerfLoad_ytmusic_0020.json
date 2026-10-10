@@ -1,0 +1,16 @@
+{
+    "description": "ytmusic_history_json_parse_per_row",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_ytmusic_0020.py"
+        ]
+    },
+    "kits": []
+}

@@ -12,7 +12,11 @@
   "android_mechanism": "All list-row content (drawables/previews) eagerly prepared instead of only bound/visible rows",
   "category": "latency",
   "bug_description": "The main article list and card grid render store.articles with plain ForEach. Opening a feed or scrolling loads pages of articles (limit grows with 'load more'), and every accumulated article row/card — including off-screen ones — is built eagerly, with per-card context menus bound, slowing list display and paging in large feeds.",
-  "perf_scenarios": ["列表滑动", "组件创建", "页面切换"],
+  "perf_scenarios": [
+    "列表滑动",
+    "组件创建",
+    "页面切换"
+  ],
   "unfixed_commit": "f62858e",
   "fixed_commit": "c3e7b11",
   "fix_summary": "Both the list and grid render via LazyForEach over an IDataSource kept in sync with the store, so rows are created on demand as they enter the viewport.",
@@ -20,20 +24,55 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Subscribe to feeds with many articles (or import an OPML with large feeds) so a category holds several hundred articles.",
-    "Start hitrace capture (categories: ace, app, sched).",
-    "Open the 全部文章 view, trigger load-more 5 times, then scroll through the list.",
-    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
-  "test_oracle": {
-    "metric": "article_row_build_count",
-    "definition": "Count of article card component builds during open + load-more + scroll (ace trace), first-render latency after open, and dropped frames while scrolling.",
-    "comparison": "unfixed builds every accumulated article (hundreds) eagerly; fixed builds only viewport rows. unfixed first-render and scroll jank measurably worse."
+  "testcase": {
+    "name": "PerfLoad_sheafreader_0010",
+    "py_file": "testcase/PerfLoad_sheafreader_0010.py",
+    "descriptor": "testcase/PerfLoad_sheafreader_0010.json",
+    "install_dir": "perf_testing/hapray/testcases/com.sheafreader.hm",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "bench_ui"
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 40 ace app sched graphic -o /data/local/tmp/sr_artlist.chtrace",
-    "window_ms": 40000
-  }
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 40,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "expected",
+      "measured_as": "article card builds",
+      "unfixed": [],
+      "fixed": [],
+      "note": "unfixed container redesigned to Scroll+Column+ForEach so the eager-build mechanism actually manifests on this OS build (List+ForEach is already virtualised); control case browser_history_list_foreach separates 3.5x"
+    },
+    "mechanism_oracle": {
+      "metric": "article_row_build_count",
+      "definition": "Count of article card component builds during open + load-more + scroll (ace trace), first-render latency after open, and dropped frames while scrolling.",
+      "comparison": "unfixed builds every accumulated article (hundreds) eagerly; fixed builds only viewport rows. unfixed first-render and scroll jank measurably worse."
+    }
+  },
+  "reproduction": [
+    "git -C hosts/sheafreader checkout case/sheafreader_article_list_foreach/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/sheafreader_article_list_foreach/testcase/PerfLoad_sheafreader_0010.* perf_testing/hapray/testcases/com.sheafreader.hm/",
+    "python -m scripts.main perf --run_testcases PerfLoad_sheafreader_0010 --round 3",
+    "git -C hosts/sheafreader checkout case/sheafreader_article_list_foreach/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

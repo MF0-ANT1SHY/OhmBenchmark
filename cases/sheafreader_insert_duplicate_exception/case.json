@@ -23,28 +23,63 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Subscribe to feeds with substantial history and refresh once to populate articles.",
-    "Start hitrace capture (categories: app, sched, disk, database).",
-    "Trigger refresh-all again (all articles already exist; every insert is a duplicate).",
-    "Stop hitrace when refresh completes. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
+  "testcase": {
+    "name": "PerfLoad_sheafreader_0030",
+    "py_file": "testcase/PerfLoad_sheafreader_0030.py",
+    "descriptor": "testcase/PerfLoad_sheafreader_0030.json",
+    "install_dir": "perf_testing/hapray/testcases/com.sheafreader.hm",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "bench"
+  },
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 60,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
   "test_oracle": {
-    "metric": "trace_cpu_ms",
-    "definition": "CPU time across the no-op refresh case window, from trace.",
-    "comparison": "unfixed pays statement-execution + exception-throw/catch per stored article; fixed pays a cheap ignored insert. unfixed no-op refresh CPU > fixed by a clear margin scaling with stored article count.",
-    "oracle_revision": {
-      "previous_metric": "no_op_refresh_cpu_ms",
-      "previous_definition": "CPU time of the refresh phase when nothing new arrives (all duplicate inserts), from trace + JS sampling (exception handling frames).",
-      "corrected_metric": "trace_cpu_ms",
-      "corrected_definition": "CPU time across the no-op refresh case window, from trace.",
-      "kind": "weaker-proxy",
-      "reason": "WEAKER PROXY. The declared metric names CPU for the no-op refresh phase, and trace_cpu_ms is collected - but on this case the two variants OVERLAP: 23463.5/27458.4/37015.4 unfixed vs 24176.7/25597.2/26290.9 fixed, a 13.5% reduction with the ranges interleaved. So the declared metric is collected and does not separate the variants; the main-thread CPU field does (no overlap, 16.4%). This is the honest reading rather than a pass: the case does not reach a clear difference on the metric it declares. An earlier revision claimed the rounds collected only elapsed_ms, which was wrong."
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "measured",
+      "measured_as": "perf_hw-instructions",
+      "unfixed": [
+        12837909544,
+        11594010171,
+        14676652174
+      ],
+      "fixed": [
+        4922802397,
+        4907621328,
+        4944325933
+      ],
+      "note": "12.8G vs 4.92G instructions (2.6x) over the no-op refresh phase"
+    },
+    "mechanism_oracle": {
+      "metric": "trace_cpu_ms",
+      "definition": "CPU time across the no-op refresh case window, from trace.",
+      "comparison": "unfixed pays statement-execution + exception-throw/catch per stored article; fixed pays a cheap ignored insert. unfixed no-op refresh CPU > fixed by a clear margin scaling with stored article count."
     }
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 60 app sched disk database -o /data/local/tmp/sr_dupinsert.chtrace",
-    "window_ms": 60000
-  }
+  "reproduction": [
+    "git -C hosts/sheafreader checkout case/sheafreader_insert_duplicate_exception/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/sheafreader_insert_duplicate_exception/testcase/PerfLoad_sheafreader_0030.* perf_testing/hapray/testcases/com.sheafreader.hm/",
+    "python -m scripts.main perf --run_testcases PerfLoad_sheafreader_0030 --round 3",
+    "git -C hosts/sheafreader checkout case/sheafreader_insert_duplicate_exception/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

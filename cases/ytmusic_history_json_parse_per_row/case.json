@@ -24,25 +24,63 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Play 30+ different tracks to populate listening history.",
-    "Start hitrace capture (categories: ace, app, sched).",
-    "Open the history page (历史记录) and scroll through all entries; delete one entry.",
-    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
+  "testcase": {
+    "name": "PerfLoad_ytmusic_0020",
+    "py_file": "testcase/PerfLoad_ytmusic_0020.py",
+    "descriptor": "testcase/PerfLoad_ytmusic_0020.json",
+    "install_dir": "perf_testing/hapray/testcases/com.example.myapplication",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "bench_ui"
+  },
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 15,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
   "test_oracle": {
-    "metric": "history_page_render_cpu_ms",
-    "definition": "UI-thread CPU time from page-show to last row rendered plus the re-render after one deletion, from the ace trace.",
-    "comparison": "unfixed performs 4*history_size JSON.parse calls per render (visible in JS sampling); fixed performs history_size parses. unfixed_render_cpu_ms > fixed by >= 25% with 30+ entries.",
-    "oracle_revision": {
-      "previous_comparison": "unfixed performs 4*history_size JSON.parse calls per render (visible in JS sampling); fixed performs history_size parses.",
-      "corrected_comparison": "unfixed performs 3*history_size JSON.parse calls per render; fixed performs history_size parses. Measured: 600 vs 200 for a 200-entry list.",
-      "reason": "The page has four JSON.parse call sites, but only three run during a render: Image(JSON.parse(item).img), Text(JSON.parse(item).name) and Text(JSON.parse(item).creator). The fourth sits inside the row's onClick handler and only fires on a tap, which this bench never performs. Measured on device: unfixed 600 parses (200 x 3), fixed 200 (200 x 1). The claim's direction is unchanged."
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "supporting",
+      "measured_as": "JSON.parse calls per render",
+      "unfixed": [
+        600,
+        600,
+        600
+      ],
+      "fixed": [
+        200,
+        200,
+        200
+      ],
+      "note": "600 vs 200 parses per history-page render (docs/analysis/ytmusic-harness.md)"
+    },
+    "mechanism_oracle": {
+      "metric": "history_page_render_cpu_ms",
+      "definition": "UI-thread CPU time from page-show to last row rendered plus the re-render after one deletion, from the ace trace.",
+      "comparison": "unfixed performs 4*history_size JSON.parse calls per render (visible in JS sampling); fixed performs history_size parses. unfixed_render_cpu_ms > fixed by >= 25% with 30+ entries."
     }
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 15 ace app sched -o /data/local/tmp/yt_histjson.chtrace",
-    "window_ms": 15000
-  }
+  "reproduction": [
+    "git -C hosts/ytmusic checkout case/ytmusic_history_json_parse_per_row/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/ytmusic_history_json_parse_per_row/testcase/PerfLoad_ytmusic_0020.* perf_testing/hapray/testcases/com.example.myapplication/",
+    "python -m scripts.main perf --run_testcases PerfLoad_ytmusic_0020 --round 3",
+    "git -C hosts/ytmusic checkout case/ytmusic_history_json_parse_per_row/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

@@ -23,28 +23,63 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Import the dataset once via settings (数据同步) so the poem table is populated.",
-    "Start hitrace capture (categories: app, sched, network, disk, database).",
-    "Open the 数据同步 page again.",
-    "Stop hitrace after 10 seconds. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
+  "testcase": {
+    "name": "PerfLoad_jingmo_0030",
+    "py_file": "testcase/PerfLoad_jingmo_0030.py",
+    "descriptor": "testcase/PerfLoad_jingmo_0030.json",
+    "install_dir": "perf_testing/hapray/testcases/com.hefengbao.jingmo.hw",
+    "driver": "DeviceTest",
+    "module": "default",
+    "ability": "EntryAbility",
+    "trigger": "bench"
+  },
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 15,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
   "test_oracle": {
-    "metric": "elapsed_ms",
-    "definition": "Wall time of the case action, measured in the app.",
-    "comparison": "unfixed re-downloads the whole dataset and re-attempts all inserts (visible network transfer + DB activity); fixed performs one COUNT and no transfer. unfixed network bytes >> fixed (fixed = 0).",
-    "oracle_revision": {
-      "previous_metric": "revisit_sync_page_cost",
-      "previous_definition": "Bytes downloaded and database statements executed when re-opening the sync page with data already imported, plus page-open wall time.",
-      "corrected_metric": "elapsed_ms",
-      "corrected_definition": "Wall time of the case action, measured in the app.",
-      "kind": "same-quantity-renamed",
-      "reason": "The declared metric includes page-open wall time, which the collected elapsed time is. The declared metric also names bytes downloaded and database statements, which are NOT collected and remain open."
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "measured",
+      "measured_as": "perf_hw-instructions / trace_cpu_ms",
+      "unfixed": [
+        11506009207,
+        11444384089,
+        11694505915
+      ],
+      "fixed": [
+        28662204,
+        23962817,
+        29937028
+      ],
+      "note": "11.5G vs 28.7M instructions (400x); cpu 1789 vs 123 ms"
+    },
+    "mechanism_oracle": {
+      "metric": "elapsed_ms",
+      "definition": "Wall time of the case action, measured in the app.",
+      "comparison": "unfixed re-downloads the whole dataset and re-attempts all inserts (visible network transfer + DB activity); fixed performs one COUNT and no transfer. unfixed network bytes >> fixed (fixed = 0)."
     }
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 15 app sched network disk database -o /data/local/tmp/jingmo_reimport.chtrace",
-    "window_ms": 15000
-  }
+  "reproduction": [
+    "git -C hosts/jingmo checkout case/jingmo_sync_page_reimport/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/jingmo_sync_page_reimport/testcase/PerfLoad_jingmo_0030.* perf_testing/hapray/testcases/com.hefengbao.jingmo.hw/",
+    "python -m scripts.main perf --run_testcases PerfLoad_jingmo_0030 --round 3",
+    "git -C hosts/jingmo checkout case/jingmo_sync_page_reimport/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

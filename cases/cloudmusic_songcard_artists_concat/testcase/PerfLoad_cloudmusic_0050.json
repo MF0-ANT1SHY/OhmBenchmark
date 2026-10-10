@@ -1,0 +1,16 @@
+{
+    "description": "cloudmusic_songcard_artists_concat",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_cloudmusic_0050.py"
+        ]
+    },
+    "kits": []
+}

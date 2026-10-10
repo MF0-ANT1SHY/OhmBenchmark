@@ -1,0 +1,16 @@
+{
+    "description": "cloudmusic_indexof_in_render",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_cloudmusic_0010.py"
+        ]
+    },
+    "kits": []
+}

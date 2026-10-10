@@ -1,0 +1,119 @@
+# Dynamic data collection specification — mirrors ArkAnalyzer-HapRay.
+#
+# Source: SMAT-Lab/ArkAnalyzer-HapRay @ main
+#   perf_testing/hapray/core/collection/command_templates.py  (plugin configs)
+#   perf_testing/hapray/core/config/config.yaml               (collector options)
+#   perf_testing/hapray/core/collection/data_collector.py     (step lifecycle)
+#
+# Every case collects through ONE hiprofiler_cmd session per measured step, built
+# exactly the way HapRay's CommandBuilder assembles it. Per-case parameters
+# (step duration, memory mode, rounds) live in cases/<id>/case.json#collection.
+
+tool: hiprofiler_cmd
+
+# Command line run on-device, once per measured step:
+#   hiprofiler_cmd -c - -o <out>.htrace -t <duration_s> -s -k <<CONFIG ... CONFIG
+command: "hiprofiler_cmd -c - -o {output}.htrace -t {duration_s} -s -k <<CONFIG"
+
+session_config:
+  buffers:
+    pages: 16384
+
+# --- ftrace-plugin: hitrace categories + kernel sched events (verbatim HapRay) ---
+ftrace_plugin:
+  sample_interval: 1000
+  ftrace_events:
+    - sched/sched_switch
+    - power/suspend_resume
+    - sched/sched_wakeup
+    - sched/sched_wakeup_new
+    - sched/sched_waking
+    - sched/sched_process_exit
+    - sched/sched_process_free
+    - task/task_newtask
+    - task/task_rename
+    - power/cpu_frequency
+    - power/cpu_idle
+  hitrace_categories:
+    - ability
+    - ace
+    - app
+    - ark
+    - binder
+    - disk
+    - freq
+    - graphic
+    - idle
+    - irq
+    - memreclaim
+    - mmc
+    - multimodalinput
+    - notification
+    - ohos
+    - pagecache
+    - rpc
+    - sched
+    - sync
+    - window
+    - workq
+    - zaudio
+    - zcamera
+    - zimage
+    - zmedia
+  buffer_size_kb: 204800
+  flush_interval_ms: 1000
+  flush_threshold_kb: 4096
+  parse_ksyms: true
+  clock: boot
+  trace_period_ms: 200
+
+# --- hiperf-plugin: CPU sampling (verbatim HapRay record_args) ---
+hiperf_plugin:
+  is_root: false
+  outfile_name: /data/local/tmp/perf.data
+  record_args: "-f 1000 {pids} --cpu-limit 100 -e {event} --call-stack dwarf --clockid boottime --kernel-callchain -m 1024"
+  event: raw-instruction-retired   # --circles switches to raw-cpu-cycles
+  duration_s: 30                   # default; case.json overrides per step
+
+# --- nativehook-plugin: only for MemLoad_* cases (memory.enable: true) ---
+memory_plugin:
+  sample_interval: 5000
+  save_file: false
+  smb_pages: 16384
+  max_stack_depth: 100
+  string_compressed: true
+  fp_unwind: true
+  blocked: true
+  callframe_compress: true
+  record_accurately: true
+  offline_symbolization: true
+  startup_mode: false      # expand_pids:<pid> when app is running; else process_name + true
+  malloc_free_matching_interval: 10
+
+# --- periodic host-side collectors HapRay also runs per step ---
+periodic:
+  smaps_interval_s: 2        # /proc/<pid>/smaps_rollup -> memory/<ts>/ (PSS source)
+  gpu_dma: true              # /proc/gpu_memory, dmabuf dumps
+  ui_capture: true           # dumpLayout at step start/end -> ui/
+  thermal_interval_s: 5      # /sys/class/thermal/thermal_zone*/temp
+
+# --- artifacts pulled per measured step (HapRay filenames) ---
+outputs:
+  - htrace/trace.htrace      # ftrace-plugin output (all hitrace categories + sched events)
+  - hiperf/perf.data         # hiperf record output -> perf.db (instructions per frame/function)
+  - pids.json                # app pid(s) the step was attributed to
+  - memory/                  # periodic smaps/gpu/dma snapshots (PSS time series)
+  - ui/                      # component-tree dumps at step boundaries
+  - thermal/
+
+# --- oracle quantities derivable from the artifacts ---
+metrics:
+  hiperf_instructions: |
+    raw-instruction-retired sample count attributed to the app pid during the
+    measured step, aggregated from perf.data (HapRay perf.db instruction counts).
+  app_pss_bytes: |
+    Pss of the app process from the periodic smaps_rollup snapshots; reported as
+    the peak/median over the measured step (HapRay memory/ series).
+  nativehook_retained_bytes: |
+    Bytes still allocated at step end (malloc/free matching), from the nativehook
+    plugin stream inside trace.htrace. Only for memory-enabled (MemLoad) cases.

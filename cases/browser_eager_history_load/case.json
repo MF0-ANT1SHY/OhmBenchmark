@@ -24,29 +24,64 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Install and launch the unfixed HAP; browse ~30 distinct pages to seed per-day history tables; exit the app.",
-    "hdc shell aa force-stop com.example.nanvision; start hitrace capture (categories: ace, app, sched, disk); hdc shell aa start -a EntryAbility -b com.example.nanvision.",
-    "Wait for the main page to finish rendering (logo/search bar visible). Stop hitrace.",
-    "Repeat 3 repetitions for unfixed, then rebuild/install the fixed HAP and repeat 3 repetitions identically without seeding again."
-  ],
+  "testcase": {
+    "name": "PerfLoad_browser_0010",
+    "py_file": "testcase/PerfLoad_browser_0010.py",
+    "descriptor": "testcase/PerfLoad_browser_0010.json",
+    "install_dir": "perf_testing/hapray/testcases/com.example.nanvision",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "relaunch"
+  },
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 15,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
   "test_oracle": {
-    "metric": "trace_cpu_ms",
-    "definition": "CPU time of the app process across the case window, from trace.",
-    "comparison": "unfixed_startup_cpu_time_ms > fixed_startup_cpu_time_ms by >= 20% with 30+ seeded history entries; fixed shows zero history-table SELECT queries during startup, unfixed shows N (one per day table).",
-    "auxiliary": "hilog marker '项目已启动' timestamp delta from process start.",
-    "oracle_revision": {
-      "previous_metric": "startup_cpu_time_ms",
-      "previous_definition": "Sum of CPU time of the app process between process start (first sched wake-up of the ability) and completion of Index.aboutToAppear (last RDB query completion observable in disk/sys traces / hilog marker 项目已启动), measured from the hitrace trace.",
-      "corrected_metric": "trace_cpu_ms",
-      "corrected_definition": "CPU time of the app process across the case window, from trace.",
-      "kind": "same-quantity-renamed",
-      "reason": "The declared metric names CPU time for the startup phase and the collected metric is CPU time for the same case window. The name differed; the quantity did not."
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "measured",
+      "measured_as": "perf_hw-instructions / trace_cpu_ms",
+      "unfixed": [
+        4862521465,
+        4717430103,
+        5046213668
+      ],
+      "fixed": [
+        1511572583,
+        1345359423,
+        1530821367
+      ],
+      "note": "startup window: 4.86G vs 1.51G instructions (3.2x); cpu 2122 vs 747 ms"
+    },
+    "mechanism_oracle": {
+      "metric": "trace_cpu_ms",
+      "definition": "CPU time of the app process across the case window, from trace.",
+      "comparison": "unfixed_startup_cpu_time_ms > fixed_startup_cpu_time_ms by >= 20% with 30+ seeded history entries; fixed shows zero history-table SELECT queries during startup, unfixed shows N (one per day table).",
+      "auxiliary": "hilog marker '项目已启动' timestamp delta from process start."
     }
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 15 ace app sched disk idle -o /data/local/tmp/browser_eager_startup.chtrace",
-    "window_ms": 15000
-  }
+  "reproduction": [
+    "git -C hosts/browser checkout case/browser_eager_history_load/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/browser_eager_history_load/testcase/PerfLoad_browser_0010.* perf_testing/hapray/testcases/com.example.nanvision/",
+    "python -m scripts.main perf --run_testcases PerfLoad_browser_0010 --round 3",
+    "git -C hosts/browser checkout case/browser_eager_history_load/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

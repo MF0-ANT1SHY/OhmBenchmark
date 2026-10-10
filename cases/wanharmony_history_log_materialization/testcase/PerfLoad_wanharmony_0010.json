@@ -1,0 +1,16 @@
+{
+    "description": "wanharmony_history_log_materialization",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_wanharmony_0010.py"
+        ]
+    },
+    "kits": []
+}

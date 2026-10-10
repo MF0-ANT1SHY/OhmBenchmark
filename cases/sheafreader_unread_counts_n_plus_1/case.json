@@ -12,7 +12,10 @@
   "android_mechanism": "Per-row subqueries replacing a single aggregated query; fix computes all values in one query",
   "category": "latency",
   "bug_description": "getFeedsWithCounts issues one SELECT COUNT(*) query per feed (N+1 pattern) every time the sidebar feed list refreshes — which happens after every article open/mark-read/refresh. With many subscriptions the sidebar update performs dozens of sequential RDB round-trips on the UI path.",
-  "perf_scenarios": ["数据库读取", "状态更新"],
+  "perf_scenarios": [
+    "数据库读取",
+    "状态更新"
+  ],
   "unfixed_commit": "cf4f9fb",
   "fixed_commit": "4c9b8dc",
   "fix_summary": "A single grouped query (GROUP BY feed_id over unread articles) returns all feeds' unread counts at once.",
@@ -20,20 +23,63 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Subscribe to 15+ feeds and sync articles.",
-    "Start hitrace capture (categories: app, sched, disk, database).",
-    "Open and close 5 articles (each triggers a sidebar counts refresh).",
-    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
-  "test_oracle": {
-    "metric": "sidebar_count_queries_per_refresh",
-    "definition": "Number of RDB SELECT statements attributable to unread-count computation per sidebar refresh, and total refresh latency.",
-    "comparison": "unfixed: N queries per refresh (one per feed); fixed: 1. With 15+ feeds, sidebar refresh latency after article-open drops accordingly."
+  "testcase": {
+    "name": "PerfLoad_sheafreader_0050",
+    "py_file": "testcase/PerfLoad_sheafreader_0050.py",
+    "descriptor": "testcase/PerfLoad_sheafreader_0050.json",
+    "install_dir": "perf_testing/hapray/testcases/com.sheafreader.hm",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "bench"
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 30 app sched disk database -o /data/local/tmp/sr_counts.chtrace",
-    "window_ms": 30000
-  }
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 30,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "measured",
+      "measured_as": "perf_hw-instructions / trace_cpu_ms",
+      "unfixed": [
+        2218196909,
+        2013965128,
+        2861558012
+      ],
+      "fixed": [
+        87201809,
+        86596278,
+        87640704
+      ],
+      "note": "2.22G vs 87M instructions (25x); cpu 4102 vs 81 ms; 201 vs 2 queries"
+    },
+    "mechanism_oracle": {
+      "metric": "sidebar_count_queries_per_refresh",
+      "definition": "Number of RDB SELECT statements attributable to unread-count computation per sidebar refresh, and total refresh latency.",
+      "comparison": "unfixed: N queries per refresh (one per feed); fixed: 1. With 15+ feeds, sidebar refresh latency after article-open drops accordingly."
+    }
+  },
+  "reproduction": [
+    "git -C hosts/sheafreader checkout case/sheafreader_unread_counts_n_plus_1/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/sheafreader_unread_counts_n_plus_1/testcase/PerfLoad_sheafreader_0050.* perf_testing/hapray/testcases/com.sheafreader.hm/",
+    "python -m scripts.main perf --run_testcases PerfLoad_sheafreader_0050 --round 3",
+    "git -C hosts/sheafreader checkout case/sheafreader_unread_counts_n_plus_1/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

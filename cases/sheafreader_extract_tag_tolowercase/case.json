@@ -23,28 +23,63 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Add several large RSS/Atom feeds (or one feed with 100+ long articles) to the reader.",
-    "Start hitrace capture (categories: app, sched, memory).",
-    "Trigger 刷新全部 (refresh all feeds).",
-    "Stop hitrace after refresh completes. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
+  "testcase": {
+    "name": "PerfLoad_sheafreader_0020",
+    "py_file": "testcase/PerfLoad_sheafreader_0020.py",
+    "descriptor": "testcase/PerfLoad_sheafreader_0020.json",
+    "install_dir": "perf_testing/hapray/testcases/com.sheafreader.hm",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "bench"
+  },
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 40,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
   "test_oracle": {
-    "metric": "trace_cpu_ms",
-    "definition": "CPU time across the refresh case window, from trace.",
-    "comparison": "unfixed performs one full-fragment toLowerCase copy per extracted tag (~6 per item); fixed none. unfixed parse CPU and GC activity > fixed by >= 15% on feeds with long descriptions.",
-    "oracle_revision": {
-      "previous_metric": "feed_parse_cpu_ms",
-      "previous_definition": "CPU time of the feed parsing phase per refresh (from first article parse to last, before DB insert), plus count/size of large short-lived string allocations (GC events in memory trace).",
-      "corrected_metric": "trace_cpu_ms",
-      "corrected_definition": "CPU time across the refresh case window, from trace.",
-      "kind": "same-quantity-renamed",
-      "reason": "The declared metric named CPU time for the feed-parsing phase and the collected metric is CPU time for the same case window. The name differed; the quantity did not. Recorded rounds: 2962.8/3089.2/3178.8 unfixed vs 1415.5/1508.0/1533.3 fixed, no overlap, 51.7% reduction. NOTE: an earlier revision of this entry claimed the rounds collected only elapsed_ms; that came from a stale hand-written table in the contract builder and was wrong - the rounds carry trace_cpu_ms and main_thread_cpu_ms as well."
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "measured",
+      "measured_as": "perf_hw-instructions / trace_cpu_ms",
+      "unfixed": [
+        25878521817,
+        25796251259,
+        25931635945
+      ],
+      "fixed": [
+        11205986526,
+        11169483753,
+        11224455511
+      ],
+      "note": "25.9G vs 11.2G instructions (2.3x); cpu 3089 vs 1508 ms"
+    },
+    "mechanism_oracle": {
+      "metric": "trace_cpu_ms",
+      "definition": "CPU time across the refresh case window, from trace.",
+      "comparison": "unfixed performs one full-fragment toLowerCase copy per extracted tag (~6 per item); fixed none. unfixed parse CPU and GC activity > fixed by >= 15% on feeds with long descriptions."
     }
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 40 app sched memory -o /data/local/tmp/sr_parse.chtrace",
-    "window_ms": 40000
-  }
+  "reproduction": [
+    "git -C hosts/sheafreader checkout case/sheafreader_extract_tag_tolowercase/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/sheafreader_extract_tag_tolowercase/testcase/PerfLoad_sheafreader_0020.* perf_testing/hapray/testcases/com.sheafreader.hm/",
+    "python -m scripts.main perf --run_testcases PerfLoad_sheafreader_0020 --round 3",
+    "git -C hosts/sheafreader checkout case/sheafreader_extract_tag_tolowercase/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

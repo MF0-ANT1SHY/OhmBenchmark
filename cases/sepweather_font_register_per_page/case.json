@@ -12,7 +12,10 @@
   "android_mechanism": "Themed-font handling repeated expensive font work; fix performs the lookup/registration once",
   "category": "latency",
   "bug_description": "MainPage.aboutToAppear unconditionally calls font.registerFont for two custom font families (iconfont.ttf and DINCOROS-Regular.ttf) every time the main page component is created. Each registration re-loads and re-parses the TTF files; navigating back to the main page (router.replaceUrl flows) repeats the work and delays page build, growing memory with duplicate typeface entries.",
-  "perf_scenarios": ["页面启动", "页面切换"],
+  "perf_scenarios": [
+    "页面启动",
+    "页面切换"
+  ],
   "unfixed_commit": "30cc357",
   "fixed_commit": "e720e21",
   "fix_summary": "Font registration is guarded by a once-per-process static flag so the TTFs are loaded only on first creation.",
@@ -20,19 +23,59 @@
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
-  "trigger_steps": [
-    "Launch the app; from the main page navigate to the location list and back (recreating MainPage) 10 times.",
-    "Start hitrace capture (categories: ace, app, sched, disk) during the last 5 round-trips.",
-    "Stop hitrace. Repeat 3 repetitions for unfixed, then install the fixed HAP and repeat 3 repetitions."
-  ],
-  "test_oracle": {
-    "metric": "mainpage_build_ms",
-    "definition": "Time from MainPage creation (first build event in ace trace) to first frame rendered, averaged over recreations.",
-    "comparison": "unfixed shows TTF file reads + font registration work in the page-build path on every creation; fixed only on the first. unfixed_avg_build_ms > fixed_avg_build_ms (fixed approaches the no-font-work floor)."
+  "testcase": {
+    "name": "PerfLoad_sepweather_0010",
+    "py_file": "testcase/PerfLoad_sepweather_0010.py",
+    "descriptor": "testcase/PerfLoad_sepweather_0010.json",
+    "install_dir": "perf_testing/hapray/testcases/cn.seayj.sepweather",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "bench"
   },
-  "trace_config": {
-    "tool": "hitrace",
-    "command": "hdc shell hitrace --time 30 ace app sched disk -o /data/local/tmp/sep_font.chtrace",
-    "window_ms": 30000
-  }
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 30,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "supporting",
+      "measured_as": "font registrations per MainPage creation",
+      "unfixed": [
+        2.0
+      ],
+      "fixed": [
+        0.1
+      ],
+      "note": "2.0 vs 0.1 registrations (docs/analysis/measurement-font-register.md)"
+    },
+    "mechanism_oracle": {
+      "metric": "mainpage_build_ms",
+      "definition": "Time from MainPage creation (first build event in ace trace) to first frame rendered, averaged over recreations.",
+      "comparison": "unfixed shows TTF file reads + font registration work in the page-build path on every creation; fixed only on the first. unfixed_avg_build_ms > fixed_avg_build_ms (fixed approaches the no-font-work floor)."
+    }
+  },
+  "reproduction": [
+    "git -C hosts/sepweather checkout case/sepweather_font_register_per_page/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
+    "cp cases/sepweather_font_register_per_page/testcase/PerfLoad_sepweather_0010.* perf_testing/hapray/testcases/cn.seayj.sepweather/",
+    "python -m scripts.main perf --run_testcases PerfLoad_sepweather_0010 --round 3",
+    "git -C hosts/sepweather checkout case/sepweather_font_register_per_page/fixed; rebuild, reinstall and repeat identically.",
+    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
+  ]
 }

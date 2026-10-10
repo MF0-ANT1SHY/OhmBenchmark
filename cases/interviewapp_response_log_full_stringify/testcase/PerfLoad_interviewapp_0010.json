@@ -1,0 +1,16 @@
+{
+    "description": "interviewapp_response_log_full_stringify",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_interviewapp_0010.py"
+        ]
+    },
+    "kits": []
+}

@@ -1,0 +1,16 @@
+{
+    "description": "ytmusic_search_no_debounce",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_ytmusic_0030.py"
+        ]
+    },
+    "kits": []
+}

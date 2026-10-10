@@ -1,0 +1,16 @@
+{
+    "description": "cloudmusic_play_time_high_frequency_update",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_cloudmusic_0030.py"
+        ]
+    },
+    "kits": []
+}

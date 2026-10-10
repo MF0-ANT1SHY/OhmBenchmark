@@ -1,0 +1,16 @@
+{
+    "description": "weatherassistant_http_session_leak",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "MemLoad_weatherassistant_0010.py"
+        ]
+    },
+    "kits": []
+}

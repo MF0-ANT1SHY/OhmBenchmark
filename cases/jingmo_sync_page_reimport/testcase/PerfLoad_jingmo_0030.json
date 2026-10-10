@@ -1,0 +1,16 @@
+{
+    "description": "jingmo_sync_page_reimport",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_jingmo_0030.py"
+        ]
+    },
+    "kits": []
+}

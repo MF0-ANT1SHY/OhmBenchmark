@@ -1,0 +1,16 @@
+{
+    "description": "interviewapp_search_history_sync_flush",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_interviewapp_0020.py"
+        ]
+    },
+    "kits": []
+}

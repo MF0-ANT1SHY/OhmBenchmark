@@ -1,0 +1,16 @@
+{
+    "description": "browser_eager_history_load",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_browser_0010.py"
+        ]
+    },
+    "kits": []
+}

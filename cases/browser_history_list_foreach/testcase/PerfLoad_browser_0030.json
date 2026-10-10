@@ -1,0 +1,16 @@
+{
+    "description": "browser_history_list_foreach",
+    "environment": [
+        {
+            "type": "device",
+            "label": "phone"
+        }
+    ],
+    "driver": {
+        "type": "DeviceTest",
+        "py_file": [
+            "PerfLoad_browser_0030.py"
+        ]
+    },
+    "kits": []
+}
