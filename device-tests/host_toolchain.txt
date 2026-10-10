@@ -1,8 +1,0 @@
-# host -> toolchain version
-#
-# 5.1.0 is the default. A host is listed here when it declares an older compatibleSdkVersion and
-# fails under 5.1.0's stricter ArkTS rules while building unmodified under the older tools.
-#
-# interviewapp: compatibleSdkVersion 5.0.0(12); 38 strict-rule errors under 5.1.0, builds
-# unmodified under 5.0.5 (verified: BUILD SUCCESSFUL).
-interviewapp 5.0.5

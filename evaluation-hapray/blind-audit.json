@@ -1,8 +1,0 @@
-{
-  "time": "2026-10-01T03:45:54.733829",
-  "formal_sessions": 39,
-  "predictions": 39,
-  "outgoing_requests_inspected": 546,
-  "ground_truth_identifier_matches": [],
-  "scope": "Checks identifiers and known ground-truth paths in actual outbound payloads; isolation enforced separately by per-case read-only MCP. This is not a general proof against all semantic leakage."
-}

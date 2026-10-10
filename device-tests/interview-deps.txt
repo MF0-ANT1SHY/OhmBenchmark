@@ -1,7 +1,0 @@
-ohpm [37mINFO: [39m[37mfetch package done 1 @ohos/hamock from https://repo.harmonyos.com/ohpm/@ohos/hamock/-/hamock-1.0.0-rc.har[39m
-ohpm [37mINFO: [39m[37mfetch package done 2 @ohos/hypium from https://repo.harmonyos.com/ohpm/@ohos/hypium/-/hypium-1.0.15.har[39m
-ohpm [37mINFO: [39m[37mfetch package done 3 dayjs from https://repo.harmonyos.com/ohpm/dayjs/-/dayjs-1.11.7.tgz[39m
-ohpm [33mWARN: [39m[93m[40m[1mSource code dependencies in project-level "oh-package.json5" are as follows, which could lead to circular dependencies reference.[22m[49m[39m[33m
-	 - "@ohmos/calendar@file:./commons/calendar"
-[39m
-[32minstall completed in 4s 339ms[39m

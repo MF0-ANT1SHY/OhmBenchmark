@@ -1,8 +1,0 @@
-10-01 02:04:35.314  4150  4150 I A03D00/org.example.wan.ohos/JSAPP: [JSHookFramework] requireNapi: systemDateTime
-10-01 02:04:35.314  4150  4150 D A03D00/org.example.wan.ohos/JSAPP: [JSHookFramework] try found moduleName systemDateTime in hookModule: test
-10-01 02:04:35.314  4150  4150 D A03D00/org.example.wan.ohos/JSAPP: [JSHookFramework] try found moduleName systemDateTime in hookModule: @ohos.application.WindowStage
-10-01 02:04:35.314  4150  4150 D A03D00/org.example.wan.ohos/JSAPP: [JSHookFramework] insert systemDateTime into importedLib
-10-01 02:04:35.314  4150  4150 I A03D00/org.example.wan.ohos/JSAPP: [JSHookFramework] requireNapi: hiTraceMeter
-10-01 02:04:35.314  4150  4150 D A03D00/org.example.wan.ohos/JSAPP: [JSHookFramework] try found moduleName hiTraceMeter in hookModule: test
-10-01 02:04:35.314  4150  4150 D A03D00/org.example.wan.ohos/JSAPP: [JSHookFramework] try found moduleName hiTraceMeter in hookModule: @ohos.application.WindowStage
-10-01 02:04:35.314  4150  4150 D A03D00/org.example.wan.ohos/JSAPP: [JSHookFramework] insert hiTraceMeter into importedLib
