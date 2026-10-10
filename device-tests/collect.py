@@ -1,7 +1,8 @@
 """Collect three fresh-process runs of the real app's instrumented business path."""
-import gzip, json, pathlib, subprocess, sys, time
+import gzip, json, os, pathlib, shutil, subprocess, sys, time
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-HDC = r'C:\Program Files (x86)\commandline-tools-windows-x64-5.1.1.840\command-line-tools\sdk\default\openharmony\toolchains\hdc.exe'
+HDC = os.environ.get('OHM_HDC') or shutil.which('hdc') or shutil.which('hdc.exe')
+OUTROOT = pathlib.Path(os.environ.get('OHM_OUTROOT', str(ROOT / 'measurements')))
 case, variant, bundle = sys.argv[1:4]
 module = sys.argv[4] if len(sys.argv) > 4 else 'entry'
 ability = sys.argv[5] if len(sys.argv) > 5 else 'EntryAbility'
@@ -24,7 +25,7 @@ def wait_state(state, seconds=180):
     raise TimeoutError(f'{state}: {status()}')
 
 for n in range(1,4):
-    out = ROOT/'measurements'/case/variant/f'run{n}'
+    out = OUTROOT/case/variant/f'run{n}'
     out.mkdir(parents=True,exist_ok=True)
     sh(f'aa force-stop {bundle}')
     sh(f'rm -f {base}/ohm-status.json {base}/ohm-go')

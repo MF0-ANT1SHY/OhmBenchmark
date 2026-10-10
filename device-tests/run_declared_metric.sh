@@ -53,7 +53,7 @@ esac
 # The metric may come from a different place than the harness came from. A case whose count is
 # logged by the app to its diag file sets SUMMARY_SOURCE=diag:<key> while its harness is
 # installed by the instrumenter above.
-SUMMARY_SOURCE="$SUMMARY_SOURCE"
+SUMMARY_SOURCE="${SUMMARY_SOURCE:-}"
 MODULE=$(python3 "$ROOT/device-tests/host_module.py" "$CASE")
 [ -n "$MODULE" ] || { echo "ABORT: could not resolve the host module"; exit 1; }
 echo "host module: $MODULE" 
