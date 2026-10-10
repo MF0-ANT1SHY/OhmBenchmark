@@ -418,7 +418,7 @@
         "网络结果渲染",
         "页面切换"
       ],
-      "unfixed_commit": "7caa2af",
+      "unfixed_commit": "0de1081",
       "fixed_commit": "20e8e16",
       "patch": "cases/weatherassistant_http_session_leak/fix.patch",
       "testcase": "cases/weatherassistant_http_session_leak/testcase/MemLoad_weatherassistant_0010.py",
