@@ -55,16 +55,24 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "expected",
-      "measured_as": "response handler instructions",
-      "unfixed": [],
-      "fixed": [],
-      "note": "blocked on device by fixture reachability; the bench feeds a canned large payload through the same logging path in-app"
+      "status": "measured",
+      "measured_as": "perf_hw-instructions over 100 fixture requests (Pura 70 Ultra)",
+      "unfixed": [
+        315292103,
+        328791181,
+        323866609
+      ],
+      "fixed": [
+        266184074,
+        266943452,
+        274443107
+      ],
+      "note": "324M vs 267M median instructions (1.21x, disjoint ranges) over a 100-request run against device-tests/response_server.py (~55KB flat body, HTTP/1.1 keep-alive). The fixture shape is deliberate: expectDataType:OBJECT stops parsing bodies above ~64KB, and a many-small-rows body inflates the shared parse baseline enough to hide the logging-path delta. The unfixed handler serialized 100 full bodies vs 0 on fixed (ohmResponseStringify counter)."
     },
     "mechanism_oracle": {
       "metric": "response_handler_cpu_ms",
-      "definition": "CPU time spent in the HTTP response handling path per API call (between response receipt and promise resolution visible in JS sampling), averaged over >= 10 calls.",
-      "comparison": "unfixed serializes each full response body (O(payload)); fixed logs O(1) fields. With list payloads of tens of KB, unfixed per-response overhead > fixed."
+      "definition": "CPU time inside the OHMB/response_logging hiTraceMeter region per API call (the success-path logging statement), averaged over 100 calls per run.",
+      "comparison": "unfixed serializes each full response body (O(payload)); fixed logs O(1) fields. Measured: unfixed 1.00ms/call vs fixed 0.22ms/call (4.5x, n=300 each; per-run sums ~104ms vs ~25ms)."
     }
   },
   "reproduction": [

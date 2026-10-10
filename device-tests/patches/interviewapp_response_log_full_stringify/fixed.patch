@@ -49,20 +49,25 @@ index 02d47e5..a2fc3c4 100644
 +export { runInterviewBench } from './src/main/ets/utils/InterviewBench';
 diff --git a/features/home/src/main/ets/utils/InterviewBench.ets b/features/home/src/main/ets/utils/InterviewBench.ets
 new file mode 100644
-index 0000000..413e700
+index 0000000..1111111
 --- /dev/null
 +++ b/features/home/src/main/ets/utils/InterviewBench.ets
-@@ -0,0 +1,37 @@
+@@ -0,0 +1,48 @@
 +import { common } from '@kit.AbilityKit';
 +import { historyStore } from './history';
 +import { ohmHttp } from '@itcast/basic';
 +import { OhmProbe } from './OhmProbe';
++import { ohmResponseStringifyReset, ohmResponseStringifyTotal, ohmDiag } from '@itcast/basic';
++import { OHM_FIXTURE_HOST } from './OhmFixtureHost';
 +
 +interface FixtureRow { id: number; title: string; description: string; }
++
 +export async function runInterviewBench(context: common.UIAbilityContext, name: string): Promise<void> {
 +  await OhmProbe.measure(context, name, async (): Promise<void> => {
 +    if (name === 'interviewapp_response_log_full_stringify') {
-+      ohmHttp.baseURL = 'http://127.0.0.1:18766/';
++      // OHM_FIXTURE_HOST is written by tools/instrument_response_stringify.py, so the fixture
++      // can be pointed at whatever address the device can actually reach
++      ohmHttp.baseURL = 'http://' + OHM_FIXTURE_HOST + ':18766/';
 +      return;
 +    }
 +    historyStore.clear();
@@ -77,12 +82,18 @@ index 0000000..413e700
 +      return total;
 +    }
 +    if (name === 'interviewapp_response_log_full_stringify') {
++      // count how many full response bodies the handler serializes for logging: the fixture
++      // returns a ~52 KB body, so this is the oracle's O(payload) cost driver
++      ohmResponseStringifyReset();
 +      let total=0;
-+      for (let i=0;i<5;i++) {
++      for (let i=0;i<100;i++) {
 +        const response = await ohmHttp.get<FixtureRow[]>('response');
 +        total+=response.data.length;
 +      }
-+      return total;
++      const stringifies = ohmResponseStringifyTotal();
++      ohmDiag(context, 'after-wait', 'calls=100 serializes=' + stringifies +
++        ' rowsPerResponse=' + (total / 100));
++      return stringifies;
 +    }
 +    for (let i=0;i<1000;i++) historyStore.setItem('HarmonyOS interview question '+i);
 +    // Include the application's own deferred flush (2 seconds) in both windows.
@@ -90,6 +101,7 @@ index 0000000..413e700
 +    return historyStore.getAll().length;
 +  });
 +}
+
 diff --git a/features/home/src/main/ets/utils/OhmProbe.ets b/features/home/src/main/ets/utils/OhmProbe.ets
 new file mode 100644
 index 0000000..d37c5ea

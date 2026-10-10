@@ -7,8 +7,10 @@ HTTP response handling path per API call. The unfixed handler logs
 characters; the fixed handler logs two fields.
 
 The oracle's own comparison states the cost driver: "unfixed serializes each full response body
-(O(payload)); fixed logs O(1) fields". The local fixture returns a 345 KB body with 1000 rows, so
-each serialization is expensive. The counter records how many occur.
+(O(payload)); fixed logs O(1) fields". The local fixture (device-tests/response_server.py)
+returns a ~55 KB body in a single row — expectDataType:OBJECT stops parsing above ~64 KB, and
+a flat object graph keeps the shared parse cost low — and the bench issues 100 requests, so the
+unfixed handler serializes ~5.5 MB per run. The counter records how many occur.
 
 Where the pieces live, and why:
 
