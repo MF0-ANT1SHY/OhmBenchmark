@@ -1,5 +1,5 @@
 diff --git a/entry/src/main/ets/components/ArticleListView.ets b/entry/src/main/ets/components/ArticleListView.ets
-index 6fd18dd..223c3e4 100644
+index b54526b..223c3e4 100644
 --- a/entry/src/main/ets/components/ArticleListView.ets
 +++ b/entry/src/main/ets/components/ArticleListView.ets
 @@ -59,9 +59,55 @@ struct ChipView {
@@ -68,12 +68,137 @@ index 6fd18dd..223c3e4 100644
              GridItem() {
                Column() {
                  GridCard({
-@@ -844,7 +890,7 @@ export struct ArticleListView {
+@@ -843,74 +889,75 @@ export struct ArticleListView {
+         .width('100%')
          .scrollBar(BarState.Auto)
        } else {
-         List() {
--          ForEach(this.store.articles, (article: Article) => {
+-        Scroll() {
+-          Column() {
+-            ForEach(this.store.articles, (article: Article) => {
++        List() {
 +          LazyForEach(this.articleDataSource, (article: Article) => {
-             ListItem() {
++            ListItem() {
                Column() {
-                 if (this.store.viewType === ViewType.Compact) {
+-                Column() {
+-                  if (this.store.viewType === ViewType.Compact) {
+-                    CompactCard({
+-                      article: article,
+-                      isSelected: article.id === this.store.selectedArticleId,
+-                      isDarkMode: this.store.isDarkMode,
+-                      fadeRead: this.fadeRead(),
+-                      onItemClick: () => {
+-                        this.onArticleSelect(article.id);
+-                      }
+-                    })
+-                  } else if (this.store.viewType === ViewType.Magazine) {
+-                    MagazineCard({
+-                      article: article,
+-                      isSelected: article.id === this.store.selectedArticleId,
+-                      isDarkMode: this.store.isDarkMode,
+-                      showCover: this.showCover(),
+-                      showSnippet: this.showSnippet(),
+-                      fadeRead: this.fadeRead(),
+-                      onItemClick: () => {
+-                        this.onArticleSelect(article.id);
+-                      },
+-                      onStarClick: () => {
+-                        this.onStarToggle(article.id);
+-                      }
+-                    })
+-                  } else {
+-                    ListCard({
+-                      article: article,
+-                      isSelected: article.id === this.store.selectedArticleId,
+-                      isDarkMode: this.store.isDarkMode,
+-                      showCover: this.showCover(),
+-                      showSnippet: this.showSnippet(),
+-                      fadeRead: this.fadeRead(),
+-                      onItemClick: () => {
+-                        this.onArticleSelect(article.id);
+-                      },
+-                      onStarClick: () => {
+-                        this.onStarToggle(article.id);
+-                      }
+-                    })
+-                  }
++                if (this.store.viewType === ViewType.Compact) {
++                  CompactCard({
++                    article: article,
++                    isSelected: article.id === this.store.selectedArticleId,
++                    isDarkMode: this.store.isDarkMode,
++                    fadeRead: this.fadeRead(),
++                    onItemClick: () => {
++                      this.onArticleSelect(article.id);
++                    }
++                  })
++                } else if (this.store.viewType === ViewType.Magazine) {
++                  MagazineCard({
++                    article: article,
++                    isSelected: article.id === this.store.selectedArticleId,
++                    isDarkMode: this.store.isDarkMode,
++                    showCover: this.showCover(),
++                    showSnippet: this.showSnippet(),
++                    fadeRead: this.fadeRead(),
++                    onItemClick: () => {
++                      this.onArticleSelect(article.id);
++                    },
++                    onStarClick: () => {
++                      this.onStarToggle(article.id);
++                    }
++                  })
++                } else {
++                  ListCard({
++                    article: article,
++                    isSelected: article.id === this.store.selectedArticleId,
++                    isDarkMode: this.store.isDarkMode,
++                    showCover: this.showCover(),
++                    showSnippet: this.showSnippet(),
++                    fadeRead: this.fadeRead(),
++                    onItemClick: () => {
++                      this.onArticleSelect(article.id);
++                    },
++                    onStarClick: () => {
++                      this.onStarToggle(article.id);
++                    }
++                  })
+                 }
+-                .width('100%')
+-                // The mouse trigger lives on the inner node and the touch trigger
+-                // on the outer one: a second bindContextMenu on the same node
+-                // replaces the first rather than adding a trigger.
+-                .bindContextMenu(this.ArticleMenu(article), ResponseType.RightClick)
+-                Divider()
+-                  .strokeWidth(1)
+-                  .color(this.dividerColor())
+-                  .margin({ left: 12, right: 12 })
+               }
+-              .bindContextMenu(this.ArticleMenu(article), ResponseType.LongPress)
+-            }, (article: Article) => this.rowKey(article))
+-            if (this.store.canLoadMore) {
++              .width('100%')
++              // The mouse trigger lives on the inner node and the touch trigger
++              // on the outer one: a second bindContextMenu on the same node
++              // replaces the first rather than adding a trigger.
++              .bindContextMenu(this.ArticleMenu(article), ResponseType.RightClick)
++            }
++            .bindContextMenu(this.ArticleMenu(article), ResponseType.LongPress)
++          }, (article: Article) => this.rowKey(article))
++          if (this.store.canLoadMore) {
++            ListItem() {
+               this.LoadMoreFooter()
+             }
+           }
+-          .width('100%')
+         }
+         .layoutWeight(1)
+         .width('100%')
+         .scrollBar(BarState.Auto)
++        .divider({
++          strokeWidth: 1,
++          color: this.dividerColor(),
++          startMargin: 12,
++          endMargin: 12
++        })
+       }
+     }
+     .width('100%')

@@ -16,8 +16,8 @@
     "网络结果渲染",
     "状态更新"
   ],
-  "unfixed_commit": "1e3d086",
-  "fixed_commit": "b32b720",
+  "unfixed_commit": "157104d",
+  "fixed_commit": "c4b1879",
   "fix_summary": "Search-as-you-type is debounced by 300ms (timer reset on each keystroke, cleared on submit), so one request is issued per paused query instead of one per keystroke.",
   "build": {
     "build_unfixed": "PASS",

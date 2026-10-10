@@ -16,8 +16,8 @@
     "动画",
     "状态更新"
   ],
-  "unfixed_commit": "b32b720",
-  "fixed_commit": "b140b41",
+  "unfixed_commit": "c4b1879",
+  "fixed_commit": "e175817",
   "fix_summary": "The state is assigned only when the whole-second part of the position changes.",
   "build": {
     "build_unfixed": "PASS",

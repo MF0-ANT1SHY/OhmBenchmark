@@ -21,9 +21,13 @@ config, and a test oracle.
 hosts/            rebuilt host repos (gitignored; recreate from hosts_patches/, see REPRODUCE.md)
   <host>/           e.g. hosts/browser — base + adapt + unfixed/fixed commits, tags case/<id>/{unfixed,fixed}
 cases/<id>/
-  case.json       bundle name, commits, bug description, android source case, trigger steps,
-                  test oracle (metric + comparison), hitrace capture config
+  case.json       bundle name, commits, bug description, android source case, HapRay
+                  testcase + collection spec, CPU/memory test oracle, reproduction steps
   fix.patch       the unfixed→fixed diff
+  testcase/       ArkAnalyzer/HapRay-format test case (<name>.py + <name>.json descriptor)
+cases/collection.yaml  shared hiprofiler/ftrace + hiperf + nativehook collection spec
+                       matching HapRay's defaults; referenced by every case
+cases/README.md        the uniform case structure and reproducibility criteria
 hosts_patches/    per-host git format-patch series (upstream base → all dataset commits)
   README.md         upstream repo + base commit per host
   REPRODUCE.md      how to rebuild a host and verify the result
@@ -103,12 +107,18 @@ bash tools/verify_all.sh          # writes build_results.jsonl; exit 0 = all PAS
 
 ## Device workflow (once hardware is available)
 
-1. Checkout the case's `unfixed` tag, build, install (sign first), run `trigger_steps`
-   from `cases/<id>/case.json` while capturing the configured hitrace.
-2. Repeat per the case's repetition count; then checkout `fixed`, rebuild, reinstall,
-   repeat identically.
-3. Evaluate `test_oracle.metric` on both trace sets and check the stated `comparison`
-   (e.g. fixed ≥ 20% lower startup CPU, zero icon CDN bytes, 1 flush instead of 10).
+1. Checkout the case's `unfixed` tag, apply the case's measurement harness patch
+   (device-tests/patches/<id>/unfixed.patch where present), build, install (sign first).
+2. Copy `cases/<id>/testcase/<name>.py` + `.json` into a HapRay checkout under
+   `perf_testing/hapray/testcases/<bundle>/` and run it with
+   `python -m scripts.main perf --run_testcases <name> --round 3`
+   (`--memory` for the three MemLoad cases). HapRay collects hiprofiler ftrace,
+   hiperf (raw-instruction-retired), UI/thermal and, where enabled, nativehook —
+   per `cases/collection.yaml`.
+3. Checkout `fixed`, rebuild, reinstall, repeat identically.
+4. Evaluate `test_oracle.metric` on the two report sets and check the stated
+   `comparison` (unfixed ≥ 1.2 × fixed over ≥ 3 rounds). `test_oracle.evidence`
+   records the measured or supporting values from the original device runs.
 
 ## Upstream bases
 

@@ -17,8 +17,8 @@
     "状态更新",
     "组件创建"
   ],
-  "unfixed_commit": "5bf6142",
-  "fixed_commit": "1e3d086",
+  "unfixed_commit": "627611f",
+  "fixed_commit": "157104d",
   "fix_summary": "The item list is mapped to parsed objects once per render and rows read the parsed fields; deletion re-serializes only the affected entry.",
   "build": {
     "build_unfixed": "PASS",

@@ -167,8 +167,8 @@
           "tree": "012f18c7b80113b0119917ca97a5d6a6536650f7"
         },
         "case/sheafreader_article_list_foreach/unfixed": {
-          "state": "perf: locate closing tags with a case-insensitive regex instead of lowercasing a copy of the whole fragment per extracted tag",
-          "tree": "914c45be73bbdd599cf09029098f0ea6bff961e4"
+          "state": "perf: render the article list view eagerly through Scroll and Column so every article card builds upfront",
+          "tree": "dfe283c40ad1c8401dd37201e85dccf945c2513c"
         },
         "case/sheafreader_extract_tag_tolowercase/fixed": {
           "state": "perf: locate closing tags with a case-insensitive regex instead of lowercasing a copy of the whole fragment per extracted tag",
@@ -229,8 +229,8 @@
           "tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0"
         },
         "case/weatherassistant_http_session_leak/unfixed": {
-          "state": "build: refresh ohpm lockfile for headless CI build",
-          "tree": "bed692ed0c78126d91a798a62409886b83da1ee4"
+          "state": "perf: retain every created HTTP session for the lifetime of the app",
+          "tree": "e0e36e961a7355d35c2ab2ae109c586d0bca55cd"
         },
         "case/weatherassistant_remote_weather_icons/fixed": {
           "state": "perf: bundle weather icons as local raw resources instead of fetching static glyphs from a remote CDN on every render",

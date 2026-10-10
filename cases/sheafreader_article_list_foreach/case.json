@@ -11,13 +11,13 @@
   "android_source_case": "alwayson_lazy_layout_previews",
   "android_mechanism": "All list-row content (drawables/previews) eagerly prepared instead of only bound/visible rows",
   "category": "latency",
-  "bug_description": "The main article list and card grid render store.articles with plain ForEach. Opening a feed or scrolling loads pages of articles (limit grows with 'load more'), and every accumulated article row/card — including off-screen ones — is built eagerly, with per-card context menus bound, slowing list display and paging in large feeds.",
+  "bug_description": "The article list view renders store.articles through a Scroll container holding a Column with a plain ForEach, which is never virtualised; the card grid also uses a non-caching ForEach. Opening a feed or scrolling loads pages of articles (limit grows with 'load more'), and every accumulated article row/card — including off-screen ones — is built eagerly, with per-card context menus bound, slowing list display and paging in large feeds.",
   "perf_scenarios": [
     "列表滑动",
     "组件创建",
     "页面切换"
   ],
-  "unfixed_commit": "f62858e",
+  "unfixed_commit": "030f867",
   "fixed_commit": "c3e7b11",
   "fix_summary": "Both the list and grid render via LazyForEach over an IDataSource kept in sync with the store, so rows are created on demand as they enter the viewport.",
   "build": {
