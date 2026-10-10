@@ -11,12 +11,12 @@
   "android_source_case": "portauthority_b311d3140b48",
   "android_mechanism": "Network resource (socket/stream) not released after use; fix closes/releases it",
   "category": "resource_retention",
-  "bug_description": "getWeatherUtil.getWeather creates a new http.createHttp() session for every weather request, retains it in the viewmodel's sessions array, and never calls request.destroy(). Each city refresh leaks an HTTP session (native session object, socket and response buffers) for the lifetime of the app, so repeated refreshes and multi-city loads accumulate retained memory.",
+  "bug_description": "getWeatherUtil.getWeather creates a new http.createHttp() session for every weather request, retains the session and the full response body in the viewmodel, and never calls request.destroy(). Each city refresh leaks an HTTP session plus its complete response for the lifetime of the app, so repeated refreshes and multi-city loads accumulate retained memory.",
   "perf_scenarios": [
     "网络结果渲染",
     "页面切换"
   ],
-  "unfixed_commit": "7caa2af",
+  "unfixed_commit": "0de1081",
   "fixed_commit": "20e8e16",
   "fix_summary": "Sessions are no longer retained after creation, and each request session is destroyed in a finally handler after the response/error callback completes.",
   "build": {
@@ -56,11 +56,19 @@
     "definition": "bytes still allocated at step end (malloc/free matching) from the nativehook plugin stream in trace.htrace.",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "expected",
-      "measured_as": "retained session/response objects",
-      "unfixed": [],
-      "fixed": [],
-      "note": "unfixed retains every created http session plus its full response in memory; fd counts were flat because sessions are pooled, so the oracle is retained bytes, not fds"
+      "status": "measured",
+      "measured_as": "VmRSS delta over 120 weather requests (Pura 70 Ultra)",
+      "unfixed": [
+        56884,
+        56972,
+        57440
+      ],
+      "fixed": [
+        38644,
+        37880,
+        38512
+      ],
+      "note": "+57.0MB vs +38.5MB VmRSS growth over the same 120-request workload (~18MB = 120 retained response bodies; disjoint ranges, 1.48x). fd counts are flat in both variants because sessions pool sockets, so the oracle is retained bytes (measurements-staging-v2)."
     },
     "mechanism_oracle": {
       "metric": "retained_fds_and_connections",

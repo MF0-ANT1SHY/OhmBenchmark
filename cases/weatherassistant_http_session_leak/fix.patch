@@ -1,13 +1,14 @@
 diff --git a/alatus/src/main/ets/viewmodel/getWeatherUtil.ets b/alatus/src/main/ets/viewmodel/getWeatherUtil.ets
-index 8631160..7ab0698 100644
+index c84ca96..7ab0698 100644
 --- a/alatus/src/main/ets/viewmodel/getWeatherUtil.ets
 +++ b/alatus/src/main/ets/viewmodel/getWeatherUtil.ets
-@@ -3,14 +3,10 @@ import http from '@ohos.net.http';
+@@ -3,24 +3,21 @@ import http from '@ohos.net.http';
  import key from '../const/key';
  
  class getWeatherUtil{
--  // 保留已创建的请求会话，方便后续复用与排查
+-  // 保留已创建的请求会话和完整响应，方便后续复用与排查
 -  private sessions: Array<http.HttpRequest> = [];
+-  private responses: Array<string> = [];
 -
    // 发送一个URL请求,返回对应的数据
    getWeather(cityCode:number){
@@ -17,7 +18,9 @@ index 8631160..7ab0698 100644
        let url = `https://restapi.amap.com/v3/weather/weatherInfo?city=${cityCode}&extensions=all&key=${key}`;
        let result = request.request(url);
        result.then((res)=>{
-@@ -19,6 +15,9 @@ class getWeatherUtil{
+         if(res.responseCode===200){
+-          this.responses.push(res.result.toString());
+           resolve(JSON.parse(res.result.toString()));
          }
        }).catch((err:object)=>{
          console.log(err.toString());

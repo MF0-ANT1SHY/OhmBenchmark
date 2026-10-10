@@ -229,8 +229,8 @@
           "tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0"
         },
         "case/weatherassistant_http_session_leak/unfixed": {
-          "state": "perf: retain every created HTTP session for the lifetime of the app",
-          "tree": "e0e36e961a7355d35c2ab2ae109c586d0bca55cd"
+          "state": "perf: also retain every full weather response body for the lifetime of the app",
+          "tree": "53a80521604b9d78ecce523623c36ca8dd3d9458"
         },
         "case/weatherassistant_remote_weather_icons/fixed": {
           "state": "perf: bundle weather icons as local raw resources instead of fetching static glyphs from a remote CDN on every render",

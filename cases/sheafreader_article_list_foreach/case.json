@@ -56,11 +56,19 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "expected",
-      "measured_as": "article card builds",
-      "unfixed": [],
-      "fixed": [],
-      "note": "unfixed container redesigned to Scroll+Column+ForEach so the eager-build mechanism actually manifests on this OS build (List+ForEach is already virtualised); control case browser_history_list_foreach separates 3.5x"
+      "status": "measured",
+      "measured_as": "perf_hw-instructions / sw-task-clock / VmRSS delta",
+      "unfixed": [
+        4871567917,
+        4842343144,
+        4883882521
+      ],
+      "fixed": [
+        381802167,
+        338417365,
+        344065090
+      ],
+      "note": "4.87G vs 344M instructions (14.2x); task clock 1569 vs 281 ms (5.6x); VmRSS +340MB vs +6MB (53x). Measured on Pura 70 Ultra, 600-article feed, 3 runs each (measurements-staging/sheafreader_article_list_foreach)."
     },
     "mechanism_oracle": {
       "metric": "article_row_build_count",
