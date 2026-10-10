@@ -56,19 +56,19 @@
     "definition": "Pss of the app process after the workload, from the periodic smaps_rollup snapshots in memory/.",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "supporting",
-      "measured_as": "persistent write bytes per load-more",
+      "status": "measured",
+      "measured_as": "perf_hw-instructions over the load-more persistence workload (Pura 70 Ultra)",
       "unfixed": [
-        284970,
-        284970,
-        284970
+        38880689,
+        55970360,
+        23187060
       ],
       "fixed": [
-        5111,
-        5111,
-        5111
+        4284000,
+        4561975,
+        4611977
       ],
-      "note": "284970 vs 5111 bytes persisted per load-more; the in-memory list the persistence mirrors grows the same way (docs/analysis/measurement-persisted-growth.md)"
+      "note": "38.9M vs 4.56M median hw-instructions (8.5x, disjoint ranges, high unfixed variance); mechanism counter 284970 vs 5111 persisted bytes per load-more (measurements-staging)."
     },
     "mechanism_oracle": {
       "metric": "persistent_write_bytes_per_loadmore",

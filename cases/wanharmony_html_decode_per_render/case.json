@@ -67,7 +67,7 @@
         1,
         1
       ],
-      "note": "3 vs 1 decode calls per rendered item (docs/analysis/measurement-html-decode.md)"
+      "note": "3 vs 1 htmlDecode calls per rendered item (mechanism counter, authoritative); whole-step hw-instruction medians sit inside the noise band (3.9M vs 4.4M), so the declared metric needs a narrower region to separate (measurements-staging)."
     },
     "mechanism_oracle": {
       "metric": "scroll_cpu_ms_per_item",

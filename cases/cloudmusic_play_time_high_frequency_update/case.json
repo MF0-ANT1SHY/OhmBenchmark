@@ -55,19 +55,19 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "supporting",
-      "measured_as": "state writes/minute",
+      "status": "measured",
+      "measured_as": "perf_hw-instructions over the playback progress-update window (Pura 70 Ultra)",
       "unfixed": [
-        600,
-        600,
-        600
+        7871713,
+        8337462,
+        7906151
       ],
       "fixed": [
-        60,
-        60,
-        60
+        3883766,
+        3363295,
+        4369473
       ],
-      "note": "600 vs 60 PLAY_TIME writes/minute (docs/analysis/measurement-play-time.md)"
+      "note": "7.91M vs 3.88M median hw-instructions (2.04x, disjoint ranges); mechanism counter 600 vs 60 PLAY_TIME state writes per minute (measurements-staging)."
     },
     "mechanism_oracle": {
       "metric": "player_page_rerenders_per_minute",

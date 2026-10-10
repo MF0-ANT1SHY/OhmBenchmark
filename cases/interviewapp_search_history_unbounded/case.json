@@ -56,19 +56,19 @@
     "definition": "Pss of the app process after the workload, from the periodic smaps_rollup snapshots in memory/.",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "supporting",
-      "measured_as": "history entries retained",
+      "status": "measured",
+      "measured_as": "VmRSS delta (kB) over the seeded-history read path",
       "unfixed": [
-        500000,
-        500000,
-        500000
+        22496,
+        22040,
+        20964
       ],
       "fixed": [
-        2000,
-        2000,
-        2000
+        -608,
+        -1008,
+        -1116
       ],
-      "note": "500000 vs 2000 retained entries; 2.30G vs 2.47M instructions on the read path"
+      "note": "+22.0MB vs -1.0MB VmRSS growth (unfixed retains all 500000 seeded entries; fixed caps at 2000). hw-instructions in the same runs: 2.33G vs 32M (73x); bench result 500000 vs 2000 entries. Measured on Pura 70 Ultra (measurements-staging/interviewapp_search_history_unbounded)."
     },
     "mechanism_oracle": {
       "metric": "history_entries_and_render_cost",

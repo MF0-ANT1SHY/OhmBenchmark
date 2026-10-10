@@ -68,7 +68,7 @@
         200,
         200
       ],
-      "note": "600 vs 200 parses per history-page render (docs/analysis/ytmusic-harness.md)"
+      "note": "600 vs 200 JSON.parse calls per history-page render (mechanism counter, authoritative); whole-step hw-instruction medians are flat (714M vs 695M) because fixed still parses a large baseline, so the declared metric needs a narrower region to separate (measurements-staging)."
     },
     "mechanism_oracle": {
       "metric": "history_page_render_cpu_ms",

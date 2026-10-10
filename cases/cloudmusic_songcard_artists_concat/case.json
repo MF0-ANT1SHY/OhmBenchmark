@@ -55,19 +55,19 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "supporting",
-      "measured_as": "concat allocations per row",
+      "status": "measured",
+      "measured_as": "perf_hw-instructions over the song-list render workload (Pura 70 Ultra)",
       "unfixed": [
-        8,
-        8,
-        8
+        4745121,
+        3820215,
+        4115647
       ],
       "fixed": [
-        0,
-        0,
-        0
+        4137020,
+        2579600,
+        2851768
       ],
-      "note": "8 vs 0 string-concat allocations per row (docs/analysis/measurement-artists-concat.md)"
+      "note": "4.12M vs 2.85M median hw-instructions (1.44x; one run overlaps the fixed range); mechanism counter 8 vs 0 string-concat allocations per row (measurements-staging)."
     },
     "mechanism_oracle": {
       "metric": "row_appear_cpu_overhead",

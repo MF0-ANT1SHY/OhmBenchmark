@@ -63,7 +63,7 @@
       "fixed": [
         0.1
       ],
-      "note": "2.0 vs 0.1 registrations (docs/analysis/measurement-font-register.md)"
+      "note": "2.0 vs 0.1 font registrations per MainPage creation (mechanism counter, authoritative); whole-step hw-instruction medians are flat (59M vs 60M) because the window is dominated by page build, so the declared metric needs a narrower region to separate (measurements-staging)."
     },
     "mechanism_oracle": {
       "metric": "mainpage_build_ms",

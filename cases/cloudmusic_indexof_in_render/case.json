@@ -55,19 +55,19 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "supporting",
-      "measured_as": "indexOf scan comparisons",
+      "status": "measured",
+      "measured_as": "perf_hw-instructions over the search-result render workload (Pura 70 Ultra)",
       "unfixed": [
-        250500,
-        250500,
-        250500
+        6457682,
+        6640043,
+        4220519
       ],
       "fixed": [
-        0,
-        0,
-        0
+        4014264,
+        2649980,
+        2746105
       ],
-      "note": "250500 vs 0 comparisons per render pass (docs/analysis/measurement-indexof-scan.md)"
+      "note": "6.46M vs 2.75M median hw-instructions (2.35x, disjoint ranges); mechanism counter 250500 vs 0 indexOf comparisons per render pass (measurements-staging)."
     },
     "mechanism_oracle": {
       "metric": "row_build_cpu_overhead",

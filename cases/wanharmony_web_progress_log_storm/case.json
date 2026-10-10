@@ -55,19 +55,19 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "supporting",
-      "measured_as": "log calls per page load",
+      "status": "measured",
+      "measured_as": "perf_hw-instructions over the web progress-callback window (Pura 70 Ultra)",
       "unfixed": [
-        101,
-        101,
-        101
+        4916252,
+        4181742,
+        4416890
       ],
       "fixed": [
-        5,
-        5,
-        5
+        3937338,
+        3515289,
+        3460033
       ],
-      "note": "101 vs 5 hilog calls per page load (docs/analysis/measurement-progress-log.md)"
+      "note": "4.42M vs 3.52M median hw-instructions (1.26x, disjoint ranges); mechanism counter 101 vs 5 hilog calls per page load (measurements-staging)."
     },
     "mechanism_oracle": {
       "metric": "log_calls_per_pageload",

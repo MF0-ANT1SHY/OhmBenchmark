@@ -68,7 +68,7 @@
         12,
         12
       ],
-      "note": "150 vs 12 row builds (docs/analysis/measurement-search-foreach.md)"
+      "note": "150 vs 12 row builds per render (mechanism counter, authoritative); whole-step hw-instruction medians are flat (3.4M vs 3.5M) because the window is dominated by page setup, so the declared metric needs a narrower region to separate (measurements-staging)."
     },
     "mechanism_oracle": {
       "metric": "search_list_render_cpu_and_jank",

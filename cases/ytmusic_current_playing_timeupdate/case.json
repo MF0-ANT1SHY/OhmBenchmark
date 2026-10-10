@@ -67,7 +67,7 @@
         60,
         60
       ],
-      "note": "600 vs 60 state updates/minute (docs/analysis/measurement-player-updates.md)"
+      "note": "600 vs 60 state updates per minute (mechanism counter, authoritative); whole-step hw-instruction medians sit inside the noise band (5.0M vs 5.5M), so the declared metric needs a narrower region to separate (measurements-staging)."
     },
     "mechanism_oracle": {
       "metric": "player_page_updates_per_minute",
