@@ -8,6 +8,8 @@ from pathlib import Path
 from playback_progress import check_progress
 from music_service_fixture import same_instance
 from page_lifecycle import verify_reconstructions
+from reader_data_fixture import CASES as READER_CASES, verify_preparation
+from rss_refresh_progress import verify_observation
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -25,6 +27,11 @@ def accept(cid, write=True, require_pass=True):
         workload=json.loads((folder/'workload.json').read_text())
         if workload['status']!='PASS' or workload['plan_sha256']!=plan_hash or workload['signed_sha256']!=sign['audit']['sha256']:
             raise RuntimeError('matching real workload execution not proven')
+        if cid in READER_CASES:
+            device=json.loads((folder/'workload-device.json').read_text())
+            if verify_observation(device['reader_refresh'])!=workload.get('reader_refresh'):
+                raise RuntimeError('normal complete reader refresh is not proven')
+            verify_preparation(workload['fixture'],workload['fixture_after'])
         if cid=='sepweather_font_register_per_page':
             device=json.loads((folder/'workload-device.json').read_text())
             if verify_reconstructions(device['page_observations'],case['host_app']['bundle_name'])!=workload.get('page_reconstructions'):
@@ -50,6 +57,16 @@ def accept(cid, write=True, require_pass=True):
                 raise RuntimeError('capture provenance mismatch')
             if receipt.get('fixture_sha256') != workload.get('fixture',{}).get('sha256'):
                 raise RuntimeError('capture fixture differs from the validated workload')
+            if cid in READER_CASES:
+                verify_observation(receipt['reader_refresh'])
+                verify_preparation(receipt['reader_fixture_before'],receipt['reader_fixture_after'])
+                if receipt['reader_fixture_before']['sha256']!=receipt['fixture_sha256']:
+                    raise RuntimeError('reader capture input differs from its verified native database')
+                observation=receipt['reader_refresh']
+                if (observation['before']['ended_monotonic']>receipt['action_start_monotonic']
+                        or observation['after']['started_monotonic']<receipt['action_start_monotonic']
+                        or observation['after']['ended_monotonic']>receipt['action_end_monotonic']):
+                    raise RuntimeError('reader completion was not observed within the measured window')
             if cid=='sepweather_font_register_per_page':
                 if verify_reconstructions(receipt['page_observations'],case['host_app']['bundle_name'])!=receipt.get('page_reconstructions'):
                     raise RuntimeError('page reconstruction within capture is not proven')

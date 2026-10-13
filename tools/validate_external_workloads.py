@@ -24,11 +24,13 @@ from install_search_history_fixture import install as install_search_history
 from music_service_fixture import prepare as prepare_music_service, same_instance
 from bundled_font_fixture import for_case as packaged_fonts
 from page_lifecycle import verify_reconstructions
+from reader_data_fixture import prepare as prepare_reader, finish as finish_reader
+from rss_refresh_progress import verify_observation
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, search_history_fixture=None, preferences_path=None, music_service=False, bundled_fonts=False):
+def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, search_history_fixture=None, preferences_path=None, music_service=False, bundled_fonts=False, reader_fixture=None):
     cid = case['id']
     folder = ROOT / 'artifacts/clean' / cid / variant
     signed = json.loads((folder / 'sign.json').read_text())
@@ -37,7 +39,7 @@ def validate(remote, case, variant, browser_fixture=None, local_song_fixture=Non
     result = {'case':cid, 'variant':variant, 'signed_sha256':signed['audit']['sha256'],
               'plan_sha256':plan_hash, 'status':'FAIL', 'performance_verified':False}
     try:
-        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture,search_history_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
+        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture,search_history_fixture,reader_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
             raise ValueError('only one fixture may be supplied')
         if bundled_audio:
             result['fixture']=packaged_audio(ROOT,case,variant,signed)
@@ -66,6 +68,8 @@ def validate(remote, case, variant, browser_fixture=None, local_song_fixture=Non
             result['fixture']['sha256']=hashlib.sha256(poem_fixture.read_bytes()).hexdigest()
         if search_history_fixture:
             result['fixture']=install_search_history(remote,case,variant,search_history_fixture,preferences_path or '')
+        if reader_fixture:
+            result['fixture']=prepare_reader(remote,case,reader_fixture)
         destination = f'/home/research/ohm-clean/{cid}/{variant}/workload-plan.json'
         remote.upload(plan_path, destination)
         code = """import hashlib,json,subprocess,sys,time,traceback
@@ -80,6 +84,9 @@ def shell(command):
         code += f"plan_path=Path({destination!r});plan=json.loads(plan_path.read_text())\n"
         code += f"assert hashlib.sha256(plan_path.read_bytes()).hexdigest()=={plan_hash!r}\n"
         code += "ui=UI(shell,plan['bundle'],plan['ability'])\nphases={}\n"
+        if reader_fixture:
+            remote.upload(ROOT/'tools/rss_refresh_progress.py','/home/research/ohm-clean/tools/rss_refresh_progress.py')
+            code += "from rss_refresh_progress import read_state,complete_refresh\n"
         if cid=='sepweather_font_register_per_page':
             for module in ('page_lifecycle.py','system_pss.py'):
                 remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
@@ -100,7 +107,11 @@ def shell(command):
         code += " for phase in ['setup','measured','verify']:\n"
         code += "  started=time.monotonic()\n  ui.run(plan[phase])\n"
         code += "  phases[phase]={'elapsed_s':time.monotonic()-started,'layout':ui.layout()}\n"
+        if reader_fixture:
+            code += "  if phase=='setup':reader_before=read_state(shell)\n"
         code += " result={'phases':phases,'status':'PASS'}\n"
+        if reader_fixture:
+            code += " result['reader_refresh']=complete_refresh(ui,reader_before)\n"
         code += "except Exception as exc:\n"
         code += " result={'phases':phases,'status':'FAIL','error':str(exc)}\n"
         code += " try:result['failure_layout']=ui.layout()\n except Exception:pass\n"
@@ -115,6 +126,10 @@ def shell(command):
         if device['status'] != 'PASS':
             raise RuntimeError(device['error'])
         result['phase_elapsed_s'] = {p:r['elapsed_s'] for p,r in device['phases'].items()}
+        if reader_fixture:
+            result['reader_refresh']=verify_observation(device['reader_refresh'])
+            result['fixture_after']=finish_reader(remote,case,result['fixture'])
+            result['functional_check']='all ordinary RSS articles verified and all ten feeds refreshed through the existing UI shortcut'
         if cid=='sepweather_font_register_per_page':
             result['page_reconstructions']=verify_reconstructions(device['page_observations'],case['host_app']['bundle_name'])
         if music_service:
@@ -202,6 +217,7 @@ def main():
     fixtures.add_argument('--search-history-fixture',type=Path)
     fixtures.add_argument('--music-service',action='store_true')
     fixtures.add_argument('--bundled-fonts',action='store_true')
+    fixtures.add_argument('--reader-fixture',type=Path)
     parser.add_argument('--preferences-path',help='actual initialized historyStore file; discover through normal app use')
     args=parser.parse_args()
     remote=Remote(args.remote)
@@ -210,7 +226,7 @@ def main():
     for cid in args.cases:
         case=json.loads((ROOT/'cases'/cid/'case.json').read_text())
         for variant in ('unfixed','fixed'):
-            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.search_history_fixture,args.preferences_path,args.music_service,args.bundled_fonts)
+            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.search_history_fixture,args.preferences_path,args.music_service,args.bundled_fonts,args.reader_fixture)
     return int(failed)
 
 

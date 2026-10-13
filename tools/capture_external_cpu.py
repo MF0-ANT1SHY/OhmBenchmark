@@ -16,13 +16,14 @@ from seed_local_songs import deploy as deploy_songs
 from bundled_audio_fixture import for_case as packaged_audio
 from music_service_fixture import prepare as prepare_music_service, same_instance
 from bundled_font_fixture import for_case as packaged_fonts
+from reader_data_fixture import prepare as prepare_reader, finish as finish_reader
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def capture(remote, case, variant, round_number, fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, music_service=False, bundled_fonts=False):
+def capture(remote, case, variant, round_number, fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, music_service=False, bundled_fonts=False, reader_fixture=None):
     cid = case['id']
-    if sum(p is not None for p in (fixture,local_song_fixture,poem_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
+    if sum(p is not None for p in (fixture,local_song_fixture,poem_fixture,reader_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
         raise ValueError('only one fixture may be supplied')
     if local_song_fixture and case['host_app']['bundle_name']!='cc.chenlvin.cloudmusic':
         raise ValueError('local song fixture provided to a different app')
@@ -64,6 +65,9 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
     if poem_fixture:
         install_fixture(remote,case['host_app']['bundle_name'],case['testcase']['module'],'jingmo.db',poem_fixture)
         fixture_hash=hashlib.sha256(poem_fixture.read_bytes()).hexdigest()
+    if reader_fixture:
+        reader_before=prepare_reader(remote,case,reader_fixture)
+        fixture_hash=reader_before['sha256']
     remote.upload(plan_file,remote_plan)
     code = """import hashlib,json,subprocess,sys,time,traceback
 from pathlib import Path
@@ -87,6 +91,9 @@ def shell(command):
         code += " if selector.get('id')=='AddAddressBtn':page_observations.append(observe_page(shell,plan['bundle'],node))\n"
         code += " return node\nui.find=observe_find\n"
     code += "ui.run([{'op':'stop'},{'op':'launch'}]);ui.run(plan['setup'])\n"
+    if reader_fixture:
+        remote.upload(ROOT/'tools/rss_refresh_progress.py','/home/research/ohm-clean/tools/rss_refresh_progress.py')
+        code += "from rss_refresh_progress import read_state,complete_refresh\nreader_before=read_state(shell)\n"
     if cid=='ytmusic_current_playing_timeupdate':
         remote.upload(ROOT/'tools/playback_progress.py','/home/research/ohm-clean/tools/playback_progress.py')
         code += "from playback_progress import check_progress\n"
@@ -105,6 +112,8 @@ def shell(command):
     code += " if 'fail' in record['start_output'].lower() or 'error' in record['start_output'].lower():raise RuntimeError(record['start_output'])\n"
     code += " record['action_start_monotonic']=time.monotonic()\n"
     code += " ui.run(plan['measured']);ui.run(plan['verify'])\n"
+    if reader_fixture:
+        code += " record['reader_refresh']=complete_refresh(ui,reader_before)\n"
     if cid=='sepweather_font_register_per_page':
         code += " record['page_observations']=page_observations\n"
         code += " record['page_reconstructions']=verify_reconstructions(page_observations,plan['bundle'])\n"
@@ -147,6 +156,9 @@ def shell(command):
         receipt['fixture_sha256']=fixture_hash
     (output/'capture.json').write_text(json.dumps(receipt,indent=2)+'\n')
     if receipt['status']=='CAPTURED':
+        if reader_fixture:
+            receipt['reader_fixture_before']=reader_before
+            receipt['reader_fixture_after']=finish_reader(remote,case,reader_before)
         if music_service:
             after=prepare_music_service(remote,case)
             same_instance(service_fixture,after)
@@ -182,12 +194,13 @@ def main():
     fixtures.add_argument('--bundled-audio',action='store_true')
     fixtures.add_argument('--music-service',action='store_true')
     fixtures.add_argument('--bundled-fonts',action='store_true')
+    fixtures.add_argument('--reader-fixture',type=Path)
     parser.add_argument('--remote',default='cityuPC')
     args=parser.parse_args()
     remote=Remote(args.remote)
     remote.upload(ROOT/'tools/ui_driver.py','/home/research/ohm-clean/tools/ui_driver.py')
     case=json.loads((ROOT/'cases'/args.case/'case.json').read_text())
-    capture(remote,case,args.variant,args.round,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.music_service,args.bundled_fonts)
+    capture(remote,case,args.variant,args.round,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.music_service,args.bundled_fonts,args.reader_fixture)
 
 
 if __name__=='__main__':

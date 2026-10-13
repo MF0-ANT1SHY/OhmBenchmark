@@ -57,3 +57,18 @@ def finish(remote, case, before):
         raise RuntimeError('reader/RSS input identity changed')
     return {'sha256': before['sha256'], 'service': after_source,
             'device_snapshot': actual, 'functional_read_verified': True}
+
+
+def verify_preparation(before, after):
+    same_instance(before['service'], after['service'])
+    for receipt in (before, after):
+        snapshot = receipt['device_snapshot']
+        actual = inspect(snapshot['local_archive'])
+        if actual != snapshot['ordinary_data'] or actual['database_sha256'] != snapshot['sha256']:
+            raise ValueError('reader snapshot receipt differs from the actual ordinary database')
+        if (actual['semantic_sha256'] != before['database']['semantic_sha256']
+                or identity(actual, receipt['service']) != before['sha256']
+                or receipt.get('functional_read_verified') is not True):
+            raise ValueError('reader input identity or native data read is not proven')
+    if after['sha256'] != before['sha256']:
+        raise ValueError('reader input changed during the workload')
