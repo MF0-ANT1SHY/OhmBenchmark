@@ -1,0 +1,164 @@
+From c181b312ec1c31ad1ea13641b2953fa2efd4778f Mon Sep 17 00:00:00 2001
+From: mike <dust@to.com>
+Date: Wed, 23 Sep 2026 12:52:53 +0800
+Subject: [PATCH 3/3] perf: bundle weather icons as local raw resources instead
+ of fetching static glyphs from a remote CDN on every render
+
+---
+ alatus/src/main/ets/view/cityView.ets            |   9 +++++----
+ .../main/resources/rawfile/weather/cloudy.img    | Bin 0 -> 1177 bytes
+ .../main/resources/rawfile/weather/overcast.img  | Bin 0 -> 1176 bytes
+ .../src/main/resources/rawfile/weather/rain.img  | Bin 0 -> 1421 bytes
+ .../src/main/resources/rawfile/weather/sunny.img | Bin 0 -> 1858 bytes
+ 5 files changed, 5 insertions(+), 4 deletions(-)
+ create mode 100644 alatus/src/main/resources/rawfile/weather/cloudy.img
+ create mode 100644 alatus/src/main/resources/rawfile/weather/overcast.img
+ create mode 100644 alatus/src/main/resources/rawfile/weather/rain.img
+ create mode 100644 alatus/src/main/resources/rawfile/weather/sunny.img
+
+diff --git a/alatus/src/main/ets/view/cityView.ets b/alatus/src/main/ets/view/cityView.ets
+index bfb53d2..50332c9 100644
+--- a/alatus/src/main/ets/view/cityView.ets
++++ b/alatus/src/main/ets/view/cityView.ets
+@@ -4,21 +4,22 @@ import { cast } from '../viewmodel/cast';
+ export struct cityView{
+   // 获取数据,城市数据
+   casts:Array<cast> = [];
++  // 天气图标使用本地静态资源，避免每次渲染都从远程 CDN 加载
+   @Builder weatherImage(weather:string,width:number,height:number){
+     if(weather === "晴"){
+-      Image("https://i-blog.csdnimg.cn/direct/bf01538113ef4f218fd4495c430e0568.jpeg")
++      Image($rawfile('weather/sunny.img'))
+         .width(width).height(height);
+     }
+     if(weather === "阴"){
+-      Image("https://i-blog.csdnimg.cn/direct/cdccb8075bb8473db2672bed70190ba7.jpeg")
++      Image($rawfile('weather/overcast.img'))
+         .width(width).height(height);
+     }
+     if(weather === "多云"){
+-      Image("https://i-blog.csdnimg.cn/direct/cc6430c2542b4f49b98d33bac2005829.jpeg")
++      Image($rawfile('weather/cloudy.img'))
+         .width(width).height(height);
+     }
+     if(weather.includes("雨")){
+-      Image("https://i-blog.csdnimg.cn/direct/de1260f193c446e7a1e9468140997ae2.jpeg")
++      Image($rawfile('weather/rain.img'))
+         .width(width).height(height);
+     }
+   }
+diff --git a/alatus/src/main/resources/rawfile/weather/cloudy.img b/alatus/src/main/resources/rawfile/weather/cloudy.img
+new file mode 100644
+index 0000000000000000000000000000000000000000..228d44c5424a0e742b72a76db41d3d9ee4475c22
+GIT binary patch
+literal 1177
+zcmeAS@N?(olHy`uVBq!ia0y~yU<5K5893O0R7}x|GzJEi1Wy;okcv5PZyn6L<sjk^
+z82q(+)5HJMZ$6oR$2G`Q)uD&E(B}Ib+esJC>^4@Ae^xoKVOe~%J;MfB#s-6tfi~O+
+z`gi@j`SH)T&bO7D&-cAX%!=>xo~rvBFNL?&Y6d27GX7AzZ}??;2jg^(1I)RWAl7@%
+z1I&Mp9JE(u@tMqU=c*jr|0x1nI1k9aDg5Bi={T98<{(FNy%$H+9*!-SIu6_WKCaV0
+zSIoR4Fw@}<+c9+pa}D1A@z<3eygm9?xS_S{@c-){f0TUq_Gku6LgS|o`K~<s+8JsN
+zeaQFck#lEQXYj|qTj0)ohM0sO^?Hgs<QXjve|X<4P&1cdj=`Vb$}F!dg+It1-tT`c
+z*OoDX<NSI3%>sA)81CJ$N#4-6U9jQgGRfYrF@6jZljgIWe!`qEx##S!xas^1kA)jg
+zUt-)~Xtm~R<x7SON=)*p%n8OOk>CHPGBa>6IOZ|_S7A<IPT=3;#m2DAlVzDFgMu%E
+z$Ljk`EDd{#Sc(`m^v&j+Vr4kDQjUj-A(4q8ziT@KIL(x2K^ekJqZ=3;W`NKE$*J=h
+zS2Bc%iB3Dka^S;Z_f7_hx@#J5W<O*Oh;WI>{=vX7omZA&xqXaz4g-&UP2LTL1GYVN
+z6L=&WE{gNMOFhBBaGFOPD6eB4!_e@wjjQ3Ze4cR#L&I$jh8A97hU@h^?iw&M<f$_V
+zn7J^-{7;;#$i%QlnL$7egbI!V1Ng=-Nx97Lj33w))@=XHa6q}Y?f_6P=io!K&noZz
+ll5FVR!3YVv!AstdkNKr^N086?0I<km@O1TaS?83{1OQL!d$Irk
+
+literal 0
+HcmV?d00001
+
+diff --git a/alatus/src/main/resources/rawfile/weather/overcast.img b/alatus/src/main/resources/rawfile/weather/overcast.img
+new file mode 100644
+index 0000000000000000000000000000000000000000..700a65e2766b7d99a144d1aebe372d619a1da3a9
+GIT binary patch
+literal 1176
+zcmeAS@N?(olHy`uVBq!ia0y~yU<5K5893O0R7}x|GzJEicuyC{kcv5PZyn6L<sjk^
+z82q(=bK2C>eK%uOLW7x(SO^?1K7UhL^6VaK=1+<9o^xjW+WM85;kF<Hhw#WizxRG+
+z{_yJO&(yfzHy?j|S#Umm;bVjItG~-?*QVZ>F2p)bpdtU0taE**L_sHm&4p<o)`xiv
+zHV6D={scQ6FyTB9`!?}|Kd0kthC2u4*#A!v01Aos82nh?vfya9gLbdQpUWoizCW@t
+zZ;+nKb|g2UhN+<W(ue=0x=i=t?$|R%tg!e~FWc|Wp0D5M$sne||3B==gKCZg>OB9y
+z9eGg5@__5`|IHi+|8gE+ZTtURsOh(0gE7y4JC1|bIS+6i-f!=;VV*hTeZxP$Q|?|9
+zW@!8H=Z_Kh!M7|Ade0iOy{?dEoRKr@V#N8UEDef3JvaE+F_@javF3g0PX+@!!5uoX
+z4AP4aN6nwk$Dph9A<&G$%z1L@|9CTo1_psAVjujC7|a;H9ax>hkTA<7VHOL+C6<OQ
+zzjPfKPH4L;h&OynI=nK5;lZ3&2Nf6u)EGW2tKb#@rJ0K5We|o%;4W4Uh89i`niKd_
+zasrn_YGC3@9|j)#nkgI&57T=O?US@)XmxGb+Q!dNaPtCV!LP%mhuIE%IQ+bgm*LLg
+z7wjh|FiO;3d=S^h!?58@0Z6{+Fe^hu-U<ebzYoovSs8ZpGC15YU@Z9Cew$aA;XxS_
+zL!vXwfv@t{B$XHrSOIxp6fV>6-@bPK!--|`4D}3$s&?};*j#$S-oxN9WALFHz<juN
+nKI4rJX=vC%LU1sWe;I%L`TKo2#{~mmiNoOO>gTe~DWM4fN3~j#
+
+literal 0
+HcmV?d00001
+
+diff --git a/alatus/src/main/resources/rawfile/weather/rain.img b/alatus/src/main/resources/rawfile/weather/rain.img
+new file mode 100644
+index 0000000000000000000000000000000000000000..aa4c83243e7f9bc94c9608e5498b979af086395f
+GIT binary patch
+literal 1421
+zcmd6naZD3e9LImx()J3rv{am<XhlVb1I84g24>L#g~hR<B)UNq2Ej~-bVD{K#U7%=
+zF|cD{4VKQEBPMg8?G%(upf`-N3>dH|Qo*gjXv?}mg&GQl>+ZV!zhr-z{F3**cfa4~
+zec$`tyHDOslk<Fod;x%$nv%F50HGuTD4QCx-v1^afR&M&xF@4j_t)qTbwLMLC!{OF
+zL_OnCtrw-i6_X8Z-HPDztcc`owZc`8d8=^MfT{V9D>jw8yxJt;SFIa#_B3%|y&N{|
+zdzRwQ-X@N@-)_HkXISN)n=4WEzGWMc@Eh^CnC~rymqLBRLjeDM2Y+SPJH#%ALavT?
+zTF)V~Tw+~KsYA_0Zhr}5_jd#@=k6Wc0<n%7j;BEo%_Rc!rLLYcU)}Yuh|xZA%ziLW
+z8m0Yg!~SV(gl*XhFV^!tZ%C2|{c|`D;TiGEvd#|WWB1buolkbf+_-A<o^~11PK-+`
+z*N#<zk`ijcm<Dv?4)yEk@mC>D;lir~S#mfpT^>k9Zwj#wgGuXFAG<3o>VWV`Ng>Ee
+z6_#9admr0S>^eGC+_?`Lw5T#%0{%ZPEALsSm<g4rPQ%BlzP@W+xqSj`!U|6>o2VR|
+zy5R{G!=prVEqoTr7y_4h@d_EfnF$?2nENRc1LB$(K`=uWe0$k?ed0!)A2>b*BCahW
+zf$pn0<y}7kpdyf7y3Ru34ENvArMuQ|2*kQMz6E&<v*XTe0HSb>w@x$7j^bJqj!!c|
+z7h3}P`q-?3M<88Rm|78tY}^jNl7_x|1T+^SX*qU+l8xJF`Ev#W!$LqCx4^LKP>~jh
+zS30Oel%4#zEP$HbNX?GqR|AZqpnKW9qPiu56cM0hOW<M%Zc+o$+0k_>u8%xTL8uqc
+zT8vV+Mm_-X=XlWV^PiD@*+`N_Hsi(Zk^<#NP8hJcLdXSNwxHHdt)Bm`UdB0`Gd*fg
+z_itT1)Eh|Q%=eO2Wf#;7G&=jzkg+pHl8F+$+O96GI+p=C3<F`aH!qI7MtAjip3~jD
+zC{2RMwdLhIB@gKiV`8ti(oH5f$ws4AUBD&2NIr6;zei3}%{4<056-{mN5d3nhi3Jb
+z$pA!}<9zx+IaUn`4Nw@pv~+B@#tYlj^cz(d!6n#Ddc7q#48fw1(xcv7EuGsEy|nT`
+z*%AV>8ror*w<yrN*xO#WVh?$2_e>J338EclQm&?$Q8a%hOad>6FqYTh)n5>=>je!T
+z?sEwiz1U<B1u#L)Db-F19wNp<z0@{p3!nd!jE6oC=6+Hkm_Ja|S~o*g9PWxgi3x*c
+nElpS3si#5^SmOTI7v$!zIqS@u=$;f&zgb94N=v-9H~aM8>Q?Wk
+
+literal 0
+HcmV?d00001
+
+diff --git a/alatus/src/main/resources/rawfile/weather/sunny.img b/alatus/src/main/resources/rawfile/weather/sunny.img
+new file mode 100644
+index 0000000000000000000000000000000000000000..b50ab2910b4e749ae40d9e727933f6206df38a29
+GIT binary patch
+literal 1858
+zcmcIlSx}Q#6u$ZSOM(-Y2#R2kU9iX^prH^11PmY$WvB%~5<t<>L1Ivh1|^7s$`Z#4
+zk;vv01Su3`UqphjB8>u$6%bjHh@i40mc<w#X@YgyKJ?8#-81Jd=bZ0+-#wRi2NKj*
+z>8}C+sQdbO1p$Cim<WJURV?AuvKRo6YQA0`!L+>T;io5GIju|GLkpBrFrmfQg5UYo
+z_+ajM)l#E)Qe%Xc*@uzVT!%w7R~ed`mW14U;WjMjfHY2|3#JIb=mv1NLomn?=zzg_
+zH2`Y^)JCA?|CKftVnw<fqqr)Tcl*plAuE%lh7_uOg*eqyVDmERAh(#RB0eYaHe$7D
+zs&nQat-pY`VFdX_ftgsE#K`M7VkvtK<Is8oJZeigC>(>y?^M$?cEGwET|God>)qrO
+zJ6By!z$~&T!IP^RdBld%I<D!?Bb_pEL_Mb>@Qz8q50e~hP4BmNu(*a{1bG={a@&0Z
+zm0leUc~mIE(i@JM5Lf*{ZNAW5=aI{F-ES>Y<L6r>H#;qTPgU7{1@+{Cpen~eag{%X
+zm2HF+p1f@Cs6QCF%u$@#kKzzaC>k0`IEWGeXFU~&{J=3xax_)a%3C(+U0sVFsuInM
+zUU!P3?=eFcgk+eXTdN+yizFR6q0`-fv@ij?ux9}QE2TGNbv)~rDQdj)le(}VO;#|n
+z#c7aD^Z|WkdXGm^Xb)48DhVj8%orwDZcTX^uhl~lSJkKTQ62et;P(*w8*Qo|GLZ6p
+zyHE?Oj-e1`^M~!|XdznRiAC*H#bww+FIsRE4f)x6(d0|E^U@1EqE1S4sn-xzAmusi
+z(&R8Aq>-de1eGJmUID3ed^w`(E_d{aHV0E|AY&dWgt0Okm`v<K$_Mwzo_MS?L@Wr!
+zNinVo#(-`&)fmbWz+^{H*^PNUKd{q&h!;{C36pg^+p^~McPQzY!Qb|C^zb$d5a#eO
+zwqo=)Ox~5+s5#lBr=)N7n#R4PzIbh@`WtSG`s84~lGbmZTGv}ozRF&)yQUpePtNRA
+zzBDJ?tIs=g%2>(sGnDny+!ovy+V4A!9%jwQnfxVzI<e$5df^uPUm|h0cB473UEJdh
+zj0PIpNbZ|Tt~d5azgScdyp059P%;3=(&i>H5&jQZRYxac9^*u0-A)w95Y~KpNKk67
+z{@hZ+kJ!u0WnW@{)@APl&4R3s?ZJO1xHR;S1n2l$P8jyJ<*t<YYpi3={LBhib7On;
+zxz49dS4xa`iRDQX%$0TnKW8xY<a8ithzeP(DY&Vn3>`*2Iv;6(GgTma?=!NnXLx5z
+zY~Tv)!fj!lXVi^>sowj870>M;JGS856DitU(Y3Lat`)Hw`+4Q0xB<7?4Xw21@V=+k
+zxJ3Mto4mqsj5HdLyS2b?Z;L4JV-ppWX}SNYf4kcCYxKo>tc)oyW`nvW9K%E$J}GGb
+zD5?;ex>uT~{IGb*d6sZKr`L5~ydkoj29@2N>$}sIA9GfJ;Jw)PlW1s6ja<q0INF>a
+zL(@O3KFHqs(X9FksCY)@)oG0DdG@~cjX6Q#qBueH4Kil8*7*p-$gG-iZEc2mmeVBy
+zx?`<dtCMh$=miSC<ANEz6pULnp1UFMI>1vOb*#svxSnGPGw8=5h|=S)(!ctm>2l7P
+zKb@)tQPMqJZ0OIkZK3@R<j%gDNB1|+T?C0^;=&Zv2~!}#%HlD}HgJ(nn!LiRC>J;_
+zO>Be$YE<~*9uK(ujVeb_n2rkWLNmB-7MKugQM&uPw4`^7ZnN}&(bsEg3IKYiDiKP5
+z19JpDCQ$kT<!S~I55h$WT3Fevc5<3MwEH)y2SqX=fSRl<K*{FOUPdPKHPp1p3Y6eS
+z2d-u^#~_J`Ehrfp<rif#-#`*G2T+nY{I)uiISxszaG+%Am6(&soPaD#ijhUv2Qo{W
+zz!h-SMj~b@*cb3MK7V?1_-(mWZ?X#>@qZ2&#jKi2>S<to+b!*~Q_M!->mBIz%MSAS
+FKLMH9*wO$1
+
+literal 0
+HcmV?d00001
+
+-- 
+2.34.1
+

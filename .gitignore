@@ -16,3 +16,4 @@ measurements-staging/
 measurements-staging-v2/
 
 __pycache__/
+/artifacts/

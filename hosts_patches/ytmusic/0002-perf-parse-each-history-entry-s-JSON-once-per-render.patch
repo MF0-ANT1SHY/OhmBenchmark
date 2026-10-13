@@ -1,0 +1,59 @@
+From 1e3d086fee748d99ffcdd31d18b4f793ddab8491 Mon Sep 17 00:00:00 2001
+From: mike <dust@to.com>
+Date: Wed, 23 Sep 2026 12:50:25 +0800
+Subject: [PATCH 2/4] perf: parse each history entry's JSON once per render
+ instead of four times per row build
+
+---
+ entry/src/main/ets/pages/History.ets | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/entry/src/main/ets/pages/History.ets b/entry/src/main/ets/pages/History.ets
+index 53b3f9c..8769d69 100644
+--- a/entry/src/main/ets/pages/History.ets
++++ b/entry/src/main/ets/pages/History.ets
+@@ -36,21 +36,22 @@ struct History {
+       if (this.history.size > 0) {
+         Scroll() {
+           Column() {
+-            ForEach(Array.from(this.history).reverse(), (item: string) => {
++            // 每条历史记录只解析一次 JSON，避免在每次组件构建时重复解析
++            ForEach(Array.from(this.history).reverse().map((item: string): Record<string, Object> => JSON.parse(item) as Record<string, Object>), (item: Record<string, Object>) => {
+               Row() {
+-                Image(JSON.parse(item).img)
++                Image(item['img'] as string)
+                   .width(80)
+                   .height(80)
+                   .borderRadius(3)
+                   .margin({ right: 15 })
+                 Column() {
+-                  Text(JSON.parse(item).name)
++                  Text(item['name'] as string)
+                     .fontSize(16)
+                     .fontWeight(700)
+                     .fontColor('#fff')
+                     .textOverflow({ overflow: TextOverflow.Ellipsis })
+                     .maxLines(1)
+-                  Text(JSON.parse(item).creator)
++                  Text(item['creator'] as string)
+                     .fontSize(14)
+                     .fontColor('#cdcdcd')
+                     .textOverflow({ overflow: TextOverflow.Ellipsis })
+@@ -63,12 +64,12 @@ struct History {
+                 Image($rawfile('header/close.svg'))
+                   .width(20)
+                   .onClick(() => {
+-                    this.history.delete(item)
++                    this.history.delete(JSON.stringify(item))
+                   })
+               }
+               .alignItems(VerticalAlign.Center)
+               .margin({ top: 12, left: 15, right: 15 })
+-              .onClick(() => router.pushUrl({ url: 'pages/CurrentPlaying', params: JSON.parse(item) }))
++              .onClick(() => router.pushUrl({ url: 'pages/CurrentPlaying', params: item }))
+             })
+           }
+         }
+-- 
+2.34.1
+

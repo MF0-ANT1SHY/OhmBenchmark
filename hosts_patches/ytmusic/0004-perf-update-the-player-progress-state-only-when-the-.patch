@@ -1,0 +1,48 @@
+From b140b414abf9f3fa69593990bc7f381cb0f5e703 Mon Sep 17 00:00:00 2001
+From: mike <dust@to.com>
+Date: Wed, 23 Sep 2026 13:05:11 +0800
+Subject: [PATCH 4/4] perf: update the player progress state only when the
+ displayed second changes instead of on every timeUpdate callback
+
+---
+ entry/src/main/ets/pages/CurrentPlaying.ets | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/entry/src/main/ets/pages/CurrentPlaying.ets b/entry/src/main/ets/pages/CurrentPlaying.ets
+index 467abea..bab5540 100644
+--- a/entry/src/main/ets/pages/CurrentPlaying.ets
++++ b/entry/src/main/ets/pages/CurrentPlaying.ets
+@@ -9,18 +9,25 @@ import { common } from '@kit.AbilityKit'
+ struct CurrentPlaying {
+   @State avplayer: media.AVPlayer | null = null
+ 
+-  setAVPlayerCallback(avPlayer: media.AVPlayer) {
++    // 进度展示以秒为单位：仅当秒数变化时才更新状态，避免高频 timeUpdate 持续触发页面重绘
++    private lastReportedSecond: number = -1
++
++    setAVPlayerCallback(avPlayer: media.AVPlayer) {
+     // seek操作结果回调函数
+     avPlayer.on('seekDone', (seekDoneTime: number) => {
+       console.info(`AVPlayer seek succeeded, seek time is ${seekDoneTime}`);
+     })
+-    // error回调监听函数,当avPlayer在操作过程中出现错误时调用 reset接口触发重置流程
++    // error回调监听函数,当avplayer在操作过程中出现错误时调用 reset接口触发重置流程
+     avPlayer.on('error', (err: BusinessError) => {
+-      console.error(`Invoke avPlayer failed, code is ${err.code}, message is ${err.message}`);
+-      avPlayer.reset(); // 调用reset重置资源，触发idle状态
++      console.error(`Invoke avplayer failed, code is ${err.code}, message is ${err.message}`);
++      avPlayer.reset(); // 调用reset接口销毁实例对象
+     })
+     avPlayer.on('timeUpdate', (time: number) => {
+-      this.currentValue = time
++      const second: number = Math.floor(time / 1000)
++      if (second !== this.lastReportedSecond) {
++        this.lastReportedSecond = second
++        this.currentValue = time
++      }
+     })
+     // 状态机变化回调函数
+     avPlayer.on('stateChange', async (state: string, reason: media.StateChangeReason) => {
+-- 
+2.34.1
+
