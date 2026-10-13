@@ -1,0 +1,14 @@
+{
+  "pid": 54513,
+  "bundle": "com.example.myapplication",
+  "pss_bytes": 65032192,
+  "raw_smaps_rollup": "1c20000000-7f09d48000 ---p 00000000 00:00 0                              [rollup]\nRss:              141512 kB\nPss:               63508 kB\nPss_HHP:               0 kB\nPss_Anon:          50751 kB\nPss_File:          12732 kB\nPss_Shmem:             4 kB\nShared_Clean:      74636 kB\nShared_Dirty:       9260 kB\nPrivate_Clean:     51632 kB\nPrivate_Dirty:      5984 kB\nReferenced:       136340 kB\nAnonymous:         56704 kB\nLazyFree:              0 kB\nAnonHugePages:         0 kB\nShmemPmdMapped:        0 kB\nShared_Hugetlb:        0 kB\nPrivate_Hugetlb:       0 kB\nSwap:              34920 kB\nSwapPss:            1199 kB\nLocked:                0 kB\n",
+  "process_start_ticks": 235120555,
+  "raw_stat_before": "54513 (e.myapplication) S 618 1 1 0 0 0 13763 13763 11677 11677 170 16 0 0 -14 -10 32 0 235120555 39270309888 35373 0 0 0 545573706272 0 0 0 0 0 0 0 8730 0 0 2 13 1 0 0 0 371886364784 371886372184 380720406528 545573706954 545573707229 545573707229 545573707728 0 0\n",
+  "raw_stat_after": "54513 (e.myapplication) S 618 1 1 0 0 0 13658 13658 11677 11677 185 16 0 0 -14 -10 27 0 235120555 39264841728 35306 0 0 0 545573706272 0 0 0 0 0 0 0 8730 0 0 1 13 1 0 0 0 371886364784 371886372184 380720406528 545573706954 545573707229 545573707229 545573707728 0 0\n",
+  "method": "kernel /proc/PID/smaps_rollup; no app instrumentation",
+  "status": "PASS",
+  "scope": "kernel PSS reader only; not a performance case verdict",
+  "captured_utc": "2026-10-13T14:55:38.988319+00:00",
+  "performance_verified": false
+}

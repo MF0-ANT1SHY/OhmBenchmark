@@ -1,5 +1,7 @@
 """Strict parsing of the kernel's process smaps_rollup Pss value."""
 import re
+import threading
+import time
 
 
 def pss_bytes(text):
@@ -42,3 +44,49 @@ def read_process(remote,pid,bundle):
     return {'pid':pid,'bundle':bundle,'pss_bytes':value,'raw_smaps_rollup':raw,
             'process_start_ticks':before_start,'raw_stat_before':before_stat,'raw_stat_after':after_stat,
             'method':'kernel /proc/PID/smaps_rollup; no app instrumentation'}
+
+
+def capture_window(remote,pid,bundle,workload,interval_s=2):
+    """Observe one process throughout a normal external UI workload.
+
+    The post-workload PSS, not growth/RSS/a selected low snapshot, is the oracle
+    value. Any observer failure or process restart invalidates the whole trial.
+    """
+    if interval_s<=0:
+        raise ValueError('sampling interval must be positive')
+    baseline=read_process(remote,pid,bundle)
+    samples=[]
+    failures=[]
+    stopped=threading.Event()
+
+    def sample(phase):
+        result=read_process(remote,pid,bundle)
+        if result['process_start_ticks']!=baseline['process_start_ticks']:
+            raise ValueError('process restarted within workload window')
+        result.update(phase=phase,monotonic=time.monotonic())
+        samples.append(result)
+
+    def observe():
+        while not stopped.wait(interval_s):
+            try:
+                sample('workload')
+            except Exception as exc:
+                failures.append(exc)
+                return
+
+    baseline.update(phase='before',monotonic=time.monotonic())
+    samples.append(baseline)
+    observer=threading.Thread(target=observe)
+    observer.start()
+    started=time.monotonic()
+    try:
+        workload()
+    finally:
+        ended=time.monotonic()
+        stopped.set()
+        observer.join()
+    if failures:
+        raise RuntimeError('PSS observer failed') from failures[0]
+    sample('after')
+    return {'action_start_monotonic':started,'action_end_monotonic':ended,
+            'snapshots':samples,'app_pss_bytes':samples[-1]['pss_bytes']}

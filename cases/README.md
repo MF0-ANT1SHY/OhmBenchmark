@@ -67,7 +67,10 @@ collecting another case's profile.
 YTMusic playback can use its original packaged MP3 files with `--bundled-audio`.
 The evaluator hashes the actual audited HAP's audio entries and verifies they are
 identical across the pair; no audio events or player callbacks are synthesized.
-Real playback and progress advancement still require separate device validation.
+The current-playing workload observes 60 seconds of normal playback. External
+accessibility snapshots must show the app's slider advancing with elapsed time;
+the validator and each CPU capture check this, and acceptance recomputes the
+progress proof from raw snapshots. A visible song title alone is not sufficient.
 
 CloudMusic online-list preparation uses the existing server configuration UI and
 ordinary music API responses from `tools/cloudmusic_data_service.py`. The
@@ -85,6 +88,16 @@ python3 tools/ui_driver.py cases/<id>/testcase/<name>.workload.json --remote cit
 ```
 
 ## Independent acceptance gates
+
+For `app_pss_bytes` cases, `tools/capture_external_pss.py` records the kernel's
+`/proc/PID/smaps_rollup` total `Pss` before, during and after normal UI actions.
+The value is the final absolute app PSS, not RSS, growth, system memory or a
+selected minimum. Process name and start time must remain consistent throughout
+the trial; UI/observer failures and restarts invalidate collection. The reader
+has a real-device check in `validation/system-pss-device-check.json`, but that
+does **not** validate a memory case. Per-trial input reset/provenance and paired
+memory-oracle acceptance remain pending; the collector does not inherit a
+previous validation run's fixture hash as fresh preparation evidence.
 
 1. Exact clean source trees and business-only repair diff.
 2. Both release builds and compiled-bytecode audits pass.
