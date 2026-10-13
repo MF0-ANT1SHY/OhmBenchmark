@@ -71,6 +71,48 @@
           "verify": 1.4039997040526941e-06
         },
         "capture_duration_required_s": 10
+      },
+      "performance": {
+        "status": "PASS",
+        "metric": "hiperf_instructions",
+        "rounds": 3,
+        "samples": [
+          1777740431,
+          1756342612,
+          1805539155
+        ],
+        "median": 1777740431,
+        "paired_ratios": [
+          1.3529467846821515,
+          1.3664202056229455,
+          1.379376634582685
+        ],
+        "median_ratio": 1.3581392605547522,
+        "plan_sha256": "cffd2a1faaad8298028069332bdbaa466075e1373a031e6238b5c46e7c97292f",
+        "signed_sha256": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9",
+        "fixture_sha256": "3ae759987f895d18c9166a34ba924c2634a031dd0b6da4dc050f331ce5f70fbb",
+        "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+        "captures": [
+          {
+            "round": 1,
+            "report_sha256": "bcc214d5dc5f86e069ad7292dcd3438ca01a8c5dbd9bca291080d4d2b6b4e785",
+            "app_samples": 959,
+            "remote_artifacts": "/home/research/ohm-clean/browser_eager_history_load/unfixed/cpu-captures/round-1"
+          },
+          {
+            "round": 2,
+            "report_sha256": "2f089edcfc9ec761b769d35aa545a6c8805a48c9b053d0694ed79ec0fda622ff",
+            "app_samples": 960,
+            "remote_artifacts": "/home/research/ohm-clean/browser_eager_history_load/unfixed/cpu-captures/round-2"
+          },
+          {
+            "round": 3,
+            "report_sha256": "cab9e2447d74c7dadc0c0deca5b390e9d96c91314026e5e06752a35445c1fc8a",
+            "app_samples": 983,
+            "remote_artifacts": "/home/research/ohm-clean/browser_eager_history_load/unfixed/cpu-captures/round-3"
+          }
+        ],
+        "legacy_evidence_reused": false
       }
     },
     {
@@ -141,6 +183,48 @@
           "verify": 1.356000211671926e-06
         },
         "capture_duration_required_s": 10
+      },
+      "performance": {
+        "status": "PASS",
+        "metric": "hiperf_instructions",
+        "rounds": 3,
+        "samples": [
+          1313976611,
+          1285360539,
+          1308952979
+        ],
+        "median": 1308952979,
+        "paired_ratios": [
+          1.3529467846821515,
+          1.3664202056229455,
+          1.379376634582685
+        ],
+        "median_ratio": 1.3581392605547522,
+        "plan_sha256": "cffd2a1faaad8298028069332bdbaa466075e1373a031e6238b5c46e7c97292f",
+        "signed_sha256": "248a222109a97a8bf1dcb5163910ba48184d307e311b6ccb8a2fd81534976709",
+        "fixture_sha256": "3ae759987f895d18c9166a34ba924c2634a031dd0b6da4dc050f331ce5f70fbb",
+        "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+        "captures": [
+          {
+            "round": 1,
+            "report_sha256": "2be080ec402f209fe47d06a10e9f7f02067f59143cefef91b3bcfe275e406e2f",
+            "app_samples": 758,
+            "remote_artifacts": "/home/research/ohm-clean/browser_eager_history_load/fixed/cpu-captures/round-1"
+          },
+          {
+            "round": 2,
+            "report_sha256": "616add0387c0cdcb0253575ad0b106a8e6f11aecdb11a67c5d4d7ef2016fc88e",
+            "app_samples": 679,
+            "remote_artifacts": "/home/research/ohm-clean/browser_eager_history_load/fixed/cpu-captures/round-2"
+          },
+          {
+            "round": 3,
+            "report_sha256": "7886122f87efec1ea50a13aad6dc07b782708a5f4187eccb1ba6632bcc6ff1a7",
+            "app_samples": 728,
+            "remote_artifacts": "/home/research/ohm-clean/browser_eager_history_load/fixed/cpu-captures/round-3"
+          }
+        ],
+        "legacy_evidence_reused": false
       }
     },
     {
