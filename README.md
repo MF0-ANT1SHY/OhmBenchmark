@@ -36,6 +36,19 @@ metadata, repair diffs, fixed packages, fixture/oracle inventories and evaluator
 receipts. No app-side counters, custom traces, diagnostics, bench entrypoints,
 gates, simulations or instrumentation wrappers are allowed in clean HAPs.
 
+Export to a fresh directory outside the evaluator checkout:
+
+```bash
+python3 tools/export_agent_data.py browser_eager_history_load /tmp/diagnosis-app \
+  --symptom '启动浏览器时响应较慢'
+```
+
+The export contains only the captured unfixed package, its business source archive
+(no git history), neutral UI workload, symptom and app-scoped system report. The
+device JSON reporter does not reliably honor `--pids`; this exporter explicitly
+filters processes, threads and unreferenced symbols/libraries and recomputes
+totals. Do not give agents the private all-process reports or capture receipts.
+
 ## Validation status
 
 Build/audit, install/launch, real-workload and performance gates are separate.

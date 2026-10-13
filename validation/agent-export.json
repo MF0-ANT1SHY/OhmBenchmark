@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "case": "browser_eager_history_load",
+  "exported_process_count": 1,
+  "private_processes_removed": 111,
+  "app_instruction_period_sum_preserved": 1777740431,
+  "app_samples_preserved": 959,
+  "source_archive_files": 94,
+  "export_file_sha256": {
+    "app-source.tar": "282c636d6f5dde2bd5a187962592da42d7dd66845f6bb7191cbd51afc7d65d09",
+    "workload.json": "710a084b63faeb26d2aef5a85d1a812d860d32885fb94e4a6b17617eece7928e",
+    "profile.json": "3ec676b83f689f6af84c5ab3041f095fc776519110b651ac74e61d03cc7c4326",
+    "symptom.txt": "1acee50e017acea32505e23045399457e85a2c6931f9feb8f0ccde3d555dc32c",
+    "app.hap": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9"
+  },
+  "fixed_or_oracle_artifacts_exported": false,
+  "git_history_exported": false
+}
