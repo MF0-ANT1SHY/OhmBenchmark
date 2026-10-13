@@ -100,7 +100,7 @@
   },
   "clean_validation": {
     "policy": "no_app_injection",
-    "workload_validation": "pending",
+    "workload_validation": "verified",
     "performance_validation": "pending",
     "variants": {
       "unfixed": {

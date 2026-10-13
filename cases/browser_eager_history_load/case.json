@@ -116,8 +116,8 @@
   },
   "clean_validation": {
     "policy": "no_app_injection",
-    "workload_validation": "pending",
-    "performance_validation": "pending",
+    "workload_validation": "verified",
+    "performance_validation": "verified",
     "variants": {
       "unfixed": {
         "ref": "clean-app/browser_eager_history_load/unfixed",

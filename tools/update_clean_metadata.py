@@ -64,6 +64,11 @@ def main():
             clean["variants"][variant] = item
             rows.append({"case": cid, "variant": variant, "host": host, **item})
         c["build"] = builds
+        if all(clean['variants'][v].get('workload',{}).get('status')=='PASS' for v in ('unfixed','fixed')):
+            clean['workload_validation']='verified'
+        if oracle['evidence'].get('status')=='measured_clean' and all(
+                clean['variants'][v].get('performance',{}).get('status')=='PASS' for v in ('unfixed','fixed')):
+            clean['performance_validation']='verified'
         c["clean_validation"] = clean
         c["reproduction"] = [
             "python3 tools/reconstruct_clean_hosts.py",
@@ -79,6 +84,18 @@ def main():
     destination.mkdir(exist_ok=True)
     (destination / "clean-builds.json").write_text(json.dumps({"case_count": 30, "variant_count": len(rows),
         "performance_evidence_reused": False, "variants": rows}, indent=2, ensure_ascii=False) + "\n")
+    contracts={}
+    for path in sorted((ROOT/'cases').glob('*/case.json')):
+        case=json.loads(path.read_text())
+        measured=case['clean_validation']['performance_validation']=='verified'
+        contracts[case['id']]={'oracle_metric':case['test_oracle']['metric'],'app_injection':False,
+            'workload_validation':case['clean_validation']['workload_validation'],
+            'measurement_status':'measured_clean' if measured else 'pending_clean_measurement',
+            'rounds_recorded':case['test_oracle']['evidence'].get('rounds_per_variant',0) if measured else 0}
+    (ROOT/'cases/measurement-contract.json').write_text(json.dumps({
+        '$comment':'External clean measurement contract. Historical instrumented evidence is archived and not reused.',
+        'case_count':len(contracts),'measured_case_count':sum(c['measurement_status']=='measured_clean' for c in contracts.values()),
+        'cases':contracts},indent=2)+'\n')
     print(f"{len(rows)}/60 clean build receipts published; old performance evidence archived")
 
 
