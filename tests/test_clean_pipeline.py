@@ -2,6 +2,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import shlex
 from unittest.mock import patch
 from pathlib import Path
 
@@ -69,6 +70,24 @@ class CleanPipelineTests(unittest.TestCase):
         with patch('ui_driver.time.monotonic', side_effect=[100,112]):
             with self.assertRaisesRegex(RuntimeError, 'capture window'):
                 ui.profiled(execute, 'screen', 10, [])
+
+    def test_repeated_input_replaces_instead_of_appending_the_prior_query(self):
+        state={'text':'','selected':False}
+        def shell(command):
+            if command=='uitest uiInput keyEvent 2072 2017':
+                state['selected']=True
+            elif command=='uitest uiInput keyEvent 2055':
+                if state['selected']:state['text']=''
+            elif command.startswith('uitest uiInput inputText '):
+                state['text']+=shlex.split(command)[-1]
+                state['selected']=False
+            return ''
+        ui=UI(shell,'app.bundle')
+        ui.layout=lambda:{'attributes':{'bundleName':'app.bundle','type':'SearchField',
+            'text':state['text'],'bounds':'[0,0][50,50]'}}
+        ui.input({'type':'SearchField'},'blue')
+        ui.input({'type':'SearchField'},'jazz')
+        self.assertEqual(state['text'],'jazz')
 
 
 if __name__ == "__main__":

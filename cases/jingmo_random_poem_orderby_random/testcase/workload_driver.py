@@ -69,8 +69,19 @@ class UI:
         self.shell(f"uitest uiInput click {x} {y}")
 
     def input(self, selector, value):
-        x, y = self.center(self.find(selector))
+        node=self.find(selector)
+        x, y = self.center(node)
+        if str(node.get('text','')):
+            # uiInput inputText appends. Replace through ordinary keyboard input,
+            # and verify clearing rather than silently searching "bluejazz".
+            self.shell(f'uitest uiInput click {x} {y}')
+            self.shell('uitest uiInput keyEvent 2072 2017')  # Ctrl+A
+            self.shell('uitest uiInput keyEvent 2055')       # Backspace
+            if str(self.find(selector).get('text','')):
+                raise RuntimeError('UI input did not clear the previous value')
         self.shell(f"uitest uiInput inputText {x} {y} {shlex.quote(value)}")
+        if str(self.find(selector).get('text',''))!=value:
+            raise RuntimeError('UI input value does not match the requested text')
 
     def run(self, actions):
         for action in actions:
