@@ -38,7 +38,10 @@ class UI:
                     continue
                 if self.bundle and node.get("bundleName") not in (None, "", self.bundle):
                     continue
-                if all(str(value) in str(node.get(key, "")) for key, value in selector.items() if key != "index"):
+                def matches_field(key, value):
+                    actual = str(node.get(key, ''))
+                    return actual == str(value) if selector.get('match') == 'exact' else str(value) in actual
+                if all(matches_field(key,value) for key,value in selector.items() if key not in ('index','match')):
                     matches.append(node)
             index = selector.get("index", 0)
             if len(matches) > index:

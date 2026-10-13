@@ -25,7 +25,8 @@
     {
       "op": "tap",
       "selector": {
-        "text": "确定"
+        "text": "确定",
+        "match": "exact"
       }
     }
   ],
