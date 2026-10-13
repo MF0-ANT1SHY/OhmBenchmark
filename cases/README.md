@@ -96,6 +96,17 @@ ordinary catalogue before/after the workload and checks service continuity;
 workload validation also checks song titles and artist text against that data.
 Each pair still needs its own actual workload and performance acceptance.
 
+SheafReader data preparation uses `tools/rss_data_service.py`: ten ordinary RSS
+subscriptions, each with one hundred stable articles and long HTML descriptions,
+plus an OPML subscription document. `/feeds/1.xml` through `/feeds/10.xml`,
+`/subscriptions.opml` and the linked article pages are normal content routes;
+there are no benchmark status/oracle endpoints. Default payloads stay below the SDK's
+default 5 MiB HTTP response limit. Local XML and workstation HTTP checks are in
+`validation/rss-data-fixture.json` and `validation/rss-data-service.json`.
+Device forwarding, subscription/import UI, actual refreshes and performance
+acceptance remain pending. When the device is idle, forward port 18491 and use
+the app's normal feed URL/import controls; do not replace them with an app hook.
+
 ```bash
 python3 tools/ui_driver.py cases/<id>/testcase/<name>.workload.json --remote cityuPC --phase setup
 python3 tools/ui_driver.py cases/<id>/testcase/<name>.workload.json --remote cityuPC --phase measured

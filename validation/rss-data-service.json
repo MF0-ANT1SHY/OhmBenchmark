@@ -1,0 +1,15 @@
+{
+  "process": {
+    "pid": 92814,
+    "source": "/home/research/ohm-clean/services/rss/data-03ea0ea2b57a69b6.py",
+    "source_sha256": "03ea0ea2b57a69b62286a1456834a7c3c779f62c079e61e0013d7aa830e1728f",
+    "base_url": "http://127.0.0.1:18491",
+    "feeds": 10,
+    "articles_per_feed": 100
+  },
+  "feed_bytes": 3311659,
+  "feed_sha256": "f409fdd387cfdc3daa92b9123f5e64fa860bd55a25727f654fb22a00cc1944c2",
+  "host_response_verified": true,
+  "device_validation": "pending",
+  "performance_verified": false
+}
