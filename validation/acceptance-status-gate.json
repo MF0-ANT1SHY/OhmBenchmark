@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "accepted_reference": {
+    "stage": "complete",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "rejected_reference": {
+    "stage": "complete",
+    "cases": 1,
+    "errors": [],
+    "pending": [
+      "cloudmusic_local_song_memory_filter/unfixed: performance not validated",
+      "cloudmusic_local_song_memory_filter/fixed: performance not validated",
+      "cloudmusic_local_song_memory_filter: clean performance oracle not accepted (measured_clean_failed)"
+    ],
+    "passed": false
+  },
+  "criterion_changed": false
+}

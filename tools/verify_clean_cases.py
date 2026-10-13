@@ -77,8 +77,9 @@ def verify(stage, selected=None):
                         errors.append(f"{label}: {kind} receipt belongs to another signed artifact")
                 if kind == "performance" and (r.get("rounds", 0) < 3 or r.get("metric") != c["test_oracle"]["metric"]):
                     errors.append(f"{label}: oracle coverage/rounds not proven")
-        if c["test_oracle"]["evidence"].get("status") == "pending_clean_measurement" and stage == "complete":
-            pending.append(f"{cid}: clean performance oracle pending")
+        evidence_status=c['test_oracle']['evidence'].get('status')
+        if stage=='complete' and evidence_status!='measured_clean':
+            pending.append(f'{cid}: clean performance oracle not accepted ({evidence_status})')
         if stage == 'complete' and c['test_oracle']['evidence'].get('status')=='measured_clean':
             if c['test_oracle']['metric']=='hiperf_instructions':
                 try:
