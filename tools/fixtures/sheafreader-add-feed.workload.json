@@ -1,0 +1,80 @@
+{
+  "bundle": "com.sheafreader.hm",
+  "ability": "EntryAbility",
+  "description": "通过普通订阅界面添加阅读源",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "全部文章|All articles",
+        "match": "regex"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "type": "Button",
+        "index": 0
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "添加订阅源|Add source",
+        "match": "regex"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "添加订阅源|Add source",
+        "match": "regex"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "hint": "https://example.com/feed.xml",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "https://example.com/feed.xml",
+        "match": "exact"
+      },
+      "value": "http://127.0.0.1:18491/feeds/1.xml"
+    },
+    {
+      "op": "key",
+      "key": "Back"
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "type": "Button",
+        "text": "添加订阅源|Add source",
+        "match": "regex"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Journal 1",
+        "match": "exact"
+      },
+      "timeout_s": 120
+    }
+  ],
+  "measured": [],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Journal 1",
+        "match": "exact"
+      }
+    }
+  ]
+}

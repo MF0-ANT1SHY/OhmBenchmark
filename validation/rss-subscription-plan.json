@@ -1,0 +1,16 @@
+{
+  "status": "source_grounded_candidate",
+  "device_validated": false,
+  "performance_verified": false,
+  "assumptions": [
+    "fresh subscription URL",
+    "collapsed phone sidebar",
+    "header menu is first visible app button"
+  ],
+  "source_paths": [
+    "entry/src/main/ets/components/ArticleListView.ets",
+    "entry/src/main/ets/components/SidebarView.ets",
+    "entry/src/main/ets/components/AddFeedDialog.ets"
+  ],
+  "scope": "initial feed subscription preparation only; actual drawer, dialog and RSS ingestion must be verified"
+}

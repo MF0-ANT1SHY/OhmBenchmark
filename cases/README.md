@@ -106,6 +106,10 @@ default 5 MiB HTTP response limit. Local XML and workstation HTTP checks are in
 Device forwarding, subscription/import UI, actual refreshes and performance
 acceptance remain pending. When the device is idle, forward port 18491 and use
 the app's normal feed URL/import controls; do not replace them with an app hook.
+The source-grounded phone subscription candidate is
+`tools/fixtures/sheafreader-add-feed.workload.json`. Its drawer-button and fresh
+URL assumptions are recorded in `validation/rss-subscription-plan.json`; neither
+file proves successful device subscription or article ingestion.
 
 ```bash
 python3 tools/ui_driver.py cases/<id>/testcase/<name>.workload.json --remote cityuPC --phase setup
