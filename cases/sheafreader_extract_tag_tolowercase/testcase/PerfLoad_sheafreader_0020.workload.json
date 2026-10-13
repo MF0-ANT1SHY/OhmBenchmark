@@ -1,13 +1,25 @@
 {
   "bundle": "com.sheafreader.hm",
   "ability": "EntryAbility",
-  "description": "Sheaf-Reader (束阅 RSS 阅读器)页面操作",
+  "description": "通过普通 F5 刷新已订阅的阅读源",
   "setup": [
     {
       "op": "wait",
       "selector": {
-        "type": "Button"
-      }
+        "text": "Journal 1 article 1",
+        "match": "exact"
+      },
+      "timeout_s": 60
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "type": "Button",
+        "bounds": "[195,326][296,427]",
+        "enabled": "true",
+        "match": "exact"
+      },
+      "timeout_s": 120
     }
   ],
   "measured": [
@@ -18,14 +30,26 @@
     {
       "op": "pause",
       "seconds": 3
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "type": "Button",
+        "bounds": "[195,326][296,427]",
+        "enabled": "true",
+        "match": "exact"
+      },
+      "timeout_s": 120
     }
   ],
   "verify": [
     {
       "op": "wait",
       "selector": {
-        "type": "Button"
-      }
+        "text": "Journal 1 article 1",
+        "match": "exact"
+      },
+      "timeout_s": 60
     }
   ]
 }

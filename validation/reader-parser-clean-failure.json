@@ -1,0 +1,93 @@
+{
+  "case": "sheafreader_extract_tag_tolowercase",
+  "status": "measured_clean_failed",
+  "performance_passed": false,
+  "criteria_unchanged": true,
+  "raw_recomputation": "accept_cpu_evidence.accept(require_pass=False) completed on all six actual reports, with ordinary database snapshots and raw refresh observations independently verified",
+  "results": {
+    "unfixed": {
+      "status": "FAIL",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        53537598571,
+        53604127747,
+        53597122901
+      ],
+      "median": 53597122901,
+      "paired_ratios": [
+        0.961848083472427,
+        0.9614595025638129,
+        0.9638556020538567
+      ],
+      "median_ratio": 0.9629174882320475,
+      "plan_sha256": "24a6f8e64843d8644925eacf96e14777b68f90f1df62779e1e86f236f4b21849",
+      "signed_sha256": "81b0a97950c54d1672e4fd16de404ffcedfa8c85b10372d39b33d128fbf94da5",
+      "fixture_sha256": "4de8e684fce5f27fec16c11c6bd5f564288762cf514e7cf95d63b9fc10bacb73",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "dd3f946726ff8e37d168e75643a4c0ed9c9ad4e835af4f8e114c5d2ae1ba98ae",
+          "app_samples": 8282,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "b675242ad32388485a1e9fd969162d543b6bc933dcd365f9e40eb0fe20e60f38",
+          "app_samples": 8473,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "252e7fc7ecb15e635d99ac36d11ffab983badd4784bcd47c702282049946efc4",
+          "app_samples": 9512,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    },
+    "fixed": {
+      "status": "FAIL",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        55661179235,
+        55752871134,
+        55607004604
+      ],
+      "median": 55661179235,
+      "paired_ratios": [
+        0.961848083472427,
+        0.9614595025638129,
+        0.9638556020538567
+      ],
+      "median_ratio": 0.9629174882320475,
+      "plan_sha256": "24a6f8e64843d8644925eacf96e14777b68f90f1df62779e1e86f236f4b21849",
+      "signed_sha256": "03ad86646c33e9321420635c9c85bbc7b9294483111c8b5ba50d470860969a5c",
+      "fixture_sha256": "4de8e684fce5f27fec16c11c6bd5f564288762cf514e7cf95d63b9fc10bacb73",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "78e8f57c6343d82f86ecac741e615fb25137c20f77fb33abbfe78b6962a9655d",
+          "app_samples": 8883,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "3df6f5f5859af232a3d80670a4b94c0dbcf63f0b1cccb9fab0ecc24d79c70792",
+          "app_samples": 7948,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "bcbd6912c3df68c8178aea960ffa5a901f548cb2053457ceef7dada1a9446859",
+          "app_samples": 8208,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    }
+  }
+}
