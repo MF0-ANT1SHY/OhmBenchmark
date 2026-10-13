@@ -142,6 +142,34 @@
           "foreground_bundle": "cn.seayj.sepweather",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "sepweather_font_register_per_page",
+          "variant": "unfixed",
+          "signed_sha256": "effefb72e7c738ff6714ddbe303aa54a3cb9b59d6f31c12ca57146442e625d9d",
+          "plan_sha256": "8d51fce3d25805ebfd2a0e18b2f578763035f4160166bdbb205b16d85ad14530",
+          "status": "FAIL",
+          "performance_verified": false,
+          "fixture": {
+            "kind": "bundled business fonts",
+            "sha256": "bdf0f909288b29b6a76e84cc682599366efccedd489e72cc398b737f29f4022b",
+            "fonts": {
+              "resources/rawfile/DINCOROS-Black.ttf": "efde0708facc851b87fe8ba73d366e24c3a8694f878b09fe05aa883b6c9bd280",
+              "resources/rawfile/DINCOROS-Bold.ttf": "370f0bef24f4c0a2af52c50af58f6585a59b2b303175d580a82e6c9d4f5af321",
+              "resources/rawfile/DINCOROS-Regular.ttf": "efa4366d7c7e9a3dfb37ef513a50ccb44c241a84f09438b56479082b87220cbf",
+              "resources/rawfile/iconfont.ttf": "e33f7722988dfb8fb7c0cdfd27b1ed1473157045992cee12530b3d44107f4899"
+            },
+            "registered_font_paths": [
+              "resources/rawfile/DINCOROS-Regular.ttf",
+              "resources/rawfile/iconfont.ttf"
+            ]
+          },
+          "phase_elapsed_s": {
+            "setup": 10.914921440002217,
+            "measured": 127.78472963999957,
+            "verify": 11.560733051002899
+          },
+          "error": "launches reused a window instead of reconstructing MainPage"
         }
       },
       "fixed": {
@@ -187,6 +215,29 @@
           "foreground_bundle": "cn.seayj.sepweather",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "sepweather_font_register_per_page",
+          "variant": "fixed",
+          "signed_sha256": "00fa3c507f02679f7033c3257bb9ab9afb45fdba1a87b793e446bcb6b9643ea3",
+          "plan_sha256": "8d51fce3d25805ebfd2a0e18b2f578763035f4160166bdbb205b16d85ad14530",
+          "status": "FAIL",
+          "performance_verified": false,
+          "fixture": {
+            "kind": "bundled business fonts",
+            "sha256": "bdf0f909288b29b6a76e84cc682599366efccedd489e72cc398b737f29f4022b",
+            "fonts": {
+              "resources/rawfile/DINCOROS-Black.ttf": "efde0708facc851b87fe8ba73d366e24c3a8694f878b09fe05aa883b6c9bd280",
+              "resources/rawfile/DINCOROS-Bold.ttf": "370f0bef24f4c0a2af52c50af58f6585a59b2b303175d580a82e6c9d4f5af321",
+              "resources/rawfile/DINCOROS-Regular.ttf": "efa4366d7c7e9a3dfb37ef513a50ccb44c241a84f09438b56479082b87220cbf",
+              "resources/rawfile/iconfont.ttf": "e33f7722988dfb8fb7c0cdfd27b1ed1473157045992cee12530b3d44107f4899"
+            },
+            "registered_font_paths": [
+              "resources/rawfile/DINCOROS-Regular.ttf",
+              "resources/rawfile/iconfont.ttf"
+            ]
+          },
+          "error": "UI target not found: {'id': 'AddAddressBtn'}"
         }
       }
     }
