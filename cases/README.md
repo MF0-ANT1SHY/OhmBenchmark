@@ -51,6 +51,19 @@ and verifies the deployed audio. Fixture identity includes database, filename
 manifest and audio content. These commands prepare/capture evidence only; they do
 not themselves establish that a case passes its performance oracle.
 
+Jingmo random-poem preparation also uses ordinary database rows:
+
+```bash
+python3 tools/seed_classic_poems.py artifacts/fixtures/jingmo/jingmo.db --count 100000
+python3 tools/validate_external_workloads.py jingmo_random_poem_orderby_random \
+  --poem-fixture artifacts/fixtures/jingmo/jingmo.db
+```
+
+The evaluator checks displayed title/content against the database and observes
+different poems across repeated UI refreshes. No simulated scans, app counters
+or in-app completion flags are used. Run this only when the device is not already
+collecting another case's profile.
+
 ```bash
 python3 tools/ui_driver.py cases/<id>/testcase/<name>.workload.json --remote cityuPC --phase setup
 python3 tools/ui_driver.py cases/<id>/testcase/<name>.workload.json --remote cityuPC --phase measured

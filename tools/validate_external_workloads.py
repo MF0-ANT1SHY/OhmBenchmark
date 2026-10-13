@@ -22,7 +22,7 @@ from seed_local_songs import deploy as deploy_songs
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None):
+def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None):
     cid = case['id']
     folder = ROOT / 'artifacts/clean' / cid / variant
     signed = json.loads((folder / 'sign.json').read_text())
@@ -31,10 +31,12 @@ def validate(remote, case, variant, browser_fixture=None, local_song_fixture=Non
     result = {'case':cid, 'variant':variant, 'signed_sha256':signed['audit']['sha256'],
               'plan_sha256':plan_hash, 'status':'FAIL', 'performance_verified':False}
     try:
-        if browser_fixture and local_song_fixture:
+        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture))>1:
             raise ValueError('only one fixture may be supplied')
         if local_song_fixture and case['host_app']['bundle_name']!='cc.chenlvin.cloudmusic':
             raise ValueError('local song fixture provided to a different app')
+        if poem_fixture and case['host_app']['bundle_name']!='com.hefengbao.jingmo.hw':
+            raise ValueError('poetry fixture provided to a different app')
         remote.python("from pathlib import Path\nimport hashlib\n"
                       f"assert hashlib.sha256(Path({signed['signed_hap']!r}).read_bytes()).hexdigest()=={signed['audit']['sha256']!r}", timeout=300)
         output = remote.hdc(['install','-r',signed['signed_hap']], timeout=180)
@@ -47,6 +49,9 @@ def validate(remote, case, variant, browser_fixture=None, local_song_fixture=Non
         if local_song_fixture:
             result['fixture']=deploy_songs(local_song_fixture,remote.host)
             result['fixture']['sha256']=result['fixture']['fixture_sha256']
+        if poem_fixture:
+            result['fixture']=install_fixture(remote,case['host_app']['bundle_name'],case['testcase']['module'],'jingmo.db',poem_fixture)
+            result['fixture']['sha256']=hashlib.sha256(poem_fixture.read_bytes()).hexdigest()
         destination = f'/home/research/ohm-clean/{cid}/{variant}/workload-plan.json'
         remote.upload(plan_path, destination)
         code = """import hashlib,json,subprocess,sys,time,traceback
@@ -61,6 +66,13 @@ def shell(command):
         code += f"plan_path=Path({destination!r});plan=json.loads(plan_path.read_text())\n"
         code += f"assert hashlib.sha256(plan_path.read_bytes()).hexdigest()=={plan_hash!r}\n"
         code += "ui=UI(shell,plan['bundle'],plan['ability'])\nphases={}\n"
+        if cid=='jingmo_random_poem_orderby_random':
+            code += "import re\nobserved_poem_titles=[]\noriginal_find=ui.find\n"
+            code += "def observe_find(selector,timeout=15):\n"
+            code += " node=original_find(selector,timeout)\n"
+            code += " title=str(node.get('text',''))\n"
+            code += " if re.fullmatch(r'山水诗 [1-9][0-9]*',title):observed_poem_titles.append(title)\n"
+            code += " return node\nui.find=observe_find\n"
         code += "ui.run([{'op':'stop'},{'op':'launch'}])\n"
         code += "try:\n"
         code += " for phase in ['setup','measured','verify']:\n"
@@ -70,6 +82,8 @@ def shell(command):
         code += "except Exception as exc:\n"
         code += " result={'phases':phases,'status':'FAIL','error':str(exc)}\n"
         code += " try:result['failure_layout']=ui.layout()\n except Exception:pass\n"
+        if cid=='jingmo_random_poem_orderby_random':
+            code += "result['observed_poem_titles']=observed_poem_titles\n"
         code += "plan_path.with_name('workload-device.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))\n"
         remote.python(code, timeout=600)
         remote.download(str(Path(destination).with_name('workload-device.json')), folder / 'workload-device.json')
@@ -77,6 +91,22 @@ def shell(command):
         if device['status'] != 'PASS':
             raise RuntimeError(device['error'])
         result['phase_elapsed_s'] = {p:r['elapsed_s'] for p,r in device['phases'].items()}
+        if cid=='jingmo_random_poem_orderby_random':
+            if not poem_fixture:
+                raise RuntimeError('random-poem validation requires a known fixture')
+            from ui_driver import UI
+            texts={str(n.get('text','')) for n in UI.nodes(device['phases']['verify']['layout'])
+                   if n.get('bundleName')==case['host_app']['bundle_name']}
+            with sqlite3.connect(f'file:{poem_fixture.resolve()}?mode=ro',uri=True) as fixture_db:
+                rows=fixture_db.execute('SELECT title,content FROM classicalliterature_classicpoem WHERE title IN ('+
+                    ','.join('?' for _ in texts)+')',list(texts)).fetchall()
+            if not any(title in texts and content in texts for title,content in rows):
+                raise RuntimeError('displayed poetry does not match the ordinary database fixture')
+            titles=device.get('observed_poem_titles',[])
+            if len(titles)<21 or len(set(titles))<2:
+                raise RuntimeError('repeated refreshes did not produce observable poetry updates')
+            result['functional_check']='displayed poetry title and content match the database fixture'
+            result['observed_refresh_titles']=titles
         if cid == 'browser_history_delete_no_transaction':
             db = '/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db'
             if not browser_fixture:
@@ -111,6 +141,7 @@ def main():
     fixtures=parser.add_mutually_exclusive_group()
     fixtures.add_argument('--browser-fixture',type=Path)
     fixtures.add_argument('--local-song-fixture',type=Path)
+    fixtures.add_argument('--poem-fixture',type=Path)
     args=parser.parse_args()
     remote=Remote(args.remote)
     remote.upload(ROOT/'tools/ui_driver.py','/home/research/ohm-clean/tools/ui_driver.py')
@@ -118,7 +149,7 @@ def main():
     for cid in args.cases:
         case=json.loads((ROOT/'cases'/cid/'case.json').read_text())
         for variant in ('unfixed','fixed'):
-            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture)
+            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture)
     return int(failed)
 
 

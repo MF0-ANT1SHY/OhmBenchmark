@@ -17,12 +17,14 @@ from seed_local_songs import deploy as deploy_songs
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def capture(remote, case, variant, round_number, fixture=None, local_song_fixture=None):
+def capture(remote, case, variant, round_number, fixture=None, local_song_fixture=None, poem_fixture=None):
     cid = case['id']
-    if fixture and local_song_fixture:
+    if sum(p is not None for p in (fixture,local_song_fixture,poem_fixture))>1:
         raise ValueError('only one fixture may be supplied')
     if local_song_fixture and case['host_app']['bundle_name']!='cc.chenlvin.cloudmusic':
         raise ValueError('local song fixture provided to a different app')
+    if poem_fixture and case['host_app']['bundle_name']!='com.hefengbao.jingmo.hw':
+        raise ValueError('poetry fixture provided to a different app')
     fixture_hash=None
     folder = ROOT/'artifacts/clean'/cid/variant
     sign = json.loads((folder/'sign.json').read_text())
@@ -48,6 +50,9 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
         fixture_hash=hashlib.sha256(fixture.read_bytes()).hexdigest()
     if local_song_fixture:
         fixture_hash=deploy_songs(local_song_fixture,remote.host)['fixture_sha256']
+    if poem_fixture:
+        install_fixture(remote,case['host_app']['bundle_name'],case['testcase']['module'],'jingmo.db',poem_fixture)
+        fixture_hash=hashlib.sha256(poem_fixture.read_bytes()).hexdigest()
     remote.upload(plan_file,remote_plan)
     code = """import hashlib,json,subprocess,sys,time,traceback
 from pathlib import Path
@@ -126,6 +131,8 @@ def shell(command):
             raise RuntimeError('app has no attributable instruction samples')
         (output/'capture.json').write_text(json.dumps(receipt,indent=2)+'\n')
     print(f'{cid}/{variant}/round-{round_number}: {receipt["status"]} {receipt.get("error", "")}',flush=True)
+    if receipt['status']!='CAPTURED':
+        raise RuntimeError('capture failed: '+receipt.get('error','unknown error'))
 
 
 def main():
@@ -136,12 +143,13 @@ def main():
     fixtures=parser.add_mutually_exclusive_group()
     fixtures.add_argument('--browser-fixture',type=Path)
     fixtures.add_argument('--local-song-fixture',type=Path)
+    fixtures.add_argument('--poem-fixture',type=Path)
     parser.add_argument('--remote',default='cityuPC')
     args=parser.parse_args()
     remote=Remote(args.remote)
     remote.upload(ROOT/'tools/ui_driver.py','/home/research/ohm-clean/tools/ui_driver.py')
     case=json.loads((ROOT/'cases'/args.case/'case.json').read_text())
-    capture(remote,case,args.variant,args.round,args.browser_fixture,args.local_song_fixture)
+    capture(remote,case,args.variant,args.round,args.browser_fixture,args.local_song_fixture,args.poem_fixture)
 
 
 if __name__=='__main__':
