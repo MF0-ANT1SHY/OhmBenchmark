@@ -5,11 +5,12 @@ import sqlite3
 from pathlib import Path
 
 from rss_data_service import Catalogue
+from rss_dataset import normalize
 
 
-def inspect(path):
+def inspect(path, dataset=None):
     path = Path(path).resolve()
-    catalogue = Catalogue('http://127.0.0.1:18491')
+    catalogue = Catalogue('http://127.0.0.1:18491', body_bytes=normalize(dataset)['body_bytes'])
     expected_body = hashlib.sha256(catalogue.body.encode()).hexdigest()
     records = []
     with sqlite3.connect(path.as_uri() + '?mode=ro', uri=True) as db:

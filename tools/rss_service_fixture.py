@@ -4,14 +4,16 @@ import json
 from pathlib import Path
 
 from rss_data_service import Catalogue
+from rss_dataset import normalize
 
 
-def prepare(remote, case):
+def prepare(remote, case, dataset=None):
     if (case['host_app']['bundle_name'] != 'com.sheafreader.hm'
             or not case['id'].startswith('sheafreader_')):
         raise ValueError('RSS fixture provided to a different app')
     source = Path(__file__).with_name('rss_data_service.py')
-    catalogue = Catalogue('http://127.0.0.1:18491')
+    dataset = normalize(dataset)
+    catalogue = Catalogue('http://127.0.0.1:18491', body_bytes=dataset['body_bytes'])
     files = {f'/feeds/{i}.xml': hashlib.sha256(catalogue.feed(i)).hexdigest()
              for i in range(1, 11)}
     files['/subscriptions.opml'] = hashlib.sha256(catalogue.opml()).hexdigest()
@@ -25,6 +27,7 @@ pid=process['pid'];proc=Path('/proc')/str(pid)
 before=(proc/'stat').read_text().rsplit(')',1)[1].split()[19]
 assert process['base_url']=='http://127.0.0.1:18491'
 assert process['feeds']==10 and process['articles_per_feed']==100
+assert process.get('body_bytes',32768)==PAYLOAD['dataset']['body_bytes']
 assert process['source'].encode() in (proc/'cmdline').read_bytes()
 assert hashlib.sha256(Path(process['source']).read_bytes()).hexdigest()==PAYLOAD['source_sha256']
 files={}
@@ -45,6 +48,7 @@ print(json.dumps({'sha256':digest,'source_sha256':PAYLOAD['source_sha256'],
     return json.loads(remote.python(code, {
         'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
         'files': files, 'sha256': digest,
+        'dataset': dataset,
     }, timeout=300))
 
 

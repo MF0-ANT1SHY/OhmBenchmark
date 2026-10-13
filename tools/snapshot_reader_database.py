@@ -10,7 +10,7 @@ from remote_device import Remote
 from rss_database_fixture import inspect
 
 
-def snapshot(remote, destination):
+def snapshot(remote, destination, dataset=None):
     destination = Path(destination)
     if destination.exists():
         raise ValueError('refusing to overwrite an existing reader database snapshot')
@@ -39,7 +39,7 @@ finally:
     remote.download(archive, destination)
     if hashlib.sha256(destination.read_bytes()).hexdigest() != receipt['sha256']:
         raise RuntimeError('reader database snapshot transfer hash mismatch')
-    receipt['ordinary_data'] = inspect(destination)
+    receipt['ordinary_data'] = inspect(destination, dataset)
     receipt['performance_verified'] = False
     destination.with_suffix('.json').write_text(json.dumps(receipt, indent=2) + '\n')
     return receipt

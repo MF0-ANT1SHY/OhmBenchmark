@@ -8,6 +8,7 @@ from install_sqlite_fixture import install
 from rss_database_fixture import inspect
 from rss_service_fixture import prepare as service, same_instance
 from snapshot_reader_database import snapshot
+from rss_dataset import for_fixture, normalize
 
 CASES = {'sheafreader_extract_tag_tolowercase', 'sheafreader_insert_duplicate_exception',
          'sheafreader_refresh_feeds_sequential', 'sheafreader_unread_counts_n_plus_1',
@@ -15,9 +16,9 @@ CASES = {'sheafreader_extract_tag_tolowercase', 'sheafreader_insert_duplicate_ex
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def audit_device(remote):
+def audit_device(remote, dataset=None):
     path = ROOT / 'artifacts/fixtures/rss-audits' / (uuid.uuid4().hex + '.db')
-    receipt = snapshot(remote, path)
+    receipt = snapshot(remote, path, dataset)
     receipt['local_archive'] = str(path)
     path.with_suffix('.json').write_text(json.dumps(receipt, indent=2) + '\n')
     return receipt
@@ -34,23 +35,25 @@ def prepare(remote, case, fixture):
     if (case['id'] not in CASES
             or case['host_app']['bundle_name'] != 'com.sheafreader.hm'):
         raise ValueError('reader fixture provided to an unsupported case')
-    expected = inspect(fixture)
-    source = service(remote, case)
+    dataset = for_fixture(fixture)
+    expected = inspect(fixture, dataset)
+    source = service(remote, case, dataset)
     installed = install(remote, case['host_app']['bundle_name'],
                         case['testcase']['module'], 'sheaf_reader.db', fixture)
-    actual = audit_device(remote)
+    actual = audit_device(remote, dataset)
     if actual['ordinary_data']['semantic_sha256'] != expected['semantic_sha256']:
         raise RuntimeError('device reader data differs from the prepared ordinary database')
-    return {'sha256': identity(expected, source), 'database': expected,
+    return {'sha256': identity(expected, source), 'database': expected, 'dataset': dataset,
             'device_snapshot': actual, 'installation': installed, 'service': source,
             'functional_read_verified': True,
             'method': 'ordinary UI-populated database restored outside profiling and all article bodies verified'}
 
 
 def finish(remote, case, before):
-    after_source = service(remote, case)
+    dataset = normalize(before.get('dataset'))
+    after_source = service(remote, case, dataset)
     same_instance(before['service'], after_source)
-    actual = audit_device(remote)
+    actual = audit_device(remote, dataset)
     if actual['ordinary_data']['semantic_sha256'] != before['database']['semantic_sha256']:
         raise RuntimeError('reader contents changed or were incomplete after the workload')
     if identity(actual['ordinary_data'], after_source) != before['sha256']:
@@ -63,7 +66,7 @@ def verify_preparation(before, after):
     same_instance(before['service'], after['service'])
     for receipt in (before, after):
         snapshot = receipt['device_snapshot']
-        actual = inspect(snapshot['local_archive'])
+        actual = inspect(snapshot['local_archive'], normalize(before.get('dataset')))
         if actual != snapshot['ordinary_data'] or actual['database_sha256'] != snapshot['sha256']:
             raise ValueError('reader snapshot receipt differs from the actual ordinary database')
         if (actual['semantic_sha256'] != before['database']['semantic_sha256']

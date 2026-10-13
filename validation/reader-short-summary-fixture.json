@@ -1,0 +1,22 @@
+{
+  "status": "ordinary_short_summary_fixture_prepared",
+  "performance_verified": false,
+  "device_verified": false,
+  "dataset": {
+    "body_bytes": 256
+  },
+  "article_body_bytes": 314,
+  "ordinary_data": {
+    "database_sha256": "81c57546952af1b9d33613f831b5f49e41b96e6b9c22a0027a382ef7dc6dc870",
+    "semantic_sha256": "e599882adfc721e7aced634f87a5df1d0ec11c3d8de3cfc2dd95cdc144b85aa2",
+    "feeds": 10,
+    "articles": 1000,
+    "body_sha256": "eca420399c66878e1d4e1dca11c062f2d370ec5eba5a8911d8e306ce602808f6",
+    "integrity_check": "ok",
+    "functional_read_verified": true,
+    "method": "all normal feed URLs, article GUIDs, titles, links, authors and full bodies verified"
+  },
+  "snippet_source_ref": "clean-app-v2/sheafreader_insert_duplicate_exception/unfixed",
+  "snippet_source_sha256": "7e512f79f117934bec0d4b5dec79d650b779fb84066de9e0a7b3eb8d6683bb4e",
+  "preparation": "Existing normal UI-created schema and articles retained; full bodies and snippets replaced with the ordinary short RSS catalogue outside the app. No evaluator fields or hooks added."
+}
