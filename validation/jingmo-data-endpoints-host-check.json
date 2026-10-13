@@ -1,0 +1,26 @@
+{
+  "scope": "read-only requests from evaluator host and device workstation; not an on-device app request",
+  "local_host": [
+    {
+      "url": "https://p1-cdn.jingmo.ruaruan.com/api/classicalliterature_classicpoem1.json",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "url": "https://p1-cdn.jingmo.ruaruan.com/api/dataset_v2.json",
+      "error": "HTTP Error 403: Forbidden"
+    }
+  ],
+  "device_workstation": [
+    {
+      "url": "https://p1-cdn.jingmo.ruaruan.com/api/classicalliterature_classicpoem1.json",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "url": "https://p1-cdn.jingmo.ruaruan.com/api/dataset_v2.json",
+      "error": "HTTP Error 403: Forbidden"
+    }
+  ],
+  "device_app_access": "pending",
+  "import_functionality_verified": false,
+  "performance_verified": false
+}
