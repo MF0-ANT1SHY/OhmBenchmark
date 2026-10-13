@@ -16,5 +16,25 @@
     "performance_verified": false
   },
   "runner": "tools/verify_reader_parser_candidate.js",
-  "scope": "Native marker searches replace full-fragment regexp scans during tag and CDATA extraction. No evaluator code is added to the application. Host functional equivalence does not substitute for an audited HAP or device performance trials."
+  "scope": "Native marker searches replace full-fragment regexp scans during tag and CDATA extraction. No evaluator code is added to the application. Host functional equivalence does not substitute for an audited HAP or device performance trials.",
+  "build": {
+    "ref": "candidate/native-tag-search/sheafreader_extract_tag_tolowercase/fixed",
+    "mode": "release",
+    "source": {
+      "tree": "c211382c799c5d1f8a034ee91424a701e207d1e3",
+      "files_checked": 70,
+      "findings": [],
+      "passed": true
+    },
+    "hap": {
+      "sha256": "045258596066ad562dc26511f10d7f874932d82e5a2c2d9be24bf60ab63cef86",
+      "abc_modules_checked": [
+        "ets/modules.abc"
+      ],
+      "findings": [],
+      "passed": true
+    },
+    "status": "PASS"
+  },
+  "device_performance": "pending"
 }

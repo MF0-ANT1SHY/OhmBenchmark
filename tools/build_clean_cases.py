@@ -14,10 +14,12 @@ from clean_sources import app_ref
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def build_case(case, variant, output, toolchain, mode):
+def build_case(case, variant, output, toolchain, mode, source_ref=None):
     cid = case["id"]
     repo = ROOT / case["host_app"]["local_path"]
-    ref = app_ref(case, variant)
+    # Isolated candidates may be compiled before changing the published source
+    # mapping. The receipt still binds the exact audited ref and source tree.
+    ref = source_ref or app_ref(case, variant)
     dest = output / cid / variant
     dest.mkdir(parents=True, exist_ok=True)
     source = audit_source(repo, ref)
