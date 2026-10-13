@@ -10,6 +10,7 @@ from music_service_fixture import same_instance
 from page_lifecycle import verify_reconstructions
 from reader_data_fixture import CASES as READER_CASES, verify_preparation
 from rss_refresh_progress import verify_observation
+from jingmo_import_fixture import CASE as POEM_IMPORT_CASE, verify_state as verify_poem_state, verify_preparation as verify_poem_preparation
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -27,6 +28,10 @@ def accept(cid, write=True, require_pass=True):
         workload=json.loads((folder/'workload.json').read_text())
         if workload['status']!='PASS' or workload['plan_sha256']!=plan_hash or workload['signed_sha256']!=sign['audit']['sha256']:
             raise RuntimeError('matching real workload execution not proven')
+        if cid==POEM_IMPORT_CASE:
+            device=json.loads((folder/'workload-device.json').read_text())
+            verify_poem_state(device['poem_import_state'],True)
+            verify_poem_preparation(workload['fixture'],workload['fixture_after'])
         if cid in READER_CASES:
             device=json.loads((folder/'workload-device.json').read_text())
             if verify_observation(device['reader_refresh'])!=workload.get('reader_refresh'):
@@ -57,6 +62,11 @@ def accept(cid, write=True, require_pass=True):
                 raise RuntimeError('capture provenance mismatch')
             if receipt.get('fixture_sha256') != workload.get('fixture',{}).get('sha256'):
                 raise RuntimeError('capture fixture differs from the validated workload')
+            if cid==POEM_IMPORT_CASE:
+                verify_poem_state(receipt['poem_import_state'],True)
+                verify_poem_preparation(receipt['poem_import_fixture_before'],receipt['poem_import_fixture_after'])
+                if receipt['poem_import_fixture_before']['sha256']!=receipt['fixture_sha256']:
+                    raise RuntimeError('poetry capture data identity differs from validated cold import')
             if cid in READER_CASES:
                 verify_observation(receipt['reader_refresh'])
                 verify_preparation(receipt['reader_fixture_before'],receipt['reader_fixture_after'])
