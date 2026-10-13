@@ -1,0 +1,16 @@
+{
+  "status": "normal_user_source_setting_and_full_import_verified",
+  "performance_verified": false,
+  "signed_sha256": "f19c17f95b00ae8ecf77532ada7e6e56497b10a8d53dc093efd531dd4ece01cb",
+  "fixture": {
+    "bundle": "com.hefengbao.jingmo.hw",
+    "database": "/data/app/el2/100/database/com.hefengbao.jingmo.hw/default/rdb/jingmo.db",
+    "backup": "/home/research/ohm-clean/backups/com.hefengbao.jingmo.hw/1791919333746528194/jingmo.db",
+    "fixture_tables": 1,
+    "integrity_check": "ok"
+  },
+  "records": 5000,
+  "all_fields_verified": true,
+  "scope": "ordinary settings UI and sync route; all full records read back from the normal database; no measurement or app harness",
+  "raw_device_sha256": "6176deff6c1da23d6dc9156a332b9e0feb4baea6fdf757fc30e76d7d5fa31b39"
+}
