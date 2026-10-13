@@ -29,6 +29,9 @@ class UI:
             yield from UI.nodes(child, bundle)
 
     def find(self, selector, timeout=15):
+        match_mode=selector.get('match','substring')
+        if match_mode not in ('substring','exact','regex'):
+            raise ValueError('invalid UI matching mode')
         deadline = time.monotonic() + timeout
         while True:
             layout = self.layout()
@@ -40,7 +43,11 @@ class UI:
                     continue
                 def matches_field(key, value):
                     actual = str(node.get(key, ''))
-                    return actual == str(value) if selector.get('match') == 'exact' else str(value) in actual
+                    if match_mode=='exact':
+                        return actual==str(value)
+                    if match_mode=='regex':
+                        return re.fullmatch(str(value),actual) is not None
+                    return str(value) in actual
                 if all(matches_field(key,value) for key,value in selector.items() if key not in ('index','match')):
                     matches.append(node)
             index = selector.get("index", 0)

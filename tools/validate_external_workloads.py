@@ -17,11 +17,12 @@ from pathlib import Path
 
 from install_sqlite_fixture import install as install_fixture
 from remote_device import Remote
+from seed_local_songs import deploy as deploy_songs
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def validate(remote, case, variant, browser_fixture=None):
+def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None):
     cid = case['id']
     folder = ROOT / 'artifacts/clean' / cid / variant
     signed = json.loads((folder / 'sign.json').read_text())
@@ -30,6 +31,10 @@ def validate(remote, case, variant, browser_fixture=None):
     result = {'case':cid, 'variant':variant, 'signed_sha256':signed['audit']['sha256'],
               'plan_sha256':plan_hash, 'status':'FAIL', 'performance_verified':False}
     try:
+        if browser_fixture and local_song_fixture:
+            raise ValueError('only one fixture may be supplied')
+        if local_song_fixture and case['host_app']['bundle_name']!='cc.chenlvin.cloudmusic':
+            raise ValueError('local song fixture provided to a different app')
         remote.python("from pathlib import Path\nimport hashlib\n"
                       f"assert hashlib.sha256(Path({signed['signed_hap']!r}).read_bytes()).hexdigest()=={signed['audit']['sha256']!r}", timeout=300)
         output = remote.hdc(['install','-r',signed['signed_hap']], timeout=180)
@@ -39,6 +44,9 @@ def validate(remote, case, variant, browser_fixture=None):
             result['fixture'] = install_fixture(remote, case['host_app']['bundle_name'],
                                                 case['testcase']['module'], 'Histories.db', browser_fixture)
             result['fixture']['sha256'] = hashlib.sha256(browser_fixture.read_bytes()).hexdigest()
+        if local_song_fixture:
+            result['fixture']=deploy_songs(local_song_fixture,remote.host)
+            result['fixture']['sha256']=result['fixture']['fixture_sha256']
         destination = f'/home/research/ohm-clean/{cid}/{variant}/workload-plan.json'
         remote.upload(plan_path, destination)
         code = """import hashlib,json,subprocess,sys,time,traceback
@@ -100,7 +108,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('cases',nargs='+')
     parser.add_argument('--remote',default='cityuPC')
-    parser.add_argument('--browser-fixture',type=Path)
+    fixtures=parser.add_mutually_exclusive_group()
+    fixtures.add_argument('--browser-fixture',type=Path)
+    fixtures.add_argument('--local-song-fixture',type=Path)
     args=parser.parse_args()
     remote=Remote(args.remote)
     remote.upload(ROOT/'tools/ui_driver.py','/home/research/ohm-clean/tools/ui_driver.py')
@@ -108,7 +118,7 @@ def main():
     for cid in args.cases:
         case=json.loads((ROOT/'cases'/cid/'case.json').read_text())
         for variant in ('unfixed','fixed'):
-            failed |= not validate(remote,case,variant,args.browser_fixture)
+            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture)
     return int(failed)
 
 
