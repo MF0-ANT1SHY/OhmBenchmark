@@ -1,0 +1,21 @@
+{
+  "bundle": "cc.chenlvin.cloudmusic",
+  "database": "/data/app/el2/100/database/cc.chenlvin.cloudmusic/entry/rdb/LocalSongs.db",
+  "backup": "/home/research/ohm-clean/backups/cc.chenlvin.cloudmusic/1791894696470719363/LocalSongs.db",
+  "fixture_tables": 1,
+  "integrity_check": "ok",
+  "audio_sha256": "e0a685d74829d610ba9436ddbd1b3e19916f04028a4560adac5b2d1a99e6c6dd",
+  "audio_files": 10000,
+  "database_sha256": "723e699f4211a2cdee2b22d3ca30df82b5b889927c3aef05e60326d4f86ab51d",
+  "fixture_sha256": "a1b73574e51b9a05b17ccdca41a7b8ee129d27822112e79dc949bb293b1e9637",
+  "status": "PASS",
+  "audio_paths_verified": 10000,
+  "audio_inodes": 5,
+  "maximum_inode_links": 2001,
+  "audio_owner": [
+    20020212,
+    20020212
+  ],
+  "business_paths": "relative to the ordinary app filesDir",
+  "app_code_modified": false
+}

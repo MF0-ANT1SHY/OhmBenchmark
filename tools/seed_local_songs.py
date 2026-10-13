@@ -11,9 +11,44 @@ import hashlib
 import tempfile
 import uuid
 import subprocess
+import tarfile
+import io
 from pathlib import Path
 
 APP_FILES = '/data/app/el2/100/base/cc.chenlvin.cloudmusic/haps/entry/files'
+
+
+def audio_archive(path, files, blob):
+    """Use separate audio inodes below the device's 4096-link limit."""
+    digest=hashlib.sha256(blob).hexdigest()[:16]
+    parts={name:f'sample-{digest}-{i//2000}.mp3' for i,name in enumerate(files)}
+    with tarfile.open(path,'w',format=tarfile.USTAR_FORMAT) as archive:
+        for name in sorted(set(parts.values())):
+            info=tarfile.TarInfo(name)
+            # App UIDs exceed USTAR's octal field. Extract portably as root,
+            # then restore the real app owner on just these audio inodes.
+            info.size=len(blob);info.mode=0o660
+            archive.addfile(info,io.BytesIO(blob))
+        for name,part in parts.items():
+            info=tarfile.TarInfo(name)
+            info.type=tarfile.LNKTYPE;info.linkname=part
+            info.mode=0o660
+            archive.addfile(info)
+    return parts
+
+
+def file_inventory(listing, wanted):
+    found={}
+    for line in listing.splitlines():
+        # ls -lni includes an inode, numeric ownership and size. A symlink must
+        # never be mistaken for an absent fixture file and overwritten.
+        words=line.split(' -> ',1)[0].split()
+        if not words or words[-1] not in wanted:
+            continue
+        if len(words)<8 or not words[0].isdigit() or not words[1].startswith('-') or not words[5].isdigit():
+            raise RuntimeError('unrecognized existing fixture file: '+line)
+        found[words[-1]]=(int(words[0]),int(words[5]))
+    return found
 
 
 def fixture_digest(folder):
@@ -93,25 +128,47 @@ def deploy(folder, remote_name):
     if not existing:
         remote.hdc(['file','send',audio_host,target])
     remote.hdc(['shell',f'chown {uid}:{gid} {target}; chmod 660 {target}'])
-    # One remote shell call creates all ordinary files; no app methods or fake
-    # player callbacks are invoked. Hard links avoid duplicating gigabytes of audio.
-    lines=['set -e']
-    for name in spec['files']:
-        path=directory+'/'+name
-        lines.append(f'if test -e {path}; then test {path} -ef {target}; else ln {target} {path}; fi')
-    lines.append('echo AUDIO_FILES_READY')
+    # Native archive extraction avoids thousands of slow shell forks. Groups use
+    # separate copies of the same playable audio, rather than exceeding the
+    # phone filesystem's link limit. No app methods or callbacks are invoked.
     token=uuid.uuid4().hex
-    host_script=f'/home/research/ohm-clean/fixtures/cloudmusic/files-{token}.sh'
-    device_script=f'/data/local/tmp/files-{token}.sh'
+    host_archive=f'/home/research/ohm-clean/fixtures/cloudmusic/audio-{token}.tar'
+    device_archive=f'/data/local/tmp/audio-{token}.tar'
+    blob=(folder/audio_name).read_bytes()
     with tempfile.TemporaryDirectory() as tmp:
-        script=Path(tmp)/'files.sh';script.write_text('\n'.join(lines)+'\n')
-        remote.upload(script,host_script)
-    remote.hdc(['file','send',host_script,device_script])
-    output=remote.hdc(['shell',f'sh {device_script}'],timeout=180)
+        archive=Path(tmp)/'audio.tar'
+        parts=audio_archive(archive,spec['files'],blob)
+        wanted=set(spec['files'])|set(parts.values())|{audio_name}
+        before=file_inventory(remote.hdc(['shell',f'ls -lni {directory}']),wanted)
+        if audio_name not in before:
+            raise RuntimeError('original audio is missing')
+        allowed={before[audio_name][0]}
+        for name in set(parts.values()) & before.keys():
+            check=remote.hdc(['shell',f'sha256sum {directory}/{name}']).split()
+            if not check or check[0]!=digest:
+                raise RuntimeError('existing audio group differs; refusing to overwrite it')
+            allowed.add(before[name][0])
+        if any(name in before and before[name][0] not in allowed for name in spec['files']):
+            raise RuntimeError('existing song file is not a verified fixture link; refusing to overwrite it')
+        remote.upload(archive,host_archive)
+    remote.hdc(['file','send',host_archive,device_archive])
+    output=remote.hdc(['shell',f'tar -xf {device_archive} -C {directory} && echo AUDIO_FILES_READY'],timeout=180)
     if 'AUDIO_FILES_READY' not in output:
         raise RuntimeError('audio deployment did not finish: '+output)
+    groups=' '.join(directory+'/'+name for name in sorted(set(parts.values())))
+    owned=remote.hdc(['shell',f'chown {uid}:{gid} {groups} && chmod 660 {groups} && echo AUDIO_OWNER_READY'])
+    if 'AUDIO_OWNER_READY' not in owned:
+        raise RuntimeError('deployed audio ownership could not be restored')
     actual=remote.hdc(['shell',f'sha256sum {target}']).split()[0]
     if actual!=digest:raise RuntimeError('deployed audio checksum mismatch')
+    after=file_inventory(remote.hdc(['shell',f'ls -lni {directory}']),wanted)
+    for name,part in parts.items():
+        if name not in after or part not in after or after[name]!=after[part] or after[name][1]!=len(blob):
+            raise RuntimeError('deployed audio link is missing or incorrect: '+name)
+    for part in set(parts.values()):
+        check=remote.hdc(['shell',f'sha256sum {directory}/{part}']).split()
+        if not check or check[0]!=digest:
+            raise RuntimeError('deployed audio group checksum mismatch')
     receipt.update({'audio_sha256':digest,'audio_files':len(spec['files']),
                     'database_sha256':hashlib.sha256((folder/'LocalSongs.db').read_bytes()).hexdigest(),
                     'fixture_sha256':digest_fixture})
