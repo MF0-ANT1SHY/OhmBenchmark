@@ -1,0 +1,10 @@
+{
+  "status": "normal_sync_ui_observed_import_unproven",
+  "performance_verified": false,
+  "import_functionality_verified": false,
+  "database_count_before": "100000",
+  "database_count_after": "100000",
+  "app_pid": 55067,
+  "filtered_app_log_sha256": "f9d567e6f456880fdf7ccfd365f7bae91f82c457d75b0515fbab694dc26d31f1",
+  "app_logs_excerpt": "10-14 03:16:03.090 55067 55067 I A0FF00/com.hefengbao.jingmo.hw/JINGMO@DatasetViewModel: getClassicPoemList url :https://p1-cdn.jingmo.ruaruan.com/api/classicalliterature_classicpoem1.json, %{public}s\n10-14 03:16:03.106 55067 55067 E A0FF00/com.hefengbao.jingmo.hw/JINGMO@SyncData: [object Object]} => Couldn't resolve host name, %{public}s\n10-14 03:16:03.106 55067 55067 I A0FF00/com.hefengbao.jingmo.hw/JINGMO@DatasetViewModel: getClassicPoemList result msg :[object Object]} => Couldn't resolve host name, %{public}s\n10-14 03:16:03.106 55067 55067 I A0FF00/com.hefengbao.jingmo.hw/JINGMO@DatasetViewModel: getClassicPoemList result error :[object Object]} => Couldn't resolve host name, %{public}s\n10-14 03:16:03.106 55067 55067 E A0FF00/com.hefengbao.jingmo.hw/JINGMO@SyncData: code = undefined, msg = undefined, %{public}s\n"
+}
