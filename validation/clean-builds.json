@@ -959,6 +959,48 @@
           "verify": 4.07207912100057
         },
         "capture_duration_required_s": 125
+      },
+      "performance": {
+        "status": "FAIL",
+        "metric": "hiperf_instructions",
+        "rounds": 3,
+        "samples": [
+          2045600548,
+          2054389977,
+          2030748226
+        ],
+        "median": 2045600548,
+        "paired_ratios": [
+          1.1021910073938732,
+          1.107127740304073,
+          1.0817584952976602
+        ],
+        "median_ratio": 1.1021910073938732,
+        "plan_sha256": "fc0124a21d7b95615d2dba0151b8a9b62a3906bb2667890149636a97274f29e1",
+        "signed_sha256": "1ef83d8d67aabb9d0f745ced3322c25542201dab36d2ae0588d7837e37726e62",
+        "fixture_sha256": "a1b73574e51b9a05b17ccdca41a7b8ee129d27822112e79dc949bb293b1e9637",
+        "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+        "captures": [
+          {
+            "round": 1,
+            "report_sha256": "26e29fb38a6e62f7ff86ebf4eaef51106677a95b7f34ac7b7a87a1845debf8a6",
+            "app_samples": 3106,
+            "remote_artifacts": "/home/research/ohm-clean/cloudmusic_local_song_memory_filter/unfixed/cpu-captures/round-1"
+          },
+          {
+            "round": 2,
+            "report_sha256": "271fe25a6e978d128bc9f626322eb85e45aa785fa9cb98768d89d2890817852e",
+            "app_samples": 3173,
+            "remote_artifacts": "/home/research/ohm-clean/cloudmusic_local_song_memory_filter/unfixed/cpu-captures/round-2"
+          },
+          {
+            "round": 3,
+            "report_sha256": "ca92b5368d49e38a3650bfc107986b17f7831b8fe9a38cafc33351c34ac55cae",
+            "app_samples": 3109,
+            "remote_artifacts": "/home/research/ohm-clean/cloudmusic_local_song_memory_filter/unfixed/cpu-captures/round-3"
+          }
+        ],
+        "legacy_evidence_reused": false
       }
     },
     {
@@ -1039,6 +1081,48 @@
           "verify": 3.9625588199996855
         },
         "capture_duration_required_s": 125
+      },
+      "performance": {
+        "status": "FAIL",
+        "metric": "hiperf_instructions",
+        "rounds": 3,
+        "samples": [
+          1855940154,
+          1855603380,
+          1877265799
+        ],
+        "median": 1855940154,
+        "paired_ratios": [
+          1.1021910073938732,
+          1.107127740304073,
+          1.0817584952976602
+        ],
+        "median_ratio": 1.1021910073938732,
+        "plan_sha256": "fc0124a21d7b95615d2dba0151b8a9b62a3906bb2667890149636a97274f29e1",
+        "signed_sha256": "5989ec9fa82bc0b5147cb51a2a0f1630fcfe96a46046ea60f105e94503d85dda",
+        "fixture_sha256": "a1b73574e51b9a05b17ccdca41a7b8ee129d27822112e79dc949bb293b1e9637",
+        "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+        "captures": [
+          {
+            "round": 1,
+            "report_sha256": "5d180c2b3282ad2b5d1197d3cde43621b13aea8ef59acec5ec586e8fd8095d93",
+            "app_samples": 3012,
+            "remote_artifacts": "/home/research/ohm-clean/cloudmusic_local_song_memory_filter/fixed/cpu-captures/round-1"
+          },
+          {
+            "round": 2,
+            "report_sha256": "050b3cfb00cb41f4b3ffe94c2da83019c7da6ac291a3b0f20e46668a9e1d458a",
+            "app_samples": 3167,
+            "remote_artifacts": "/home/research/ohm-clean/cloudmusic_local_song_memory_filter/fixed/cpu-captures/round-2"
+          },
+          {
+            "round": 3,
+            "report_sha256": "f10f7de7fbe429a07f08f9d3b29e080eb9750fd247c437e12a699ca39663300c",
+            "app_samples": 3010,
+            "remote_artifacts": "/home/research/ohm-clean/cloudmusic_local_song_memory_filter/fixed/cpu-captures/round-3"
+          }
+        ],
+        "legacy_evidence_reused": false
       }
     },
     {
