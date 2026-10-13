@@ -1,0 +1,9 @@
+{
+  "pid": 53975,
+  "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+  "source": "/home/research/ohm-clean/services/cloudmusic/data-5eb6248f092b6a5a.py",
+  "count": 10000,
+  "base_url": "http://127.0.0.1:18490",
+  "status": "PASS",
+  "scope": "workstation API response only; device URL configuration and workloads not validated"
+}
