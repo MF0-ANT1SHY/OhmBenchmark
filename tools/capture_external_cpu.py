@@ -26,6 +26,12 @@ def capture(remote, case, variant, round_number, fixture=None):
     output.mkdir(parents=True,exist_ok=True)
     remote_base = f'/home/research/ohm-clean/{cid}/{variant}/cpu-captures/round-{round_number}'
     remote_plan = remote_base+'/plan.json'
+    # Isolate this trial from the other benchmark apps left running by smoke
+    # checks. Do not stop unrelated applications installed on the device.
+    bundles=sorted({json.loads(p.read_text())['host_app']['bundle_name']
+                    for p in (ROOT/'cases').glob('*/case.json')})
+    for bundle in bundles:
+        remote.hdc(['shell','aa force-stop '+bundle])
     response = remote.hdc(['install','-r',sign['signed_hap']],timeout=180)
     if 'install bundle successfully' not in response:
         raise RuntimeError(response)
