@@ -16,10 +16,11 @@
     "数据库读取",
     "网络结果渲染"
   ],
-  "unfixed_commit": "caf0823",
-  "fixed_commit": "d52c391",
+  "unfixed_commit": "caf08237364b16bdda9a9be5ade0beae37d7f487",
+  "fixed_commit": "d52c391f23e1f9b1f1f5c1c26989200953eb1f55",
   "fix_summary": "Dataset import uses RdbStore.batchInsert so the whole array is inserted in a single transaction; the per-row debug logging is removed.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "default",
     "ability": "EntryAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_jingmo_0010.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "elapsed_ms",
+      "definition": "Time from dataset JSON parse completion to the last INSERT commit observed in disk/database trace activity.",
+      "comparison": "unfixed: one sqlite journal/fsync cycle per row (thousands of small commits); fixed: single batched commit. unfixed_import_ms > fixed_import_ms by >= 3x for a multi-thousand-row dataset."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions / trace_cpu_ms",
       "unfixed": [
@@ -68,18 +79,94 @@
         714310442
       ],
       "note": "1.73G vs 713M instructions (2.4x); cpu 4816 vs 239 ms"
-    },
-    "mechanism_oracle": {
-      "metric": "elapsed_ms",
-      "definition": "Time from dataset JSON parse completion to the last INSERT commit observed in disk/database trace activity.",
-      "comparison": "unfixed: one sqlite journal/fsync cycle per row (thousands of small commits); fixed: single batched commit. unfixed_import_ms > fixed_import_ms by >= 3x for a multi-thousand-row dataset."
     }
   },
   "reproduction": [
-    "git -C hosts/jingmo checkout case/jingmo_dataset_import_no_transaction/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/jingmo_dataset_import_no_transaction/testcase/PerfLoad_jingmo_0010.* perf_testing/hapray/testcases/com.hefengbao.jingmo.hw/",
-    "python -m scripts.main perf --run_testcases PerfLoad_jingmo_0010 --round 3",
-    "git -C hosts/jingmo checkout case/jingmo_dataset_import_no_transaction/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py jingmo_dataset_import_no_transaction",
+    "python3 tools/sign_clean_cases.py jingmo_dataset_import_no_transaction",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/jingmo_dataset_import_no_transaction/testcase/ into perf_testing/hapray/testcases/com.hefengbao.jingmo.hw/.",
+    "Install each clean signed variant and run the PerfLoad_jingmo_0010 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "caf0823",
+    "fixed_commit": "d52c391",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/jingmo_dataset_import_no_transaction/unfixed",
+        "commit": "caf08237364b16bdda9a9be5ade0beae37d7f487",
+        "tree": "2eadaf75ff4f636cd8f04ca1ac52c6f3279b622a",
+        "business_base_tree": "2eadaf75ff4f636cd8f04ca1ac52c6f3279b622a",
+        "production_patches": [],
+        "unsigned_sha256": "9253e0aaef33fc49ec8906b0747155de335f56b96ffb3bfe3dbd159664cd427d",
+        "bytecode_audit": {
+          "sha256": "9253e0aaef33fc49ec8906b0747155de335f56b96ffb3bfe3dbd159664cd427d",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "jingmo_dataset_import_no_transaction",
+          "variant": "unfixed",
+          "unsigned_sha256": "9253e0aaef33fc49ec8906b0747155de335f56b96ffb3bfe3dbd159664cd427d",
+          "signed_hap": "/home/research/ohm-clean/jingmo_dataset_import_no_transaction/unfixed/app.hap",
+          "audit": {
+            "sha256": "2a993214fb0a158a972215c50d9112f3d1d7362b204baaf15839af7236003c52",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/jingmo_dataset_import_no_transaction/fixed",
+        "commit": "d52c391f23e1f9b1f1f5c1c26989200953eb1f55",
+        "tree": "ac69e4f9f62a10ea28840c83cc0f8741788ec151",
+        "business_base_tree": "ac69e4f9f62a10ea28840c83cc0f8741788ec151",
+        "production_patches": [],
+        "unsigned_sha256": "8fcc828852a7a389baad8de97e978ea6767540950af102266cb882e2b6e5feed",
+        "bytecode_audit": {
+          "sha256": "8fcc828852a7a389baad8de97e978ea6767540950af102266cb882e2b6e5feed",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "jingmo_dataset_import_no_transaction",
+          "variant": "fixed",
+          "unsigned_sha256": "8fcc828852a7a389baad8de97e978ea6767540950af102266cb882e2b6e5feed",
+          "signed_hap": "/home/research/ohm-clean/jingmo_dataset_import_no_transaction/fixed/app.hap",
+          "audit": {
+            "sha256": "12bc14abc50deae03781e62e7e18a94b11af407772d48d68ea72b4c9dfb397d4",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

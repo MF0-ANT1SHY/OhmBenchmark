@@ -17,10 +17,11 @@
     "状态更新",
     "组件创建"
   ],
-  "unfixed_commit": "627611f",
-  "fixed_commit": "157104d",
+  "unfixed_commit": "5bf6142f76af3ff2fd25b6f731a27fee6b838346",
+  "fixed_commit": "1e3d086fee748d99ffcdd31d18b4f793ddab8491",
   "fix_summary": "The item list is mapped to parsed objects once per render and rows read the parsed fields; deletion re-serializes only the affected entry.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -32,7 +33,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench_ui"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_ytmusic_0020.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -56,6 +58,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "history_page_render_cpu_ms",
+      "definition": "UI-thread CPU time from page-show to last row rendered plus the re-render after one deletion, from the ace trace.",
+      "comparison": "unfixed performs 4*history_size JSON.parse calls per render (visible in JS sampling); fixed performs history_size parses. unfixed_render_cpu_ms > fixed by >= 25% with 30+ entries."
+    },
+    "legacy_instrumented_evidence": {
       "status": "supporting",
       "measured_as": "JSON.parse calls per render",
       "unfixed": [
@@ -69,18 +80,94 @@
         200
       ],
       "note": "600 vs 200 JSON.parse calls per history-page render (mechanism counter, authoritative); whole-step hw-instruction medians are flat (714M vs 695M) because fixed still parses a large baseline, so the declared metric needs a narrower region to separate (measurements-staging)."
-    },
-    "mechanism_oracle": {
-      "metric": "history_page_render_cpu_ms",
-      "definition": "UI-thread CPU time from page-show to last row rendered plus the re-render after one deletion, from the ace trace.",
-      "comparison": "unfixed performs 4*history_size JSON.parse calls per render (visible in JS sampling); fixed performs history_size parses. unfixed_render_cpu_ms > fixed by >= 25% with 30+ entries."
     }
   },
   "reproduction": [
-    "git -C hosts/ytmusic checkout case/ytmusic_history_json_parse_per_row/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/ytmusic_history_json_parse_per_row/testcase/PerfLoad_ytmusic_0020.* perf_testing/hapray/testcases/com.example.myapplication/",
-    "python -m scripts.main perf --run_testcases PerfLoad_ytmusic_0020 --round 3",
-    "git -C hosts/ytmusic checkout case/ytmusic_history_json_parse_per_row/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py ytmusic_history_json_parse_per_row",
+    "python3 tools/sign_clean_cases.py ytmusic_history_json_parse_per_row",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/ytmusic_history_json_parse_per_row/testcase/ into perf_testing/hapray/testcases/com.example.myapplication/.",
+    "Install each clean signed variant and run the PerfLoad_ytmusic_0020 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "627611f",
+    "fixed_commit": "157104d",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/ytmusic_history_json_parse_per_row/unfixed",
+        "commit": "5bf6142f76af3ff2fd25b6f731a27fee6b838346",
+        "tree": "b708e385576817b0291209da9dde6190c4d4f672",
+        "business_base_tree": "b708e385576817b0291209da9dde6190c4d4f672",
+        "production_patches": [],
+        "unsigned_sha256": "9ebe2d06e0b0aa7f31200789530b8f11e3322b88b8a0dcd17b334a355a4f9c5d",
+        "bytecode_audit": {
+          "sha256": "9ebe2d06e0b0aa7f31200789530b8f11e3322b88b8a0dcd17b334a355a4f9c5d",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "ytmusic_history_json_parse_per_row",
+          "variant": "unfixed",
+          "unsigned_sha256": "9ebe2d06e0b0aa7f31200789530b8f11e3322b88b8a0dcd17b334a355a4f9c5d",
+          "signed_hap": "/home/research/ohm-clean/ytmusic_history_json_parse_per_row/unfixed/app.hap",
+          "audit": {
+            "sha256": "441c83955e2424c8fbb364ac3c7e45dc6c684ca062c00563e04c8b5543557aca",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/ytmusic_history_json_parse_per_row/fixed",
+        "commit": "1e3d086fee748d99ffcdd31d18b4f793ddab8491",
+        "tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d",
+        "business_base_tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d",
+        "production_patches": [],
+        "unsigned_sha256": "3a17053f95549bb8ad06c904437793f02826788099ac4f0337489a03f4825864",
+        "bytecode_audit": {
+          "sha256": "3a17053f95549bb8ad06c904437793f02826788099ac4f0337489a03f4825864",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "ytmusic_history_json_parse_per_row",
+          "variant": "fixed",
+          "unsigned_sha256": "3a17053f95549bb8ad06c904437793f02826788099ac4f0337489a03f4825864",
+          "signed_hap": "/home/research/ohm-clean/ytmusic_history_json_parse_per_row/fixed/app.hap",
+          "audit": {
+            "sha256": "a1ad4d454f028655fd36cba349a91d055e0650f63350a90d8d9f488a0d33bfe6",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

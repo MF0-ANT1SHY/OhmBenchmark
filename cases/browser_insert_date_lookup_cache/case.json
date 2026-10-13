@@ -16,10 +16,11 @@
     "状态更新",
     "数据库读取"
   ],
-  "unfixed_commit": "e3c8aa9",
-  "fixed_commit": "9138921",
+  "unfixed_commit": "e3c8aa99fd6a93333a9e906216545861aec07456",
+  "fixed_commit": "9138921a02aa215e6afb02ec09253c7908babd06",
   "fix_summary": "Cache already-verified per-day tables in an in-memory Set (RdbUtils.knownDates); insertDate returns early on cache hit, and deleteAll clears the cache.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_browser_0040.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "rdb_statements_per_page_save",
+      "definition": "Count of RDB statement executions attributable to history saving (date_table SELECT + CREATE TABLE + history INSERT) per page load, from disk/sqlite activity in the hitrace trace or RDB debug logs.",
+      "comparison": "unfixed: >= 3 statements per page save after the first (SELECT + CREATE TABLE + INSERT); fixed: 1 statement per page save (INSERT only). Overall page-save wall time in trace drops accordingly."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions / trace_cpu_ms",
       "unfixed": [
@@ -68,18 +79,120 @@
         428455155
       ],
       "note": "980M vs 427M instructions (2.3x); cpu 5949 vs 2495 ms; 3000 vs 1002 statements"
-    },
-    "mechanism_oracle": {
-      "metric": "rdb_statements_per_page_save",
-      "definition": "Count of RDB statement executions attributable to history saving (date_table SELECT + CREATE TABLE + history INSERT) per page load, from disk/sqlite activity in the hitrace trace or RDB debug logs.",
-      "comparison": "unfixed: >= 3 statements per page save after the first (SELECT + CREATE TABLE + INSERT); fixed: 1 statement per page save (INSERT only). Overall page-save wall time in trace drops accordingly."
     }
   },
   "reproduction": [
-    "git -C hosts/browser checkout case/browser_insert_date_lookup_cache/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/browser_insert_date_lookup_cache/testcase/PerfLoad_browser_0040.* perf_testing/hapray/testcases/com.example.nanvision/",
-    "python -m scripts.main perf --run_testcases PerfLoad_browser_0040 --round 3",
-    "git -C hosts/browser checkout case/browser_insert_date_lookup_cache/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py browser_insert_date_lookup_cache",
+    "python3 tools/sign_clean_cases.py browser_insert_date_lookup_cache",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/browser_insert_date_lookup_cache/testcase/ into perf_testing/hapray/testcases/com.example.nanvision/.",
+    "Install each clean signed variant and run the PerfLoad_browser_0040 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "e3c8aa9",
+    "fixed_commit": "9138921",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/browser_insert_date_lookup_cache/unfixed",
+        "commit": "e3c8aa99fd6a93333a9e906216545861aec07456",
+        "tree": "0ba445d9e65201d8b2c135dc64f17cafa5c4a2ee",
+        "business_base_tree": "0ba445d9e65201d8b2c135dc64f17cafa5c4a2ee",
+        "production_patches": [],
+        "unsigned_sha256": "964710080bce771321ea022db94d33ff2873d0b5ad65fd52e812a1dbcf172669",
+        "bytecode_audit": {
+          "sha256": "964710080bce771321ea022db94d33ff2873d0b5ad65fd52e812a1dbcf172669",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "browser_insert_date_lookup_cache",
+          "variant": "unfixed",
+          "unsigned_sha256": "964710080bce771321ea022db94d33ff2873d0b5ad65fd52e812a1dbcf172669",
+          "signed_hap": "/home/research/ohm-clean/browser_insert_date_lookup_cache/unfixed/app.hap",
+          "audit": {
+            "sha256": "c5557aaa6231ab000c7823372a48182a663151d6c62276c033519a80ca26583e",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "browser_insert_date_lookup_cache",
+          "variant": "unfixed",
+          "signed_sha256": "c5557aaa6231ab000c7823372a48182a663151d6c62276c033519a80ca26583e",
+          "install": "[Info]App install path:/home/research/ohm-clean/browser_insert_date_lookup_cache/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            31131
+          ],
+          "foreground_bundle": "com.example.nanvision",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/browser_insert_date_lookup_cache/fixed",
+        "commit": "9138921a02aa215e6afb02ec09253c7908babd06",
+        "tree": "b5f933274bab9a3518b4b572da64957f3f9e9e87",
+        "business_base_tree": "b5f933274bab9a3518b4b572da64957f3f9e9e87",
+        "production_patches": [],
+        "unsigned_sha256": "783a6e8d904e197430ce578fbbdec2f2e1595805774853997bc6bf5be3fcb92d",
+        "bytecode_audit": {
+          "sha256": "783a6e8d904e197430ce578fbbdec2f2e1595805774853997bc6bf5be3fcb92d",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "browser_insert_date_lookup_cache",
+          "variant": "fixed",
+          "unsigned_sha256": "783a6e8d904e197430ce578fbbdec2f2e1595805774853997bc6bf5be3fcb92d",
+          "signed_hap": "/home/research/ohm-clean/browser_insert_date_lookup_cache/fixed/app.hap",
+          "audit": {
+            "sha256": "6967ee493f0d8cc6e0f89c4da06de8050a9207930e73ca794154768fb6a5d1b0",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "browser_insert_date_lookup_cache",
+          "variant": "fixed",
+          "signed_sha256": "6967ee493f0d8cc6e0f89c4da06de8050a9207930e73ca794154768fb6a5d1b0",
+          "install": "[Info]App install path:/home/research/ohm-clean/browser_insert_date_lookup_cache/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            31563
+          ],
+          "foreground_bundle": "com.example.nanvision",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      }
+    }
+  }
 }

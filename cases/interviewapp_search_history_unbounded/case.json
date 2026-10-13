@@ -16,10 +16,11 @@
     "状态更新",
     "页面切换"
   ],
-  "unfixed_commit": "4fd3756",
-  "fixed_commit": "9f226e3",
+  "unfixed_commit": "4fd37562f8060ce572f580d89dbf9d3a33052e63",
+  "fixed_commit": "9f226e3d8793bf1a9396221d5c518debd7b8bde5",
   "fix_summary": "History is kept as a single ordered JSON list capped at the 20 most recent keywords.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "phone",
     "ability": "PhoneAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/MemLoad_interviewapp_0030.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -56,6 +58,15 @@
     "definition": "Pss of the app process after the workload, from the periodic smaps_rollup snapshots in memory/.",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "history_entries_and_render_cost",
+      "definition": "Number of history entries retained after 60 searches, size of the preferences file, and CPU/time to render the history component when the search page opens.",
+      "comparison": "unfixed retains 60+ entries and growing render/storage cost; fixed retains 20. unfixed history-component build cost and preferences size > fixed."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "VmRSS delta (kB) over the seeded-history read path",
       "unfixed": [
@@ -69,18 +80,98 @@
         -1116
       ],
       "note": "+22.0MB vs -1.0MB VmRSS growth (unfixed retains all 500000 seeded entries; fixed caps at 2000). hw-instructions in the same runs: 2.33G vs 32M (73x); bench result 500000 vs 2000 entries. Measured on Pura 70 Ultra (measurements-staging/interviewapp_search_history_unbounded)."
-    },
-    "mechanism_oracle": {
-      "metric": "history_entries_and_render_cost",
-      "definition": "Number of history entries retained after 60 searches, size of the preferences file, and CPU/time to render the history component when the search page opens.",
-      "comparison": "unfixed retains 60+ entries and growing render/storage cost; fixed retains 20. unfixed history-component build cost and preferences size > fixed."
     }
   },
   "reproduction": [
-    "git -C hosts/interviewapp checkout case/interviewapp_search_history_unbounded/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/interviewapp_search_history_unbounded/testcase/MemLoad_interviewapp_0030.* perf_testing/hapray/testcases/com.itcast.pass_interview/",
-    "python -m scripts.main perf --run_testcases MemLoad_interviewapp_0030 --round 3 --memory",
-    "git -C hosts/interviewapp checkout case/interviewapp_search_history_unbounded/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py interviewapp_search_history_unbounded",
+    "python3 tools/sign_clean_cases.py interviewapp_search_history_unbounded",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/interviewapp_search_history_unbounded/testcase/ into perf_testing/hapray/testcases/com.itcast.pass_interview/.",
+    "Install each clean signed variant and run the MemLoad_interviewapp_0030 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "4fd3756",
+    "fixed_commit": "9f226e3",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/interviewapp_search_history_unbounded/unfixed",
+        "commit": "4fd37562f8060ce572f580d89dbf9d3a33052e63",
+        "tree": "4085ad189b70ef72a88ddc0010fdf6890b12aa49",
+        "business_base_tree": "4085ad189b70ef72a88ddc0010fdf6890b12aa49",
+        "production_patches": [],
+        "unsigned_sha256": "82852c0c1e05422b84aa9d3f1c70c60bf77d5f371ca5c41a2ca5c787cec3532e",
+        "bytecode_audit": {
+          "sha256": "82852c0c1e05422b84aa9d3f1c70c60bf77d5f371ca5c41a2ca5c787cec3532e",
+          "abc_modules_checked": [
+            "ets/widgets.abc",
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "interviewapp_search_history_unbounded",
+          "variant": "unfixed",
+          "unsigned_sha256": "82852c0c1e05422b84aa9d3f1c70c60bf77d5f371ca5c41a2ca5c787cec3532e",
+          "signed_hap": "/home/research/ohm-clean/interviewapp_search_history_unbounded/unfixed/app.hap",
+          "audit": {
+            "sha256": "854316c15663fb5a93d874a4c392602febbbb9dd553080a9856d83bcb218a36c",
+            "abc_modules_checked": [
+              "ets/modules.abc",
+              "ets/widgets.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/interviewapp_search_history_unbounded/fixed",
+        "commit": "9f226e3d8793bf1a9396221d5c518debd7b8bde5",
+        "tree": "6ead8b753ec2a2f67ecdbc52bd53a454f2942b9f",
+        "business_base_tree": "6ead8b753ec2a2f67ecdbc52bd53a454f2942b9f",
+        "production_patches": [],
+        "unsigned_sha256": "dc8c86eba41cb1b96150e052ac156f337a4ab8dd018c869294d3b446568c0c93",
+        "bytecode_audit": {
+          "sha256": "dc8c86eba41cb1b96150e052ac156f337a4ab8dd018c869294d3b446568c0c93",
+          "abc_modules_checked": [
+            "ets/widgets.abc",
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "interviewapp_search_history_unbounded",
+          "variant": "fixed",
+          "unsigned_sha256": "dc8c86eba41cb1b96150e052ac156f337a4ab8dd018c869294d3b446568c0c93",
+          "signed_hap": "/home/research/ohm-clean/interviewapp_search_history_unbounded/fixed/app.hap",
+          "audit": {
+            "sha256": "c802d64e5a6189c856d4d189f266e25a5644af5cb20d2b3c4a4624d72475f928",
+            "abc_modules_checked": [
+              "ets/modules.abc",
+              "ets/widgets.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

@@ -1,0 +1,49 @@
+{
+  "bundle": "com.example.nanvision",
+  "ability": "EntryAbility",
+  "description": "浏览器页面操作",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "小狐狸浏览器"
+      }
+    }
+  ],
+  "measured": [
+    {
+      "op": "repeat",
+      "count": 15,
+      "actions": [
+        {
+          "op": "input",
+          "selector": {
+            "type": "SearchField"
+          },
+          "value": "https://example.com"
+        },
+        {
+          "op": "key",
+          "key": 2054
+        },
+        {
+          "op": "pause",
+          "seconds": 1
+        }
+      ]
+    }
+  ],
+  "verify": [
+    {
+      "op": "point",
+      "x": 0.5,
+      "y": 0.92
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Example Domain"
+      }
+    }
+  ]
+}

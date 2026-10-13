@@ -16,10 +16,11 @@
     "列表滑动",
     "组件创建"
   ],
-  "unfixed_commit": "153f8c7",
-  "fixed_commit": "ff15a99",
+  "unfixed_commit": "153f8c7dc8203197ffb3ff14e8856d6c124f001b",
+  "fixed_commit": "ff15a9947c7438848de730bc46b02d5573b7583d",
   "fix_summary": "Names are collected into an array and joined once.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench_ui"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_cloudmusic_0050.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "row_appear_cpu_overhead",
+      "definition": "CPU time in SongCard aboutToAppear per row appearance from JS sampling stacks (getArtists frames), aggregated over the scroll.",
+      "comparison": "unfixed shows repeated string-concat allocations in getArtists for every row build; fixed shows a single join per row. Aggregate scroll CPU lower in fixed; effect scales with rows rendered."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions over the song-list render workload (Pura 70 Ultra)",
       "unfixed": [
@@ -68,18 +79,100 @@
         2851768
       ],
       "note": "4.12M vs 2.85M median hw-instructions (1.44x; one run overlaps the fixed range); mechanism counter 8 vs 0 string-concat allocations per row (measurements-staging)."
-    },
-    "mechanism_oracle": {
-      "metric": "row_appear_cpu_overhead",
-      "definition": "CPU time in SongCard aboutToAppear per row appearance from JS sampling stacks (getArtists frames), aggregated over the scroll.",
-      "comparison": "unfixed shows repeated string-concat allocations in getArtists for every row build; fixed shows a single join per row. Aggregate scroll CPU lower in fixed; effect scales with rows rendered."
     }
   },
   "reproduction": [
-    "git -C hosts/cloudmusic checkout case/cloudmusic_songcard_artists_concat/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/cloudmusic_songcard_artists_concat/testcase/PerfLoad_cloudmusic_0050.* perf_testing/hapray/testcases/cc.chenlvin.cloudmusic/",
-    "python -m scripts.main perf --run_testcases PerfLoad_cloudmusic_0050 --round 3",
-    "git -C hosts/cloudmusic checkout case/cloudmusic_songcard_artists_concat/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py cloudmusic_songcard_artists_concat",
+    "python3 tools/sign_clean_cases.py cloudmusic_songcard_artists_concat",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/cloudmusic_songcard_artists_concat/testcase/ into perf_testing/hapray/testcases/cc.chenlvin.cloudmusic/.",
+    "Install each clean signed variant and run the PerfLoad_cloudmusic_0050 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "153f8c7",
+    "fixed_commit": "ff15a99",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/cloudmusic_songcard_artists_concat/unfixed",
+        "commit": "153f8c7dc8203197ffb3ff14e8856d6c124f001b",
+        "tree": "9fce0f474edb3690c2c562d83cc82629ae42fb24",
+        "business_base_tree": "9fce0f474edb3690c2c562d83cc82629ae42fb24",
+        "production_patches": [],
+        "unsigned_sha256": "962f21b8acc04e9a994117efbd1ce65279bb66e2bf1ae32d921f817138e7b224",
+        "bytecode_audit": {
+          "sha256": "962f21b8acc04e9a994117efbd1ce65279bb66e2bf1ae32d921f817138e7b224",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "cloudmusic_songcard_artists_concat",
+          "variant": "unfixed",
+          "unsigned_sha256": "962f21b8acc04e9a994117efbd1ce65279bb66e2bf1ae32d921f817138e7b224",
+          "signed_hap": "/home/research/ohm-clean/cloudmusic_songcard_artists_concat/unfixed/app.hap",
+          "audit": {
+            "sha256": "2b564840358e206ab42e656128e5e2f52dc6955ec1dc39c95f636dfefebd6cb3",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "allowed_acls": [
+            "ohos.permission.SYSTEM_FLOAT_WINDOW"
+          ],
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/cloudmusic_songcard_artists_concat/fixed",
+        "commit": "ff15a9947c7438848de730bc46b02d5573b7583d",
+        "tree": "61388725820d06db64e66e57edb504321b12ba6c",
+        "business_base_tree": "61388725820d06db64e66e57edb504321b12ba6c",
+        "production_patches": [],
+        "unsigned_sha256": "0deedf99d463d0dedadfa3efa5ff3a2bc99edca62a484fb27287fd975cb281f0",
+        "bytecode_audit": {
+          "sha256": "0deedf99d463d0dedadfa3efa5ff3a2bc99edca62a484fb27287fd975cb281f0",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "cloudmusic_songcard_artists_concat",
+          "variant": "fixed",
+          "unsigned_sha256": "0deedf99d463d0dedadfa3efa5ff3a2bc99edca62a484fb27287fd975cb281f0",
+          "signed_hap": "/home/research/ohm-clean/cloudmusic_songcard_artists_concat/fixed/app.hap",
+          "audit": {
+            "sha256": "21253d8a97af9cfd2685897d21f80d733a11a70d8bceea580fc3784abd483958",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "allowed_acls": [
+            "ohos.permission.SYSTEM_FLOAT_WINDOW"
+          ],
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

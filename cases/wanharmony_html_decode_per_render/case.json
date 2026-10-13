@@ -16,10 +16,11 @@
     "列表滑动",
     "网络结果渲染"
   ],
-  "unfixed_commit": "dd45ad2",
-  "fixed_commit": "85a7398",
+  "unfixed_commit": "dd45ad238328c4ac857992b69fe9457c87c279f3",
+  "fixed_commit": "85a73986cd4eee9c04cdbffc96aefc947e1f3bab",
   "fix_summary": "HTML entities are decoded once when article data arrives (TextUtils.decodeArticleList applied in fetchData/search/loadList); list items render the already-decoded fields.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench_ui"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_wanharmony_0020.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "scroll_cpu_ms_per_item",
+      "definition": "Total CPU time of the app process during the fixed-duration scroll divided by number of rendered items, from hitrace; supplementary: count of string replaceAll invocations in JS stack samples.",
+      "comparison": "unfixed shows repeated htmlDecode execution on every item build (visible in JS sampling stacks); fixed executes decode only once per item at fetch. unfixed scroll CPU per item > fixed by >= 15%."
+    },
+    "legacy_instrumented_evidence": {
       "status": "supporting",
       "measured_as": "htmlDecode calls per item",
       "unfixed": [
@@ -68,18 +79,94 @@
         1
       ],
       "note": "3 vs 1 htmlDecode calls per rendered item (mechanism counter, authoritative); whole-step hw-instruction medians sit inside the noise band (3.9M vs 4.4M), so the declared metric needs a narrower region to separate (measurements-staging)."
-    },
-    "mechanism_oracle": {
-      "metric": "scroll_cpu_ms_per_item",
-      "definition": "Total CPU time of the app process during the fixed-duration scroll divided by number of rendered items, from hitrace; supplementary: count of string replaceAll invocations in JS stack samples.",
-      "comparison": "unfixed shows repeated htmlDecode execution on every item build (visible in JS sampling stacks); fixed executes decode only once per item at fetch. unfixed scroll CPU per item > fixed by >= 15%."
     }
   },
   "reproduction": [
-    "git -C hosts/wanharmony checkout case/wanharmony_html_decode_per_render/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/wanharmony_html_decode_per_render/testcase/PerfLoad_wanharmony_0020.* perf_testing/hapray/testcases/org.example.wan.ohos/",
-    "python -m scripts.main perf --run_testcases PerfLoad_wanharmony_0020 --round 3",
-    "git -C hosts/wanharmony checkout case/wanharmony_html_decode_per_render/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py wanharmony_html_decode_per_render",
+    "python3 tools/sign_clean_cases.py wanharmony_html_decode_per_render",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/wanharmony_html_decode_per_render/testcase/ into perf_testing/hapray/testcases/org.example.wan.ohos/.",
+    "Install each clean signed variant and run the PerfLoad_wanharmony_0020 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "dd45ad2",
+    "fixed_commit": "85a7398",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/wanharmony_html_decode_per_render/unfixed",
+        "commit": "dd45ad238328c4ac857992b69fe9457c87c279f3",
+        "tree": "88b368cc0c7d5f07755f64a4a3aa7152208a5ac6",
+        "business_base_tree": "88b368cc0c7d5f07755f64a4a3aa7152208a5ac6",
+        "production_patches": [],
+        "unsigned_sha256": "57bf465688d66e69f1547c202a0a50481426aabad2b042edecede1c8b2cdd046",
+        "bytecode_audit": {
+          "sha256": "57bf465688d66e69f1547c202a0a50481426aabad2b042edecede1c8b2cdd046",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "wanharmony_html_decode_per_render",
+          "variant": "unfixed",
+          "unsigned_sha256": "57bf465688d66e69f1547c202a0a50481426aabad2b042edecede1c8b2cdd046",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_html_decode_per_render/unfixed/app.hap",
+          "audit": {
+            "sha256": "f56a69d48d3fcb31517579ce7ff54a27f84aec5f86a4408ca439546f0e4f709d",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/wanharmony_html_decode_per_render/fixed",
+        "commit": "85a73986cd4eee9c04cdbffc96aefc947e1f3bab",
+        "tree": "41efd76077ad95ba36a279f8d4874c6d2310bca7",
+        "business_base_tree": "41efd76077ad95ba36a279f8d4874c6d2310bca7",
+        "production_patches": [],
+        "unsigned_sha256": "a5a3cabf07632435f6a587429d1685754edd657cb2657ec74fa1473739affb13",
+        "bytecode_audit": {
+          "sha256": "a5a3cabf07632435f6a587429d1685754edd657cb2657ec74fa1473739affb13",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "wanharmony_html_decode_per_render",
+          "variant": "fixed",
+          "unsigned_sha256": "a5a3cabf07632435f6a587429d1685754edd657cb2657ec74fa1473739affb13",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_html_decode_per_render/fixed/app.hap",
+          "audit": {
+            "sha256": "b2a69d03cf3b2909889e432a93e5324e666aaf3cb936c19aac407736ad36cb2d",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

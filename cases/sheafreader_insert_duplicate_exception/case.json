@@ -16,10 +16,11 @@
     "数据库读取",
     "网络结果渲染"
   ],
-  "unfixed_commit": "4c9b8dc",
-  "fixed_commit": "ba9a953",
+  "unfixed_commit": "4c9b8dcdc7f230b68120fb5c7640c4cce3521a88",
+  "fixed_commit": "ba9a953d20c146d20aa26ba337ba0cee026a3693",
   "fix_summary": "Inserts run with ConflictResolution.ON_CONFLICT_IGNORE so SQLite silently skips duplicates without exception overhead; behavior (only new articles stored) is unchanged.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_sheafreader_0030.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "trace_cpu_ms",
+      "definition": "CPU time across the no-op refresh case window, from trace.",
+      "comparison": "unfixed pays statement-execution + exception-throw/catch per stored article; fixed pays a cheap ignored insert. unfixed no-op refresh CPU > fixed by a clear margin scaling with stored article count."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions",
       "unfixed": [
@@ -68,18 +79,94 @@
         4944325933
       ],
       "note": "12.8G vs 4.92G instructions (2.6x) over the no-op refresh phase"
-    },
-    "mechanism_oracle": {
-      "metric": "trace_cpu_ms",
-      "definition": "CPU time across the no-op refresh case window, from trace.",
-      "comparison": "unfixed pays statement-execution + exception-throw/catch per stored article; fixed pays a cheap ignored insert. unfixed no-op refresh CPU > fixed by a clear margin scaling with stored article count."
     }
   },
   "reproduction": [
-    "git -C hosts/sheafreader checkout case/sheafreader_insert_duplicate_exception/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/sheafreader_insert_duplicate_exception/testcase/PerfLoad_sheafreader_0030.* perf_testing/hapray/testcases/com.sheafreader.hm/",
-    "python -m scripts.main perf --run_testcases PerfLoad_sheafreader_0030 --round 3",
-    "git -C hosts/sheafreader checkout case/sheafreader_insert_duplicate_exception/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py sheafreader_insert_duplicate_exception",
+    "python3 tools/sign_clean_cases.py sheafreader_insert_duplicate_exception",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/sheafreader_insert_duplicate_exception/testcase/ into perf_testing/hapray/testcases/com.sheafreader.hm/.",
+    "Install each clean signed variant and run the PerfLoad_sheafreader_0030 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "4c9b8dc",
+    "fixed_commit": "ba9a953",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/sheafreader_insert_duplicate_exception/unfixed",
+        "commit": "4c9b8dcdc7f230b68120fb5c7640c4cce3521a88",
+        "tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
+        "business_base_tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
+        "production_patches": [],
+        "unsigned_sha256": "abd062458bdc50825f9401db0dbc8d18c8520de75b1e189670e2356104248f7f",
+        "bytecode_audit": {
+          "sha256": "abd062458bdc50825f9401db0dbc8d18c8520de75b1e189670e2356104248f7f",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "sheafreader_insert_duplicate_exception",
+          "variant": "unfixed",
+          "unsigned_sha256": "abd062458bdc50825f9401db0dbc8d18c8520de75b1e189670e2356104248f7f",
+          "signed_hap": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/unfixed/app.hap",
+          "audit": {
+            "sha256": "77f654e1e4c3eb3e04be7a8b87c6e2b55c038c1f1183eeb9b98bd70005263c6a",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/sheafreader_insert_duplicate_exception/fixed",
+        "commit": "ba9a953d20c146d20aa26ba337ba0cee026a3693",
+        "tree": "7ea7f7cfd78e0f1a97b76a48171a643c59f4892e",
+        "business_base_tree": "7ea7f7cfd78e0f1a97b76a48171a643c59f4892e",
+        "production_patches": [],
+        "unsigned_sha256": "2aee7cb3ebb5170f0cbb55aebcbddca0154ad876519468d3c102a8b0c9519f7d",
+        "bytecode_audit": {
+          "sha256": "2aee7cb3ebb5170f0cbb55aebcbddca0154ad876519468d3c102a8b0c9519f7d",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "sheafreader_insert_duplicate_exception",
+          "variant": "fixed",
+          "unsigned_sha256": "2aee7cb3ebb5170f0cbb55aebcbddca0154ad876519468d3c102a8b0c9519f7d",
+          "signed_hap": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/fixed/app.hap",
+          "audit": {
+            "sha256": "b5f4582f5fb8fb3d287f3568f43db08389d088843be2d15681d6bf6b57dd602b",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

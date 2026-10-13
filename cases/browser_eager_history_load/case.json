@@ -17,10 +17,11 @@
     "页面启动",
     "数据库读取"
   ],
-  "unfixed_commit": "c42e4b3",
-  "fixed_commit": "e3c8aa9",
+  "unfixed_commit": "c42e4b34960aa3de5f6f34b83c60a3b2024e70bb",
+  "fixed_commit": "e3c8aa99fd6a93333a9e906216545861aec07456",
   "fix_summary": "History is loaded lazily on first open of the history dialog (PagesDialog.loadHistoryData), and RdbUtils.queryHistoriesByDate now actually awaits the RDB query instead of returning an unfilled array.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -32,7 +33,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "relaunch"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_browser_0010.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -56,6 +58,16 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "trace_cpu_ms",
+      "definition": "CPU time of the app process across the case window, from trace.",
+      "comparison": "unfixed_startup_cpu_time_ms > fixed_startup_cpu_time_ms by >= 20% with 30+ seeded history entries; fixed shows zero history-table SELECT queries during startup, unfixed shows N (one per day table).",
+      "auxiliary": "hilog marker '项目已启动' timestamp delta from process start."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions / trace_cpu_ms",
       "unfixed": [
@@ -69,19 +81,120 @@
         1530821367
       ],
       "note": "startup window: 4.86G vs 1.51G instructions (3.2x); cpu 2122 vs 747 ms"
-    },
-    "mechanism_oracle": {
-      "metric": "trace_cpu_ms",
-      "definition": "CPU time of the app process across the case window, from trace.",
-      "comparison": "unfixed_startup_cpu_time_ms > fixed_startup_cpu_time_ms by >= 20% with 30+ seeded history entries; fixed shows zero history-table SELECT queries during startup, unfixed shows N (one per day table).",
-      "auxiliary": "hilog marker '项目已启动' timestamp delta from process start."
     }
   },
   "reproduction": [
-    "git -C hosts/browser checkout case/browser_eager_history_load/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/browser_eager_history_load/testcase/PerfLoad_browser_0010.* perf_testing/hapray/testcases/com.example.nanvision/",
-    "python -m scripts.main perf --run_testcases PerfLoad_browser_0010 --round 3",
-    "git -C hosts/browser checkout case/browser_eager_history_load/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py browser_eager_history_load",
+    "python3 tools/sign_clean_cases.py browser_eager_history_load",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/browser_eager_history_load/testcase/ into perf_testing/hapray/testcases/com.example.nanvision/.",
+    "Install each clean signed variant and run the PerfLoad_browser_0010 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "c42e4b3",
+    "fixed_commit": "e3c8aa9",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/browser_eager_history_load/unfixed",
+        "commit": "c42e4b34960aa3de5f6f34b83c60a3b2024e70bb",
+        "tree": "4a496ee498c760e81d3c36c685bbd441c9a43372",
+        "business_base_tree": "4a496ee498c760e81d3c36c685bbd441c9a43372",
+        "production_patches": [],
+        "unsigned_sha256": "60cb5758870c38979c397996ca747a5289269c8f3afebbd37d81cf333fa63155",
+        "bytecode_audit": {
+          "sha256": "60cb5758870c38979c397996ca747a5289269c8f3afebbd37d81cf333fa63155",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "browser_eager_history_load",
+          "variant": "unfixed",
+          "unsigned_sha256": "60cb5758870c38979c397996ca747a5289269c8f3afebbd37d81cf333fa63155",
+          "signed_hap": "/home/research/ohm-clean/browser_eager_history_load/unfixed/app.hap",
+          "audit": {
+            "sha256": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "browser_eager_history_load",
+          "variant": "unfixed",
+          "signed_sha256": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9",
+          "install": "[Info]App install path:/home/research/ohm-clean/browser_eager_history_load/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            28227
+          ],
+          "foreground_bundle": "com.example.nanvision",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/browser_eager_history_load/fixed",
+        "commit": "e3c8aa99fd6a93333a9e906216545861aec07456",
+        "tree": "0ba445d9e65201d8b2c135dc64f17cafa5c4a2ee",
+        "business_base_tree": "0ba445d9e65201d8b2c135dc64f17cafa5c4a2ee",
+        "production_patches": [],
+        "unsigned_sha256": "6bedaa0a8c722900518731cd26772395a01b197169921cfb0bd7e079a6ae11b5",
+        "bytecode_audit": {
+          "sha256": "6bedaa0a8c722900518731cd26772395a01b197169921cfb0bd7e079a6ae11b5",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "browser_eager_history_load",
+          "variant": "fixed",
+          "unsigned_sha256": "6bedaa0a8c722900518731cd26772395a01b197169921cfb0bd7e079a6ae11b5",
+          "signed_hap": "/home/research/ohm-clean/browser_eager_history_load/fixed/app.hap",
+          "audit": {
+            "sha256": "248a222109a97a8bf1dcb5163910ba48184d307e311b6ccb8a2fd81534976709",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "browser_eager_history_load",
+          "variant": "fixed",
+          "signed_sha256": "248a222109a97a8bf1dcb5163910ba48184d307e311b6ccb8a2fd81534976709",
+          "install": "[Info]App install path:/home/research/ohm-clean/browser_eager_history_load/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            28813
+          ],
+          "foreground_bundle": "com.example.nanvision",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      }
+    }
+  }
 }

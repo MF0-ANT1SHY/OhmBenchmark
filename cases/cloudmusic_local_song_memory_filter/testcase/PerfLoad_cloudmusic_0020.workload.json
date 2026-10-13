@@ -1,0 +1,110 @@
+{
+  "bundle": "cc.chenlvin.cloudmusic",
+  "ability": "EntryAbility",
+  "description": "CloudMusic-HarmonyOSNext (仿网易云音乐)页面操作",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Explore"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "Me"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "Local Songs"
+      }
+    }
+  ],
+  "measured": [
+    {
+      "op": "input",
+      "selector": {
+        "hint": "Search something"
+      },
+      "value": "blue"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.2
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "Search something"
+      },
+      "value": "jazz"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.2
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "Search something"
+      },
+      "value": "music"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.2
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "Search something"
+      },
+      "value": "blue"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.2
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "Search something"
+      },
+      "value": "jazz"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.2
+    }
+  ],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "type": "SearchField"
+      }
+    }
+  ]
+}

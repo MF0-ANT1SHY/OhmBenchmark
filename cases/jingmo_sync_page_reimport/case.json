@@ -16,10 +16,11 @@
     "数据库读取",
     "页面切换"
   ],
-  "unfixed_commit": "d52c391",
-  "fixed_commit": "6d6ad77",
+  "unfixed_commit": "d52c391f23e1f9b1f1f5c1c26989200953eb1f55",
+  "fixed_commit": "6d6ad777f109124852e5c2374ea77edfc2347cea",
   "fix_summary": "Before importing, a single COUNT query checks whether the dataset is already present and skips the download/import entirely when the table is populated.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "default",
     "ability": "EntryAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_jingmo_0030.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "elapsed_ms",
+      "definition": "Wall time of the case action, measured in the app.",
+      "comparison": "unfixed re-downloads the whole dataset and re-attempts all inserts (visible network transfer + DB activity); fixed performs one COUNT and no transfer. unfixed network bytes >> fixed (fixed = 0)."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions / trace_cpu_ms",
       "unfixed": [
@@ -68,18 +79,94 @@
         29937028
       ],
       "note": "11.5G vs 28.7M instructions (400x); cpu 1789 vs 123 ms"
-    },
-    "mechanism_oracle": {
-      "metric": "elapsed_ms",
-      "definition": "Wall time of the case action, measured in the app.",
-      "comparison": "unfixed re-downloads the whole dataset and re-attempts all inserts (visible network transfer + DB activity); fixed performs one COUNT and no transfer. unfixed network bytes >> fixed (fixed = 0)."
     }
   },
   "reproduction": [
-    "git -C hosts/jingmo checkout case/jingmo_sync_page_reimport/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/jingmo_sync_page_reimport/testcase/PerfLoad_jingmo_0030.* perf_testing/hapray/testcases/com.hefengbao.jingmo.hw/",
-    "python -m scripts.main perf --run_testcases PerfLoad_jingmo_0030 --round 3",
-    "git -C hosts/jingmo checkout case/jingmo_sync_page_reimport/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py jingmo_sync_page_reimport",
+    "python3 tools/sign_clean_cases.py jingmo_sync_page_reimport",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/jingmo_sync_page_reimport/testcase/ into perf_testing/hapray/testcases/com.hefengbao.jingmo.hw/.",
+    "Install each clean signed variant and run the PerfLoad_jingmo_0030 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "d52c391",
+    "fixed_commit": "6d6ad77",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/jingmo_sync_page_reimport/unfixed",
+        "commit": "d52c391f23e1f9b1f1f5c1c26989200953eb1f55",
+        "tree": "ac69e4f9f62a10ea28840c83cc0f8741788ec151",
+        "business_base_tree": "ac69e4f9f62a10ea28840c83cc0f8741788ec151",
+        "production_patches": [],
+        "unsigned_sha256": "1284640c9805c3e681436236e576307a58776af906aae9c0f6e250c8cc97ec12",
+        "bytecode_audit": {
+          "sha256": "1284640c9805c3e681436236e576307a58776af906aae9c0f6e250c8cc97ec12",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "jingmo_sync_page_reimport",
+          "variant": "unfixed",
+          "unsigned_sha256": "1284640c9805c3e681436236e576307a58776af906aae9c0f6e250c8cc97ec12",
+          "signed_hap": "/home/research/ohm-clean/jingmo_sync_page_reimport/unfixed/app.hap",
+          "audit": {
+            "sha256": "92022238fa684963ffe6f2a444805f040c88f71c079a0158cc200d7743cd50e6",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/jingmo_sync_page_reimport/fixed",
+        "commit": "6d6ad777f109124852e5c2374ea77edfc2347cea",
+        "tree": "8101cbf9b28e027904a750305aedeeec43a74202",
+        "business_base_tree": "8101cbf9b28e027904a750305aedeeec43a74202",
+        "production_patches": [],
+        "unsigned_sha256": "d9bf2fd56bde1a4d996757df9b58d577531262cae75e0a05f848fcdc6e47eab8",
+        "bytecode_audit": {
+          "sha256": "d9bf2fd56bde1a4d996757df9b58d577531262cae75e0a05f848fcdc6e47eab8",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "jingmo_sync_page_reimport",
+          "variant": "fixed",
+          "unsigned_sha256": "d9bf2fd56bde1a4d996757df9b58d577531262cae75e0a05f848fcdc6e47eab8",
+          "signed_hap": "/home/research/ohm-clean/jingmo_sync_page_reimport/fixed/app.hap",
+          "audit": {
+            "sha256": "d86baea098122d26ff4ca81334123f8f62f3af5b7cd6b189a43c832602a8e952",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

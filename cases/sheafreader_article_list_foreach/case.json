@@ -17,10 +17,11 @@
     "组件创建",
     "页面切换"
   ],
-  "unfixed_commit": "030f867",
-  "fixed_commit": "c3e7b11",
+  "unfixed_commit": "759b2b81f8436fc20ea56985fdbc6e6b57b1faa9",
+  "fixed_commit": "c3e7b111cf83050b6b6e48c8b05875efa01bd3ae",
   "fix_summary": "Both the list and grid render via LazyForEach over an IDataSource kept in sync with the store, so rows are created on demand as they enter the viewport.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -32,7 +33,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench_ui"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_sheafreader_0010.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -56,6 +58,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "article_row_build_count",
+      "definition": "Count of article card component builds during open + load-more + scroll (ace trace), first-render latency after open, and dropped frames while scrolling.",
+      "comparison": "unfixed builds every accumulated article (hundreds) eagerly; fixed builds only viewport rows. unfixed first-render and scroll jank measurably worse."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions / sw-task-clock / VmRSS delta",
       "unfixed": [
@@ -69,18 +80,94 @@
         344065090
       ],
       "note": "4.87G vs 344M instructions (14.2x); task clock 1569 vs 281 ms (5.6x); VmRSS +340MB vs +6MB (53x). Measured on Pura 70 Ultra, 600-article feed, 3 runs each (measurements-staging/sheafreader_article_list_foreach)."
-    },
-    "mechanism_oracle": {
-      "metric": "article_row_build_count",
-      "definition": "Count of article card component builds during open + load-more + scroll (ace trace), first-render latency after open, and dropped frames while scrolling.",
-      "comparison": "unfixed builds every accumulated article (hundreds) eagerly; fixed builds only viewport rows. unfixed first-render and scroll jank measurably worse."
     }
   },
   "reproduction": [
-    "git -C hosts/sheafreader checkout case/sheafreader_article_list_foreach/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/sheafreader_article_list_foreach/testcase/PerfLoad_sheafreader_0010.* perf_testing/hapray/testcases/com.sheafreader.hm/",
-    "python -m scripts.main perf --run_testcases PerfLoad_sheafreader_0010 --round 3",
-    "git -C hosts/sheafreader checkout case/sheafreader_article_list_foreach/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py sheafreader_article_list_foreach",
+    "python3 tools/sign_clean_cases.py sheafreader_article_list_foreach",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/sheafreader_article_list_foreach/testcase/ into perf_testing/hapray/testcases/com.sheafreader.hm/.",
+    "Install each clean signed variant and run the PerfLoad_sheafreader_0010 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "030f867",
+    "fixed_commit": "c3e7b11",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/sheafreader_article_list_foreach/unfixed",
+        "commit": "759b2b81f8436fc20ea56985fdbc6e6b57b1faa9",
+        "tree": "dfe283c40ad1c8401dd37201e85dccf945c2513c",
+        "business_base_tree": "dfe283c40ad1c8401dd37201e85dccf945c2513c",
+        "production_patches": [],
+        "unsigned_sha256": "a509690790e7e560395c25b06f2fac2cae2ae9ba14a01aecfb41d61ca9e7392e",
+        "bytecode_audit": {
+          "sha256": "a509690790e7e560395c25b06f2fac2cae2ae9ba14a01aecfb41d61ca9e7392e",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "sheafreader_article_list_foreach",
+          "variant": "unfixed",
+          "unsigned_sha256": "a509690790e7e560395c25b06f2fac2cae2ae9ba14a01aecfb41d61ca9e7392e",
+          "signed_hap": "/home/research/ohm-clean/sheafreader_article_list_foreach/unfixed/app.hap",
+          "audit": {
+            "sha256": "1a486de4353db0fa573f986d8370b18826be06ed16be660f8afcc83422c3e8b1",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/sheafreader_article_list_foreach/fixed",
+        "commit": "c3e7b111cf83050b6b6e48c8b05875efa01bd3ae",
+        "tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
+        "business_base_tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
+        "production_patches": [],
+        "unsigned_sha256": "b67d05a4e776f1d70d1e55032ac6eba5ba67e92b4d110433c2e5ed7413cab848",
+        "bytecode_audit": {
+          "sha256": "b67d05a4e776f1d70d1e55032ac6eba5ba67e92b4d110433c2e5ed7413cab848",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "sheafreader_article_list_foreach",
+          "variant": "fixed",
+          "unsigned_sha256": "b67d05a4e776f1d70d1e55032ac6eba5ba67e92b4d110433c2e5ed7413cab848",
+          "signed_hap": "/home/research/ohm-clean/sheafreader_article_list_foreach/fixed/app.hap",
+          "audit": {
+            "sha256": "ba1e074a3f089f0ee521618bf3223a9dd54c8e5b4bb71420648ea6eb517c4e9c",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

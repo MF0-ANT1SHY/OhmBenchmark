@@ -7,6 +7,7 @@ that workstation. The installed application's bundle name is not rewritten.
 import argparse
 import base64
 import hashlib
+import re
 import subprocess
 from pathlib import Path
 
@@ -31,12 +32,22 @@ class Remote:
 
     def upload(self, source, destination):
         blob = source.read_bytes()
-        code = ("import base64,hashlib\nfrom pathlib import Path\n"
-                f"p=Path({str(destination)!r});p.parent.mkdir(parents=True,exist_ok=True)\n"
-                "blob=base64.b64decode(PAYLOAD)\n"
-                f"assert hashlib.sha256(blob).hexdigest()=={hashlib.sha256(blob).hexdigest()!r}\n"
-                "p.write_bytes(blob)\nprint(str(p))")
-        return self.python(code, base64.b64encode(blob).decode(), timeout=300)
+        if not re.fullmatch(r"/[A-Za-z0-9_./-]+", str(destination)):
+            raise ValueError("remote transfer path must be absolute and contain no shell metacharacters")
+        digest = hashlib.sha256(blob).hexdigest()
+        # Stream binary data directly, avoiding a 500MB Python heredoc for the
+        # music app's bundled audio. cmd.exe sees only fixed code and validated args.
+        code = ("import sys,hashlib; from pathlib import Path; "
+                "blob=sys.stdin.buffer.read(); digest=hashlib.sha256(blob).hexdigest(); "
+                "assert digest==sys.argv[2]; p=Path(sys.argv[1]); "
+                "p.parent.mkdir(parents=True,exist_ok=True); p.write_bytes(blob); print(digest)")
+        command = f'wsl -d {self.distro} -- python3 -c "{code}" {destination} {digest}'
+        result = subprocess.run(["ssh", "-o", "BatchMode=yes", self.host, command],
+                                input=blob, capture_output=True, timeout=600)
+        if result.returncode or result.stdout.decode(errors="replace").strip() != digest:
+            raise RuntimeError("remote binary transfer failed integrity verification: " +
+                               result.stderr.decode(errors="replace"))
+        return str(destination)
 
     def download(self, source, destination):
         code = ("import base64\nfrom pathlib import Path\n"

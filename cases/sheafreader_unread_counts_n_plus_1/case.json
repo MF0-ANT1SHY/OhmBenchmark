@@ -16,10 +16,11 @@
     "数据库读取",
     "状态更新"
   ],
-  "unfixed_commit": "cf4f9fb",
-  "fixed_commit": "4c9b8dc",
+  "unfixed_commit": "cf4f9fb7753069103b8f994cc1f5ca31e7f170e2",
+  "fixed_commit": "4c9b8dcdc7f230b68120fb5c7640c4cce3521a88",
   "fix_summary": "A single grouped query (GROUP BY feed_id over unread articles) returns all feeds' unread counts at once.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_sheafreader_0050.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "sidebar_count_queries_per_refresh",
+      "definition": "Number of RDB SELECT statements attributable to unread-count computation per sidebar refresh, and total refresh latency.",
+      "comparison": "unfixed: N queries per refresh (one per feed); fixed: 1. With 15+ feeds, sidebar refresh latency after article-open drops accordingly."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions / trace_cpu_ms",
       "unfixed": [
@@ -68,18 +79,94 @@
         87640704
       ],
       "note": "2.22G vs 87M instructions (25x); cpu 4102 vs 81 ms; 201 vs 2 queries"
-    },
-    "mechanism_oracle": {
-      "metric": "sidebar_count_queries_per_refresh",
-      "definition": "Number of RDB SELECT statements attributable to unread-count computation per sidebar refresh, and total refresh latency.",
-      "comparison": "unfixed: N queries per refresh (one per feed); fixed: 1. With 15+ feeds, sidebar refresh latency after article-open drops accordingly."
     }
   },
   "reproduction": [
-    "git -C hosts/sheafreader checkout case/sheafreader_unread_counts_n_plus_1/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/sheafreader_unread_counts_n_plus_1/testcase/PerfLoad_sheafreader_0050.* perf_testing/hapray/testcases/com.sheafreader.hm/",
-    "python -m scripts.main perf --run_testcases PerfLoad_sheafreader_0050 --round 3",
-    "git -C hosts/sheafreader checkout case/sheafreader_unread_counts_n_plus_1/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py sheafreader_unread_counts_n_plus_1",
+    "python3 tools/sign_clean_cases.py sheafreader_unread_counts_n_plus_1",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/sheafreader_unread_counts_n_plus_1/testcase/ into perf_testing/hapray/testcases/com.sheafreader.hm/.",
+    "Install each clean signed variant and run the PerfLoad_sheafreader_0050 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "cf4f9fb",
+    "fixed_commit": "4c9b8dc",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/sheafreader_unread_counts_n_plus_1/unfixed",
+        "commit": "cf4f9fb7753069103b8f994cc1f5ca31e7f170e2",
+        "tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
+        "business_base_tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
+        "production_patches": [],
+        "unsigned_sha256": "cb51443b0d0c7193fc0eed9aec745d2f62a0476b3fcc7eb50e6ea89aca99128a",
+        "bytecode_audit": {
+          "sha256": "cb51443b0d0c7193fc0eed9aec745d2f62a0476b3fcc7eb50e6ea89aca99128a",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "sheafreader_unread_counts_n_plus_1",
+          "variant": "unfixed",
+          "unsigned_sha256": "cb51443b0d0c7193fc0eed9aec745d2f62a0476b3fcc7eb50e6ea89aca99128a",
+          "signed_hap": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/unfixed/app.hap",
+          "audit": {
+            "sha256": "e1b2e668b875941c642c0ce74e21d0e38102fea1e6af493e4997a83e6b0757c0",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/sheafreader_unread_counts_n_plus_1/fixed",
+        "commit": "4c9b8dcdc7f230b68120fb5c7640c4cce3521a88",
+        "tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
+        "business_base_tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
+        "production_patches": [],
+        "unsigned_sha256": "03e8709a4ff0c3eae043f0188bd82501ba13a8ad54e05e01aa2f340e95bc294d",
+        "bytecode_audit": {
+          "sha256": "03e8709a4ff0c3eae043f0188bd82501ba13a8ad54e05e01aa2f340e95bc294d",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "sheafreader_unread_counts_n_plus_1",
+          "variant": "fixed",
+          "unsigned_sha256": "03e8709a4ff0c3eae043f0188bd82501ba13a8ad54e05e01aa2f340e95bc294d",
+          "signed_hap": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/fixed/app.hap",
+          "audit": {
+            "sha256": "59adedd91aa83ee21266387c7722ceeace477a9e826c1f5b7e8b671f03c1869c",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

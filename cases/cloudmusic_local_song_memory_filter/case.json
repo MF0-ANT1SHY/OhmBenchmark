@@ -16,10 +16,11 @@
     "数据库读取",
     "状态更新"
   ],
-  "unfixed_commit": "a967ef1",
-  "fixed_commit": "2aa4715",
+  "unfixed_commit": "a967ef10ae9722d19100d6dfbf00760467397a3c",
+  "fixed_commit": "2aa471589e637964e0ef9ba37c0ef9e9db5b6de7",
   "fix_summary": "A getSongsByKeyword query (RdbPredicates.like on songFile, with LIKE-wildcard escaping) performs the filtering in SQLite; the page search handler awaits it directly instead of filtering the full in-memory list.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_cloudmusic_0020.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "elapsed_ms",
+      "definition": "Wall time of the case action, measured in the app.",
+      "comparison": "unfixed scans all rows in memory (CPU grows with library size); fixed returns only matching rows from SQLite. With >= 300 local songs, unfixed_avg_ms > fixed_avg_ms."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions",
       "unfixed": [
@@ -68,18 +79,126 @@
         102776450
       ],
       "note": "96.8M vs 30.6M instructions (3.2x) even at the small 10-song fixture; the gap grows with library size"
-    },
-    "mechanism_oracle": {
-      "metric": "elapsed_ms",
-      "definition": "Wall time of the case action, measured in the app.",
-      "comparison": "unfixed scans all rows in memory (CPU grows with library size); fixed returns only matching rows from SQLite. With >= 300 local songs, unfixed_avg_ms > fixed_avg_ms."
     }
   },
   "reproduction": [
-    "git -C hosts/cloudmusic checkout case/cloudmusic_local_song_memory_filter/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/cloudmusic_local_song_memory_filter/testcase/PerfLoad_cloudmusic_0020.* perf_testing/hapray/testcases/cc.chenlvin.cloudmusic/",
-    "python -m scripts.main perf --run_testcases PerfLoad_cloudmusic_0020 --round 3",
-    "git -C hosts/cloudmusic checkout case/cloudmusic_local_song_memory_filter/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py cloudmusic_local_song_memory_filter",
+    "python3 tools/sign_clean_cases.py cloudmusic_local_song_memory_filter",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/cloudmusic_local_song_memory_filter/testcase/ into perf_testing/hapray/testcases/cc.chenlvin.cloudmusic/.",
+    "Install each clean signed variant and run the PerfLoad_cloudmusic_0020 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "a967ef1",
+    "fixed_commit": "2aa4715",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/cloudmusic_local_song_memory_filter/unfixed",
+        "commit": "a967ef10ae9722d19100d6dfbf00760467397a3c",
+        "tree": "a668180b0569859ca1d7fa7ccb3eb16e9ab7e1f5",
+        "business_base_tree": "a668180b0569859ca1d7fa7ccb3eb16e9ab7e1f5",
+        "production_patches": [],
+        "unsigned_sha256": "d75232a512d7c76151b39141f6a61eee37c2165f51862238189d109b09ed3d39",
+        "bytecode_audit": {
+          "sha256": "d75232a512d7c76151b39141f6a61eee37c2165f51862238189d109b09ed3d39",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "cloudmusic_local_song_memory_filter",
+          "variant": "unfixed",
+          "unsigned_sha256": "d75232a512d7c76151b39141f6a61eee37c2165f51862238189d109b09ed3d39",
+          "signed_hap": "/home/research/ohm-clean/cloudmusic_local_song_memory_filter/unfixed/app.hap",
+          "audit": {
+            "sha256": "04551fd3cc1c89c1968f65df22811e986d589a25c2c51f3670f2e3b009876a11",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "allowed_acls": [
+            "ohos.permission.SYSTEM_FLOAT_WINDOW"
+          ],
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "cloudmusic_local_song_memory_filter",
+          "variant": "unfixed",
+          "signed_sha256": "04551fd3cc1c89c1968f65df22811e986d589a25c2c51f3670f2e3b009876a11",
+          "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_local_song_memory_filter/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            37302
+          ],
+          "foreground_bundle": "cc.chenlvin.cloudmusic",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/cloudmusic_local_song_memory_filter/fixed",
+        "commit": "2aa471589e637964e0ef9ba37c0ef9e9db5b6de7",
+        "tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
+        "business_base_tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
+        "production_patches": [],
+        "unsigned_sha256": "1f3965d825b47775ba8923ae44cd0dce713650f838c6bd2267e86709499f0a2f",
+        "bytecode_audit": {
+          "sha256": "1f3965d825b47775ba8923ae44cd0dce713650f838c6bd2267e86709499f0a2f",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "cloudmusic_local_song_memory_filter",
+          "variant": "fixed",
+          "unsigned_sha256": "1f3965d825b47775ba8923ae44cd0dce713650f838c6bd2267e86709499f0a2f",
+          "signed_hap": "/home/research/ohm-clean/cloudmusic_local_song_memory_filter/fixed/app.hap",
+          "audit": {
+            "sha256": "cf66ddf8864aab726515a9621021aab9f7daf97ab1792fc2577d4da8d2253329",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "allowed_acls": [
+            "ohos.permission.SYSTEM_FLOAT_WINDOW"
+          ],
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "cloudmusic_local_song_memory_filter",
+          "variant": "fixed",
+          "signed_sha256": "cf66ddf8864aab726515a9621021aab9f7daf97ab1792fc2577d4da8d2253329",
+          "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_local_song_memory_filter/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            37665
+          ],
+          "foreground_bundle": "cc.chenlvin.cloudmusic",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      }
+    }
+  }
 }

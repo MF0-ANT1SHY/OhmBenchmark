@@ -1,0 +1,28 @@
+{
+  "bundle": "com.example.nanvision",
+  "ability": "EntryAbility",
+  "description": "浏览器页面操作",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "小狐狸浏览器"
+      }
+    },
+    {
+      "op": "stop"
+    }
+  ],
+  "measured": [
+    {
+      "op": "launch"
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "小狐狸浏览器"
+      }
+    }
+  ],
+  "verify": []
+}

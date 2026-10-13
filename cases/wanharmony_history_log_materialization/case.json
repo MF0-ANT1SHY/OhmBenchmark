@@ -16,10 +16,11 @@
     "网络结果渲染",
     "页面切换"
   ],
-  "unfixed_commit": "85a7398",
-  "fixed_commit": "87d63ec",
+  "unfixed_commit": "85a73986cd4eee9c04cdbffc96aefc947e1f3bab",
+  "fixed_commit": "87d63ec508b1d6ee950f9e5f55c0146bc189b233",
   "fix_summary": "The debug logs report the list size only, removing full-list map + JSON.stringify on the page-load and page-open paths.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_wanharmony_0010.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "on-CPU time of the app process during the measured step, from the sched events in trace.htrace.",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "trace_cpu_ms",
+      "definition": "CPU time of the app process across the case window, from trace.",
+      "comparison": "unfixed spends O(history_size) in JSON serialization per open (grows with history); fixed is O(1). With 100+ entries unfixed > fixed by >= 30% on the title-event path."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "trace_cpu_ms over the lifecycle-log phase",
       "unfixed": [
@@ -68,18 +79,94 @@
         0.1
       ],
       "note": "phase-scoped cpu 49.9 vs 0.1 ms; whole-window instructions do not discriminate (page-open work dominates), so the oracle is the title-event phase CPU"
-    },
-    "mechanism_oracle": {
-      "metric": "trace_cpu_ms",
-      "definition": "CPU time of the app process across the case window, from trace.",
-      "comparison": "unfixed spends O(history_size) in JSON serialization per open (grows with history); fixed is O(1). With 100+ entries unfixed > fixed by >= 30% on the title-event path."
     }
   },
   "reproduction": [
-    "git -C hosts/wanharmony checkout case/wanharmony_history_log_materialization/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/wanharmony_history_log_materialization/testcase/PerfLoad_wanharmony_0010.* perf_testing/hapray/testcases/org.example.wan.ohos/",
-    "python -m scripts.main perf --run_testcases PerfLoad_wanharmony_0010 --round 3",
-    "git -C hosts/wanharmony checkout case/wanharmony_history_log_materialization/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py wanharmony_history_log_materialization",
+    "python3 tools/sign_clean_cases.py wanharmony_history_log_materialization",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/wanharmony_history_log_materialization/testcase/ into perf_testing/hapray/testcases/org.example.wan.ohos/.",
+    "Install each clean signed variant and run the PerfLoad_wanharmony_0010 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "85a7398",
+    "fixed_commit": "87d63ec",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/wanharmony_history_log_materialization/unfixed",
+        "commit": "85a73986cd4eee9c04cdbffc96aefc947e1f3bab",
+        "tree": "41efd76077ad95ba36a279f8d4874c6d2310bca7",
+        "business_base_tree": "41efd76077ad95ba36a279f8d4874c6d2310bca7",
+        "production_patches": [],
+        "unsigned_sha256": "db2e9771b7e993302e7f2a3fc6236097b0eab50da62c3460551cfd702a85b8bd",
+        "bytecode_audit": {
+          "sha256": "db2e9771b7e993302e7f2a3fc6236097b0eab50da62c3460551cfd702a85b8bd",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "wanharmony_history_log_materialization",
+          "variant": "unfixed",
+          "unsigned_sha256": "db2e9771b7e993302e7f2a3fc6236097b0eab50da62c3460551cfd702a85b8bd",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_history_log_materialization/unfixed/app.hap",
+          "audit": {
+            "sha256": "26d684d104e6c4d06d1570c350d4a26cba8d03cf506d8c5eb4eab1a74c45f708",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/wanharmony_history_log_materialization/fixed",
+        "commit": "87d63ec508b1d6ee950f9e5f55c0146bc189b233",
+        "tree": "4335f38febb7059d241de4f6ef22ade69767e729",
+        "business_base_tree": "4335f38febb7059d241de4f6ef22ade69767e729",
+        "production_patches": [],
+        "unsigned_sha256": "4a499cf607d52b77169c49fdc35960a5b3af4f877208d29088d81845840d08ee",
+        "bytecode_audit": {
+          "sha256": "4a499cf607d52b77169c49fdc35960a5b3af4f877208d29088d81845840d08ee",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "wanharmony_history_log_materialization",
+          "variant": "fixed",
+          "unsigned_sha256": "4a499cf607d52b77169c49fdc35960a5b3af4f877208d29088d81845840d08ee",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_history_log_materialization/fixed/app.hap",
+          "audit": {
+            "sha256": "b9a6aea7be05e48bd221f5d17b1ca4b0da3f397e5779f2324b0c7b919ed21cbc",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+"""Verify clean builds independently from signed/smoke/workload/performance gates."""
+import argparse
+import ast
+import json
+import subprocess
+from pathlib import Path
+
+from audit_clean_app import audit_hap, audit_source
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def verify(stage):
+    recon = json.loads((ROOT / "hosts_patches/host-reconstruction.json").read_text())["hosts"]
+    paths = sorted((ROOT / "cases").glob("*/case.json"))
+    errors, pending = [], []
+    if len(paths) != 30:
+        errors.append(f"expected 30 cases, found {len(paths)}")
+    for path in paths:
+        c = json.loads(path.read_text())
+        cid = c["id"]
+        host = c["host_app"]["local_path"].split("/")[-1]
+        repo = ROOT / c["host_app"]["local_path"]
+        tc = c["testcase"]
+        source = (path.parent / tc["py_file"]).read_text()
+        ast.parse(source)
+        if any(term in source for term in ("run_bench", "wait_state", "ohm-go", "--ps bench", "CASE_ID")):
+            errors.append(f"{cid}: retired app-side protocol or identity in testcase")
+        plan = json.loads((path.parent / tc["workload"]).read_text())
+        if not plan.get("measured") or any(phase not in plan for phase in ("setup", "measured", "verify")):
+            errors.append(f"{cid}: incomplete external workload plan")
+        if plan["bundle"] != c["host_app"]["bundle_name"] or plan["ability"] != tc["ability"]:
+            errors.append(f"{cid}: workload targets wrong app")
+        diff = subprocess.check_output(["git", "-C", str(repo), "diff",
+                                      f"clean-app/{cid}/unfixed", f"clean-app/{cid}/fixed"])
+        if diff != (path.parent / "fix.patch").read_bytes():
+            errors.append(f"{cid}: repair diff does not match clean app trees")
+        for variant in ("unfixed", "fixed"):
+            label = f"{cid}/{variant}"
+            entry = recon[host]["case_tags"][f"case/{cid}/{variant}"]
+            ref = f"clean-app/{cid}/{variant}"
+            audit = audit_source(repo, ref)
+            expected = entry.get("app_tree", entry["tree"])
+            folder = ROOT / "artifacts/clean" / cid / variant
+            build = json.loads((folder / "build.json").read_text())
+            if audit["tree"] != expected or not audit["passed"] or build["source"]["tree"] != expected:
+                errors.append(f"{label}: source provenance/audit failed")
+            hap = audit_hap(folder / "app-unsigned.hap", ROOT / "toolchain/command-line-tools/sdk/default/openharmony/toolchains/ark_disasm")
+            if not hap["passed"] or hap["sha256"] != build["hap"]["sha256"] or build["status"] != "PASS":
+                errors.append(f"{label}: artifact audit/build failed")
+            required = [] if stage == "build" else ["sign"]
+            if stage in ("smoke", "complete"):
+                required += ["smoke"]
+            if stage == "complete":
+                required += ["workload", "performance"]
+            for kind in required:
+                receipt = folder / f"{kind}.json"
+                if not receipt.exists():
+                    pending.append(f"{label}: {kind} evidence missing")
+                    continue
+                r = json.loads(receipt.read_text())
+                if r.get("status") != "PASS":
+                    pending.append(f"{label}: {kind} not validated")
+                if kind == "sign" and r.get("unsigned_sha256") != hap["sha256"]:
+                    errors.append(f"{label}: signature receipt belongs to another build")
+                if kind in ("smoke", "workload", "performance"):
+                    signed = json.loads((folder / "sign.json").read_text())
+                    if r.get("signed_sha256") != signed["audit"]["sha256"]:
+                        errors.append(f"{label}: {kind} receipt belongs to another signed artifact")
+                if kind == "performance" and (r.get("rounds", 0) < 3 or r.get("metric") != c["test_oracle"]["metric"]):
+                    errors.append(f"{label}: oracle coverage/rounds not proven")
+        if c["test_oracle"]["evidence"].get("status") == "pending_clean_measurement" and stage == "complete":
+            pending.append(f"{cid}: clean performance oracle pending")
+    print(json.dumps({"stage": stage, "cases": len(paths), "errors": errors,
+                      "pending": pending, "passed": not errors and not pending}, indent=2))
+    return int(bool(errors or pending))
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--stage", choices=["build", "sign", "smoke", "complete"], default="complete")
+    args = parser.parse_args()
+    raise SystemExit(verify(args.stage))

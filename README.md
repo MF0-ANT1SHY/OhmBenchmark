@@ -1,40 +1,47 @@
-# OhmBenchmark — HarmonyOS Performance-Bug Cases
+# OhmBenchmark — business-only HarmonyOS performance cases
 
-30 reproducible performance-bug cases on HarmonyOS / OpenHarmony NEXT, migrated
-from an Android performance-bug benchmark. Each case is a pair of builds —
-unfixed (buggy) and fixed — of a real open-source HarmonyOS app, plus trigger
-steps and a device-test oracle.
-
-## Dataset at a glance
-
-![bug cases per host app](assets/cases-by-app.png)
-
-![test oracle metrics](assets/oracle-metrics.png)
-
-![performance scenarios](assets/perf-scenarios.png)
+30 cases across nine apps, each with unfixed/fixed business source trees, a repair
+diff and an external UI workload. **No injected benchmark code is compiled into
+the apps.** Renaming probes or hiding their outputs does not satisfy this rule.
 
 ## Layout
 
-- `cases/<id>/case.json` — host app, unfixed/fixed commits, trigger steps, oracle
-- `cases/<id>/fix.patch` — the unfixed→fixed diff
-- `cases/<id>/testcase/` — HapRay-format testcase and collection spec
-- `cases/collection.yaml` — shared hiprofiler/hiperf capture config
-- `cases/README.md` — case structure and reproducibility criteria
-- `harness/` — reusable ArkTS instrument probes for measuring new cases
+- `cases/<id>/case.json` — evaluator-only identity, source refs, oracle and gate status
+- `cases/<id>/fix.patch` — unfixed→fixed business diff
+- `cases/<id>/testcase/` — HapRay testcase, external workload plan and shared UI driver
+- `cases/collection.yaml` — system-level profiling configuration
+- `hosts_patches/` — upstream reconstruction and explicit production adaptations
+- `tools/` — reconstruction, build, bytecode audit, signing and external device tools
+- `validation/clean-builds.json` — artifact hashes and separate runtime gates
 
-## Adding a new case
+## Rebuild
 
-1. Pick a real performance bug (or a realistic refactor of a real code path) in
-   a public HarmonyOS app; no sleeps, dummy loops or artificial delays.
-2. Create `cases/<id>/` following `cases/README.md`: `case.json`, `fix.patch`,
-   `testcase/`, with a measurable oracle (unfixed >= 1.2x fixed, >= 3 rounds).
-3. For device measurement, derive a counter from `harness/OhmProbe.ets` (see
-   existing `Ohm*Count.ets` probes for patterns), inject it into both builds,
-   and record the measured evidence in `case.json`.
+```bash
+python3 tools/reconstruct_clean_hosts.py
+python3 tools/build_clean_cases.py
+python3 tools/sign_clean_cases.py
+python3 tools/smoke_clean_cases.py
+```
 
-## Removed content
+`toolchain/command-line-tools` must point to the SDK toolchain (5.1.0.840 used).
+Signing/device tools default to the existing `cityuPC` SSH alias and Ubuntu-24.04
+WSL workstation. Signing keys stay there; app bundle names are not rewritten.
+See `cases/README.md` for external preparation and performance acceptance.
 
-The measurement pipeline scripts, host reconstruction patches, signing docs and
-raw-data inventory were slimmed away; find them in git history at tag
-`full-pipeline-2026-10-10`. Raw device data stays outside the repo
-(`/home/research/OhmBenchmark-data/`, see DATA.md at that tag).
+## Blind-evaluation boundary
+
+Give the diagnosis agent only the **clean unfixed HAP**, symptom description,
+neutral UI reproduction driver and system-generated profiles. Exclude case
+metadata, repair diffs, fixed packages, fixture/oracle inventories and evaluator
+receipts. No app-side counters, custom traces, diagnostics, bench entrypoints,
+gates, simulations or instrumentation wrappers are allowed in clean HAPs.
+
+## Validation status
+
+Build/audit, install/launch, real-workload and performance gates are separate.
+Migration is not complete until all 30 workloads and declared CPU/memory oracles
+are verified on the clean pairs. Historical instrumented evidence is archived
+for provenance and **does not validate these rebuilt cases**.
+
+Retired probes and measurement patches remain only in git history at
+`full-pipeline-2026-10-10`; do not apply them to clean builds.

@@ -1,0 +1,38 @@
+{
+  "bundle": "com.itcast.pass_interview",
+  "ability": "PhoneAbility",
+  "description": "interview-handbook-project (面试通)页面操作",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "热门题库"
+      }
+    }
+  ],
+  "measured": [
+    {
+      "op": "repeat",
+      "count": 5,
+      "actions": [
+        {
+          "op": "swipe",
+          "count": 1,
+          "direction": "down"
+        },
+        {
+          "op": "pause",
+          "seconds": 1
+        }
+      ]
+    }
+  ],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "热门题库"
+      }
+    }
+  ]
+}

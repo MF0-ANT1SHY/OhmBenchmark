@@ -17,10 +17,11 @@
     "网络结果渲染",
     "组件创建"
   ],
-  "unfixed_commit": "d755085",
-  "fixed_commit": "153f8c7",
+  "unfixed_commit": "d755085f20e4ba7bddffce1e6ee8e06b1e0b1966",
+  "fixed_commit": "153f8c7dc8203197ffb3ff14e8856d6c124f001b",
   "fix_summary": "Results render through LazyForEach backed by a LazyData data source (already used elsewhere in the app), so rows are created on demand and recycled.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -32,7 +33,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench_ui"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_cloudmusic_0040.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -56,6 +58,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "search_list_render_cpu_and_jank",
+      "definition": "(a) UI-thread CPU from results display to end of scroll; (b) count of SongCard component builds; (c) dropped frames while scrolling.",
+      "comparison": "unfixed builds all accumulated rows (150+ after 5 pages) at once; fixed builds only visible rows. unfixed first-paint after load-more and scroll CPU measurably higher; more jank frames."
+    },
+    "legacy_instrumented_evidence": {
       "status": "supporting",
       "measured_as": "SongCard builds",
       "unfixed": [
@@ -69,18 +80,113 @@
         12
       ],
       "note": "150 vs 12 row builds per render (mechanism counter, authoritative); whole-step hw-instruction medians are flat (3.4M vs 3.5M) because the window is dominated by page setup, so the declared metric needs a narrower region to separate (measurements-staging)."
-    },
-    "mechanism_oracle": {
-      "metric": "search_list_render_cpu_and_jank",
-      "definition": "(a) UI-thread CPU from results display to end of scroll; (b) count of SongCard component builds; (c) dropped frames while scrolling.",
-      "comparison": "unfixed builds all accumulated rows (150+ after 5 pages) at once; fixed builds only visible rows. unfixed first-paint after load-more and scroll CPU measurably higher; more jank frames."
     }
   },
   "reproduction": [
-    "git -C hosts/cloudmusic checkout case/cloudmusic_search_result_foreach/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/cloudmusic_search_result_foreach/testcase/PerfLoad_cloudmusic_0040.* perf_testing/hapray/testcases/cc.chenlvin.cloudmusic/",
-    "python -m scripts.main perf --run_testcases PerfLoad_cloudmusic_0040 --round 3",
-    "git -C hosts/cloudmusic checkout case/cloudmusic_search_result_foreach/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py cloudmusic_search_result_foreach",
+    "python3 tools/sign_clean_cases.py cloudmusic_search_result_foreach",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/cloudmusic_search_result_foreach/testcase/ into perf_testing/hapray/testcases/cc.chenlvin.cloudmusic/.",
+    "Install each clean signed variant and run the PerfLoad_cloudmusic_0040 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "d755085",
+    "fixed_commit": "153f8c7",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/cloudmusic_search_result_foreach/unfixed",
+        "commit": "d755085f20e4ba7bddffce1e6ee8e06b1e0b1966",
+        "tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
+        "business_base_tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
+        "production_patches": [],
+        "unsigned_sha256": "ea6b4400e75f80efdfdb6ad574b0e659b1b5c53d202d2bf67172973700a83076",
+        "bytecode_audit": {
+          "sha256": "ea6b4400e75f80efdfdb6ad574b0e659b1b5c53d202d2bf67172973700a83076",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "cloudmusic_search_result_foreach",
+          "variant": "unfixed",
+          "unsigned_sha256": "ea6b4400e75f80efdfdb6ad574b0e659b1b5c53d202d2bf67172973700a83076",
+          "signed_hap": "/home/research/ohm-clean/cloudmusic_search_result_foreach/unfixed/app.hap",
+          "audit": {
+            "sha256": "3e5c26c7909ac4a8ac5a1057f41e15c79d16a2da7d8879d9294a5d5fa283d02f",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "allowed_acls": [
+            "ohos.permission.SYSTEM_FLOAT_WINDOW"
+          ],
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "cloudmusic_search_result_foreach",
+          "variant": "unfixed",
+          "signed_sha256": "3e5c26c7909ac4a8ac5a1057f41e15c79d16a2da7d8879d9294a5d5fa283d02f",
+          "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_search_result_foreach/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            38772
+          ],
+          "foreground_bundle": "cc.chenlvin.cloudmusic",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/cloudmusic_search_result_foreach/fixed",
+        "commit": "153f8c7dc8203197ffb3ff14e8856d6c124f001b",
+        "tree": "9fce0f474edb3690c2c562d83cc82629ae42fb24",
+        "business_base_tree": "9fce0f474edb3690c2c562d83cc82629ae42fb24",
+        "production_patches": [],
+        "unsigned_sha256": "49e6fb6115749be857d5267e2280a5767738ef10ed8a362b026a0ac945bfe8b3",
+        "bytecode_audit": {
+          "sha256": "49e6fb6115749be857d5267e2280a5767738ef10ed8a362b026a0ac945bfe8b3",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "cloudmusic_search_result_foreach",
+          "variant": "fixed",
+          "unsigned_sha256": "49e6fb6115749be857d5267e2280a5767738ef10ed8a362b026a0ac945bfe8b3",
+          "signed_hap": "/home/research/ohm-clean/cloudmusic_search_result_foreach/fixed/app.hap",
+          "audit": {
+            "sha256": "c9370192b53e02d4ce12758a489d691052866891931a340bc4c4c94761e2783a",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "allowed_acls": [
+            "ohos.permission.SYSTEM_FLOAT_WINDOW"
+          ],
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

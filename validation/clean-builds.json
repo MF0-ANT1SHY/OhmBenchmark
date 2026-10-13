@@ -1,0 +1,2348 @@
+{
+  "case_count": 30,
+  "variant_count": 60,
+  "performance_evidence_reused": false,
+  "variants": [
+    {
+      "case": "browser_eager_history_load",
+      "variant": "unfixed",
+      "host": "browser",
+      "ref": "clean-app/browser_eager_history_load/unfixed",
+      "commit": "c42e4b34960aa3de5f6f34b83c60a3b2024e70bb",
+      "tree": "4a496ee498c760e81d3c36c685bbd441c9a43372",
+      "business_base_tree": "4a496ee498c760e81d3c36c685bbd441c9a43372",
+      "production_patches": [],
+      "unsigned_sha256": "60cb5758870c38979c397996ca747a5289269c8f3afebbd37d81cf333fa63155",
+      "bytecode_audit": {
+        "sha256": "60cb5758870c38979c397996ca747a5289269c8f3afebbd37d81cf333fa63155",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "browser_eager_history_load",
+        "variant": "unfixed",
+        "unsigned_sha256": "60cb5758870c38979c397996ca747a5289269c8f3afebbd37d81cf333fa63155",
+        "signed_hap": "/home/research/ohm-clean/browser_eager_history_load/unfixed/app.hap",
+        "audit": {
+          "sha256": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "browser_eager_history_load",
+        "variant": "unfixed",
+        "signed_sha256": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9",
+        "install": "[Info]App install path:/home/research/ohm-clean/browser_eager_history_load/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          28227
+        ],
+        "foreground_bundle": "com.example.nanvision",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "browser_eager_history_load",
+      "variant": "fixed",
+      "host": "browser",
+      "ref": "clean-app/browser_eager_history_load/fixed",
+      "commit": "e3c8aa99fd6a93333a9e906216545861aec07456",
+      "tree": "0ba445d9e65201d8b2c135dc64f17cafa5c4a2ee",
+      "business_base_tree": "0ba445d9e65201d8b2c135dc64f17cafa5c4a2ee",
+      "production_patches": [],
+      "unsigned_sha256": "6bedaa0a8c722900518731cd26772395a01b197169921cfb0bd7e079a6ae11b5",
+      "bytecode_audit": {
+        "sha256": "6bedaa0a8c722900518731cd26772395a01b197169921cfb0bd7e079a6ae11b5",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "browser_eager_history_load",
+        "variant": "fixed",
+        "unsigned_sha256": "6bedaa0a8c722900518731cd26772395a01b197169921cfb0bd7e079a6ae11b5",
+        "signed_hap": "/home/research/ohm-clean/browser_eager_history_load/fixed/app.hap",
+        "audit": {
+          "sha256": "248a222109a97a8bf1dcb5163910ba48184d307e311b6ccb8a2fd81534976709",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "browser_eager_history_load",
+        "variant": "fixed",
+        "signed_sha256": "248a222109a97a8bf1dcb5163910ba48184d307e311b6ccb8a2fd81534976709",
+        "install": "[Info]App install path:/home/research/ohm-clean/browser_eager_history_load/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          28813
+        ],
+        "foreground_bundle": "com.example.nanvision",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "browser_history_delete_no_transaction",
+      "variant": "unfixed",
+      "host": "browser",
+      "ref": "clean-app/browser_history_delete_no_transaction/unfixed",
+      "commit": "1aa4710ed2aa098f9073e2649868f3559da05e51",
+      "tree": "29abf85fdf8613d8b71cfb40ce6de41be0f9a0df",
+      "business_base_tree": "46f3821de88c3d309552d55308c95eaba7c3ad67",
+      "production_patches": [
+        "hosts_patches/browser/production-clear-history.patch"
+      ],
+      "unsigned_sha256": "3a6ace31b223eb567a84b1d6d17d265cd3d000d94d19c5d38963e2cccba42f90",
+      "bytecode_audit": {
+        "sha256": "3a6ace31b223eb567a84b1d6d17d265cd3d000d94d19c5d38963e2cccba42f90",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "browser_history_delete_no_transaction",
+        "variant": "unfixed",
+        "unsigned_sha256": "3a6ace31b223eb567a84b1d6d17d265cd3d000d94d19c5d38963e2cccba42f90",
+        "signed_hap": "/home/research/ohm-clean/browser_history_delete_no_transaction/unfixed/app.hap",
+        "audit": {
+          "sha256": "4cc753261eacb91fd4d2b0e3473f71a734e1444990bf42c8cb8e7dbb8483703a",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "browser_history_delete_no_transaction",
+        "variant": "unfixed",
+        "signed_sha256": "4cc753261eacb91fd4d2b0e3473f71a734e1444990bf42c8cb8e7dbb8483703a",
+        "install": "[Info]App install path:/home/research/ohm-clean/browser_history_delete_no_transaction/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          29224
+        ],
+        "foreground_bundle": "com.example.nanvision",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "browser_history_delete_no_transaction",
+      "variant": "fixed",
+      "host": "browser",
+      "ref": "clean-app/browser_history_delete_no_transaction/fixed",
+      "commit": "650ec0b7beab4e28e8c9578ed8651bea05d34d20",
+      "tree": "be84808097cc57985aca37d414e3b450fc1f7a32",
+      "business_base_tree": "83229456c247987eaa418ea094b8b65cddb02c22",
+      "production_patches": [
+        "hosts_patches/browser/production-clear-history.patch"
+      ],
+      "unsigned_sha256": "3338ed364eca4b86f77797ecbd658769223ebe409f3dbd5688f51a566c5fdf55",
+      "bytecode_audit": {
+        "sha256": "3338ed364eca4b86f77797ecbd658769223ebe409f3dbd5688f51a566c5fdf55",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "browser_history_delete_no_transaction",
+        "variant": "fixed",
+        "unsigned_sha256": "3338ed364eca4b86f77797ecbd658769223ebe409f3dbd5688f51a566c5fdf55",
+        "signed_hap": "/home/research/ohm-clean/browser_history_delete_no_transaction/fixed/app.hap",
+        "audit": {
+          "sha256": "578d2e95ea8fd24f832567ef7c471f0d340b60d81babe08ad4fce8a401e46327",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "browser_history_delete_no_transaction",
+        "variant": "fixed",
+        "signed_sha256": "578d2e95ea8fd24f832567ef7c471f0d340b60d81babe08ad4fce8a401e46327",
+        "install": "[Info]App install path:/home/research/ohm-clean/browser_history_delete_no_transaction/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          30024
+        ],
+        "foreground_bundle": "com.example.nanvision",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "browser_history_list_foreach",
+      "variant": "unfixed",
+      "host": "browser",
+      "ref": "clean-app/browser_history_list_foreach/unfixed",
+      "commit": "52bc23247f20a7d0abca20efa117ccbbe87d4f83",
+      "tree": "83229456c247987eaa418ea094b8b65cddb02c22",
+      "business_base_tree": "83229456c247987eaa418ea094b8b65cddb02c22",
+      "production_patches": [],
+      "unsigned_sha256": "01cdcb78bae2b553d8093dc9f58b1e309a16554f4f986f07ef234211a72306aa",
+      "bytecode_audit": {
+        "sha256": "01cdcb78bae2b553d8093dc9f58b1e309a16554f4f986f07ef234211a72306aa",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "browser_history_list_foreach",
+        "variant": "unfixed",
+        "unsigned_sha256": "01cdcb78bae2b553d8093dc9f58b1e309a16554f4f986f07ef234211a72306aa",
+        "signed_hap": "/home/research/ohm-clean/browser_history_list_foreach/unfixed/app.hap",
+        "audit": {
+          "sha256": "6311f1cea71ed49307bc022f80baec3f4ed57d98700b5a1f34c0952501afe2dd",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "browser_history_list_foreach",
+        "variant": "unfixed",
+        "signed_sha256": "6311f1cea71ed49307bc022f80baec3f4ed57d98700b5a1f34c0952501afe2dd",
+        "install": "[Info]App install path:/home/research/ohm-clean/browser_history_list_foreach/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          30265
+        ],
+        "foreground_bundle": "com.example.nanvision",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "browser_history_list_foreach",
+      "variant": "fixed",
+      "host": "browser",
+      "ref": "clean-app/browser_history_list_foreach/fixed",
+      "commit": "f9425c47b7306fe7d6031ddc40dc117a80349162",
+      "tree": "ca8cdb46a27f193e2d1e80db3cb72c0f3efc63a4",
+      "business_base_tree": "ca8cdb46a27f193e2d1e80db3cb72c0f3efc63a4",
+      "production_patches": [],
+      "unsigned_sha256": "c3b2002c04af5ceb9ebe96d13b20a0603b1177074a1848fae60a4a0c10737520",
+      "bytecode_audit": {
+        "sha256": "c3b2002c04af5ceb9ebe96d13b20a0603b1177074a1848fae60a4a0c10737520",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "browser_history_list_foreach",
+        "variant": "fixed",
+        "unsigned_sha256": "c3b2002c04af5ceb9ebe96d13b20a0603b1177074a1848fae60a4a0c10737520",
+        "signed_hap": "/home/research/ohm-clean/browser_history_list_foreach/fixed/app.hap",
+        "audit": {
+          "sha256": "54062ffc30474a26df9120937bf51e4b323096d05e16923cfeab182bd4f727b9",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "browser_history_list_foreach",
+        "variant": "fixed",
+        "signed_sha256": "54062ffc30474a26df9120937bf51e4b323096d05e16923cfeab182bd4f727b9",
+        "install": "[Info]App install path:/home/research/ohm-clean/browser_history_list_foreach/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          30697
+        ],
+        "foreground_bundle": "com.example.nanvision",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "browser_insert_date_lookup_cache",
+      "variant": "unfixed",
+      "host": "browser",
+      "ref": "clean-app/browser_insert_date_lookup_cache/unfixed",
+      "commit": "e3c8aa99fd6a93333a9e906216545861aec07456",
+      "tree": "0ba445d9e65201d8b2c135dc64f17cafa5c4a2ee",
+      "business_base_tree": "0ba445d9e65201d8b2c135dc64f17cafa5c4a2ee",
+      "production_patches": [],
+      "unsigned_sha256": "964710080bce771321ea022db94d33ff2873d0b5ad65fd52e812a1dbcf172669",
+      "bytecode_audit": {
+        "sha256": "964710080bce771321ea022db94d33ff2873d0b5ad65fd52e812a1dbcf172669",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "browser_insert_date_lookup_cache",
+        "variant": "unfixed",
+        "unsigned_sha256": "964710080bce771321ea022db94d33ff2873d0b5ad65fd52e812a1dbcf172669",
+        "signed_hap": "/home/research/ohm-clean/browser_insert_date_lookup_cache/unfixed/app.hap",
+        "audit": {
+          "sha256": "c5557aaa6231ab000c7823372a48182a663151d6c62276c033519a80ca26583e",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "browser_insert_date_lookup_cache",
+        "variant": "unfixed",
+        "signed_sha256": "c5557aaa6231ab000c7823372a48182a663151d6c62276c033519a80ca26583e",
+        "install": "[Info]App install path:/home/research/ohm-clean/browser_insert_date_lookup_cache/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          31131
+        ],
+        "foreground_bundle": "com.example.nanvision",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "browser_insert_date_lookup_cache",
+      "variant": "fixed",
+      "host": "browser",
+      "ref": "clean-app/browser_insert_date_lookup_cache/fixed",
+      "commit": "9138921a02aa215e6afb02ec09253c7908babd06",
+      "tree": "b5f933274bab9a3518b4b572da64957f3f9e9e87",
+      "business_base_tree": "b5f933274bab9a3518b4b572da64957f3f9e9e87",
+      "production_patches": [],
+      "unsigned_sha256": "783a6e8d904e197430ce578fbbdec2f2e1595805774853997bc6bf5be3fcb92d",
+      "bytecode_audit": {
+        "sha256": "783a6e8d904e197430ce578fbbdec2f2e1595805774853997bc6bf5be3fcb92d",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "browser_insert_date_lookup_cache",
+        "variant": "fixed",
+        "unsigned_sha256": "783a6e8d904e197430ce578fbbdec2f2e1595805774853997bc6bf5be3fcb92d",
+        "signed_hap": "/home/research/ohm-clean/browser_insert_date_lookup_cache/fixed/app.hap",
+        "audit": {
+          "sha256": "6967ee493f0d8cc6e0f89c4da06de8050a9207930e73ca794154768fb6a5d1b0",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "browser_insert_date_lookup_cache",
+        "variant": "fixed",
+        "signed_sha256": "6967ee493f0d8cc6e0f89c4da06de8050a9207930e73ca794154768fb6a5d1b0",
+        "install": "[Info]App install path:/home/research/ohm-clean/browser_insert_date_lookup_cache/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          31563
+        ],
+        "foreground_bundle": "com.example.nanvision",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "cloudmusic_indexof_in_render",
+      "variant": "unfixed",
+      "host": "cloudmusic",
+      "ref": "clean-app/cloudmusic_indexof_in_render/unfixed",
+      "commit": "f8fd90d72af8c72f05d54823792b45c0474c923d",
+      "tree": "21ed09da100d1dba53df5043b1dc50f24d22bc09",
+      "business_base_tree": "21ed09da100d1dba53df5043b1dc50f24d22bc09",
+      "production_patches": [],
+      "unsigned_sha256": "044214ecd63423a62b0862513abf3938fe77814292b42961f53ebfa0ce344f3d",
+      "bytecode_audit": {
+        "sha256": "044214ecd63423a62b0862513abf3938fe77814292b42961f53ebfa0ce344f3d",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "cloudmusic_indexof_in_render",
+        "variant": "unfixed",
+        "unsigned_sha256": "044214ecd63423a62b0862513abf3938fe77814292b42961f53ebfa0ce344f3d",
+        "signed_hap": "/home/research/ohm-clean/cloudmusic_indexof_in_render/unfixed/app.hap",
+        "audit": {
+          "sha256": "c86222b842fa82c41c63539c75776792a962f93fc38444d615d31ea853407462",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [
+          "ohos.permission.SYSTEM_FLOAT_WINDOW"
+        ],
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "cloudmusic_indexof_in_render",
+        "variant": "unfixed",
+        "signed_sha256": "c86222b842fa82c41c63539c75776792a962f93fc38444d615d31ea853407462",
+        "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_indexof_in_render/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          35774
+        ],
+        "foreground_bundle": "cc.chenlvin.cloudmusic",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "cloudmusic_indexof_in_render",
+      "variant": "fixed",
+      "host": "cloudmusic",
+      "ref": "clean-app/cloudmusic_indexof_in_render/fixed",
+      "commit": "a967ef10ae9722d19100d6dfbf00760467397a3c",
+      "tree": "a668180b0569859ca1d7fa7ccb3eb16e9ab7e1f5",
+      "business_base_tree": "a668180b0569859ca1d7fa7ccb3eb16e9ab7e1f5",
+      "production_patches": [],
+      "unsigned_sha256": "360fb38b3a621067e6729295703906e9fe3dfe177fa8605bfa6c5ebca1e50525",
+      "bytecode_audit": {
+        "sha256": "360fb38b3a621067e6729295703906e9fe3dfe177fa8605bfa6c5ebca1e50525",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "cloudmusic_indexof_in_render",
+        "variant": "fixed",
+        "unsigned_sha256": "360fb38b3a621067e6729295703906e9fe3dfe177fa8605bfa6c5ebca1e50525",
+        "signed_hap": "/home/research/ohm-clean/cloudmusic_indexof_in_render/fixed/app.hap",
+        "audit": {
+          "sha256": "16b7e4564ff60f505c4717dccbd915f29e2ba0d147dd38c0ea07875c3efbaab0",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [
+          "ohos.permission.SYSTEM_FLOAT_WINDOW"
+        ],
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "cloudmusic_indexof_in_render",
+        "variant": "fixed",
+        "signed_sha256": "16b7e4564ff60f505c4717dccbd915f29e2ba0d147dd38c0ea07875c3efbaab0",
+        "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_indexof_in_render/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          36821
+        ],
+        "foreground_bundle": "cc.chenlvin.cloudmusic",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "cloudmusic_local_song_memory_filter",
+      "variant": "unfixed",
+      "host": "cloudmusic",
+      "ref": "clean-app/cloudmusic_local_song_memory_filter/unfixed",
+      "commit": "a967ef10ae9722d19100d6dfbf00760467397a3c",
+      "tree": "a668180b0569859ca1d7fa7ccb3eb16e9ab7e1f5",
+      "business_base_tree": "a668180b0569859ca1d7fa7ccb3eb16e9ab7e1f5",
+      "production_patches": [],
+      "unsigned_sha256": "d75232a512d7c76151b39141f6a61eee37c2165f51862238189d109b09ed3d39",
+      "bytecode_audit": {
+        "sha256": "d75232a512d7c76151b39141f6a61eee37c2165f51862238189d109b09ed3d39",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "cloudmusic_local_song_memory_filter",
+        "variant": "unfixed",
+        "unsigned_sha256": "d75232a512d7c76151b39141f6a61eee37c2165f51862238189d109b09ed3d39",
+        "signed_hap": "/home/research/ohm-clean/cloudmusic_local_song_memory_filter/unfixed/app.hap",
+        "audit": {
+          "sha256": "04551fd3cc1c89c1968f65df22811e986d589a25c2c51f3670f2e3b009876a11",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [
+          "ohos.permission.SYSTEM_FLOAT_WINDOW"
+        ],
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "cloudmusic_local_song_memory_filter",
+        "variant": "unfixed",
+        "signed_sha256": "04551fd3cc1c89c1968f65df22811e986d589a25c2c51f3670f2e3b009876a11",
+        "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_local_song_memory_filter/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          37302
+        ],
+        "foreground_bundle": "cc.chenlvin.cloudmusic",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "cloudmusic_local_song_memory_filter",
+      "variant": "fixed",
+      "host": "cloudmusic",
+      "ref": "clean-app/cloudmusic_local_song_memory_filter/fixed",
+      "commit": "2aa471589e637964e0ef9ba37c0ef9e9db5b6de7",
+      "tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
+      "business_base_tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
+      "production_patches": [],
+      "unsigned_sha256": "1f3965d825b47775ba8923ae44cd0dce713650f838c6bd2267e86709499f0a2f",
+      "bytecode_audit": {
+        "sha256": "1f3965d825b47775ba8923ae44cd0dce713650f838c6bd2267e86709499f0a2f",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "cloudmusic_local_song_memory_filter",
+        "variant": "fixed",
+        "unsigned_sha256": "1f3965d825b47775ba8923ae44cd0dce713650f838c6bd2267e86709499f0a2f",
+        "signed_hap": "/home/research/ohm-clean/cloudmusic_local_song_memory_filter/fixed/app.hap",
+        "audit": {
+          "sha256": "cf66ddf8864aab726515a9621021aab9f7daf97ab1792fc2577d4da8d2253329",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [
+          "ohos.permission.SYSTEM_FLOAT_WINDOW"
+        ],
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "cloudmusic_local_song_memory_filter",
+        "variant": "fixed",
+        "signed_sha256": "cf66ddf8864aab726515a9621021aab9f7daf97ab1792fc2577d4da8d2253329",
+        "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_local_song_memory_filter/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          37665
+        ],
+        "foreground_bundle": "cc.chenlvin.cloudmusic",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "cloudmusic_play_time_high_frequency_update",
+      "variant": "unfixed",
+      "host": "cloudmusic",
+      "ref": "clean-app/cloudmusic_play_time_high_frequency_update/unfixed",
+      "commit": "2aa471589e637964e0ef9ba37c0ef9e9db5b6de7",
+      "tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
+      "business_base_tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
+      "production_patches": [],
+      "unsigned_sha256": "924ac0b4470c9848d2f04acecef2c041ae5edbc61e21c618202551a26e9e5421",
+      "bytecode_audit": {
+        "sha256": "924ac0b4470c9848d2f04acecef2c041ae5edbc61e21c618202551a26e9e5421",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "cloudmusic_play_time_high_frequency_update",
+        "variant": "unfixed",
+        "unsigned_sha256": "924ac0b4470c9848d2f04acecef2c041ae5edbc61e21c618202551a26e9e5421",
+        "signed_hap": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/unfixed/app.hap",
+        "audit": {
+          "sha256": "4b8d8021e537dd325d9a0e9e7d097a8ed2e14bcf4e523943eb0fa8595b7ae698",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [
+          "ohos.permission.SYSTEM_FLOAT_WINDOW"
+        ],
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "cloudmusic_play_time_high_frequency_update",
+        "variant": "unfixed",
+        "signed_sha256": "4b8d8021e537dd325d9a0e9e7d097a8ed2e14bcf4e523943eb0fa8595b7ae698",
+        "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          38052
+        ],
+        "foreground_bundle": "cc.chenlvin.cloudmusic",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "cloudmusic_play_time_high_frequency_update",
+      "variant": "fixed",
+      "host": "cloudmusic",
+      "ref": "clean-app/cloudmusic_play_time_high_frequency_update/fixed",
+      "commit": "d755085f20e4ba7bddffce1e6ee8e06b1e0b1966",
+      "tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
+      "business_base_tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
+      "production_patches": [],
+      "unsigned_sha256": "2320ded382bca8f83f41cc45107280dadc6564d72bdafba1b0122662949fd6d8",
+      "bytecode_audit": {
+        "sha256": "2320ded382bca8f83f41cc45107280dadc6564d72bdafba1b0122662949fd6d8",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "cloudmusic_play_time_high_frequency_update",
+        "variant": "fixed",
+        "unsigned_sha256": "2320ded382bca8f83f41cc45107280dadc6564d72bdafba1b0122662949fd6d8",
+        "signed_hap": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/fixed/app.hap",
+        "audit": {
+          "sha256": "762236132cfb3db9750d10e29f59335efda788b9a215fd244d52f1b933e6b70e",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [
+          "ohos.permission.SYSTEM_FLOAT_WINDOW"
+        ],
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "cloudmusic_play_time_high_frequency_update",
+        "variant": "fixed",
+        "signed_sha256": "762236132cfb3db9750d10e29f59335efda788b9a215fd244d52f1b933e6b70e",
+        "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          38422
+        ],
+        "foreground_bundle": "cc.chenlvin.cloudmusic",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "cloudmusic_search_result_foreach",
+      "variant": "unfixed",
+      "host": "cloudmusic",
+      "ref": "clean-app/cloudmusic_search_result_foreach/unfixed",
+      "commit": "d755085f20e4ba7bddffce1e6ee8e06b1e0b1966",
+      "tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
+      "business_base_tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
+      "production_patches": [],
+      "unsigned_sha256": "ea6b4400e75f80efdfdb6ad574b0e659b1b5c53d202d2bf67172973700a83076",
+      "bytecode_audit": {
+        "sha256": "ea6b4400e75f80efdfdb6ad574b0e659b1b5c53d202d2bf67172973700a83076",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "cloudmusic_search_result_foreach",
+        "variant": "unfixed",
+        "unsigned_sha256": "ea6b4400e75f80efdfdb6ad574b0e659b1b5c53d202d2bf67172973700a83076",
+        "signed_hap": "/home/research/ohm-clean/cloudmusic_search_result_foreach/unfixed/app.hap",
+        "audit": {
+          "sha256": "3e5c26c7909ac4a8ac5a1057f41e15c79d16a2da7d8879d9294a5d5fa283d02f",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [
+          "ohos.permission.SYSTEM_FLOAT_WINDOW"
+        ],
+        "status": "PASS"
+      },
+      "smoke": {
+        "case": "cloudmusic_search_result_foreach",
+        "variant": "unfixed",
+        "signed_sha256": "3e5c26c7909ac4a8ac5a1057f41e15c79d16a2da7d8879d9294a5d5fa283d02f",
+        "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_search_result_foreach/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          38772
+        ],
+        "foreground_bundle": "cc.chenlvin.cloudmusic",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    {
+      "case": "cloudmusic_search_result_foreach",
+      "variant": "fixed",
+      "host": "cloudmusic",
+      "ref": "clean-app/cloudmusic_search_result_foreach/fixed",
+      "commit": "153f8c7dc8203197ffb3ff14e8856d6c124f001b",
+      "tree": "9fce0f474edb3690c2c562d83cc82629ae42fb24",
+      "business_base_tree": "9fce0f474edb3690c2c562d83cc82629ae42fb24",
+      "production_patches": [],
+      "unsigned_sha256": "49e6fb6115749be857d5267e2280a5767738ef10ed8a362b026a0ac945bfe8b3",
+      "bytecode_audit": {
+        "sha256": "49e6fb6115749be857d5267e2280a5767738ef10ed8a362b026a0ac945bfe8b3",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "cloudmusic_search_result_foreach",
+        "variant": "fixed",
+        "unsigned_sha256": "49e6fb6115749be857d5267e2280a5767738ef10ed8a362b026a0ac945bfe8b3",
+        "signed_hap": "/home/research/ohm-clean/cloudmusic_search_result_foreach/fixed/app.hap",
+        "audit": {
+          "sha256": "c9370192b53e02d4ce12758a489d691052866891931a340bc4c4c94761e2783a",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [
+          "ohos.permission.SYSTEM_FLOAT_WINDOW"
+        ],
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "cloudmusic_songcard_artists_concat",
+      "variant": "unfixed",
+      "host": "cloudmusic",
+      "ref": "clean-app/cloudmusic_songcard_artists_concat/unfixed",
+      "commit": "153f8c7dc8203197ffb3ff14e8856d6c124f001b",
+      "tree": "9fce0f474edb3690c2c562d83cc82629ae42fb24",
+      "business_base_tree": "9fce0f474edb3690c2c562d83cc82629ae42fb24",
+      "production_patches": [],
+      "unsigned_sha256": "962f21b8acc04e9a994117efbd1ce65279bb66e2bf1ae32d921f817138e7b224",
+      "bytecode_audit": {
+        "sha256": "962f21b8acc04e9a994117efbd1ce65279bb66e2bf1ae32d921f817138e7b224",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "cloudmusic_songcard_artists_concat",
+        "variant": "unfixed",
+        "unsigned_sha256": "962f21b8acc04e9a994117efbd1ce65279bb66e2bf1ae32d921f817138e7b224",
+        "signed_hap": "/home/research/ohm-clean/cloudmusic_songcard_artists_concat/unfixed/app.hap",
+        "audit": {
+          "sha256": "2b564840358e206ab42e656128e5e2f52dc6955ec1dc39c95f636dfefebd6cb3",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [
+          "ohos.permission.SYSTEM_FLOAT_WINDOW"
+        ],
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "cloudmusic_songcard_artists_concat",
+      "variant": "fixed",
+      "host": "cloudmusic",
+      "ref": "clean-app/cloudmusic_songcard_artists_concat/fixed",
+      "commit": "ff15a9947c7438848de730bc46b02d5573b7583d",
+      "tree": "61388725820d06db64e66e57edb504321b12ba6c",
+      "business_base_tree": "61388725820d06db64e66e57edb504321b12ba6c",
+      "production_patches": [],
+      "unsigned_sha256": "0deedf99d463d0dedadfa3efa5ff3a2bc99edca62a484fb27287fd975cb281f0",
+      "bytecode_audit": {
+        "sha256": "0deedf99d463d0dedadfa3efa5ff3a2bc99edca62a484fb27287fd975cb281f0",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "cloudmusic_songcard_artists_concat",
+        "variant": "fixed",
+        "unsigned_sha256": "0deedf99d463d0dedadfa3efa5ff3a2bc99edca62a484fb27287fd975cb281f0",
+        "signed_hap": "/home/research/ohm-clean/cloudmusic_songcard_artists_concat/fixed/app.hap",
+        "audit": {
+          "sha256": "21253d8a97af9cfd2685897d21f80d733a11a70d8bceea580fc3784abd483958",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [
+          "ohos.permission.SYSTEM_FLOAT_WINDOW"
+        ],
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "interviewapp_response_log_full_stringify",
+      "variant": "unfixed",
+      "host": "interviewapp",
+      "ref": "clean-app/interviewapp_response_log_full_stringify/unfixed",
+      "commit": "6f1c96f698fe1c9dd90e05bb45b76ba9e5118c4d",
+      "tree": "382c9d77994a2b3aa5e42dcac0f81fbae280b8cf",
+      "business_base_tree": "382c9d77994a2b3aa5e42dcac0f81fbae280b8cf",
+      "production_patches": [],
+      "unsigned_sha256": "b2659a41c0242c40f590fc888c6c882dcd166e96a984d9739afb28356069486e",
+      "bytecode_audit": {
+        "sha256": "b2659a41c0242c40f590fc888c6c882dcd166e96a984d9739afb28356069486e",
+        "abc_modules_checked": [
+          "ets/widgets.abc",
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "interviewapp_response_log_full_stringify",
+        "variant": "unfixed",
+        "unsigned_sha256": "b2659a41c0242c40f590fc888c6c882dcd166e96a984d9739afb28356069486e",
+        "signed_hap": "/home/research/ohm-clean/interviewapp_response_log_full_stringify/unfixed/app.hap",
+        "audit": {
+          "sha256": "e285b251e7ba8282477b4af02206b1e14b62f3d245b4d028043e9623163bd952",
+          "abc_modules_checked": [
+            "ets/modules.abc",
+            "ets/widgets.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "interviewapp_response_log_full_stringify",
+      "variant": "fixed",
+      "host": "interviewapp",
+      "ref": "clean-app/interviewapp_response_log_full_stringify/fixed",
+      "commit": "4fd37562f8060ce572f580d89dbf9d3a33052e63",
+      "tree": "4085ad189b70ef72a88ddc0010fdf6890b12aa49",
+      "business_base_tree": "4085ad189b70ef72a88ddc0010fdf6890b12aa49",
+      "production_patches": [],
+      "unsigned_sha256": "2ee29e3f04dcfc018483fc7c773ddf8ec9fcc53c95ddcb22b29125ae5e06c38b",
+      "bytecode_audit": {
+        "sha256": "2ee29e3f04dcfc018483fc7c773ddf8ec9fcc53c95ddcb22b29125ae5e06c38b",
+        "abc_modules_checked": [
+          "ets/widgets.abc",
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "interviewapp_response_log_full_stringify",
+        "variant": "fixed",
+        "unsigned_sha256": "2ee29e3f04dcfc018483fc7c773ddf8ec9fcc53c95ddcb22b29125ae5e06c38b",
+        "signed_hap": "/home/research/ohm-clean/interviewapp_response_log_full_stringify/fixed/app.hap",
+        "audit": {
+          "sha256": "1a67c147168c589aea1ca69d8c5a493adbd5418cb37e5089eb205622a5b326b3",
+          "abc_modules_checked": [
+            "ets/modules.abc",
+            "ets/widgets.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "interviewapp_search_history_sync_flush",
+      "variant": "unfixed",
+      "host": "interviewapp",
+      "ref": "clean-app/interviewapp_search_history_sync_flush/unfixed",
+      "commit": "ad6183004cbd5b81fd7ddebb044b7ba8c9c7af1c",
+      "tree": "e77617182614753257cf10aff3244973254c2c97",
+      "business_base_tree": "e77617182614753257cf10aff3244973254c2c97",
+      "production_patches": [],
+      "unsigned_sha256": "a081ea6e32ccfbe50e32884dd39097ca0c92d89c342cfb8d39e1c37e20f7aa2a",
+      "bytecode_audit": {
+        "sha256": "a081ea6e32ccfbe50e32884dd39097ca0c92d89c342cfb8d39e1c37e20f7aa2a",
+        "abc_modules_checked": [
+          "ets/widgets.abc",
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "interviewapp_search_history_sync_flush",
+        "variant": "unfixed",
+        "unsigned_sha256": "a081ea6e32ccfbe50e32884dd39097ca0c92d89c342cfb8d39e1c37e20f7aa2a",
+        "signed_hap": "/home/research/ohm-clean/interviewapp_search_history_sync_flush/unfixed/app.hap",
+        "audit": {
+          "sha256": "0d93bb3d0a5e52817fa2032da6adbe505d3167e4f8edf0c0bd893e8025ab73cc",
+          "abc_modules_checked": [
+            "ets/modules.abc",
+            "ets/widgets.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "interviewapp_search_history_sync_flush",
+      "variant": "fixed",
+      "host": "interviewapp",
+      "ref": "clean-app/interviewapp_search_history_sync_flush/fixed",
+      "commit": "6f1c96f698fe1c9dd90e05bb45b76ba9e5118c4d",
+      "tree": "382c9d77994a2b3aa5e42dcac0f81fbae280b8cf",
+      "business_base_tree": "382c9d77994a2b3aa5e42dcac0f81fbae280b8cf",
+      "production_patches": [],
+      "unsigned_sha256": "92e0f1fefdeed4f2fd43778a0f012c66bd160bab407b0e655d25d827d36d2abc",
+      "bytecode_audit": {
+        "sha256": "92e0f1fefdeed4f2fd43778a0f012c66bd160bab407b0e655d25d827d36d2abc",
+        "abc_modules_checked": [
+          "ets/widgets.abc",
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "interviewapp_search_history_sync_flush",
+        "variant": "fixed",
+        "unsigned_sha256": "92e0f1fefdeed4f2fd43778a0f012c66bd160bab407b0e655d25d827d36d2abc",
+        "signed_hap": "/home/research/ohm-clean/interviewapp_search_history_sync_flush/fixed/app.hap",
+        "audit": {
+          "sha256": "6eec7877bdeb7b90dd2031296e36759514f319be07da3ccadb16bcd183712183",
+          "abc_modules_checked": [
+            "ets/modules.abc",
+            "ets/widgets.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "interviewapp_search_history_unbounded",
+      "variant": "unfixed",
+      "host": "interviewapp",
+      "ref": "clean-app/interviewapp_search_history_unbounded/unfixed",
+      "commit": "4fd37562f8060ce572f580d89dbf9d3a33052e63",
+      "tree": "4085ad189b70ef72a88ddc0010fdf6890b12aa49",
+      "business_base_tree": "4085ad189b70ef72a88ddc0010fdf6890b12aa49",
+      "production_patches": [],
+      "unsigned_sha256": "82852c0c1e05422b84aa9d3f1c70c60bf77d5f371ca5c41a2ca5c787cec3532e",
+      "bytecode_audit": {
+        "sha256": "82852c0c1e05422b84aa9d3f1c70c60bf77d5f371ca5c41a2ca5c787cec3532e",
+        "abc_modules_checked": [
+          "ets/widgets.abc",
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "interviewapp_search_history_unbounded",
+        "variant": "unfixed",
+        "unsigned_sha256": "82852c0c1e05422b84aa9d3f1c70c60bf77d5f371ca5c41a2ca5c787cec3532e",
+        "signed_hap": "/home/research/ohm-clean/interviewapp_search_history_unbounded/unfixed/app.hap",
+        "audit": {
+          "sha256": "854316c15663fb5a93d874a4c392602febbbb9dd553080a9856d83bcb218a36c",
+          "abc_modules_checked": [
+            "ets/modules.abc",
+            "ets/widgets.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "interviewapp_search_history_unbounded",
+      "variant": "fixed",
+      "host": "interviewapp",
+      "ref": "clean-app/interviewapp_search_history_unbounded/fixed",
+      "commit": "9f226e3d8793bf1a9396221d5c518debd7b8bde5",
+      "tree": "6ead8b753ec2a2f67ecdbc52bd53a454f2942b9f",
+      "business_base_tree": "6ead8b753ec2a2f67ecdbc52bd53a454f2942b9f",
+      "production_patches": [],
+      "unsigned_sha256": "dc8c86eba41cb1b96150e052ac156f337a4ab8dd018c869294d3b446568c0c93",
+      "bytecode_audit": {
+        "sha256": "dc8c86eba41cb1b96150e052ac156f337a4ab8dd018c869294d3b446568c0c93",
+        "abc_modules_checked": [
+          "ets/widgets.abc",
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "interviewapp_search_history_unbounded",
+        "variant": "fixed",
+        "unsigned_sha256": "dc8c86eba41cb1b96150e052ac156f337a4ab8dd018c869294d3b446568c0c93",
+        "signed_hap": "/home/research/ohm-clean/interviewapp_search_history_unbounded/fixed/app.hap",
+        "audit": {
+          "sha256": "c802d64e5a6189c856d4d189f266e25a5644af5cb20d2b3c4a4624d72475f928",
+          "abc_modules_checked": [
+            "ets/modules.abc",
+            "ets/widgets.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "variant": "unfixed",
+      "host": "jingmo",
+      "ref": "clean-app/jingmo_dataset_import_no_transaction/unfixed",
+      "commit": "caf08237364b16bdda9a9be5ade0beae37d7f487",
+      "tree": "2eadaf75ff4f636cd8f04ca1ac52c6f3279b622a",
+      "business_base_tree": "2eadaf75ff4f636cd8f04ca1ac52c6f3279b622a",
+      "production_patches": [],
+      "unsigned_sha256": "9253e0aaef33fc49ec8906b0747155de335f56b96ffb3bfe3dbd159664cd427d",
+      "bytecode_audit": {
+        "sha256": "9253e0aaef33fc49ec8906b0747155de335f56b96ffb3bfe3dbd159664cd427d",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "jingmo_dataset_import_no_transaction",
+        "variant": "unfixed",
+        "unsigned_sha256": "9253e0aaef33fc49ec8906b0747155de335f56b96ffb3bfe3dbd159664cd427d",
+        "signed_hap": "/home/research/ohm-clean/jingmo_dataset_import_no_transaction/unfixed/app.hap",
+        "audit": {
+          "sha256": "2a993214fb0a158a972215c50d9112f3d1d7362b204baaf15839af7236003c52",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "variant": "fixed",
+      "host": "jingmo",
+      "ref": "clean-app/jingmo_dataset_import_no_transaction/fixed",
+      "commit": "d52c391f23e1f9b1f1f5c1c26989200953eb1f55",
+      "tree": "ac69e4f9f62a10ea28840c83cc0f8741788ec151",
+      "business_base_tree": "ac69e4f9f62a10ea28840c83cc0f8741788ec151",
+      "production_patches": [],
+      "unsigned_sha256": "8fcc828852a7a389baad8de97e978ea6767540950af102266cb882e2b6e5feed",
+      "bytecode_audit": {
+        "sha256": "8fcc828852a7a389baad8de97e978ea6767540950af102266cb882e2b6e5feed",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "jingmo_dataset_import_no_transaction",
+        "variant": "fixed",
+        "unsigned_sha256": "8fcc828852a7a389baad8de97e978ea6767540950af102266cb882e2b6e5feed",
+        "signed_hap": "/home/research/ohm-clean/jingmo_dataset_import_no_transaction/fixed/app.hap",
+        "audit": {
+          "sha256": "12bc14abc50deae03781e62e7e18a94b11af407772d48d68ea72b4c9dfb397d4",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "jingmo_random_poem_orderby_random",
+      "variant": "unfixed",
+      "host": "jingmo",
+      "ref": "clean-app/jingmo_random_poem_orderby_random/unfixed",
+      "commit": "3eb76867d44a6833067234e96ee12dce669940e7",
+      "tree": "1f27352d8d13c42ec52161b1696aad64e437f95c",
+      "business_base_tree": "1f27352d8d13c42ec52161b1696aad64e437f95c",
+      "production_patches": [],
+      "unsigned_sha256": "0aaf275aa3cf68b26cb9aecdb413b79796fc706eb8e80375d1522b514db61682",
+      "bytecode_audit": {
+        "sha256": "0aaf275aa3cf68b26cb9aecdb413b79796fc706eb8e80375d1522b514db61682",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "jingmo_random_poem_orderby_random",
+        "variant": "unfixed",
+        "unsigned_sha256": "0aaf275aa3cf68b26cb9aecdb413b79796fc706eb8e80375d1522b514db61682",
+        "signed_hap": "/home/research/ohm-clean/jingmo_random_poem_orderby_random/unfixed/app.hap",
+        "audit": {
+          "sha256": "dfed739f69b5efda1071306817a46e5f9f8252ecd1b66e16b3561ba27f292c8b",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "jingmo_random_poem_orderby_random",
+      "variant": "fixed",
+      "host": "jingmo",
+      "ref": "clean-app/jingmo_random_poem_orderby_random/fixed",
+      "commit": "caf08237364b16bdda9a9be5ade0beae37d7f487",
+      "tree": "2eadaf75ff4f636cd8f04ca1ac52c6f3279b622a",
+      "business_base_tree": "2eadaf75ff4f636cd8f04ca1ac52c6f3279b622a",
+      "production_patches": [],
+      "unsigned_sha256": "b33d400ce3eb5dada7a81f08b7bd3b841d0707d69b5d919d5e10a0ee887a9fa2",
+      "bytecode_audit": {
+        "sha256": "b33d400ce3eb5dada7a81f08b7bd3b841d0707d69b5d919d5e10a0ee887a9fa2",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "jingmo_random_poem_orderby_random",
+        "variant": "fixed",
+        "unsigned_sha256": "b33d400ce3eb5dada7a81f08b7bd3b841d0707d69b5d919d5e10a0ee887a9fa2",
+        "signed_hap": "/home/research/ohm-clean/jingmo_random_poem_orderby_random/fixed/app.hap",
+        "audit": {
+          "sha256": "ef9325e435ca099ae781edaaf64f61c4c8f1ab46e9c76a916b4b992860d45e9d",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "variant": "unfixed",
+      "host": "jingmo",
+      "ref": "clean-app/jingmo_sync_page_reimport/unfixed",
+      "commit": "d52c391f23e1f9b1f1f5c1c26989200953eb1f55",
+      "tree": "ac69e4f9f62a10ea28840c83cc0f8741788ec151",
+      "business_base_tree": "ac69e4f9f62a10ea28840c83cc0f8741788ec151",
+      "production_patches": [],
+      "unsigned_sha256": "1284640c9805c3e681436236e576307a58776af906aae9c0f6e250c8cc97ec12",
+      "bytecode_audit": {
+        "sha256": "1284640c9805c3e681436236e576307a58776af906aae9c0f6e250c8cc97ec12",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "jingmo_sync_page_reimport",
+        "variant": "unfixed",
+        "unsigned_sha256": "1284640c9805c3e681436236e576307a58776af906aae9c0f6e250c8cc97ec12",
+        "signed_hap": "/home/research/ohm-clean/jingmo_sync_page_reimport/unfixed/app.hap",
+        "audit": {
+          "sha256": "92022238fa684963ffe6f2a444805f040c88f71c079a0158cc200d7743cd50e6",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "variant": "fixed",
+      "host": "jingmo",
+      "ref": "clean-app/jingmo_sync_page_reimport/fixed",
+      "commit": "6d6ad777f109124852e5c2374ea77edfc2347cea",
+      "tree": "8101cbf9b28e027904a750305aedeeec43a74202",
+      "business_base_tree": "8101cbf9b28e027904a750305aedeeec43a74202",
+      "production_patches": [],
+      "unsigned_sha256": "d9bf2fd56bde1a4d996757df9b58d577531262cae75e0a05f848fcdc6e47eab8",
+      "bytecode_audit": {
+        "sha256": "d9bf2fd56bde1a4d996757df9b58d577531262cae75e0a05f848fcdc6e47eab8",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "jingmo_sync_page_reimport",
+        "variant": "fixed",
+        "unsigned_sha256": "d9bf2fd56bde1a4d996757df9b58d577531262cae75e0a05f848fcdc6e47eab8",
+        "signed_hap": "/home/research/ohm-clean/jingmo_sync_page_reimport/fixed/app.hap",
+        "audit": {
+          "sha256": "d86baea098122d26ff4ca81334123f8f62f3af5b7cd6b189a43c832602a8e952",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "sepweather_font_register_per_page",
+      "variant": "unfixed",
+      "host": "sepweather",
+      "ref": "clean-app/sepweather_font_register_per_page/unfixed",
+      "commit": "30cc357936f8fff776d9c0e6b7e6f4b29668367b",
+      "tree": "370125e32dcc9e352b052fbe25a8098878ad0ac7",
+      "business_base_tree": "370125e32dcc9e352b052fbe25a8098878ad0ac7",
+      "production_patches": [],
+      "unsigned_sha256": "522f316a9c31440e202be7d3b726aab42317f1c3d59f95173460096284f4c67f",
+      "bytecode_audit": {
+        "sha256": "522f316a9c31440e202be7d3b726aab42317f1c3d59f95173460096284f4c67f",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "sepweather_font_register_per_page",
+        "variant": "unfixed",
+        "unsigned_sha256": "522f316a9c31440e202be7d3b726aab42317f1c3d59f95173460096284f4c67f",
+        "signed_hap": "/home/research/ohm-clean/sepweather_font_register_per_page/unfixed/app.hap",
+        "audit": {
+          "sha256": "effefb72e7c738ff6714ddbe303aa54a3cb9b59d6f31c12ca57146442e625d9d",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "sepweather_font_register_per_page",
+      "variant": "fixed",
+      "host": "sepweather",
+      "ref": "clean-app/sepweather_font_register_per_page/fixed",
+      "commit": "e720e2150a6a062c85ccbe8269399d4edc6e7300",
+      "tree": "3264b46ab990081c90469f9095e6a1bf96f717d7",
+      "business_base_tree": "3264b46ab990081c90469f9095e6a1bf96f717d7",
+      "production_patches": [],
+      "unsigned_sha256": "dcba512e7da08e5cf095b2678f351370e21457d1567ce1bb1e1b09b481bc2526",
+      "bytecode_audit": {
+        "sha256": "dcba512e7da08e5cf095b2678f351370e21457d1567ce1bb1e1b09b481bc2526",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "sepweather_font_register_per_page",
+        "variant": "fixed",
+        "unsigned_sha256": "dcba512e7da08e5cf095b2678f351370e21457d1567ce1bb1e1b09b481bc2526",
+        "signed_hap": "/home/research/ohm-clean/sepweather_font_register_per_page/fixed/app.hap",
+        "audit": {
+          "sha256": "00fa3c507f02679f7033c3257bb9ab9afb45fdba1a87b793e446bcb6b9643ea3",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "sheafreader_article_list_foreach",
+      "variant": "unfixed",
+      "host": "sheafreader",
+      "ref": "clean-app/sheafreader_article_list_foreach/unfixed",
+      "commit": "759b2b81f8436fc20ea56985fdbc6e6b57b1faa9",
+      "tree": "dfe283c40ad1c8401dd37201e85dccf945c2513c",
+      "business_base_tree": "dfe283c40ad1c8401dd37201e85dccf945c2513c",
+      "production_patches": [],
+      "unsigned_sha256": "a509690790e7e560395c25b06f2fac2cae2ae9ba14a01aecfb41d61ca9e7392e",
+      "bytecode_audit": {
+        "sha256": "a509690790e7e560395c25b06f2fac2cae2ae9ba14a01aecfb41d61ca9e7392e",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "sheafreader_article_list_foreach",
+        "variant": "unfixed",
+        "unsigned_sha256": "a509690790e7e560395c25b06f2fac2cae2ae9ba14a01aecfb41d61ca9e7392e",
+        "signed_hap": "/home/research/ohm-clean/sheafreader_article_list_foreach/unfixed/app.hap",
+        "audit": {
+          "sha256": "1a486de4353db0fa573f986d8370b18826be06ed16be660f8afcc83422c3e8b1",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "sheafreader_article_list_foreach",
+      "variant": "fixed",
+      "host": "sheafreader",
+      "ref": "clean-app/sheafreader_article_list_foreach/fixed",
+      "commit": "c3e7b111cf83050b6b6e48c8b05875efa01bd3ae",
+      "tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
+      "business_base_tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
+      "production_patches": [],
+      "unsigned_sha256": "b67d05a4e776f1d70d1e55032ac6eba5ba67e92b4d110433c2e5ed7413cab848",
+      "bytecode_audit": {
+        "sha256": "b67d05a4e776f1d70d1e55032ac6eba5ba67e92b4d110433c2e5ed7413cab848",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "sheafreader_article_list_foreach",
+        "variant": "fixed",
+        "unsigned_sha256": "b67d05a4e776f1d70d1e55032ac6eba5ba67e92b4d110433c2e5ed7413cab848",
+        "signed_hap": "/home/research/ohm-clean/sheafreader_article_list_foreach/fixed/app.hap",
+        "audit": {
+          "sha256": "ba1e074a3f089f0ee521618bf3223a9dd54c8e5b4bb71420648ea6eb517c4e9c",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "sheafreader_extract_tag_tolowercase",
+      "variant": "unfixed",
+      "host": "sheafreader",
+      "ref": "clean-app/sheafreader_extract_tag_tolowercase/unfixed",
+      "commit": "e04ef65673a7b3a0da2de85fb7b954663232dec7",
+      "tree": "afc2ecbc7de30ebdf0580018ab615aba7590a3de",
+      "business_base_tree": "afc2ecbc7de30ebdf0580018ab615aba7590a3de",
+      "production_patches": [],
+      "unsigned_sha256": "8af0ad8aa458066f5ad9447eb323183f967849f55fd673ab4010b74badc0876d",
+      "bytecode_audit": {
+        "sha256": "8af0ad8aa458066f5ad9447eb323183f967849f55fd673ab4010b74badc0876d",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "sheafreader_extract_tag_tolowercase",
+        "variant": "unfixed",
+        "unsigned_sha256": "8af0ad8aa458066f5ad9447eb323183f967849f55fd673ab4010b74badc0876d",
+        "signed_hap": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/app.hap",
+        "audit": {
+          "sha256": "d1c7ceb0deb65c5e8827a9061f55c20f05eaaa6c5765d91911d5691412202a0b",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "sheafreader_extract_tag_tolowercase",
+      "variant": "fixed",
+      "host": "sheafreader",
+      "ref": "clean-app/sheafreader_extract_tag_tolowercase/fixed",
+      "commit": "f62858e1ca337cbc1d128cec51917d792c3f4c68",
+      "tree": "914c45be73bbdd599cf09029098f0ea6bff961e4",
+      "business_base_tree": "914c45be73bbdd599cf09029098f0ea6bff961e4",
+      "production_patches": [],
+      "unsigned_sha256": "b11411fb0ca91d5cab14f1a69d1b2f677f5399d76e0af1397e5ad3b746dfc55b",
+      "bytecode_audit": {
+        "sha256": "b11411fb0ca91d5cab14f1a69d1b2f677f5399d76e0af1397e5ad3b746dfc55b",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "sheafreader_extract_tag_tolowercase",
+        "variant": "fixed",
+        "unsigned_sha256": "b11411fb0ca91d5cab14f1a69d1b2f677f5399d76e0af1397e5ad3b746dfc55b",
+        "signed_hap": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/app.hap",
+        "audit": {
+          "sha256": "3a89e0372d0ab0ead083a2a9b5ba6ef70b89609edeeea917e82b54b6e8653b5f",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "sheafreader_insert_duplicate_exception",
+      "variant": "unfixed",
+      "host": "sheafreader",
+      "ref": "clean-app/sheafreader_insert_duplicate_exception/unfixed",
+      "commit": "4c9b8dcdc7f230b68120fb5c7640c4cce3521a88",
+      "tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
+      "business_base_tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
+      "production_patches": [],
+      "unsigned_sha256": "abd062458bdc50825f9401db0dbc8d18c8520de75b1e189670e2356104248f7f",
+      "bytecode_audit": {
+        "sha256": "abd062458bdc50825f9401db0dbc8d18c8520de75b1e189670e2356104248f7f",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "sheafreader_insert_duplicate_exception",
+        "variant": "unfixed",
+        "unsigned_sha256": "abd062458bdc50825f9401db0dbc8d18c8520de75b1e189670e2356104248f7f",
+        "signed_hap": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/unfixed/app.hap",
+        "audit": {
+          "sha256": "77f654e1e4c3eb3e04be7a8b87c6e2b55c038c1f1183eeb9b98bd70005263c6a",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "sheafreader_insert_duplicate_exception",
+      "variant": "fixed",
+      "host": "sheafreader",
+      "ref": "clean-app/sheafreader_insert_duplicate_exception/fixed",
+      "commit": "ba9a953d20c146d20aa26ba337ba0cee026a3693",
+      "tree": "7ea7f7cfd78e0f1a97b76a48171a643c59f4892e",
+      "business_base_tree": "7ea7f7cfd78e0f1a97b76a48171a643c59f4892e",
+      "production_patches": [],
+      "unsigned_sha256": "2aee7cb3ebb5170f0cbb55aebcbddca0154ad876519468d3c102a8b0c9519f7d",
+      "bytecode_audit": {
+        "sha256": "2aee7cb3ebb5170f0cbb55aebcbddca0154ad876519468d3c102a8b0c9519f7d",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "sheafreader_insert_duplicate_exception",
+        "variant": "fixed",
+        "unsigned_sha256": "2aee7cb3ebb5170f0cbb55aebcbddca0154ad876519468d3c102a8b0c9519f7d",
+        "signed_hap": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/fixed/app.hap",
+        "audit": {
+          "sha256": "b5f4582f5fb8fb3d287f3568f43db08389d088843be2d15681d6bf6b57dd602b",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "sheafreader_refresh_feeds_sequential",
+      "variant": "unfixed",
+      "host": "sheafreader",
+      "ref": "clean-app/sheafreader_refresh_feeds_sequential/unfixed",
+      "commit": "c3e7b111cf83050b6b6e48c8b05875efa01bd3ae",
+      "tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
+      "business_base_tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
+      "production_patches": [],
+      "unsigned_sha256": "272b8612a0d2e566e1ca28b4d659d6f2249cf510bbff84914482e7f9a5b362a4",
+      "bytecode_audit": {
+        "sha256": "272b8612a0d2e566e1ca28b4d659d6f2249cf510bbff84914482e7f9a5b362a4",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "sheafreader_refresh_feeds_sequential",
+        "variant": "unfixed",
+        "unsigned_sha256": "272b8612a0d2e566e1ca28b4d659d6f2249cf510bbff84914482e7f9a5b362a4",
+        "signed_hap": "/home/research/ohm-clean/sheafreader_refresh_feeds_sequential/unfixed/app.hap",
+        "audit": {
+          "sha256": "92d80b49ab25a86ac0e11394212e35d0fe858eee7d150a950da24ce5fef670d2",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "sheafreader_refresh_feeds_sequential",
+      "variant": "fixed",
+      "host": "sheafreader",
+      "ref": "clean-app/sheafreader_refresh_feeds_sequential/fixed",
+      "commit": "cf4f9fb7753069103b8f994cc1f5ca31e7f170e2",
+      "tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
+      "business_base_tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
+      "production_patches": [],
+      "unsigned_sha256": "3a647f1bf92b94c93eb057d5337d072b529a7e34d9760d4d39c53efbc1044bfb",
+      "bytecode_audit": {
+        "sha256": "3a647f1bf92b94c93eb057d5337d072b529a7e34d9760d4d39c53efbc1044bfb",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "sheafreader_refresh_feeds_sequential",
+        "variant": "fixed",
+        "unsigned_sha256": "3a647f1bf92b94c93eb057d5337d072b529a7e34d9760d4d39c53efbc1044bfb",
+        "signed_hap": "/home/research/ohm-clean/sheafreader_refresh_feeds_sequential/fixed/app.hap",
+        "audit": {
+          "sha256": "21389be272d30b5f0a9e62838ccf3ad3c547b37f054cd656303de845a536fc3a",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "sheafreader_unread_counts_n_plus_1",
+      "variant": "unfixed",
+      "host": "sheafreader",
+      "ref": "clean-app/sheafreader_unread_counts_n_plus_1/unfixed",
+      "commit": "cf4f9fb7753069103b8f994cc1f5ca31e7f170e2",
+      "tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
+      "business_base_tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
+      "production_patches": [],
+      "unsigned_sha256": "cb51443b0d0c7193fc0eed9aec745d2f62a0476b3fcc7eb50e6ea89aca99128a",
+      "bytecode_audit": {
+        "sha256": "cb51443b0d0c7193fc0eed9aec745d2f62a0476b3fcc7eb50e6ea89aca99128a",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "sheafreader_unread_counts_n_plus_1",
+        "variant": "unfixed",
+        "unsigned_sha256": "cb51443b0d0c7193fc0eed9aec745d2f62a0476b3fcc7eb50e6ea89aca99128a",
+        "signed_hap": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/unfixed/app.hap",
+        "audit": {
+          "sha256": "e1b2e668b875941c642c0ce74e21d0e38102fea1e6af493e4997a83e6b0757c0",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "sheafreader_unread_counts_n_plus_1",
+      "variant": "fixed",
+      "host": "sheafreader",
+      "ref": "clean-app/sheafreader_unread_counts_n_plus_1/fixed",
+      "commit": "4c9b8dcdc7f230b68120fb5c7640c4cce3521a88",
+      "tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
+      "business_base_tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
+      "production_patches": [],
+      "unsigned_sha256": "03e8709a4ff0c3eae043f0188bd82501ba13a8ad54e05e01aa2f340e95bc294d",
+      "bytecode_audit": {
+        "sha256": "03e8709a4ff0c3eae043f0188bd82501ba13a8ad54e05e01aa2f340e95bc294d",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "sheafreader_unread_counts_n_plus_1",
+        "variant": "fixed",
+        "unsigned_sha256": "03e8709a4ff0c3eae043f0188bd82501ba13a8ad54e05e01aa2f340e95bc294d",
+        "signed_hap": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/fixed/app.hap",
+        "audit": {
+          "sha256": "59adedd91aa83ee21266387c7722ceeace477a9e826c1f5b7e8b671f03c1869c",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "wanharmony_history_log_materialization",
+      "variant": "unfixed",
+      "host": "wanharmony",
+      "ref": "clean-app/wanharmony_history_log_materialization/unfixed",
+      "commit": "85a73986cd4eee9c04cdbffc96aefc947e1f3bab",
+      "tree": "41efd76077ad95ba36a279f8d4874c6d2310bca7",
+      "business_base_tree": "41efd76077ad95ba36a279f8d4874c6d2310bca7",
+      "production_patches": [],
+      "unsigned_sha256": "db2e9771b7e993302e7f2a3fc6236097b0eab50da62c3460551cfd702a85b8bd",
+      "bytecode_audit": {
+        "sha256": "db2e9771b7e993302e7f2a3fc6236097b0eab50da62c3460551cfd702a85b8bd",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "wanharmony_history_log_materialization",
+        "variant": "unfixed",
+        "unsigned_sha256": "db2e9771b7e993302e7f2a3fc6236097b0eab50da62c3460551cfd702a85b8bd",
+        "signed_hap": "/home/research/ohm-clean/wanharmony_history_log_materialization/unfixed/app.hap",
+        "audit": {
+          "sha256": "26d684d104e6c4d06d1570c350d4a26cba8d03cf506d8c5eb4eab1a74c45f708",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "wanharmony_history_log_materialization",
+      "variant": "fixed",
+      "host": "wanharmony",
+      "ref": "clean-app/wanharmony_history_log_materialization/fixed",
+      "commit": "87d63ec508b1d6ee950f9e5f55c0146bc189b233",
+      "tree": "4335f38febb7059d241de4f6ef22ade69767e729",
+      "business_base_tree": "4335f38febb7059d241de4f6ef22ade69767e729",
+      "production_patches": [],
+      "unsigned_sha256": "4a499cf607d52b77169c49fdc35960a5b3af4f877208d29088d81845840d08ee",
+      "bytecode_audit": {
+        "sha256": "4a499cf607d52b77169c49fdc35960a5b3af4f877208d29088d81845840d08ee",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "wanharmony_history_log_materialization",
+        "variant": "fixed",
+        "unsigned_sha256": "4a499cf607d52b77169c49fdc35960a5b3af4f877208d29088d81845840d08ee",
+        "signed_hap": "/home/research/ohm-clean/wanharmony_history_log_materialization/fixed/app.hap",
+        "audit": {
+          "sha256": "b9a6aea7be05e48bd221f5d17b1ca4b0da3f397e5779f2324b0c7b919ed21cbc",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "wanharmony_html_decode_per_render",
+      "variant": "unfixed",
+      "host": "wanharmony",
+      "ref": "clean-app/wanharmony_html_decode_per_render/unfixed",
+      "commit": "dd45ad238328c4ac857992b69fe9457c87c279f3",
+      "tree": "88b368cc0c7d5f07755f64a4a3aa7152208a5ac6",
+      "business_base_tree": "88b368cc0c7d5f07755f64a4a3aa7152208a5ac6",
+      "production_patches": [],
+      "unsigned_sha256": "57bf465688d66e69f1547c202a0a50481426aabad2b042edecede1c8b2cdd046",
+      "bytecode_audit": {
+        "sha256": "57bf465688d66e69f1547c202a0a50481426aabad2b042edecede1c8b2cdd046",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "wanharmony_html_decode_per_render",
+        "variant": "unfixed",
+        "unsigned_sha256": "57bf465688d66e69f1547c202a0a50481426aabad2b042edecede1c8b2cdd046",
+        "signed_hap": "/home/research/ohm-clean/wanharmony_html_decode_per_render/unfixed/app.hap",
+        "audit": {
+          "sha256": "f56a69d48d3fcb31517579ce7ff54a27f84aec5f86a4408ca439546f0e4f709d",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "wanharmony_html_decode_per_render",
+      "variant": "fixed",
+      "host": "wanharmony",
+      "ref": "clean-app/wanharmony_html_decode_per_render/fixed",
+      "commit": "85a73986cd4eee9c04cdbffc96aefc947e1f3bab",
+      "tree": "41efd76077ad95ba36a279f8d4874c6d2310bca7",
+      "business_base_tree": "41efd76077ad95ba36a279f8d4874c6d2310bca7",
+      "production_patches": [],
+      "unsigned_sha256": "a5a3cabf07632435f6a587429d1685754edd657cb2657ec74fa1473739affb13",
+      "bytecode_audit": {
+        "sha256": "a5a3cabf07632435f6a587429d1685754edd657cb2657ec74fa1473739affb13",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "wanharmony_html_decode_per_render",
+        "variant": "fixed",
+        "unsigned_sha256": "a5a3cabf07632435f6a587429d1685754edd657cb2657ec74fa1473739affb13",
+        "signed_hap": "/home/research/ohm-clean/wanharmony_html_decode_per_render/fixed/app.hap",
+        "audit": {
+          "sha256": "b2a69d03cf3b2909889e432a93e5324e666aaf3cb936c19aac407736ad36cb2d",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "wanharmony_persisted_home_list_growth",
+      "variant": "unfixed",
+      "host": "wanharmony",
+      "ref": "clean-app/wanharmony_persisted_home_list_growth/unfixed",
+      "commit": "87d63ec508b1d6ee950f9e5f55c0146bc189b233",
+      "tree": "4335f38febb7059d241de4f6ef22ade69767e729",
+      "business_base_tree": "4335f38febb7059d241de4f6ef22ade69767e729",
+      "production_patches": [],
+      "unsigned_sha256": "0f49cab6d143afade5ff2f597154434b01f022b3898d8129180c3435f8783c11",
+      "bytecode_audit": {
+        "sha256": "0f49cab6d143afade5ff2f597154434b01f022b3898d8129180c3435f8783c11",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "wanharmony_persisted_home_list_growth",
+        "variant": "unfixed",
+        "unsigned_sha256": "0f49cab6d143afade5ff2f597154434b01f022b3898d8129180c3435f8783c11",
+        "signed_hap": "/home/research/ohm-clean/wanharmony_persisted_home_list_growth/unfixed/app.hap",
+        "audit": {
+          "sha256": "06787426f0293f1010bbc8a6a21095dc8a23f020860207453dcd2de0ffbb6653",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "wanharmony_persisted_home_list_growth",
+      "variant": "fixed",
+      "host": "wanharmony",
+      "ref": "clean-app/wanharmony_persisted_home_list_growth/fixed",
+      "commit": "d1618b99cc613e0333c750137beb833f814c910a",
+      "tree": "892d60f0762ef9cbf11fc32972f2b4116df74aa1",
+      "business_base_tree": "892d60f0762ef9cbf11fc32972f2b4116df74aa1",
+      "production_patches": [],
+      "unsigned_sha256": "df1d6aa039fe134c34ac639b3eb73e708f4f942da69024b29dd2cdd5083c10ca",
+      "bytecode_audit": {
+        "sha256": "df1d6aa039fe134c34ac639b3eb73e708f4f942da69024b29dd2cdd5083c10ca",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "wanharmony_persisted_home_list_growth",
+        "variant": "fixed",
+        "unsigned_sha256": "df1d6aa039fe134c34ac639b3eb73e708f4f942da69024b29dd2cdd5083c10ca",
+        "signed_hap": "/home/research/ohm-clean/wanharmony_persisted_home_list_growth/fixed/app.hap",
+        "audit": {
+          "sha256": "24157c61b0d37098dc74ea8d359f519d374e34513aa52ee8c511fe8ae8b036de",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "wanharmony_web_progress_log_storm",
+      "variant": "unfixed",
+      "host": "wanharmony",
+      "ref": "clean-app/wanharmony_web_progress_log_storm/unfixed",
+      "commit": "d1618b99cc613e0333c750137beb833f814c910a",
+      "tree": "892d60f0762ef9cbf11fc32972f2b4116df74aa1",
+      "business_base_tree": "892d60f0762ef9cbf11fc32972f2b4116df74aa1",
+      "production_patches": [],
+      "unsigned_sha256": "b7e2eab978f168e855005cf1e67e9cb685bfa7d4e4642fed85300855e81de8cf",
+      "bytecode_audit": {
+        "sha256": "b7e2eab978f168e855005cf1e67e9cb685bfa7d4e4642fed85300855e81de8cf",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "wanharmony_web_progress_log_storm",
+        "variant": "unfixed",
+        "unsigned_sha256": "b7e2eab978f168e855005cf1e67e9cb685bfa7d4e4642fed85300855e81de8cf",
+        "signed_hap": "/home/research/ohm-clean/wanharmony_web_progress_log_storm/unfixed/app.hap",
+        "audit": {
+          "sha256": "fe902792f6486d3d4a54a8404e19fa8d5946ecdfe6d3ec47934be537e902edc5",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "wanharmony_web_progress_log_storm",
+      "variant": "fixed",
+      "host": "wanharmony",
+      "ref": "clean-app/wanharmony_web_progress_log_storm/fixed",
+      "commit": "cb8a8ea61b6b0fc4d744d7ec9298f0a391910e12",
+      "tree": "99dcfd702c28ecbaf6386036450985be31f31735",
+      "business_base_tree": "99dcfd702c28ecbaf6386036450985be31f31735",
+      "production_patches": [],
+      "unsigned_sha256": "7543e176a60fbbd66f0f5f1fd89e82d77407bdef53ef49c4b9ecc184f898b72b",
+      "bytecode_audit": {
+        "sha256": "7543e176a60fbbd66f0f5f1fd89e82d77407bdef53ef49c4b9ecc184f898b72b",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "wanharmony_web_progress_log_storm",
+        "variant": "fixed",
+        "unsigned_sha256": "7543e176a60fbbd66f0f5f1fd89e82d77407bdef53ef49c4b9ecc184f898b72b",
+        "signed_hap": "/home/research/ohm-clean/wanharmony_web_progress_log_storm/fixed/app.hap",
+        "audit": {
+          "sha256": "5de101a391a294f2a036bdcee11b5eafda54082ca4ce4e3b2cabd3a25fd5851b",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "weatherassistant_http_session_leak",
+      "variant": "unfixed",
+      "host": "weatherassistant",
+      "ref": "clean-app/weatherassistant_http_session_leak/unfixed",
+      "commit": "1f787390a703886e69d30ba8968765d363d55a19",
+      "tree": "53a80521604b9d78ecce523623c36ca8dd3d9458",
+      "business_base_tree": "53a80521604b9d78ecce523623c36ca8dd3d9458",
+      "production_patches": [],
+      "unsigned_sha256": "4cacc61b8ca69b12fd44ab88cbc19bb4ee666d64f059f7427d63fa19e409e0b6",
+      "bytecode_audit": {
+        "sha256": "4cacc61b8ca69b12fd44ab88cbc19bb4ee666d64f059f7427d63fa19e409e0b6",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "weatherassistant_http_session_leak",
+        "variant": "unfixed",
+        "unsigned_sha256": "4cacc61b8ca69b12fd44ab88cbc19bb4ee666d64f059f7427d63fa19e409e0b6",
+        "signed_hap": "/home/research/ohm-clean/weatherassistant_http_session_leak/unfixed/app.hap",
+        "audit": {
+          "sha256": "dd4a89db292ae4a9c48024fb14e5d1e66dc76315aed214301a9a600924aa7b72",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "weatherassistant_http_session_leak",
+      "variant": "fixed",
+      "host": "weatherassistant",
+      "ref": "clean-app/weatherassistant_http_session_leak/fixed",
+      "commit": "20e8e16b0c81fd5dee14b636433089cc2796f707",
+      "tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+      "business_base_tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+      "production_patches": [],
+      "unsigned_sha256": "404f2887764ec596574bc5fe8ede81401d25ad78b13f6aeab446e250dffd36fc",
+      "bytecode_audit": {
+        "sha256": "404f2887764ec596574bc5fe8ede81401d25ad78b13f6aeab446e250dffd36fc",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "weatherassistant_http_session_leak",
+        "variant": "fixed",
+        "unsigned_sha256": "404f2887764ec596574bc5fe8ede81401d25ad78b13f6aeab446e250dffd36fc",
+        "signed_hap": "/home/research/ohm-clean/weatherassistant_http_session_leak/fixed/app.hap",
+        "audit": {
+          "sha256": "9711924f552264e21e5155358fdb672939b452a83279a4e518f134201aa5a73e",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "weatherassistant_remote_weather_icons",
+      "variant": "unfixed",
+      "host": "weatherassistant",
+      "ref": "clean-app/weatherassistant_remote_weather_icons/unfixed",
+      "commit": "20e8e16b0c81fd5dee14b636433089cc2796f707",
+      "tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+      "business_base_tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+      "production_patches": [],
+      "unsigned_sha256": "f61f7bc56a4a82e22d0b7558cf6df63e8aef5db32bce13a0c3bbd0a79195abc9",
+      "bytecode_audit": {
+        "sha256": "f61f7bc56a4a82e22d0b7558cf6df63e8aef5db32bce13a0c3bbd0a79195abc9",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "weatherassistant_remote_weather_icons",
+        "variant": "unfixed",
+        "unsigned_sha256": "f61f7bc56a4a82e22d0b7558cf6df63e8aef5db32bce13a0c3bbd0a79195abc9",
+        "signed_hap": "/home/research/ohm-clean/weatherassistant_remote_weather_icons/unfixed/app.hap",
+        "audit": {
+          "sha256": "12230719fe30a509377b743bc2002922cf21d43e185415a57be0f3b271bc5617",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "weatherassistant_remote_weather_icons",
+      "variant": "fixed",
+      "host": "weatherassistant",
+      "ref": "clean-app/weatherassistant_remote_weather_icons/fixed",
+      "commit": "c181b312ec1c31ad1ea13641b2953fa2efd4778f",
+      "tree": "9542890dec7276586992a10a72fe723731107419",
+      "business_base_tree": "9542890dec7276586992a10a72fe723731107419",
+      "production_patches": [],
+      "unsigned_sha256": "56091d86c7bf4acf2f2c13d24a1fb0f67789b623cfcd50b1bbc4f63f4a012fd9",
+      "bytecode_audit": {
+        "sha256": "56091d86c7bf4acf2f2c13d24a1fb0f67789b623cfcd50b1bbc4f63f4a012fd9",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "weatherassistant_remote_weather_icons",
+        "variant": "fixed",
+        "unsigned_sha256": "56091d86c7bf4acf2f2c13d24a1fb0f67789b623cfcd50b1bbc4f63f4a012fd9",
+        "signed_hap": "/home/research/ohm-clean/weatherassistant_remote_weather_icons/fixed/app.hap",
+        "audit": {
+          "sha256": "cd48452d25c7c37bad9e4c2e57769232eb0eeac9b7efe7b18189b54f3f8c2da3",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "ytmusic_current_playing_timeupdate",
+      "variant": "unfixed",
+      "host": "ytmusic",
+      "ref": "clean-app/ytmusic_current_playing_timeupdate/unfixed",
+      "commit": "b32b7202acf9d94f2a372e35fdfc5c2d02363824",
+      "tree": "73d702e49b2e7ec1974e5035e8eaf2c70ebb4d82",
+      "business_base_tree": "73d702e49b2e7ec1974e5035e8eaf2c70ebb4d82",
+      "production_patches": [],
+      "unsigned_sha256": "744d22d0c5ffc50d8f0e51239b4ea99368a0292836f95924c66acf306fd4ec04",
+      "bytecode_audit": {
+        "sha256": "744d22d0c5ffc50d8f0e51239b4ea99368a0292836f95924c66acf306fd4ec04",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "ytmusic_current_playing_timeupdate",
+        "variant": "unfixed",
+        "unsigned_sha256": "744d22d0c5ffc50d8f0e51239b4ea99368a0292836f95924c66acf306fd4ec04",
+        "signed_hap": "/home/research/ohm-clean/ytmusic_current_playing_timeupdate/unfixed/app.hap",
+        "audit": {
+          "sha256": "8c7e42e915de35376800f3a3a96a11d96662fc12aec711bbc6043bf7eb3bbe6b",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "ytmusic_current_playing_timeupdate",
+      "variant": "fixed",
+      "host": "ytmusic",
+      "ref": "clean-app/ytmusic_current_playing_timeupdate/fixed",
+      "commit": "b140b414abf9f3fa69593990bc7f381cb0f5e703",
+      "tree": "f80bfeac1b993798db6b531e59b3ad90eb6def64",
+      "business_base_tree": "f80bfeac1b993798db6b531e59b3ad90eb6def64",
+      "production_patches": [],
+      "unsigned_sha256": "585676afe9a6b5b26e31fc2fd5b465b38c77601caae8dd18404de98a1bff154c",
+      "bytecode_audit": {
+        "sha256": "585676afe9a6b5b26e31fc2fd5b465b38c77601caae8dd18404de98a1bff154c",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "ytmusic_current_playing_timeupdate",
+        "variant": "fixed",
+        "unsigned_sha256": "585676afe9a6b5b26e31fc2fd5b465b38c77601caae8dd18404de98a1bff154c",
+        "signed_hap": "/home/research/ohm-clean/ytmusic_current_playing_timeupdate/fixed/app.hap",
+        "audit": {
+          "sha256": "417711b3ab77af68e7f60d87a40343c1b95740dec639ccb43ccbfa897ddbcf28",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "ytmusic_history_json_parse_per_row",
+      "variant": "unfixed",
+      "host": "ytmusic",
+      "ref": "clean-app/ytmusic_history_json_parse_per_row/unfixed",
+      "commit": "5bf6142f76af3ff2fd25b6f731a27fee6b838346",
+      "tree": "b708e385576817b0291209da9dde6190c4d4f672",
+      "business_base_tree": "b708e385576817b0291209da9dde6190c4d4f672",
+      "production_patches": [],
+      "unsigned_sha256": "9ebe2d06e0b0aa7f31200789530b8f11e3322b88b8a0dcd17b334a355a4f9c5d",
+      "bytecode_audit": {
+        "sha256": "9ebe2d06e0b0aa7f31200789530b8f11e3322b88b8a0dcd17b334a355a4f9c5d",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "ytmusic_history_json_parse_per_row",
+        "variant": "unfixed",
+        "unsigned_sha256": "9ebe2d06e0b0aa7f31200789530b8f11e3322b88b8a0dcd17b334a355a4f9c5d",
+        "signed_hap": "/home/research/ohm-clean/ytmusic_history_json_parse_per_row/unfixed/app.hap",
+        "audit": {
+          "sha256": "441c83955e2424c8fbb364ac3c7e45dc6c684ca062c00563e04c8b5543557aca",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "ytmusic_history_json_parse_per_row",
+      "variant": "fixed",
+      "host": "ytmusic",
+      "ref": "clean-app/ytmusic_history_json_parse_per_row/fixed",
+      "commit": "1e3d086fee748d99ffcdd31d18b4f793ddab8491",
+      "tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d",
+      "business_base_tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d",
+      "production_patches": [],
+      "unsigned_sha256": "3a17053f95549bb8ad06c904437793f02826788099ac4f0337489a03f4825864",
+      "bytecode_audit": {
+        "sha256": "3a17053f95549bb8ad06c904437793f02826788099ac4f0337489a03f4825864",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "ytmusic_history_json_parse_per_row",
+        "variant": "fixed",
+        "unsigned_sha256": "3a17053f95549bb8ad06c904437793f02826788099ac4f0337489a03f4825864",
+        "signed_hap": "/home/research/ohm-clean/ytmusic_history_json_parse_per_row/fixed/app.hap",
+        "audit": {
+          "sha256": "a1ad4d454f028655fd36cba349a91d055e0650f63350a90d8d9f488a0d33bfe6",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "ytmusic_search_no_debounce",
+      "variant": "unfixed",
+      "host": "ytmusic",
+      "ref": "clean-app/ytmusic_search_no_debounce/unfixed",
+      "commit": "1e3d086fee748d99ffcdd31d18b4f793ddab8491",
+      "tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d",
+      "business_base_tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d",
+      "production_patches": [],
+      "unsigned_sha256": "10757512790d4f51d28b45e3be90ddbb3d21ba1e772524f0a28a88e349cc42b7",
+      "bytecode_audit": {
+        "sha256": "10757512790d4f51d28b45e3be90ddbb3d21ba1e772524f0a28a88e349cc42b7",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "ytmusic_search_no_debounce",
+        "variant": "unfixed",
+        "unsigned_sha256": "10757512790d4f51d28b45e3be90ddbb3d21ba1e772524f0a28a88e349cc42b7",
+        "signed_hap": "/home/research/ohm-clean/ytmusic_search_no_debounce/unfixed/app.hap",
+        "audit": {
+          "sha256": "3d56cf94f5976964feb24140784d539b30a5323a0633b2427ee420873d674662",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "case": "ytmusic_search_no_debounce",
+      "variant": "fixed",
+      "host": "ytmusic",
+      "ref": "clean-app/ytmusic_search_no_debounce/fixed",
+      "commit": "b32b7202acf9d94f2a372e35fdfc5c2d02363824",
+      "tree": "73d702e49b2e7ec1974e5035e8eaf2c70ebb4d82",
+      "business_base_tree": "73d702e49b2e7ec1974e5035e8eaf2c70ebb4d82",
+      "production_patches": [],
+      "unsigned_sha256": "70715cb25a89ebe42f17bcd4464ba86f1ff8179b6ca150f1750f40039124f68d",
+      "bytecode_audit": {
+        "sha256": "70715cb25a89ebe42f17bcd4464ba86f1ff8179b6ca150f1750f40039124f68d",
+        "abc_modules_checked": [
+          "ets/modules.abc"
+        ],
+        "findings": [],
+        "passed": true
+      },
+      "build_status": "PASS",
+      "sign": {
+        "case": "ytmusic_search_no_debounce",
+        "variant": "fixed",
+        "unsigned_sha256": "70715cb25a89ebe42f17bcd4464ba86f1ff8179b6ca150f1750f40039124f68d",
+        "signed_hap": "/home/research/ohm-clean/ytmusic_search_no_debounce/fixed/app.hap",
+        "audit": {
+          "sha256": "55b4708c057fdcab89f6f084c8e8a2e0ccc79ebb0bf9cf45b028059e0a059e38",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "status": "PASS"
+      }
+    }
+  ]
+}

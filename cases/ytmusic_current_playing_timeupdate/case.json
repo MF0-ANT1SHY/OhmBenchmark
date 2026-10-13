@@ -16,10 +16,11 @@
     "动画",
     "状态更新"
   ],
-  "unfixed_commit": "c4b1879",
-  "fixed_commit": "e175817",
+  "unfixed_commit": "b32b7202acf9d94f2a372e35fdfc5c2d02363824",
+  "fixed_commit": "b140b414abf9f3fa69593990bc7f381cb0f5e703",
   "fix_summary": "The state is assigned only when the whole-second part of the position changes.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_ytmusic_0010.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "player_page_updates_per_minute",
+      "definition": "Count of page state updates / render passes attributable to currentValue during 60s idle playback, plus UI-thread CPU time.",
+      "comparison": "unfixed ~600 updates/minute vs fixed ~60/minute; unfixed UI CPU during playback > fixed."
+    },
+    "legacy_instrumented_evidence": {
       "status": "supporting",
       "measured_as": "page updates/minute",
       "unfixed": [
@@ -68,18 +79,94 @@
         60
       ],
       "note": "600 vs 60 state updates per minute (mechanism counter, authoritative); whole-step hw-instruction medians sit inside the noise band (5.0M vs 5.5M), so the declared metric needs a narrower region to separate (measurements-staging)."
-    },
-    "mechanism_oracle": {
-      "metric": "player_page_updates_per_minute",
-      "definition": "Count of page state updates / render passes attributable to currentValue during 60s idle playback, plus UI-thread CPU time.",
-      "comparison": "unfixed ~600 updates/minute vs fixed ~60/minute; unfixed UI CPU during playback > fixed."
     }
   },
   "reproduction": [
-    "git -C hosts/ytmusic checkout case/ytmusic_current_playing_timeupdate/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/ytmusic_current_playing_timeupdate/testcase/PerfLoad_ytmusic_0010.* perf_testing/hapray/testcases/com.example.myapplication/",
-    "python -m scripts.main perf --run_testcases PerfLoad_ytmusic_0010 --round 3",
-    "git -C hosts/ytmusic checkout case/ytmusic_current_playing_timeupdate/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py ytmusic_current_playing_timeupdate",
+    "python3 tools/sign_clean_cases.py ytmusic_current_playing_timeupdate",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/ytmusic_current_playing_timeupdate/testcase/ into perf_testing/hapray/testcases/com.example.myapplication/.",
+    "Install each clean signed variant and run the PerfLoad_ytmusic_0010 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "c4b1879",
+    "fixed_commit": "e175817",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/ytmusic_current_playing_timeupdate/unfixed",
+        "commit": "b32b7202acf9d94f2a372e35fdfc5c2d02363824",
+        "tree": "73d702e49b2e7ec1974e5035e8eaf2c70ebb4d82",
+        "business_base_tree": "73d702e49b2e7ec1974e5035e8eaf2c70ebb4d82",
+        "production_patches": [],
+        "unsigned_sha256": "744d22d0c5ffc50d8f0e51239b4ea99368a0292836f95924c66acf306fd4ec04",
+        "bytecode_audit": {
+          "sha256": "744d22d0c5ffc50d8f0e51239b4ea99368a0292836f95924c66acf306fd4ec04",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "ytmusic_current_playing_timeupdate",
+          "variant": "unfixed",
+          "unsigned_sha256": "744d22d0c5ffc50d8f0e51239b4ea99368a0292836f95924c66acf306fd4ec04",
+          "signed_hap": "/home/research/ohm-clean/ytmusic_current_playing_timeupdate/unfixed/app.hap",
+          "audit": {
+            "sha256": "8c7e42e915de35376800f3a3a96a11d96662fc12aec711bbc6043bf7eb3bbe6b",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/ytmusic_current_playing_timeupdate/fixed",
+        "commit": "b140b414abf9f3fa69593990bc7f381cb0f5e703",
+        "tree": "f80bfeac1b993798db6b531e59b3ad90eb6def64",
+        "business_base_tree": "f80bfeac1b993798db6b531e59b3ad90eb6def64",
+        "production_patches": [],
+        "unsigned_sha256": "585676afe9a6b5b26e31fc2fd5b465b38c77601caae8dd18404de98a1bff154c",
+        "bytecode_audit": {
+          "sha256": "585676afe9a6b5b26e31fc2fd5b465b38c77601caae8dd18404de98a1bff154c",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "ytmusic_current_playing_timeupdate",
+          "variant": "fixed",
+          "unsigned_sha256": "585676afe9a6b5b26e31fc2fd5b465b38c77601caae8dd18404de98a1bff154c",
+          "signed_hap": "/home/research/ohm-clean/ytmusic_current_playing_timeupdate/fixed/app.hap",
+          "audit": {
+            "sha256": "417711b3ab77af68e7f60d87a40343c1b95740dec639ccb43ccbfa897ddbcf28",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

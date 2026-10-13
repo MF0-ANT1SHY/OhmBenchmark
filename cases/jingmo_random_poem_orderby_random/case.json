@@ -17,10 +17,11 @@
     "数据库读取",
     "页面启动"
   ],
-  "unfixed_commit": "3eb7686",
-  "fixed_commit": "caf0823",
+  "unfixed_commit": "3eb76867d44a6833067234e96ee12dce669940e7",
+  "fixed_commit": "caf08237364b16bdda9a9be5ade0beae37d7f487",
   "fix_summary": "The random pick uses a random id range scan on the primary key (where id >= abs(random()) % max(id) ... order by id limit 1), an O(log n) indexed lookup instead of a full-table sort.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -32,7 +33,8 @@
     "driver": "DeviceTest",
     "module": "default",
     "ability": "EntryAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_jingmo_0020.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -56,6 +58,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "elapsed_ms",
+      "definition": "Wall time of each random-poem SELECT execution (from query start to resultSet ready, visible in database/disk trace activity and hilog), averaged over 10 refreshes.",
+      "comparison": "unfixed query time grows with row count (full scan + sort of N rows); fixed is near-constant. With >= 5000 rows, unfixed_avg_ms > fixed_avg_ms by >= 5x."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions / trace_cpu_ms",
       "unfixed": [
@@ -69,18 +80,94 @@
         7890165
       ],
       "note": "959M vs 7.5M instructions (128x); cpu 426 vs 40 ms"
-    },
-    "mechanism_oracle": {
-      "metric": "elapsed_ms",
-      "definition": "Wall time of each random-poem SELECT execution (from query start to resultSet ready, visible in database/disk trace activity and hilog), averaged over 10 refreshes.",
-      "comparison": "unfixed query time grows with row count (full scan + sort of N rows); fixed is near-constant. With >= 5000 rows, unfixed_avg_ms > fixed_avg_ms by >= 5x."
     }
   },
   "reproduction": [
-    "git -C hosts/jingmo checkout case/jingmo_random_poem_orderby_random/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/jingmo_random_poem_orderby_random/testcase/PerfLoad_jingmo_0020.* perf_testing/hapray/testcases/com.hefengbao.jingmo.hw/",
-    "python -m scripts.main perf --run_testcases PerfLoad_jingmo_0020 --round 3",
-    "git -C hosts/jingmo checkout case/jingmo_random_poem_orderby_random/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py jingmo_random_poem_orderby_random",
+    "python3 tools/sign_clean_cases.py jingmo_random_poem_orderby_random",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/jingmo_random_poem_orderby_random/testcase/ into perf_testing/hapray/testcases/com.hefengbao.jingmo.hw/.",
+    "Install each clean signed variant and run the PerfLoad_jingmo_0020 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "3eb7686",
+    "fixed_commit": "caf0823",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/jingmo_random_poem_orderby_random/unfixed",
+        "commit": "3eb76867d44a6833067234e96ee12dce669940e7",
+        "tree": "1f27352d8d13c42ec52161b1696aad64e437f95c",
+        "business_base_tree": "1f27352d8d13c42ec52161b1696aad64e437f95c",
+        "production_patches": [],
+        "unsigned_sha256": "0aaf275aa3cf68b26cb9aecdb413b79796fc706eb8e80375d1522b514db61682",
+        "bytecode_audit": {
+          "sha256": "0aaf275aa3cf68b26cb9aecdb413b79796fc706eb8e80375d1522b514db61682",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "jingmo_random_poem_orderby_random",
+          "variant": "unfixed",
+          "unsigned_sha256": "0aaf275aa3cf68b26cb9aecdb413b79796fc706eb8e80375d1522b514db61682",
+          "signed_hap": "/home/research/ohm-clean/jingmo_random_poem_orderby_random/unfixed/app.hap",
+          "audit": {
+            "sha256": "dfed739f69b5efda1071306817a46e5f9f8252ecd1b66e16b3561ba27f292c8b",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/jingmo_random_poem_orderby_random/fixed",
+        "commit": "caf08237364b16bdda9a9be5ade0beae37d7f487",
+        "tree": "2eadaf75ff4f636cd8f04ca1ac52c6f3279b622a",
+        "business_base_tree": "2eadaf75ff4f636cd8f04ca1ac52c6f3279b622a",
+        "production_patches": [],
+        "unsigned_sha256": "b33d400ce3eb5dada7a81f08b7bd3b841d0707d69b5d919d5e10a0ee887a9fa2",
+        "bytecode_audit": {
+          "sha256": "b33d400ce3eb5dada7a81f08b7bd3b841d0707d69b5d919d5e10a0ee887a9fa2",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "jingmo_random_poem_orderby_random",
+          "variant": "fixed",
+          "unsigned_sha256": "b33d400ce3eb5dada7a81f08b7bd3b841d0707d69b5d919d5e10a0ee887a9fa2",
+          "signed_hap": "/home/research/ohm-clean/jingmo_random_poem_orderby_random/fixed/app.hap",
+          "audit": {
+            "sha256": "ef9325e435ca099ae781edaaf64f61c4c8f1ab46e9c76a916b4b992860d45e9d",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

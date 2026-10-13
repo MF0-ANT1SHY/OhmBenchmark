@@ -16,10 +16,11 @@
     "网络结果渲染",
     "状态更新"
   ],
-  "unfixed_commit": "d1618b9",
-  "fixed_commit": "cb8a8ea",
+  "unfixed_commit": "d1618b99cc613e0333c750137beb833f814c910a",
+  "fixed_commit": "cb8a8ea61b6b0fc4d744d7ec9298f0a391910e12",
   "fix_summary": "Progress is logged only at milestones (every 25% and completion), cutting per-event formatting and hilog traffic during page loads.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_wanharmony_0040.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "log_calls_per_pageload",
+      "definition": "Count of hilog invocations from the app during page load (progress-event logs), and UI-thread CPU from tap to page-end.",
+      "comparison": "unfixed logs on every progress event (dozens per page); fixed logs <= 5 per page. unfixed page-load UI CPU > fixed."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions over the web progress-callback window (Pura 70 Ultra)",
       "unfixed": [
@@ -68,18 +79,94 @@
         3460033
       ],
       "note": "4.42M vs 3.52M median hw-instructions (1.26x, disjoint ranges); mechanism counter 101 vs 5 hilog calls per page load (measurements-staging)."
-    },
-    "mechanism_oracle": {
-      "metric": "log_calls_per_pageload",
-      "definition": "Count of hilog invocations from the app during page load (progress-event logs), and UI-thread CPU from tap to page-end.",
-      "comparison": "unfixed logs on every progress event (dozens per page); fixed logs <= 5 per page. unfixed page-load UI CPU > fixed."
     }
   },
   "reproduction": [
-    "git -C hosts/wanharmony checkout case/wanharmony_web_progress_log_storm/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/wanharmony_web_progress_log_storm/testcase/PerfLoad_wanharmony_0040.* perf_testing/hapray/testcases/org.example.wan.ohos/",
-    "python -m scripts.main perf --run_testcases PerfLoad_wanharmony_0040 --round 3",
-    "git -C hosts/wanharmony checkout case/wanharmony_web_progress_log_storm/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py wanharmony_web_progress_log_storm",
+    "python3 tools/sign_clean_cases.py wanharmony_web_progress_log_storm",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/wanharmony_web_progress_log_storm/testcase/ into perf_testing/hapray/testcases/org.example.wan.ohos/.",
+    "Install each clean signed variant and run the PerfLoad_wanharmony_0040 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "d1618b9",
+    "fixed_commit": "cb8a8ea",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/wanharmony_web_progress_log_storm/unfixed",
+        "commit": "d1618b99cc613e0333c750137beb833f814c910a",
+        "tree": "892d60f0762ef9cbf11fc32972f2b4116df74aa1",
+        "business_base_tree": "892d60f0762ef9cbf11fc32972f2b4116df74aa1",
+        "production_patches": [],
+        "unsigned_sha256": "b7e2eab978f168e855005cf1e67e9cb685bfa7d4e4642fed85300855e81de8cf",
+        "bytecode_audit": {
+          "sha256": "b7e2eab978f168e855005cf1e67e9cb685bfa7d4e4642fed85300855e81de8cf",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "wanharmony_web_progress_log_storm",
+          "variant": "unfixed",
+          "unsigned_sha256": "b7e2eab978f168e855005cf1e67e9cb685bfa7d4e4642fed85300855e81de8cf",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_web_progress_log_storm/unfixed/app.hap",
+          "audit": {
+            "sha256": "fe902792f6486d3d4a54a8404e19fa8d5946ecdfe6d3ec47934be537e902edc5",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/wanharmony_web_progress_log_storm/fixed",
+        "commit": "cb8a8ea61b6b0fc4d744d7ec9298f0a391910e12",
+        "tree": "99dcfd702c28ecbaf6386036450985be31f31735",
+        "business_base_tree": "99dcfd702c28ecbaf6386036450985be31f31735",
+        "production_patches": [],
+        "unsigned_sha256": "7543e176a60fbbd66f0f5f1fd89e82d77407bdef53ef49c4b9ecc184f898b72b",
+        "bytecode_audit": {
+          "sha256": "7543e176a60fbbd66f0f5f1fd89e82d77407bdef53ef49c4b9ecc184f898b72b",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "wanharmony_web_progress_log_storm",
+          "variant": "fixed",
+          "unsigned_sha256": "7543e176a60fbbd66f0f5f1fd89e82d77407bdef53ef49c4b9ecc184f898b72b",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_web_progress_log_storm/fixed/app.hap",
+          "audit": {
+            "sha256": "5de101a391a294f2a036bdcee11b5eafda54082ca4ce4e3b2cabd3a25fd5851b",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

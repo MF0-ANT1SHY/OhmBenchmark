@@ -16,10 +16,11 @@
     "动画",
     "状态更新"
   ],
-  "unfixed_commit": "2aa4715",
-  "fixed_commit": "d755085",
+  "unfixed_commit": "2aa471589e637964e0ef9ba37c0ef9e9db5b6de7",
+  "fixed_commit": "d755085f20e4ba7bddffce1e6ee8e06b1e0b1966",
   "fix_summary": "The global state is written only when the whole-second part of the position changes (seek still updates immediately).",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_cloudmusic_0030.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "player_page_rerenders_per_minute",
+      "definition": "Count of player-page state-update/render passes attributable to PLAY_TIME changes during 60s of idle playback (ace trace component update events or JS state-set calls), plus UI-thread CPU time.",
+      "comparison": "unfixed ~600 state writes/minute (10/s); fixed ~60/minute (1/s). unfixed UI CPU time > fixed by a clearly measurable margin during playback."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions over the playback progress-update window (Pura 70 Ultra)",
       "unfixed": [
@@ -68,18 +79,126 @@
         4369473
       ],
       "note": "7.91M vs 3.88M median hw-instructions (2.04x, disjoint ranges); mechanism counter 600 vs 60 PLAY_TIME state writes per minute (measurements-staging)."
-    },
-    "mechanism_oracle": {
-      "metric": "player_page_rerenders_per_minute",
-      "definition": "Count of player-page state-update/render passes attributable to PLAY_TIME changes during 60s of idle playback (ace trace component update events or JS state-set calls), plus UI-thread CPU time.",
-      "comparison": "unfixed ~600 state writes/minute (10/s); fixed ~60/minute (1/s). unfixed UI CPU time > fixed by a clearly measurable margin during playback."
     }
   },
   "reproduction": [
-    "git -C hosts/cloudmusic checkout case/cloudmusic_play_time_high_frequency_update/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/cloudmusic_play_time_high_frequency_update/testcase/PerfLoad_cloudmusic_0030.* perf_testing/hapray/testcases/cc.chenlvin.cloudmusic/",
-    "python -m scripts.main perf --run_testcases PerfLoad_cloudmusic_0030 --round 3",
-    "git -C hosts/cloudmusic checkout case/cloudmusic_play_time_high_frequency_update/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py cloudmusic_play_time_high_frequency_update",
+    "python3 tools/sign_clean_cases.py cloudmusic_play_time_high_frequency_update",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/cloudmusic_play_time_high_frequency_update/testcase/ into perf_testing/hapray/testcases/cc.chenlvin.cloudmusic/.",
+    "Install each clean signed variant and run the PerfLoad_cloudmusic_0030 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "2aa4715",
+    "fixed_commit": "d755085",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/cloudmusic_play_time_high_frequency_update/unfixed",
+        "commit": "2aa471589e637964e0ef9ba37c0ef9e9db5b6de7",
+        "tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
+        "business_base_tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
+        "production_patches": [],
+        "unsigned_sha256": "924ac0b4470c9848d2f04acecef2c041ae5edbc61e21c618202551a26e9e5421",
+        "bytecode_audit": {
+          "sha256": "924ac0b4470c9848d2f04acecef2c041ae5edbc61e21c618202551a26e9e5421",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "cloudmusic_play_time_high_frequency_update",
+          "variant": "unfixed",
+          "unsigned_sha256": "924ac0b4470c9848d2f04acecef2c041ae5edbc61e21c618202551a26e9e5421",
+          "signed_hap": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/unfixed/app.hap",
+          "audit": {
+            "sha256": "4b8d8021e537dd325d9a0e9e7d097a8ed2e14bcf4e523943eb0fa8595b7ae698",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "allowed_acls": [
+            "ohos.permission.SYSTEM_FLOAT_WINDOW"
+          ],
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "cloudmusic_play_time_high_frequency_update",
+          "variant": "unfixed",
+          "signed_sha256": "4b8d8021e537dd325d9a0e9e7d097a8ed2e14bcf4e523943eb0fa8595b7ae698",
+          "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            38052
+          ],
+          "foreground_bundle": "cc.chenlvin.cloudmusic",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/cloudmusic_play_time_high_frequency_update/fixed",
+        "commit": "d755085f20e4ba7bddffce1e6ee8e06b1e0b1966",
+        "tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
+        "business_base_tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
+        "production_patches": [],
+        "unsigned_sha256": "2320ded382bca8f83f41cc45107280dadc6564d72bdafba1b0122662949fd6d8",
+        "bytecode_audit": {
+          "sha256": "2320ded382bca8f83f41cc45107280dadc6564d72bdafba1b0122662949fd6d8",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "cloudmusic_play_time_high_frequency_update",
+          "variant": "fixed",
+          "unsigned_sha256": "2320ded382bca8f83f41cc45107280dadc6564d72bdafba1b0122662949fd6d8",
+          "signed_hap": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/fixed/app.hap",
+          "audit": {
+            "sha256": "762236132cfb3db9750d10e29f59335efda788b9a215fd244d52f1b933e6b70e",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "allowed_acls": [
+            "ohos.permission.SYSTEM_FLOAT_WINDOW"
+          ],
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "cloudmusic_play_time_high_frequency_update",
+          "variant": "fixed",
+          "signed_sha256": "762236132cfb3db9750d10e29f59335efda788b9a215fd244d52f1b933e6b70e",
+          "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            38422
+          ],
+          "foreground_bundle": "cc.chenlvin.cloudmusic",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      }
+    }
+  }
 }

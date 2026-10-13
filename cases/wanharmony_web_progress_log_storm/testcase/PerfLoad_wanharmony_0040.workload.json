@@ -1,0 +1,48 @@
+{
+  "bundle": "org.example.wan.ohos",
+  "ability": "EntryAbility",
+  "description": "WanHarmony (WanAndroid 客户端)页面操作",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "首页"
+      }
+    },
+    {
+      "op": "point",
+      "x": 0.4,
+      "y": 0.4
+    },
+    {
+      "op": "pause",
+      "seconds": 2
+    }
+  ],
+  "measured": [
+    {
+      "op": "repeat",
+      "count": 5,
+      "actions": [
+        {
+          "op": "tap",
+          "selector": {
+            "text": "刷新"
+          }
+        },
+        {
+          "op": "pause",
+          "seconds": 1
+        }
+      ]
+    }
+  ],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "type": "Web"
+      }
+    }
+  ]
+}

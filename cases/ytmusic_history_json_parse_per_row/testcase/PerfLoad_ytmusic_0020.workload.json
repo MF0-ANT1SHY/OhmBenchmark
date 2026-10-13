@@ -1,0 +1,50 @@
+{
+  "bundle": "com.example.myapplication",
+  "ability": "EntryAbility",
+  "description": "Youtube-Music-ArkTS-Clone页面操作",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "首页"
+      }
+    },
+    {
+      "op": "point",
+      "x": 0.93,
+      "y": 0.09
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "观看记录"
+      }
+    }
+  ],
+  "measured": [
+    {
+      "op": "tap",
+      "selector": {
+        "text": "观看记录"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "历史记录"
+      }
+    },
+    {
+      "op": "swipe",
+      "count": 3
+    }
+  ],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "历史记录"
+      }
+    }
+  ]
+}

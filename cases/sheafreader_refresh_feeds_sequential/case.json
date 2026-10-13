@@ -16,10 +16,11 @@
     "网络结果渲染",
     "页面启动"
   ],
-  "unfixed_commit": "c3e7b11",
-  "fixed_commit": "cf4f9fb",
+  "unfixed_commit": "c3e7b111cf83050b6b6e48c8b05875efa01bd3ae",
+  "fixed_commit": "cf4f9fb7753069103b8f994cc1f5ca31e7f170e2",
   "fix_summary": "Due feeds are fetched by a bounded worker pool (4 concurrent), overlapping network latency while limiting parallelism.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_sheafreader_0040.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "on-CPU time of the app process during the measured step, from the sched events in trace.htrace.",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "elapsed_ms",
+      "definition": "Wall time from refresh start to the last feed's completion, from network activity in the trace.",
+      "comparison": "unfixed total ~= sum of per-feed latencies (serialized request timeline); fixed overlaps up to 4 fetches. With 10+ feeds, fixed refresh time <= ~50% of unfixed."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "trace_cpu_ms",
       "unfixed": [
@@ -68,18 +79,94 @@
         3812
       ],
       "note": "cpu 5420 vs 3930 ms (+38%, disjoint ranges); total instructions match because the same fetches run, so the oracle is sched CPU time"
-    },
-    "mechanism_oracle": {
-      "metric": "elapsed_ms",
-      "definition": "Wall time from refresh start to the last feed's completion, from network activity in the trace.",
-      "comparison": "unfixed total ~= sum of per-feed latencies (serialized request timeline); fixed overlaps up to 4 fetches. With 10+ feeds, fixed refresh time <= ~50% of unfixed."
     }
   },
   "reproduction": [
-    "git -C hosts/sheafreader checkout case/sheafreader_refresh_feeds_sequential/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/sheafreader_refresh_feeds_sequential/testcase/PerfLoad_sheafreader_0040.* perf_testing/hapray/testcases/com.sheafreader.hm/",
-    "python -m scripts.main perf --run_testcases PerfLoad_sheafreader_0040 --round 3",
-    "git -C hosts/sheafreader checkout case/sheafreader_refresh_feeds_sequential/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py sheafreader_refresh_feeds_sequential",
+    "python3 tools/sign_clean_cases.py sheafreader_refresh_feeds_sequential",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/sheafreader_refresh_feeds_sequential/testcase/ into perf_testing/hapray/testcases/com.sheafreader.hm/.",
+    "Install each clean signed variant and run the PerfLoad_sheafreader_0040 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "c3e7b11",
+    "fixed_commit": "cf4f9fb",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/sheafreader_refresh_feeds_sequential/unfixed",
+        "commit": "c3e7b111cf83050b6b6e48c8b05875efa01bd3ae",
+        "tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
+        "business_base_tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
+        "production_patches": [],
+        "unsigned_sha256": "272b8612a0d2e566e1ca28b4d659d6f2249cf510bbff84914482e7f9a5b362a4",
+        "bytecode_audit": {
+          "sha256": "272b8612a0d2e566e1ca28b4d659d6f2249cf510bbff84914482e7f9a5b362a4",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "sheafreader_refresh_feeds_sequential",
+          "variant": "unfixed",
+          "unsigned_sha256": "272b8612a0d2e566e1ca28b4d659d6f2249cf510bbff84914482e7f9a5b362a4",
+          "signed_hap": "/home/research/ohm-clean/sheafreader_refresh_feeds_sequential/unfixed/app.hap",
+          "audit": {
+            "sha256": "92d80b49ab25a86ac0e11394212e35d0fe858eee7d150a950da24ce5fef670d2",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/sheafreader_refresh_feeds_sequential/fixed",
+        "commit": "cf4f9fb7753069103b8f994cc1f5ca31e7f170e2",
+        "tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
+        "business_base_tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
+        "production_patches": [],
+        "unsigned_sha256": "3a647f1bf92b94c93eb057d5337d072b529a7e34d9760d4d39c53efbc1044bfb",
+        "bytecode_audit": {
+          "sha256": "3a647f1bf92b94c93eb057d5337d072b529a7e34d9760d4d39c53efbc1044bfb",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "sheafreader_refresh_feeds_sequential",
+          "variant": "fixed",
+          "unsigned_sha256": "3a647f1bf92b94c93eb057d5337d072b529a7e34d9760d4d39c53efbc1044bfb",
+          "signed_hap": "/home/research/ohm-clean/sheafreader_refresh_feeds_sequential/fixed/app.hap",
+          "audit": {
+            "sha256": "21389be272d30b5f0a9e62838ccf3ad3c547b37f054cd656303de845a536fc3a",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

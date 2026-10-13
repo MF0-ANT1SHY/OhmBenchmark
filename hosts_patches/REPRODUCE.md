@@ -6,6 +6,12 @@ repository; `host-reconstruction.json` records everything needed to verify a reb
 
 ## Procedure
 
+For the business-only rebuild, use `python3 tools/reconstruct_clean_hosts.py`.
+It verifies original trees, recovers supplemental states from `fix.patch`, and
+creates `clean/` and `clean-app/` refs. Explicit `production_patches` are checked
+against `app_tree`. The historical manual recipe below does not by itself
+recover subsequently amended unfixed business states.
+
 For each row of the table in `README.md`:
 
 ```bash
@@ -38,7 +44,7 @@ git remote add origin "$URL"
 git fetch --depth 1 origin main      # sidesteps the 350 MB audio history
 git checkout FETCH_HEAD
 git checkout -b ohmbase
-git am ../../hosts_patches/ytmusic/*.patch
+git am ../../hosts_patches/ytmusic/[0-9]*.patch
 ```
 
 All four patches apply cleanly. The resulting dataset states are:

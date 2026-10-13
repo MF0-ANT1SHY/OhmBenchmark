@@ -16,10 +16,11 @@
     "数据库读取",
     "网络结果渲染"
   ],
-  "unfixed_commit": "e04ef65",
-  "fixed_commit": "f62858e",
+  "unfixed_commit": "e04ef65673a7b3a0da2de85fb7b954663232dec7",
+  "fixed_commit": "f62858e1ca337cbc1d128cec51917d792c3f4c68",
   "fix_summary": "The closing tag is located with a case-insensitive regex over the remaining substring, eliminating the per-tag lowercase copy while preserving case-insensitive matching semantics.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_sheafreader_0020.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "trace_cpu_ms",
+      "definition": "CPU time across the refresh case window, from trace.",
+      "comparison": "unfixed performs one full-fragment toLowerCase copy per extracted tag (~6 per item); fixed none. unfixed parse CPU and GC activity > fixed by >= 15% on feeds with long descriptions."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions / trace_cpu_ms",
       "unfixed": [
@@ -68,18 +79,94 @@
         11224455511
       ],
       "note": "25.9G vs 11.2G instructions (2.3x); cpu 3089 vs 1508 ms"
-    },
-    "mechanism_oracle": {
-      "metric": "trace_cpu_ms",
-      "definition": "CPU time across the refresh case window, from trace.",
-      "comparison": "unfixed performs one full-fragment toLowerCase copy per extracted tag (~6 per item); fixed none. unfixed parse CPU and GC activity > fixed by >= 15% on feeds with long descriptions."
     }
   },
   "reproduction": [
-    "git -C hosts/sheafreader checkout case/sheafreader_extract_tag_tolowercase/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/sheafreader_extract_tag_tolowercase/testcase/PerfLoad_sheafreader_0020.* perf_testing/hapray/testcases/com.sheafreader.hm/",
-    "python -m scripts.main perf --run_testcases PerfLoad_sheafreader_0020 --round 3",
-    "git -C hosts/sheafreader checkout case/sheafreader_extract_tag_tolowercase/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py sheafreader_extract_tag_tolowercase",
+    "python3 tools/sign_clean_cases.py sheafreader_extract_tag_tolowercase",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/sheafreader_extract_tag_tolowercase/testcase/ into perf_testing/hapray/testcases/com.sheafreader.hm/.",
+    "Install each clean signed variant and run the PerfLoad_sheafreader_0020 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "e04ef65",
+    "fixed_commit": "f62858e",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/sheafreader_extract_tag_tolowercase/unfixed",
+        "commit": "e04ef65673a7b3a0da2de85fb7b954663232dec7",
+        "tree": "afc2ecbc7de30ebdf0580018ab615aba7590a3de",
+        "business_base_tree": "afc2ecbc7de30ebdf0580018ab615aba7590a3de",
+        "production_patches": [],
+        "unsigned_sha256": "8af0ad8aa458066f5ad9447eb323183f967849f55fd673ab4010b74badc0876d",
+        "bytecode_audit": {
+          "sha256": "8af0ad8aa458066f5ad9447eb323183f967849f55fd673ab4010b74badc0876d",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "sheafreader_extract_tag_tolowercase",
+          "variant": "unfixed",
+          "unsigned_sha256": "8af0ad8aa458066f5ad9447eb323183f967849f55fd673ab4010b74badc0876d",
+          "signed_hap": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/app.hap",
+          "audit": {
+            "sha256": "d1c7ceb0deb65c5e8827a9061f55c20f05eaaa6c5765d91911d5691412202a0b",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/sheafreader_extract_tag_tolowercase/fixed",
+        "commit": "f62858e1ca337cbc1d128cec51917d792c3f4c68",
+        "tree": "914c45be73bbdd599cf09029098f0ea6bff961e4",
+        "business_base_tree": "914c45be73bbdd599cf09029098f0ea6bff961e4",
+        "production_patches": [],
+        "unsigned_sha256": "b11411fb0ca91d5cab14f1a69d1b2f677f5399d76e0af1397e5ad3b746dfc55b",
+        "bytecode_audit": {
+          "sha256": "b11411fb0ca91d5cab14f1a69d1b2f677f5399d76e0af1397e5ad3b746dfc55b",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "sheafreader_extract_tag_tolowercase",
+          "variant": "fixed",
+          "unsigned_sha256": "b11411fb0ca91d5cab14f1a69d1b2f677f5399d76e0af1397e5ad3b746dfc55b",
+          "signed_hap": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/app.hap",
+          "audit": {
+            "sha256": "3a89e0372d0ab0ead083a2a9b5ba6ef70b89609edeeea917e82b54b6e8653b5f",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

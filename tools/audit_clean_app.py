@@ -15,7 +15,8 @@ INJECTION = re.compile(
     r"(?i)ohm(?:probe|counters?|diag|scan|decode|persist|progresslog|font|row|update|play|concat|log|ctr)"
     r"|ohm[-_](?:status|diag|go)|OHMB/|OHM_[A-Z_]+"
     r"|(?:Browser|Cloud|Interview|Jingmo|SheafUi|Sheaf|Weather|YtMusic)Bench"
-    r"|want\.parameters(?:\?\.)?(?:\[['\"]bench['\"]\]|\.bench)"
+    r"|want\.parameters(?:\?\.)?\[['\"]bench['\"]\]"
+    r"|want\.parameters\??\.bench|WORKLOAD/(?:span|count)"
 )
 
 
@@ -27,13 +28,14 @@ def findings(text):
 def audit_source(repo, ref):
     tree = subprocess.check_output(["git", "-C", str(repo), "rev-parse", f"{ref}^{{tree}}"], text=True).strip()
     names = subprocess.check_output(["git", "-C", str(repo), "ls-tree", "-r", "--name-only", ref], text=True).splitlines()
-    hits = []
+    hits, checked = [], 0
     for name in names:
         if Path(name).suffix not in {".ets", ".ts", ".js", ".json", ".json5", ".cpp", ".h"}:
             continue
         content = subprocess.check_output(["git", "-C", str(repo), "show", f"{ref}:{name}"]).decode(errors="replace")
+        checked += 1
         hits.extend({"file": name, **hit} for hit in findings(content))
-    return {"tree": tree, "files_checked": len(names), "findings": hits, "passed": not hits}
+    return {"tree": tree, "files_checked": checked, "findings": hits, "passed": not hits}
 
 
 def audit_hap(hap, disassembler):

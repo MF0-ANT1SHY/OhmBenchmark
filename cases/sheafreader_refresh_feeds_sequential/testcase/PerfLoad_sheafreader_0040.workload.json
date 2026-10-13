@@ -1,0 +1,31 @@
+{
+  "bundle": "com.sheafreader.hm",
+  "ability": "EntryAbility",
+  "description": "Sheaf-Reader (束阅 RSS 阅读器)页面操作",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "type": "Button"
+      }
+    }
+  ],
+  "measured": [
+    {
+      "op": "key",
+      "key": 2094
+    },
+    {
+      "op": "pause",
+      "seconds": 3
+    }
+  ],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "type": "Button"
+      }
+    }
+  ]
+}

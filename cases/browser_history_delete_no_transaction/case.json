@@ -16,10 +16,11 @@
     "数据库读取",
     "状态更新"
   ],
-  "unfixed_commit": "28a458b",
-  "fixed_commit": "52bc232",
+  "unfixed_commit": "1aa4710ed2aa098f9073e2649868f3559da05e51",
+  "fixed_commit": "650ec0b7beab4e28e8c9578ed8651bea05d34d20",
   "fix_summary": "All clear-history DELETE statements are wrapped in a single RDB transaction (beginTransaction/commit with rollback on error): one bulk DELETE per table inside one commit.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_browser_0020.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "elapsed_ms",
+      "definition": "Time from the clear-button tap event (input dispatch in trace) to completion of the last RDB write observed in disk activity.",
+      "comparison": "unfixed shows one sqlite fsync/journal cycle per deleted row; fixed shows a single commit. unfixed_clear_history_wall_time_ms > fixed_clear_history_wall_time_ms by >= 2x with 100+ entries."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions / trace_cpu_ms",
       "unfixed": [
@@ -68,18 +79,124 @@
         5785336
       ],
       "note": "348M vs 4.6M instructions (75x); cpu 2735 vs 28 ms"
-    },
-    "mechanism_oracle": {
-      "metric": "elapsed_ms",
-      "definition": "Time from the clear-button tap event (input dispatch in trace) to completion of the last RDB write observed in disk activity.",
-      "comparison": "unfixed shows one sqlite fsync/journal cycle per deleted row; fixed shows a single commit. unfixed_clear_history_wall_time_ms > fixed_clear_history_wall_time_ms by >= 2x with 100+ entries."
     }
   },
   "reproduction": [
-    "git -C hosts/browser checkout case/browser_history_delete_no_transaction/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/browser_history_delete_no_transaction/testcase/PerfLoad_browser_0020.* perf_testing/hapray/testcases/com.example.nanvision/",
-    "python -m scripts.main perf --run_testcases PerfLoad_browser_0020 --round 3",
-    "git -C hosts/browser checkout case/browser_history_delete_no_transaction/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py browser_history_delete_no_transaction",
+    "python3 tools/sign_clean_cases.py browser_history_delete_no_transaction",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/browser_history_delete_no_transaction/testcase/ into perf_testing/hapray/testcases/com.example.nanvision/.",
+    "Install each clean signed variant and run the PerfLoad_browser_0020 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "28a458b",
+    "fixed_commit": "52bc232",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/browser_history_delete_no_transaction/unfixed",
+        "commit": "1aa4710ed2aa098f9073e2649868f3559da05e51",
+        "tree": "29abf85fdf8613d8b71cfb40ce6de41be0f9a0df",
+        "business_base_tree": "46f3821de88c3d309552d55308c95eaba7c3ad67",
+        "production_patches": [
+          "hosts_patches/browser/production-clear-history.patch"
+        ],
+        "unsigned_sha256": "3a6ace31b223eb567a84b1d6d17d265cd3d000d94d19c5d38963e2cccba42f90",
+        "bytecode_audit": {
+          "sha256": "3a6ace31b223eb567a84b1d6d17d265cd3d000d94d19c5d38963e2cccba42f90",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "browser_history_delete_no_transaction",
+          "variant": "unfixed",
+          "unsigned_sha256": "3a6ace31b223eb567a84b1d6d17d265cd3d000d94d19c5d38963e2cccba42f90",
+          "signed_hap": "/home/research/ohm-clean/browser_history_delete_no_transaction/unfixed/app.hap",
+          "audit": {
+            "sha256": "4cc753261eacb91fd4d2b0e3473f71a734e1444990bf42c8cb8e7dbb8483703a",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "browser_history_delete_no_transaction",
+          "variant": "unfixed",
+          "signed_sha256": "4cc753261eacb91fd4d2b0e3473f71a734e1444990bf42c8cb8e7dbb8483703a",
+          "install": "[Info]App install path:/home/research/ohm-clean/browser_history_delete_no_transaction/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            29224
+          ],
+          "foreground_bundle": "com.example.nanvision",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/browser_history_delete_no_transaction/fixed",
+        "commit": "650ec0b7beab4e28e8c9578ed8651bea05d34d20",
+        "tree": "be84808097cc57985aca37d414e3b450fc1f7a32",
+        "business_base_tree": "83229456c247987eaa418ea094b8b65cddb02c22",
+        "production_patches": [
+          "hosts_patches/browser/production-clear-history.patch"
+        ],
+        "unsigned_sha256": "3338ed364eca4b86f77797ecbd658769223ebe409f3dbd5688f51a566c5fdf55",
+        "bytecode_audit": {
+          "sha256": "3338ed364eca4b86f77797ecbd658769223ebe409f3dbd5688f51a566c5fdf55",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "browser_history_delete_no_transaction",
+          "variant": "fixed",
+          "unsigned_sha256": "3338ed364eca4b86f77797ecbd658769223ebe409f3dbd5688f51a566c5fdf55",
+          "signed_hap": "/home/research/ohm-clean/browser_history_delete_no_transaction/fixed/app.hap",
+          "audit": {
+            "sha256": "578d2e95ea8fd24f832567ef7c471f0d340b60d81babe08ad4fce8a401e46327",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "browser_history_delete_no_transaction",
+          "variant": "fixed",
+          "signed_sha256": "578d2e95ea8fd24f832567ef7c471f0d340b60d81babe08ad4fce8a401e46327",
+          "install": "[Info]App install path:/home/research/ohm-clean/browser_history_delete_no_transaction/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            30024
+          ],
+          "foreground_bundle": "com.example.nanvision",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      }
+    }
+  }
 }

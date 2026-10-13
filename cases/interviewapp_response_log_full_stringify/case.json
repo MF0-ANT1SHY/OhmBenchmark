@@ -16,10 +16,11 @@
     "网络结果渲染",
     "页面启动"
   ],
-  "unfixed_commit": "6f1c96f",
-  "fixed_commit": "4fd3756",
+  "unfixed_commit": "6f1c96f698fe1c9dd90e05bb45b76ba9e5118c4d",
+  "fixed_commit": "4fd37562f8060ce572f580d89dbf9d3a33052e63",
   "fix_summary": "The log records only the response code and message fields, removing the full-body JSON.stringify and truncation copy.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "phone",
     "ability": "PhoneAbility",
-    "trigger": "bench"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_interviewapp_0010.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "response_handler_cpu_ms",
+      "definition": "CPU time inside the OHMB/response_logging hiTraceMeter region per API call (the success-path logging statement), averaged over 100 calls per run.",
+      "comparison": "unfixed serializes each full response body (O(payload)); fixed logs O(1) fields. Measured: unfixed 1.00ms/call vs fixed 0.22ms/call (4.5x, n=300 each; per-run sums ~104ms vs ~25ms)."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions over 100 fixture requests (Pura 70 Ultra)",
       "unfixed": [
@@ -68,18 +79,98 @@
         274443107
       ],
       "note": "324M vs 267M median instructions (1.21x, disjoint ranges) over a 100-request run against device-tests/response_server.py (~55KB flat body, HTTP/1.1 keep-alive). The fixture shape is deliberate: expectDataType:OBJECT stops parsing bodies above ~64KB, and a many-small-rows body inflates the shared parse baseline enough to hide the logging-path delta. The unfixed handler serialized 100 full bodies vs 0 on fixed (ohmResponseStringify counter)."
-    },
-    "mechanism_oracle": {
-      "metric": "response_handler_cpu_ms",
-      "definition": "CPU time inside the OHMB/response_logging hiTraceMeter region per API call (the success-path logging statement), averaged over 100 calls per run.",
-      "comparison": "unfixed serializes each full response body (O(payload)); fixed logs O(1) fields. Measured: unfixed 1.00ms/call vs fixed 0.22ms/call (4.5x, n=300 each; per-run sums ~104ms vs ~25ms)."
     }
   },
   "reproduction": [
-    "git -C hosts/interviewapp checkout case/interviewapp_response_log_full_stringify/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/interviewapp_response_log_full_stringify/testcase/PerfLoad_interviewapp_0010.* perf_testing/hapray/testcases/com.itcast.pass_interview/",
-    "python -m scripts.main perf --run_testcases PerfLoad_interviewapp_0010 --round 3",
-    "git -C hosts/interviewapp checkout case/interviewapp_response_log_full_stringify/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py interviewapp_response_log_full_stringify",
+    "python3 tools/sign_clean_cases.py interviewapp_response_log_full_stringify",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/interviewapp_response_log_full_stringify/testcase/ into perf_testing/hapray/testcases/com.itcast.pass_interview/.",
+    "Install each clean signed variant and run the PerfLoad_interviewapp_0010 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "6f1c96f",
+    "fixed_commit": "4fd3756",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/interviewapp_response_log_full_stringify/unfixed",
+        "commit": "6f1c96f698fe1c9dd90e05bb45b76ba9e5118c4d",
+        "tree": "382c9d77994a2b3aa5e42dcac0f81fbae280b8cf",
+        "business_base_tree": "382c9d77994a2b3aa5e42dcac0f81fbae280b8cf",
+        "production_patches": [],
+        "unsigned_sha256": "b2659a41c0242c40f590fc888c6c882dcd166e96a984d9739afb28356069486e",
+        "bytecode_audit": {
+          "sha256": "b2659a41c0242c40f590fc888c6c882dcd166e96a984d9739afb28356069486e",
+          "abc_modules_checked": [
+            "ets/widgets.abc",
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "interviewapp_response_log_full_stringify",
+          "variant": "unfixed",
+          "unsigned_sha256": "b2659a41c0242c40f590fc888c6c882dcd166e96a984d9739afb28356069486e",
+          "signed_hap": "/home/research/ohm-clean/interviewapp_response_log_full_stringify/unfixed/app.hap",
+          "audit": {
+            "sha256": "e285b251e7ba8282477b4af02206b1e14b62f3d245b4d028043e9623163bd952",
+            "abc_modules_checked": [
+              "ets/modules.abc",
+              "ets/widgets.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/interviewapp_response_log_full_stringify/fixed",
+        "commit": "4fd37562f8060ce572f580d89dbf9d3a33052e63",
+        "tree": "4085ad189b70ef72a88ddc0010fdf6890b12aa49",
+        "business_base_tree": "4085ad189b70ef72a88ddc0010fdf6890b12aa49",
+        "production_patches": [],
+        "unsigned_sha256": "2ee29e3f04dcfc018483fc7c773ddf8ec9fcc53c95ddcb22b29125ae5e06c38b",
+        "bytecode_audit": {
+          "sha256": "2ee29e3f04dcfc018483fc7c773ddf8ec9fcc53c95ddcb22b29125ae5e06c38b",
+          "abc_modules_checked": [
+            "ets/widgets.abc",
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "interviewapp_response_log_full_stringify",
+          "variant": "fixed",
+          "unsigned_sha256": "2ee29e3f04dcfc018483fc7c773ddf8ec9fcc53c95ddcb22b29125ae5e06c38b",
+          "signed_hap": "/home/research/ohm-clean/interviewapp_response_log_full_stringify/fixed/app.hap",
+          "audit": {
+            "sha256": "1a67c147168c589aea1ca69d8c5a493adbd5418cb37e5089eb205622a5b326b3",
+            "abc_modules_checked": [
+              "ets/modules.abc",
+              "ets/widgets.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }

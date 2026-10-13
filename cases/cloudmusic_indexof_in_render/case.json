@@ -16,10 +16,11 @@
     "列表滑动",
     "网络结果渲染"
   ],
-  "unfixed_commit": "f8fd90d",
-  "fixed_commit": "a967ef1",
+  "unfixed_commit": "f8fd90d72af8c72f05d54823792b45c0474c923d",
+  "fixed_commit": "a967ef10ae9722d19100d6dfbf00760467397a3c",
   "fix_summary": "The index already provided by the LazyForEach item generator is passed to SongCard, removing both per-row linear scans.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench_ui"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_cloudmusic_0010.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -55,6 +57,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "row_build_cpu_overhead",
+      "definition": "UI-thread CPU time attributable to list-row building during the scroll (from ace trace component-build events), divided by number of rows rendered.",
+      "comparison": "unfixed per-row build time grows linearly with playlist size (indexOf scan) while fixed stays constant; with >= 500 songs, unfixed scroll CPU > fixed by >= 10% and unfixed shows more dropped frames."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions over the search-result render workload (Pura 70 Ultra)",
       "unfixed": [
@@ -68,18 +79,126 @@
         2746105
       ],
       "note": "6.46M vs 2.75M median hw-instructions (2.35x, disjoint ranges); mechanism counter 250500 vs 0 indexOf comparisons per render pass (measurements-staging)."
-    },
-    "mechanism_oracle": {
-      "metric": "row_build_cpu_overhead",
-      "definition": "UI-thread CPU time attributable to list-row building during the scroll (from ace trace component-build events), divided by number of rows rendered.",
-      "comparison": "unfixed per-row build time grows linearly with playlist size (indexOf scan) while fixed stays constant; with >= 500 songs, unfixed scroll CPU > fixed by >= 10% and unfixed shows more dropped frames."
     }
   },
   "reproduction": [
-    "git -C hosts/cloudmusic checkout case/cloudmusic_indexof_in_render/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/cloudmusic_indexof_in_render/testcase/PerfLoad_cloudmusic_0010.* perf_testing/hapray/testcases/cc.chenlvin.cloudmusic/",
-    "python -m scripts.main perf --run_testcases PerfLoad_cloudmusic_0010 --round 3",
-    "git -C hosts/cloudmusic checkout case/cloudmusic_indexof_in_render/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py cloudmusic_indexof_in_render",
+    "python3 tools/sign_clean_cases.py cloudmusic_indexof_in_render",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/cloudmusic_indexof_in_render/testcase/ into perf_testing/hapray/testcases/cc.chenlvin.cloudmusic/.",
+    "Install each clean signed variant and run the PerfLoad_cloudmusic_0010 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "f8fd90d",
+    "fixed_commit": "a967ef1",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/cloudmusic_indexof_in_render/unfixed",
+        "commit": "f8fd90d72af8c72f05d54823792b45c0474c923d",
+        "tree": "21ed09da100d1dba53df5043b1dc50f24d22bc09",
+        "business_base_tree": "21ed09da100d1dba53df5043b1dc50f24d22bc09",
+        "production_patches": [],
+        "unsigned_sha256": "044214ecd63423a62b0862513abf3938fe77814292b42961f53ebfa0ce344f3d",
+        "bytecode_audit": {
+          "sha256": "044214ecd63423a62b0862513abf3938fe77814292b42961f53ebfa0ce344f3d",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "cloudmusic_indexof_in_render",
+          "variant": "unfixed",
+          "unsigned_sha256": "044214ecd63423a62b0862513abf3938fe77814292b42961f53ebfa0ce344f3d",
+          "signed_hap": "/home/research/ohm-clean/cloudmusic_indexof_in_render/unfixed/app.hap",
+          "audit": {
+            "sha256": "c86222b842fa82c41c63539c75776792a962f93fc38444d615d31ea853407462",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "allowed_acls": [
+            "ohos.permission.SYSTEM_FLOAT_WINDOW"
+          ],
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "cloudmusic_indexof_in_render",
+          "variant": "unfixed",
+          "signed_sha256": "c86222b842fa82c41c63539c75776792a962f93fc38444d615d31ea853407462",
+          "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_indexof_in_render/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            35774
+          ],
+          "foreground_bundle": "cc.chenlvin.cloudmusic",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/cloudmusic_indexof_in_render/fixed",
+        "commit": "a967ef10ae9722d19100d6dfbf00760467397a3c",
+        "tree": "a668180b0569859ca1d7fa7ccb3eb16e9ab7e1f5",
+        "business_base_tree": "a668180b0569859ca1d7fa7ccb3eb16e9ab7e1f5",
+        "production_patches": [],
+        "unsigned_sha256": "360fb38b3a621067e6729295703906e9fe3dfe177fa8605bfa6c5ebca1e50525",
+        "bytecode_audit": {
+          "sha256": "360fb38b3a621067e6729295703906e9fe3dfe177fa8605bfa6c5ebca1e50525",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "cloudmusic_indexof_in_render",
+          "variant": "fixed",
+          "unsigned_sha256": "360fb38b3a621067e6729295703906e9fe3dfe177fa8605bfa6c5ebca1e50525",
+          "signed_hap": "/home/research/ohm-clean/cloudmusic_indexof_in_render/fixed/app.hap",
+          "audit": {
+            "sha256": "16b7e4564ff60f505c4717dccbd915f29e2ba0d147dd38c0ea07875c3efbaab0",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "allowed_acls": [
+            "ohos.permission.SYSTEM_FLOAT_WINDOW"
+          ],
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "cloudmusic_indexof_in_render",
+          "variant": "fixed",
+          "signed_sha256": "16b7e4564ff60f505c4717dccbd915f29e2ba0d147dd38c0ea07875c3efbaab0",
+          "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_indexof_in_render/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            36821
+          ],
+          "foreground_bundle": "cc.chenlvin.cloudmusic",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      }
+    }
+  }
 }

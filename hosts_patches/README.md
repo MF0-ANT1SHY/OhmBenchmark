@@ -5,6 +5,12 @@ commit to the dataset's `ohmbase` branch tip (build adaptation + all case commit
 Apply with `git am` to reconstruct the full dataset history including the unfixed/fixed
 commits referenced by `cases/*/case.json`.
 
+The current workflow is `tools/reconstruct_clean_hosts.py` and
+`clean-app/<id>/<variant>` refs. Only numbered patches belong to the upstream
+series. Production adaptations are explicitly listed per variant in the manifest;
+supplemental business states are recovered from the repair diff and tree-verified.
+Historical commit IDs are archived under `case.json#legacy_source`.
+
 | Host | Upstream base | Upstream repo | Patches |
 | --- | --- | --- | --- |
 | browser | f44fff7 | https://github.com/langwudong/browser | 6 |
@@ -23,7 +29,7 @@ commits referenced by `cases/*/case.json`.
 git clone <upstream-repo> hosts/<name> && cd hosts/<name>
 git checkout <upstream-base>
 git checkout -b ohmbase
-git am ../..//hosts_patches/<name>/*.patch   # from repo root: git -C hosts/<name> am ...
+git am ../..//hosts_patches/<name>/[0-9]*.patch
 ```
 
 Case tags (`case/<id>/unfixed`, `case/<id>/fixed`) map to the commit hashes recorded in

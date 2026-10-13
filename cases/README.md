@@ -1,56 +1,57 @@
-# Case structure
+# Business-only case structure
 
-All 30 cases share one uniform layout. A case is reproducible when every element
-below is present and consistent — `tools/verify_case_structure.py` checks it
-mechanically.
+Each `cases/<id>/` contains `case.json`, `fix.patch` and `testcase/`, whose files
+are the HapRay Python testcase and descriptor, its `.workload.json` UI plan and
+`workload_driver.py`. Copy **all** testcase files to the declared `install_dir`.
 
+## Source and build contract
+
+`hosts_patches/host-reconstruction.json` records every original business tree.
+`clean/<id>/<variant>` identifies that state; `clean-app/<id>/<variant>` adds only
+explicitly recorded production adaptations. The browser clear-history button,
+for example, calls the existing database deletion operation in **both** variants.
+No test branch, measurement counter, custom trace or app-side gate is allowed.
+
+Use `python3 tools/reconstruct_clean_hosts.py`; `--seed-root` can reuse local
+clones. Supplemental historical business states are recovered from the repair
+diffs and exact tree hashes must match. Trees, not regenerated commit IDs, are
+stable reconstruction identities.
+
+`tools/build_clean_cases.py` uses isolated worktrees, locked dependencies, release
+builds and disassembly of every ABC module. Formatting-only ohpm metadata is
+restored; dependency/business-source modifications fail the build. Identical
+source trees may reuse only a hash-checked, audited compiled artifact.
+
+## External workload contract
+
+UI plans declare `setup`, `measured` and `verify` actions driven through `uitest`.
+Their existence or syntax validity does not prove successful reproduction. The
+plans must reach the actual business path in both variants on the real device.
+
+Prepare data outside profiling, using normal operations, external services or
+offline database/preference fixtures. `tools/seed_browser.py` creates ordinary
+SQLite history; `tools/install_sqlite_fixture.py` stops the app, backs up existing
+data, then installs the fixture. Direct database preparation requires a root test
+device. Keep fixture metadata and expected results outside the agent sandbox.
+
+```bash
+python3 tools/ui_driver.py cases/<id>/testcase/<name>.workload.json --remote cityuPC --phase setup
+python3 tools/ui_driver.py cases/<id>/testcase/<name>.workload.json --remote cityuPC --phase measured
+python3 tools/ui_driver.py cases/<id>/testcase/<name>.workload.json --remote cityuPC --phase verify
 ```
-cases/<id>/
-  case.json                      uniform schema (keys listed below)
-  fix.patch                      unfixed -> fixed diff
-  testcase/
-    <Perf|Mem>Load_<scene>_<NNNN>.py     HapRay test case (hapray.core.perf_testcase.PerfTestCase)
-    <Perf|Mem>Load_<scene>_<NNNN>.json   HapRay testcase descriptor
-cases/collection.yaml            shared dynamic-collection spec (mirrors HapRay)
-```
 
-## Reproducibility criteria
+## Independent acceptance gates
 
-1. **Test cases consistent with ArkAnalyzer-HapRay** — `testcase/` holds a
-   `PerfTestCase` subclass plus the `<class>.json` descriptor in the exact
-   format `perf_testing/hapray/testcases/` uses (`driver.type: DeviceTest`,
-   `environment: [{type: device, label: phone}]`). Copy both files into
-   `perf_testing/hapray/testcases/<bundle>/` and select with
-   `--run_testcases <name>`.
-2. **Dynamic data collection matching HapRay** — `case.json#collection` points at
-   `cases/collection.yaml`, which mirrors HapRay's `hiprofiler_cmd` session:
-   ftrace plugin (24 hitrace categories + sched/task/power ftrace events),
-   hiperf plugin (`-f 1000 -e raw-instruction-retired --call-stack dwarf
-   --clockid boottime --kernel-callchain -m 1024`), nativehook plugin for
-   `MemLoad` cases, and the periodic smaps/ui/thermal collectors. Outputs are the
-   HapRay filenames (`trace.htrace`, `perf.data`, `pids.json`, `memory/`).
-3. **Unfixed significantly worse than fixed on CPU/memory** —
-   `case.json#test_oracle` declares exactly one CPU or memory metric:
-   `hiperf_instructions` (PerfLoad cases), `app_pss_bytes` or
-   `nativehook_retained_bytes` (MemLoad cases), with
-   `unfixed >= 1.2 * fixed`. `fixed_commit` is immutable; the declared metric is
-   the release criterion, the mechanism counter in `mechanism_oracle` is
-   corroborating evidence.
+1. Exact clean source trees and business-only repair diff.
+2. Both release builds and compiled-bytecode audits pass.
+3. Signed variants install, stay running and display foreground app UI.
+4. External fixtures and actions reach the faulty business path in both variants.
+5. Measure the declared system CPU/memory metric over >= 3 rounds per variant;
+   demonstrate `unfixed >= 1.2 * fixed`, using identical data/actions and preserving
+   functional correctness. The capture window must cover the entire action sequence.
 
-## case.json keys
-
-| key | meaning |
-| --- | --- |
-| `id`, `category`, `bug_description`, `perf_scenarios` | case identity |
-| `host_app` | repo, bundle, `local_path`, `base_branch`, `base_commit` |
-| `android_source_case`, `android_mechanism` | Android-benchmark provenance |
-| `unfixed_commit`, `fixed_commit`, `fix_summary` | the pair of builds |
-| `build` | last recorded `hvigorw assembleHap` result per variant |
-| `testcase` | HapRay testcase: class name, files, install dir, module, ability, trigger |
-| `collection` | `config` ref + `modes` (`htrace`,`hiperf`,[+`memory`]), `step_duration_s`, `rounds` |
-| `test_oracle` | CPU/memory metric + comparison + evidence + mechanism_oracle |
-| `reproduction` | ordered steps: seed (if any), measured step, comparison |
-
-`PerfLoad_*` drives the UI/`--ps bench` workload while HapRay collects htrace +
-hiperf; `MemLoad_*` additionally enables the nativehook plugin for the
-resource-retention cases.
+`case.json#clean_validation` records the stages separately. Workload/performance
+statuses remain pending until actual evidence exists. Legacy instrumented results
+are archived under `test_oracle.legacy_instrumented_evidence`; the old measurement
+contract is in `validation/legacy-measurement-contract.json`. Neither is clean
+validation evidence. Install/build success is not a performance verdict.

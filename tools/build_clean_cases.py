@@ -28,9 +28,30 @@ def build_case(case, variant, output, toolchain, mode):
         if old.get("status") == "PASS" and old.get("source", {}).get("tree") == source["tree"] and old.get("mode") == mode:
             audit = audit_hap(dest / "app-unsigned.hap", toolchain / "sdk/default/openharmony/toolchains/ark_disasm")
             if audit["passed"] and audit["sha256"] == old["hap"]["sha256"]:
+                old["ref"] = ref
+                receipt.write_text(json.dumps(old, indent=2) + "\n")
                 print(f"{cid}/{variant}: verified existing clean build", flush=True)
                 return old
-    wt = output / "worktrees" / cid / variant
+    # Adjacent cases often share the exact same business source state. Reuse only
+    # a compiled artifact whose tree, mode, hash AND bytecode audit all match.
+    candidates = sorted(output.glob("*/unfixed/build.json")) + sorted(output.glob("*/fixed/build.json"))
+    for candidate in candidates:
+        if candidate == receipt:
+            continue
+        cached = json.loads(candidate.read_text())
+        if cached.get("status") != "PASS" or cached.get("mode") != mode or cached.get("source", {}).get("tree") != source["tree"]:
+            continue
+        cached_hap = candidate.parent / "app-unsigned.hap"
+        audit = audit_hap(cached_hap, toolchain / "sdk/default/openharmony/toolchains/ark_disasm")
+        if audit["passed"] and audit["sha256"] == cached["hap"]["sha256"]:
+            shutil.copyfile(cached_hap, dest / "app-unsigned.hap")
+            shutil.copyfile(candidate.parent / "build.log", dest / "build.log")
+            result = {**cached, "case": cid, "variant": variant, "ref": ref,
+                      "reused_from": str(candidate.relative_to(output)), "hap": audit}
+            receipt.write_text(json.dumps(result, indent=2) + "\n")
+            print(f"{cid}/{variant}: PASS (verified identical-tree artifact)", flush=True)
+            return result
+    wt = output / "worktrees" / cid / (variant + "-" + source["tree"][:12])
     if wt.exists():
         actual = subprocess.check_output(["git", "-C", str(wt), "rev-parse", "HEAD^{tree}"], text=True).strip()
         if not receipt.exists() or actual != source["tree"]:
@@ -67,7 +88,8 @@ def build_case(case, variant, output, toolchain, mode):
             subprocess.run([str(toolchain / "bin/hvigorw"), "--mode", "module", "-p", "product=default",
                             "-p", f"buildMode={mode}", "assembleHap", "--no-daemon"],
                            cwd=wt, env=env, stdout=log, stderr=subprocess.STDOUT, check=True, timeout=900)
-        artifacts = list(wt.glob("*/build/default/outputs/default/*-unsigned.hap"))
+        artifacts = [p for p in wt.rglob("*-unsigned.hap")
+                     if p.parent.name == "default" and p.parent.parent.name == "outputs"]
         if len(artifacts) != 1:
             raise RuntimeError(f"expected one unsigned HAP, got {artifacts}")
         target = dest / "app-unsigned.hap"

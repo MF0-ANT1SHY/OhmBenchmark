@@ -1,0 +1,49 @@
+{
+  "bundle": "cc.chenlvin.cloudmusic",
+  "ability": "EntryAbility",
+  "description": "CloudMusic-HarmonyOSNext (仿网易云音乐)页面操作",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Explore"
+      }
+    },
+    {
+      "op": "point",
+      "x": 0.92,
+      "y": 0.07
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "type": "SearchField"
+      }
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "Search something"
+      },
+      "value": "music"
+    }
+  ],
+  "measured": [
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "swipe",
+      "count": 5
+    }
+  ],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Track"
+      }
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "bundle": "com.alatus.futureweather",
+  "ability": "AlatusAbility",
+  "description": "HarmonyOS-Next-Weather-Assistant页面操作",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "添加"
+      }
+    },
+    {
+      "op": "stop"
+    }
+  ],
+  "measured": [
+    {
+      "op": "launch"
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "添加"
+      }
+    },
+    {
+      "op": "pause",
+      "seconds": 3
+    }
+  ],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "添加"
+      }
+    }
+  ]
+}

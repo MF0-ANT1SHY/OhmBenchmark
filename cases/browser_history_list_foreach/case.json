@@ -17,10 +17,11 @@
     "组件创建",
     "页面切换"
   ],
-  "unfixed_commit": "52bc232",
-  "fixed_commit": "f9425c4",
+  "unfixed_commit": "52bc23247f20a7d0abca20efa117ccbbe87d4f83",
+  "fixed_commit": "f9425c47b7306fe7d6031ddc40dc117a80349162",
   "fix_summary": "History entries are rendered with LazyForEach backed by a per-group IDataSource implementation, so row components are created on demand as they enter the viewport and recycled while scrolling.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -32,7 +33,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench_ui"
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_browser_0030.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -56,6 +58,15 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "component_build_count_and_first_frame_ms",
+      "definition": "(a) Time from dialog-open event to first rendered history frame; (b) count of HistoryItem component build/attach operations in the ace trace during the whole scroll; (c) dropped-frame count while scrolling.",
+      "comparison": "unfixed builds all N components at open (N = seeded entries) vs fixed builds only visible rows (~10-15); unfixed_first_frame_ms > fixed_first_frame_ms; unfixed shows more jank frames during scroll."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions / trace_cpu_ms",
       "unfixed": [
@@ -69,18 +80,120 @@
         2799537880
       ],
       "note": "9.64G vs 2.79G instructions (3.5x); cpu 5986 vs 4041 ms; builds 200 vs 59"
-    },
-    "mechanism_oracle": {
-      "metric": "component_build_count_and_first_frame_ms",
-      "definition": "(a) Time from dialog-open event to first rendered history frame; (b) count of HistoryItem component build/attach operations in the ace trace during the whole scroll; (c) dropped-frame count while scrolling.",
-      "comparison": "unfixed builds all N components at open (N = seeded entries) vs fixed builds only visible rows (~10-15); unfixed_first_frame_ms > fixed_first_frame_ms; unfixed shows more jank frames during scroll."
     }
   },
   "reproduction": [
-    "git -C hosts/browser checkout case/browser_history_list_foreach/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/browser_history_list_foreach/testcase/PerfLoad_browser_0030.* perf_testing/hapray/testcases/com.example.nanvision/",
-    "python -m scripts.main perf --run_testcases PerfLoad_browser_0030 --round 3",
-    "git -C hosts/browser checkout case/browser_history_list_foreach/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py browser_history_list_foreach",
+    "python3 tools/sign_clean_cases.py browser_history_list_foreach",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/browser_history_list_foreach/testcase/ into perf_testing/hapray/testcases/com.example.nanvision/.",
+    "Install each clean signed variant and run the PerfLoad_browser_0030 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "52bc232",
+    "fixed_commit": "f9425c4",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/browser_history_list_foreach/unfixed",
+        "commit": "52bc23247f20a7d0abca20efa117ccbbe87d4f83",
+        "tree": "83229456c247987eaa418ea094b8b65cddb02c22",
+        "business_base_tree": "83229456c247987eaa418ea094b8b65cddb02c22",
+        "production_patches": [],
+        "unsigned_sha256": "01cdcb78bae2b553d8093dc9f58b1e309a16554f4f986f07ef234211a72306aa",
+        "bytecode_audit": {
+          "sha256": "01cdcb78bae2b553d8093dc9f58b1e309a16554f4f986f07ef234211a72306aa",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "browser_history_list_foreach",
+          "variant": "unfixed",
+          "unsigned_sha256": "01cdcb78bae2b553d8093dc9f58b1e309a16554f4f986f07ef234211a72306aa",
+          "signed_hap": "/home/research/ohm-clean/browser_history_list_foreach/unfixed/app.hap",
+          "audit": {
+            "sha256": "6311f1cea71ed49307bc022f80baec3f4ed57d98700b5a1f34c0952501afe2dd",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "browser_history_list_foreach",
+          "variant": "unfixed",
+          "signed_sha256": "6311f1cea71ed49307bc022f80baec3f4ed57d98700b5a1f34c0952501afe2dd",
+          "install": "[Info]App install path:/home/research/ohm-clean/browser_history_list_foreach/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            30265
+          ],
+          "foreground_bundle": "com.example.nanvision",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/browser_history_list_foreach/fixed",
+        "commit": "f9425c47b7306fe7d6031ddc40dc117a80349162",
+        "tree": "ca8cdb46a27f193e2d1e80db3cb72c0f3efc63a4",
+        "business_base_tree": "ca8cdb46a27f193e2d1e80db3cb72c0f3efc63a4",
+        "production_patches": [],
+        "unsigned_sha256": "c3b2002c04af5ceb9ebe96d13b20a0603b1177074a1848fae60a4a0c10737520",
+        "bytecode_audit": {
+          "sha256": "c3b2002c04af5ceb9ebe96d13b20a0603b1177074a1848fae60a4a0c10737520",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "browser_history_list_foreach",
+          "variant": "fixed",
+          "unsigned_sha256": "c3b2002c04af5ceb9ebe96d13b20a0603b1177074a1848fae60a4a0c10737520",
+          "signed_hap": "/home/research/ohm-clean/browser_history_list_foreach/fixed/app.hap",
+          "audit": {
+            "sha256": "54062ffc30474a26df9120937bf51e4b323096d05e16923cfeab182bd4f727b9",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "browser_history_list_foreach",
+          "variant": "fixed",
+          "signed_sha256": "54062ffc30474a26df9120937bf51e4b323096d05e16923cfeab182bd4f727b9",
+          "install": "[Info]App install path:/home/research/ohm-clean/browser_history_list_foreach/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            30697
+          ],
+          "foreground_bundle": "com.example.nanvision",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      }
+    }
+  }
 }

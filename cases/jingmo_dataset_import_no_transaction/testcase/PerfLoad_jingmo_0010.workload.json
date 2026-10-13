@@ -1,0 +1,38 @@
+{
+  "bundle": "com.hefengbao.jingmo.hw",
+  "ability": "EntryAbility",
+  "description": "jingmo (京墨文库)页面操作",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "京墨"
+      }
+    },
+    {
+      "op": "point",
+      "x": 0.94,
+      "y": 0.07
+    }
+  ],
+  "measured": [
+    {
+      "op": "tap",
+      "selector": {
+        "text": "同步数据"
+      }
+    },
+    {
+      "op": "pause",
+      "seconds": 3
+    }
+  ],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "同步数据"
+      }
+    }
+  ]
+}

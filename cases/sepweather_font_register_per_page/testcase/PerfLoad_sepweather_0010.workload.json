@@ -1,0 +1,39 @@
+{
+  "bundle": "cn.seayj.sepweather",
+  "ability": "EntryAbility",
+  "description": "SepWeather页面操作",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "id": "AddAddressBtn"
+      }
+    }
+  ],
+  "measured": [
+    {
+      "op": "repeat",
+      "count": 10,
+      "actions": [
+        {
+          "op": "launch",
+          "flags": 268468224
+        },
+        {
+          "op": "wait",
+          "selector": {
+            "id": "AddAddressBtn"
+          }
+        }
+      ]
+    }
+  ],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "id": "AddAddressBtn"
+      }
+    }
+  ]
+}

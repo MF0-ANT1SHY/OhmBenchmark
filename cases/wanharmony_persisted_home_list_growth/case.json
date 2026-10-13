@@ -16,10 +16,11 @@
     "列表滑动",
     "状态更新"
   ],
-  "unfixed_commit": "87d63ec",
-  "fixed_commit": "d1618b9",
+  "unfixed_commit": "87d63ec508b1d6ee950f9e5f55c0146bc189b233",
+  "fixed_commit": "d1618b99cc613e0333c750137beb833f814c910a",
   "fix_summary": "Only the first-page home-article snapshot is persisted ('homeListCache') for fast cold-start rendering; pages loaded during the session accumulate in component state without rewriting persistent storage.",
   "build": {
+    "mode": "release",
     "build_unfixed": "PASS",
     "build_fixed": "PASS"
   },
@@ -31,7 +32,8 @@
     "driver": "DeviceTest",
     "module": "entry",
     "ability": "EntryAbility",
-    "trigger": "bench_ui"
+    "trigger": "external_ui",
+    "workload": "testcase/MemLoad_wanharmony_0030.workload.json"
   },
   "collection": {
     "config": "../collection.yaml",
@@ -56,6 +58,15 @@
     "definition": "Pss of the app process after the workload, from the periodic smaps_rollup snapshots in memory/.",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "persistent_write_bytes_per_loadmore",
+      "definition": "Bytes written to app preferences/storage attributable to home-list persistence per load-more cycle, from disk/filesystem trace activity (write sizes grow with list length in unfixed, stay constant in fixed).",
+      "comparison": "unfixed: write size per load-more grows linearly with accumulated pages (total write volume quadratic in pages); fixed: writes only at first-page fetch. unfixed_total_write_bytes > fixed by >= 3x after 10 pages; unfixed resident memory higher."
+    },
+    "legacy_instrumented_evidence": {
       "status": "measured",
       "measured_as": "perf_hw-instructions over the load-more persistence workload (Pura 70 Ultra)",
       "unfixed": [
@@ -69,18 +80,94 @@
         4611977
       ],
       "note": "38.9M vs 4.56M median hw-instructions (8.5x, disjoint ranges, high unfixed variance); mechanism counter 284970 vs 5111 persisted bytes per load-more (measurements-staging)."
-    },
-    "mechanism_oracle": {
-      "metric": "persistent_write_bytes_per_loadmore",
-      "definition": "Bytes written to app preferences/storage attributable to home-list persistence per load-more cycle, from disk/filesystem trace activity (write sizes grow with list length in unfixed, stay constant in fixed).",
-      "comparison": "unfixed: write size per load-more grows linearly with accumulated pages (total write volume quadratic in pages); fixed: writes only at first-page fetch. unfixed_total_write_bytes > fixed by >= 3x after 10 pages; unfixed resident memory higher."
     }
   },
   "reproduction": [
-    "git -C hosts/wanharmony checkout case/wanharmony_persisted_home_list_growth/unfixed; apply the measurement harness patch for this case, build, sign and install the HAP.",
-    "cp cases/wanharmony_persisted_home_list_growth/testcase/MemLoad_wanharmony_0030.* perf_testing/hapray/testcases/org.example.wan.ohos/",
-    "python -m scripts.main perf --run_testcases MemLoad_wanharmony_0030 --round 3 --memory",
-    "git -C hosts/wanharmony checkout case/wanharmony_persisted_home_list_growth/fixed; rebuild, reinstall and repeat identically.",
-    "Compare test_oracle.metric across the two report sets: unfixed >= 1.2 * fixed."
-  ]
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py wanharmony_persisted_home_list_growth",
+    "python3 tools/sign_clean_cases.py wanharmony_persisted_home_list_growth",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/wanharmony_persisted_home_list_growth/testcase/ into perf_testing/hapray/testcases/org.example.wan.ohos/.",
+    "Install each clean signed variant and run the MemLoad_wanharmony_0030 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "87d63ec",
+    "fixed_commit": "d1618b9",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/wanharmony_persisted_home_list_growth/unfixed",
+        "commit": "87d63ec508b1d6ee950f9e5f55c0146bc189b233",
+        "tree": "4335f38febb7059d241de4f6ef22ade69767e729",
+        "business_base_tree": "4335f38febb7059d241de4f6ef22ade69767e729",
+        "production_patches": [],
+        "unsigned_sha256": "0f49cab6d143afade5ff2f597154434b01f022b3898d8129180c3435f8783c11",
+        "bytecode_audit": {
+          "sha256": "0f49cab6d143afade5ff2f597154434b01f022b3898d8129180c3435f8783c11",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "wanharmony_persisted_home_list_growth",
+          "variant": "unfixed",
+          "unsigned_sha256": "0f49cab6d143afade5ff2f597154434b01f022b3898d8129180c3435f8783c11",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_persisted_home_list_growth/unfixed/app.hap",
+          "audit": {
+            "sha256": "06787426f0293f1010bbc8a6a21095dc8a23f020860207453dcd2de0ffbb6653",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/wanharmony_persisted_home_list_growth/fixed",
+        "commit": "d1618b99cc613e0333c750137beb833f814c910a",
+        "tree": "892d60f0762ef9cbf11fc32972f2b4116df74aa1",
+        "business_base_tree": "892d60f0762ef9cbf11fc32972f2b4116df74aa1",
+        "production_patches": [],
+        "unsigned_sha256": "df1d6aa039fe134c34ac639b3eb73e708f4f942da69024b29dd2cdd5083c10ca",
+        "bytecode_audit": {
+          "sha256": "df1d6aa039fe134c34ac639b3eb73e708f4f942da69024b29dd2cdd5083c10ca",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "wanharmony_persisted_home_list_growth",
+          "variant": "fixed",
+          "unsigned_sha256": "df1d6aa039fe134c34ac639b3eb73e708f4f942da69024b29dd2cdd5083c10ca",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_persisted_home_list_growth/fixed/app.hap",
+          "audit": {
+            "sha256": "24157c61b0d37098dc74ea8d359f519d374e34513aa52ee8c511fe8ae8b036de",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      }
+    }
+  }
 }
