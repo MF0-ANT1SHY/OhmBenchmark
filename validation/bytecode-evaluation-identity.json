@@ -1,0 +1,752 @@
+{
+  "scope": "raw ABC byte scan for evaluator case identities and build-path prefixes; supplemental to source and disassembly audits",
+  "variants": 60,
+  "passed": true,
+  "results": [
+    {
+      "case": "browser_eager_history_load",
+      "variant": "unfixed",
+      "unsigned_sha256": "60cb5758870c38979c397996ca747a5289269c8f3afebbd37d81cf333fa63155",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "8d2b9b83a7f01e1b8f07cded87029b4dcd3b47d6417e7629a421237b24a9bd19"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "browser_eager_history_load",
+      "variant": "fixed",
+      "unsigned_sha256": "6bedaa0a8c722900518731cd26772395a01b197169921cfb0bd7e079a6ae11b5",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "ada8d07351d3e1148c9f9f3c5031db48ac7baed2bc5e2be57409e3ebbac6c73f"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "browser_history_delete_no_transaction",
+      "variant": "unfixed",
+      "unsigned_sha256": "3a6ace31b223eb567a84b1d6d17d265cd3d000d94d19c5d38963e2cccba42f90",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "ea1a7b31f5a1e7b553c1fdf01687c54127871301ef6cdebf7b59dd3dc2b98422"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "browser_history_delete_no_transaction",
+      "variant": "fixed",
+      "unsigned_sha256": "3338ed364eca4b86f77797ecbd658769223ebe409f3dbd5688f51a566c5fdf55",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "850deebb764f1ca1ca5042230edbfa9bd62e11fbce81ee8dd23686267e148861"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "browser_history_list_foreach",
+      "variant": "unfixed",
+      "unsigned_sha256": "01cdcb78bae2b553d8093dc9f58b1e309a16554f4f986f07ef234211a72306aa",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "e3ccd4e7be37f45a2ba14e27142f828be3aca47e678fb36cbf410637ddd4978c"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "browser_history_list_foreach",
+      "variant": "fixed",
+      "unsigned_sha256": "c3b2002c04af5ceb9ebe96d13b20a0603b1177074a1848fae60a4a0c10737520",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "f9ee638588624c454e6b7abaea3e3d61c68fe766ad3d45bb2e9e24e47b89fd20"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "browser_insert_date_lookup_cache",
+      "variant": "unfixed",
+      "unsigned_sha256": "964710080bce771321ea022db94d33ff2873d0b5ad65fd52e812a1dbcf172669",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "ada8d07351d3e1148c9f9f3c5031db48ac7baed2bc5e2be57409e3ebbac6c73f"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "browser_insert_date_lookup_cache",
+      "variant": "fixed",
+      "unsigned_sha256": "783a6e8d904e197430ce578fbbdec2f2e1595805774853997bc6bf5be3fcb92d",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "18a9ea3c2df94edfa4e4a42fb5368779083dfac1d6586cb79fc91249159b74b8"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "cloudmusic_indexof_in_render",
+      "variant": "unfixed",
+      "unsigned_sha256": "044214ecd63423a62b0862513abf3938fe77814292b42961f53ebfa0ce344f3d",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "dcce84f944410f7b8f4d33d64251e2709f43056fe8683825b9edce9d417d02f8"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "cloudmusic_indexof_in_render",
+      "variant": "fixed",
+      "unsigned_sha256": "360fb38b3a621067e6729295703906e9fe3dfe177fa8605bfa6c5ebca1e50525",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "4fe0d2f11496cbb89c82d77a46eee6d0751d8f1fa0870b157eb9fe786f0b527e"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "cloudmusic_local_song_memory_filter",
+      "variant": "unfixed",
+      "unsigned_sha256": "d8c2d7e9ddc3a7011f4e2b88dbdd012040186aedea587d10ca212a19c33b73c8",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "5e92cada211179e5e50d709faecf1eb65fe8d514f8766c8f8c84946037b3f188"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "cloudmusic_local_song_memory_filter",
+      "variant": "fixed",
+      "unsigned_sha256": "e857d6f19362359404cecc6023ffd90623a6c10e76b7599a5d94d3d38a774953",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "8e11904b1f5c03f934847b6e2a897cca411dd00c7a8b6a6991dc55ac81ca9cad"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "cloudmusic_play_time_high_frequency_update",
+      "variant": "unfixed",
+      "unsigned_sha256": "e857d6f19362359404cecc6023ffd90623a6c10e76b7599a5d94d3d38a774953",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "8e11904b1f5c03f934847b6e2a897cca411dd00c7a8b6a6991dc55ac81ca9cad"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "cloudmusic_play_time_high_frequency_update",
+      "variant": "fixed",
+      "unsigned_sha256": "bfce3dc40d63a7652feaad1c10486764d235389e3abebd776ac3e4ec320488ae",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "97c61ac3a3728d2a861e8a3e18dce0e92472e555a81110c76117142b13594522"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "cloudmusic_search_result_foreach",
+      "variant": "unfixed",
+      "unsigned_sha256": "ea6b4400e75f80efdfdb6ad574b0e659b1b5c53d202d2bf67172973700a83076",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "cea91cb67f3c4b58aff3fe169034b3fe49cdff741e8f503586e77b432087fa69"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "cloudmusic_search_result_foreach",
+      "variant": "fixed",
+      "unsigned_sha256": "49e6fb6115749be857d5267e2280a5767738ef10ed8a362b026a0ac945bfe8b3",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "37c00f41882a3f094b6a7ad8949cd0c30cd5534779dfdbf9565d0bd69e64ab01"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "cloudmusic_songcard_artists_concat",
+      "variant": "unfixed",
+      "unsigned_sha256": "962f21b8acc04e9a994117efbd1ce65279bb66e2bf1ae32d921f817138e7b224",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "37c00f41882a3f094b6a7ad8949cd0c30cd5534779dfdbf9565d0bd69e64ab01"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "cloudmusic_songcard_artists_concat",
+      "variant": "fixed",
+      "unsigned_sha256": "0deedf99d463d0dedadfa3efa5ff3a2bc99edca62a484fb27287fd975cb281f0",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "ceafb0edc6f8c6d4f031af86283135fdf42850bc4809aba75a0bc17b3829ee7c"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "interviewapp_response_log_full_stringify",
+      "variant": "unfixed",
+      "unsigned_sha256": "b2659a41c0242c40f590fc888c6c882dcd166e96a984d9739afb28356069486e",
+      "abc_modules": [
+        {
+          "name": "ets/widgets.abc",
+          "sha256": "8436371dc74e36ab484f88069423b1cf77272efa4b6abd237bb93b09d2103bac"
+        },
+        {
+          "name": "ets/modules.abc",
+          "sha256": "acd63f4a638ac110c329cf92207f61c0726104a04654382def290cd318c90f47"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "interviewapp_response_log_full_stringify",
+      "variant": "fixed",
+      "unsigned_sha256": "2ee29e3f04dcfc018483fc7c773ddf8ec9fcc53c95ddcb22b29125ae5e06c38b",
+      "abc_modules": [
+        {
+          "name": "ets/widgets.abc",
+          "sha256": "8436371dc74e36ab484f88069423b1cf77272efa4b6abd237bb93b09d2103bac"
+        },
+        {
+          "name": "ets/modules.abc",
+          "sha256": "6a98fe2d2f5ae41228f8c808f025ed29eeda99f6782061ad0f6e2a06b77ad7d3"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "interviewapp_search_history_sync_flush",
+      "variant": "unfixed",
+      "unsigned_sha256": "a081ea6e32ccfbe50e32884dd39097ca0c92d89c342cfb8d39e1c37e20f7aa2a",
+      "abc_modules": [
+        {
+          "name": "ets/widgets.abc",
+          "sha256": "8436371dc74e36ab484f88069423b1cf77272efa4b6abd237bb93b09d2103bac"
+        },
+        {
+          "name": "ets/modules.abc",
+          "sha256": "ff4ebd4b5193756ff60a0b601e62671ade08cc25e45a7395f7f4c05cf91fcb60"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "interviewapp_search_history_sync_flush",
+      "variant": "fixed",
+      "unsigned_sha256": "92e0f1fefdeed4f2fd43778a0f012c66bd160bab407b0e655d25d827d36d2abc",
+      "abc_modules": [
+        {
+          "name": "ets/widgets.abc",
+          "sha256": "8436371dc74e36ab484f88069423b1cf77272efa4b6abd237bb93b09d2103bac"
+        },
+        {
+          "name": "ets/modules.abc",
+          "sha256": "acd63f4a638ac110c329cf92207f61c0726104a04654382def290cd318c90f47"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "interviewapp_search_history_unbounded",
+      "variant": "unfixed",
+      "unsigned_sha256": "82852c0c1e05422b84aa9d3f1c70c60bf77d5f371ca5c41a2ca5c787cec3532e",
+      "abc_modules": [
+        {
+          "name": "ets/widgets.abc",
+          "sha256": "8436371dc74e36ab484f88069423b1cf77272efa4b6abd237bb93b09d2103bac"
+        },
+        {
+          "name": "ets/modules.abc",
+          "sha256": "6a98fe2d2f5ae41228f8c808f025ed29eeda99f6782061ad0f6e2a06b77ad7d3"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "interviewapp_search_history_unbounded",
+      "variant": "fixed",
+      "unsigned_sha256": "dc8c86eba41cb1b96150e052ac156f337a4ab8dd018c869294d3b446568c0c93",
+      "abc_modules": [
+        {
+          "name": "ets/widgets.abc",
+          "sha256": "8436371dc74e36ab484f88069423b1cf77272efa4b6abd237bb93b09d2103bac"
+        },
+        {
+          "name": "ets/modules.abc",
+          "sha256": "cfe14b8c9a3daa18bb1c2397bba3aa22c44ad3f45bc97b34246b35ee1b28c6bb"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "variant": "unfixed",
+      "unsigned_sha256": "9253e0aaef33fc49ec8906b0747155de335f56b96ffb3bfe3dbd159664cd427d",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "ae05bc99c4b692e90d9247b9dd94862969db31d5178cab0021497a472c342063"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "variant": "fixed",
+      "unsigned_sha256": "8fcc828852a7a389baad8de97e978ea6767540950af102266cb882e2b6e5feed",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "e6be9f64c89dc873078efd7496c12d9a1a362f7a284bd84beafca6266cfae4ed"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "jingmo_random_poem_orderby_random",
+      "variant": "unfixed",
+      "unsigned_sha256": "0aaf275aa3cf68b26cb9aecdb413b79796fc706eb8e80375d1522b514db61682",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "08515752f0749ba8bcf7f258821e277d6caf1f106bda965fd8a9fe8ca57045e9"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "jingmo_random_poem_orderby_random",
+      "variant": "fixed",
+      "unsigned_sha256": "b33d400ce3eb5dada7a81f08b7bd3b841d0707d69b5d919d5e10a0ee887a9fa2",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "ae05bc99c4b692e90d9247b9dd94862969db31d5178cab0021497a472c342063"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "variant": "unfixed",
+      "unsigned_sha256": "1284640c9805c3e681436236e576307a58776af906aae9c0f6e250c8cc97ec12",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "e6be9f64c89dc873078efd7496c12d9a1a362f7a284bd84beafca6266cfae4ed"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "variant": "fixed",
+      "unsigned_sha256": "d9bf2fd56bde1a4d996757df9b58d577531262cae75e0a05f848fcdc6e47eab8",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "3d40814ed688104caa6882d81f8ad2296a72e1035bd34ec77b3123ba6df7d17a"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "sepweather_font_register_per_page",
+      "variant": "unfixed",
+      "unsigned_sha256": "522f316a9c31440e202be7d3b726aab42317f1c3d59f95173460096284f4c67f",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "87bcd9bdd0d75a44df74062a52aab0ba31662c237297c900f611162838b8b0ab"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "sepweather_font_register_per_page",
+      "variant": "fixed",
+      "unsigned_sha256": "dcba512e7da08e5cf095b2678f351370e21457d1567ce1bb1e1b09b481bc2526",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "10be681bd27822ce9927ac8e09e4130532929a7e64fc2ea7de29fba789977615"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "sheafreader_article_list_foreach",
+      "variant": "unfixed",
+      "unsigned_sha256": "fe8e45af23c444c3739b805adc19f2833bcee9dae358868b86b20ac34608ada7",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "7db193c394d9a61284727c03b2e3d06be426502e824f502a617e480dfa60ed16"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "sheafreader_article_list_foreach",
+      "variant": "fixed",
+      "unsigned_sha256": "1852850ec8d0db976946ea409dcf723216bf44c9de87f17897578ab27985c382",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "2efe119a666823e080ee53e14a05666aa74111709c49259550d823aeda96b59a"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "sheafreader_extract_tag_tolowercase",
+      "variant": "unfixed",
+      "unsigned_sha256": "be83d4a5203a04d189b40bb6f78cfe85e8b0cf744ba602a571ccbe602aedd574",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "fa77bac84ba8a0c4cf1dcbdaefa8d75597d8d4fff8f9e150c8c86877bbae84e6"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "sheafreader_extract_tag_tolowercase",
+      "variant": "fixed",
+      "unsigned_sha256": "3c9849bf882f99b3803da701fa3ca568091bb650e4740db680e543c09ef44aea",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "21f7d587f4e9645230fc5c0c6c67014450b83f662fff77533ef79480b26e71d2"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "sheafreader_insert_duplicate_exception",
+      "variant": "unfixed",
+      "unsigned_sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "7e14a3a417c268bf89759f7834548b62e591ae0392775848d60934bb23a8eedd"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "sheafreader_insert_duplicate_exception",
+      "variant": "fixed",
+      "unsigned_sha256": "dc3476540d097090e8fd86f6cc9ae03646041440e8a144ee658e4f9fcaaeba78",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "bf8e38fc9c95bc2a520a427ccadfd76057811c19368231540bde90df3043970a"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "sheafreader_refresh_feeds_sequential",
+      "variant": "unfixed",
+      "unsigned_sha256": "1852850ec8d0db976946ea409dcf723216bf44c9de87f17897578ab27985c382",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "2efe119a666823e080ee53e14a05666aa74111709c49259550d823aeda96b59a"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "sheafreader_refresh_feeds_sequential",
+      "variant": "fixed",
+      "unsigned_sha256": "f6e0c79a149e386cc9b505f3b817552980e8e0a2c2a090e3937672909382dfbc",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "6a2d59b3457de4e4a0c825a6bce9fc87d55e88118dd2b389cf4e7682ada248a6"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "sheafreader_unread_counts_n_plus_1",
+      "variant": "unfixed",
+      "unsigned_sha256": "f6e0c79a149e386cc9b505f3b817552980e8e0a2c2a090e3937672909382dfbc",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "6a2d59b3457de4e4a0c825a6bce9fc87d55e88118dd2b389cf4e7682ada248a6"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "sheafreader_unread_counts_n_plus_1",
+      "variant": "fixed",
+      "unsigned_sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "7e14a3a417c268bf89759f7834548b62e591ae0392775848d60934bb23a8eedd"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "wanharmony_history_log_materialization",
+      "variant": "unfixed",
+      "unsigned_sha256": "db2e9771b7e993302e7f2a3fc6236097b0eab50da62c3460551cfd702a85b8bd",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "f90ce813d36832222560d120fb6d7e3f6ed4ea52608846bd42b75f03d3ff5b8a"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "wanharmony_history_log_materialization",
+      "variant": "fixed",
+      "unsigned_sha256": "4a499cf607d52b77169c49fdc35960a5b3af4f877208d29088d81845840d08ee",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "a7b95ba980323e67a074ad2cf462318a0249bfd72645c93d5d9fc16e87039724"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "wanharmony_html_decode_per_render",
+      "variant": "unfixed",
+      "unsigned_sha256": "57bf465688d66e69f1547c202a0a50481426aabad2b042edecede1c8b2cdd046",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "9b35fa9ed909220427cc16ccc1377c07c6f2fa7de12bbb602fbe5a140fe4f247"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "wanharmony_html_decode_per_render",
+      "variant": "fixed",
+      "unsigned_sha256": "a5a3cabf07632435f6a587429d1685754edd657cb2657ec74fa1473739affb13",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "f90ce813d36832222560d120fb6d7e3f6ed4ea52608846bd42b75f03d3ff5b8a"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "wanharmony_persisted_home_list_growth",
+      "variant": "unfixed",
+      "unsigned_sha256": "0f49cab6d143afade5ff2f597154434b01f022b3898d8129180c3435f8783c11",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "a7b95ba980323e67a074ad2cf462318a0249bfd72645c93d5d9fc16e87039724"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "wanharmony_persisted_home_list_growth",
+      "variant": "fixed",
+      "unsigned_sha256": "df1d6aa039fe134c34ac639b3eb73e708f4f942da69024b29dd2cdd5083c10ca",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "900cc99618288913fb40659272ffd8be239eca13fd4f0bcdbe38614e5132a0b6"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "wanharmony_web_progress_log_storm",
+      "variant": "unfixed",
+      "unsigned_sha256": "b7e2eab978f168e855005cf1e67e9cb685bfa7d4e4642fed85300855e81de8cf",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "900cc99618288913fb40659272ffd8be239eca13fd4f0bcdbe38614e5132a0b6"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "wanharmony_web_progress_log_storm",
+      "variant": "fixed",
+      "unsigned_sha256": "7543e176a60fbbd66f0f5f1fd89e82d77407bdef53ef49c4b9ecc184f898b72b",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "9b45ae5c1b4b422b0459444505da23450c6bfc56f37cd3559aec5c0049270fd6"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "weatherassistant_http_session_leak",
+      "variant": "unfixed",
+      "unsigned_sha256": "4cacc61b8ca69b12fd44ab88cbc19bb4ee666d64f059f7427d63fa19e409e0b6",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "79b9b6972170b8606d1df506619c45d4f65b576c69ea2477e913c24c4d930fa4"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "weatherassistant_http_session_leak",
+      "variant": "fixed",
+      "unsigned_sha256": "404f2887764ec596574bc5fe8ede81401d25ad78b13f6aeab446e250dffd36fc",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "d6ac6aa1df0ec505fa8f95e3cd896ad32415a2416c09b23dc133808a43e61296"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "weatherassistant_remote_weather_icons",
+      "variant": "unfixed",
+      "unsigned_sha256": "f61f7bc56a4a82e22d0b7558cf6df63e8aef5db32bce13a0c3bbd0a79195abc9",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "d6ac6aa1df0ec505fa8f95e3cd896ad32415a2416c09b23dc133808a43e61296"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "weatherassistant_remote_weather_icons",
+      "variant": "fixed",
+      "unsigned_sha256": "56091d86c7bf4acf2f2c13d24a1fb0f67789b623cfcd50b1bbc4f63f4a012fd9",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "e78cab654b8cf5a4d64e58621bf3d67683a833ae6348dc39aa66cef87bb70b55"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "ytmusic_current_playing_timeupdate",
+      "variant": "unfixed",
+      "unsigned_sha256": "744d22d0c5ffc50d8f0e51239b4ea99368a0292836f95924c66acf306fd4ec04",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "0f9d94119265d064d0ecd7b1e6a6715f8396f4f631a240453ca5e55bf6885aab"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "ytmusic_current_playing_timeupdate",
+      "variant": "fixed",
+      "unsigned_sha256": "585676afe9a6b5b26e31fc2fd5b465b38c77601caae8dd18404de98a1bff154c",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "50a1fcfd44decf6aaebdaf4ddedb1de856d7e4bb37531b1bd77363ff0a3f0f58"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "ytmusic_history_json_parse_per_row",
+      "variant": "unfixed",
+      "unsigned_sha256": "9ebe2d06e0b0aa7f31200789530b8f11e3322b88b8a0dcd17b334a355a4f9c5d",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "db4ccff91f40d4100a5a6c47b474bcd52c0c307154202a3bda03dca0c976c5db"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "ytmusic_history_json_parse_per_row",
+      "variant": "fixed",
+      "unsigned_sha256": "3a17053f95549bb8ad06c904437793f02826788099ac4f0337489a03f4825864",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "f3d7788d12f0a0934ccbda950f425493b80548f324b52e2c14e0306963dae7d7"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "ytmusic_search_no_debounce",
+      "variant": "unfixed",
+      "unsigned_sha256": "10757512790d4f51d28b45e3be90ddbb3d21ba1e772524f0a28a88e349cc42b7",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "f3d7788d12f0a0934ccbda950f425493b80548f324b52e2c14e0306963dae7d7"
+        }
+      ],
+      "findings": []
+    },
+    {
+      "case": "ytmusic_search_no_debounce",
+      "variant": "fixed",
+      "unsigned_sha256": "70715cb25a89ebe42f17bcd4464ba86f1ff8179b6ca150f1750f40039124f68d",
+      "abc_modules": [
+        {
+          "name": "ets/modules.abc",
+          "sha256": "0f9d94119265d064d0ecd7b1e6a6715f8396f4f631a240453ca5e55bf6885aab"
+        }
+      ],
+      "findings": []
+    }
+  ],
+  "artifact_hashes_verified": true
+}
