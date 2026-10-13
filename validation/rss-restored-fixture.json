@@ -1,0 +1,148 @@
+{
+  "status": "ordinary_reader_fixture_restored_and_read",
+  "performance_verified": false,
+  "signed_sha256": "81b0a97950c54d1672e4fd16de404ffcedfa8c85b10372d39b33d128fbf94da5",
+  "before": {
+    "sha256": "4de8e684fce5f27fec16c11c6bd5f564288762cf514e7cf95d63b9fc10bacb73",
+    "database": {
+      "database_sha256": "e9e03e7c0fcb45258d72bada12763f5ade844a6215ab8936a7c39b008d076467",
+      "semantic_sha256": "09689d97dc208ba63565fe6ada608c1a8c0fb07a2e8a21dcbf0f16de0fd525da",
+      "feeds": 10,
+      "articles": 1000,
+      "body_sha256": "dc45eb48bd3d6c9bdd79ba85bb08cf8505b8b5369f666972fa1872a783fcf409",
+      "integrity_check": "ok",
+      "functional_read_verified": true,
+      "method": "all normal feed URLs, article GUIDs, titles, links, authors and full bodies verified"
+    },
+    "device_snapshot": {
+      "sha256": "d3ebefc31850603978b3d09e07ef178220d987d12e805aa4a889a83501951e64",
+      "bytes": 33533952,
+      "remote_archive": "/home/research/ohm-clean/services/rss/snapshots/8ab8cc20096f4e4eb4649192fff4d34e.db",
+      "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
+      "ordinary_data": {
+        "database_sha256": "d3ebefc31850603978b3d09e07ef178220d987d12e805aa4a889a83501951e64",
+        "semantic_sha256": "09689d97dc208ba63565fe6ada608c1a8c0fb07a2e8a21dcbf0f16de0fd525da",
+        "feeds": 10,
+        "articles": 1000,
+        "body_sha256": "dc45eb48bd3d6c9bdd79ba85bb08cf8505b8b5369f666972fa1872a783fcf409",
+        "integrity_check": "ok",
+        "functional_read_verified": true,
+        "method": "all normal feed URLs, article GUIDs, titles, links, authors and full bodies verified"
+      },
+      "performance_verified": false,
+      "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/rss-audits/8bbaa2bdc02b471086f4efce6c3ba46b.db"
+    },
+    "installation": {
+      "bundle": "com.sheafreader.hm",
+      "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
+      "backup": "/home/research/ohm-clean/backups/com.sheafreader.hm/1791914812439374920/sheaf_reader.db",
+      "fixture_tables": 4,
+      "integrity_check": "ok"
+    },
+    "service": {
+      "sha256": "74c92f745452b6bdc0ed82a10a18d629dd345678a5a09f77dc98de4b172c4f43",
+      "source_sha256": "03ea0ea2b57a69b62286a1456834a7c3c779f62c079e61e0013d7aa830e1728f",
+      "base_url": "http://127.0.0.1:18491",
+      "service_pid": 92814,
+      "service_start_ticks": 3185896,
+      "files": {
+        "/feeds/1.xml": "f409fdd387cfdc3daa92b9123f5e64fa860bd55a25727f654fb22a00cc1944c2",
+        "/feeds/2.xml": "834bb4a2c1e253fcd08f87c374751cd7dd1b2701abaa6f1e03321322d6915156",
+        "/feeds/3.xml": "04815674fb447478247eb71e6dfa5da9562bac5d05912a7fbb506fe1760a86d0",
+        "/feeds/4.xml": "9464b77677d21955327ccc9ceaaa76ae54775d5d326c13f023f9513af146bd5f",
+        "/feeds/5.xml": "758bc6c9816bf51e71033d7230abf5d7825e33c8a51fc49769fb2b4988ee3ceb",
+        "/feeds/6.xml": "26bb27570bf8c50dead339a418d101329b7912f42303a5130bb0c6a3b9c0f987",
+        "/feeds/7.xml": "a193bb5a4cf31fd03c4a63cc24485bf7da300ef4d955357fdc31f584dbfc1602",
+        "/feeds/8.xml": "3b183731d60693f33635eed6dbd4f90ccffc93e046a94a5a0739f5d9a13a0fbe",
+        "/feeds/9.xml": "5a12c264ca2f99329ed0f180acf1d0ecf4a9bf85c2938ec59cf30741b1afe342",
+        "/feeds/10.xml": "68c44b2ea5e9515b2bf266533b0256102c0a0b77636466e22908aef20ae1d94d",
+        "/subscriptions.opml": "b3b01bf48e62cee30f2d3992a649b47bfbfa18a40741756f68a3799a01cf4937"
+      },
+      "feeds": 10,
+      "articles_per_feed": 100,
+      "method": "ordinary RSS/OPML responses fetched and hashed outside profiling",
+      "functional_read_verified": false
+    },
+    "functional_read_verified": true,
+    "method": "ordinary UI-populated database restored outside profiling and all article bodies verified"
+  },
+  "after": {
+    "sha256": "4de8e684fce5f27fec16c11c6bd5f564288762cf514e7cf95d63b9fc10bacb73",
+    "service": {
+      "sha256": "74c92f745452b6bdc0ed82a10a18d629dd345678a5a09f77dc98de4b172c4f43",
+      "source_sha256": "03ea0ea2b57a69b62286a1456834a7c3c779f62c079e61e0013d7aa830e1728f",
+      "base_url": "http://127.0.0.1:18491",
+      "service_pid": 92814,
+      "service_start_ticks": 3185896,
+      "files": {
+        "/feeds/1.xml": "f409fdd387cfdc3daa92b9123f5e64fa860bd55a25727f654fb22a00cc1944c2",
+        "/feeds/2.xml": "834bb4a2c1e253fcd08f87c374751cd7dd1b2701abaa6f1e03321322d6915156",
+        "/feeds/3.xml": "04815674fb447478247eb71e6dfa5da9562bac5d05912a7fbb506fe1760a86d0",
+        "/feeds/4.xml": "9464b77677d21955327ccc9ceaaa76ae54775d5d326c13f023f9513af146bd5f",
+        "/feeds/5.xml": "758bc6c9816bf51e71033d7230abf5d7825e33c8a51fc49769fb2b4988ee3ceb",
+        "/feeds/6.xml": "26bb27570bf8c50dead339a418d101329b7912f42303a5130bb0c6a3b9c0f987",
+        "/feeds/7.xml": "a193bb5a4cf31fd03c4a63cc24485bf7da300ef4d955357fdc31f584dbfc1602",
+        "/feeds/8.xml": "3b183731d60693f33635eed6dbd4f90ccffc93e046a94a5a0739f5d9a13a0fbe",
+        "/feeds/9.xml": "5a12c264ca2f99329ed0f180acf1d0ecf4a9bf85c2938ec59cf30741b1afe342",
+        "/feeds/10.xml": "68c44b2ea5e9515b2bf266533b0256102c0a0b77636466e22908aef20ae1d94d",
+        "/subscriptions.opml": "b3b01bf48e62cee30f2d3992a649b47bfbfa18a40741756f68a3799a01cf4937"
+      },
+      "feeds": 10,
+      "articles_per_feed": 100,
+      "method": "ordinary RSS/OPML responses fetched and hashed outside profiling",
+      "functional_read_verified": false
+    },
+    "device_snapshot": {
+      "sha256": "ba6ab1d07a0c71848bab6f791826d6c36e877cb1b53d0ab61ecaca29c5700453",
+      "bytes": 33533952,
+      "remote_archive": "/home/research/ohm-clean/services/rss/snapshots/db98e559290443ec8350992bb32b598e.db",
+      "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
+      "ordinary_data": {
+        "database_sha256": "ba6ab1d07a0c71848bab6f791826d6c36e877cb1b53d0ab61ecaca29c5700453",
+        "semantic_sha256": "09689d97dc208ba63565fe6ada608c1a8c0fb07a2e8a21dcbf0f16de0fd525da",
+        "feeds": 10,
+        "articles": 1000,
+        "body_sha256": "dc45eb48bd3d6c9bdd79ba85bb08cf8505b8b5369f666972fa1872a783fcf409",
+        "integrity_check": "ok",
+        "functional_read_verified": true,
+        "method": "all normal feed URLs, article GUIDs, titles, links, authors and full bodies verified"
+      },
+      "performance_verified": false,
+      "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/rss-audits/a4ac04b5930c4fe8bb15e7c2f8b0cebd.db"
+    },
+    "functional_read_verified": true
+  },
+  "normal_article_node": {
+    "accessibilityId": "693",
+    "backgroundColor": "#00000000",
+    "backgroundImage": "empty source",
+    "blur": "",
+    "bounds": "[83,687][1106,742]",
+    "checkable": "false",
+    "checked": "false",
+    "clickable": "false",
+    "clip": "false",
+    "description": "",
+    "displayId": "0",
+    "enabled": "true",
+    "focused": "false",
+    "hashcode": "335:693",
+    "hierarchy": "ROOT335,0,0,0,0,3,0,0,0,1,0",
+    "hint": "",
+    "hitTestBehavior": "HitTestMode.Default",
+    "hostWindowId": "335",
+    "id": "",
+    "key": "",
+    "longClickable": "false",
+    "opacity": "1.000000",
+    "origBounds": "[83,687][1106,742]",
+    "originalText": "Journal 1 article 1",
+    "scrollable": "false",
+    "selected": "false",
+    "text": "Journal 1 article 1",
+    "type": "Text",
+    "visible": "true",
+    "zIndex": "0",
+    "bundleName": "com.sheafreader.hm"
+  }
+}
