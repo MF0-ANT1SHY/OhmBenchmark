@@ -18,11 +18,12 @@ from pathlib import Path
 from install_sqlite_fixture import install as install_fixture
 from remote_device import Remote
 from seed_local_songs import deploy as deploy_songs
+from bundled_audio_fixture import for_case as packaged_audio
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None):
+def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False):
     cid = case['id']
     folder = ROOT / 'artifacts/clean' / cid / variant
     signed = json.loads((folder / 'sign.json').read_text())
@@ -31,8 +32,10 @@ def validate(remote, case, variant, browser_fixture=None, local_song_fixture=Non
     result = {'case':cid, 'variant':variant, 'signed_sha256':signed['audit']['sha256'],
               'plan_sha256':plan_hash, 'status':'FAIL', 'performance_verified':False}
     try:
-        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture))>1:
+        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture))+int(bundled_audio)>1:
             raise ValueError('only one fixture may be supplied')
+        if bundled_audio:
+            result['fixture']=packaged_audio(ROOT,case,variant,signed)
         if local_song_fixture and case['host_app']['bundle_name']!='cc.chenlvin.cloudmusic':
             raise ValueError('local song fixture provided to a different app')
         if poem_fixture and case['host_app']['bundle_name']!='com.hefengbao.jingmo.hw':
@@ -142,6 +145,7 @@ def main():
     fixtures.add_argument('--browser-fixture',type=Path)
     fixtures.add_argument('--local-song-fixture',type=Path)
     fixtures.add_argument('--poem-fixture',type=Path)
+    fixtures.add_argument('--bundled-audio',action='store_true')
     args=parser.parse_args()
     remote=Remote(args.remote)
     remote.upload(ROOT/'tools/ui_driver.py','/home/research/ohm-clean/tools/ui_driver.py')
@@ -149,7 +153,7 @@ def main():
     for cid in args.cases:
         case=json.loads((ROOT/'cases'/cid/'case.json').read_text())
         for variant in ('unfixed','fixed'):
-            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture)
+            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio)
     return int(failed)
 
 

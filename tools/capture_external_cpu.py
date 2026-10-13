@@ -13,13 +13,14 @@ from pathlib import Path
 from install_sqlite_fixture import install as install_fixture
 from remote_device import Remote
 from seed_local_songs import deploy as deploy_songs
+from bundled_audio_fixture import for_case as packaged_audio
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def capture(remote, case, variant, round_number, fixture=None, local_song_fixture=None, poem_fixture=None):
+def capture(remote, case, variant, round_number, fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False):
     cid = case['id']
-    if sum(p is not None for p in (fixture,local_song_fixture,poem_fixture))>1:
+    if sum(p is not None for p in (fixture,local_song_fixture,poem_fixture))+int(bundled_audio)>1:
         raise ValueError('only one fixture may be supplied')
     if local_song_fixture and case['host_app']['bundle_name']!='cc.chenlvin.cloudmusic':
         raise ValueError('local song fixture provided to a different app')
@@ -28,6 +29,8 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
     fixture_hash=None
     folder = ROOT/'artifacts/clean'/cid/variant
     sign = json.loads((folder/'sign.json').read_text())
+    if bundled_audio:
+        fixture_hash=packaged_audio(ROOT,case,variant,sign)['sha256']
     plan_file = ROOT/'cases'/cid/case['testcase']['workload']
     plan_hash = hashlib.sha256(plan_file.read_bytes()).hexdigest()
     output = folder/'cpu-captures'/f'round-{round_number}'
@@ -144,12 +147,13 @@ def main():
     fixtures.add_argument('--browser-fixture',type=Path)
     fixtures.add_argument('--local-song-fixture',type=Path)
     fixtures.add_argument('--poem-fixture',type=Path)
+    fixtures.add_argument('--bundled-audio',action='store_true')
     parser.add_argument('--remote',default='cityuPC')
     args=parser.parse_args()
     remote=Remote(args.remote)
     remote.upload(ROOT/'tools/ui_driver.py','/home/research/ohm-clean/tools/ui_driver.py')
     case=json.loads((ROOT/'cases'/args.case/'case.json').read_text())
-    capture(remote,case,args.variant,args.round,args.browser_fixture,args.local_song_fixture,args.poem_fixture)
+    capture(remote,case,args.variant,args.round,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio)
 
 
 if __name__=='__main__':

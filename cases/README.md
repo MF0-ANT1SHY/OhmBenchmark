@@ -64,6 +64,11 @@ different poems across repeated UI refreshes. No simulated scans, app counters
 or in-app completion flags are used. Run this only when the device is not already
 collecting another case's profile.
 
+YTMusic playback can use its original packaged MP3 files with `--bundled-audio`.
+The evaluator hashes the actual audited HAP's audio entries and verifies they are
+identical across the pair; no audio events or player callbacks are synthesized.
+Real playback and progress advancement still require separate device validation.
+
 ```bash
 python3 tools/ui_driver.py cases/<id>/testcase/<name>.workload.json --remote cityuPC --phase setup
 python3 tools/ui_driver.py cases/<id>/testcase/<name>.workload.json --remote cityuPC --phase measured
