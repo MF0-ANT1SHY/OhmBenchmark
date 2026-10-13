@@ -8,6 +8,8 @@ import struct
 import wave
 import re
 import hashlib
+import tempfile
+import uuid
 from pathlib import Path
 
 
@@ -68,8 +70,19 @@ def deploy(folder, remote_name):
     for name in spec['files']:
         path=directory+'/'+name
         lines.append(f'if test -e {path}; then test {path} -ef {target}; else ln {target} {path}; fi')
-    remote.python('import subprocess\n' + f"p=subprocess.run(['hdc','shell','sh'],input={chr(10).join(lines)!r},text=True,capture_output=True,timeout=120)\n"+
-                  "assert p.returncode==0,p.stdout+p.stderr\n")
+    lines.append('echo AUDIO_FILES_READY')
+    token=uuid.uuid4().hex
+    host_script=f'/home/research/ohm-clean/fixtures/cloudmusic/files-{token}.sh'
+    device_script=f'/data/local/tmp/files-{token}.sh'
+    with tempfile.TemporaryDirectory() as tmp:
+        script=Path(tmp)/'files.sh';script.write_text('\n'.join(lines)+'\n')
+        remote.upload(script,host_script)
+    remote.hdc(['file','send',host_script,device_script])
+    output=remote.hdc(['shell',f'sh {device_script}'],timeout=180)
+    if 'AUDIO_FILES_READY' not in output:
+        raise RuntimeError('audio deployment did not finish: '+output)
+    actual=remote.hdc(['shell',f'sha256sum {target}']).split()[0]
+    if actual!=digest:raise RuntimeError('deployed audio checksum mismatch')
     receipt.update({'audio_sha256':digest,'audio_files':len(spec['files']),'fixture_sha256':hashlib.sha256((folder/'LocalSongs.db').read_bytes()).hexdigest()})
     (folder/'install.json').write_text(json.dumps(receipt,indent=2)+'\n')
     return receipt
