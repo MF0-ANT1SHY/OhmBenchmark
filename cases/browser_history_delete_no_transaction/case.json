@@ -54,11 +54,25 @@
   },
   "test_oracle": {
     "metric": "hiperf_instructions",
-    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "definition": "Sampled retired-instruction period sum (hw-instructions) attributed to the app process in the complete externally driven measured window.",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "pending_clean_measurement",
-      "note": "Legacy instrumented measurements do not validate these business-only builds."
+      "status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "unfixed": [
+        1843064109,
+        1861622479,
+        1877101942
+      ],
+      "fixed": [
+        62688675,
+        59118103,
+        59449886
+      ],
+      "median_ratio": 31.31414716253619,
+      "rounds_per_variant": 3,
+      "legacy_evidence_reused": false,
+      "note": "Every paired round exceeds 1.2x; app process explicitly selected from the system report."
     },
     "mechanism_oracle": {
       "metric": "elapsed_ms",
@@ -101,7 +115,7 @@
   "clean_validation": {
     "policy": "no_app_injection",
     "workload_validation": "verified",
-    "performance_validation": "pending",
+    "performance_validation": "verified",
     "variants": {
       "unfixed": {
         "ref": "clean-app/browser_history_delete_no_transaction/unfixed",
@@ -159,18 +173,61 @@
           "fixture": {
             "bundle": "com.example.nanvision",
             "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
-            "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791890978967479037/Histories.db",
+            "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791893104959409882/Histories.db",
             "fixture_tables": 61,
             "integrity_check": "ok",
             "sha256": "3ae759987f895d18c9166a34ba924c2634a031dd0b6da4dc050f331ce5f70fbb"
           },
           "phase_elapsed_s": {
-            "setup": 15.23619798999971,
-            "measured": 5.976814230998571,
-            "verify": 4.358997341001668
+            "setup": 14.972500194999157,
+            "measured": 5.620055793000574,
+            "verify": 3.923369353999078
           },
-          "functional_check": "database cleared through the production UI",
+          "functional_check": "all history rows and dates cleared through the production UI",
+          "cleared_tables": 61,
           "capture_duration_required_s": 11
+        },
+        "performance": {
+          "status": "PASS",
+          "metric": "hiperf_instructions",
+          "rounds": 3,
+          "samples": [
+            1843064109,
+            1861622479,
+            1877101942
+          ],
+          "median": 1861622479,
+          "paired_ratios": [
+            29.40027220227577,
+            31.48988862176447,
+            31.574525508762118
+          ],
+          "median_ratio": 31.31414716253619,
+          "plan_sha256": "92e0edeb5422f45ee7f368bc20454a78026004e657cc181b231b36f5d341d867",
+          "signed_sha256": "4cc753261eacb91fd4d2b0e3473f71a734e1444990bf42c8cb8e7dbb8483703a",
+          "fixture_sha256": "3ae759987f895d18c9166a34ba924c2634a031dd0b6da4dc050f331ce5f70fbb",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "6c64ef58fe66537d0657e6bbe8a206a028051171020f5089b08bb2a605485153",
+              "app_samples": 10770,
+              "remote_artifacts": "/home/research/ohm-clean/browser_history_delete_no_transaction/unfixed/cpu-captures/round-1"
+            },
+            {
+              "round": 2,
+              "report_sha256": "baf3947cb153b811b68c93a0d30f2eeb7b327c0100eba39729358657d2092e38",
+              "app_samples": 10459,
+              "remote_artifacts": "/home/research/ohm-clean/browser_history_delete_no_transaction/unfixed/cpu-captures/round-2"
+            },
+            {
+              "round": 3,
+              "report_sha256": "4ad561c3d55a6d23fd2d7fded13fa31e377e61536cd104e282ebdee4bde64d3b",
+              "app_samples": 11536,
+              "remote_artifacts": "/home/research/ohm-clean/browser_history_delete_no_transaction/unfixed/cpu-captures/round-3"
+            }
+          ],
+          "legacy_evidence_reused": false
         }
       },
       "fixed": {
@@ -229,18 +286,61 @@
           "fixture": {
             "bundle": "com.example.nanvision",
             "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
-            "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791891043300870339/Histories.db",
+            "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791893167970237843/Histories.db",
             "fixture_tables": 61,
             "integrity_check": "ok",
             "sha256": "3ae759987f895d18c9166a34ba924c2634a031dd0b6da4dc050f331ce5f70fbb"
           },
           "phase_elapsed_s": {
-            "setup": 15.146047624000857,
-            "measured": 5.714518102000511,
-            "verify": 3.85886724699958
+            "setup": 15.049663978001263,
+            "measured": 5.971729062999657,
+            "verify": 4.293643513999996
           },
-          "functional_check": "database cleared through the production UI",
+          "functional_check": "all history rows and dates cleared through the production UI",
+          "cleared_tables": 61,
           "capture_duration_required_s": 11
+        },
+        "performance": {
+          "status": "PASS",
+          "metric": "hiperf_instructions",
+          "rounds": 3,
+          "samples": [
+            62688675,
+            59118103,
+            59449886
+          ],
+          "median": 59449886,
+          "paired_ratios": [
+            29.40027220227577,
+            31.48988862176447,
+            31.574525508762118
+          ],
+          "median_ratio": 31.31414716253619,
+          "plan_sha256": "92e0edeb5422f45ee7f368bc20454a78026004e657cc181b231b36f5d341d867",
+          "signed_sha256": "578d2e95ea8fd24f832567ef7c471f0d340b60d81babe08ad4fce8a401e46327",
+          "fixture_sha256": "3ae759987f895d18c9166a34ba924c2634a031dd0b6da4dc050f331ce5f70fbb",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "d6217410324b15a3662c681433e3bfec535e015e56f8fa6b19d3e8bdd90289d2",
+              "app_samples": 151,
+              "remote_artifacts": "/home/research/ohm-clean/browser_history_delete_no_transaction/fixed/cpu-captures/round-1"
+            },
+            {
+              "round": 2,
+              "report_sha256": "5eee93982d7cb04d7466ea95e1d3617920d39de68f23e7fabc85844060c9f676",
+              "app_samples": 137,
+              "remote_artifacts": "/home/research/ohm-clean/browser_history_delete_no_transaction/fixed/cpu-captures/round-2"
+            },
+            {
+              "round": 3,
+              "report_sha256": "2cd66b6d36b51c3e559790543a253b4ae5bc5b3bc66a818c0476ebc1e50d36f5",
+              "app_samples": 171,
+              "remote_artifacts": "/home/research/ohm-clean/browser_history_delete_no_transaction/fixed/cpu-captures/round-3"
+            }
+          ],
+          "legacy_evidence_reused": false
         }
       }
     }

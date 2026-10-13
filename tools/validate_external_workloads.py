@@ -9,6 +9,10 @@ import argparse
 import hashlib
 import json
 import subprocess
+import sqlite3
+import shlex
+import time
+import re
 from pathlib import Path
 
 from install_sqlite_fixture import install as install_fixture
@@ -67,10 +71,22 @@ def shell(command):
         result['phase_elapsed_s'] = {p:r['elapsed_s'] for p,r in device['phases'].items()}
         if cid == 'browser_history_delete_no_transaction':
             db = '/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db'
-            remaining = remote.hdc(['shell', f'sqlite3 {db} "SELECT COUNT(*) FROM date_table;"']).strip()
-            if remaining != '0':
-                raise RuntimeError(f'clear-history UI did not clear the database: {remaining}')
-            result['functional_check'] = 'database cleared through the production UI'
+            if not browser_fixture:
+                raise RuntimeError('clear-history validation requires a known fixture')
+            with sqlite3.connect(f'file:{browser_fixture.resolve()}?mode=ro',uri=True) as fixture_db:
+                tables=[r[0] for r in fixture_db.execute("SELECT name FROM sqlite_master WHERE type='table' AND (name='date_table' OR name LIKE 'history_%')")]
+            if not tables or any(not re.fullmatch(r'date_table|history_[0-9_]+',t) for t in tables):
+                raise RuntimeError('unexpected history fixture schema')
+            sql='SELECT '+'+'.join(f'(SELECT COUNT(*) FROM {t})' for t in tables)+';'
+            deadline=time.monotonic()+120
+            while True:
+                remaining = remote.hdc(['shell', f'sqlite3 {db} {shlex.quote(sql)}']).strip()
+                if remaining=='0':break
+                if not remaining.isdigit() or time.monotonic()>deadline:
+                    raise RuntimeError(f'clear-history UI left database rows: {remaining}')
+                time.sleep(.1)
+            result['functional_check'] = 'all history rows and dates cleared through the production UI'
+            result['cleared_tables'] = len(tables)
         result['status'] = device['status']
         result['capture_duration_required_s'] = round(result['phase_elapsed_s']['measured'] + 5)
     except Exception as exc:

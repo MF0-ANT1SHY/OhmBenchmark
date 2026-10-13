@@ -68,6 +68,17 @@ def shell(command):
     code += " if 'fail' in record['start_output'].lower() or 'error' in record['start_output'].lower():raise RuntimeError(record['start_output'])\n"
     code += " record['action_start_monotonic']=time.monotonic()\n"
     code += " ui.run(plan['measured']);ui.run(plan['verify'])\n"
+    if cid=='browser_history_delete_no_transaction':
+        # The button returns before its async database work completes. This is a
+        # private evaluator check, outside the app and excluded from app attribution.
+        code += " deadline=time.monotonic()+120\n"
+        code += " while True:\n"
+        code += "  remaining=shell(\"sqlite3 /data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db 'SELECT COUNT(*) FROM date_table;'\").strip()\n"
+        code += "  if remaining=='0':break\n"
+        code += "  if not remaining.isdigit():raise RuntimeError('invalid completion check: '+remaining)\n"
+        code += "  if time.monotonic()>deadline:raise RuntimeError('clear-history operation did not finish')\n"
+        code += "  time.sleep(.1)\n"
+        code += " record['completion_check']='database cleared before capture stop'\n"
     code += " record['action_end_monotonic']=time.monotonic()\n"
     code += " pid_text=shell('pidof '+plan['bundle']).strip()\n"
     code += " assert pid_text and all(x.isdigit() for x in pid_text.split()),'app is not alive'\n"

@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def accept(cid):
+def accept(cid, write=True):
     path=ROOT/'cases'/cid/'case.json'
     case=json.loads(path.read_text())
     if case['test_oracle']['metric']!='hiperf_instructions':
@@ -22,6 +22,10 @@ def accept(cid):
         workload=json.loads((folder/'workload.json').read_text())
         if workload['status']!='PASS' or workload['plan_sha256']!=plan_hash or workload['signed_sha256']!=sign['audit']['sha256']:
             raise RuntimeError('matching real workload execution not proven')
+        if cid=='browser_history_delete_no_transaction' and (
+                workload.get('functional_check')!='all history rows and dates cleared through the production UI'
+                or workload.get('cleared_tables',0)<2):
+            raise RuntimeError('complete history-row deletion through the UI is not proven')
         samples=[]
         captures=[]
         fixture_hashes=set()
@@ -30,6 +34,10 @@ def accept(cid):
             receipt=json.loads((capture_dir/'capture.json').read_text())
             if receipt['status']!='CAPTURED' or receipt['plan_sha256']!=plan_hash or receipt['signed_sha256']!=sign['audit']['sha256']:
                 raise RuntimeError('capture provenance mismatch')
+            if receipt.get('fixture_sha256') != workload.get('fixture',{}).get('sha256'):
+                raise RuntimeError('capture fixture differs from the validated workload')
+            if cid=='browser_history_delete_no_transaction' and receipt.get('completion_check')!='database cleared before capture stop':
+                raise RuntimeError('async database completion within the capture is not proven')
             report_path=capture_dir/'report.json'
             report=json.loads(report_path.read_text())
             events=[e for e in report['recordSampleInfo'] if e['eventConfigName']=='hw-instructions']
@@ -56,19 +64,24 @@ def accept(cid):
     ratios=[u/f for u,f in zip(variants['unfixed']['samples'],variants['fixed']['samples'])]
     median_ratio=statistics.median(variants['unfixed']['samples'])/statistics.median(variants['fixed']['samples'])
     if min(ratios)<1.2 or median_ratio<1.2:raise RuntimeError(f'performance criterion not met: {ratios}')
+    results={}
     for variant,data in variants.items():
         result={'status':'PASS','metric':'hiperf_instructions','rounds':3,'samples':data['samples'],
                 'median':statistics.median(data['samples']),'paired_ratios':ratios,'median_ratio':median_ratio,
                 'plan_sha256':plan_hash,'signed_sha256':data['signed_sha256'],'fixture_sha256':next(iter(fixtures)),
                 'method':'app-process sampled retired-instruction period sum from system hiperf; not system total',
                 'captures':data['captures'],'legacy_evidence_reused':False}
-        (ROOT/'artifacts/clean'/cid/variant/'performance.json').write_text(json.dumps(result,indent=2)+'\n')
+        results[variant]=result
+        if write:
+            (ROOT/'artifacts/clean'/cid/variant/'performance.json').write_text(json.dumps(result,indent=2)+'\n')
     case['test_oracle']['evidence']={'status':'measured_clean','metric':'hiperf_instructions',
         'unfixed':variants['unfixed']['samples'],'fixed':variants['fixed']['samples'],'median_ratio':median_ratio,
         'rounds_per_variant':3,'legacy_evidence_reused':False,'note':'Every paired round exceeds 1.2x; app process explicitly selected from the system report.'}
     case['test_oracle']['definition']='Sampled retired-instruction period sum (hw-instructions) attributed to the app process in the complete externally driven measured window.'
-    path.write_text(json.dumps(case,indent=2,ensure_ascii=False)+'\n')
-    print(f'{cid}: clean CPU oracle verified, median ratio={median_ratio:.3f}x')
+    if write:
+        path.write_text(json.dumps(case,indent=2,ensure_ascii=False)+'\n')
+        print(f'{cid}: clean CPU oracle verified, median ratio={median_ratio:.3f}x')
+    return results
 
 
 if __name__=='__main__':

@@ -8,16 +8,22 @@ from pathlib import Path
 
 from audit_clean_app import audit_hap, audit_source
 from clean_sources import app_ref
+from accept_cpu_evidence import accept as validate_cpu
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def verify(stage):
+def verify(stage, selected=None):
     recon = json.loads((ROOT / "hosts_patches/host-reconstruction.json").read_text())["hosts"]
     paths = sorted((ROOT / "cases").glob("*/case.json"))
     errors, pending = [], []
     if len(paths) != 30:
         errors.append(f"expected 30 cases, found {len(paths)}")
+    if selected:
+        unknown=set(selected)-{p.parent.name for p in paths}
+        if unknown:
+            errors.append(f'unknown cases: {sorted(unknown)}')
+        paths=[p for p in paths if p.parent.name in selected]
     for path in paths:
         c = json.loads(path.read_text())
         cid = c["id"]
@@ -73,6 +79,21 @@ def verify(stage):
                     errors.append(f"{label}: oracle coverage/rounds not proven")
         if c["test_oracle"]["evidence"].get("status") == "pending_clean_measurement" and stage == "complete":
             pending.append(f"{cid}: clean performance oracle pending")
+        if stage == 'complete' and c['test_oracle']['evidence'].get('status')=='measured_clean':
+            if c['test_oracle']['metric']=='hiperf_instructions':
+                try:
+                    recomputed=validate_cpu(cid,write=False)
+                    for variant,expected in recomputed.items():
+                        actual=json.loads((ROOT/'artifacts/clean'/cid/variant/'performance.json').read_text())
+                        if actual!=expected:
+                            errors.append(f'{cid}/{variant}: performance receipt differs from raw evidence')
+                    evidence=c['test_oracle']['evidence']
+                    if any(evidence.get(v)!=recomputed[v]['samples'] for v in ('unfixed','fixed')):
+                        errors.append(f'{cid}: case evidence differs from raw measurements')
+                except Exception as exc:
+                    errors.append(f'{cid}: raw CPU evidence failed: {exc}')
+            else:
+                pending.append(f'{cid}: raw oracle verification is not implemented for this metric')
     print(json.dumps({"stage": stage, "cases": len(paths), "errors": errors,
                       "pending": pending, "passed": not errors and not pending}, indent=2))
     return int(bool(errors or pending))
@@ -81,5 +102,6 @@ def verify(stage):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--stage", choices=["build", "sign", "smoke", "complete"], default="complete")
+    parser.add_argument('--case', action='append', dest='cases', help='verify this case (repeatable), retaining the 30-case inventory check')
     args = parser.parse_args()
-    raise SystemExit(verify(args.stage))
+    raise SystemExit(verify(args.stage,args.cases))
