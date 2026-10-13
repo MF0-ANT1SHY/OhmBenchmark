@@ -133,19 +133,43 @@
         },
         "case/cloudmusic_local_song_memory_filter/fixed": {
           "state": "perf: filter local songs in SQLite with a LIKE predicate instead of materializing the whole table and filtering in memory",
-          "tree": "2846ea4d65fe74a0290de6c36b3d5815be288073"
+          "tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
+          "app_ref": "clean-app-v4/cloudmusic_local_song_memory_filter/fixed",
+          "app_tree": "0b5dec7ee0528cc56e306a9686d3c20d46a27485",
+          "production_patches": [
+            "hosts_patches/cloudmusic/production-virtual-local-grid.patch",
+            "hosts_patches/cloudmusic/production-local-interactions-sql.patch"
+          ]
         },
         "case/cloudmusic_local_song_memory_filter/unfixed": {
           "state": "perf: pass the LazyForEach index to song cards instead of calling list.indexOf(item) twice per row build",
-          "tree": "a668180b0569859ca1d7fa7ccb3eb16e9ab7e1f5"
+          "tree": "a668180b0569859ca1d7fa7ccb3eb16e9ab7e1f5",
+          "app_ref": "clean-app-v4/cloudmusic_local_song_memory_filter/unfixed",
+          "app_tree": "7f1ad4a5829283cc440789b46875fd3ff8879f4c",
+          "production_patches": [
+            "hosts_patches/cloudmusic/production-virtual-local-grid.patch",
+            "hosts_patches/cloudmusic/production-local-interactions-js.patch"
+          ]
         },
         "case/cloudmusic_play_time_high_frequency_update/fixed": {
           "state": "perf: update the global play-time state only when the displayed second changes instead of on every high-frequency timeUpdate callback",
-          "tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a"
+          "tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
+          "app_ref": "clean-app-v4/cloudmusic_play_time_high_frequency_update/fixed",
+          "app_tree": "843c42a4e041972ed1bb7bc754fe66d62c4a40b7",
+          "production_patches": [
+            "hosts_patches/cloudmusic/production-virtual-local-grid.patch",
+            "hosts_patches/cloudmusic/production-local-interactions-sql.patch"
+          ]
         },
         "case/cloudmusic_play_time_high_frequency_update/unfixed": {
           "state": "perf: filter local songs in SQLite with a LIKE predicate instead of materializing the whole table and filtering in memory",
-          "tree": "2846ea4d65fe74a0290de6c36b3d5815be288073"
+          "tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
+          "app_ref": "clean-app-v4/cloudmusic_play_time_high_frequency_update/unfixed",
+          "app_tree": "0b5dec7ee0528cc56e306a9686d3c20d46a27485",
+          "production_patches": [
+            "hosts_patches/cloudmusic/production-virtual-local-grid.patch",
+            "hosts_patches/cloudmusic/production-local-interactions-sql.patch"
+          ]
         },
         "case/cloudmusic_search_result_foreach/fixed": {
           "state": "perf: render song search results with LazyForEach and a data source so off-screen result rows are not created eagerly",

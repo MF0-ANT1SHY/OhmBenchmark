@@ -31,10 +31,10 @@ index c50aa9d..4095a71 100644
     * 解析查询结果
     * @param resultSet
 diff --git a/entry/src/main/ets/pages/local/LocalSongPage.ets b/entry/src/main/ets/pages/local/LocalSongPage.ets
-index b3560b0..4baa1f2 100644
+index 5be54fd..cf539b7 100644
 --- a/entry/src/main/ets/pages/local/LocalSongPage.ets
 +++ b/entry/src/main/ets/pages/local/LocalSongPage.ets
-@@ -241,16 +241,15 @@ export struct LocalSongPage {
+@@ -229,16 +229,15 @@ export struct LocalSongPage {
      .backgroundColor($r('app.color.background'))
    }
  
@@ -50,7 +50,7 @@ index b3560b0..4baa1f2 100644
 -        return item.songFile.toString().toLowerCase().includes(keyword)
 -      }))
 +      // 直接在 SQLite 中按关键词过滤，避免全表加载后在内存中过滤
-+      this.dataSourceFiltered.setData(await RelationalStoreUtils.getSongsByKeyword(keyword))
++      this.dataSourceFiltered.setData((await RelationalStoreUtils.getSongsByKeyword(keyword)).reverse())
+       this.dataSourceFiltered.notifyDataReload()
      } catch (e) {
        ToastUtil.showToast('搜索时出错')
-       LogUtil.error(TAG, 'Error while handelSearch: ' + e.message)

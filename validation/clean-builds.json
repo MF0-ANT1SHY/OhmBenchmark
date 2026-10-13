@@ -885,14 +885,17 @@
       "case": "cloudmusic_local_song_memory_filter",
       "variant": "unfixed",
       "host": "cloudmusic",
-      "ref": "clean-app/cloudmusic_local_song_memory_filter/unfixed",
-      "commit": "a967ef10ae9722d19100d6dfbf00760467397a3c",
-      "tree": "a668180b0569859ca1d7fa7ccb3eb16e9ab7e1f5",
+      "ref": "clean-app-v4/cloudmusic_local_song_memory_filter/unfixed",
+      "commit": "ace0b4f209a921e128dbfbea448c098b6e05fd34",
+      "tree": "7f1ad4a5829283cc440789b46875fd3ff8879f4c",
       "business_base_tree": "a668180b0569859ca1d7fa7ccb3eb16e9ab7e1f5",
-      "production_patches": [],
-      "unsigned_sha256": "d75232a512d7c76151b39141f6a61eee37c2165f51862238189d109b09ed3d39",
+      "production_patches": [
+        "hosts_patches/cloudmusic/production-virtual-local-grid.patch",
+        "hosts_patches/cloudmusic/production-local-interactions-js.patch"
+      ],
+      "unsigned_sha256": "d8c2d7e9ddc3a7011f4e2b88dbdd012040186aedea587d10ca212a19c33b73c8",
       "bytecode_audit": {
-        "sha256": "d75232a512d7c76151b39141f6a61eee37c2165f51862238189d109b09ed3d39",
+        "sha256": "d8c2d7e9ddc3a7011f4e2b88dbdd012040186aedea587d10ca212a19c33b73c8",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -903,10 +906,10 @@
       "sign": {
         "case": "cloudmusic_local_song_memory_filter",
         "variant": "unfixed",
-        "unsigned_sha256": "d75232a512d7c76151b39141f6a61eee37c2165f51862238189d109b09ed3d39",
+        "unsigned_sha256": "d8c2d7e9ddc3a7011f4e2b88dbdd012040186aedea587d10ca212a19c33b73c8",
         "signed_hap": "/home/research/ohm-clean/cloudmusic_local_song_memory_filter/unfixed/app.hap",
         "audit": {
-          "sha256": "04551fd3cc1c89c1968f65df22811e986d589a25c2c51f3670f2e3b009876a11",
+          "sha256": "1ef83d8d67aabb9d0f745ced3322c25542201dab36d2ae0588d7837e37726e62",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -921,29 +924,58 @@
       "smoke": {
         "case": "cloudmusic_local_song_memory_filter",
         "variant": "unfixed",
-        "signed_sha256": "04551fd3cc1c89c1968f65df22811e986d589a25c2c51f3670f2e3b009876a11",
+        "signed_sha256": "1ef83d8d67aabb9d0f745ced3322c25542201dab36d2ae0588d7837e37726e62",
         "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_local_song_memory_filter/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
         "launch": "start ability successfully.",
         "pids": [
-          37302
+          3280
         ],
         "foreground_bundle": "cc.chenlvin.cloudmusic",
         "status": "PASS",
         "performance_verified": false
+      },
+      "workload": {
+        "case": "cloudmusic_local_song_memory_filter",
+        "variant": "unfixed",
+        "signed_sha256": "1ef83d8d67aabb9d0f745ced3322c25542201dab36d2ae0588d7837e37726e62",
+        "plan_sha256": "fc0124a21d7b95615d2dba0151b8a9b62a3906bb2667890149636a97274f29e1",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "bundle": "cc.chenlvin.cloudmusic",
+          "database": "/data/app/el2/100/database/cc.chenlvin.cloudmusic/entry/rdb/LocalSongs.db",
+          "backup": "/home/research/ohm-clean/backups/cc.chenlvin.cloudmusic/1791897532691648554/LocalSongs.db",
+          "fixture_tables": 1,
+          "integrity_check": "ok",
+          "audio_sha256": "e0a685d74829d610ba9436ddbd1b3e19916f04028a4560adac5b2d1a99e6c6dd",
+          "audio_files": 10000,
+          "database_sha256": "723e699f4211a2cdee2b22d3ca30df82b5b889927c3aef05e60326d4f86ab51d",
+          "fixture_sha256": "a1b73574e51b9a05b17ccdca41a7b8ee129d27822112e79dc949bb293b1e9637",
+          "sha256": "a1b73574e51b9a05b17ccdca41a7b8ee129d27822112e79dc949bb293b1e9637"
+        },
+        "phase_elapsed_s": {
+          "setup": 13.476957967999624,
+          "measured": 120.02788112199778,
+          "verify": 4.07207912100057
+        },
+        "capture_duration_required_s": 125
       }
     },
     {
       "case": "cloudmusic_local_song_memory_filter",
       "variant": "fixed",
       "host": "cloudmusic",
-      "ref": "clean-app/cloudmusic_local_song_memory_filter/fixed",
-      "commit": "2aa471589e637964e0ef9ba37c0ef9e9db5b6de7",
-      "tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
+      "ref": "clean-app-v4/cloudmusic_local_song_memory_filter/fixed",
+      "commit": "e04e50e0d1fb5710eb884718455915b9c70f2ed6",
+      "tree": "0b5dec7ee0528cc56e306a9686d3c20d46a27485",
       "business_base_tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
-      "production_patches": [],
-      "unsigned_sha256": "1f3965d825b47775ba8923ae44cd0dce713650f838c6bd2267e86709499f0a2f",
+      "production_patches": [
+        "hosts_patches/cloudmusic/production-virtual-local-grid.patch",
+        "hosts_patches/cloudmusic/production-local-interactions-sql.patch"
+      ],
+      "unsigned_sha256": "e857d6f19362359404cecc6023ffd90623a6c10e76b7599a5d94d3d38a774953",
       "bytecode_audit": {
-        "sha256": "1f3965d825b47775ba8923ae44cd0dce713650f838c6bd2267e86709499f0a2f",
+        "sha256": "e857d6f19362359404cecc6023ffd90623a6c10e76b7599a5d94d3d38a774953",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -954,10 +986,10 @@
       "sign": {
         "case": "cloudmusic_local_song_memory_filter",
         "variant": "fixed",
-        "unsigned_sha256": "1f3965d825b47775ba8923ae44cd0dce713650f838c6bd2267e86709499f0a2f",
+        "unsigned_sha256": "e857d6f19362359404cecc6023ffd90623a6c10e76b7599a5d94d3d38a774953",
         "signed_hap": "/home/research/ohm-clean/cloudmusic_local_song_memory_filter/fixed/app.hap",
         "audit": {
-          "sha256": "cf66ddf8864aab726515a9621021aab9f7daf97ab1792fc2577d4da8d2253329",
+          "sha256": "5989ec9fa82bc0b5147cb51a2a0f1630fcfe96a46046ea60f105e94503d85dda",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -972,29 +1004,58 @@
       "smoke": {
         "case": "cloudmusic_local_song_memory_filter",
         "variant": "fixed",
-        "signed_sha256": "cf66ddf8864aab726515a9621021aab9f7daf97ab1792fc2577d4da8d2253329",
+        "signed_sha256": "5989ec9fa82bc0b5147cb51a2a0f1630fcfe96a46046ea60f105e94503d85dda",
         "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_local_song_memory_filter/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
         "launch": "start ability successfully.",
         "pids": [
-          37665
+          3850
         ],
         "foreground_bundle": "cc.chenlvin.cloudmusic",
         "status": "PASS",
         "performance_verified": false
+      },
+      "workload": {
+        "case": "cloudmusic_local_song_memory_filter",
+        "variant": "fixed",
+        "signed_sha256": "5989ec9fa82bc0b5147cb51a2a0f1630fcfe96a46046ea60f105e94503d85dda",
+        "plan_sha256": "fc0124a21d7b95615d2dba0151b8a9b62a3906bb2667890149636a97274f29e1",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "bundle": "cc.chenlvin.cloudmusic",
+          "database": "/data/app/el2/100/database/cc.chenlvin.cloudmusic/entry/rdb/LocalSongs.db",
+          "backup": "/home/research/ohm-clean/backups/cc.chenlvin.cloudmusic/1791897750368615327/LocalSongs.db",
+          "fixture_tables": 1,
+          "integrity_check": "ok",
+          "audio_sha256": "e0a685d74829d610ba9436ddbd1b3e19916f04028a4560adac5b2d1a99e6c6dd",
+          "audio_files": 10000,
+          "database_sha256": "723e699f4211a2cdee2b22d3ca30df82b5b889927c3aef05e60326d4f86ab51d",
+          "fixture_sha256": "a1b73574e51b9a05b17ccdca41a7b8ee129d27822112e79dc949bb293b1e9637",
+          "sha256": "a1b73574e51b9a05b17ccdca41a7b8ee129d27822112e79dc949bb293b1e9637"
+        },
+        "phase_elapsed_s": {
+          "setup": 13.540285613999004,
+          "measured": 119.80336667299707,
+          "verify": 3.9625588199996855
+        },
+        "capture_duration_required_s": 125
       }
     },
     {
       "case": "cloudmusic_play_time_high_frequency_update",
       "variant": "unfixed",
       "host": "cloudmusic",
-      "ref": "clean-app/cloudmusic_play_time_high_frequency_update/unfixed",
-      "commit": "2aa471589e637964e0ef9ba37c0ef9e9db5b6de7",
-      "tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
+      "ref": "clean-app-v4/cloudmusic_play_time_high_frequency_update/unfixed",
+      "commit": "4835092c8299fa484cfc36bcb9d107a0403888c3",
+      "tree": "0b5dec7ee0528cc56e306a9686d3c20d46a27485",
       "business_base_tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
-      "production_patches": [],
-      "unsigned_sha256": "924ac0b4470c9848d2f04acecef2c041ae5edbc61e21c618202551a26e9e5421",
+      "production_patches": [
+        "hosts_patches/cloudmusic/production-virtual-local-grid.patch",
+        "hosts_patches/cloudmusic/production-local-interactions-sql.patch"
+      ],
+      "unsigned_sha256": "e857d6f19362359404cecc6023ffd90623a6c10e76b7599a5d94d3d38a774953",
       "bytecode_audit": {
-        "sha256": "924ac0b4470c9848d2f04acecef2c041ae5edbc61e21c618202551a26e9e5421",
+        "sha256": "e857d6f19362359404cecc6023ffd90623a6c10e76b7599a5d94d3d38a774953",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -1005,10 +1066,10 @@
       "sign": {
         "case": "cloudmusic_play_time_high_frequency_update",
         "variant": "unfixed",
-        "unsigned_sha256": "924ac0b4470c9848d2f04acecef2c041ae5edbc61e21c618202551a26e9e5421",
+        "unsigned_sha256": "e857d6f19362359404cecc6023ffd90623a6c10e76b7599a5d94d3d38a774953",
         "signed_hap": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/unfixed/app.hap",
         "audit": {
-          "sha256": "4b8d8021e537dd325d9a0e9e7d097a8ed2e14bcf4e523943eb0fa8595b7ae698",
+          "sha256": "96e15c4a5979da602dcac54e919eded35e729cb2e85a42e7ecaadcb1d320ca17",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -1023,11 +1084,11 @@
       "smoke": {
         "case": "cloudmusic_play_time_high_frequency_update",
         "variant": "unfixed",
-        "signed_sha256": "4b8d8021e537dd325d9a0e9e7d097a8ed2e14bcf4e523943eb0fa8595b7ae698",
+        "signed_sha256": "96e15c4a5979da602dcac54e919eded35e729cb2e85a42e7ecaadcb1d320ca17",
         "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
         "launch": "start ability successfully.",
         "pids": [
-          38052
+          4188
         ],
         "foreground_bundle": "cc.chenlvin.cloudmusic",
         "status": "PASS",
@@ -1038,14 +1099,17 @@
       "case": "cloudmusic_play_time_high_frequency_update",
       "variant": "fixed",
       "host": "cloudmusic",
-      "ref": "clean-app/cloudmusic_play_time_high_frequency_update/fixed",
-      "commit": "d755085f20e4ba7bddffce1e6ee8e06b1e0b1966",
-      "tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
+      "ref": "clean-app-v4/cloudmusic_play_time_high_frequency_update/fixed",
+      "commit": "3c1def23260ecff4417b78b9ad658730417c74f1",
+      "tree": "843c42a4e041972ed1bb7bc754fe66d62c4a40b7",
       "business_base_tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
-      "production_patches": [],
-      "unsigned_sha256": "2320ded382bca8f83f41cc45107280dadc6564d72bdafba1b0122662949fd6d8",
+      "production_patches": [
+        "hosts_patches/cloudmusic/production-virtual-local-grid.patch",
+        "hosts_patches/cloudmusic/production-local-interactions-sql.patch"
+      ],
+      "unsigned_sha256": "bfce3dc40d63a7652feaad1c10486764d235389e3abebd776ac3e4ec320488ae",
       "bytecode_audit": {
-        "sha256": "2320ded382bca8f83f41cc45107280dadc6564d72bdafba1b0122662949fd6d8",
+        "sha256": "bfce3dc40d63a7652feaad1c10486764d235389e3abebd776ac3e4ec320488ae",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -1056,10 +1120,10 @@
       "sign": {
         "case": "cloudmusic_play_time_high_frequency_update",
         "variant": "fixed",
-        "unsigned_sha256": "2320ded382bca8f83f41cc45107280dadc6564d72bdafba1b0122662949fd6d8",
+        "unsigned_sha256": "bfce3dc40d63a7652feaad1c10486764d235389e3abebd776ac3e4ec320488ae",
         "signed_hap": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/fixed/app.hap",
         "audit": {
-          "sha256": "762236132cfb3db9750d10e29f59335efda788b9a215fd244d52f1b933e6b70e",
+          "sha256": "a071d92851a1b684ac086a328cc3c99e4c222ee54ecacde53182c8c50b49a17a",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -1074,11 +1138,11 @@
       "smoke": {
         "case": "cloudmusic_play_time_high_frequency_update",
         "variant": "fixed",
-        "signed_sha256": "762236132cfb3db9750d10e29f59335efda788b9a215fd244d52f1b933e6b70e",
+        "signed_sha256": "a071d92851a1b684ac086a328cc3c99e4c222ee54ecacde53182c8c50b49a17a",
         "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
         "launch": "start ability successfully.",
         "pids": [
-          38422
+          4559
         ],
         "foreground_bundle": "cc.chenlvin.cloudmusic",
         "status": "PASS",

@@ -42,3 +42,17 @@ git tag case/<id>/fixed   <fixed_commit>
 
 Note: ytmusic's upstream repository carries ~350 MB of rawfile audio at tip; the patch
 series reconstructs the code without duplicating that history.
+# CloudMusic ordinary local-song UI adaptations
+
+`production-virtual-local-grid.patch` places `LazyForEach` directly under a
+bounded native `Grid`. The original `GridRow` eagerly created thousands of
+`FileCard` nodes and triggered `THREAD_BLOCK_6S` on the real phone.
+
+The JS/SQL interaction patches preserve data-driven selection across virtualized
+rows, notify the list after filtering, and retain descending result order. They
+apply to both sides of the local-search/playback pairs; the search implementation
+difference remains JS filtering versus SQLite filtering. They contain no test
+entrypoints, counters, timing markers or instrumentation wrappers.
+
+Current versioned refs and expected source trees are in `host-reconstruction.json`.
+Build, bytecode, signing and launch proof is separate from performance acceptance.

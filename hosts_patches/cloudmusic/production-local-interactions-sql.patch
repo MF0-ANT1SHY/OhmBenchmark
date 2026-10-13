@@ -1,0 +1,68 @@
+diff --git a/entry/src/main/ets/pages/local/LocalSongPage.ets b/entry/src/main/ets/pages/local/LocalSongPage.ets
+index eed3e26..cf539b7 100644
+--- a/entry/src/main/ets/pages/local/LocalSongPage.ets
++++ b/entry/src/main/ets/pages/local/LocalSongPage.ets
+@@ -147,7 +147,11 @@ export struct LocalSongPage {
+                             FileUtils.saveFile(this.selectedSongs)
+                           })
+                       }
+-                      CheckboxGroup({ group: 'fileCard' })
++                      Checkbox()
++                        .select(this.isSelectionComplete())
++                        .onChange((checked: boolean) => {
++                          this.selectedSongs = checked ? [...this.getSelectionSongs()] : []
++                        })
+                         .width(Constants.SIZE_ICON_BUTTON_BAR - 5)
+                         .height(Constants.SIZE_ICON_BUTTON_BAR - 5)
+                     }
+@@ -233,7 +237,8 @@ export struct LocalSongPage {
+       }
+       const keyword = this.searchKeyword.trim().toLowerCase()
+       // 直接在 SQLite 中按关键词过滤，避免全表加载后在内存中过滤
+-      this.dataSourceFiltered.setData(await RelationalStoreUtils.getSongsByKeyword(keyword))
++      this.dataSourceFiltered.setData((await RelationalStoreUtils.getSongsByKeyword(keyword)).reverse())
++      this.dataSourceFiltered.notifyDataReload()
+     } catch (e) {
+       ToastUtil.showToast('搜索时出错')
+       LogUtil.error(TAG, 'Error while handelSearch: ' + e.message)
+@@ -311,19 +316,38 @@ export struct LocalSongPage {
+     LocalMigrationSheet({ isShowMigration: this.isShowMigration })
+   }
+ 
++  private isSelectionComplete(): boolean {
++    const count = this.searchKeyword ? this.dataSourceFiltered.totalCount() : this.localSongs.length
++    return count > 0 && this.selectedSongs.length === count
++  }
++
++  private getSelectionSongs(): LocalSong[] {
++    if (!this.searchKeyword) {
++      return this.localSongs
++    }
++    const songs: LocalSong[] = []
++    for (let index = 0; index < this.dataSourceFiltered.totalCount(); index++) {
++      songs.push(this.dataSourceFiltered.getData(index))
++    }
++    return songs
++  }
++
+   @Builder CardCheckBox(localSong: LocalSong) {
+     Checkbox({ group: 'fileCard' })
++      .select(this.selectedSongs.some(item => item.id === localSong.id))
+       .shape(CheckBoxShape.ROUNDED_SQUARE)
+       .width(Constants.SIZE_ICON_BUTTON_BAR)
+       .aspectRatio(1)
+       .onChange((value) => {
+         if(value) {
+           animateTo({ duration: 100, curve: Curve.Ease }, () => {
+-            this.selectedSongs.push(localSong)
++            if (!this.selectedSongs.some(item => item.id === localSong.id)) {
++              this.selectedSongs.push(localSong)
++            }
+           })
+         } else {
+           animateTo({ duration: 100, curve: Curve.Ease }, () => {
+-            this.selectedSongs = this.selectedSongs.filter(item => item.name !== localSong.name)
++            this.selectedSongs = this.selectedSongs.filter(item => item.id !== localSong.id)
+           })
+         }
+       })

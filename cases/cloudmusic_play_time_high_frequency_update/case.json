@@ -16,8 +16,8 @@
     "动画",
     "状态更新"
   ],
-  "unfixed_commit": "2aa471589e637964e0ef9ba37c0ef9e9db5b6de7",
-  "fixed_commit": "d755085f20e4ba7bddffce1e6ee8e06b1e0b1966",
+  "unfixed_commit": "4835092c8299fa484cfc36bcb9d107a0403888c3",
+  "fixed_commit": "3c1def23260ecff4417b78b9ad658730417c74f1",
   "fix_summary": "The global state is written only when the whole-second part of the position changes (seek still updates immediately).",
   "build": {
     "mode": "release",
@@ -104,14 +104,17 @@
     "performance_validation": "pending",
     "variants": {
       "unfixed": {
-        "ref": "clean-app/cloudmusic_play_time_high_frequency_update/unfixed",
-        "commit": "2aa471589e637964e0ef9ba37c0ef9e9db5b6de7",
-        "tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
+        "ref": "clean-app-v4/cloudmusic_play_time_high_frequency_update/unfixed",
+        "commit": "4835092c8299fa484cfc36bcb9d107a0403888c3",
+        "tree": "0b5dec7ee0528cc56e306a9686d3c20d46a27485",
         "business_base_tree": "2846ea4d65fe74a0290de6c36b3d5815be288073",
-        "production_patches": [],
-        "unsigned_sha256": "924ac0b4470c9848d2f04acecef2c041ae5edbc61e21c618202551a26e9e5421",
+        "production_patches": [
+          "hosts_patches/cloudmusic/production-virtual-local-grid.patch",
+          "hosts_patches/cloudmusic/production-local-interactions-sql.patch"
+        ],
+        "unsigned_sha256": "e857d6f19362359404cecc6023ffd90623a6c10e76b7599a5d94d3d38a774953",
         "bytecode_audit": {
-          "sha256": "924ac0b4470c9848d2f04acecef2c041ae5edbc61e21c618202551a26e9e5421",
+          "sha256": "e857d6f19362359404cecc6023ffd90623a6c10e76b7599a5d94d3d38a774953",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -122,10 +125,10 @@
         "sign": {
           "case": "cloudmusic_play_time_high_frequency_update",
           "variant": "unfixed",
-          "unsigned_sha256": "924ac0b4470c9848d2f04acecef2c041ae5edbc61e21c618202551a26e9e5421",
+          "unsigned_sha256": "e857d6f19362359404cecc6023ffd90623a6c10e76b7599a5d94d3d38a774953",
           "signed_hap": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/unfixed/app.hap",
           "audit": {
-            "sha256": "4b8d8021e537dd325d9a0e9e7d097a8ed2e14bcf4e523943eb0fa8595b7ae698",
+            "sha256": "96e15c4a5979da602dcac54e919eded35e729cb2e85a42e7ecaadcb1d320ca17",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
@@ -140,11 +143,11 @@
         "smoke": {
           "case": "cloudmusic_play_time_high_frequency_update",
           "variant": "unfixed",
-          "signed_sha256": "4b8d8021e537dd325d9a0e9e7d097a8ed2e14bcf4e523943eb0fa8595b7ae698",
+          "signed_sha256": "96e15c4a5979da602dcac54e919eded35e729cb2e85a42e7ecaadcb1d320ca17",
           "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
           "launch": "start ability successfully.",
           "pids": [
-            38052
+            4188
           ],
           "foreground_bundle": "cc.chenlvin.cloudmusic",
           "status": "PASS",
@@ -152,14 +155,17 @@
         }
       },
       "fixed": {
-        "ref": "clean-app/cloudmusic_play_time_high_frequency_update/fixed",
-        "commit": "d755085f20e4ba7bddffce1e6ee8e06b1e0b1966",
-        "tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
+        "ref": "clean-app-v4/cloudmusic_play_time_high_frequency_update/fixed",
+        "commit": "3c1def23260ecff4417b78b9ad658730417c74f1",
+        "tree": "843c42a4e041972ed1bb7bc754fe66d62c4a40b7",
         "business_base_tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
-        "production_patches": [],
-        "unsigned_sha256": "2320ded382bca8f83f41cc45107280dadc6564d72bdafba1b0122662949fd6d8",
+        "production_patches": [
+          "hosts_patches/cloudmusic/production-virtual-local-grid.patch",
+          "hosts_patches/cloudmusic/production-local-interactions-sql.patch"
+        ],
+        "unsigned_sha256": "bfce3dc40d63a7652feaad1c10486764d235389e3abebd776ac3e4ec320488ae",
         "bytecode_audit": {
-          "sha256": "2320ded382bca8f83f41cc45107280dadc6564d72bdafba1b0122662949fd6d8",
+          "sha256": "bfce3dc40d63a7652feaad1c10486764d235389e3abebd776ac3e4ec320488ae",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -170,10 +176,10 @@
         "sign": {
           "case": "cloudmusic_play_time_high_frequency_update",
           "variant": "fixed",
-          "unsigned_sha256": "2320ded382bca8f83f41cc45107280dadc6564d72bdafba1b0122662949fd6d8",
+          "unsigned_sha256": "bfce3dc40d63a7652feaad1c10486764d235389e3abebd776ac3e4ec320488ae",
           "signed_hap": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/fixed/app.hap",
           "audit": {
-            "sha256": "762236132cfb3db9750d10e29f59335efda788b9a215fd244d52f1b933e6b70e",
+            "sha256": "a071d92851a1b684ac086a328cc3c99e4c222ee54ecacde53182c8c50b49a17a",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
@@ -188,11 +194,11 @@
         "smoke": {
           "case": "cloudmusic_play_time_high_frequency_update",
           "variant": "fixed",
-          "signed_sha256": "762236132cfb3db9750d10e29f59335efda788b9a215fd244d52f1b933e6b70e",
+          "signed_sha256": "a071d92851a1b684ac086a328cc3c99e4c222ee54ecacde53182c8c50b49a17a",
           "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
           "launch": "start ability successfully.",
           "pids": [
-            38422
+            4559
           ],
           "foreground_bundle": "cc.chenlvin.cloudmusic",
           "status": "PASS",

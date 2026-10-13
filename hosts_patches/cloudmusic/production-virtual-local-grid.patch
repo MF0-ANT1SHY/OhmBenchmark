@@ -1,0 +1,243 @@
+diff --git a/entry/src/main/ets/pages/local/LocalSongPage.ets b/entry/src/main/ets/pages/local/LocalSongPage.ets
+index b3560b0..ee08b79 100644
+--- a/entry/src/main/ets/pages/local/LocalSongPage.ets
++++ b/entry/src/main/ets/pages/local/LocalSongPage.ets
+@@ -94,134 +94,118 @@ export struct LocalSongPage {
+           .justifyContent(FlexAlign.Center)
+         } else {
+           Column() {
+-            Column() {
+-              Grid() {
+-                GridItem() {
+-                  Search({
+-                    placeholder: $r('app.string.Search_content'),
+-                    icon: '/resources/base/media/ic_public_search_filled.svg'
+-                  })
+-                    .id('search')
+-                    .height(Constants.HEIGHT_SEARCH)
+-                    .width('100%')
+-                    .searchButton('搜索')
+-                    .onChange((value) => {
+-                      if(value == '') {
+-                        this.filteredSongs = []
+-                        this.selectedSongs = []
+-                        this.searchKeyword = ''
+-                      }
+-                    })
+-                    .onSubmit((value) => {
+-                      this.searchKeyword = value
+-                      this.handelSearch()
+-                    })
+-                }
+-                GridItem() {
+-                  if (this.localSongs.length > 0) {
+-                    Row() {
+-                      Text(this.isSelecting ? `已选 ${this.selectedSongs.length} 项` : `共 ${this.localSongs.length} 首歌曲`)
+-                        .fontSize(Constants.FONT_SIZE_COMMON)
+-                      Row({ space: 20 }) {
+-                        if(!this.isSelecting) {
+-                          // Image($r('app.media.ic_files_name_drive'))
+-                          //   .width(Constants.SIZE_ICON_BUTTON_BAR)
+-                          //   .aspectRatio(1)
+-                          //   .fillColor(this.isSorted ? $r('app.color.blue') : Color.Gray)
+-                          //   .onClick(() => {
+-                          //     this.isSorted = !this.isSorted
+-                          //     if (this.searchKeyword) {
+-                          //       this.filteredSongs = this.getSortedList(this.filteredSongs)
+-                          //     }
+-                          //   })
+-                        } else {
+-                          if(this.selectedSongs.length > 0) {
+-                            Image($r('app.media.ic_public_delete'))
+-                              .width(Constants.SIZE_ICON_BUTTON_BAR)
+-                              .aspectRatio(1)
+-                              .fillColor(Color.Gray)
+-                              .onClick(() => {
+-                                this.handleDelete()
+-                              })
+-                            Image($r('app.media.ic_public_folder'))
+-                              .width(Constants.SIZE_ICON_BUTTON_BAR)
+-                              .aspectRatio(1)
+-                              .fillColor(Color.Gray)
+-                              .onClick(() => {
+-                                FileUtils.saveFile(this.selectedSongs)
+-                              })
+-                          }
+-                          CheckboxGroup({ group: 'fileCard' })
+-                            .width(Constants.SIZE_ICON_BUTTON_BAR - 5)
+-                            .height(Constants.SIZE_ICON_BUTTON_BAR - 5)
+-                        }
+-
+-                        Image($r('app.media.ic_gallery_material_select_checkbox'))
++            Column({ space: 10 }) {
++              Search({
++                placeholder: $r('app.string.Search_content'),
++                icon: '/resources/base/media/ic_public_search_filled.svg'
++              })
++                .id('search')
++                .height(Constants.HEIGHT_SEARCH)
++                .width('100%')
++                .searchButton('搜索')
++                .onChange((value) => {
++                  if(value == '') {
++                    this.filteredSongs = []
++                    this.selectedSongs = []
++                    this.searchKeyword = ''
++                  }
++                })
++                .onSubmit((value) => {
++                  this.searchKeyword = value
++                  this.handelSearch()
++                })
++              if (this.localSongs.length > 0) {
++                Row() {
++                  Text(this.isSelecting ? `已选 ${this.selectedSongs.length} 项` : `共 ${this.localSongs.length} 首歌曲`)
++                    .fontSize(Constants.FONT_SIZE_COMMON)
++                  Row({ space: 20 }) {
++                    if(!this.isSelecting) {
++                      // Image($r('app.media.ic_files_name_drive'))
++                      //   .width(Constants.SIZE_ICON_BUTTON_BAR)
++                      //   .aspectRatio(1)
++                      //   .fillColor(this.isSorted ? $r('app.color.blue') : Color.Gray)
++                      //   .onClick(() => {
++                      //     this.isSorted = !this.isSorted
++                      //     if (this.searchKeyword) {
++                      //       this.filteredSongs = this.getSortedList(this.filteredSongs)
++                      //     }
++                      //   })
++                    } else {
++                      if(this.selectedSongs.length > 0) {
++                        Image($r('app.media.ic_public_delete'))
+                           .width(Constants.SIZE_ICON_BUTTON_BAR)
+                           .aspectRatio(1)
+-                          .fillColor(this.isSelecting ? $r('app.color.blue') : Color.Gray)
++                          .fillColor(Color.Gray)
+                           .onClick(() => {
+-                            animateTo({ duration: 100, curve: Curve.EaseInOut }, () => {
+-                              this.isSelecting = !this.isSelecting
+-                              this.selectedSongs = []
+-                            })
++                            this.handleDelete()
+                           })
+-                      }
+-                      .height(30)
+-                    }
+-                    .justifyContent(FlexAlign.SpaceBetween)
+-                    .width('100%')
+-                  }
+-                  else {
+-                    Column({ space: 20 }) {
+-                      Text('本地文件列表为空\n\n右上方入口支持上传本地音频').width('100%').textAlign(TextAlign.Center).padding({ left: 30, right: 30, top: 10 })
+-                      if(this.filesList.length > 0) {
+-                        Button('迁移旧版本数据').padding({ left: 10, right: 10, top: 5, bottom: 5 })
+-                          .onClick(() => { this.isShowMigration = true })
+-                          .bindSheet(this.isShowMigration, this.Migration(), {
+-                            preferType: SheetType.CENTER,
+-                            height: SheetSize.MEDIUM,
+-                            dragBar: false,
+-                            showClose: false,
+-                            backgroundColor: Color.Transparent,
+-                            blurStyle: BlurStyle.Regular,
+-                            onDisappear: () => { this.isShowMigration = false }
++                        Image($r('app.media.ic_public_folder'))
++                          .width(Constants.SIZE_ICON_BUTTON_BAR)
++                          .aspectRatio(1)
++                          .fillColor(Color.Gray)
++                          .onClick(() => {
++                            FileUtils.saveFile(this.selectedSongs)
+                           })
+                       }
++                      CheckboxGroup({ group: 'fileCard' })
++                        .width(Constants.SIZE_ICON_BUTTON_BAR - 5)
++                        .height(Constants.SIZE_ICON_BUTTON_BAR - 5)
+                     }
+-                  }
+-                }
+ 
+-                GridItem() {
+-                  GridRow({ columns: { xs: 1, sm: 1, md: 1, lg: 2, xl: 2 } }) {
+-                    if(!this.searchKeyword) {
+-                      this.ListContent(this.dataSource)
+-                    } else {
+-                      this.ListContent(this.dataSourceFiltered)
+-                    }
++                    Image($r('app.media.ic_gallery_material_select_checkbox'))
++                      .width(Constants.SIZE_ICON_BUTTON_BAR)
++                      .aspectRatio(1)
++                      .fillColor(this.isSelecting ? $r('app.color.blue') : Color.Gray)
++                      .onClick(() => {
++                        animateTo({ duration: 100, curve: Curve.EaseInOut }, () => {
++                          this.isSelecting = !this.isSelecting
++                          this.selectedSongs = []
++                        })
++                      })
+                   }
++                  .height(30)
+                 }
++                .justifyContent(FlexAlign.SpaceBetween)
+                 .width('100%')
+-
+-                GridItem()
+-                  .height(px2vp(this.bottomRectHeight) + Constants.HEIGHT_MINI)
+               }
++              else {
++                Column({ space: 20 }) {
++                  Text('本地文件列表为空\n\n右上方入口支持上传本地音频').width('100%').textAlign(TextAlign.Center).padding({ left: 30, right: 30, top: 10 })
++                  if(this.filesList.length > 0) {
++                    Button('迁移旧版本数据').padding({ left: 10, right: 10, top: 5, bottom: 5 })
++                      .onClick(() => { this.isShowMigration = true })
++                      .bindSheet(this.isShowMigration, this.Migration(), {
++                        preferType: SheetType.CENTER,
++                        height: SheetSize.MEDIUM,
++                        dragBar: false,
++                        showClose: false,
++                        backgroundColor: Color.Transparent,
++                        blurStyle: BlurStyle.Regular,
++                        onDisappear: () => { this.isShowMigration = false }
++                      })
++                  }
++                }
++              }
++              Grid() {
++                if (!this.searchKeyword) {
++                  this.ListContent(this.dataSource)
++                } else {
++                  this.ListContent(this.dataSourceFiltered)
++                }
++              }
++              .columnsTemplate(this.breakpoint === 'lg' || this.breakpoint === 'xl' ? '1fr 1fr' : '1fr')
++              .columnsGap(10)
++              .rowsGap(10)
+               .edgeEffect(EdgeEffect.Spring)
+               .scrollBar(BarState.Off)
+-              .rowsGap(10)
+-              .columnsGap(10)
+-              .columnsTemplate('1fr')
+-              .layoutDirection(GridDirection.Column)
+-              .backgroundColor($r('app.color.background'))
+-              .height('100%')
+               .width('100%')
+-              .padding({ left: 10, right: 10 })
+               .layoutWeight(1)
+-              .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
+-              .backToTop(true)
++
++              Blank()
++                .height(px2vp(this.bottomRectHeight) + Constants.HEIGHT_MINI)
+             }
+-            .justifyContent(FlexAlign.Center)
+-            .layoutWeight(1)
++            .padding({ left: 10, right: 10 })
++            .height('100%')
+             .width('100%')
+           }
+           .width('100%')
+@@ -307,7 +291,7 @@ export struct LocalSongPage {
+   @Builder ListContent(dataSource: LazyData<LocalSong>) {
+     LazyForEach(dataSource,
+       (item: LocalSong, index: number) => {
+-        GridCol() {
++        GridItem() {
+           Row({ space: 5 }) {
+             FileCard({
+               localSong: item

@@ -6,27 +6,31 @@
     {
       "op": "wait",
       "selector": {
-        "text": "Explore"
+        "text": "发现",
+        "match": "exact"
       }
     },
     {
       "op": "tap",
       "selector": {
-        "text": "Me"
+        "text": "本地曲库",
+        "match": "exact"
       }
     },
     {
-      "op": "tap",
+      "op": "wait",
       "selector": {
-        "text": "Local Songs"
-      }
+        "text": "共 10000 首歌曲",
+        "match": "exact"
+      },
+      "timeout_s": 60
     }
   ],
   "measured": [
     {
       "op": "input",
       "selector": {
-        "hint": "Search something"
+        "type": "SearchField"
       },
       "value": "blue"
     },
@@ -35,13 +39,17 @@
       "key": 2054
     },
     {
-      "op": "pause",
-      "seconds": 0.2
+      "op": "wait",
+      "selector": {
+        "text": "Track (?:[0-9]*00|0)",
+        "match": "regex"
+      },
+      "timeout_s": 30
     },
     {
       "op": "input",
       "selector": {
-        "hint": "Search something"
+        "type": "SearchField"
       },
       "value": "jazz"
     },
@@ -50,13 +58,17 @@
       "key": 2054
     },
     {
-      "op": "pause",
-      "seconds": 0.2
+      "op": "wait",
+      "selector": {
+        "text": "Track (?:[0-9]*01|1)",
+        "match": "regex"
+      },
+      "timeout_s": 30
     },
     {
       "op": "input",
       "selector": {
-        "hint": "Search something"
+        "type": "SearchField"
       },
       "value": "music"
     },
@@ -65,13 +77,17 @@
       "key": 2054
     },
     {
-      "op": "pause",
-      "seconds": 0.2
+      "op": "wait",
+      "selector": {
+        "text": "Track (?:[0-9]*02|2)",
+        "match": "regex"
+      },
+      "timeout_s": 30
     },
     {
       "op": "input",
       "selector": {
-        "hint": "Search something"
+        "type": "SearchField"
       },
       "value": "blue"
     },
@@ -80,13 +96,17 @@
       "key": 2054
     },
     {
-      "op": "pause",
-      "seconds": 0.2
+      "op": "wait",
+      "selector": {
+        "text": "Track (?:[0-9]*00|0)",
+        "match": "regex"
+      },
+      "timeout_s": 30
     },
     {
       "op": "input",
       "selector": {
-        "hint": "Search something"
+        "type": "SearchField"
       },
       "value": "jazz"
     },
@@ -95,15 +115,20 @@
       "key": 2054
     },
     {
-      "op": "pause",
-      "seconds": 0.2
+      "op": "wait",
+      "selector": {
+        "text": "Track (?:[0-9]*01|1)",
+        "match": "regex"
+      },
+      "timeout_s": 30
     }
   ],
   "verify": [
     {
       "op": "wait",
       "selector": {
-        "type": "SearchField"
+        "text": "Track (?:[0-9]*01|1)",
+        "match": "regex"
       }
     }
   ]
