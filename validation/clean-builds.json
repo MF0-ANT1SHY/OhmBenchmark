@@ -3309,6 +3309,180 @@
         "foreground_bundle": "com.sheafreader.hm",
         "status": "PASS",
         "performance_verified": false
+      },
+      "workload": {
+        "case": "sheafreader_insert_duplicate_exception",
+        "variant": "unfixed",
+        "signed_sha256": "1eb035fa2f86535e2c887e4c1d9a2e0c0a90d76ef88d25e9deb05d75d238fee5",
+        "plan_sha256": "d8a9aef8fe854844c3886952aeef8af6670e4fcbc68b8a5541471b788cea6f64",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+          "database": {
+            "database_sha256": "5e019dcc3c557e3c42facb5dbcbb9f6d70db0b42ae3b8cb80f70d85589cffbff",
+            "semantic_sha256": "e599882adfc721e7aced634f87a5df1d0ec11c3d8de3cfc2dd95cdc144b85aa2",
+            "feeds": 10,
+            "articles": 1000,
+            "body_sha256": "eca420399c66878e1d4e1dca11c062f2d370ec5eba5a8911d8e306ce602808f6",
+            "integrity_check": "ok",
+            "functional_read_verified": true,
+            "method": "all normal feed URLs, article GUIDs, titles, links, authors and full bodies verified"
+          },
+          "dataset": {
+            "body_bytes": 256
+          },
+          "device_snapshot": {
+            "sha256": "a8fb1c752d709f6a472a82aa20834719a6b6b0514cbd559501d357a399308c41",
+            "bytes": 962560,
+            "remote_archive": "/home/research/ohm-clean/services/rss/snapshots/678affdc65fa4015a108b8d24d3f065a.db",
+            "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
+            "ordinary_data": {
+              "database_sha256": "a8fb1c752d709f6a472a82aa20834719a6b6b0514cbd559501d357a399308c41",
+              "semantic_sha256": "e599882adfc721e7aced634f87a5df1d0ec11c3d8de3cfc2dd95cdc144b85aa2",
+              "feeds": 10,
+              "articles": 1000,
+              "body_sha256": "eca420399c66878e1d4e1dca11c062f2d370ec5eba5a8911d8e306ce602808f6",
+              "integrity_check": "ok",
+              "functional_read_verified": true,
+              "method": "all normal feed URLs, article GUIDs, titles, links, authors and full bodies verified"
+            },
+            "performance_verified": false,
+            "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/rss-audits/5ccdb003c3c64ec2a08908b6a15cce0a.db"
+          },
+          "installation": {
+            "bundle": "com.sheafreader.hm",
+            "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
+            "backup": "/home/research/ohm-clean/backups/com.sheafreader.hm/1791917946616925865/sheaf_reader.db",
+            "fixture_tables": 4,
+            "integrity_check": "ok"
+          },
+          "service": {
+            "sha256": "b29b7dafc29b769c3df44e2fe3c23c23f51cf81e62f5489af97fba24f8aa4ea7",
+            "source_sha256": "03ea0ea2b57a69b62286a1456834a7c3c779f62c079e61e0013d7aa830e1728f",
+            "base_url": "http://127.0.0.1:18491",
+            "service_pid": 113077,
+            "service_start_ticks": 3729949,
+            "files": {
+              "/feeds/1.xml": "c836eb9a7d3779074dfc6c9c19acad6781b0494e1304a3487c3281c11b543c93",
+              "/feeds/2.xml": "d7e494bf5673441d352de2bee915eabdc2ad01d07f75b1068c3f47a778196495",
+              "/feeds/3.xml": "5af77fdb18ccc1ed152361b815e8daf4eddfad34f7a67dda416e1fd06d6dd2c4",
+              "/feeds/4.xml": "a2800270760fc5d17e5b88322268cf5cbf8100447f4cab452df82bae3df40e72",
+              "/feeds/5.xml": "76a70796ca6bb6882fae3b25f67406fc9c81cca7ccebf817dc2085581fc2d3ae",
+              "/feeds/6.xml": "4ef3ac01f675ed06804a2bb4c027f2de9eb7a9a5c95c0a2eb9686a882865de13",
+              "/feeds/7.xml": "b730c24037d00662d77840c34d72c96d12e7eb46bbbbd640c2ce6ef40c2cb7e8",
+              "/feeds/8.xml": "cf7352d1abe4f245fba2388ebca13498e901c7214d8687c8ffae183df1526d69",
+              "/feeds/9.xml": "3e3d21e897840289b77dc3ff76c6319055ef55e723343a11b0db86a7a8ee1d35",
+              "/feeds/10.xml": "e806fc024d5d6bfdfba0636818ec0832e0f081495622fb96599181443f2be24b",
+              "/subscriptions.opml": "b3b01bf48e62cee30f2d3992a649b47bfbfa18a40741756f68a3799a01cf4937"
+            },
+            "feeds": 10,
+            "articles_per_feed": 100,
+            "method": "ordinary RSS/OPML responses fetched and hashed outside profiling",
+            "functional_read_verified": false
+          },
+          "functional_read_verified": true,
+          "method": "ordinary UI-populated database restored outside profiling and all article bodies verified"
+        },
+        "phase_elapsed_s": {
+          "setup": 11.486347553000087,
+          "measured": 10.367944994999561,
+          "verify": 5.748874702003377
+        },
+        "reader_refresh": {
+          "feeds_refreshed": 10,
+          "method": "all existing feed last_fetched values advanced after the normal refresh action"
+        },
+        "fixture_after": {
+          "sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+          "service": {
+            "sha256": "b29b7dafc29b769c3df44e2fe3c23c23f51cf81e62f5489af97fba24f8aa4ea7",
+            "source_sha256": "03ea0ea2b57a69b62286a1456834a7c3c779f62c079e61e0013d7aa830e1728f",
+            "base_url": "http://127.0.0.1:18491",
+            "service_pid": 113077,
+            "service_start_ticks": 3729949,
+            "files": {
+              "/feeds/1.xml": "c836eb9a7d3779074dfc6c9c19acad6781b0494e1304a3487c3281c11b543c93",
+              "/feeds/2.xml": "d7e494bf5673441d352de2bee915eabdc2ad01d07f75b1068c3f47a778196495",
+              "/feeds/3.xml": "5af77fdb18ccc1ed152361b815e8daf4eddfad34f7a67dda416e1fd06d6dd2c4",
+              "/feeds/4.xml": "a2800270760fc5d17e5b88322268cf5cbf8100447f4cab452df82bae3df40e72",
+              "/feeds/5.xml": "76a70796ca6bb6882fae3b25f67406fc9c81cca7ccebf817dc2085581fc2d3ae",
+              "/feeds/6.xml": "4ef3ac01f675ed06804a2bb4c027f2de9eb7a9a5c95c0a2eb9686a882865de13",
+              "/feeds/7.xml": "b730c24037d00662d77840c34d72c96d12e7eb46bbbbd640c2ce6ef40c2cb7e8",
+              "/feeds/8.xml": "cf7352d1abe4f245fba2388ebca13498e901c7214d8687c8ffae183df1526d69",
+              "/feeds/9.xml": "3e3d21e897840289b77dc3ff76c6319055ef55e723343a11b0db86a7a8ee1d35",
+              "/feeds/10.xml": "e806fc024d5d6bfdfba0636818ec0832e0f081495622fb96599181443f2be24b",
+              "/subscriptions.opml": "b3b01bf48e62cee30f2d3992a649b47bfbfa18a40741756f68a3799a01cf4937"
+            },
+            "feeds": 10,
+            "articles_per_feed": 100,
+            "method": "ordinary RSS/OPML responses fetched and hashed outside profiling",
+            "functional_read_verified": false
+          },
+          "device_snapshot": {
+            "sha256": "e7952fad6ebe80aa89014279d0527c290a043c3dd7466050765e79b028eafb67",
+            "bytes": 962560,
+            "remote_archive": "/home/research/ohm-clean/services/rss/snapshots/32926fc2889941c894d9b9d804216e68.db",
+            "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
+            "ordinary_data": {
+              "database_sha256": "e7952fad6ebe80aa89014279d0527c290a043c3dd7466050765e79b028eafb67",
+              "semantic_sha256": "e599882adfc721e7aced634f87a5df1d0ec11c3d8de3cfc2dd95cdc144b85aa2",
+              "feeds": 10,
+              "articles": 1000,
+              "body_sha256": "eca420399c66878e1d4e1dca11c062f2d370ec5eba5a8911d8e306ce602808f6",
+              "integrity_check": "ok",
+              "functional_read_verified": true,
+              "method": "all normal feed URLs, article GUIDs, titles, links, authors and full bodies verified"
+            },
+            "performance_verified": false,
+            "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/rss-audits/7f1e6d02c61648a79e4b50d65e609b87.db"
+          },
+          "functional_read_verified": true
+        },
+        "functional_check": "all ordinary RSS articles verified and all ten feeds refreshed through the existing UI shortcut",
+        "capture_duration_required_s": 15
+      },
+      "performance": {
+        "status": "PASS",
+        "metric": "hiperf_instructions",
+        "rounds": 3,
+        "samples": [
+          3271974943,
+          3279607994,
+          3268534428
+        ],
+        "median": 3271974943,
+        "paired_ratios": [
+          1.4815058793085116,
+          1.5011364505773457,
+          1.5070263363447092
+        ],
+        "median_ratio": 1.4976426637875284,
+        "plan_sha256": "d8a9aef8fe854844c3886952aeef8af6670e4fcbc68b8a5541471b788cea6f64",
+        "signed_sha256": "1eb035fa2f86535e2c887e4c1d9a2e0c0a90d76ef88d25e9deb05d75d238fee5",
+        "fixture_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+        "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+        "captures": [
+          {
+            "round": 1,
+            "report_sha256": "5111282aa9160ffb6ce98790e14956a1fdbd6dd0ad30246064850ca5acbfcba4",
+            "app_samples": 3530,
+            "remote_artifacts": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/unfixed/cpu-captures/round-1"
+          },
+          {
+            "round": 2,
+            "report_sha256": "7716439432f3606db76652c9068c040a34ad14c7f68b71be186b0bf9cb2735ba",
+            "app_samples": 3559,
+            "remote_artifacts": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/unfixed/cpu-captures/round-2"
+          },
+          {
+            "round": 3,
+            "report_sha256": "e0264542d1811c530ad294f2f1c2a264bb7ab12ee7cb4901373ca23694d8adea",
+            "app_samples": 3574,
+            "remote_artifacts": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/unfixed/cpu-captures/round-3"
+          }
+        ],
+        "legacy_evidence_reused": false
       }
     },
     {
@@ -3360,6 +3534,180 @@
         "foreground_bundle": "com.sheafreader.hm",
         "status": "PASS",
         "performance_verified": false
+      },
+      "workload": {
+        "case": "sheafreader_insert_duplicate_exception",
+        "variant": "fixed",
+        "signed_sha256": "fc4694b3a0021eaac8179a8bec2077266648e30fb9b666ce12338068d47ddbfd",
+        "plan_sha256": "d8a9aef8fe854844c3886952aeef8af6670e4fcbc68b8a5541471b788cea6f64",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+          "database": {
+            "database_sha256": "5e019dcc3c557e3c42facb5dbcbb9f6d70db0b42ae3b8cb80f70d85589cffbff",
+            "semantic_sha256": "e599882adfc721e7aced634f87a5df1d0ec11c3d8de3cfc2dd95cdc144b85aa2",
+            "feeds": 10,
+            "articles": 1000,
+            "body_sha256": "eca420399c66878e1d4e1dca11c062f2d370ec5eba5a8911d8e306ce602808f6",
+            "integrity_check": "ok",
+            "functional_read_verified": true,
+            "method": "all normal feed URLs, article GUIDs, titles, links, authors and full bodies verified"
+          },
+          "dataset": {
+            "body_bytes": 256
+          },
+          "device_snapshot": {
+            "sha256": "a8fb1c752d709f6a472a82aa20834719a6b6b0514cbd559501d357a399308c41",
+            "bytes": 962560,
+            "remote_archive": "/home/research/ohm-clean/services/rss/snapshots/972f0e53d585409497cb5267b3a66992.db",
+            "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
+            "ordinary_data": {
+              "database_sha256": "a8fb1c752d709f6a472a82aa20834719a6b6b0514cbd559501d357a399308c41",
+              "semantic_sha256": "e599882adfc721e7aced634f87a5df1d0ec11c3d8de3cfc2dd95cdc144b85aa2",
+              "feeds": 10,
+              "articles": 1000,
+              "body_sha256": "eca420399c66878e1d4e1dca11c062f2d370ec5eba5a8911d8e306ce602808f6",
+              "integrity_check": "ok",
+              "functional_read_verified": true,
+              "method": "all normal feed URLs, article GUIDs, titles, links, authors and full bodies verified"
+            },
+            "performance_verified": false,
+            "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/rss-audits/ee26778132ce48d28204b765a8646167.db"
+          },
+          "installation": {
+            "bundle": "com.sheafreader.hm",
+            "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
+            "backup": "/home/research/ohm-clean/backups/com.sheafreader.hm/1791918040647381629/sheaf_reader.db",
+            "fixture_tables": 4,
+            "integrity_check": "ok"
+          },
+          "service": {
+            "sha256": "b29b7dafc29b769c3df44e2fe3c23c23f51cf81e62f5489af97fba24f8aa4ea7",
+            "source_sha256": "03ea0ea2b57a69b62286a1456834a7c3c779f62c079e61e0013d7aa830e1728f",
+            "base_url": "http://127.0.0.1:18491",
+            "service_pid": 113077,
+            "service_start_ticks": 3729949,
+            "files": {
+              "/feeds/1.xml": "c836eb9a7d3779074dfc6c9c19acad6781b0494e1304a3487c3281c11b543c93",
+              "/feeds/2.xml": "d7e494bf5673441d352de2bee915eabdc2ad01d07f75b1068c3f47a778196495",
+              "/feeds/3.xml": "5af77fdb18ccc1ed152361b815e8daf4eddfad34f7a67dda416e1fd06d6dd2c4",
+              "/feeds/4.xml": "a2800270760fc5d17e5b88322268cf5cbf8100447f4cab452df82bae3df40e72",
+              "/feeds/5.xml": "76a70796ca6bb6882fae3b25f67406fc9c81cca7ccebf817dc2085581fc2d3ae",
+              "/feeds/6.xml": "4ef3ac01f675ed06804a2bb4c027f2de9eb7a9a5c95c0a2eb9686a882865de13",
+              "/feeds/7.xml": "b730c24037d00662d77840c34d72c96d12e7eb46bbbbd640c2ce6ef40c2cb7e8",
+              "/feeds/8.xml": "cf7352d1abe4f245fba2388ebca13498e901c7214d8687c8ffae183df1526d69",
+              "/feeds/9.xml": "3e3d21e897840289b77dc3ff76c6319055ef55e723343a11b0db86a7a8ee1d35",
+              "/feeds/10.xml": "e806fc024d5d6bfdfba0636818ec0832e0f081495622fb96599181443f2be24b",
+              "/subscriptions.opml": "b3b01bf48e62cee30f2d3992a649b47bfbfa18a40741756f68a3799a01cf4937"
+            },
+            "feeds": 10,
+            "articles_per_feed": 100,
+            "method": "ordinary RSS/OPML responses fetched and hashed outside profiling",
+            "functional_read_verified": false
+          },
+          "functional_read_verified": true,
+          "method": "ordinary UI-populated database restored outside profiling and all article bodies verified"
+        },
+        "phase_elapsed_s": {
+          "setup": 11.64015254900005,
+          "measured": 10.380205703004322,
+          "verify": 6.166590372005885
+        },
+        "reader_refresh": {
+          "feeds_refreshed": 10,
+          "method": "all existing feed last_fetched values advanced after the normal refresh action"
+        },
+        "fixture_after": {
+          "sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+          "service": {
+            "sha256": "b29b7dafc29b769c3df44e2fe3c23c23f51cf81e62f5489af97fba24f8aa4ea7",
+            "source_sha256": "03ea0ea2b57a69b62286a1456834a7c3c779f62c079e61e0013d7aa830e1728f",
+            "base_url": "http://127.0.0.1:18491",
+            "service_pid": 113077,
+            "service_start_ticks": 3729949,
+            "files": {
+              "/feeds/1.xml": "c836eb9a7d3779074dfc6c9c19acad6781b0494e1304a3487c3281c11b543c93",
+              "/feeds/2.xml": "d7e494bf5673441d352de2bee915eabdc2ad01d07f75b1068c3f47a778196495",
+              "/feeds/3.xml": "5af77fdb18ccc1ed152361b815e8daf4eddfad34f7a67dda416e1fd06d6dd2c4",
+              "/feeds/4.xml": "a2800270760fc5d17e5b88322268cf5cbf8100447f4cab452df82bae3df40e72",
+              "/feeds/5.xml": "76a70796ca6bb6882fae3b25f67406fc9c81cca7ccebf817dc2085581fc2d3ae",
+              "/feeds/6.xml": "4ef3ac01f675ed06804a2bb4c027f2de9eb7a9a5c95c0a2eb9686a882865de13",
+              "/feeds/7.xml": "b730c24037d00662d77840c34d72c96d12e7eb46bbbbd640c2ce6ef40c2cb7e8",
+              "/feeds/8.xml": "cf7352d1abe4f245fba2388ebca13498e901c7214d8687c8ffae183df1526d69",
+              "/feeds/9.xml": "3e3d21e897840289b77dc3ff76c6319055ef55e723343a11b0db86a7a8ee1d35",
+              "/feeds/10.xml": "e806fc024d5d6bfdfba0636818ec0832e0f081495622fb96599181443f2be24b",
+              "/subscriptions.opml": "b3b01bf48e62cee30f2d3992a649b47bfbfa18a40741756f68a3799a01cf4937"
+            },
+            "feeds": 10,
+            "articles_per_feed": 100,
+            "method": "ordinary RSS/OPML responses fetched and hashed outside profiling",
+            "functional_read_verified": false
+          },
+          "device_snapshot": {
+            "sha256": "575b55eba6744487a75ec6ba0197d9a41a5c04f55e7207f9a4d5ad724646633d",
+            "bytes": 962560,
+            "remote_archive": "/home/research/ohm-clean/services/rss/snapshots/584e8e2070a946c08574ad8469d8192d.db",
+            "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
+            "ordinary_data": {
+              "database_sha256": "575b55eba6744487a75ec6ba0197d9a41a5c04f55e7207f9a4d5ad724646633d",
+              "semantic_sha256": "e599882adfc721e7aced634f87a5df1d0ec11c3d8de3cfc2dd95cdc144b85aa2",
+              "feeds": 10,
+              "articles": 1000,
+              "body_sha256": "eca420399c66878e1d4e1dca11c062f2d370ec5eba5a8911d8e306ce602808f6",
+              "integrity_check": "ok",
+              "functional_read_verified": true,
+              "method": "all normal feed URLs, article GUIDs, titles, links, authors and full bodies verified"
+            },
+            "performance_verified": false,
+            "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/rss-audits/6b992f5f2daf4c53a9fb5553fa9c17ec.db"
+          },
+          "functional_read_verified": true
+        },
+        "functional_check": "all ordinary RSS articles verified and all ten feeds refreshed through the existing UI shortcut",
+        "capture_duration_required_s": 15
+      },
+      "performance": {
+        "status": "PASS",
+        "metric": "hiperf_instructions",
+        "rounds": 3,
+        "samples": [
+          2208546715,
+          2184750089,
+          2168863509
+        ],
+        "median": 2184750089,
+        "paired_ratios": [
+          1.4815058793085116,
+          1.5011364505773457,
+          1.5070263363447092
+        ],
+        "median_ratio": 1.4976426637875284,
+        "plan_sha256": "d8a9aef8fe854844c3886952aeef8af6670e4fcbc68b8a5541471b788cea6f64",
+        "signed_sha256": "fc4694b3a0021eaac8179a8bec2077266648e30fb9b666ce12338068d47ddbfd",
+        "fixture_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+        "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+        "captures": [
+          {
+            "round": 1,
+            "report_sha256": "e945736306392c65f593c03b6f7a15a2b27d9bc835cc7832a11a2d4ed17d20df",
+            "app_samples": 2423,
+            "remote_artifacts": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/fixed/cpu-captures/round-1"
+          },
+          {
+            "round": 2,
+            "report_sha256": "fec9e831e637af8a7675cc000335747d18d9ee03c7d5c3f51c143fe6ad51b7b1",
+            "app_samples": 2400,
+            "remote_artifacts": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/fixed/cpu-captures/round-2"
+          },
+          {
+            "round": 3,
+            "report_sha256": "386f4589e68850dca5dbb3a745efdf2b6c761d7f224671f0fa41bce3cc4f8c05",
+            "app_samples": 2433,
+            "remote_artifacts": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/fixed/cpu-captures/round-3"
+          }
+        ],
+        "legacy_evidence_reused": false
       }
     },
     {

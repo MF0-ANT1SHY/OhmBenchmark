@@ -1,0 +1,102 @@
+{
+  "case": "sheafreader_insert_duplicate_exception",
+  "status": "measured_clean",
+  "criteria_unchanged": true,
+  "complete_gate": {
+    "stage": "complete",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "dataset": {
+    "body_bytes": 256
+  },
+  "results": {
+    "unfixed": {
+      "status": "PASS",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        3271974943,
+        3279607994,
+        3268534428
+      ],
+      "median": 3271974943,
+      "paired_ratios": [
+        1.4815058793085116,
+        1.5011364505773457,
+        1.5070263363447092
+      ],
+      "median_ratio": 1.4976426637875284,
+      "plan_sha256": "d8a9aef8fe854844c3886952aeef8af6670e4fcbc68b8a5541471b788cea6f64",
+      "signed_sha256": "1eb035fa2f86535e2c887e4c1d9a2e0c0a90d76ef88d25e9deb05d75d238fee5",
+      "fixture_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "5111282aa9160ffb6ce98790e14956a1fdbd6dd0ad30246064850ca5acbfcba4",
+          "app_samples": 3530,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/unfixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "7716439432f3606db76652c9068c040a34ad14c7f68b71be186b0bf9cb2735ba",
+          "app_samples": 3559,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/unfixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "e0264542d1811c530ad294f2f1c2a264bb7ab12ee7cb4901373ca23694d8adea",
+          "app_samples": 3574,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/unfixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    },
+    "fixed": {
+      "status": "PASS",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        2208546715,
+        2184750089,
+        2168863509
+      ],
+      "median": 2184750089,
+      "paired_ratios": [
+        1.4815058793085116,
+        1.5011364505773457,
+        1.5070263363447092
+      ],
+      "median_ratio": 1.4976426637875284,
+      "plan_sha256": "d8a9aef8fe854844c3886952aeef8af6670e4fcbc68b8a5541471b788cea6f64",
+      "signed_sha256": "fc4694b3a0021eaac8179a8bec2077266648e30fb9b666ce12338068d47ddbfd",
+      "fixture_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "e945736306392c65f593c03b6f7a15a2b27d9bc835cc7832a11a2d4ed17d20df",
+          "app_samples": 2423,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/fixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "fec9e831e637af8a7675cc000335747d18d9ee03c7d5c3f51c143fe6ad51b7b1",
+          "app_samples": 2400,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/fixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "386f4589e68850dca5dbb3a745efdf2b6c761d7f224671f0fa41bce3cc4f8c05",
+          "app_samples": 2433,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/fixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    }
+  },
+  "scope": "Normal F5 refresh of ten existing feeds and 1000 ordinary short-summary articles; complete refresh and all stored bodies verified before/after every trial. No app instrumentation and no old captures reused."
+}
