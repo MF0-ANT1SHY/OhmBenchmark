@@ -113,7 +113,7 @@ def app_report(report, pids, bundle):
     return result
 
 
-def export(cid, destination, symptom, round_number, remote_name='cityuPC'):
+def export(cid, destination, symptom, round_number, remote_name='cityuPC', include_source=False):
     case = json.loads((ROOT/'cases'/cid/'case.json').read_text())
     folder = ROOT/'artifacts/clean'/cid/'unfixed'
     build = json.loads((folder/'build.json').read_text())
@@ -140,7 +140,8 @@ def export(cid, destination, symptom, round_number, remote_name='cityuPC'):
     # survive in the diagnosis workspace. No git history is exported.
     destination.mkdir(parents=True, exist_ok=False)
     (destination/'app.hap').write_bytes(hap.read_bytes())
-    subprocess.run(['git', '-C', str(repo), 'archive', '--format=tar', '-o', str((destination/'app-source.tar').resolve()), ref], check=True)
+    if include_source:
+        subprocess.run(['git', '-C', str(repo), 'archive', '--format=tar', '-o', str((destination/'app-source.tar').resolve()), ref], check=True)
     workload = json.loads(plan.read_text())
     workload['description'] = 'Application UI reproduction'
     (destination/'workload.json').write_text(json.dumps(workload, ensure_ascii=False, indent=2)+'\n')
@@ -157,5 +158,6 @@ if __name__ == '__main__':
     parser.add_argument('--symptom', required=True, help='observed user-facing symptom; no fix or oracle')
     parser.add_argument('--round', type=int, default=1)
     parser.add_argument('--remote', default='cityuPC')
+    parser.add_argument('--include-source', action='store_true', help='explicit source-enabled diagnosis; excluded from binary-only blind evaluation')
     args = parser.parse_args()
-    export(args.case, args.destination, args.symptom, args.round, args.remote)
+    export(args.case, args.destination, args.symptom, args.round, args.remote, args.include_source)

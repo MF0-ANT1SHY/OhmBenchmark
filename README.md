@@ -43,8 +43,10 @@ python3 tools/export_agent_data.py browser_eager_history_load /tmp/diagnosis-app
   --symptom '启动浏览器时响应较慢'
 ```
 
-The export contains only the captured unfixed package, its business source archive
-(no git history), neutral UI workload/standalone `reproduce.py`, symptom and app-scoped system report. Run
+The default binary-only export contains the captured unfixed package, neutral UI
+workload/standalone `reproduce.py`, symptom and app-scoped system report. Source
+is excluded; use `--include-source` only for separately identified source-enabled
+diagnosis (the archive excludes git history). Run
 `python3 reproduce.py` in a prepared diagnosis environment with `hdc` available. The
 device JSON reporter does not reliably honor `--pids`; this exporter explicitly
 filters processes, threads and unreferenced symbols/libraries and recomputes

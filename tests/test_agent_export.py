@@ -2,13 +2,46 @@ import copy
 import ast
 import sys
 import unittest
+import tempfile
+import json
+import hashlib
+from unittest.mock import patch
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from export_agent_data import app_report,reproduction_script
+from export_agent_data import app_report,reproduction_script,export
 
 
 class AppReportTests(unittest.TestCase):
+    def test_binary_only_export_has_no_source_or_evaluator_files(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);cid='private-case'
+            (root/'tools').mkdir()
+            (root/'tools/ui_driver.py').write_text((Path(__file__).resolve().parents[1]/'tools/ui_driver.py').read_text())
+            folder=root/'artifacts/clean'/cid/'unfixed';folder.mkdir(parents=True)
+            case_dir=root/'cases'/cid;case_dir.mkdir(parents=True)
+            def put(path,data):path.write_text(json.dumps(data))
+            package=b'package';digest=hashlib.sha256(package).hexdigest()
+            (folder/'app-export.hap').write_bytes(package)
+            put(case_dir/'workload.json',{'description':'private-case','setup':[],'measured':[],'verify':[]})
+            put(case_dir/'case.json',{'host_app':{'local_path':'repo','bundle_name':'app.bundle'},
+                                     'testcase':{'workload':'workload.json'}})
+            put(folder/'build.json',{'source':{'tree':'tree','passed':True}})
+            put(folder/'sign.json',{'status':'PASS','audit':{'passed':True,'sha256':digest}})
+            capture=folder/'cpu-captures/round-1';capture.mkdir(parents=True)
+            put(capture/'capture.json',{'status':'CAPTURED','signed_sha256':digest,'pids':[10],
+                                       'plan_sha256':hashlib.sha256((case_dir/'workload.json').read_bytes()).hexdigest()})
+            put(capture/'report.json',self.report())
+            with patch('export_agent_data.ROOT',root),patch('export_agent_data.app_ref',return_value='ref'),\
+                    patch('export_agent_data.subprocess.check_output',return_value='tree\n'),\
+                    patch('export_agent_data.subprocess.run') as archive:
+                destination=root/'export'
+                export(cid,destination,'slow launch',1)
+                archive.assert_not_called()
+            self.assertEqual({p.name for p in destination.iterdir()},
+                             {'app.hap','workload.json','reproduce.py','profile.json','symptom.txt'})
+            self.assertNotIn('private-case',(destination/'workload.json').read_text())
+
     def test_reproduction_entrypoint_has_no_evaluator_or_profiler_dependencies(self):
         source=reproduction_script()
         parsed=ast.parse(source)
