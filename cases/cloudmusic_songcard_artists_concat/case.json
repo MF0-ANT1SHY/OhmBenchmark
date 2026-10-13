@@ -41,7 +41,7 @@
       "htrace",
       "hiperf"
     ],
-    "step_duration_s": 35,
+    "step_duration_s": 60,
     "rounds": 3,
     "outputs": [
       "htrace/trace.htrace",
@@ -54,11 +54,25 @@
   },
   "test_oracle": {
     "metric": "hiperf_instructions",
-    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "definition": "Sampled retired-instruction period sum (hw-instructions) attributed to the app process in the complete externally driven measured window.",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "pending_clean_measurement",
-      "note": "Legacy instrumented measurements do not validate these business-only builds."
+      "status": "measured_clean_failed",
+      "metric": "hiperf_instructions",
+      "unfixed": [
+        4387898960,
+        4432927262,
+        4465272396
+      ],
+      "fixed": [
+        4363734492,
+        4400388212,
+        4477160107
+      ],
+      "median_ratio": 1.0073945862120222,
+      "rounds_per_variant": 3,
+      "legacy_evidence_reused": false,
+      "note": "Clean captures are valid, but the required 1.2x performance improvement is not met; this case is not accepted."
     },
     "mechanism_oracle": {
       "metric": "row_appear_cpu_overhead",
@@ -100,8 +114,8 @@
   },
   "clean_validation": {
     "policy": "no_app_injection",
-    "workload_validation": "pending",
-    "performance_validation": "pending",
+    "workload_validation": "verified",
+    "performance_validation": "failed",
     "variants": {
       "unfixed": {
         "ref": "clean-app/cloudmusic_songcard_artists_concat/unfixed",
@@ -149,6 +163,94 @@
           "foreground_bundle": "cc.chenlvin.cloudmusic",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "cloudmusic_songcard_artists_concat",
+          "variant": "unfixed",
+          "signed_sha256": "2b564840358e206ab42e656128e5e2f52dc6955ec1dc39c95f636dfefebd6cb3",
+          "plan_sha256": "4f074cf59278ad692bf6143baeeea551250fa369ed627f9065ec1f6e6f80e268",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+            "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+            "songs": 10000,
+            "artist_count": 12,
+            "base_url": "http://127.0.0.1:18490",
+            "service_pid": 53975,
+            "service_start_ticks": 1980273,
+            "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+          },
+          "phase_elapsed_s": {
+            "setup": 31.386378733997844,
+            "measured": 35.990595694998774,
+            "verify": 11.415516863999073
+          },
+          "fixture_after": {
+            "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+            "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+            "songs": 10000,
+            "artist_count": 12,
+            "base_url": "http://127.0.0.1:18490",
+            "service_pid": 53975,
+            "service_start_ticks": 1980273,
+            "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+          },
+          "functional_check": "normal song titles and artist lines match the ordinary music catalogue",
+          "observed_titles": [
+            "Track 22",
+            "Track 23",
+            "Track 24",
+            "Track 25",
+            "Track 26",
+            "Track 27",
+            "Track 28",
+            "Track 29",
+            "Track 30"
+          ],
+          "capture_duration_required_s": 41
+        },
+        "performance": {
+          "status": "FAIL",
+          "metric": "hiperf_instructions",
+          "rounds": 3,
+          "samples": [
+            4387898960,
+            4432927262,
+            4465272396
+          ],
+          "median": 4432927262,
+          "paired_ratios": [
+            1.0055375660559323,
+            1.0073945862120222,
+            0.9973448099429337
+          ],
+          "median_ratio": 1.0073945862120222,
+          "plan_sha256": "4f074cf59278ad692bf6143baeeea551250fa369ed627f9065ec1f6e6f80e268",
+          "signed_sha256": "2b564840358e206ab42e656128e5e2f52dc6955ec1dc39c95f636dfefebd6cb3",
+          "fixture_sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "aa5099825e531bc437da33be774c9ced89d17e7855b14c56488909fd5817cd1d",
+              "app_samples": 8066,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_songcard_artists_concat/unfixed/cpu-captures/round-1"
+            },
+            {
+              "round": 2,
+              "report_sha256": "defdf951a87c2f477e14cc633ce4c50040550ca7208b57d1bc1a3e5788e0b7f8",
+              "app_samples": 8462,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_songcard_artists_concat/unfixed/cpu-captures/round-2"
+            },
+            {
+              "round": 3,
+              "report_sha256": "eeb48cd9c338d3e79be28084aba4fbc81ebcb00bef5d15d06019368cd050a153",
+              "app_samples": 8295,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_songcard_artists_concat/unfixed/cpu-captures/round-3"
+            }
+          ],
+          "legacy_evidence_reused": false
         }
       },
       "fixed": {
@@ -197,6 +299,94 @@
           "foreground_bundle": "cc.chenlvin.cloudmusic",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "cloudmusic_songcard_artists_concat",
+          "variant": "fixed",
+          "signed_sha256": "21253d8a97af9cfd2685897d21f80d733a11a70d8bceea580fc3784abd483958",
+          "plan_sha256": "4f074cf59278ad692bf6143baeeea551250fa369ed627f9065ec1f6e6f80e268",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+            "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+            "songs": 10000,
+            "artist_count": 12,
+            "base_url": "http://127.0.0.1:18490",
+            "service_pid": 53975,
+            "service_start_ticks": 1980273,
+            "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+          },
+          "phase_elapsed_s": {
+            "setup": 32.08918041499783,
+            "measured": 36.814878836998105,
+            "verify": 11.395180432002235
+          },
+          "fixture_after": {
+            "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+            "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+            "songs": 10000,
+            "artist_count": 12,
+            "base_url": "http://127.0.0.1:18490",
+            "service_pid": 53975,
+            "service_start_ticks": 1980273,
+            "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+          },
+          "functional_check": "normal song titles and artist lines match the ordinary music catalogue",
+          "observed_titles": [
+            "Track 22",
+            "Track 23",
+            "Track 24",
+            "Track 25",
+            "Track 26",
+            "Track 27",
+            "Track 28",
+            "Track 29",
+            "Track 30"
+          ],
+          "capture_duration_required_s": 42
+        },
+        "performance": {
+          "status": "FAIL",
+          "metric": "hiperf_instructions",
+          "rounds": 3,
+          "samples": [
+            4363734492,
+            4400388212,
+            4477160107
+          ],
+          "median": 4400388212,
+          "paired_ratios": [
+            1.0055375660559323,
+            1.0073945862120222,
+            0.9973448099429337
+          ],
+          "median_ratio": 1.0073945862120222,
+          "plan_sha256": "4f074cf59278ad692bf6143baeeea551250fa369ed627f9065ec1f6e6f80e268",
+          "signed_sha256": "21253d8a97af9cfd2685897d21f80d733a11a70d8bceea580fc3784abd483958",
+          "fixture_sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "7eeadaa2bcaec334e9be6a6071977e6342834992773eaac6c2b6af6529fa8601",
+              "app_samples": 8248,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_songcard_artists_concat/fixed/cpu-captures/round-1"
+            },
+            {
+              "round": 2,
+              "report_sha256": "aaf1286d2d9b076743e7d71a1b92b01e5fd57faa99c6dfee398f2c5466cfd12c",
+              "app_samples": 8244,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_songcard_artists_concat/fixed/cpu-captures/round-2"
+            },
+            {
+              "round": 3,
+              "report_sha256": "540b470f8591a62fdea12bac14e350d35ae3d3a633dc6d7bfa1b1768a1366d1c",
+              "app_samples": 8426,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_songcard_artists_concat/fixed/cpu-captures/round-3"
+            }
+          ],
+          "legacy_evidence_reused": false
         }
       }
     }
