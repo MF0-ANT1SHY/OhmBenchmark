@@ -1,0 +1,20 @@
+{
+  "status": "isolated_business_fix_candidate",
+  "performance_verified": false,
+  "live_haps_unchanged": true,
+  "base_ref": "clean-app-v2/sheafreader_extract_tag_tolowercase/fixed",
+  "source_path": "entry/src/main/ets/utils/FeedParser.ets",
+  "base_source_sha256": "7e512f79f117934bec0d4b5dec79d650b779fb84066de9e0a7b3eb8d6683bb4e",
+  "candidate_source_sha256": "34e844a1ca70e2720a9c0e29927eb56c48be790f2441dadd30dfe0f9f4b79ee9",
+  "patch": "hosts_patches/sheafreader_native_tag_search.candidate.patch",
+  "patch_sha256": "cdba9d171c0faa1e1c5fb88656e1e9bbdec3add12aa0795089c7d0817f4b032b",
+  "functional_checks": {
+    "extraction_comparisons": 2011,
+    "ordinary_feeds": 10,
+    "ordinary_articles": 1000,
+    "full_parse_equal": true,
+    "performance_verified": false
+  },
+  "runner": "tools/verify_reader_parser_candidate.js",
+  "scope": "Native marker searches replace full-fragment regexp scans during tag and CDATA extraction. No evaluator code is added to the application. Host functional equivalence does not substitute for an audited HAP or device performance trials."
+}
