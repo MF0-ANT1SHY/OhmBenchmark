@@ -22,11 +22,12 @@ from bundled_audio_fixture import for_case as packaged_audio
 from playback_progress import check_progress
 from install_search_history_fixture import install as install_search_history
 from music_service_fixture import prepare as prepare_music_service, same_instance
+from bundled_font_fixture import for_case as packaged_fonts
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, search_history_fixture=None, preferences_path=None, music_service=False):
+def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, search_history_fixture=None, preferences_path=None, music_service=False, bundled_fonts=False):
     cid = case['id']
     folder = ROOT / 'artifacts/clean' / cid / variant
     signed = json.loads((folder / 'sign.json').read_text())
@@ -35,10 +36,12 @@ def validate(remote, case, variant, browser_fixture=None, local_song_fixture=Non
     result = {'case':cid, 'variant':variant, 'signed_sha256':signed['audit']['sha256'],
               'plan_sha256':plan_hash, 'status':'FAIL', 'performance_verified':False}
     try:
-        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture,search_history_fixture))+int(bundled_audio)+int(music_service)>1:
+        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture,search_history_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
             raise ValueError('only one fixture may be supplied')
         if bundled_audio:
             result['fixture']=packaged_audio(ROOT,case,variant,signed)
+        if bundled_fonts:
+            result['fixture']=packaged_fonts(ROOT,case,variant,signed)
         if music_service:
             result['fixture']=prepare_music_service(remote,case)
         if local_song_fixture and case['host_app']['bundle_name']!='cc.chenlvin.cloudmusic':
@@ -185,6 +188,7 @@ def main():
     fixtures.add_argument('--bundled-audio',action='store_true')
     fixtures.add_argument('--search-history-fixture',type=Path)
     fixtures.add_argument('--music-service',action='store_true')
+    fixtures.add_argument('--bundled-fonts',action='store_true')
     parser.add_argument('--preferences-path',help='actual initialized historyStore file; discover through normal app use')
     args=parser.parse_args()
     remote=Remote(args.remote)
@@ -193,7 +197,7 @@ def main():
     for cid in args.cases:
         case=json.loads((ROOT/'cases'/cid/'case.json').read_text())
         for variant in ('unfixed','fixed'):
-            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.search_history_fixture,args.preferences_path,args.music_service)
+            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.search_history_fixture,args.preferences_path,args.music_service,args.bundled_fonts)
     return int(failed)
 
 

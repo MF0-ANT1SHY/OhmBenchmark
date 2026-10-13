@@ -72,6 +72,13 @@ accessibility snapshots must show the app's slider advancing with elapsed time;
 the validator and each CPU capture check this, and acceptance recomputes the
 progress proof from raw snapshots. A visible song title alone is not sufficient.
 
+SepWeather font preparation uses `--bundled-fonts`, which hashes the real TTF/OTF
+assets from the audited HAP and requires the two fonts registered by MainPage.
+`validation/sepweather-bundled-fonts.json` proves identical packaged fonts across
+the pair, not repeated page creation or a CPU improvement. The current launch
+flags still need device lifecycle verification; a visible AddAddress button alone
+cannot prove MainPage was reconstructed in the same process.
+
 CloudMusic online-list preparation uses the existing server configuration UI and
 ordinary music API responses from `tools/cloudmusic_data_service.py`. The
 settings plan is `tools/fixtures/cloudmusic-api-setup.workload.json`, using the

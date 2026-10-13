@@ -1,0 +1,36 @@
+{
+  "case": "sepweather_font_register_per_page",
+  "assets_identical": true,
+  "performance_verified": false,
+  "scope": "actual audited packaged font identity only; normal page reconstruction remains unverified",
+  "results": {
+    "unfixed": {
+      "kind": "bundled business fonts",
+      "sha256": "bdf0f909288b29b6a76e84cc682599366efccedd489e72cc398b737f29f4022b",
+      "fonts": {
+        "resources/rawfile/DINCOROS-Black.ttf": "efde0708facc851b87fe8ba73d366e24c3a8694f878b09fe05aa883b6c9bd280",
+        "resources/rawfile/DINCOROS-Bold.ttf": "370f0bef24f4c0a2af52c50af58f6585a59b2b303175d580a82e6c9d4f5af321",
+        "resources/rawfile/DINCOROS-Regular.ttf": "efa4366d7c7e9a3dfb37ef513a50ccb44c241a84f09438b56479082b87220cbf",
+        "resources/rawfile/iconfont.ttf": "e33f7722988dfb8fb7c0cdfd27b1ed1473157045992cee12530b3d44107f4899"
+      },
+      "registered_font_paths": [
+        "resources/rawfile/DINCOROS-Regular.ttf",
+        "resources/rawfile/iconfont.ttf"
+      ]
+    },
+    "fixed": {
+      "kind": "bundled business fonts",
+      "sha256": "bdf0f909288b29b6a76e84cc682599366efccedd489e72cc398b737f29f4022b",
+      "fonts": {
+        "resources/rawfile/DINCOROS-Black.ttf": "efde0708facc851b87fe8ba73d366e24c3a8694f878b09fe05aa883b6c9bd280",
+        "resources/rawfile/DINCOROS-Bold.ttf": "370f0bef24f4c0a2af52c50af58f6585a59b2b303175d580a82e6c9d4f5af321",
+        "resources/rawfile/DINCOROS-Regular.ttf": "efa4366d7c7e9a3dfb37ef513a50ccb44c241a84f09438b56479082b87220cbf",
+        "resources/rawfile/iconfont.ttf": "e33f7722988dfb8fb7c0cdfd27b1ed1473157045992cee12530b3d44107f4899"
+      },
+      "registered_font_paths": [
+        "resources/rawfile/DINCOROS-Regular.ttf",
+        "resources/rawfile/iconfont.ttf"
+      ]
+    }
+  }
+}

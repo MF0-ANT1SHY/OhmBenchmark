@@ -25,17 +25,21 @@ def identify(hap):
     return {'kind':'bundled business audio','sha256':digest,'audio_files':len(files)}
 
 
-def for_case(root,case,variant,sign):
-    if case['id']!='ytmusic_current_playing_timeupdate':
-        raise ValueError('bundled audio fixture currently supports the actual YTMusic playback case only')
+def audited_hap(root,case,variant,sign):
     folder=root/'artifacts/clean'/case['id']/variant
     build=json.loads((folder/'build.json').read_text())
     if sign['status']!='PASS' or not sign['audit']['passed'] or build['status']!='PASS' or not build['hap']['passed'] or sign['unsigned_sha256']!=build['hap']['sha256']:
-        raise ValueError('audio package provenance does not match the signed build')
+        raise ValueError('resource package provenance does not match the signed build')
     hap=folder/'app-unsigned.hap'
     digest=hashlib.sha256()
     with hap.open('rb') as stream:
         while block:=stream.read(1024*1024):digest.update(block)
     if digest.hexdigest()!=build['hap']['sha256']:
-        raise ValueError('audio package changed since build audit')
-    return identify(hap)
+        raise ValueError('resource package changed since build audit')
+    return hap
+
+
+def for_case(root,case,variant,sign):
+    if case['id']!='ytmusic_current_playing_timeupdate':
+        raise ValueError('bundled audio fixture currently supports the actual YTMusic playback case only')
+    return identify(audited_hap(root,case,variant,sign))
