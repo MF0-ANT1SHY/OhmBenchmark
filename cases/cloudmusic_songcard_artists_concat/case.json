@@ -136,6 +136,19 @@
             "ohos.permission.SYSTEM_FLOAT_WINDOW"
           ],
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "cloudmusic_songcard_artists_concat",
+          "variant": "unfixed",
+          "signed_sha256": "2b564840358e206ab42e656128e5e2f52dc6955ec1dc39c95f636dfefebd6cb3",
+          "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_songcard_artists_concat/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            39503
+          ],
+          "foreground_bundle": "cc.chenlvin.cloudmusic",
+          "status": "PASS",
+          "performance_verified": false
         }
       },
       "fixed": {
@@ -171,6 +184,19 @@
             "ohos.permission.SYSTEM_FLOAT_WINDOW"
           ],
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "cloudmusic_songcard_artists_concat",
+          "variant": "fixed",
+          "signed_sha256": "21253d8a97af9cfd2685897d21f80d733a11a70d8bceea580fc3784abd483958",
+          "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_songcard_artists_concat/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            39885
+          ],
+          "foreground_bundle": "cc.chenlvin.cloudmusic",
+          "status": "PASS",
+          "performance_verified": false
         }
       }
     }

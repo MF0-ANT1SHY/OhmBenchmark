@@ -147,6 +147,28 @@
           "foreground_bundle": "com.example.nanvision",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "browser_history_list_foreach",
+          "variant": "unfixed",
+          "signed_sha256": "6311f1cea71ed49307bc022f80baec3f4ed57d98700b5a1f34c0952501afe2dd",
+          "plan_sha256": "d5878d439de81ad10f05b03bf0d6774f55e0c7c36b48a594d708212173da8131",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "bundle": "com.example.nanvision",
+            "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
+            "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791890041847460899/Histories.db",
+            "fixture_tables": 61,
+            "integrity_check": "ok",
+            "sha256": "3ae759987f895d18c9166a34ba924c2634a031dd0b6da4dc050f331ce5f70fbb"
+          },
+          "phase_elapsed_s": {
+            "setup": 3.7257210980005766,
+            "measured": 33.56836375799867,
+            "verify": 4.096643913000662
+          },
+          "capture_duration_required_s": 39
         }
       },
       "fixed": {

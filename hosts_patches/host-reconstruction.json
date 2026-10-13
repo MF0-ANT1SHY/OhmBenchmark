@@ -172,43 +172,93 @@
       "case_tags": {
         "case/sheafreader_article_list_foreach/fixed": {
           "state": "perf: render the article list and card grid with LazyForEach over a data source so off-screen articles are not built eagerly",
-          "tree": "012f18c7b80113b0119917ca97a5d6a6536650f7"
+          "tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
+          "app_tree": "ddd1a920cb12be31fb13fb73950066705ff65cf0",
+          "app_ref": "clean-app-v2/sheafreader_article_list_foreach/fixed",
+          "production_patches": [
+            "hosts_patches/sheafreader/production-phone-support.patch"
+          ]
         },
         "case/sheafreader_article_list_foreach/unfixed": {
           "state": "perf: render the article list view eagerly through Scroll and Column so every article card builds upfront",
-          "tree": "dfe283c40ad1c8401dd37201e85dccf945c2513c"
+          "tree": "dfe283c40ad1c8401dd37201e85dccf945c2513c",
+          "app_tree": "291205d3edc3fe744204764ded4fa70e8ed0cff0",
+          "app_ref": "clean-app-v2/sheafreader_article_list_foreach/unfixed",
+          "production_patches": [
+            "hosts_patches/sheafreader/production-phone-support.patch"
+          ]
         },
         "case/sheafreader_extract_tag_tolowercase/fixed": {
           "state": "perf: locate closing tags with a case-insensitive regex instead of lowercasing a copy of the whole fragment per extracted tag",
-          "tree": "914c45be73bbdd599cf09029098f0ea6bff961e4"
+          "tree": "914c45be73bbdd599cf09029098f0ea6bff961e4",
+          "app_tree": "a77feda14111774305d61f9942ec0a8d91cff824",
+          "app_ref": "clean-app-v2/sheafreader_extract_tag_tolowercase/fixed",
+          "production_patches": [
+            "hosts_patches/sheafreader/production-phone-support.patch"
+          ]
         },
         "case/sheafreader_extract_tag_tolowercase/unfixed": {
           "state": "upstream-base:e04ef65",
-          "tree": "afc2ecbc7de30ebdf0580018ab615aba7590a3de"
+          "tree": "afc2ecbc7de30ebdf0580018ab615aba7590a3de",
+          "app_tree": "fe0da4cdae56960086e28000e0a08dc4d02f4a04",
+          "app_ref": "clean-app-v2/sheafreader_extract_tag_tolowercase/unfixed",
+          "production_patches": [
+            "hosts_patches/sheafreader/production-phone-support.patch"
+          ]
         },
         "case/sheafreader_insert_duplicate_exception/fixed": {
           "state": "perf: let SQLite ignore duplicate article inserts via conflict resolution instead of throwing and catching a constraint exception per existing row",
-          "tree": "7ea7f7cfd78e0f1a97b76a48171a643c59f4892e"
+          "tree": "7ea7f7cfd78e0f1a97b76a48171a643c59f4892e",
+          "app_tree": "0b54a503d5bfbd066f3f85caeb7403ad3e5adf0e",
+          "app_ref": "clean-app-v2/sheafreader_insert_duplicate_exception/fixed",
+          "production_patches": [
+            "hosts_patches/sheafreader/production-phone-support.patch"
+          ]
         },
         "case/sheafreader_insert_duplicate_exception/unfixed": {
           "state": "perf: fetch all feed unread counts with one GROUP BY query instead of one COUNT per feed",
-          "tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40"
+          "tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
+          "app_tree": "88948fc3c60907d9f0a25cbb28a16a4b0d4e5ecb",
+          "app_ref": "clean-app-v2/sheafreader_insert_duplicate_exception/unfixed",
+          "production_patches": [
+            "hosts_patches/sheafreader/production-phone-support.patch"
+          ]
         },
         "case/sheafreader_refresh_feeds_sequential/fixed": {
           "state": "perf: refresh feeds with bounded concurrency (4 workers) instead of fetching every source strictly sequentially",
-          "tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf"
+          "tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
+          "app_tree": "fe04f28b6470e2ca7da74b154d6656a39190d01d",
+          "app_ref": "clean-app-v2/sheafreader_refresh_feeds_sequential/fixed",
+          "production_patches": [
+            "hosts_patches/sheafreader/production-phone-support.patch"
+          ]
         },
         "case/sheafreader_refresh_feeds_sequential/unfixed": {
           "state": "perf: render the article list and card grid with LazyForEach over a data source so off-screen articles are not built eagerly",
-          "tree": "012f18c7b80113b0119917ca97a5d6a6536650f7"
+          "tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
+          "app_tree": "ddd1a920cb12be31fb13fb73950066705ff65cf0",
+          "app_ref": "clean-app-v2/sheafreader_refresh_feeds_sequential/unfixed",
+          "production_patches": [
+            "hosts_patches/sheafreader/production-phone-support.patch"
+          ]
         },
         "case/sheafreader_unread_counts_n_plus_1/fixed": {
           "state": "perf: fetch all feed unread counts with one GROUP BY query instead of one COUNT per feed",
-          "tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40"
+          "tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
+          "app_tree": "88948fc3c60907d9f0a25cbb28a16a4b0d4e5ecb",
+          "app_ref": "clean-app-v2/sheafreader_unread_counts_n_plus_1/fixed",
+          "production_patches": [
+            "hosts_patches/sheafreader/production-phone-support.patch"
+          ]
         },
         "case/sheafreader_unread_counts_n_plus_1/unfixed": {
           "state": "perf: refresh feeds with bounded concurrency (4 workers) instead of fetching every source strictly sequentially",
-          "tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf"
+          "tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
+          "app_tree": "fe04f28b6470e2ca7da74b154d6656a39190d01d",
+          "app_ref": "clean-app-v2/sheafreader_unread_counts_n_plus_1/unfixed",
+          "production_patches": [
+            "hosts_patches/sheafreader/production-phone-support.patch"
+          ]
         }
       }
     },

@@ -17,8 +17,8 @@
     "组件创建",
     "页面切换"
   ],
-  "unfixed_commit": "759b2b81f8436fc20ea56985fdbc6e6b57b1faa9",
-  "fixed_commit": "c3e7b111cf83050b6b6e48c8b05875efa01bd3ae",
+  "unfixed_commit": "35e2a6740cb75efa1f0bb8db6fa9da952282d9b2",
+  "fixed_commit": "4e787e43a5939a9cb20130e84a5936affe3e6dbb",
   "fix_summary": "Both the list and grid render via LazyForEach over an IDataSource kept in sync with the store, so rows are created on demand as they enter the viewport.",
   "build": {
     "mode": "release",
@@ -105,14 +105,16 @@
     "performance_validation": "pending",
     "variants": {
       "unfixed": {
-        "ref": "clean-app/sheafreader_article_list_foreach/unfixed",
-        "commit": "759b2b81f8436fc20ea56985fdbc6e6b57b1faa9",
-        "tree": "dfe283c40ad1c8401dd37201e85dccf945c2513c",
+        "ref": "clean-app-v2/sheafreader_article_list_foreach/unfixed",
+        "commit": "35e2a6740cb75efa1f0bb8db6fa9da952282d9b2",
+        "tree": "291205d3edc3fe744204764ded4fa70e8ed0cff0",
         "business_base_tree": "dfe283c40ad1c8401dd37201e85dccf945c2513c",
-        "production_patches": [],
-        "unsigned_sha256": "a509690790e7e560395c25b06f2fac2cae2ae9ba14a01aecfb41d61ca9e7392e",
+        "production_patches": [
+          "hosts_patches/sheafreader/production-phone-support.patch"
+        ],
+        "unsigned_sha256": "fe8e45af23c444c3739b805adc19f2833bcee9dae358868b86b20ac34608ada7",
         "bytecode_audit": {
-          "sha256": "a509690790e7e560395c25b06f2fac2cae2ae9ba14a01aecfb41d61ca9e7392e",
+          "sha256": "fe8e45af23c444c3739b805adc19f2833bcee9dae358868b86b20ac34608ada7",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -123,28 +125,31 @@
         "sign": {
           "case": "sheafreader_article_list_foreach",
           "variant": "unfixed",
-          "unsigned_sha256": "a509690790e7e560395c25b06f2fac2cae2ae9ba14a01aecfb41d61ca9e7392e",
+          "unsigned_sha256": "fe8e45af23c444c3739b805adc19f2833bcee9dae358868b86b20ac34608ada7",
           "signed_hap": "/home/research/ohm-clean/sheafreader_article_list_foreach/unfixed/app.hap",
           "audit": {
-            "sha256": "1a486de4353db0fa573f986d8370b18826be06ed16be660f8afcc83422c3e8b1",
+            "sha256": "72b95a0c7415f7e675f19cbe74a83d95820cf542dc4a9f28fe590eb9696e5250",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
             "findings": [],
             "passed": true
           },
+          "allowed_acls": [],
           "status": "PASS"
         }
       },
       "fixed": {
-        "ref": "clean-app/sheafreader_article_list_foreach/fixed",
-        "commit": "c3e7b111cf83050b6b6e48c8b05875efa01bd3ae",
-        "tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
+        "ref": "clean-app-v2/sheafreader_article_list_foreach/fixed",
+        "commit": "4e787e43a5939a9cb20130e84a5936affe3e6dbb",
+        "tree": "ddd1a920cb12be31fb13fb73950066705ff65cf0",
         "business_base_tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
-        "production_patches": [],
-        "unsigned_sha256": "b67d05a4e776f1d70d1e55032ac6eba5ba67e92b4d110433c2e5ed7413cab848",
+        "production_patches": [
+          "hosts_patches/sheafreader/production-phone-support.patch"
+        ],
+        "unsigned_sha256": "1852850ec8d0db976946ea409dcf723216bf44c9de87f17897578ab27985c382",
         "bytecode_audit": {
-          "sha256": "b67d05a4e776f1d70d1e55032ac6eba5ba67e92b4d110433c2e5ed7413cab848",
+          "sha256": "1852850ec8d0db976946ea409dcf723216bf44c9de87f17897578ab27985c382",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -155,16 +160,17 @@
         "sign": {
           "case": "sheafreader_article_list_foreach",
           "variant": "fixed",
-          "unsigned_sha256": "b67d05a4e776f1d70d1e55032ac6eba5ba67e92b4d110433c2e5ed7413cab848",
+          "unsigned_sha256": "1852850ec8d0db976946ea409dcf723216bf44c9de87f17897578ab27985c382",
           "signed_hap": "/home/research/ohm-clean/sheafreader_article_list_foreach/fixed/app.hap",
           "audit": {
-            "sha256": "ba1e074a3f089f0ee521618bf3223a9dd54c8e5b4bb71420648ea6eb517c4e9c",
+            "sha256": "71444bd5659f1031a7eab0ded76489b21a84bc56f24a2e7ae60a399b87cb99b8",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
             "findings": [],
             "passed": true
           },
+          "allowed_acls": [],
           "status": "PASS"
         }
       }

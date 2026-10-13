@@ -16,8 +16,8 @@
     "数据库读取",
     "网络结果渲染"
   ],
-  "unfixed_commit": "e04ef65673a7b3a0da2de85fb7b954663232dec7",
-  "fixed_commit": "f62858e1ca337cbc1d128cec51917d792c3f4c68",
+  "unfixed_commit": "79cacfd4cbb6bbeb9edaa96ff88c209902a94ab1",
+  "fixed_commit": "0bf6166abc0377f24de9205e8a4d38a0686f911d",
   "fix_summary": "The closing tag is located with a case-insensitive regex over the remaining substring, eliminating the per-tag lowercase copy while preserving case-insensitive matching semantics.",
   "build": {
     "mode": "release",
@@ -104,14 +104,16 @@
     "performance_validation": "pending",
     "variants": {
       "unfixed": {
-        "ref": "clean-app/sheafreader_extract_tag_tolowercase/unfixed",
-        "commit": "e04ef65673a7b3a0da2de85fb7b954663232dec7",
-        "tree": "afc2ecbc7de30ebdf0580018ab615aba7590a3de",
+        "ref": "clean-app-v2/sheafreader_extract_tag_tolowercase/unfixed",
+        "commit": "79cacfd4cbb6bbeb9edaa96ff88c209902a94ab1",
+        "tree": "fe0da4cdae56960086e28000e0a08dc4d02f4a04",
         "business_base_tree": "afc2ecbc7de30ebdf0580018ab615aba7590a3de",
-        "production_patches": [],
-        "unsigned_sha256": "8af0ad8aa458066f5ad9447eb323183f967849f55fd673ab4010b74badc0876d",
+        "production_patches": [
+          "hosts_patches/sheafreader/production-phone-support.patch"
+        ],
+        "unsigned_sha256": "be83d4a5203a04d189b40bb6f78cfe85e8b0cf744ba602a571ccbe602aedd574",
         "bytecode_audit": {
-          "sha256": "8af0ad8aa458066f5ad9447eb323183f967849f55fd673ab4010b74badc0876d",
+          "sha256": "be83d4a5203a04d189b40bb6f78cfe85e8b0cf744ba602a571ccbe602aedd574",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -122,28 +124,31 @@
         "sign": {
           "case": "sheafreader_extract_tag_tolowercase",
           "variant": "unfixed",
-          "unsigned_sha256": "8af0ad8aa458066f5ad9447eb323183f967849f55fd673ab4010b74badc0876d",
+          "unsigned_sha256": "be83d4a5203a04d189b40bb6f78cfe85e8b0cf744ba602a571ccbe602aedd574",
           "signed_hap": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/app.hap",
           "audit": {
-            "sha256": "d1c7ceb0deb65c5e8827a9061f55c20f05eaaa6c5765d91911d5691412202a0b",
+            "sha256": "81b0a97950c54d1672e4fd16de404ffcedfa8c85b10372d39b33d128fbf94da5",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
             "findings": [],
             "passed": true
           },
+          "allowed_acls": [],
           "status": "PASS"
         }
       },
       "fixed": {
-        "ref": "clean-app/sheafreader_extract_tag_tolowercase/fixed",
-        "commit": "f62858e1ca337cbc1d128cec51917d792c3f4c68",
-        "tree": "914c45be73bbdd599cf09029098f0ea6bff961e4",
+        "ref": "clean-app-v2/sheafreader_extract_tag_tolowercase/fixed",
+        "commit": "0bf6166abc0377f24de9205e8a4d38a0686f911d",
+        "tree": "a77feda14111774305d61f9942ec0a8d91cff824",
         "business_base_tree": "914c45be73bbdd599cf09029098f0ea6bff961e4",
-        "production_patches": [],
-        "unsigned_sha256": "b11411fb0ca91d5cab14f1a69d1b2f677f5399d76e0af1397e5ad3b746dfc55b",
+        "production_patches": [
+          "hosts_patches/sheafreader/production-phone-support.patch"
+        ],
+        "unsigned_sha256": "3c9849bf882f99b3803da701fa3ca568091bb650e4740db680e543c09ef44aea",
         "bytecode_audit": {
-          "sha256": "b11411fb0ca91d5cab14f1a69d1b2f677f5399d76e0af1397e5ad3b746dfc55b",
+          "sha256": "3c9849bf882f99b3803da701fa3ca568091bb650e4740db680e543c09ef44aea",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -154,16 +159,17 @@
         "sign": {
           "case": "sheafreader_extract_tag_tolowercase",
           "variant": "fixed",
-          "unsigned_sha256": "b11411fb0ca91d5cab14f1a69d1b2f677f5399d76e0af1397e5ad3b746dfc55b",
+          "unsigned_sha256": "3c9849bf882f99b3803da701fa3ca568091bb650e4740db680e543c09ef44aea",
           "signed_hap": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/app.hap",
           "audit": {
-            "sha256": "3a89e0372d0ab0ead083a2a9b5ba6ef70b89609edeeea917e82b54b6e8653b5f",
+            "sha256": "03ad86646c33e9321420635c9c85bbc7b9294483111c8b5ba50d470860969a5c",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
             "findings": [],
             "passed": true
           },
+          "allowed_acls": [],
           "status": "PASS"
         }
       }

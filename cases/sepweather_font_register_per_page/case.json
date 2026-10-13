@@ -129,6 +129,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "sepweather_font_register_per_page",
+          "variant": "unfixed",
+          "signed_sha256": "effefb72e7c738ff6714ddbe303aa54a3cb9b59d6f31c12ca57146442e625d9d",
+          "install": "[Info]App install path:/home/research/ohm-clean/sepweather_font_register_per_page/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            46112
+          ],
+          "foreground_bundle": "cn.seayj.sepweather",
+          "status": "PASS",
+          "performance_verified": false
         }
       },
       "fixed": {
@@ -161,6 +174,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "sepweather_font_register_per_page",
+          "variant": "fixed",
+          "signed_sha256": "00fa3c507f02679f7033c3257bb9ab9afb45fdba1a87b793e446bcb6b9643ea3",
+          "install": "[Info]App install path:/home/research/ohm-clean/sepweather_font_register_per_page/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            46555
+          ],
+          "foreground_bundle": "cn.seayj.sepweather",
+          "status": "PASS",
+          "performance_verified": false
         }
       }
     }

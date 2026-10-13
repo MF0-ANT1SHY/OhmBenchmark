@@ -106,6 +106,31 @@ class UI:
             else:
                 raise ValueError(f"unsupported external action: {op}")
 
+    def profiled(self, execute, description, duration, actions):
+        """Fail after collection even when the profiler swallows action exceptions."""
+        failures, elapsed, called = [], [], []
+        def action():
+            called.append(True)
+            started = time.monotonic()
+            try:
+                self.run(actions)
+            except Exception as exc:
+                failures.append(exc)
+                raise
+            finally:
+                elapsed.append(time.monotonic() - started)
+        def launches(items):
+            return any(item['op'] == 'launch' or
+                       (item['op'] == 'repeat' and launches(item['actions'])) for item in items)
+        execute(description, duration, action, sample_all_processes=launches(actions))
+        if not called:
+            raise RuntimeError('profiler did not execute the workload')
+        if failures:
+            raise RuntimeError('measured UI workload failed') from failures[0]
+        if elapsed[0] > duration:
+            raise RuntimeError(f'workload took {elapsed[0]:.2f}s, exceeding the {duration}s capture window')
+        return elapsed[0]
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)

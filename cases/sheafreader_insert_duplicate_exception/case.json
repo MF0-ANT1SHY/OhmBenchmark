@@ -16,8 +16,8 @@
     "数据库读取",
     "网络结果渲染"
   ],
-  "unfixed_commit": "4c9b8dcdc7f230b68120fb5c7640c4cce3521a88",
-  "fixed_commit": "ba9a953d20c146d20aa26ba337ba0cee026a3693",
+  "unfixed_commit": "463c977d351fb5149557f5b966c10ca73f06c81c",
+  "fixed_commit": "5b93c09bd1c2ac01ac5154fe1f8c8b630f26a1c2",
   "fix_summary": "Inserts run with ConflictResolution.ON_CONFLICT_IGNORE so SQLite silently skips duplicates without exception overhead; behavior (only new articles stored) is unchanged.",
   "build": {
     "mode": "release",
@@ -104,14 +104,16 @@
     "performance_validation": "pending",
     "variants": {
       "unfixed": {
-        "ref": "clean-app/sheafreader_insert_duplicate_exception/unfixed",
-        "commit": "4c9b8dcdc7f230b68120fb5c7640c4cce3521a88",
-        "tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
+        "ref": "clean-app-v2/sheafreader_insert_duplicate_exception/unfixed",
+        "commit": "463c977d351fb5149557f5b966c10ca73f06c81c",
+        "tree": "88948fc3c60907d9f0a25cbb28a16a4b0d4e5ecb",
         "business_base_tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
-        "production_patches": [],
-        "unsigned_sha256": "abd062458bdc50825f9401db0dbc8d18c8520de75b1e189670e2356104248f7f",
+        "production_patches": [
+          "hosts_patches/sheafreader/production-phone-support.patch"
+        ],
+        "unsigned_sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
         "bytecode_audit": {
-          "sha256": "abd062458bdc50825f9401db0dbc8d18c8520de75b1e189670e2356104248f7f",
+          "sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -122,28 +124,31 @@
         "sign": {
           "case": "sheafreader_insert_duplicate_exception",
           "variant": "unfixed",
-          "unsigned_sha256": "abd062458bdc50825f9401db0dbc8d18c8520de75b1e189670e2356104248f7f",
+          "unsigned_sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
           "signed_hap": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/unfixed/app.hap",
           "audit": {
-            "sha256": "77f654e1e4c3eb3e04be7a8b87c6e2b55c038c1f1183eeb9b98bd70005263c6a",
+            "sha256": "1eb035fa2f86535e2c887e4c1d9a2e0c0a90d76ef88d25e9deb05d75d238fee5",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
             "findings": [],
             "passed": true
           },
+          "allowed_acls": [],
           "status": "PASS"
         }
       },
       "fixed": {
-        "ref": "clean-app/sheafreader_insert_duplicate_exception/fixed",
-        "commit": "ba9a953d20c146d20aa26ba337ba0cee026a3693",
-        "tree": "7ea7f7cfd78e0f1a97b76a48171a643c59f4892e",
+        "ref": "clean-app-v2/sheafreader_insert_duplicate_exception/fixed",
+        "commit": "5b93c09bd1c2ac01ac5154fe1f8c8b630f26a1c2",
+        "tree": "0b54a503d5bfbd066f3f85caeb7403ad3e5adf0e",
         "business_base_tree": "7ea7f7cfd78e0f1a97b76a48171a643c59f4892e",
-        "production_patches": [],
-        "unsigned_sha256": "2aee7cb3ebb5170f0cbb55aebcbddca0154ad876519468d3c102a8b0c9519f7d",
+        "production_patches": [
+          "hosts_patches/sheafreader/production-phone-support.patch"
+        ],
+        "unsigned_sha256": "dc3476540d097090e8fd86f6cc9ae03646041440e8a144ee658e4f9fcaaeba78",
         "bytecode_audit": {
-          "sha256": "2aee7cb3ebb5170f0cbb55aebcbddca0154ad876519468d3c102a8b0c9519f7d",
+          "sha256": "dc3476540d097090e8fd86f6cc9ae03646041440e8a144ee658e4f9fcaaeba78",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -154,16 +159,17 @@
         "sign": {
           "case": "sheafreader_insert_duplicate_exception",
           "variant": "fixed",
-          "unsigned_sha256": "2aee7cb3ebb5170f0cbb55aebcbddca0154ad876519468d3c102a8b0c9519f7d",
+          "unsigned_sha256": "dc3476540d097090e8fd86f6cc9ae03646041440e8a144ee658e4f9fcaaeba78",
           "signed_hap": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/fixed/app.hap",
           "audit": {
-            "sha256": "b5f4582f5fb8fb3d287f3568f43db08389d088843be2d15681d6bf6b57dd602b",
+            "sha256": "fc4694b3a0021eaac8179a8bec2077266648e30fb9b666ce12338068d47ddbfd",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
             "findings": [],
             "passed": true
           },
+          "allowed_acls": [],
           "status": "PASS"
         }
       }

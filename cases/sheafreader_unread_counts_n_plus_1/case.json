@@ -16,8 +16,8 @@
     "数据库读取",
     "状态更新"
   ],
-  "unfixed_commit": "cf4f9fb7753069103b8f994cc1f5ca31e7f170e2",
-  "fixed_commit": "4c9b8dcdc7f230b68120fb5c7640c4cce3521a88",
+  "unfixed_commit": "21b43e274476c00939eecd80a07b0a9e7501774b",
+  "fixed_commit": "463c977d351fb5149557f5b966c10ca73f06c81c",
   "fix_summary": "A single grouped query (GROUP BY feed_id over unread articles) returns all feeds' unread counts at once.",
   "build": {
     "mode": "release",
@@ -104,14 +104,16 @@
     "performance_validation": "pending",
     "variants": {
       "unfixed": {
-        "ref": "clean-app/sheafreader_unread_counts_n_plus_1/unfixed",
-        "commit": "cf4f9fb7753069103b8f994cc1f5ca31e7f170e2",
-        "tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
+        "ref": "clean-app-v2/sheafreader_unread_counts_n_plus_1/unfixed",
+        "commit": "21b43e274476c00939eecd80a07b0a9e7501774b",
+        "tree": "fe04f28b6470e2ca7da74b154d6656a39190d01d",
         "business_base_tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
-        "production_patches": [],
-        "unsigned_sha256": "cb51443b0d0c7193fc0eed9aec745d2f62a0476b3fcc7eb50e6ea89aca99128a",
+        "production_patches": [
+          "hosts_patches/sheafreader/production-phone-support.patch"
+        ],
+        "unsigned_sha256": "f6e0c79a149e386cc9b505f3b817552980e8e0a2c2a090e3937672909382dfbc",
         "bytecode_audit": {
-          "sha256": "cb51443b0d0c7193fc0eed9aec745d2f62a0476b3fcc7eb50e6ea89aca99128a",
+          "sha256": "f6e0c79a149e386cc9b505f3b817552980e8e0a2c2a090e3937672909382dfbc",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -122,28 +124,31 @@
         "sign": {
           "case": "sheafreader_unread_counts_n_plus_1",
           "variant": "unfixed",
-          "unsigned_sha256": "cb51443b0d0c7193fc0eed9aec745d2f62a0476b3fcc7eb50e6ea89aca99128a",
+          "unsigned_sha256": "f6e0c79a149e386cc9b505f3b817552980e8e0a2c2a090e3937672909382dfbc",
           "signed_hap": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/unfixed/app.hap",
           "audit": {
-            "sha256": "e1b2e668b875941c642c0ce74e21d0e38102fea1e6af493e4997a83e6b0757c0",
+            "sha256": "2e183f4ca68e575c23a5cba0edbbcddf3fd03298c23ed3e29abc65524bc0b682",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
             "findings": [],
             "passed": true
           },
+          "allowed_acls": [],
           "status": "PASS"
         }
       },
       "fixed": {
-        "ref": "clean-app/sheafreader_unread_counts_n_plus_1/fixed",
-        "commit": "4c9b8dcdc7f230b68120fb5c7640c4cce3521a88",
-        "tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
+        "ref": "clean-app-v2/sheafreader_unread_counts_n_plus_1/fixed",
+        "commit": "463c977d351fb5149557f5b966c10ca73f06c81c",
+        "tree": "88948fc3c60907d9f0a25cbb28a16a4b0d4e5ecb",
         "business_base_tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
-        "production_patches": [],
-        "unsigned_sha256": "03e8709a4ff0c3eae043f0188bd82501ba13a8ad54e05e01aa2f340e95bc294d",
+        "production_patches": [
+          "hosts_patches/sheafreader/production-phone-support.patch"
+        ],
+        "unsigned_sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
         "bytecode_audit": {
-          "sha256": "03e8709a4ff0c3eae043f0188bd82501ba13a8ad54e05e01aa2f340e95bc294d",
+          "sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -154,16 +159,17 @@
         "sign": {
           "case": "sheafreader_unread_counts_n_plus_1",
           "variant": "fixed",
-          "unsigned_sha256": "03e8709a4ff0c3eae043f0188bd82501ba13a8ad54e05e01aa2f340e95bc294d",
+          "unsigned_sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
           "signed_hap": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/fixed/app.hap",
           "audit": {
-            "sha256": "59adedd91aa83ee21266387c7722ceeace477a9e826c1f5b7e8b671f03c1869c",
+            "sha256": "6531ac887766ff2553696f9c95c595aaf4399dfb8a57e4edfd58a509b4ff732a",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
             "findings": [],
             "passed": true
           },
+          "allowed_acls": [],
           "status": "PASS"
         }
       }

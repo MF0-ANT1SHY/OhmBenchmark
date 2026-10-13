@@ -133,6 +133,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "jingmo_dataset_import_no_transaction",
+          "variant": "unfixed",
+          "signed_sha256": "2a993214fb0a158a972215c50d9112f3d1d7362b204baaf15839af7236003c52",
+          "install": "[Info]App install path:/home/research/ohm-clean/jingmo_dataset_import_no_transaction/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            43869
+          ],
+          "foreground_bundle": "com.hefengbao.jingmo.hw",
+          "status": "PASS",
+          "performance_verified": false
         }
       },
       "fixed": {
@@ -165,6 +178,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "jingmo_dataset_import_no_transaction",
+          "variant": "fixed",
+          "signed_sha256": "12bc14abc50deae03781e62e7e18a94b11af407772d48d68ea72b4c9dfb397d4",
+          "install": "[Info]App install path:/home/research/ohm-clean/jingmo_dataset_import_no_transaction/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            44084
+          ],
+          "foreground_bundle": "com.hefengbao.jingmo.hw",
+          "status": "PASS",
+          "performance_verified": false
         }
       }
     }

@@ -49,6 +49,28 @@
         "foreground_bundle": "com.example.nanvision",
         "status": "PASS",
         "performance_verified": false
+      },
+      "workload": {
+        "case": "browser_eager_history_load",
+        "variant": "unfixed",
+        "signed_sha256": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9",
+        "plan_sha256": "cffd2a1faaad8298028069332bdbaa466075e1373a031e6238b5c46e7c97292f",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "bundle": "com.example.nanvision",
+          "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
+          "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791889826844067382/Histories.db",
+          "fixture_tables": 61,
+          "integrity_check": "ok",
+          "sha256": "3ae759987f895d18c9166a34ba924c2634a031dd0b6da4dc050f331ce5f70fbb"
+        },
+        "phase_elapsed_s": {
+          "setup": 5.324254470999222,
+          "measured": 5.270261981999283,
+          "verify": 1.4039997040526941e-06
+        },
+        "capture_duration_required_s": 10
       }
     },
     {
@@ -97,6 +119,28 @@
         "foreground_bundle": "com.example.nanvision",
         "status": "PASS",
         "performance_verified": false
+      },
+      "workload": {
+        "case": "browser_eager_history_load",
+        "variant": "fixed",
+        "signed_sha256": "248a222109a97a8bf1dcb5163910ba48184d307e311b6ccb8a2fd81534976709",
+        "plan_sha256": "cffd2a1faaad8298028069332bdbaa466075e1373a031e6238b5c46e7c97292f",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "bundle": "com.example.nanvision",
+          "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
+          "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791889874064176575/Histories.db",
+          "fixture_tables": 61,
+          "integrity_check": "ok",
+          "sha256": "3ae759987f895d18c9166a34ba924c2634a031dd0b6da4dc050f331ce5f70fbb"
+        },
+        "phase_elapsed_s": {
+          "setup": 5.282962216000669,
+          "measured": 5.2633417830002145,
+          "verify": 1.356000211671926e-06
+        },
+        "capture_duration_required_s": 10
       }
     },
     {
@@ -245,6 +289,28 @@
         "foreground_bundle": "com.example.nanvision",
         "status": "PASS",
         "performance_verified": false
+      },
+      "workload": {
+        "case": "browser_history_list_foreach",
+        "variant": "unfixed",
+        "signed_sha256": "6311f1cea71ed49307bc022f80baec3f4ed57d98700b5a1f34c0952501afe2dd",
+        "plan_sha256": "d5878d439de81ad10f05b03bf0d6774f55e0c7c36b48a594d708212173da8131",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "bundle": "com.example.nanvision",
+          "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
+          "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791890041847460899/Histories.db",
+          "fixture_tables": 61,
+          "integrity_check": "ok",
+          "sha256": "3ae759987f895d18c9166a34ba924c2634a031dd0b6da4dc050f331ce5f70fbb"
+        },
+        "phase_elapsed_s": {
+          "setup": 3.7257210980005766,
+          "measured": 33.56836375799867,
+          "verify": 4.096643913000662
+        },
+        "capture_duration_required_s": 39
       }
     },
     {
@@ -784,6 +850,19 @@
           "ohos.permission.SYSTEM_FLOAT_WINDOW"
         ],
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "cloudmusic_search_result_foreach",
+        "variant": "fixed",
+        "signed_sha256": "c9370192b53e02d4ce12758a489d691052866891931a340bc4c4c94761e2783a",
+        "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_search_result_foreach/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          39164
+        ],
+        "foreground_bundle": "cc.chenlvin.cloudmusic",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -822,6 +901,19 @@
           "ohos.permission.SYSTEM_FLOAT_WINDOW"
         ],
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "cloudmusic_songcard_artists_concat",
+        "variant": "unfixed",
+        "signed_sha256": "2b564840358e206ab42e656128e5e2f52dc6955ec1dc39c95f636dfefebd6cb3",
+        "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_songcard_artists_concat/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          39503
+        ],
+        "foreground_bundle": "cc.chenlvin.cloudmusic",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -860,6 +952,19 @@
           "ohos.permission.SYSTEM_FLOAT_WINDOW"
         ],
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "cloudmusic_songcard_artists_concat",
+        "variant": "fixed",
+        "signed_sha256": "21253d8a97af9cfd2685897d21f80d733a11a70d8bceea580fc3784abd483958",
+        "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_songcard_artists_concat/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          39885
+        ],
+        "foreground_bundle": "cc.chenlvin.cloudmusic",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -897,6 +1002,19 @@
           "passed": true
         },
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "interviewapp_response_log_full_stringify",
+        "variant": "unfixed",
+        "signed_sha256": "e285b251e7ba8282477b4af02206b1e14b62f3d245b4d028043e9623163bd952",
+        "install": "[Info]App install path:/home/research/ohm-clean/interviewapp_response_log_full_stringify/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          40295
+        ],
+        "foreground_bundle": "com.itcast.pass_interview",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -934,6 +1052,19 @@
           "passed": true
         },
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "interviewapp_response_log_full_stringify",
+        "variant": "fixed",
+        "signed_sha256": "1a67c147168c589aea1ca69d8c5a493adbd5418cb37e5089eb205622a5b326b3",
+        "install": "[Info]App install path:/home/research/ohm-clean/interviewapp_response_log_full_stringify/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          40713
+        ],
+        "foreground_bundle": "com.itcast.pass_interview",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -971,6 +1102,19 @@
           "passed": true
         },
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "interviewapp_search_history_sync_flush",
+        "variant": "unfixed",
+        "signed_sha256": "0d93bb3d0a5e52817fa2032da6adbe505d3167e4f8edf0c0bd893e8025ab73cc",
+        "install": "[Info]App install path:/home/research/ohm-clean/interviewapp_search_history_sync_flush/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          41121
+        ],
+        "foreground_bundle": "com.itcast.pass_interview",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -1008,6 +1152,19 @@
           "passed": true
         },
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "interviewapp_search_history_sync_flush",
+        "variant": "fixed",
+        "signed_sha256": "6eec7877bdeb7b90dd2031296e36759514f319be07da3ccadb16bcd183712183",
+        "install": "[Info]App install path:/home/research/ohm-clean/interviewapp_search_history_sync_flush/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          41501
+        ],
+        "foreground_bundle": "com.itcast.pass_interview",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -1045,6 +1202,19 @@
           "passed": true
         },
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "interviewapp_search_history_unbounded",
+        "variant": "unfixed",
+        "signed_sha256": "854316c15663fb5a93d874a4c392602febbbb9dd553080a9856d83bcb218a36c",
+        "install": "[Info]App install path:/home/research/ohm-clean/interviewapp_search_history_unbounded/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          42122
+        ],
+        "foreground_bundle": "com.itcast.pass_interview",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -1082,6 +1252,19 @@
           "passed": true
         },
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "interviewapp_search_history_unbounded",
+        "variant": "fixed",
+        "signed_sha256": "c802d64e5a6189c856d4d189f266e25a5644af5cb20d2b3c4a4624d72475f928",
+        "install": "[Info]App install path:/home/research/ohm-clean/interviewapp_search_history_unbounded/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          42328
+        ],
+        "foreground_bundle": "com.itcast.pass_interview",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -1117,6 +1300,19 @@
           "passed": true
         },
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "jingmo_dataset_import_no_transaction",
+        "variant": "unfixed",
+        "signed_sha256": "2a993214fb0a158a972215c50d9112f3d1d7362b204baaf15839af7236003c52",
+        "install": "[Info]App install path:/home/research/ohm-clean/jingmo_dataset_import_no_transaction/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          43869
+        ],
+        "foreground_bundle": "com.hefengbao.jingmo.hw",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -1152,6 +1348,19 @@
           "passed": true
         },
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "jingmo_dataset_import_no_transaction",
+        "variant": "fixed",
+        "signed_sha256": "12bc14abc50deae03781e62e7e18a94b11af407772d48d68ea72b4c9dfb397d4",
+        "install": "[Info]App install path:/home/research/ohm-clean/jingmo_dataset_import_no_transaction/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          44084
+        ],
+        "foreground_bundle": "com.hefengbao.jingmo.hw",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -1187,6 +1396,19 @@
           "passed": true
         },
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "jingmo_random_poem_orderby_random",
+        "variant": "unfixed",
+        "signed_sha256": "dfed739f69b5efda1071306817a46e5f9f8252ecd1b66e16b3561ba27f292c8b",
+        "install": "[Info]App install path:/home/research/ohm-clean/jingmo_random_poem_orderby_random/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          44555
+        ],
+        "foreground_bundle": "com.hefengbao.jingmo.hw",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -1222,6 +1444,19 @@
           "passed": true
         },
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "jingmo_random_poem_orderby_random",
+        "variant": "fixed",
+        "signed_sha256": "ef9325e435ca099ae781edaaf64f61c4c8f1ab46e9c76a916b4b992860d45e9d",
+        "install": "[Info]App install path:/home/research/ohm-clean/jingmo_random_poem_orderby_random/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          44969
+        ],
+        "foreground_bundle": "com.hefengbao.jingmo.hw",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -1257,6 +1492,19 @@
           "passed": true
         },
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "jingmo_sync_page_reimport",
+        "variant": "unfixed",
+        "signed_sha256": "92022238fa684963ffe6f2a444805f040c88f71c079a0158cc200d7743cd50e6",
+        "install": "[Info]App install path:/home/research/ohm-clean/jingmo_sync_page_reimport/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          45371
+        ],
+        "foreground_bundle": "com.hefengbao.jingmo.hw",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -1292,6 +1540,19 @@
           "passed": true
         },
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "jingmo_sync_page_reimport",
+        "variant": "fixed",
+        "signed_sha256": "d86baea098122d26ff4ca81334123f8f62f3af5b7cd6b189a43c832602a8e952",
+        "install": "[Info]App install path:/home/research/ohm-clean/jingmo_sync_page_reimport/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          45737
+        ],
+        "foreground_bundle": "com.hefengbao.jingmo.hw",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -1327,6 +1588,19 @@
           "passed": true
         },
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "sepweather_font_register_per_page",
+        "variant": "unfixed",
+        "signed_sha256": "effefb72e7c738ff6714ddbe303aa54a3cb9b59d6f31c12ca57146442e625d9d",
+        "install": "[Info]App install path:/home/research/ohm-clean/sepweather_font_register_per_page/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          46112
+        ],
+        "foreground_bundle": "cn.seayj.sepweather",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
@@ -1362,20 +1636,35 @@
           "passed": true
         },
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "sepweather_font_register_per_page",
+        "variant": "fixed",
+        "signed_sha256": "00fa3c507f02679f7033c3257bb9ab9afb45fdba1a87b793e446bcb6b9643ea3",
+        "install": "[Info]App install path:/home/research/ohm-clean/sepweather_font_register_per_page/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          46555
+        ],
+        "foreground_bundle": "cn.seayj.sepweather",
+        "status": "PASS",
+        "performance_verified": false
       }
     },
     {
       "case": "sheafreader_article_list_foreach",
       "variant": "unfixed",
       "host": "sheafreader",
-      "ref": "clean-app/sheafreader_article_list_foreach/unfixed",
-      "commit": "759b2b81f8436fc20ea56985fdbc6e6b57b1faa9",
-      "tree": "dfe283c40ad1c8401dd37201e85dccf945c2513c",
+      "ref": "clean-app-v2/sheafreader_article_list_foreach/unfixed",
+      "commit": "35e2a6740cb75efa1f0bb8db6fa9da952282d9b2",
+      "tree": "291205d3edc3fe744204764ded4fa70e8ed0cff0",
       "business_base_tree": "dfe283c40ad1c8401dd37201e85dccf945c2513c",
-      "production_patches": [],
-      "unsigned_sha256": "a509690790e7e560395c25b06f2fac2cae2ae9ba14a01aecfb41d61ca9e7392e",
+      "production_patches": [
+        "hosts_patches/sheafreader/production-phone-support.patch"
+      ],
+      "unsigned_sha256": "fe8e45af23c444c3739b805adc19f2833bcee9dae358868b86b20ac34608ada7",
       "bytecode_audit": {
-        "sha256": "a509690790e7e560395c25b06f2fac2cae2ae9ba14a01aecfb41d61ca9e7392e",
+        "sha256": "fe8e45af23c444c3739b805adc19f2833bcee9dae358868b86b20ac34608ada7",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -1386,16 +1675,17 @@
       "sign": {
         "case": "sheafreader_article_list_foreach",
         "variant": "unfixed",
-        "unsigned_sha256": "a509690790e7e560395c25b06f2fac2cae2ae9ba14a01aecfb41d61ca9e7392e",
+        "unsigned_sha256": "fe8e45af23c444c3739b805adc19f2833bcee9dae358868b86b20ac34608ada7",
         "signed_hap": "/home/research/ohm-clean/sheafreader_article_list_foreach/unfixed/app.hap",
         "audit": {
-          "sha256": "1a486de4353db0fa573f986d8370b18826be06ed16be660f8afcc83422c3e8b1",
+          "sha256": "72b95a0c7415f7e675f19cbe74a83d95820cf542dc4a9f28fe590eb9696e5250",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       }
     },
@@ -1403,14 +1693,16 @@
       "case": "sheafreader_article_list_foreach",
       "variant": "fixed",
       "host": "sheafreader",
-      "ref": "clean-app/sheafreader_article_list_foreach/fixed",
-      "commit": "c3e7b111cf83050b6b6e48c8b05875efa01bd3ae",
-      "tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
+      "ref": "clean-app-v2/sheafreader_article_list_foreach/fixed",
+      "commit": "4e787e43a5939a9cb20130e84a5936affe3e6dbb",
+      "tree": "ddd1a920cb12be31fb13fb73950066705ff65cf0",
       "business_base_tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
-      "production_patches": [],
-      "unsigned_sha256": "b67d05a4e776f1d70d1e55032ac6eba5ba67e92b4d110433c2e5ed7413cab848",
+      "production_patches": [
+        "hosts_patches/sheafreader/production-phone-support.patch"
+      ],
+      "unsigned_sha256": "1852850ec8d0db976946ea409dcf723216bf44c9de87f17897578ab27985c382",
       "bytecode_audit": {
-        "sha256": "b67d05a4e776f1d70d1e55032ac6eba5ba67e92b4d110433c2e5ed7413cab848",
+        "sha256": "1852850ec8d0db976946ea409dcf723216bf44c9de87f17897578ab27985c382",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -1421,16 +1713,17 @@
       "sign": {
         "case": "sheafreader_article_list_foreach",
         "variant": "fixed",
-        "unsigned_sha256": "b67d05a4e776f1d70d1e55032ac6eba5ba67e92b4d110433c2e5ed7413cab848",
+        "unsigned_sha256": "1852850ec8d0db976946ea409dcf723216bf44c9de87f17897578ab27985c382",
         "signed_hap": "/home/research/ohm-clean/sheafreader_article_list_foreach/fixed/app.hap",
         "audit": {
-          "sha256": "ba1e074a3f089f0ee521618bf3223a9dd54c8e5b4bb71420648ea6eb517c4e9c",
+          "sha256": "71444bd5659f1031a7eab0ded76489b21a84bc56f24a2e7ae60a399b87cb99b8",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       }
     },
@@ -1438,14 +1731,16 @@
       "case": "sheafreader_extract_tag_tolowercase",
       "variant": "unfixed",
       "host": "sheafreader",
-      "ref": "clean-app/sheafreader_extract_tag_tolowercase/unfixed",
-      "commit": "e04ef65673a7b3a0da2de85fb7b954663232dec7",
-      "tree": "afc2ecbc7de30ebdf0580018ab615aba7590a3de",
+      "ref": "clean-app-v2/sheafreader_extract_tag_tolowercase/unfixed",
+      "commit": "79cacfd4cbb6bbeb9edaa96ff88c209902a94ab1",
+      "tree": "fe0da4cdae56960086e28000e0a08dc4d02f4a04",
       "business_base_tree": "afc2ecbc7de30ebdf0580018ab615aba7590a3de",
-      "production_patches": [],
-      "unsigned_sha256": "8af0ad8aa458066f5ad9447eb323183f967849f55fd673ab4010b74badc0876d",
+      "production_patches": [
+        "hosts_patches/sheafreader/production-phone-support.patch"
+      ],
+      "unsigned_sha256": "be83d4a5203a04d189b40bb6f78cfe85e8b0cf744ba602a571ccbe602aedd574",
       "bytecode_audit": {
-        "sha256": "8af0ad8aa458066f5ad9447eb323183f967849f55fd673ab4010b74badc0876d",
+        "sha256": "be83d4a5203a04d189b40bb6f78cfe85e8b0cf744ba602a571ccbe602aedd574",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -1456,16 +1751,17 @@
       "sign": {
         "case": "sheafreader_extract_tag_tolowercase",
         "variant": "unfixed",
-        "unsigned_sha256": "8af0ad8aa458066f5ad9447eb323183f967849f55fd673ab4010b74badc0876d",
+        "unsigned_sha256": "be83d4a5203a04d189b40bb6f78cfe85e8b0cf744ba602a571ccbe602aedd574",
         "signed_hap": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/app.hap",
         "audit": {
-          "sha256": "d1c7ceb0deb65c5e8827a9061f55c20f05eaaa6c5765d91911d5691412202a0b",
+          "sha256": "81b0a97950c54d1672e4fd16de404ffcedfa8c85b10372d39b33d128fbf94da5",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       }
     },
@@ -1473,14 +1769,16 @@
       "case": "sheafreader_extract_tag_tolowercase",
       "variant": "fixed",
       "host": "sheafreader",
-      "ref": "clean-app/sheafreader_extract_tag_tolowercase/fixed",
-      "commit": "f62858e1ca337cbc1d128cec51917d792c3f4c68",
-      "tree": "914c45be73bbdd599cf09029098f0ea6bff961e4",
+      "ref": "clean-app-v2/sheafreader_extract_tag_tolowercase/fixed",
+      "commit": "0bf6166abc0377f24de9205e8a4d38a0686f911d",
+      "tree": "a77feda14111774305d61f9942ec0a8d91cff824",
       "business_base_tree": "914c45be73bbdd599cf09029098f0ea6bff961e4",
-      "production_patches": [],
-      "unsigned_sha256": "b11411fb0ca91d5cab14f1a69d1b2f677f5399d76e0af1397e5ad3b746dfc55b",
+      "production_patches": [
+        "hosts_patches/sheafreader/production-phone-support.patch"
+      ],
+      "unsigned_sha256": "3c9849bf882f99b3803da701fa3ca568091bb650e4740db680e543c09ef44aea",
       "bytecode_audit": {
-        "sha256": "b11411fb0ca91d5cab14f1a69d1b2f677f5399d76e0af1397e5ad3b746dfc55b",
+        "sha256": "3c9849bf882f99b3803da701fa3ca568091bb650e4740db680e543c09ef44aea",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -1491,16 +1789,17 @@
       "sign": {
         "case": "sheafreader_extract_tag_tolowercase",
         "variant": "fixed",
-        "unsigned_sha256": "b11411fb0ca91d5cab14f1a69d1b2f677f5399d76e0af1397e5ad3b746dfc55b",
+        "unsigned_sha256": "3c9849bf882f99b3803da701fa3ca568091bb650e4740db680e543c09ef44aea",
         "signed_hap": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/app.hap",
         "audit": {
-          "sha256": "3a89e0372d0ab0ead083a2a9b5ba6ef70b89609edeeea917e82b54b6e8653b5f",
+          "sha256": "03ad86646c33e9321420635c9c85bbc7b9294483111c8b5ba50d470860969a5c",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       }
     },
@@ -1508,14 +1807,16 @@
       "case": "sheafreader_insert_duplicate_exception",
       "variant": "unfixed",
       "host": "sheafreader",
-      "ref": "clean-app/sheafreader_insert_duplicate_exception/unfixed",
-      "commit": "4c9b8dcdc7f230b68120fb5c7640c4cce3521a88",
-      "tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
+      "ref": "clean-app-v2/sheafreader_insert_duplicate_exception/unfixed",
+      "commit": "463c977d351fb5149557f5b966c10ca73f06c81c",
+      "tree": "88948fc3c60907d9f0a25cbb28a16a4b0d4e5ecb",
       "business_base_tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
-      "production_patches": [],
-      "unsigned_sha256": "abd062458bdc50825f9401db0dbc8d18c8520de75b1e189670e2356104248f7f",
+      "production_patches": [
+        "hosts_patches/sheafreader/production-phone-support.patch"
+      ],
+      "unsigned_sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
       "bytecode_audit": {
-        "sha256": "abd062458bdc50825f9401db0dbc8d18c8520de75b1e189670e2356104248f7f",
+        "sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -1526,16 +1827,17 @@
       "sign": {
         "case": "sheafreader_insert_duplicate_exception",
         "variant": "unfixed",
-        "unsigned_sha256": "abd062458bdc50825f9401db0dbc8d18c8520de75b1e189670e2356104248f7f",
+        "unsigned_sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
         "signed_hap": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/unfixed/app.hap",
         "audit": {
-          "sha256": "77f654e1e4c3eb3e04be7a8b87c6e2b55c038c1f1183eeb9b98bd70005263c6a",
+          "sha256": "1eb035fa2f86535e2c887e4c1d9a2e0c0a90d76ef88d25e9deb05d75d238fee5",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       }
     },
@@ -1543,14 +1845,16 @@
       "case": "sheafreader_insert_duplicate_exception",
       "variant": "fixed",
       "host": "sheafreader",
-      "ref": "clean-app/sheafreader_insert_duplicate_exception/fixed",
-      "commit": "ba9a953d20c146d20aa26ba337ba0cee026a3693",
-      "tree": "7ea7f7cfd78e0f1a97b76a48171a643c59f4892e",
+      "ref": "clean-app-v2/sheafreader_insert_duplicate_exception/fixed",
+      "commit": "5b93c09bd1c2ac01ac5154fe1f8c8b630f26a1c2",
+      "tree": "0b54a503d5bfbd066f3f85caeb7403ad3e5adf0e",
       "business_base_tree": "7ea7f7cfd78e0f1a97b76a48171a643c59f4892e",
-      "production_patches": [],
-      "unsigned_sha256": "2aee7cb3ebb5170f0cbb55aebcbddca0154ad876519468d3c102a8b0c9519f7d",
+      "production_patches": [
+        "hosts_patches/sheafreader/production-phone-support.patch"
+      ],
+      "unsigned_sha256": "dc3476540d097090e8fd86f6cc9ae03646041440e8a144ee658e4f9fcaaeba78",
       "bytecode_audit": {
-        "sha256": "2aee7cb3ebb5170f0cbb55aebcbddca0154ad876519468d3c102a8b0c9519f7d",
+        "sha256": "dc3476540d097090e8fd86f6cc9ae03646041440e8a144ee658e4f9fcaaeba78",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -1561,16 +1865,17 @@
       "sign": {
         "case": "sheafreader_insert_duplicate_exception",
         "variant": "fixed",
-        "unsigned_sha256": "2aee7cb3ebb5170f0cbb55aebcbddca0154ad876519468d3c102a8b0c9519f7d",
+        "unsigned_sha256": "dc3476540d097090e8fd86f6cc9ae03646041440e8a144ee658e4f9fcaaeba78",
         "signed_hap": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/fixed/app.hap",
         "audit": {
-          "sha256": "b5f4582f5fb8fb3d287f3568f43db08389d088843be2d15681d6bf6b57dd602b",
+          "sha256": "fc4694b3a0021eaac8179a8bec2077266648e30fb9b666ce12338068d47ddbfd",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       }
     },
@@ -1578,14 +1883,16 @@
       "case": "sheafreader_refresh_feeds_sequential",
       "variant": "unfixed",
       "host": "sheafreader",
-      "ref": "clean-app/sheafreader_refresh_feeds_sequential/unfixed",
-      "commit": "c3e7b111cf83050b6b6e48c8b05875efa01bd3ae",
-      "tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
+      "ref": "clean-app-v2/sheafreader_refresh_feeds_sequential/unfixed",
+      "commit": "20963f3238e40c8e2a196dcb275bd1fa10f4cd8e",
+      "tree": "ddd1a920cb12be31fb13fb73950066705ff65cf0",
       "business_base_tree": "012f18c7b80113b0119917ca97a5d6a6536650f7",
-      "production_patches": [],
-      "unsigned_sha256": "272b8612a0d2e566e1ca28b4d659d6f2249cf510bbff84914482e7f9a5b362a4",
+      "production_patches": [
+        "hosts_patches/sheafreader/production-phone-support.patch"
+      ],
+      "unsigned_sha256": "1852850ec8d0db976946ea409dcf723216bf44c9de87f17897578ab27985c382",
       "bytecode_audit": {
-        "sha256": "272b8612a0d2e566e1ca28b4d659d6f2249cf510bbff84914482e7f9a5b362a4",
+        "sha256": "1852850ec8d0db976946ea409dcf723216bf44c9de87f17897578ab27985c382",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -1596,16 +1903,17 @@
       "sign": {
         "case": "sheafreader_refresh_feeds_sequential",
         "variant": "unfixed",
-        "unsigned_sha256": "272b8612a0d2e566e1ca28b4d659d6f2249cf510bbff84914482e7f9a5b362a4",
+        "unsigned_sha256": "1852850ec8d0db976946ea409dcf723216bf44c9de87f17897578ab27985c382",
         "signed_hap": "/home/research/ohm-clean/sheafreader_refresh_feeds_sequential/unfixed/app.hap",
         "audit": {
-          "sha256": "92d80b49ab25a86ac0e11394212e35d0fe858eee7d150a950da24ce5fef670d2",
+          "sha256": "bf210a42b9fb8fcaff45d292b844330a3cfdfeed86136f4497003555d238fb63",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       }
     },
@@ -1613,14 +1921,16 @@
       "case": "sheafreader_refresh_feeds_sequential",
       "variant": "fixed",
       "host": "sheafreader",
-      "ref": "clean-app/sheafreader_refresh_feeds_sequential/fixed",
-      "commit": "cf4f9fb7753069103b8f994cc1f5ca31e7f170e2",
-      "tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
+      "ref": "clean-app-v2/sheafreader_refresh_feeds_sequential/fixed",
+      "commit": "21b43e274476c00939eecd80a07b0a9e7501774b",
+      "tree": "fe04f28b6470e2ca7da74b154d6656a39190d01d",
       "business_base_tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
-      "production_patches": [],
-      "unsigned_sha256": "3a647f1bf92b94c93eb057d5337d072b529a7e34d9760d4d39c53efbc1044bfb",
+      "production_patches": [
+        "hosts_patches/sheafreader/production-phone-support.patch"
+      ],
+      "unsigned_sha256": "f6e0c79a149e386cc9b505f3b817552980e8e0a2c2a090e3937672909382dfbc",
       "bytecode_audit": {
-        "sha256": "3a647f1bf92b94c93eb057d5337d072b529a7e34d9760d4d39c53efbc1044bfb",
+        "sha256": "f6e0c79a149e386cc9b505f3b817552980e8e0a2c2a090e3937672909382dfbc",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -1631,16 +1941,17 @@
       "sign": {
         "case": "sheafreader_refresh_feeds_sequential",
         "variant": "fixed",
-        "unsigned_sha256": "3a647f1bf92b94c93eb057d5337d072b529a7e34d9760d4d39c53efbc1044bfb",
+        "unsigned_sha256": "f6e0c79a149e386cc9b505f3b817552980e8e0a2c2a090e3937672909382dfbc",
         "signed_hap": "/home/research/ohm-clean/sheafreader_refresh_feeds_sequential/fixed/app.hap",
         "audit": {
-          "sha256": "21389be272d30b5f0a9e62838ccf3ad3c547b37f054cd656303de845a536fc3a",
+          "sha256": "3b3a0cb27ac6e01625a467c90430951866783d14825682dfff78b9cd8af95323",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       }
     },
@@ -1648,14 +1959,16 @@
       "case": "sheafreader_unread_counts_n_plus_1",
       "variant": "unfixed",
       "host": "sheafreader",
-      "ref": "clean-app/sheafreader_unread_counts_n_plus_1/unfixed",
-      "commit": "cf4f9fb7753069103b8f994cc1f5ca31e7f170e2",
-      "tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
+      "ref": "clean-app-v2/sheafreader_unread_counts_n_plus_1/unfixed",
+      "commit": "21b43e274476c00939eecd80a07b0a9e7501774b",
+      "tree": "fe04f28b6470e2ca7da74b154d6656a39190d01d",
       "business_base_tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
-      "production_patches": [],
-      "unsigned_sha256": "cb51443b0d0c7193fc0eed9aec745d2f62a0476b3fcc7eb50e6ea89aca99128a",
+      "production_patches": [
+        "hosts_patches/sheafreader/production-phone-support.patch"
+      ],
+      "unsigned_sha256": "f6e0c79a149e386cc9b505f3b817552980e8e0a2c2a090e3937672909382dfbc",
       "bytecode_audit": {
-        "sha256": "cb51443b0d0c7193fc0eed9aec745d2f62a0476b3fcc7eb50e6ea89aca99128a",
+        "sha256": "f6e0c79a149e386cc9b505f3b817552980e8e0a2c2a090e3937672909382dfbc",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -1666,16 +1979,17 @@
       "sign": {
         "case": "sheafreader_unread_counts_n_plus_1",
         "variant": "unfixed",
-        "unsigned_sha256": "cb51443b0d0c7193fc0eed9aec745d2f62a0476b3fcc7eb50e6ea89aca99128a",
+        "unsigned_sha256": "f6e0c79a149e386cc9b505f3b817552980e8e0a2c2a090e3937672909382dfbc",
         "signed_hap": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/unfixed/app.hap",
         "audit": {
-          "sha256": "e1b2e668b875941c642c0ce74e21d0e38102fea1e6af493e4997a83e6b0757c0",
+          "sha256": "2e183f4ca68e575c23a5cba0edbbcddf3fd03298c23ed3e29abc65524bc0b682",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       }
     },
@@ -1683,14 +1997,16 @@
       "case": "sheafreader_unread_counts_n_plus_1",
       "variant": "fixed",
       "host": "sheafreader",
-      "ref": "clean-app/sheafreader_unread_counts_n_plus_1/fixed",
-      "commit": "4c9b8dcdc7f230b68120fb5c7640c4cce3521a88",
-      "tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
+      "ref": "clean-app-v2/sheafreader_unread_counts_n_plus_1/fixed",
+      "commit": "463c977d351fb5149557f5b966c10ca73f06c81c",
+      "tree": "88948fc3c60907d9f0a25cbb28a16a4b0d4e5ecb",
       "business_base_tree": "d0697246ea3b53223b7b370ecb901a3eeda3cf40",
-      "production_patches": [],
-      "unsigned_sha256": "03e8709a4ff0c3eae043f0188bd82501ba13a8ad54e05e01aa2f340e95bc294d",
+      "production_patches": [
+        "hosts_patches/sheafreader/production-phone-support.patch"
+      ],
+      "unsigned_sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
       "bytecode_audit": {
-        "sha256": "03e8709a4ff0c3eae043f0188bd82501ba13a8ad54e05e01aa2f340e95bc294d",
+        "sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -1701,16 +2017,17 @@
       "sign": {
         "case": "sheafreader_unread_counts_n_plus_1",
         "variant": "fixed",
-        "unsigned_sha256": "03e8709a4ff0c3eae043f0188bd82501ba13a8ad54e05e01aa2f340e95bc294d",
+        "unsigned_sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
         "signed_hap": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/fixed/app.hap",
         "audit": {
-          "sha256": "59adedd91aa83ee21266387c7722ceeace477a9e826c1f5b7e8b671f03c1869c",
+          "sha256": "6531ac887766ff2553696f9c95c595aaf4399dfb8a57e4edfd58a509b4ff732a",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       }
     },

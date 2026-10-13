@@ -1,8 +1,15 @@
 from pathlib import Path
 import json
+import importlib.util
 
 from hapray.core.perf_testcase import PerfTestCase
-from .workload_driver import UI
+
+# DeviceTest may load testcase files without a Python package context.
+_spec = importlib.util.spec_from_file_location('external_workload_driver',
+    Path(__file__).with_name('workload_driver.py'))
+_driver_module = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_driver_module)
+UI = _driver_module.UI
 
 
 class PerfLoad_jingmo_0020(PerfTestCase):
@@ -27,7 +34,6 @@ class PerfLoad_jingmo_0020(PerfTestCase):
         ui = UI(self.driver.shell, self._app_package, self._plan['ability'])
         ui.run([{'op': 'stop'}, {'op': 'launch'}])
         ui.run(self._plan['setup'])
-        self.execute_performance_step(
-            'jingmo (京墨文库)页面操作', 20,
-            lambda: ui.run(self._plan['measured']))
+        ui.profiled(self.execute_performance_step,
+            'jingmo (京墨文库)页面操作', 20, self._plan['measured'])
         ui.run(self._plan['verify'])

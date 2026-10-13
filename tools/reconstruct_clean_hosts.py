@@ -67,7 +67,7 @@ def reconstruct(host, info, seed_root=None):
                 raise RuntimeError(f"existing tag has wrong tree: {host}/{tag}")
         else:
             git(repo, "tag", clean_tag, reachable[tree])
-        app_tag = tag.replace("case/", "clean-app/", 1)
+        app_tag = entry.get('app_ref', tag.replace("case/", "clean-app/", 1))
         app_tree = entry.get("app_tree", tree)
         app_existing = subprocess.run(["git", "-C", str(repo), "rev-parse", "--verify", app_tag],
                                       capture_output=True, text=True)
@@ -82,7 +82,7 @@ def reconstruct(host, info, seed_root=None):
                 raise RuntimeError(f"production patches do not reproduce {app_tag}")
             if entry.get("production_patches"):
                 git(repo, "-c", "user.name=OhmBenchmark", "-c", "user.email=benchmark@localhost",
-                    "commit", "-m", "fix: connect existing UI action to production business operation")
+                    "commit", "-m", "build: apply recorded production adaptation")
             git(repo, "tag", app_tag, "HEAD")
         print(f"{host} {tag} {tree}", flush=True)
     return repo

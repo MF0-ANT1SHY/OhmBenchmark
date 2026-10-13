@@ -133,6 +133,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "jingmo_sync_page_reimport",
+          "variant": "unfixed",
+          "signed_sha256": "92022238fa684963ffe6f2a444805f040c88f71c079a0158cc200d7743cd50e6",
+          "install": "[Info]App install path:/home/research/ohm-clean/jingmo_sync_page_reimport/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            45371
+          ],
+          "foreground_bundle": "com.hefengbao.jingmo.hw",
+          "status": "PASS",
+          "performance_verified": false
         }
       },
       "fixed": {
@@ -165,6 +178,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "jingmo_sync_page_reimport",
+          "variant": "fixed",
+          "signed_sha256": "d86baea098122d26ff4ca81334123f8f62f3af5b7cd6b189a43c832602a8e952",
+          "install": "[Info]App install path:/home/research/ohm-clean/jingmo_sync_page_reimport/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            45737
+          ],
+          "foreground_bundle": "com.hefengbao.jingmo.hw",
+          "status": "PASS",
+          "performance_verified": false
         }
       }
     }

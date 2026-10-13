@@ -2,6 +2,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
@@ -50,6 +51,24 @@ class CleanPipelineTests(unittest.TestCase):
         self.assertEqual(ui.center(ui.find({"text": "Continue"}, timeout=0)), (25,25))
         with self.assertRaises(RuntimeError):
             ui.find({"text": "Missing"}, timeout=0)
+
+    def test_profiler_cannot_silently_swallow_failed_actions(self):
+        ui = UI(lambda command: '', 'target.app')
+        def swallowing_execute(description, duration, action, **kwargs):
+            try:
+                action()
+            except Exception:
+                pass
+        with self.assertRaisesRegex(RuntimeError, 'workload failed'):
+            ui.profiled(swallowing_execute, 'screen', 10, [{'op':'invalid'}])
+
+    def test_truncated_capture_cannot_pass(self):
+        ui = UI(lambda command: '', 'target.app')
+        def execute(description, duration, action, **kwargs):
+            action()
+        with patch('ui_driver.time.monotonic', side_effect=[100,112]):
+            with self.assertRaisesRegex(RuntimeError, 'capture window'):
+                ui.profiled(execute, 'screen', 10, [])
 
 
 if __name__ == "__main__":

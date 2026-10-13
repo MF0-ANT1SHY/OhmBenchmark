@@ -136,6 +136,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "interviewapp_search_history_unbounded",
+          "variant": "unfixed",
+          "signed_sha256": "854316c15663fb5a93d874a4c392602febbbb9dd553080a9856d83bcb218a36c",
+          "install": "[Info]App install path:/home/research/ohm-clean/interviewapp_search_history_unbounded/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            42122
+          ],
+          "foreground_bundle": "com.itcast.pass_interview",
+          "status": "PASS",
+          "performance_verified": false
         }
       },
       "fixed": {
@@ -170,6 +183,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "interviewapp_search_history_unbounded",
+          "variant": "fixed",
+          "signed_sha256": "c802d64e5a6189c856d4d189f266e25a5644af5cb20d2b3c4a4624d72475f928",
+          "install": "[Info]App install path:/home/research/ohm-clean/interviewapp_search_history_unbounded/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            42328
+          ],
+          "foreground_bundle": "com.itcast.pass_interview",
+          "status": "PASS",
+          "performance_verified": false
         }
       }
     }

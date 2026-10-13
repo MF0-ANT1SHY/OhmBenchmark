@@ -134,6 +134,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "jingmo_random_poem_orderby_random",
+          "variant": "unfixed",
+          "signed_sha256": "dfed739f69b5efda1071306817a46e5f9f8252ecd1b66e16b3561ba27f292c8b",
+          "install": "[Info]App install path:/home/research/ohm-clean/jingmo_random_poem_orderby_random/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            44555
+          ],
+          "foreground_bundle": "com.hefengbao.jingmo.hw",
+          "status": "PASS",
+          "performance_verified": false
         }
       },
       "fixed": {
@@ -166,6 +179,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "jingmo_random_poem_orderby_random",
+          "variant": "fixed",
+          "signed_sha256": "ef9325e435ca099ae781edaaf64f61c4c8f1ab46e9c76a916b4b992860d45e9d",
+          "install": "[Info]App install path:/home/research/ohm-clean/jingmo_random_poem_orderby_random/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            44969
+          ],
+          "foreground_bundle": "com.hefengbao.jingmo.hw",
+          "status": "PASS",
+          "performance_verified": false
         }
       }
     }

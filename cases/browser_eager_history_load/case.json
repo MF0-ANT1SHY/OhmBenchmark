@@ -148,6 +148,28 @@
           "foreground_bundle": "com.example.nanvision",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "browser_eager_history_load",
+          "variant": "unfixed",
+          "signed_sha256": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9",
+          "plan_sha256": "cffd2a1faaad8298028069332bdbaa466075e1373a031e6238b5c46e7c97292f",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "bundle": "com.example.nanvision",
+            "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
+            "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791889826844067382/Histories.db",
+            "fixture_tables": 61,
+            "integrity_check": "ok",
+            "sha256": "3ae759987f895d18c9166a34ba924c2634a031dd0b6da4dc050f331ce5f70fbb"
+          },
+          "phase_elapsed_s": {
+            "setup": 5.324254470999222,
+            "measured": 5.270261981999283,
+            "verify": 1.4039997040526941e-06
+          },
+          "capture_duration_required_s": 10
         }
       },
       "fixed": {
@@ -193,6 +215,28 @@
           "foreground_bundle": "com.example.nanvision",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "browser_eager_history_load",
+          "variant": "fixed",
+          "signed_sha256": "248a222109a97a8bf1dcb5163910ba48184d307e311b6ccb8a2fd81534976709",
+          "plan_sha256": "cffd2a1faaad8298028069332bdbaa466075e1373a031e6238b5c46e7c97292f",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "bundle": "com.example.nanvision",
+            "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
+            "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791889874064176575/Histories.db",
+            "fixture_tables": 61,
+            "integrity_check": "ok",
+            "sha256": "3ae759987f895d18c9166a34ba924c2634a031dd0b6da4dc050f331ce5f70fbb"
+          },
+          "phase_elapsed_s": {
+            "setup": 5.282962216000669,
+            "measured": 5.2633417830002145,
+            "verify": 1.356000211671926e-06
+          },
+          "capture_duration_required_s": 10
         }
       }
     }

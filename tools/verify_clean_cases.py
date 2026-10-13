@@ -7,6 +7,7 @@ import subprocess
 from pathlib import Path
 
 from audit_clean_app import audit_hap, audit_source
+from clean_sources import app_ref
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -33,13 +34,13 @@ def verify(stage):
         if plan["bundle"] != c["host_app"]["bundle_name"] or plan["ability"] != tc["ability"]:
             errors.append(f"{cid}: workload targets wrong app")
         diff = subprocess.check_output(["git", "-C", str(repo), "diff",
-                                      f"clean-app/{cid}/unfixed", f"clean-app/{cid}/fixed"])
+                                      app_ref(c,'unfixed'), app_ref(c,'fixed')])
         if diff != (path.parent / "fix.patch").read_bytes():
             errors.append(f"{cid}: repair diff does not match clean app trees")
         for variant in ("unfixed", "fixed"):
             label = f"{cid}/{variant}"
             entry = recon[host]["case_tags"][f"case/{cid}/{variant}"]
-            ref = f"clean-app/{cid}/{variant}"
+            ref = app_ref(c, variant)
             audit = audit_source(repo, ref)
             expected = entry.get("app_tree", entry["tree"])
             folder = ROOT / "artifacts/clean" / cid / variant

@@ -185,6 +185,19 @@
             "ohos.permission.SYSTEM_FLOAT_WINDOW"
           ],
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "cloudmusic_search_result_foreach",
+          "variant": "fixed",
+          "signed_sha256": "c9370192b53e02d4ce12758a489d691052866891931a340bc4c4c94761e2783a",
+          "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_search_result_foreach/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            39164
+          ],
+          "foreground_bundle": "cc.chenlvin.cloudmusic",
+          "status": "PASS",
+          "performance_verified": false
         }
       }
     }

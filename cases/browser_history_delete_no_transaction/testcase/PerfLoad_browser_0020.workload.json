@@ -25,8 +25,7 @@
     {
       "op": "tap",
       "selector": {
-        "text": "确定",
-        "type": "Button"
+        "text": "确定"
       }
     }
   ],

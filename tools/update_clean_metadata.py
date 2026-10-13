@@ -2,7 +2,9 @@
 """Publish factual clean-build receipts, archiving (not reusing) old perf evidence."""
 import json
 import subprocess
+import hashlib
 from pathlib import Path
+from clean_sources import app_ref
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -28,7 +30,7 @@ def main():
                  "performance_validation": "pending", "variants": {}}
         builds = {"mode": "release"}
         for variant in ("unfixed", "fixed"):
-            ref = f"clean-app/{cid}/{variant}"
+            ref = app_ref(c, variant)
             entry = reconstruction[host]["case_tags"][f"case/{cid}/{variant}"]
             tree = entry.get("app_tree", entry["tree"])
             commit = subprocess.check_output(["git", "-C", str(repo), "rev-parse", ref], text=True).strip()
@@ -46,7 +48,19 @@ def main():
             for receipt_name in ("sign", "smoke", "workload", "performance"):
                 receipt = folder / (receipt_name + ".json")
                 if receipt.exists():
-                    item[receipt_name] = json.loads(receipt.read_text())
+                    value = json.loads(receipt.read_text())
+                    if receipt_name == 'sign':
+                        if value.get('unsigned_sha256') != item['unsigned_sha256']:
+                            continue
+                    else:
+                        current_sign = item.get('sign')
+                        if not current_sign or value.get('signed_sha256') != current_sign['audit']['sha256']:
+                            continue
+                        if receipt_name in ('workload','performance'):
+                            plan = path.parent/c['testcase']['workload']
+                            if value.get('plan_sha256') != hashlib.sha256(plan.read_bytes()).hexdigest():
+                                continue
+                    item[receipt_name] = value
             clean["variants"][variant] = item
             rows.append({"case": cid, "variant": variant, "host": host, **item})
         c["build"] = builds

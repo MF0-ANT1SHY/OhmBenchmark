@@ -1,0 +1,11 @@
+diff --git a/entry/src/main/module.json5 b/entry/src/main/module.json5
+--- a/entry/src/main/module.json5
++++ b/entry/src/main/module.json5
+@@ -5,6 +5,7 @@
+     "description": "$string:module_desc",
+     "mainElement": "EntryAbility",
+     "deviceTypes": [
++      "phone",
+       "tablet",
+       "2in1"
+     ],
