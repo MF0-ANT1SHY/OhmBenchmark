@@ -1,0 +1,34 @@
+{
+  "fixture_sha256": "4837f37f9658128b042670c6f41479403e37e8b826e9e2112f06a2297c1ed414",
+  "submissions": 1000,
+  "variants": {
+    "unfixed": {
+      "file": "unfixed.xml",
+      "sha256": "8d36b89f2ac34d3b9ca8bbe090e2a7e02020a683b25921b7cdcb9231d131a548"
+    },
+    "fixed": {
+      "file": "fixed.xml",
+      "sha256": "2e225eced597c59e44f51d3291c632d07ecb276468e51de296ea5ffc88674fcb"
+    }
+  },
+  "format_source": "https://github.com/openharmony/distributeddatamgr_preferences/blob/OpenHarmony-v5.1.0-Release/frameworks/native/src/preferences_xml_utils.cpp",
+  "storage_name": "historyStore",
+  "bundle": "com.itcast.pass_interview",
+  "derivation": "ordinary production state after identical search submissions; fixed keeps the latest 20",
+  "device_validation": "pending",
+  "performance_verified": false,
+  "production_sources": {
+    "unfixed": {
+      "ref": "clean-app/interviewapp_search_history_unbounded/unfixed",
+      "source_path": "features/home/src/main/ets/utils/history.ets",
+      "source_sha256": "f5229fe7837648d19c90e65452f9dcba3a5dddb2575be6ac6e128a86f62ad762"
+    },
+    "fixed": {
+      "ref": "clean-app/interviewapp_search_history_unbounded/fixed",
+      "source_path": "features/home/src/main/ets/utils/history.ets",
+      "source_sha256": "06c084752cf76239f60160f9f3730ab042fa6ecfd11f63ed1e31ca8f6c3a3608"
+    }
+  },
+  "native_format_blob": "6e6c437cf7e5b6330f3395e671f11b349553ef30",
+  "scope": "fixture generation only; normal device read, per-trial deployment and performance acceptance are pending"
+}
