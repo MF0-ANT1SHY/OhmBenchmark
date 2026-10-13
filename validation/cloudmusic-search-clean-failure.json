@@ -1,0 +1,100 @@
+{
+  "case": "cloudmusic_search_result_foreach",
+  "performance_passed": false,
+  "criteria_unchanged": true,
+  "raw_report_hashes_verified": true,
+  "raw_recomputation": "all six reports checked by accept_cpu_evidence.py; terminal result failed only the 1.2x criterion",
+  "results": {
+    "unfixed": {
+      "status": "FAIL",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        21108845730,
+        21009621821,
+        20983545175
+      ],
+      "median": 21009621821,
+      "paired_ratios": [
+        0.9721402283484529,
+        0.9662396798846115,
+        0.9617260889990465
+      ],
+      "median_ratio": 0.9662396798846115,
+      "plan_sha256": "20634e7c8dd8e1b55ba1e818b40d26ba5ba4448ad2c7f8da9e3206c235221028",
+      "signed_sha256": "3e5c26c7909ac4a8ac5a1057f41e15c79d16a2da7d8879d9294a5d5fa283d02f",
+      "fixture_sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "4f7a579b59670c6e50a6638cd284b04e8ab8b9317eb03d61dad4a7279fb29300",
+          "app_samples": 37998,
+          "remote_artifacts": "/home/research/ohm-clean/cloudmusic_search_result_foreach/unfixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "5c79acf3287e83265cde090dfa32d8ba08dce9509187e497975e2dcc075c7d3f",
+          "app_samples": 37444,
+          "remote_artifacts": "/home/research/ohm-clean/cloudmusic_search_result_foreach/unfixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "1ee1769e17f9031f604db99f1db234b9742b9c834b6d2c72fbae5f503732e43d",
+          "app_samples": 37748,
+          "remote_artifacts": "/home/research/ohm-clean/cloudmusic_search_result_foreach/unfixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    },
+    "fixed": {
+      "status": "FAIL",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        21713786874,
+        21743695957,
+        21818629457
+      ],
+      "median": 21743695957,
+      "paired_ratios": [
+        0.9721402283484529,
+        0.9662396798846115,
+        0.9617260889990465
+      ],
+      "median_ratio": 0.9662396798846115,
+      "plan_sha256": "20634e7c8dd8e1b55ba1e818b40d26ba5ba4448ad2c7f8da9e3206c235221028",
+      "signed_sha256": "c9370192b53e02d4ce12758a489d691052866891931a340bc4c4c94761e2783a",
+      "fixture_sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "b7eb96dcfed27b9e6fa3d63d2889e12e413bfe3dbdf9ccb9d31319e6af25c615",
+          "app_samples": 38261,
+          "remote_artifacts": "/home/research/ohm-clean/cloudmusic_search_result_foreach/fixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "86a029e0354792e2b2832273585dd6a06eb77dad5a9c6ac11a79b7b193321cfe",
+          "app_samples": 38467,
+          "remote_artifacts": "/home/research/ohm-clean/cloudmusic_search_result_foreach/fixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "756f214b5f587e8aa54bcaceb54a552e6bb001eb3536b80de3223393b4040c1e",
+          "app_samples": 38723,
+          "remote_artifacts": "/home/research/ohm-clean/cloudmusic_search_result_foreach/fixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    }
+  },
+  "source_sign_smoke_gate": {
+    "stage": "smoke",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  }
+}
