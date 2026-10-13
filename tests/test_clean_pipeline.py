@@ -3,6 +3,7 @@ import sys
 import tempfile
 import unittest
 import shlex
+import json
 from unittest.mock import patch
 from pathlib import Path
 
@@ -88,6 +89,17 @@ class CleanPipelineTests(unittest.TestCase):
         ui.input({'type':'SearchField'},'blue')
         ui.input({'type':'SearchField'},'jazz')
         self.assertEqual(state['text'],'jazz')
+
+    def test_failed_dump_cannot_reuse_a_stale_layout(self):
+        commands=[]
+        def shell(command):
+            commands.append(command)
+            if command.startswith('cat '):return 'cat: No such file or directory'
+            return 'command failed'
+        ui=UI(shell,'app.bundle')
+        with self.assertRaises(json.JSONDecodeError):ui.layout()
+        self.assertNotIn('cat /data/local/tmp/workload-layout.json',commands)
+        self.assertTrue(commands[-1].startswith('rm -f /data/local/tmp/workload-layout-'))
 
 
 if __name__ == "__main__":

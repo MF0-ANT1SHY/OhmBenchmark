@@ -6,6 +6,7 @@ import re
 import shlex
 import subprocess
 import time
+import uuid
 from pathlib import Path
 
 
@@ -14,9 +15,14 @@ class UI:
         self.shell, self.bundle, self.ability = shell, bundle, ability
 
     def layout(self):
-        path = "/data/local/tmp/workload-layout.json"
-        self.shell(f"uitest dumpLayout -p {path}")
-        return json.loads(self.shell(f"cat {path}"))
+        # HDC can return zero even when the device command failed. A unique path
+        # prevents a failed dump from reusing a prior app's successful layout.
+        path = f'/data/local/tmp/workload-layout-{uuid.uuid4().hex}.json'
+        try:
+            self.shell(f"uitest dumpLayout -p {path}")
+            return json.loads(self.shell(f"cat {path}"))
+        finally:
+            self.shell(f'rm -f {path}')
 
     @staticmethod
     def nodes(layout, inherited_bundle=None):
