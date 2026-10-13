@@ -133,10 +133,20 @@ class CleanPipelineTests(unittest.TestCase):
         commands=[]
         ui=UI(lambda command:commands.append(command),'app.bundle')
         ui.layout=lambda:{'attributes':{'bounds':'[0,0][100,1000]'}}
-        ui.find=lambda *args,**kwargs:{'bounds':'[0,850][100,950]'}
+        ui.find=lambda *args,**kwargs:{'bounds':'[0,800][100,860]'}
         with patch('ui_driver.time.sleep'):
             ui.scroll_to({'text':'加载更多'},max_swipes=1)
         self.assertEqual(commands,[])
+
+    def test_footer_covered_by_bottom_player_is_scrolled_before_tap(self):
+        commands=[]
+        ui=UI(lambda command:commands.append(command),'app.bundle')
+        ui.layout=lambda:{'attributes':{'bounds':'[0,0][100,1000]'}}
+        positions=iter([{'bounds':'[0,850][100,950]'},{'bounds':'[0,800][100,860]'}])
+        ui.find=lambda *args,**kwargs:next(positions)
+        with patch('ui_driver.time.sleep'):
+            ui.scroll_to({'text':'加载更多'},max_swipes=1)
+        self.assertEqual(len(commands),1)
 
     def test_missing_scroll_target_is_not_a_successful_workload(self):
         ui=UI(lambda command:None,'app.bundle')

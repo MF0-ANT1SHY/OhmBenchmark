@@ -99,13 +99,15 @@ class UI:
             raise ValueError('invalid swipe limit')
         bounds=list(map(int,re.findall(r'\d+',self.layout()['attributes']['bounds'])))
         x,bottom,top=round(bounds[2]*.5),round(bounds[3]*.78),round(bounds[3]*.3)
+        reachable_bottom=round(bounds[3]*.85)
         for attempt in range(max_swipes+1):
             try:
                 node=self.find(selector,timeout=0)
-                # The swipe origin is not a visibility boundary: a reachable
-                # footer can sit below it. find() checks actual native visibility.
-                self.center(node)
-                return
+                # Native visibility includes rows covered by the bottom player.
+                # Move them above that area; the swipe origin itself is too high
+                # to serve as the tap boundary (a footer can sit just below it).
+                if self.center(node)[1]<=reachable_bottom:
+                    return
             except RuntimeError as exc:
                 if not str(exc).startswith('UI target not found:'):
                     raise
