@@ -1,0 +1,48 @@
+{
+  "status": "isolated_ordinary_source_setting_candidate",
+  "performance_verified": false,
+  "default_cdn_preserved": true,
+  "patch": "hosts_patches/jingmo/production-dataset-source-settings.patch",
+  "build": {
+    "case": "jingmo_dataset_import_no_transaction",
+    "variant": "unfixed",
+    "ref": "candidate/dataset-source-settings/jingmo_dataset_import_no_transaction/unfixed",
+    "mode": "release",
+    "source": {
+      "tree": "d1023a18fcb6aae9d1ca031f768ad75620954767",
+      "files_checked": 124,
+      "findings": [],
+      "passed": true
+    },
+    "status": "PASS",
+    "toolchain": "/data2/syang75/workspace/OhmBenchmark/toolchain/command-line-tools",
+    "hap": {
+      "sha256": "de36bdd2dfc0ee834e9a39f5320c82c47d580d2cee5db7088d03b04bfe285df2",
+      "abc_modules_checked": [
+        "ets/modules.abc"
+      ],
+      "findings": [],
+      "passed": true
+    },
+    "elapsed_s": 10.61
+  },
+  "sign": {
+    "case": "jingmo_dataset_import_no_transaction",
+    "variant": "unfixed",
+    "unsigned_sha256": "de36bdd2dfc0ee834e9a39f5320c82c47d580d2cee5db7088d03b04bfe285df2",
+    "signed_hap": "/home/research/ohm-clean/candidates/jingmo-source-settings/jingmo_dataset_import_no_transaction/unfixed/app.hap",
+    "audit": {
+      "sha256": "f19c17f95b00ae8ecf77532ada7e6e56497b10a8d53dc093efd531dd4ece01cb",
+      "abc_modules_checked": [
+        "ets/modules.abc"
+      ],
+      "findings": [],
+      "passed": true
+    },
+    "allowed_acls": [],
+    "status": "PASS"
+  },
+  "uri_checks": "original CDN default, ordinary HTTP/HTTPS mirror URI normalization and invalid URI rejection passed",
+  "symmetry_requirement": "the identical production support patch must be applied to both variants before any performance comparison",
+  "device_import": "pending"
+}

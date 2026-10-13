@@ -1,0 +1,12 @@
+{
+  "service": {
+    "pid": 118751,
+    "source": "/home/research/ohm-clean/services/jingmo/data-8c3b60e00b2ec9a9.py",
+    "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+    "base_url": "http://127.0.0.1:18492/api/",
+    "poems": 5000,
+    "response_sha256": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+  },
+  "device_ingestion_verified": false,
+  "performance_verified": false
+}

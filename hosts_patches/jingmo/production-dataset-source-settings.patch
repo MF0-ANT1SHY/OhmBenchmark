@@ -1,0 +1,115 @@
+diff --git a/commons/constants/src/main/ets/NetworkConst.ets b/commons/constants/src/main/ets/NetworkConst.ets
+index 6c1fd99..3eb8684 100644
+--- a/commons/constants/src/main/ets/NetworkConst.ets
++++ b/commons/constants/src/main/ets/NetworkConst.ets
+@@ -1,3 +1,5 @@
++import { preferences } from '@kit.ArkData';
++
+ export class NetworkConst {
+   static readonly HTTP_CODE_200: number = 200;
+   static readonly HTTP_CONNECT_TIMEOUT: number = 600000; //单位：ms
+@@ -7,6 +9,34 @@ export class NetworkConst {
+   static readonly BASE_URL1: string = "https://p1-cdn.jingmo.ruaruan.com/api/";
+   static readonly BASE_URL2: string = "https://p2-cdn.jingmo.ruaruan.com/api/";
+   static readonly BASE_URL3: string = "https://p3-cdn.jingmo.ruaruan.com/api/";
++  static normalizeDatasetBaseUrl(value: string): string {
++    const address: string = value.trim();
++    if (address.length === 0) {
++      return NetworkConst.BASE_URL1;
++    }
++    if (!/^https?:\/\/[^\s/?#]+(?:\/[^\s?#]*)?$/.test(address)) {
++      throw new Error('请输入有效的 HTTP 或 HTTPS 地址');
++    }
++    return address.endsWith('/') ? address : address.concat('/');
++  }
++
++  static getDatasetBaseUrl(): string {
++    try {
++      const store: preferences.Preferences = preferences.getPreferencesSync(getContext(), { name: 'datasetSource' });
++      const address: string = store.getSync('baseUrl', NetworkConst.BASE_URL1) as string;
++      return NetworkConst.normalizeDatasetBaseUrl(address);
++    } catch {
++      return NetworkConst.BASE_URL1;
++    }
++  }
++
++  static async saveDatasetBaseUrl(value: string): Promise<void> {
++    const address: string = NetworkConst.normalizeDatasetBaseUrl(value);
++    const store: preferences.Preferences = preferences.getPreferencesSync(getContext(), { name: 'datasetSource' });
++    await store.put('baseUrl', address);
++    await store.flush();
++  }
++
+   static readonly DATASET: string = "dataset_v2";
+   static readonly CHINA_WORLDCULTUREHERITAGE: string = "china_worldcultureheritage";
+   static readonly CHINESE_ANTITHETICALCOUPLET: string = "chinese_antitheticalcouplet";
+diff --git a/features/settings/src/main/ets/pages/Settings.ets b/features/settings/src/main/ets/pages/Settings.ets
+index 92b4297..6980b63 100644
+--- a/features/settings/src/main/ets/pages/Settings.ets
++++ b/features/settings/src/main/ets/pages/Settings.ets
+@@ -1,4 +1,4 @@
+-import { ThemeConst } from 'constants'
++import { ThemeConst, NetworkConst } from 'constants'
+ import { Logger } from 'utils'
+ 
+ @Builder
+@@ -11,7 +11,11 @@ export struct Settings {
+   @Consumer('NavPathStack') pageStack: NavPathStack = new NavPathStack();
+   @Local logger: Logger = new Logger('Settings')
+ 
++  @Local datasetSourceUrl: string = ''
++  @Local sourceMessage: string = ''
++
+   aboutToAppear(): void {
++    this.datasetSourceUrl = NetworkConst.getDatasetBaseUrl()
+     this.logger.info('Settings')
+   }
+ 
+@@ -19,6 +23,25 @@ export struct Settings {
+     NavDestination() {
+       Scroll() {
+         Column() {
++          Title({ title: '数据源' })
++          TextInput({ text: this.datasetSourceUrl, placeholder: '数据源地址' })
++            .width('100%')
++            .onChange((value: string) => {
++              this.datasetSourceUrl = value;
++              this.sourceMessage = '';
++            })
++          Button('保存数据源')
++            .onClick(async () => {
++              try {
++                await NetworkConst.saveDatasetBaseUrl(this.datasetSourceUrl);
++                this.datasetSourceUrl = NetworkConst.getDatasetBaseUrl();
++                this.sourceMessage = '已保存';
++              } catch {
++                this.sourceMessage = '请输入有效的 HTTP 或 HTTPS 地址';
++              }
++            })
++          Text(this.sourceMessage)
++            .fontSize(14)
+           Title({ title: $r('app.string.feature') })
+           Item({ title: $r('app.string.sync_data') })
+             .onClick(() => {
+diff --git a/features/settings/src/main/ets/viewmodel/DatasetViewModel.ets b/features/settings/src/main/ets/viewmodel/DatasetViewModel.ets
+index e04cbb3..5e4af63 100644
+--- a/features/settings/src/main/ets/viewmodel/DatasetViewModel.ets
++++ b/features/settings/src/main/ets/viewmodel/DatasetViewModel.ets
+@@ -10,7 +10,7 @@ class DatasetViewModel {
+ 
+   getDatasetList(): Promise<Dataset[]> {
+     return new Promise((resolve: Function, reject: Function) => {
+-      let url = `${NetworkConst.BASE_URL1}${NetworkConst.DATASET}.json`;
++      let url = `${NetworkConst.getDatasetBaseUrl()}${NetworkConst.DATASET}.json`;
+       httpRequestGet(url).then((result: ResponseResult) => {
+         if (result.msg === null) {
+           resolve(result.data)
+@@ -27,7 +27,7 @@ class DatasetViewModel {
+     return new Promise((resolve: Function, reject: Function) => {
+       let page: number | null = 1;
+       //TODO V3_1.json
+-      let url = `${NetworkConst.BASE_URL1}${NetworkConst.CLASSICALLITERATURE_CLASSICPOEM}${page}.json`;
++      let url = `${NetworkConst.getDatasetBaseUrl()}${NetworkConst.CLASSICALLITERATURE_CLASSICPOEM}${page}.json`;
+       this.logger.info(`getClassicPoemList url :${url}`)
+       httpRequestGet(url).then((result: ResponseResult) => {
+         this.logger.info(`getClassicPoemList result msg :${result.msg}`)

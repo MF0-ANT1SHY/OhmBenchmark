@@ -10,20 +10,22 @@ from remote_device import Remote
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def sign_case(remote, case, variant, artifacts):
+def sign_case(remote, case, variant, artifacts, remote_root='/home/research/ohm-clean'):
     cid, bundle = case["id"], case["host_app"]["bundle_name"]
     local = artifacts / cid / variant
     build = json.loads((local / "build.json").read_text())
     if build["status"] != "PASS" or not build["source"]["passed"] or not build["hap"]["passed"]:
         raise RuntimeError("unsigned build has not passed clean audit")
-    folder = f"/home/research/ohm-clean/{cid}/{variant}"
+    folder = f"{remote_root}/{cid}/{variant}"
     record = local / "sign.json"
     with zipfile.ZipFile(local / "app-unsigned.hap") as package:
         requested = {p['name'] for p in json.loads(package.read('module.json'))['module'].get('requestPermissions', [])}
     allowed_acls = sorted(requested & {'ohos.permission.SYSTEM_FLOAT_WINDOW'})
     if record.exists():
         previous = json.loads(record.read_text())
-        if previous.get("status") == "PASS" and previous.get("unsigned_sha256") == build["hap"]["sha256"] and previous.get("allowed_acls", []) == allowed_acls:
+        if (previous.get("status") == "PASS" and previous.get("unsigned_sha256") == build["hap"]["sha256"]
+                and previous.get("allowed_acls", []) == allowed_acls
+                and previous.get('signed_hap') == folder + '/app.hap'):
             remote.python("import hashlib\nfrom pathlib import Path\n"
                           f"assert hashlib.sha256(Path({previous['signed_hap']!r}).read_bytes()).hexdigest()=={previous['audit']['sha256']!r}\n",
                           timeout=300)
