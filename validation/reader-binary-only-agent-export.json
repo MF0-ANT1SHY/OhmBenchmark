@@ -1,0 +1,21 @@
+{
+  "case": "sheafreader_extract_tag_tolowercase",
+  "mode": "binary-only",
+  "files": [
+    "app.hap",
+    "profile.json",
+    "reproduce.py",
+    "symptom.txt",
+    "workload.json"
+  ],
+  "source_exported": false,
+  "private_evaluator_files_exported": false,
+  "build_signature_binding_verified": true,
+  "signed_sha256": "14140ea223bb7445d626f6967bf0889ac095c7a54db93fc4b6ceefb98ebc828d",
+  "app_processes": {
+    "34748": "com.sheafreader.hm"
+  },
+  "app_instruction_period_sum": 53541274550,
+  "app_samples": 9404,
+  "evaluation_marker_check": "No case ID, measurement protocol, fixture identity, acceptance ratios or evaluator paths in exported text files"
+}
