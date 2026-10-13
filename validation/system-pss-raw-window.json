@@ -1,0 +1,54 @@
+{
+  "action_start_monotonic": 77542193.88496992,
+  "action_end_monotonic": 77542199.88802513,
+  "snapshots": [
+    {
+      "pid": 35792,
+      "bundle": "cc.chenlvin.cloudmusic",
+      "pss_bytes": 105360384,
+      "raw_smaps_rollup": "14e0000000-7f09d48000 ---p 00000000 00:00 0                              [rollup]\nRss:              202904 kB\nPss:              102891 kB\nPss_HHP:           34336 kB\nPss_Anon:          83041 kB\nPss_File:          19833 kB\nPss_Shmem:             4 kB\nShared_Clean:     101808 kB\nShared_Dirty:       9636 kB\nPrivate_Clean:     86668 kB\nPrivate_Dirty:      4792 kB\nReferenced:       198232 kB\nAnonymous:         88972 kB\nLazyFree:              0 kB\nAnonHugePages:         0 kB\nShmemPmdMapped:        0 kB\nShared_Hugetlb:        0 kB\nPrivate_Hugetlb:       0 kB\nSwap:              34312 kB\nSwapPss:            1212 kB\nLocked:                0 kB\n",
+      "process_start_ticks": 235720541,
+      "raw_stat_before": "35792 (lvin.cloudmusic) R 618 1 1 0 0 0 15301 15301 19865 19865 136 21 0 0 -14 -10 28 0 235720541 39317278720 49076 0 0 0 545573706272 0 0 0 0 0 0 0 8579 0 0 11 13 1 0 0 0 371886364784 371886372184 380720406528 545573706954 545573707229 545573707229 545573707728 0 0\n",
+      "raw_stat_after": "35792 (lvin.cloudmusic) S 618 1 1 0 0 0 17182 17182 19953 19953 156 23 0 0 -14 -10 23 0 235720541 39328583680 50769 0 0 0 545573706272 0 0 0 0 0 0 0 8578 0 0 1 13 1 0 0 0 371886364784 371886372184 380720406528 545573706954 545573707229 545573707229 545573707728 0 0\n",
+      "raw_cmdline_before": "cc.chenlvin.cloudmusic",
+      "raw_cmdline_after": "cc.chenlvin.cloudmusic",
+      "method": "kernel /proc/PID/smaps_rollup; no app instrumentation",
+      "phase": "before",
+      "monotonic": 77542193.88477895
+    },
+    {
+      "pid": 35792,
+      "bundle": "cc.chenlvin.cloudmusic",
+      "pss_bytes": 106515456,
+      "raw_smaps_rollup": "14e0000000-7f09d48000 ---p 00000000 00:00 0                              [rollup]\nRss:              204032 kB\nPss:              104019 kB\nPss_HHP:           34304 kB\nPss_Anon:          84169 kB\nPss_File:          19833 kB\nPss_Shmem:             4 kB\nShared_Clean:     101808 kB\nShared_Dirty:       9636 kB\nPrivate_Clean:     87796 kB\nPrivate_Dirty:      4792 kB\nReferenced:       199376 kB\nAnonymous:         90100 kB\nLazyFree:              0 kB\nAnonHugePages:         0 kB\nShmemPmdMapped:        0 kB\nShared_Hugetlb:        0 kB\nPrivate_Hugetlb:       0 kB\nSwap:              34312 kB\nSwapPss:            1212 kB\nLocked:                0 kB\n",
+      "process_start_ticks": 235720541,
+      "raw_stat_before": "35792 (lvin.cloudmusic) S 618 1 1 0 0 0 17322 17322 19953 19953 160 23 0 0 -14 -10 22 0 235720541 39327490048 51003 0 0 0 545573706272 0 0 0 0 0 0 0 8578 0 0 4 13 1 0 0 0 371886364784 371886372184 380720406528 545573706954 545573707229 545573707229 545573707728 0 0\n",
+      "raw_stat_after": "35792 (lvin.cloudmusic) S 618 1 1 0 0 0 17090 17090 19834 19834 163 24 0 0 -14 -10 22 0 235720541 39327490048 50985 0 0 0 545573706272 0 0 0 0 0 0 0 8578 0 0 4 13 1 0 0 0 371886364784 371886372184 380720406528 545573706954 545573707229 545573707229 545573707728 0 0\n",
+      "raw_cmdline_before": "cc.chenlvin.cloudmusic",
+      "raw_cmdline_after": "cc.chenlvin.cloudmusic",
+      "method": "kernel /proc/PID/smaps_rollup; no app instrumentation",
+      "phase": "workload",
+      "monotonic": 77542204.43630135,
+      "read_start_monotonic": 77542195.88505322
+    },
+    {
+      "pid": 35792,
+      "bundle": "cc.chenlvin.cloudmusic",
+      "pss_bytes": 107072512,
+      "raw_smaps_rollup": "14e0000000-7f09d48000 ---p 00000000 00:00 0                              [rollup]\nRss:              204660 kB\nPss:              104563 kB\nPss_HHP:           34288 kB\nPss_Anon:          84731 kB\nPss_File:          19815 kB\nPss_Shmem:             4 kB\nShared_Clean:     101872 kB\nShared_Dirty:       9636 kB\nPrivate_Clean:     88360 kB\nPrivate_Dirty:      4792 kB\nReferenced:       200008 kB\nAnonymous:         90660 kB\nLazyFree:              0 kB\nAnonHugePages:         0 kB\nShmemPmdMapped:        0 kB\nShared_Hugetlb:        0 kB\nPrivate_Hugetlb:       0 kB\nSwap:              34312 kB\nSwapPss:            1212 kB\nLocked:                0 kB\n",
+      "process_start_ticks": 235720541,
+      "raw_stat_before": "35792 (lvin.cloudmusic) S 618 1 1 0 0 0 17090 17090 19834 19834 164 24 0 0 -14 -10 22 0 235720541 39327490048 50985 0 0 0 545573706272 0 0 0 0 0 0 0 8578 0 0 4 13 1 0 0 0 371886364784 371886372184 380720406528 545573706954 545573707229 545573707229 545573707728 0 0\n",
+      "raw_stat_after": "35792 (lvin.cloudmusic) S 618 1 1 0 0 0 17535 17535 19802 19802 294 27 0 0 -14 -10 31 0 235720541 39336284160 51560 0 0 0 545573706272 0 0 0 0 0 0 0 8578 0 0 2 13 1 0 0 0 371886364784 371886372184 380720406528 545573706954 545573707229 545573707229 545573707728 0 0\n",
+      "raw_cmdline_before": "cc.chenlvin.cloudmusic",
+      "raw_cmdline_after": "cc.chenlvin.cloudmusic",
+      "method": "kernel /proc/PID/smaps_rollup; no app instrumentation",
+      "phase": "after",
+      "monotonic": 77542211.73413038,
+      "read_start_monotonic": 77542204.43636988
+    }
+  ],
+  "app_pss_bytes": 107072512,
+  "scope": "read-only kernel observation during existing normal UI validation; not a memory-case verdict",
+  "raw_evidence_verified": true,
+  "performance_verified": false
+}
