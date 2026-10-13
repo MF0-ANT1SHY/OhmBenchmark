@@ -94,6 +94,26 @@ class UI:
         if str(self.find(selector).get('text',''))!=value:
             raise RuntimeError('UI input value does not match the requested text')
 
+    def scroll_to(self, selector, max_swipes=20):
+        if not isinstance(max_swipes,int) or max_swipes<0:
+            raise ValueError('invalid swipe limit')
+        bounds=list(map(int,re.findall(r'\d+',self.layout()['attributes']['bounds'])))
+        x,bottom,top=round(bounds[2]*.5),round(bounds[3]*.78),round(bounds[3]*.3)
+        for attempt in range(max_swipes+1):
+            try:
+                node=self.find(selector,timeout=0)
+                # The swipe origin is not a visibility boundary: a reachable
+                # footer can sit below it. find() checks actual native visibility.
+                self.center(node)
+                return
+            except RuntimeError as exc:
+                if not str(exc).startswith('UI target not found:'):
+                    raise
+            if attempt==max_swipes:
+                raise RuntimeError(f'UI scroll target not reached: {selector}')
+            self.shell(f'uitest uiInput swipe {x} {bottom} {x} {top} 1000')
+            time.sleep(.4)
+
     def run(self, actions):
         for action in actions:
             op = action["op"]
@@ -132,6 +152,8 @@ class UI:
                 for _ in range(action.get("count", 1)):
                     self.shell(f"uitest uiInput swipe {x} {bottom} {x} {top} 1000")
                     time.sleep(action.get("interval_s", 0.4))
+            elif op == 'scroll_to':
+                self.scroll_to(action['selector'],action.get('max_swipes',20))
             elif op == "repeat":
                 for _ in range(action["count"]):
                     self.run(action["actions"])

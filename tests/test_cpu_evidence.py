@@ -93,6 +93,18 @@ class CPUEvidenceTests(unittest.TestCase):
         result=json.loads((folder/'performance.json').read_text())
         self.assertEqual(result['status'],'FAIL')
         self.assertEqual(result['samples'],[110]*3)
+        before={p:p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        with patch('accept_cpu_evidence.ROOT',self.root):
+            audited=accept(self.cid,write=False,require_pass=False)
+        self.assertEqual(audited['unfixed']['status'],'FAIL')
+        self.assertEqual(audited['unfixed'],result)
+        self.assertEqual(before,{p:p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+
+    def test_failure_audit_still_rejects_invalid_raw_provenance(self):
+        self.change_capture('fixture_sha256','wrong')
+        with patch('accept_cpu_evidence.ROOT',self.root):
+            with self.assertRaisesRegex(RuntimeError,'fixture differs'):
+                accept(self.cid,write=False,require_pass=False)
 
 
 if __name__ == '__main__':

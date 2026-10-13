@@ -129,6 +129,23 @@ class CleanPipelineTests(unittest.TestCase):
         ui.input({'type':'SearchField'},'')
         self.assertEqual(state['text'],'')
 
+    def test_visible_footer_below_swipe_origin_is_not_ignored(self):
+        commands=[]
+        ui=UI(lambda command:commands.append(command),'app.bundle')
+        ui.layout=lambda:{'attributes':{'bounds':'[0,0][100,1000]'}}
+        ui.find=lambda *args,**kwargs:{'bounds':'[0,850][100,950]'}
+        with patch('ui_driver.time.sleep'):
+            ui.scroll_to({'text':'加载更多'},max_swipes=1)
+        self.assertEqual(commands,[])
+
+    def test_missing_scroll_target_is_not_a_successful_workload(self):
+        ui=UI(lambda command:None,'app.bundle')
+        ui.layout=lambda:{'attributes':{'bounds':'[0,0][100,1000]'}}
+        def missing(*args,**kwargs):raise RuntimeError('UI target not found: target')
+        ui.find=missing
+        with self.assertRaisesRegex(RuntimeError,'scroll target not reached'):
+            ui.scroll_to({'text':'加载更多'},max_swipes=0)
+
 
 if __name__ == "__main__":
     unittest.main()

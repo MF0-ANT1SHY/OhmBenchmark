@@ -11,7 +11,7 @@ from music_service_fixture import same_instance
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def accept(cid, write=True):
+def accept(cid, write=True, require_pass=True):
     path=ROOT/'cases'/cid/'case.json'
     case=json.loads(path.read_text())
     if case['test_oracle']['metric']!='hiperf_instructions':
@@ -106,7 +106,7 @@ def accept(cid, write=True):
         path.write_text(json.dumps(case,indent=2,ensure_ascii=False)+'\n')
         if passed:
             print(f'{cid}: clean CPU oracle verified, median ratio={median_ratio:.3f}x')
-    if not passed:
+    if not passed and require_pass:
         raise RuntimeError(f'performance criterion not met: {ratios}')
     return results
 
