@@ -54,11 +54,25 @@
   },
   "test_oracle": {
     "metric": "hiperf_instructions",
-    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "definition": "Sampled retired-instruction period sum (hw-instructions) attributed to the app process in the complete externally driven measured window.",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "pending_clean_measurement",
-      "note": "Legacy instrumented measurements do not validate these business-only builds."
+      "status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "unfixed": [
+        1064745383,
+        1060708477,
+        1098371574
+      ],
+      "fixed": [
+        203852201,
+        215081945,
+        215838507
+      ],
+      "median_ratio": 4.950417307226788,
+      "rounds_per_variant": 3,
+      "legacy_evidence_reused": false,
+      "note": "Every paired round exceeds 1.2x; app process explicitly selected from the system report."
     },
     "mechanism_oracle": {
       "metric": "player_page_updates_per_minute",
@@ -100,8 +114,8 @@
   },
   "clean_validation": {
     "policy": "no_app_injection",
-    "workload_validation": "pending",
-    "performance_validation": "pending",
+    "workload_validation": "verified",
+    "performance_validation": "verified",
     "variants": {
       "unfixed": {
         "ref": "clean-app/ytmusic_current_playing_timeupdate/unfixed",
@@ -146,6 +160,73 @@
           "foreground_bundle": "com.example.myapplication",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "ytmusic_current_playing_timeupdate",
+          "variant": "unfixed",
+          "signed_sha256": "8c7e42e915de35376800f3a3a96a11d96662fc12aec711bbc6043bf7eb3bbe6b",
+          "plan_sha256": "fe315df3c08fec04dc060c6e3eb51618282c6a75c385c6e9f20558b2d906c77c",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "kind": "bundled business audio",
+            "sha256": "cf2bd0b8a86528e27822ae09da030f7a720d67ff629058ec280c94a8489ba4b6",
+            "audio_files": 27
+          },
+          "phase_elapsed_s": {
+            "setup": 22.49758108700189,
+            "measured": 60.00007710999853,
+            "verify": 5.194351074002043
+          },
+          "playback_progress": {
+            "start_position_ms": 2045.0,
+            "end_position_ms": 67186.0,
+            "elapsed_s": 60.00007710999853,
+            "advanced_ms": 65141.0
+          },
+          "capture_duration_required_s": 65
+        },
+        "performance": {
+          "status": "PASS",
+          "metric": "hiperf_instructions",
+          "rounds": 3,
+          "samples": [
+            1064745383,
+            1060708477,
+            1098371574
+          ],
+          "median": 1064745383,
+          "paired_ratios": [
+            5.223124291898129,
+            4.931648153916406,
+            5.08885828236386
+          ],
+          "median_ratio": 4.950417307226788,
+          "plan_sha256": "fe315df3c08fec04dc060c6e3eb51618282c6a75c385c6e9f20558b2d906c77c",
+          "signed_sha256": "8c7e42e915de35376800f3a3a96a11d96662fc12aec711bbc6043bf7eb3bbe6b",
+          "fixture_sha256": "cf2bd0b8a86528e27822ae09da030f7a720d67ff629058ec280c94a8489ba4b6",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "b851564f0e79dc9475682d006b1025aedea3cd80b54196c39f46590ee4abc5e8",
+              "app_samples": 6568,
+              "remote_artifacts": "/home/research/ohm-clean/ytmusic_current_playing_timeupdate/unfixed/cpu-captures/round-1"
+            },
+            {
+              "round": 2,
+              "report_sha256": "6a8a7a72099515cf71aa0877332bd5a2222c0b3c648af5416f7a05b7e686bbb7",
+              "app_samples": 6692,
+              "remote_artifacts": "/home/research/ohm-clean/ytmusic_current_playing_timeupdate/unfixed/cpu-captures/round-2"
+            },
+            {
+              "round": 3,
+              "report_sha256": "1abfe3d0e9954c4789a8739dccb1ec165ea310297a2a9612a7790ee7713e6d4c",
+              "app_samples": 6583,
+              "remote_artifacts": "/home/research/ohm-clean/ytmusic_current_playing_timeupdate/unfixed/cpu-captures/round-3"
+            }
+          ],
+          "legacy_evidence_reused": false
         }
       },
       "fixed": {
@@ -191,6 +272,73 @@
           "foreground_bundle": "com.example.myapplication",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "ytmusic_current_playing_timeupdate",
+          "variant": "fixed",
+          "signed_sha256": "417711b3ab77af68e7f60d87a40343c1b95740dec639ccb43ccbfa897ddbcf28",
+          "plan_sha256": "fe315df3c08fec04dc060c6e3eb51618282c6a75c385c6e9f20558b2d906c77c",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "kind": "bundled business audio",
+            "sha256": "cf2bd0b8a86528e27822ae09da030f7a720d67ff629058ec280c94a8489ba4b6",
+            "audio_files": 27
+          },
+          "phase_elapsed_s": {
+            "setup": 21.809134068000276,
+            "measured": 60.00337447400307,
+            "verify": 5.502632004001498
+          },
+          "playback_progress": {
+            "start_position_ms": 1012.0,
+            "end_position_ms": 66017.0,
+            "elapsed_s": 60.00337447400307,
+            "advanced_ms": 65005.0
+          },
+          "capture_duration_required_s": 65
+        },
+        "performance": {
+          "status": "PASS",
+          "metric": "hiperf_instructions",
+          "rounds": 3,
+          "samples": [
+            203852201,
+            215081945,
+            215838507
+          ],
+          "median": 215081945,
+          "paired_ratios": [
+            5.223124291898129,
+            4.931648153916406,
+            5.08885828236386
+          ],
+          "median_ratio": 4.950417307226788,
+          "plan_sha256": "fe315df3c08fec04dc060c6e3eb51618282c6a75c385c6e9f20558b2d906c77c",
+          "signed_sha256": "417711b3ab77af68e7f60d87a40343c1b95740dec639ccb43ccbfa897ddbcf28",
+          "fixture_sha256": "cf2bd0b8a86528e27822ae09da030f7a720d67ff629058ec280c94a8489ba4b6",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "886da23b89df804865682b309df327dcf3bf53302e6005b3e4e7b1d9be410874",
+              "app_samples": 1293,
+              "remote_artifacts": "/home/research/ohm-clean/ytmusic_current_playing_timeupdate/fixed/cpu-captures/round-1"
+            },
+            {
+              "round": 2,
+              "report_sha256": "1807d84cb7757b76833beea75513a986326f0f75f3e79e2a7e2828e4d8d07d3a",
+              "app_samples": 1166,
+              "remote_artifacts": "/home/research/ohm-clean/ytmusic_current_playing_timeupdate/fixed/cpu-captures/round-2"
+            },
+            {
+              "round": 3,
+              "report_sha256": "daa1fa1e7f878868a7693e5a85b47419dad3c645f4fbc0cc6e3edb9f06ff38b0",
+              "app_samples": 1334,
+              "remote_artifacts": "/home/research/ohm-clean/ytmusic_current_playing_timeupdate/fixed/cpu-captures/round-3"
+            }
+          ],
+          "legacy_evidence_reused": false
         }
       }
     }

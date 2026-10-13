@@ -23,7 +23,7 @@
   "measured": [
     {
       "op": "pause",
-      "seconds": 20
+      "seconds": 60
     }
   ],
   "verify": [
