@@ -1,0 +1,31 @@
+{
+  "service": {
+    "sha256": "b29b7dafc29b769c3df44e2fe3c23c23f51cf81e62f5489af97fba24f8aa4ea7",
+    "source_sha256": "03ea0ea2b57a69b62286a1456834a7c3c779f62c079e61e0013d7aa830e1728f",
+    "base_url": "http://127.0.0.1:18491",
+    "service_pid": 113077,
+    "service_start_ticks": 3729949,
+    "files": {
+      "/feeds/1.xml": "c836eb9a7d3779074dfc6c9c19acad6781b0494e1304a3487c3281c11b543c93",
+      "/feeds/2.xml": "d7e494bf5673441d352de2bee915eabdc2ad01d07f75b1068c3f47a778196495",
+      "/feeds/3.xml": "5af77fdb18ccc1ed152361b815e8daf4eddfad34f7a67dda416e1fd06d6dd2c4",
+      "/feeds/4.xml": "a2800270760fc5d17e5b88322268cf5cbf8100447f4cab452df82bae3df40e72",
+      "/feeds/5.xml": "76a70796ca6bb6882fae3b25f67406fc9c81cca7ccebf817dc2085581fc2d3ae",
+      "/feeds/6.xml": "4ef3ac01f675ed06804a2bb4c027f2de9eb7a9a5c95c0a2eb9686a882865de13",
+      "/feeds/7.xml": "b730c24037d00662d77840c34d72c96d12e7eb46bbbbd640c2ce6ef40c2cb7e8",
+      "/feeds/8.xml": "cf7352d1abe4f245fba2388ebca13498e901c7214d8687c8ffae183df1526d69",
+      "/feeds/9.xml": "3e3d21e897840289b77dc3ff76c6319055ef55e723343a11b0db86a7a8ee1d35",
+      "/feeds/10.xml": "e806fc024d5d6bfdfba0636818ec0832e0f081495622fb96599181443f2be24b",
+      "/subscriptions.opml": "b3b01bf48e62cee30f2d3992a649b47bfbfa18a40741756f68a3799a01cf4937"
+    },
+    "feeds": 10,
+    "articles_per_feed": 100,
+    "method": "ordinary RSS/OPML responses fetched and hashed outside profiling",
+    "functional_read_verified": false
+  },
+  "dataset": {
+    "body_bytes": 256
+  },
+  "performance_verified": false,
+  "device_ingestion_verified": false
+}
