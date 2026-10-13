@@ -52,7 +52,7 @@ The JS/SQL interaction patches preserve data-driven selection across virtualized
 rows, notify the list after filtering, and retain descending result order. They
 apply to both sides of the local-search/playback pairs; the search implementation
 difference remains JS filtering versus SQLite filtering. They contain no test
-entrypoints, counters, timing markers or instrumentation wrappers.
+entrypoints, benchmark counters, timing markers or instrumentation wrappers.
 
 Current versioned refs and expected source trees are in `host-reconstruction.json`.
 Build, bytecode, signing and launch proof is separate from performance acceptance.

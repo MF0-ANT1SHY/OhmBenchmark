@@ -69,6 +69,9 @@ def main():
         if oracle['evidence'].get('status')=='measured_clean' and all(
                 clean['variants'][v].get('performance',{}).get('status')=='PASS' for v in ('unfixed','fixed')):
             clean['performance_validation']='verified'
+        if oracle['evidence'].get('status')=='measured_clean_failed' and all(
+                clean['variants'][v].get('performance',{}).get('status')=='FAIL' for v in ('unfixed','fixed')):
+            clean['performance_validation']='failed'
         c["clean_validation"] = clean
         c["reproduction"] = [
             "python3 tools/reconstruct_clean_hosts.py",
@@ -88,10 +91,11 @@ def main():
     for path in sorted((ROOT/'cases').glob('*/case.json')):
         case=json.loads(path.read_text())
         measured=case['clean_validation']['performance_validation']=='verified'
+        failed=case['clean_validation']['performance_validation']=='failed'
         contracts[case['id']]={'oracle_metric':case['test_oracle']['metric'],'app_injection':False,
             'workload_validation':case['clean_validation']['workload_validation'],
-            'measurement_status':'measured_clean' if measured else 'pending_clean_measurement',
-            'rounds_recorded':case['test_oracle']['evidence'].get('rounds_per_variant',0) if measured else 0}
+            'measurement_status':'measured_clean' if measured else 'measured_clean_failed' if failed else 'pending_clean_measurement',
+            'rounds_recorded':case['test_oracle']['evidence'].get('rounds_per_variant',0) if measured or failed else 0}
     (ROOT/'cases/measurement-contract.json').write_text(json.dumps({
         '$comment':'External clean measurement contract. Historical instrumented evidence is archived and not reused.',
         'case_count':len(contracts),'measured_case_count':sum(c['measurement_status']=='measured_clean' for c in contracts.values()),

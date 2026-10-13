@@ -63,10 +63,10 @@ def accept(cid, write=True):
     if len(fixtures)!=1 or None in fixtures:raise RuntimeError('identical fixture is not proven across all rounds')
     ratios=[u/f for u,f in zip(variants['unfixed']['samples'],variants['fixed']['samples'])]
     median_ratio=statistics.median(variants['unfixed']['samples'])/statistics.median(variants['fixed']['samples'])
-    if min(ratios)<1.2 or median_ratio<1.2:raise RuntimeError(f'performance criterion not met: {ratios}')
+    passed=min(ratios)>=1.2 and median_ratio>=1.2
     results={}
     for variant,data in variants.items():
-        result={'status':'PASS','metric':'hiperf_instructions','rounds':3,'samples':data['samples'],
+        result={'status':'PASS' if passed else 'FAIL','metric':'hiperf_instructions','rounds':3,'samples':data['samples'],
                 'median':statistics.median(data['samples']),'paired_ratios':ratios,'median_ratio':median_ratio,
                 'plan_sha256':plan_hash,'signed_sha256':data['signed_sha256'],'fixture_sha256':next(iter(fixtures)),
                 'method':'app-process sampled retired-instruction period sum from system hiperf; not system total',
@@ -74,13 +74,18 @@ def accept(cid, write=True):
         results[variant]=result
         if write:
             (ROOT/'artifacts/clean'/cid/variant/'performance.json').write_text(json.dumps(result,indent=2)+'\n')
-    case['test_oracle']['evidence']={'status':'measured_clean','metric':'hiperf_instructions',
+    case['test_oracle']['evidence']={'status':'measured_clean' if passed else 'measured_clean_failed','metric':'hiperf_instructions',
         'unfixed':variants['unfixed']['samples'],'fixed':variants['fixed']['samples'],'median_ratio':median_ratio,
-        'rounds_per_variant':3,'legacy_evidence_reused':False,'note':'Every paired round exceeds 1.2x; app process explicitly selected from the system report.'}
+        'rounds_per_variant':3,'legacy_evidence_reused':False,'note':
+        'Every paired round exceeds 1.2x; app process explicitly selected from the system report.' if passed else
+        'Clean captures are valid, but the required 1.2x performance improvement is not met; this case is not accepted.'}
     case['test_oracle']['definition']='Sampled retired-instruction period sum (hw-instructions) attributed to the app process in the complete externally driven measured window.'
     if write:
         path.write_text(json.dumps(case,indent=2,ensure_ascii=False)+'\n')
-        print(f'{cid}: clean CPU oracle verified, median ratio={median_ratio:.3f}x')
+        if passed:
+            print(f'{cid}: clean CPU oracle verified, median ratio={median_ratio:.3f}x')
+    if not passed:
+        raise RuntimeError(f'performance criterion not met: {ratios}')
     return results
 
 

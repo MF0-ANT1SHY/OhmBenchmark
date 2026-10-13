@@ -76,6 +76,24 @@ class CPUEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError,'attribution'):
             self.check()
 
+    def test_valid_but_insufficient_improvement_is_recorded_as_failure(self):
+        folder=self.root/'artifacts/clean'/self.cid/'unfixed'
+        for n in range(1,4):
+            path=folder/'cpu-captures'/f'round-{n}'/'capture.json'
+            capture=json.loads(path.read_text());capture['app_instruction_period_sum']=110
+            self.put(path,capture)
+            path=path.with_name('report.json');report=json.loads(path.read_text())
+            report['recordSampleInfo'][0]['processes'][0]['eventCount']=110
+            self.put(path,report)
+        with patch('accept_cpu_evidence.ROOT',self.root):
+            with self.assertRaisesRegex(RuntimeError,'criterion not met'):
+                accept(self.cid)
+        case=json.loads((self.case_dir/'case.json').read_text())
+        self.assertEqual(case['test_oracle']['evidence']['status'],'measured_clean_failed')
+        result=json.loads((folder/'performance.json').read_text())
+        self.assertEqual(result['status'],'FAIL')
+        self.assertEqual(result['samples'],[110]*3)
+
 
 if __name__ == '__main__':
     unittest.main()
