@@ -1,0 +1,6 @@
+{
+  "endpoint": "127.0.0.1:23025",
+  "tcp_connected": true,
+  "ssh_banner_received": false,
+  "error": "timed out"
+}
