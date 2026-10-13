@@ -2104,14 +2104,16 @@
       "case": "jingmo_dataset_import_no_transaction",
       "variant": "unfixed",
       "host": "jingmo",
-      "ref": "clean-app/jingmo_dataset_import_no_transaction/unfixed",
-      "commit": "caf08237364b16bdda9a9be5ade0beae37d7f487",
-      "tree": "2eadaf75ff4f636cd8f04ca1ac52c6f3279b622a",
+      "ref": "clean-app-v2/jingmo_dataset_import_no_transaction/unfixed",
+      "commit": "ebb72f9617a94c3aad65c98f937bd51bbba54b1b",
+      "tree": "d1023a18fcb6aae9d1ca031f768ad75620954767",
       "business_base_tree": "2eadaf75ff4f636cd8f04ca1ac52c6f3279b622a",
-      "production_patches": [],
-      "unsigned_sha256": "9253e0aaef33fc49ec8906b0747155de335f56b96ffb3bfe3dbd159664cd427d",
+      "production_patches": [
+        "hosts_patches/jingmo/production-dataset-source-settings.patch"
+      ],
+      "unsigned_sha256": "14273edd1e5cfef7f57b7e94b7aeb8bced8884315684cbcbe6d3b1a1c33f5062",
       "bytecode_audit": {
-        "sha256": "9253e0aaef33fc49ec8906b0747155de335f56b96ffb3bfe3dbd159664cd427d",
+        "sha256": "14273edd1e5cfef7f57b7e94b7aeb8bced8884315684cbcbe6d3b1a1c33f5062",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -2122,26 +2124,27 @@
       "sign": {
         "case": "jingmo_dataset_import_no_transaction",
         "variant": "unfixed",
-        "unsigned_sha256": "9253e0aaef33fc49ec8906b0747155de335f56b96ffb3bfe3dbd159664cd427d",
+        "unsigned_sha256": "14273edd1e5cfef7f57b7e94b7aeb8bced8884315684cbcbe6d3b1a1c33f5062",
         "signed_hap": "/home/research/ohm-clean/jingmo_dataset_import_no_transaction/unfixed/app.hap",
         "audit": {
-          "sha256": "2a993214fb0a158a972215c50d9112f3d1d7362b204baaf15839af7236003c52",
+          "sha256": "88868da64bcc4780db1e0bdf0eabafd1265e254ec84f256cde8b5dd3f3ad20b7",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       },
       "smoke": {
         "case": "jingmo_dataset_import_no_transaction",
         "variant": "unfixed",
-        "signed_sha256": "2a993214fb0a158a972215c50d9112f3d1d7362b204baaf15839af7236003c52",
+        "signed_sha256": "88868da64bcc4780db1e0bdf0eabafd1265e254ec84f256cde8b5dd3f3ad20b7",
         "install": "[Info]App install path:/home/research/ohm-clean/jingmo_dataset_import_no_transaction/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
         "launch": "start ability successfully.",
         "pids": [
-          43869
+          59811
         ],
         "foreground_bundle": "com.hefengbao.jingmo.hw",
         "status": "PASS",
@@ -2152,14 +2155,16 @@
       "case": "jingmo_dataset_import_no_transaction",
       "variant": "fixed",
       "host": "jingmo",
-      "ref": "clean-app/jingmo_dataset_import_no_transaction/fixed",
-      "commit": "d52c391f23e1f9b1f1f5c1c26989200953eb1f55",
-      "tree": "ac69e4f9f62a10ea28840c83cc0f8741788ec151",
+      "ref": "clean-app-v2/jingmo_dataset_import_no_transaction/fixed",
+      "commit": "829475c0ec8a0606c280f0792c9f762047b18f2c",
+      "tree": "8c755c793928608da1a4daeffb4b6e4ada27d2c6",
       "business_base_tree": "ac69e4f9f62a10ea28840c83cc0f8741788ec151",
-      "production_patches": [],
-      "unsigned_sha256": "8fcc828852a7a389baad8de97e978ea6767540950af102266cb882e2b6e5feed",
+      "production_patches": [
+        "hosts_patches/jingmo/production-dataset-source-settings.patch"
+      ],
+      "unsigned_sha256": "8c047e72875d5aadc3815291db9d39e935aee3d39d9e4fe7803e5386042ef376",
       "bytecode_audit": {
-        "sha256": "8fcc828852a7a389baad8de97e978ea6767540950af102266cb882e2b6e5feed",
+        "sha256": "8c047e72875d5aadc3815291db9d39e935aee3d39d9e4fe7803e5386042ef376",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -2170,26 +2175,27 @@
       "sign": {
         "case": "jingmo_dataset_import_no_transaction",
         "variant": "fixed",
-        "unsigned_sha256": "8fcc828852a7a389baad8de97e978ea6767540950af102266cb882e2b6e5feed",
+        "unsigned_sha256": "8c047e72875d5aadc3815291db9d39e935aee3d39d9e4fe7803e5386042ef376",
         "signed_hap": "/home/research/ohm-clean/jingmo_dataset_import_no_transaction/fixed/app.hap",
         "audit": {
-          "sha256": "12bc14abc50deae03781e62e7e18a94b11af407772d48d68ea72b4c9dfb397d4",
+          "sha256": "e441d217d259c968ebbe542e802bea1a4e6bdc1b07deb8f8a450aec9780b8f45",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       },
       "smoke": {
         "case": "jingmo_dataset_import_no_transaction",
         "variant": "fixed",
-        "signed_sha256": "12bc14abc50deae03781e62e7e18a94b11af407772d48d68ea72b4c9dfb397d4",
+        "signed_sha256": "e441d217d259c968ebbe542e802bea1a4e6bdc1b07deb8f8a450aec9780b8f45",
         "install": "[Info]App install path:/home/research/ohm-clean/jingmo_dataset_import_no_transaction/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
         "launch": "start ability successfully.",
         "pids": [
-          44084
+          59971
         ],
         "foreground_bundle": "com.hefengbao.jingmo.hw",
         "status": "PASS",
@@ -2474,14 +2480,16 @@
       "case": "jingmo_sync_page_reimport",
       "variant": "unfixed",
       "host": "jingmo",
-      "ref": "clean-app/jingmo_sync_page_reimport/unfixed",
-      "commit": "d52c391f23e1f9b1f1f5c1c26989200953eb1f55",
-      "tree": "ac69e4f9f62a10ea28840c83cc0f8741788ec151",
+      "ref": "clean-app-v2/jingmo_sync_page_reimport/unfixed",
+      "commit": "f4d370030192c1f82a7d368e8418250a8567ee10",
+      "tree": "8c755c793928608da1a4daeffb4b6e4ada27d2c6",
       "business_base_tree": "ac69e4f9f62a10ea28840c83cc0f8741788ec151",
-      "production_patches": [],
-      "unsigned_sha256": "1284640c9805c3e681436236e576307a58776af906aae9c0f6e250c8cc97ec12",
+      "production_patches": [
+        "hosts_patches/jingmo/production-dataset-source-settings.patch"
+      ],
+      "unsigned_sha256": "8c047e72875d5aadc3815291db9d39e935aee3d39d9e4fe7803e5386042ef376",
       "bytecode_audit": {
-        "sha256": "1284640c9805c3e681436236e576307a58776af906aae9c0f6e250c8cc97ec12",
+        "sha256": "8c047e72875d5aadc3815291db9d39e935aee3d39d9e4fe7803e5386042ef376",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -2492,26 +2500,27 @@
       "sign": {
         "case": "jingmo_sync_page_reimport",
         "variant": "unfixed",
-        "unsigned_sha256": "1284640c9805c3e681436236e576307a58776af906aae9c0f6e250c8cc97ec12",
+        "unsigned_sha256": "8c047e72875d5aadc3815291db9d39e935aee3d39d9e4fe7803e5386042ef376",
         "signed_hap": "/home/research/ohm-clean/jingmo_sync_page_reimport/unfixed/app.hap",
         "audit": {
-          "sha256": "92022238fa684963ffe6f2a444805f040c88f71c079a0158cc200d7743cd50e6",
+          "sha256": "692d37c1c95e0c48266f56f80d81417e5126c70d15e93bbbcdf4f8732ac8e046",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       },
       "smoke": {
         "case": "jingmo_sync_page_reimport",
         "variant": "unfixed",
-        "signed_sha256": "92022238fa684963ffe6f2a444805f040c88f71c079a0158cc200d7743cd50e6",
+        "signed_sha256": "692d37c1c95e0c48266f56f80d81417e5126c70d15e93bbbcdf4f8732ac8e046",
         "install": "[Info]App install path:/home/research/ohm-clean/jingmo_sync_page_reimport/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
         "launch": "start ability successfully.",
         "pids": [
-          45371
+          60322
         ],
         "foreground_bundle": "com.hefengbao.jingmo.hw",
         "status": "PASS",
@@ -2522,14 +2531,16 @@
       "case": "jingmo_sync_page_reimport",
       "variant": "fixed",
       "host": "jingmo",
-      "ref": "clean-app/jingmo_sync_page_reimport/fixed",
-      "commit": "6d6ad777f109124852e5c2374ea77edfc2347cea",
-      "tree": "8101cbf9b28e027904a750305aedeeec43a74202",
+      "ref": "clean-app-v2/jingmo_sync_page_reimport/fixed",
+      "commit": "02fddcca46e17908aebabf8cd362ddac26b4b844",
+      "tree": "0c00962020f73ba6fb8e01b3da47f3160769eb88",
       "business_base_tree": "8101cbf9b28e027904a750305aedeeec43a74202",
-      "production_patches": [],
-      "unsigned_sha256": "d9bf2fd56bde1a4d996757df9b58d577531262cae75e0a05f848fcdc6e47eab8",
+      "production_patches": [
+        "hosts_patches/jingmo/production-dataset-source-settings.patch"
+      ],
+      "unsigned_sha256": "4063f1ea6fec5ecfd7294b1dd913ff5d315b02df6106d38ba5701854341a9e7f",
       "bytecode_audit": {
-        "sha256": "d9bf2fd56bde1a4d996757df9b58d577531262cae75e0a05f848fcdc6e47eab8",
+        "sha256": "4063f1ea6fec5ecfd7294b1dd913ff5d315b02df6106d38ba5701854341a9e7f",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -2540,30 +2551,18 @@
       "sign": {
         "case": "jingmo_sync_page_reimport",
         "variant": "fixed",
-        "unsigned_sha256": "d9bf2fd56bde1a4d996757df9b58d577531262cae75e0a05f848fcdc6e47eab8",
+        "unsigned_sha256": "4063f1ea6fec5ecfd7294b1dd913ff5d315b02df6106d38ba5701854341a9e7f",
         "signed_hap": "/home/research/ohm-clean/jingmo_sync_page_reimport/fixed/app.hap",
         "audit": {
-          "sha256": "d86baea098122d26ff4ca81334123f8f62f3af5b7cd6b189a43c832602a8e952",
+          "sha256": "90ee8c4e416507081ffc9aba01524ac1228381cbdba2b3e411fefd6f028ee349",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
-      },
-      "smoke": {
-        "case": "jingmo_sync_page_reimport",
-        "variant": "fixed",
-        "signed_sha256": "d86baea098122d26ff4ca81334123f8f62f3af5b7cd6b189a43c832602a8e952",
-        "install": "[Info]App install path:/home/research/ohm-clean/jingmo_sync_page_reimport/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
-        "launch": "start ability successfully.",
-        "pids": [
-          45737
-        ],
-        "foreground_bundle": "com.hefengbao.jingmo.hw",
-        "status": "PASS",
-        "performance_verified": false
       }
     },
     {

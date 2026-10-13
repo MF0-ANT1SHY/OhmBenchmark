@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "business_fix_hunks_unchanged": true,
+  "blob_index_headers_updated_to_current_sources": true,
+  "records": [
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "variant": "unfixed",
+      "source_tree": "d1023a18fcb6aae9d1ca031f768ad75620954767",
+      "signed_sha256": "88868da64bcc4780db1e0bdf0eabafd1265e254ec84f256cde8b5dd3f3ad20b7",
+      "evaluation_identifiers_absent": true
+    },
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "variant": "fixed",
+      "source_tree": "8c755c793928608da1a4daeffb4b6e4ada27d2c6",
+      "signed_sha256": "e441d217d259c968ebbe542e802bea1a4e6bdc1b07deb8f8a450aec9780b8f45",
+      "evaluation_identifiers_absent": true
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "variant": "unfixed",
+      "source_tree": "8c755c793928608da1a4daeffb4b6e4ada27d2c6",
+      "signed_sha256": "692d37c1c95e0c48266f56f80d81417e5126c70d15e93bbbcdf4f8732ac8e046",
+      "evaluation_identifiers_absent": true
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "variant": "fixed",
+      "source_tree": "0c00962020f73ba6fb8e01b3da47f3160769eb88",
+      "signed_sha256": "90ee8c4e416507081ffc9aba01524ac1228381cbdba2b3e411fefd6f028ee349",
+      "evaluation_identifiers_absent": true
+    }
+  ],
+  "performance_verified": false
+}

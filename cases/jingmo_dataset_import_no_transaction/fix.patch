@@ -62,7 +62,7 @@ index 2077628..f7ece9a 100644
        this.logger.error(`code = ${error.code}, msg = ${error.message}`)
      })
 diff --git a/features/settings/src/main/ets/viewmodel/DatasetViewModel.ets b/features/settings/src/main/ets/viewmodel/DatasetViewModel.ets
-index e04cbb3..17ec4c0 100644
+index 5e4af63..99e2f28 100644
 --- a/features/settings/src/main/ets/viewmodel/DatasetViewModel.ets
 +++ b/features/settings/src/main/ets/viewmodel/DatasetViewModel.ets
 @@ -51,6 +51,12 @@ class DatasetViewModel {

@@ -1,0 +1,53 @@
+{
+  "status": "all_four_clean_release_builds_verified",
+  "support_patch": "hosts_patches/jingmo/production-dataset-source-settings.patch",
+  "identical_support_on_both_variants": true,
+  "records": [
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "variant": "unfixed",
+      "previous_ref": "clean-app/jingmo_dataset_import_no_transaction/unfixed",
+      "app_ref": "clean-app-v2/jingmo_dataset_import_no_transaction/unfixed",
+      "tree": "d1023a18fcb6aae9d1ca031f768ad75620954767",
+      "archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/retired-clean/jingmo_dataset_import_no_transaction/stock-source-20261014/unfixed"
+    },
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "variant": "fixed",
+      "previous_ref": "clean-app/jingmo_dataset_import_no_transaction/fixed",
+      "app_ref": "clean-app-v2/jingmo_dataset_import_no_transaction/fixed",
+      "tree": "8c755c793928608da1a4daeffb4b6e4ada27d2c6",
+      "archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/retired-clean/jingmo_dataset_import_no_transaction/stock-source-20261014/fixed"
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "variant": "unfixed",
+      "previous_ref": "clean-app/jingmo_sync_page_reimport/unfixed",
+      "app_ref": "clean-app-v2/jingmo_sync_page_reimport/unfixed",
+      "tree": "8c755c793928608da1a4daeffb4b6e4ada27d2c6",
+      "archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/retired-clean/jingmo_sync_page_reimport/stock-source-20261014/unfixed"
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "variant": "fixed",
+      "previous_ref": "clean-app/jingmo_sync_page_reimport/fixed",
+      "app_ref": "clean-app-v2/jingmo_sync_page_reimport/fixed",
+      "tree": "0c00962020f73ba6fb8e01b3da47f3160769eb88",
+      "archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/retired-clean/jingmo_sync_page_reimport/stock-source-20261014/fixed"
+    }
+  ],
+  "performance_verified": false,
+  "build_gate": {
+    "stage": "build",
+    "cases": 2,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "smoke_states": {
+    "jingmo_dataset_import_no_transaction/unfixed": "PASS",
+    "jingmo_dataset_import_no_transaction/fixed": "PASS",
+    "jingmo_sync_page_reimport/unfixed": "PASS",
+    "jingmo_sync_page_reimport/fixed": "pending_device_transport"
+  }
+}
