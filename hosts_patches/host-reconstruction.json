@@ -213,12 +213,13 @@
           ]
         },
         "case/sheafreader_extract_tag_tolowercase/fixed": {
-          "state": "perf: locate closing tags with a case-insensitive regex instead of lowercasing a copy of the whole fragment per extracted tag",
+          "state": "perf: use bounded native marker searches for tag and CDATA extraction without full-fragment copies or regexp scans",
           "tree": "914c45be73bbdd599cf09029098f0ea6bff961e4",
-          "app_tree": "a77feda14111774305d61f9942ec0a8d91cff824",
-          "app_ref": "clean-app-v2/sheafreader_extract_tag_tolowercase/fixed",
+          "app_tree": "c211382c799c5d1f8a034ee91424a701e207d1e3",
+          "app_ref": "clean-app-v3/sheafreader_extract_tag_tolowercase/fixed",
           "production_patches": [
-            "hosts_patches/sheafreader/production-phone-support.patch"
+            "hosts_patches/sheafreader/production-phone-support.patch",
+            "hosts_patches/sheafreader/production-native-tag-search.patch"
           ]
         },
         "case/sheafreader_extract_tag_tolowercase/unfixed": {

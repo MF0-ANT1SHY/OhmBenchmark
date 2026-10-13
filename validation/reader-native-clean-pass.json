@@ -1,0 +1,100 @@
+{
+  "case": "sheafreader_extract_tag_tolowercase",
+  "status": "measured_clean",
+  "criteria_unchanged": true,
+  "complete_gate": {
+    "stage": "complete",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "results": {
+    "unfixed": {
+      "status": "PASS",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        53541274550,
+        53550002296,
+        53475898980
+      ],
+      "median": 53541274550,
+      "paired_ratios": [
+        1.237737806869018,
+        1.2392063822074866,
+        1.2358927283990229
+      ],
+      "median_ratio": 1.237737806869018,
+      "plan_sha256": "24a6f8e64843d8644925eacf96e14777b68f90f1df62779e1e86f236f4b21849",
+      "signed_sha256": "14140ea223bb7445d626f6967bf0889ac095c7a54db93fc4b6ceefb98ebc828d",
+      "fixture_sha256": "4de8e684fce5f27fec16c11c6bd5f564288762cf514e7cf95d63b9fc10bacb73",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "781524b303341cf59d3f4c5790664a0e8722486feb142e29a56520b57e9549eb",
+          "app_samples": 9404,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "38e750d87d8a9269b5dd0b975f559e3b4f8446c29887e06b3db9e5aa19ea85e3",
+          "app_samples": 8433,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "ec88f0bb5e31bb429f17a05a9777194bba637f2788e2f233ecc22d8c2634ed22",
+          "app_samples": 9089,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    },
+    "fixed": {
+      "status": "PASS",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        43257363759,
+        43213142754,
+        43269045728
+      ],
+      "median": 43257363759,
+      "paired_ratios": [
+        1.237737806869018,
+        1.2392063822074866,
+        1.2358927283990229
+      ],
+      "median_ratio": 1.237737806869018,
+      "plan_sha256": "24a6f8e64843d8644925eacf96e14777b68f90f1df62779e1e86f236f4b21849",
+      "signed_sha256": "4a677f7196ad16fc71218dd5686e42ca7f78525501c6bacbfe89166b3e9388f6",
+      "fixture_sha256": "4de8e684fce5f27fec16c11c6bd5f564288762cf514e7cf95d63b9fc10bacb73",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "02c56b1aacdd1532a8070b2256a1c3d2b197e2a88ed95270477beeaf9ca70769",
+          "app_samples": 7044,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "b248dedf186c93cc3cbff3ce21293248ea6c1073d2676f7e84a8c29db42f0c87",
+          "app_samples": 7848,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "48238f02b7bb500cd2b9df0c6bcbb35916265b0134ac2e6d240a8f115d79bba3",
+          "app_samples": 6914,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    }
+  },
+  "functional_checks": "2011 extraction comparisons and all 1000 ordinary full article parses matched; production source reconstructed and release HAPs audited; all device database snapshots and complete normal refresh observations independently recomputed",
+  "previous_failed_attempt": "validation/reader-parser-clean-failure.json"
+}

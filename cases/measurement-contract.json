@@ -1,7 +1,7 @@
 {
   "$comment": "External clean measurement contract. Historical instrumented evidence is archived and not reused.",
   "case_count": 30,
-  "measured_case_count": 5,
+  "measured_case_count": 6,
   "cases": {
     "browser_eager_history_load": {
       "oracle_metric": "hiperf_instructions",
@@ -126,7 +126,7 @@
       "oracle_metric": "hiperf_instructions",
       "app_injection": false,
       "workload_validation": "verified",
-      "measurement_status": "measured_clean_failed",
+      "measurement_status": "measured_clean",
       "rounds_recorded": 3
     },
     "sheafreader_insert_duplicate_exception": {

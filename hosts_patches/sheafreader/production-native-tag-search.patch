@@ -1,0 +1,105 @@
+--- a/entry/src/main/ets/utils/FeedParser.ets
++++ b/entry/src/main/ets/utils/FeedParser.ets
+@@ -177,42 +177,78 @@
+    * then concatenate every CDATA block it contains.
+    */
+   private static extractTag(xml: string, tagName: string): string {
+-    const openRegex: RegExp = new RegExp('<'.concat(tagName).concat('(?:\\s[^>]*)?>'), 'i');
+-    const openMatch: RegExpExecArray | null = openRegex.exec(xml);
+-    if (openMatch === null) {
++    const openStart: number = FeedParser.findTagStart(xml, tagName, 0, false);
++    if (openStart < 0) {
+       return '';
+     }
+-
+-    const innerStart: number = openMatch.index + openMatch[0].length;
+-    // 用大小写不敏感的正则定位闭合标签，避免为每次取值都物化整段小写拷贝
+-    const closeRegex: RegExp = new RegExp('</'.concat(tagName).concat('\\s*>'), 'i');
+-    closeRegex.lastIndex = 0;
+-    const rest: string = xml.substring(innerStart);
+-    const closeMatch: RegExpExecArray | null = closeRegex.exec(rest);
+-    if (closeMatch === null) {
++    const innerStart: number = xml.indexOf('>', openStart) + 1;
++    const closeStart: number = FeedParser.findTagStart(xml, tagName, innerStart, true);
++    if (closeStart < 0) {
+       return '';
+     }
++    return FeedParser.joinCdata(xml.substring(innerStart, closeStart)).trim();
++  }
+ 
+-    const inner: string = rest.substring(0, closeMatch.index);
+-    return FeedParser.joinCdata(inner).trim();
++  private static isXmlSpace(character: string): boolean {
++    return character === ' ' || character === '\t' || character === '\r' || character === '\n';
+   }
+ 
+-  /**
+-   * Concatenate every CDATA section found in the fragment. When the fragment
+-   * carries no CDATA at all it is returned unchanged.
+-   */
++  private static findTagStart(xml: string, tagName: string, from: number, closing: boolean): number {
++    if (tagName.length === 0) {
++      return -1;
++    }
++    const lowerName: string = tagName.toLowerCase();
++    const prefix: string = closing ? '</' : '<';
++    const lowerPrefix: string = prefix.concat(lowerName.charAt(0));
++    const upperPrefix: string = prefix.concat(lowerName.charAt(0).toUpperCase());
++    while (from < xml.length) {
++      const lower: number = xml.indexOf(lowerPrefix, from);
++      const upper: number = xml.indexOf(upperPrefix, from);
++      const candidate: number = lower < 0 ? upper : (upper < 0 ? lower : Math.min(lower, upper));
++      if (candidate < 0) {
++        return -1;
++      }
++      const nameStart: number = candidate + prefix.length;
++      let end: number = nameStart + tagName.length;
++      if (xml.substring(nameStart, end).toLowerCase() === lowerName
++        && (xml.charAt(end) === '>' || FeedParser.isXmlSpace(xml.charAt(end)))) {
++        if (!closing) {
++          if (xml.indexOf('>', end) >= 0) {
++            return candidate;
++          }
++        } else {
++          while (FeedParser.isXmlSpace(xml.charAt(end))) {
++            end++;
++          }
++          if (xml.charAt(end) === '>') {
++            return candidate;
++          }
++        }
++      }
++      from = candidate + 1;
++    }
++    return -1;
++  }
++
++  /** Concatenate ordinary CDATA sections without scanning their bodies in a regex VM. */
+   private static joinCdata(fragment: string): string {
+-    const cdataRegex: RegExp = /<!\[CDATA\[([\s\S]*?)\]\]>/g;
++    const open: string = '<![CDATA[';
++    let from: number = 0;
+     let result: string = '';
+     let sawCdata: boolean = false;
+-
+-    let match: RegExpExecArray | null = cdataRegex.exec(fragment);
+-    while (match !== null) {
++    while (from < fragment.length) {
++      const start: number = fragment.indexOf(open, from);
++      if (start < 0) {
++        break;
++      }
++      const end: number = fragment.indexOf(']]>', start + open.length);
++      if (end < 0) {
++        break;
++      }
+       sawCdata = true;
+-      result = result.concat(match[1]);
+-      match = cdataRegex.exec(fragment);
++      result = result.concat(fragment.substring(start + open.length, end));
++      from = end + 3;
+     }
+-
+     return sawCdata ? result : fragment;
+   }
+ 

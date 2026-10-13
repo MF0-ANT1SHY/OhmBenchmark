@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "case": "sheafreader_extract_tag_tolowercase",
+  "variant": "fixed",
+  "base_tree": "914c45be73bbdd599cf09029098f0ea6bff961e4",
+  "production_patches": [
+    "hosts_patches/sheafreader/production-phone-support.patch",
+    "hosts_patches/sheafreader/production-native-tag-search.patch"
+  ],
+  "reconstructed_tree": "c211382c799c5d1f8a034ee91424a701e207d1e3",
+  "compiled_tree": "c211382c799c5d1f8a034ee91424a701e207d1e3",
+  "performance_verified": false
+}

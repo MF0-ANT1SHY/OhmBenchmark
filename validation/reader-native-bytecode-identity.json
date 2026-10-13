@@ -1,0 +1,17 @@
+{
+  "case": "sheafreader_extract_tag_tolowercase",
+  "variants": {
+    "unfixed": {
+      "abc_bytes": 801660,
+      "case_identifier_absent": true,
+      "repository_identifier_absent": true
+    },
+    "fixed": {
+      "abc_bytes": 802408,
+      "case_identifier_absent": true,
+      "repository_identifier_absent": true
+    }
+  },
+  "scope": "supplementary raw ABC evaluation-identity check; full source and compiled audits are also required",
+  "performance_verified": false
+}

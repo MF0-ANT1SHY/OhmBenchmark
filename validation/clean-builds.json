@@ -2842,7 +2842,7 @@
         "unsigned_sha256": "be83d4a5203a04d189b40bb6f78cfe85e8b0cf744ba602a571ccbe602aedd574",
         "signed_hap": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/app.hap",
         "audit": {
-          "sha256": "81b0a97950c54d1672e4fd16de404ffcedfa8c85b10372d39b33d128fbf94da5",
+          "sha256": "14140ea223bb7445d626f6967bf0889ac095c7a54db93fc4b6ceefb98ebc828d",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -2855,11 +2855,11 @@
       "smoke": {
         "case": "sheafreader_extract_tag_tolowercase",
         "variant": "unfixed",
-        "signed_sha256": "81b0a97950c54d1672e4fd16de404ffcedfa8c85b10372d39b33d128fbf94da5",
+        "signed_sha256": "14140ea223bb7445d626f6967bf0889ac095c7a54db93fc4b6ceefb98ebc828d",
         "install": "[Info]App install path:/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
         "launch": "start ability successfully.",
         "pids": [
-          55369
+          30454
         ],
         "foreground_bundle": "com.sheafreader.hm",
         "status": "PASS",
@@ -2868,7 +2868,7 @@
       "workload": {
         "case": "sheafreader_extract_tag_tolowercase",
         "variant": "unfixed",
-        "signed_sha256": "81b0a97950c54d1672e4fd16de404ffcedfa8c85b10372d39b33d128fbf94da5",
+        "signed_sha256": "14140ea223bb7445d626f6967bf0889ac095c7a54db93fc4b6ceefb98ebc828d",
         "plan_sha256": "24a6f8e64843d8644925eacf96e14777b68f90f1df62779e1e86f236f4b21849",
         "status": "PASS",
         "performance_verified": false,
@@ -2887,7 +2887,7 @@
           "device_snapshot": {
             "sha256": "d3ebefc31850603978b3d09e07ef178220d987d12e805aa4a889a83501951e64",
             "bytes": 33533952,
-            "remote_archive": "/home/research/ohm-clean/services/rss/snapshots/7250070910514ae08ed1b5a635f6e7e0.db",
+            "remote_archive": "/home/research/ohm-clean/services/rss/snapshots/88bc6d1e13904edba98d31b580ce348a.db",
             "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
             "ordinary_data": {
               "database_sha256": "d3ebefc31850603978b3d09e07ef178220d987d12e805aa4a889a83501951e64",
@@ -2900,12 +2900,12 @@
               "method": "all normal feed URLs, article GUIDs, titles, links, authors and full bodies verified"
             },
             "performance_verified": false,
-            "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/rss-audits/ab53c91eafad4e2ab6fa67fbe76bd2f8.db"
+            "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/rss-audits/715af62a8ffa48888f71d977cc101267.db"
           },
           "installation": {
             "bundle": "com.sheafreader.hm",
             "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
-            "backup": "/home/research/ohm-clean/backups/com.sheafreader.hm/1791915016396651223/sheaf_reader.db",
+            "backup": "/home/research/ohm-clean/backups/com.sheafreader.hm/1791916579449750884/sheaf_reader.db",
             "fixture_tables": 4,
             "integrity_check": "ok"
           },
@@ -2937,9 +2937,9 @@
           "method": "ordinary UI-populated database restored outside profiling and all article bodies verified"
         },
         "phase_elapsed_s": {
-          "setup": 17.685530897004355,
-          "measured": 17.05652290600119,
-          "verify": 6.041654112996184
+          "setup": 18.09514061400114,
+          "measured": 17.110997383999347,
+          "verify": 5.803874735996942
         },
         "reader_refresh": {
           "feeds_refreshed": 10,
@@ -2972,12 +2972,12 @@
             "functional_read_verified": false
           },
           "device_snapshot": {
-            "sha256": "203dabe6b8534d5587636984f5af759a77cbe114241af734b7b9d5ad423c5d4e",
+            "sha256": "0d2982d2b508380e81034d9d18c999ab4afb9e3f5418035f6e7e5d9ca440e6ad",
             "bytes": 33533952,
-            "remote_archive": "/home/research/ohm-clean/services/rss/snapshots/6807ae6db19b4cd1a9bdf48986dc17ff.db",
+            "remote_archive": "/home/research/ohm-clean/services/rss/snapshots/11a311c25eba44c8919ac75e4b5e0baa.db",
             "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
             "ordinary_data": {
-              "database_sha256": "203dabe6b8534d5587636984f5af759a77cbe114241af734b7b9d5ad423c5d4e",
+              "database_sha256": "0d2982d2b508380e81034d9d18c999ab4afb9e3f5418035f6e7e5d9ca440e6ad",
               "semantic_sha256": "09689d97dc208ba63565fe6ada608c1a8c0fb07a2e8a21dcbf0f16de0fd525da",
               "feeds": 10,
               "articles": 1000,
@@ -2987,7 +2987,7 @@
               "method": "all normal feed URLs, article GUIDs, titles, links, authors and full bodies verified"
             },
             "performance_verified": false,
-            "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/rss-audits/e0db520e42ba4a77b694948353b3aaf9.db"
+            "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/rss-audits/6ae20c45a2d84462a3fde00c4cd6650a.db"
           },
           "functional_read_verified": true
         },
@@ -2995,42 +2995,42 @@
         "capture_duration_required_s": 22
       },
       "performance": {
-        "status": "FAIL",
+        "status": "PASS",
         "metric": "hiperf_instructions",
         "rounds": 3,
         "samples": [
-          53537598571,
-          53604127747,
-          53597122901
+          53541274550,
+          53550002296,
+          53475898980
         ],
-        "median": 53597122901,
+        "median": 53541274550,
         "paired_ratios": [
-          0.961848083472427,
-          0.9614595025638129,
-          0.9638556020538567
+          1.237737806869018,
+          1.2392063822074866,
+          1.2358927283990229
         ],
-        "median_ratio": 0.9629174882320475,
+        "median_ratio": 1.237737806869018,
         "plan_sha256": "24a6f8e64843d8644925eacf96e14777b68f90f1df62779e1e86f236f4b21849",
-        "signed_sha256": "81b0a97950c54d1672e4fd16de404ffcedfa8c85b10372d39b33d128fbf94da5",
+        "signed_sha256": "14140ea223bb7445d626f6967bf0889ac095c7a54db93fc4b6ceefb98ebc828d",
         "fixture_sha256": "4de8e684fce5f27fec16c11c6bd5f564288762cf514e7cf95d63b9fc10bacb73",
         "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
         "captures": [
           {
             "round": 1,
-            "report_sha256": "dd3f946726ff8e37d168e75643a4c0ed9c9ad4e835af4f8e114c5d2ae1ba98ae",
-            "app_samples": 8282,
+            "report_sha256": "781524b303341cf59d3f4c5790664a0e8722486feb142e29a56520b57e9549eb",
+            "app_samples": 9404,
             "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/cpu-captures/round-1"
           },
           {
             "round": 2,
-            "report_sha256": "b675242ad32388485a1e9fd969162d543b6bc933dcd365f9e40eb0fe20e60f38",
-            "app_samples": 8473,
+            "report_sha256": "38e750d87d8a9269b5dd0b975f559e3b4f8446c29887e06b3db9e5aa19ea85e3",
+            "app_samples": 8433,
             "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/cpu-captures/round-2"
           },
           {
             "round": 3,
-            "report_sha256": "252e7fc7ecb15e635d99ac36d11ffab983badd4784bcd47c702282049946efc4",
-            "app_samples": 9512,
+            "report_sha256": "ec88f0bb5e31bb429f17a05a9777194bba637f2788e2f233ecc22d8c2634ed22",
+            "app_samples": 9089,
             "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/cpu-captures/round-3"
           }
         ],
@@ -3041,16 +3041,17 @@
       "case": "sheafreader_extract_tag_tolowercase",
       "variant": "fixed",
       "host": "sheafreader",
-      "ref": "clean-app-v2/sheafreader_extract_tag_tolowercase/fixed",
-      "commit": "0bf6166abc0377f24de9205e8a4d38a0686f911d",
-      "tree": "a77feda14111774305d61f9942ec0a8d91cff824",
+      "ref": "clean-app-v3/sheafreader_extract_tag_tolowercase/fixed",
+      "commit": "d6e095d1bec0d60dc7848e222e4be01f264b1a60",
+      "tree": "c211382c799c5d1f8a034ee91424a701e207d1e3",
       "business_base_tree": "914c45be73bbdd599cf09029098f0ea6bff961e4",
       "production_patches": [
-        "hosts_patches/sheafreader/production-phone-support.patch"
+        "hosts_patches/sheafreader/production-phone-support.patch",
+        "hosts_patches/sheafreader/production-native-tag-search.patch"
       ],
-      "unsigned_sha256": "3c9849bf882f99b3803da701fa3ca568091bb650e4740db680e543c09ef44aea",
+      "unsigned_sha256": "045258596066ad562dc26511f10d7f874932d82e5a2c2d9be24bf60ab63cef86",
       "bytecode_audit": {
-        "sha256": "3c9849bf882f99b3803da701fa3ca568091bb650e4740db680e543c09ef44aea",
+        "sha256": "045258596066ad562dc26511f10d7f874932d82e5a2c2d9be24bf60ab63cef86",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -3061,10 +3062,10 @@
       "sign": {
         "case": "sheafreader_extract_tag_tolowercase",
         "variant": "fixed",
-        "unsigned_sha256": "3c9849bf882f99b3803da701fa3ca568091bb650e4740db680e543c09ef44aea",
+        "unsigned_sha256": "045258596066ad562dc26511f10d7f874932d82e5a2c2d9be24bf60ab63cef86",
         "signed_hap": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/app.hap",
         "audit": {
-          "sha256": "03ad86646c33e9321420635c9c85bbc7b9294483111c8b5ba50d470860969a5c",
+          "sha256": "4a677f7196ad16fc71218dd5686e42ca7f78525501c6bacbfe89166b3e9388f6",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -3077,11 +3078,11 @@
       "smoke": {
         "case": "sheafreader_extract_tag_tolowercase",
         "variant": "fixed",
-        "signed_sha256": "03ad86646c33e9321420635c9c85bbc7b9294483111c8b5ba50d470860969a5c",
+        "signed_sha256": "4a677f7196ad16fc71218dd5686e42ca7f78525501c6bacbfe89166b3e9388f6",
         "install": "[Info]App install path:/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
         "launch": "start ability successfully.",
         "pids": [
-          55725
+          31449
         ],
         "foreground_bundle": "com.sheafreader.hm",
         "status": "PASS",
@@ -3090,7 +3091,7 @@
       "workload": {
         "case": "sheafreader_extract_tag_tolowercase",
         "variant": "fixed",
-        "signed_sha256": "03ad86646c33e9321420635c9c85bbc7b9294483111c8b5ba50d470860969a5c",
+        "signed_sha256": "4a677f7196ad16fc71218dd5686e42ca7f78525501c6bacbfe89166b3e9388f6",
         "plan_sha256": "24a6f8e64843d8644925eacf96e14777b68f90f1df62779e1e86f236f4b21849",
         "status": "PASS",
         "performance_verified": false,
@@ -3109,7 +3110,7 @@
           "device_snapshot": {
             "sha256": "d3ebefc31850603978b3d09e07ef178220d987d12e805aa4a889a83501951e64",
             "bytes": 33533952,
-            "remote_archive": "/home/research/ohm-clean/services/rss/snapshots/52231553e8f3423a9b50d251bfc35ecf.db",
+            "remote_archive": "/home/research/ohm-clean/services/rss/snapshots/388557b1468b446ca6c1dfc050168df2.db",
             "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
             "ordinary_data": {
               "database_sha256": "d3ebefc31850603978b3d09e07ef178220d987d12e805aa4a889a83501951e64",
@@ -3122,12 +3123,12 @@
               "method": "all normal feed URLs, article GUIDs, titles, links, authors and full bodies verified"
             },
             "performance_verified": false,
-            "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/rss-audits/5b2b3debbdeb4efcaf2f25d1994658ec.db"
+            "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/rss-audits/62722924fe6c461db6ec560ffe236a54.db"
           },
           "installation": {
             "bundle": "com.sheafreader.hm",
             "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
-            "backup": "/home/research/ohm-clean/backups/com.sheafreader.hm/1791915127361776119/sheaf_reader.db",
+            "backup": "/home/research/ohm-clean/backups/com.sheafreader.hm/1791916689533388149/sheaf_reader.db",
             "fixture_tables": 4,
             "integrity_check": "ok"
           },
@@ -3159,9 +3160,9 @@
           "method": "ordinary UI-populated database restored outside profiling and all article bodies verified"
         },
         "phase_elapsed_s": {
-          "setup": 18.278616975003388,
-          "measured": 16.74677848599822,
-          "verify": 5.733249901000818
+          "setup": 17.315118942999106,
+          "measured": 16.4790698709985,
+          "verify": 5.7212463169998955
         },
         "reader_refresh": {
           "feeds_refreshed": 10,
@@ -3194,12 +3195,12 @@
             "functional_read_verified": false
           },
           "device_snapshot": {
-            "sha256": "7a98ccc3200112884d6ebf0f77f4c0ff5810d971742b15f81e363d01051801ac",
+            "sha256": "4499d1de4bc492019db17c64cb1f9d6e4628d09b21ff233b3ac979ea0aa0944d",
             "bytes": 33533952,
-            "remote_archive": "/home/research/ohm-clean/services/rss/snapshots/379a1b43074445789bd0df112dd1dfef.db",
+            "remote_archive": "/home/research/ohm-clean/services/rss/snapshots/e60b56fa899a4195965481e6b40092cc.db",
             "database": "/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db",
             "ordinary_data": {
-              "database_sha256": "7a98ccc3200112884d6ebf0f77f4c0ff5810d971742b15f81e363d01051801ac",
+              "database_sha256": "4499d1de4bc492019db17c64cb1f9d6e4628d09b21ff233b3ac979ea0aa0944d",
               "semantic_sha256": "09689d97dc208ba63565fe6ada608c1a8c0fb07a2e8a21dcbf0f16de0fd525da",
               "feeds": 10,
               "articles": 1000,
@@ -3209,50 +3210,50 @@
               "method": "all normal feed URLs, article GUIDs, titles, links, authors and full bodies verified"
             },
             "performance_verified": false,
-            "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/rss-audits/4dddc5a4b8ad44a7acf1ea39a0ef6fbe.db"
+            "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/rss-audits/50729d38a9e746e6b4750769d30f3e47.db"
           },
           "functional_read_verified": true
         },
         "functional_check": "all ordinary RSS articles verified and all ten feeds refreshed through the existing UI shortcut",
-        "capture_duration_required_s": 22
+        "capture_duration_required_s": 21
       },
       "performance": {
-        "status": "FAIL",
+        "status": "PASS",
         "metric": "hiperf_instructions",
         "rounds": 3,
         "samples": [
-          55661179235,
-          55752871134,
-          55607004604
+          43257363759,
+          43213142754,
+          43269045728
         ],
-        "median": 55661179235,
+        "median": 43257363759,
         "paired_ratios": [
-          0.961848083472427,
-          0.9614595025638129,
-          0.9638556020538567
+          1.237737806869018,
+          1.2392063822074866,
+          1.2358927283990229
         ],
-        "median_ratio": 0.9629174882320475,
+        "median_ratio": 1.237737806869018,
         "plan_sha256": "24a6f8e64843d8644925eacf96e14777b68f90f1df62779e1e86f236f4b21849",
-        "signed_sha256": "03ad86646c33e9321420635c9c85bbc7b9294483111c8b5ba50d470860969a5c",
+        "signed_sha256": "4a677f7196ad16fc71218dd5686e42ca7f78525501c6bacbfe89166b3e9388f6",
         "fixture_sha256": "4de8e684fce5f27fec16c11c6bd5f564288762cf514e7cf95d63b9fc10bacb73",
         "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
         "captures": [
           {
             "round": 1,
-            "report_sha256": "78e8f57c6343d82f86ecac741e615fb25137c20f77fb33abbfe78b6962a9655d",
-            "app_samples": 8883,
+            "report_sha256": "02c56b1aacdd1532a8070b2256a1c3d2b197e2a88ed95270477beeaf9ca70769",
+            "app_samples": 7044,
             "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/cpu-captures/round-1"
           },
           {
             "round": 2,
-            "report_sha256": "3df6f5f5859af232a3d80670a4b94c0dbcf63f0b1cccb9fab0ecc24d79c70792",
-            "app_samples": 7948,
+            "report_sha256": "b248dedf186c93cc3cbff3ce21293248ea6c1073d2676f7e84a8c29db42f0c87",
+            "app_samples": 7848,
             "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/cpu-captures/round-2"
           },
           {
             "round": 3,
-            "report_sha256": "bcbd6912c3df68c8178aea960ffa5a901f548cb2053457ceef7dada1a9446859",
-            "app_samples": 8208,
+            "report_sha256": "48238f02b7bb500cd2b9df0c6bcbb35916265b0134ac2e6d240a8f115d79bba3",
+            "app_samples": 6914,
             "remote_artifacts": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/cpu-captures/round-3"
           }
         ],
