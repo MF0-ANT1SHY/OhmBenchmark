@@ -1,0 +1,7 @@
+{
+  "stage": "smoke",
+  "cases": 30,
+  "errors": [],
+  "pending": [],
+  "passed": true
+}
