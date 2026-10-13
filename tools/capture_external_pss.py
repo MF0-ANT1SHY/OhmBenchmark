@@ -11,11 +11,12 @@ from pathlib import Path
 
 from remote_device import Remote
 from system_pss import capture_window
+from install_search_history_fixture import install as install_search_history
 
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def capture(remote,case,variant,round_number):
+def capture(remote,case,variant,round_number,search_history_fixture=None,preferences_path=None):
     if case['test_oracle']['metric']!='app_pss_bytes':
         raise ValueError('PSS collector cannot validate a different metric')
     cid=case['id']
@@ -43,6 +44,11 @@ def capture(remote,case,variant,round_number):
     installed=remote.hdc(['install','-r',sign['signed_hap']],timeout=180)
     if 'install bundle successfully' not in installed:
         raise RuntimeError(installed)
+    preparation=None
+    if search_history_fixture:
+        preparation=install_search_history(remote,case,variant,search_history_fixture,preferences_path or '')
+        if preparation['sha256']!=validated.get('fixture',{}).get('sha256'):
+            raise ValueError('trial input differs from the validated workload input')
     remote.upload(ROOT/'tools/ui_driver.py','/home/research/ohm-clean/tools/ui_driver.py')
     destination=f'/home/research/ohm-clean/{cid}/{variant}/memory-plan.json'
     remote.upload(plan,destination)
@@ -70,7 +76,8 @@ def shell(command):
                   signed_sha256=sign['audit']['sha256'],
                   # A validation run's fixture does not prove the input was reset
                   # for this trial. Never inherit its hash as preparation proof.
-                  fixture_sha256=None,input_preparation_verified=False,
+                  fixture_sha256=preparation['sha256'] if preparation else None,
+                  input_preparation_verified=bool(preparation),preparation=preparation,
                   performance_verified=False)
     output.mkdir(parents=True,exist_ok=True)
     (output/'capture.json').write_text(json.dumps(result,indent=2)+'\n')
@@ -83,6 +90,8 @@ if __name__=='__main__':
     parser.add_argument('--variant',choices=['unfixed','fixed'],required=True)
     parser.add_argument('--round',type=int,default=1)
     parser.add_argument('--remote',default='cityuPC')
+    parser.add_argument('--search-history-fixture',type=Path)
+    parser.add_argument('--preferences-path')
     args=parser.parse_args()
     case=json.loads((ROOT/'cases'/args.case/'case.json').read_text())
-    capture(Remote(args.remote),case,args.variant,args.round)
+    capture(Remote(args.remote),case,args.variant,args.round,args.search_history_fixture,args.preferences_path)

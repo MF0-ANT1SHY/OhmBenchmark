@@ -20,11 +20,12 @@ from remote_device import Remote
 from seed_local_songs import deploy as deploy_songs
 from bundled_audio_fixture import for_case as packaged_audio
 from playback_progress import check_progress
+from install_search_history_fixture import install as install_search_history
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False):
+def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, search_history_fixture=None, preferences_path=None):
     cid = case['id']
     folder = ROOT / 'artifacts/clean' / cid / variant
     signed = json.loads((folder / 'sign.json').read_text())
@@ -33,7 +34,7 @@ def validate(remote, case, variant, browser_fixture=None, local_song_fixture=Non
     result = {'case':cid, 'variant':variant, 'signed_sha256':signed['audit']['sha256'],
               'plan_sha256':plan_hash, 'status':'FAIL', 'performance_verified':False}
     try:
-        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture))+int(bundled_audio)>1:
+        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture,search_history_fixture))+int(bundled_audio)>1:
             raise ValueError('only one fixture may be supplied')
         if bundled_audio:
             result['fixture']=packaged_audio(ROOT,case,variant,signed)
@@ -56,6 +57,8 @@ def validate(remote, case, variant, browser_fixture=None, local_song_fixture=Non
         if poem_fixture:
             result['fixture']=install_fixture(remote,case['host_app']['bundle_name'],case['testcase']['module'],'jingmo.db',poem_fixture)
             result['fixture']['sha256']=hashlib.sha256(poem_fixture.read_bytes()).hexdigest()
+        if search_history_fixture:
+            result['fixture']=install_search_history(remote,case,variant,search_history_fixture,preferences_path or '')
         destination = f'/home/research/ohm-clean/{cid}/{variant}/workload-plan.json'
         remote.upload(plan_path, destination)
         code = """import hashlib,json,subprocess,sys,time,traceback
@@ -95,6 +98,16 @@ def shell(command):
         if device['status'] != 'PASS':
             raise RuntimeError(device['error'])
         result['phase_elapsed_s'] = {p:r['elapsed_s'] for p,r in device['phases'].items()}
+        if search_history_fixture:
+            from ui_driver import UI
+            events=json.loads((search_history_fixture/'submissions.json').read_text())
+            expected=set(events if variant=='unfixed' else list(dict.fromkeys(reversed(events)))[:20])
+            texts={n.get('text') for n in UI.nodes(device['phases']['setup']['layout'])
+                   if n.get('bundleName')==case['host_app']['bundle_name']}
+            if not expected.intersection(texts):
+                raise RuntimeError('normal search-history UI did not read the deployed preference fixture')
+            result['fixture']['functional_read_verified']=True
+            result['functional_check']='normal history UI displays entries from the ordinary preference fixture'
         if cid=='ytmusic_current_playing_timeupdate':
             # The snapshots bracket measured idle playback. Dump latency is
             # bounded by the progress check's tolerance; a title alone is not proof.
@@ -153,6 +166,8 @@ def main():
     fixtures.add_argument('--local-song-fixture',type=Path)
     fixtures.add_argument('--poem-fixture',type=Path)
     fixtures.add_argument('--bundled-audio',action='store_true')
+    fixtures.add_argument('--search-history-fixture',type=Path)
+    parser.add_argument('--preferences-path',help='actual initialized historyStore file; discover through normal app use')
     args=parser.parse_args()
     remote=Remote(args.remote)
     remote.upload(ROOT/'tools/ui_driver.py','/home/research/ohm-clean/tools/ui_driver.py')
@@ -160,7 +175,7 @@ def main():
     for cid in args.cases:
         case=json.loads((ROOT/'cases'/cid/'case.json').read_text())
         for variant in ('unfixed','fixed'):
-            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio)
+            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.search_history_fixture,args.preferences_path)
     return int(failed)
 
 
