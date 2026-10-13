@@ -1,0 +1,441 @@
+{
+  "case": "cloudmusic_search_result_foreach",
+  "round": 1,
+  "scope": "private evaluator diagnostic only; not an acceptance verdict or agent input",
+  "schema_source": "https://github.com/openharmony/developtools_hiperf/blob/master/include/report_json_file.h",
+  "schema_blob": "841be06cbcc558f11b31123f0d3e4ca44951dbb2",
+  "results": {
+    "unfixed": {
+      "report_sha256": "4f7a579b59670c6e50a6638cd284b04e8ab8b9317eb03d61dad4a7279fb29300",
+      "app_instruction_period_sum": 21108845730,
+      "top_self_functions": [
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "HashMapGet",
+          "samples": 655,
+          "self_instruction_period_sum": 546129209,
+          "subtree_instruction_period_sum": 1883719101
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "OHOS::Ace::NG::UINode::FrameCount() const",
+          "samples": 692,
+          "self_instruction_period_sum": 518062993,
+          "subtree_instruction_period_sum": 518477953
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "pthread_mutex_unlock",
+          "samples": 516,
+          "self_instruction_period_sum": 372745898,
+          "subtree_instruction_period_sum": 374987997
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib/ld-musl-aarch64.so.1+0xabef8",
+          "samples": 475,
+          "self_instruction_period_sum": 348101106,
+          "subtree_instruction_period_sum": 348101106
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "SecVsnprintfImpl",
+          "samples": 482,
+          "self_instruction_period_sum": 293613144,
+          "subtree_instruction_period_sum": 506054411
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "pthread_mutex_lock",
+          "samples": 344,
+          "self_instruction_period_sum": 259487450,
+          "subtree_instruction_period_sum": 259775390
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "strncmp",
+          "samples": 305,
+          "self_instruction_period_sum": 246182293,
+          "subtree_instruction_period_sum": 247111338
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "strchr",
+          "samples": 327,
+          "self_instruction_period_sum": 238077428,
+          "subtree_instruction_period_sum": 238077428
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "GetLabelIndex",
+          "samples": 302,
+          "self_instruction_period_sum": 237735661,
+          "subtree_instruction_period_sum": 2325654067
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "fast_tailcall_epoll_retrive_events_entry",
+          "samples": 381,
+          "self_instruction_period_sum": 227090084,
+          "subtree_instruction_period_sum": 260873778
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "OHOS::Ace::NG::LayoutWrapper::AdjustChild(OHOS::Ace::RefPtr<OHOS::Ace::NG::UINode>, OHOS::Ace::NG::OffsetT<float> const&, bool)",
+          "samples": 276,
+          "self_instruction_period_sum": 213726195,
+          "subtree_instruction_period_sum": 242053536
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib/ld-musl-aarch64.so.1+0xb8720",
+          "samples": 224,
+          "self_instruction_period_sum": 182101441,
+          "subtree_instruction_period_sum": 182101441
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "memcpy",
+          "samples": 249,
+          "self_instruction_period_sum": 172449588,
+          "subtree_instruction_period_sum": 179677394
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib/ld-musl-aarch64.so.1+0x13bc74",
+          "samples": 189,
+          "self_instruction_period_sum": 155268044,
+          "subtree_instruction_period_sum": 155268044
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib/ld-musl-aarch64.so.1+0x13bc58",
+          "samples": 202,
+          "self_instruction_period_sum": 150293922,
+          "subtree_instruction_period_sum": 150293922
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib/ld-musl-aarch64.so.1+0x13bc6c",
+          "samples": 180,
+          "self_instruction_period_sum": 147611842,
+          "subtree_instruction_period_sum": 147611842
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "futex_wake_fast",
+          "samples": 203,
+          "self_instruction_period_sum": 146100653,
+          "subtree_instruction_period_sum": 242640166
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "OHOS::Ace::NG::UINode::SetJSViewActive(bool, bool, bool)",
+          "samples": 196,
+          "self_instruction_period_sum": 136595148,
+          "subtree_instruction_period_sum": 201534105
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "rt_enqueue",
+          "samples": 180,
+          "self_instruction_period_sum": 130305425,
+          "subtree_instruction_period_sum": 221560676
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "OHOS::Rosen::ModifierNG::RSTransformModifier::GetTranslate() const",
+          "samples": 173,
+          "self_instruction_period_sum": 127317612,
+          "subtree_instruction_period_sum": 130517045
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "strlen",
+          "samples": 163,
+          "self_instruction_period_sum": 122597053,
+          "subtree_instruction_period_sum": 122597053
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib64/platformsdk/libace_compatible.z.so+0xa11900",
+          "samples": 148,
+          "self_instruction_period_sum": 112121451,
+          "subtree_instruction_period_sum": 112121451
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "OHOS::Rosen::RSModifierExtractor::GetBounds() const",
+          "samples": 143,
+          "self_instruction_period_sum": 112114013,
+          "subtree_instruction_period_sum": 212896668
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib64/chipset-sdk-sp/libbegetutil.z.so+0x23b0c",
+          "samples": 129,
+          "self_instruction_period_sum": 107247196,
+          "subtree_instruction_period_sum": 107247196
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib64/platformsdk/libace_compatible.z.so+0xa112b4",
+          "samples": 132,
+          "self_instruction_period_sum": 106023479,
+          "subtree_instruction_period_sum": 106023479
+        },
+        {
+          "thread": "OS_EVENT_POLL",
+          "symbol": "fast_tailcall_epoll_retrive_events_entry",
+          "samples": 1036,
+          "self_instruction_period_sum": 106013747,
+          "subtree_instruction_period_sum": 108760752
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "__spincallentry_sched_thread_lt_set_conf",
+          "samples": 144,
+          "self_instruction_period_sum": 104753490,
+          "subtree_instruction_period_sum": 104753490
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "OHOS::Parcel::WriteUnpadBuffer(void const*, unsigned long)",
+          "samples": 131,
+          "self_instruction_period_sum": 102793644,
+          "subtree_instruction_period_sum": 168290107
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "OHOS::RefBase::~RefBase()",
+          "samples": 127,
+          "self_instruction_period_sum": 102407161,
+          "subtree_instruction_period_sum": 198315329
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib64/platformsdk/libace_compatible.z.so+0xa112e0",
+          "samples": 143,
+          "self_instruction_period_sum": 101709519,
+          "subtree_instruction_period_sum": 101931935
+        }
+      ]
+    },
+    "fixed": {
+      "report_sha256": "b7eb96dcfed27b9e6fa3d63d2889e12e413bfe3dbdf9ccb9d31319e6af25c615",
+      "app_instruction_period_sum": 21713786874,
+      "top_self_functions": [
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "HashMapGet",
+          "samples": 673,
+          "self_instruction_period_sum": 543383334,
+          "subtree_instruction_period_sum": 1856261052
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "pthread_mutex_unlock",
+          "samples": 686,
+          "self_instruction_period_sum": 486041712,
+          "subtree_instruction_period_sum": 486763748
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib/ld-musl-aarch64.so.1+0xabef8",
+          "samples": 576,
+          "self_instruction_period_sum": 435089013,
+          "subtree_instruction_period_sum": 435089013
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "pthread_mutex_lock",
+          "samples": 458,
+          "self_instruction_period_sum": 330172662,
+          "subtree_instruction_period_sum": 330172662
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "SecVsnprintfImpl",
+          "samples": 489,
+          "self_instruction_period_sum": 285748979,
+          "subtree_instruction_period_sum": 475137198
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "strncmp",
+          "samples": 333,
+          "self_instruction_period_sum": 261590972,
+          "subtree_instruction_period_sum": 261590972
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "GetLabelIndex",
+          "samples": 306,
+          "self_instruction_period_sum": 246553744,
+          "subtree_instruction_period_sum": 2348908814
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "strchr",
+          "samples": 318,
+          "self_instruction_period_sum": 242885761,
+          "subtree_instruction_period_sum": 242885761
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "get:[url:/usr1/hmos_for_system/src/increment/sourcecode/out/generic_generic_arm_64only/general_all_phone_standard/obj/foundation/arkui/ace_engine/frameworks/bridge/declarative_frontend/stateMgmt.js:2508:1]",
+          "samples": 304,
+          "self_instruction_period_sum": 208893309,
+          "subtree_instruction_period_sum": 232919126
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "fast_tailcall_epoll_retrive_events_entry",
+          "samples": 338,
+          "self_instruction_period_sum": 208007020,
+          "subtree_instruction_period_sum": 236796597
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib/ld-musl-aarch64.so.1+0xb8720",
+          "samples": 279,
+          "self_instruction_period_sum": 208006368,
+          "subtree_instruction_period_sum": 208917848
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib/ld-musl-aarch64.so.1+0x13bc74",
+          "samples": 212,
+          "self_instruction_period_sum": 173642265,
+          "subtree_instruction_period_sum": 173642265
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "memcpy",
+          "samples": 236,
+          "self_instruction_period_sum": 156717258,
+          "subtree_instruction_period_sum": 160365535
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib/ld-musl-aarch64.so.1+0x13bc6c",
+          "samples": 183,
+          "self_instruction_period_sum": 154471155,
+          "subtree_instruction_period_sum": 154471155
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "futex_wake_fast",
+          "samples": 195,
+          "self_instruction_period_sum": 138519368,
+          "subtree_instruction_period_sum": 235593730
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "__emutls_get_address",
+          "samples": 195,
+          "self_instruction_period_sum": 135230462,
+          "subtree_instruction_period_sum": 145424748
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "OHOS::Ace::NG::FrameNode::OnLayoutFinish(bool&, OHOS::Ace::NG::DirtySwapConfig&)",
+          "samples": 188,
+          "self_instruction_period_sum": 134048217,
+          "subtree_instruction_period_sum": 989931378
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib64/chipset-sdk-sp/libbegetutil.z.so+0x23ba4",
+          "samples": 154,
+          "self_instruction_period_sum": 124838025,
+          "subtree_instruction_period_sum": 124838025
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "strlen",
+          "samples": 173,
+          "self_instruction_period_sum": 121084522,
+          "subtree_instruction_period_sum": 121084522
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "OHOS::Rosen::ModifierNG::RSTransformModifier::GetTranslate() const",
+          "samples": 160,
+          "self_instruction_period_sum": 117227305,
+          "subtree_instruction_period_sum": 118139874
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "rt_enqueue",
+          "samples": 159,
+          "self_instruction_period_sum": 115211284,
+          "subtree_instruction_period_sum": 190659000
+        },
+        {
+          "thread": "OS_EVENT_POLL",
+          "symbol": "fast_tailcall_epoll_retrive_events_entry",
+          "samples": 930,
+          "self_instruction_period_sum": 112507266,
+          "subtree_instruction_period_sum": 113957474
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib/ld-musl-aarch64.so.1+0x13bc58",
+          "samples": 144,
+          "self_instruction_period_sum": 111026841,
+          "subtree_instruction_period_sum": 111026841
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "OHOS::Parcel::WriteUnpadBuffer(void const*, unsigned long)",
+          "samples": 133,
+          "self_instruction_period_sum": 102360276,
+          "subtree_instruction_period_sum": 174587607
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "get:[url:/usr1/hmos_for_system/src/increment/sourcecode/out/generic_generic_arm_64only/general_all_phone_standard/obj/foundation/arkui/ace_engine/frameworks/bridge/declarative_frontend/stateMgmt.js:2891:1]",
+          "samples": 138,
+          "self_instruction_period_sum": 101597977,
+          "subtree_instruction_period_sum": 103881306
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "__spincallentry_sched_thread_lt_set_conf",
+          "samples": 137,
+          "self_instruction_period_sum": 100466089,
+          "subtree_instruction_period_sum": 100466089
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "OHOS::Rosen::RSProperty<OHOS::Rosen::Vector4<float>>::UpdateToRender(OHOS::Rosen::Vector4<float> const&, OHOS::Rosen::PropertyUpdateType) const",
+          "samples": 139,
+          "self_instruction_period_sum": 99971209,
+          "subtree_instruction_period_sum": 512773325
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "OHOS::RefBase::RefBase()",
+          "samples": 127,
+          "self_instruction_period_sum": 99566698,
+          "subtree_instruction_period_sum": 233848689
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "/system/lib64/chipset-sdk-sp/libbegetutil.z.so+0x23b0c",
+          "samples": 119,
+          "self_instruction_period_sum": 96221526,
+          "subtree_instruction_period_sum": 96221526
+        },
+        {
+          "thread": "cc.chenlvin.cloudmusic",
+          "symbol": "BCStub_HandleLdobjbynameImm8Id16StwCopy",
+          "samples": 133,
+          "self_instruction_period_sum": 94478795,
+          "subtree_instruction_period_sum": 896044307
+        }
+      ]
+    }
+  }
+}
