@@ -1,0 +1,14 @@
+{
+  "status": "failed_valid_captures_archived_not_reused",
+  "case": "sheafreader_extract_tag_tolowercase",
+  "local_archive": "/data2/syang75/workspace/OhmBenchmark/artifacts/retired-clean/sheafreader_extract_tag_tolowercase/regex-fix-20261014",
+  "remote_original_prefix": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase",
+  "remote_archive_prefix": "/home/research/ohm-clean/retired/sheafreader_extract_tag_tolowercase/regex-fix-20261014",
+  "source_refs": {
+    "unfixed": "clean-app-v2/sheafreader_extract_tag_tolowercase/unfixed",
+    "fixed": "clean-app-v2/sheafreader_extract_tag_tolowercase/fixed"
+  },
+  "next_fixed_ref": "clean-app-v3/sheafreader_extract_tag_tolowercase/fixed",
+  "next_fixed_tree": "c211382c799c5d1f8a034ee91424a701e207d1e3",
+  "all_six_new_captures_required": true
+}
