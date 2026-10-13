@@ -67,6 +67,7 @@ def install(remote,case,variant,folder,device_path):
         raise ValueError('deployed preference bytes did not verify')
     remote.hdc(['shell','rm -f '+temporary])
     return {'sha256':receipt['fixture_sha256'],'deployed_sha256':hashlib.sha256(blob).hexdigest(),
+            'fixture_dir':str(folder.resolve()),
             'variant':variant,'preferences':device_path,'backup':backup,
             'method':'ordinary production preferences after identical search submissions',
             'installation_verified':True,'functional_read_verified':False}

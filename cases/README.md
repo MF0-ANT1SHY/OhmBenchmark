@@ -100,8 +100,11 @@ The value is the final absolute app PSS, not RSS, growth, system memory or a
 selected minimum. Process name and start time must remain consistent throughout
 the trial; UI/observer failures and restarts invalidate collection. The reader
 has a real-device check in `validation/system-pss-device-check.json`, but that
-does **not** validate a memory case. Per-trial input reset/provenance and paired
-memory-oracle acceptance remain pending; the collector does not inherit a
+does **not** validate a memory case. `tools/accept_pss_evidence.py` recomputes all
+six windows and the unchanged 1.2x paired criterion. For the search-history case,
+it also verifies fresh per-trial ordinary preference preparation and UI reading;
+actual case acceptance remains pending. WanHarmony input preparation is not yet
+implemented, so its memory gate stays closed. The collector never inherits a
 previous validation run's fixture hash as fresh preparation evidence.
 
 1. Exact clean source trees and business-only repair diff.

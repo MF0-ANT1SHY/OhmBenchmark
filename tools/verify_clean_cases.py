@@ -9,6 +9,7 @@ from pathlib import Path
 from audit_clean_app import audit_hap, audit_source
 from clean_sources import app_ref
 from accept_cpu_evidence import accept as validate_cpu
+from accept_pss_evidence import accept as validate_pss
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -81,9 +82,10 @@ def verify(stage, selected=None):
         if stage=='complete' and evidence_status!='measured_clean':
             pending.append(f'{cid}: clean performance oracle not accepted ({evidence_status})')
         if stage == 'complete' and c['test_oracle']['evidence'].get('status')=='measured_clean':
-            if c['test_oracle']['metric']=='hiperf_instructions':
+            if c['test_oracle']['metric'] in ('hiperf_instructions','app_pss_bytes'):
                 try:
-                    recomputed=validate_cpu(cid,write=False)
+                    validator=validate_cpu if c['test_oracle']['metric']=='hiperf_instructions' else validate_pss
+                    recomputed=validator(cid,write=False)
                     for variant,expected in recomputed.items():
                         actual=json.loads((ROOT/'artifacts/clean'/cid/variant/'performance.json').read_text())
                         if actual!=expected:
@@ -92,7 +94,7 @@ def verify(stage, selected=None):
                     if any(evidence.get(v)!=recomputed[v]['samples'] for v in ('unfixed','fixed')):
                         errors.append(f'{cid}: case evidence differs from raw measurements')
                 except Exception as exc:
-                    errors.append(f'{cid}: raw CPU evidence failed: {exc}')
+                    errors.append(f'{cid}: raw {c["test_oracle"]["metric"]} evidence failed: {exc}')
             else:
                 pending.append(f'{cid}: raw oracle verification is not implemented for this metric')
     print(json.dumps({"stage": stage, "cases": len(paths), "errors": errors,
