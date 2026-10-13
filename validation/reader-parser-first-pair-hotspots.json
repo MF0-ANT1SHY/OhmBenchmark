@@ -1,0 +1,581 @@
+{
+  "case": "sheafreader_extract_tag_tolowercase",
+  "round": 1,
+  "scope": "private evaluator diagnosis only; neither verdict nor agent input",
+  "schema_source": "https://github.com/openharmony/developtools_hiperf/blob/master/include/report_json_file.h",
+  "schema_blob": "841be06cbcc558f11b31123f0d3e4ca44951dbb2",
+  "results": {
+    "unfixed": {
+      "report_sha256": "dd3f946726ff8e37d168e75643a4c0ed9c9ad4e835af4f8e114c5d2ae1ba98ae",
+      "app_instruction_period_sum": 53537598571,
+      "top_self_functions": [
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a34",
+          "samples": 714,
+          "self_instruction_period_sum": 7401635091,
+          "subtree_instruction_period_sum": 7401635091
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a24",
+          "samples": 440,
+          "self_instruction_period_sum": 4594343592,
+          "subtree_instruction_period_sum": 4594343592
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9998",
+          "samples": 382,
+          "self_instruction_period_sum": 3944750499,
+          "subtree_instruction_period_sum": 3944750499
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9b58",
+          "samples": 273,
+          "self_instruction_period_sum": 2773211978,
+          "subtree_instruction_period_sum": 2773211978
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "BCStub_HandleCallthis0Imm8V8StwCopy",
+          "samples": 271,
+          "self_instruction_period_sum": 2555393057,
+          "subtree_instruction_period_sum": 2779224927
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x31808c",
+          "samples": 190,
+          "self_instruction_period_sum": 1997999553,
+          "subtree_instruction_period_sum": 1997999553
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a28",
+          "samples": 166,
+          "self_instruction_period_sum": 1642445237,
+          "subtree_instruction_period_sum": 1642445237
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a3c",
+          "samples": 140,
+          "self_instruction_period_sum": 1475037394,
+          "subtree_instruction_period_sum": 1475037394
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2ba058",
+          "samples": 146,
+          "self_instruction_period_sum": 1472702485,
+          "subtree_instruction_period_sum": 1472702485
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9bf8",
+          "samples": 143,
+          "self_instruction_period_sum": 1467361174,
+          "subtree_instruction_period_sum": 1467361174
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9bd0",
+          "samples": 132,
+          "self_instruction_period_sum": 1370243929,
+          "subtree_instruction_period_sum": 1370243929
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9c00",
+          "samples": 125,
+          "self_instruction_period_sum": 1301774988,
+          "subtree_instruction_period_sum": 1301774988
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9bdc",
+          "samples": 122,
+          "self_instruction_period_sum": 1267144911,
+          "subtree_instruction_period_sum": 1267144911
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b999c",
+          "samples": 123,
+          "self_instruction_period_sum": 1199082274,
+          "subtree_instruction_period_sum": 1199082274
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9e9c",
+          "samples": 111,
+          "self_instruction_period_sum": 1117639895,
+          "subtree_instruction_period_sum": 1117639895
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9b84",
+          "samples": 100,
+          "self_instruction_period_sum": 1037434210,
+          "subtree_instruction_period_sum": 1037434210
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9b9c",
+          "samples": 95,
+          "self_instruction_period_sum": 982401866,
+          "subtree_instruction_period_sum": 982401866
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a04",
+          "samples": 66,
+          "self_instruction_period_sum": 696111389,
+          "subtree_instruction_period_sum": 696111389
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9ec0",
+          "samples": 48,
+          "self_instruction_period_sum": 465226847,
+          "subtree_instruction_period_sum": 465226847
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a58",
+          "samples": 44,
+          "self_instruction_period_sum": 459913869,
+          "subtree_instruction_period_sum": 459913869
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b99f0",
+          "samples": 42,
+          "self_instruction_period_sum": 437927291,
+          "subtree_instruction_period_sum": 437927291
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a1c",
+          "samples": 39,
+          "self_instruction_period_sum": 409394123,
+          "subtree_instruction_period_sum": 409394123
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a6c",
+          "samples": 39,
+          "self_instruction_period_sum": 404112184,
+          "subtree_instruction_period_sum": 404112184
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9ef4",
+          "samples": 38,
+          "self_instruction_period_sum": 392350273,
+          "subtree_instruction_period_sum": 392350273
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9be0",
+          "samples": 37,
+          "self_instruction_period_sum": 384552606,
+          "subtree_instruction_period_sum": 384552606
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2ba0b0",
+          "samples": 37,
+          "self_instruction_period_sum": 384276826,
+          "subtree_instruction_period_sum": 384276826
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9984",
+          "samples": 37,
+          "self_instruction_period_sum": 377384157,
+          "subtree_instruction_period_sum": 377384157
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a90",
+          "samples": 33,
+          "self_instruction_period_sum": 346846939,
+          "subtree_instruction_period_sum": 346846939
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b99c8",
+          "samples": 30,
+          "self_instruction_period_sum": 315069869,
+          "subtree_instruction_period_sum": 315069869
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2ba074",
+          "samples": 31,
+          "self_instruction_period_sum": 312920417,
+          "subtree_instruction_period_sum": 312920417
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x318098",
+          "samples": 29,
+          "self_instruction_period_sum": 305633481,
+          "subtree_instruction_period_sum": 305633481
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9bb8",
+          "samples": 28,
+          "self_instruction_period_sum": 295746938,
+          "subtree_instruction_period_sum": 295746938
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9af8",
+          "samples": 28,
+          "self_instruction_period_sum": 290498936,
+          "subtree_instruction_period_sum": 290498936
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b99b8",
+          "samples": 26,
+          "self_instruction_period_sum": 273023536,
+          "subtree_instruction_period_sum": 273023536
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "BCStub_HandleCallthis2Imm8V8V8V8StwCopy",
+          "samples": 26,
+          "self_instruction_period_sum": 257353607,
+          "subtree_instruction_period_sum": 610275827
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9d60",
+          "samples": 26,
+          "self_instruction_period_sum": 255690434,
+          "subtree_instruction_period_sum": 255690434
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2ba088",
+          "samples": 23,
+          "self_instruction_period_sum": 240731553,
+          "subtree_instruction_period_sum": 240731553
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "BCStub_HandleCallthis1Imm8V8V8StwCopy",
+          "samples": 89,
+          "self_instruction_period_sum": 240040043,
+          "subtree_instruction_period_sum": 47446939872
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9bc8",
+          "samples": 22,
+          "self_instruction_period_sum": 229366595,
+          "subtree_instruction_period_sum": 229366595
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a80",
+          "samples": 21,
+          "self_instruction_period_sum": 219890103,
+          "subtree_instruction_period_sum": 219890103
+        }
+      ]
+    },
+    "fixed": {
+      "report_sha256": "78e8f57c6343d82f86ecac741e615fb25137c20f77fb33abbfe78b6962a9655d",
+      "app_instruction_period_sum": 55661179235,
+      "top_self_functions": [
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a34",
+          "samples": 816,
+          "self_instruction_period_sum": 8594272253,
+          "subtree_instruction_period_sum": 8594272253
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a24",
+          "samples": 454,
+          "self_instruction_period_sum": 4783679844,
+          "subtree_instruction_period_sum": 4783679844
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9998",
+          "samples": 403,
+          "self_instruction_period_sum": 4218752992,
+          "subtree_instruction_period_sum": 4218752992
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9b58",
+          "samples": 305,
+          "self_instruction_period_sum": 3194306741,
+          "subtree_instruction_period_sum": 3194306741
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a3c",
+          "samples": 208,
+          "self_instruction_period_sum": 2216550502,
+          "subtree_instruction_period_sum": 2216550502
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x31808c",
+          "samples": 177,
+          "self_instruction_period_sum": 1886907633,
+          "subtree_instruction_period_sum": 1886907633
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a28",
+          "samples": 181,
+          "self_instruction_period_sum": 1857248914,
+          "subtree_instruction_period_sum": 1857248914
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9bd0",
+          "samples": 169,
+          "self_instruction_period_sum": 1775090006,
+          "subtree_instruction_period_sum": 1775090006
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9c00",
+          "samples": 148,
+          "self_instruction_period_sum": 1573374535,
+          "subtree_instruction_period_sum": 1573374535
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9bdc",
+          "samples": 145,
+          "self_instruction_period_sum": 1544005302,
+          "subtree_instruction_period_sum": 1544005302
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2ba058",
+          "samples": 147,
+          "self_instruction_period_sum": 1477769641,
+          "subtree_instruction_period_sum": 1477769641
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9bf8",
+          "samples": 122,
+          "self_instruction_period_sum": 1287449235,
+          "subtree_instruction_period_sum": 1287449235
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b999c",
+          "samples": 126,
+          "self_instruction_period_sum": 1254133659,
+          "subtree_instruction_period_sum": 1254133659
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9b84",
+          "samples": 106,
+          "self_instruction_period_sum": 1118914480,
+          "subtree_instruction_period_sum": 1118914480
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9e9c",
+          "samples": 107,
+          "self_instruction_period_sum": 1079894550,
+          "subtree_instruction_period_sum": 1079894550
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9b9c",
+          "samples": 90,
+          "self_instruction_period_sum": 953262652,
+          "subtree_instruction_period_sum": 953262652
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a04",
+          "samples": 70,
+          "self_instruction_period_sum": 746512853,
+          "subtree_instruction_period_sum": 746512853
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b99c8",
+          "samples": 64,
+          "self_instruction_period_sum": 683199764,
+          "subtree_instruction_period_sum": 683199764
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a58",
+          "samples": 57,
+          "self_instruction_period_sum": 609313804,
+          "subtree_instruction_period_sum": 609313804
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a90",
+          "samples": 53,
+          "self_instruction_period_sum": 565107548,
+          "subtree_instruction_period_sum": 565107548
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b99f0",
+          "samples": 49,
+          "self_instruction_period_sum": 519981460,
+          "subtree_instruction_period_sum": 519981460
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a6c",
+          "samples": 45,
+          "self_instruction_period_sum": 479862838,
+          "subtree_instruction_period_sum": 479862838
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a1c",
+          "samples": 44,
+          "self_instruction_period_sum": 458200578,
+          "subtree_instruction_period_sum": 458200578
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x318098",
+          "samples": 40,
+          "self_instruction_period_sum": 427429023,
+          "subtree_instruction_period_sum": 427429023
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9be0",
+          "samples": 37,
+          "self_instruction_period_sum": 392653961,
+          "subtree_instruction_period_sum": 392653961
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2ba088",
+          "samples": 38,
+          "self_instruction_period_sum": 379974989,
+          "subtree_instruction_period_sum": 379974989
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9ec0",
+          "samples": 36,
+          "self_instruction_period_sum": 339698734,
+          "subtree_instruction_period_sum": 339698734
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9bb8",
+          "samples": 30,
+          "self_instruction_period_sum": 320838046,
+          "subtree_instruction_period_sum": 320838046
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9984",
+          "samples": 30,
+          "self_instruction_period_sum": 311875489,
+          "subtree_instruction_period_sum": 311875489
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b99b8",
+          "samples": 28,
+          "self_instruction_period_sum": 294438176,
+          "subtree_instruction_period_sum": 294438176
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9a14",
+          "samples": 28,
+          "self_instruction_period_sum": 288807367,
+          "subtree_instruction_period_sum": 288807367
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9ef4",
+          "samples": 28,
+          "self_instruction_period_sum": 285175610,
+          "subtree_instruction_period_sum": 285175610
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2ba0b0",
+          "samples": 26,
+          "self_instruction_period_sum": 273211312,
+          "subtree_instruction_period_sum": 273211312
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2ba074",
+          "samples": 24,
+          "self_instruction_period_sum": 251608951,
+          "subtree_instruction_period_sum": 251608951
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9af8",
+          "samples": 24,
+          "self_instruction_period_sum": 247082603,
+          "subtree_instruction_period_sum": 247082603
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9b00",
+          "samples": 26,
+          "self_instruction_period_sum": 239635359,
+          "subtree_instruction_period_sum": 239635359
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "BCStub_HandleCallthis1Imm8V8V8StwCopy",
+          "samples": 83,
+          "self_instruction_period_sum": 237641258,
+          "subtree_instruction_period_sum": 52855979914
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9ac0",
+          "samples": 21,
+          "self_instruction_period_sum": 211666398,
+          "subtree_instruction_period_sum": 211666398
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b99e0",
+          "samples": 19,
+          "self_instruction_period_sum": 203471590,
+          "subtree_instruction_period_sum": 203471590
+        },
+        {
+          "thread": "com.sheafreader.hm",
+          "symbol": "/system/lib64/platformsdk/libark_jsruntime.so+0x2b9bc8",
+          "samples": 19,
+          "self_instruction_period_sum": 203305355,
+          "subtree_instruction_period_sum": 203305355
+        }
+      ]
+    }
+  }
+}
