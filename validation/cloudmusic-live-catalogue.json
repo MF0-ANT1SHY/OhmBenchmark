@@ -1,0 +1,10 @@
+{
+  "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+  "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+  "songs": 10000,
+  "artist_count": 12,
+  "base_url": "http://127.0.0.1:18490",
+  "service_pid": 53975,
+  "service_start_ticks": 1980273,
+  "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+}

@@ -74,7 +74,9 @@ class UI:
         x, y = self.center(self.find(selector))
         self.shell(f"uitest uiInput click {x} {y}")
 
-    def input(self, selector, value):
+    def input(self, selector, value, cleared_text=''):
+        if cleared_text not in ('','0'):
+            raise ValueError('unsupported cleared input state')
         node=self.find(selector)
         x, y = self.center(node)
         if str(node.get('text','')):
@@ -83,9 +85,12 @@ class UI:
             self.shell(f'uitest uiInput click {x} {y}')
             self.shell('uitest uiInput keyEvent 2072 2017')  # Ctrl+A
             self.shell('uitest uiInput keyEvent 2055')       # Backspace
-            if str(self.find(selector).get('text','')):
+            # Controlled Number(text) fields normalize the empty input to zero.
+            # This must be explicitly declared; final value is still verified.
+            if str(self.find(selector).get('text',''))!=cleared_text:
                 raise RuntimeError('UI input did not clear the previous value')
-        self.shell(f"uitest uiInput inputText {x} {y} {shlex.quote(value)}")
+        if value:
+            self.shell(f"uitest uiInput inputText {x} {y} {shlex.quote(value)}")
         if str(self.find(selector).get('text',''))!=value:
             raise RuntimeError('UI input value does not match the requested text')
 
@@ -103,7 +108,7 @@ class UI:
             elif op == "tap":
                 self.tap(action["selector"])
             elif op == "input":
-                self.input(action["selector"], action["value"])
+                self.input(action["selector"], action["value"], action.get('cleared_text',''))
             elif op == "wait":
                 self.find(action["selector"], action.get("timeout_s", 15))
             elif op == "pause":

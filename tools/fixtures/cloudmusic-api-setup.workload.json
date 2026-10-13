@@ -13,7 +13,21 @@
     {
       "op": "tap",
       "selector": {
-        "text": "设置在线服务",
+        "text": "我的",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "应用设置",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "在线服务设置",
         "match": "exact"
       }
     },
@@ -31,7 +45,20 @@
         "type": "TextInput",
         "index": 1
       },
-      "value": "18490"
+      "value": "18490",
+      "cleared_text": "0"
+    },
+    {
+      "op": "key",
+      "key": "Back"
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "type": "Radio",
+        "text": "http",
+        "match": "exact"
+      }
     },
     {
       "op": "tap",
@@ -48,8 +75,26 @@
       "timeout_s": 30
     },
     {
+      "op": "wait",
+      "selector": {
+        "text": "正常"
+      },
+      "timeout_s": 30
+    },
+    {
       "op": "key",
       "key": "Back"
+    },
+    {
+      "op": "key",
+      "key": "Back"
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "发现",
+        "match": "exact"
+      }
     }
   ],
   "measured": [],
@@ -57,7 +102,7 @@
     {
       "op": "wait",
       "selector": {
-        "text": "发现",
+        "text": "音乐云盘",
         "match": "exact"
       }
     }

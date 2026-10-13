@@ -101,6 +101,34 @@ class CleanPipelineTests(unittest.TestCase):
         self.assertNotIn('cat /data/local/tmp/workload-layout.json',commands)
         self.assertTrue(commands[-1].startswith('rm -f /data/local/tmp/workload-layout-'))
 
+    def test_controlled_numeric_clear_is_explicit_and_final_value_checked(self):
+        state={'text':'80'}
+        def shell(command):
+            if command=='uitest uiInput keyEvent 2055':state['text']='0'
+            elif command.startswith('uitest uiInput inputText '):
+                state['text']=str(int(state['text']+shlex.split(command)[-1]))
+            return ''
+        ui=UI(shell,'app.bundle')
+        ui.layout=lambda:{'attributes':{'bundleName':'app.bundle','type':'TextInput',
+            'text':state['text'],'bounds':'[0,0][50,50]'}}
+        with self.assertRaisesRegex(RuntimeError,'did not clear'):
+            ui.input({'type':'TextInput'},'18490')
+        ui.input({'type':'TextInput'},'18490',cleared_text='0')
+        self.assertEqual(state['text'],'18490')
+
+    def test_clear_only_does_not_type_an_invalid_empty_string(self):
+        state={'text':'query'}
+        def shell(command):
+            if command=='uitest uiInput keyEvent 2055':state['text']=''
+            if command.startswith('uitest uiInput inputText '):
+                raise AssertionError('empty input should use only normal deletion')
+            return ''
+        ui=UI(shell,'app.bundle')
+        ui.layout=lambda:{'attributes':{'bundleName':'app.bundle','type':'SearchField',
+            'text':state['text'],'bounds':'[0,0][50,50]'}}
+        ui.input({'type':'SearchField'},'')
+        self.assertEqual(state['text'],'')
+
 
 if __name__ == "__main__":
     unittest.main()

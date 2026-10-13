@@ -14,23 +14,28 @@ from install_sqlite_fixture import install as install_fixture
 from remote_device import Remote
 from seed_local_songs import deploy as deploy_songs
 from bundled_audio_fixture import for_case as packaged_audio
+from music_service_fixture import prepare as prepare_music_service, same_instance
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def capture(remote, case, variant, round_number, fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False):
+def capture(remote, case, variant, round_number, fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, music_service=False):
     cid = case['id']
-    if sum(p is not None for p in (fixture,local_song_fixture,poem_fixture))+int(bundled_audio)>1:
+    if sum(p is not None for p in (fixture,local_song_fixture,poem_fixture))+int(bundled_audio)+int(music_service)>1:
         raise ValueError('only one fixture may be supplied')
     if local_song_fixture and case['host_app']['bundle_name']!='cc.chenlvin.cloudmusic':
         raise ValueError('local song fixture provided to a different app')
     if poem_fixture and case['host_app']['bundle_name']!='com.hefengbao.jingmo.hw':
         raise ValueError('poetry fixture provided to a different app')
     fixture_hash=None
+    service_fixture=None
     folder = ROOT/'artifacts/clean'/cid/variant
     sign = json.loads((folder/'sign.json').read_text())
     if bundled_audio:
         fixture_hash=packaged_audio(ROOT,case,variant,sign)['sha256']
+    if music_service:
+        service_fixture=prepare_music_service(remote,case)
+        fixture_hash=service_fixture['sha256']
     plan_file = ROOT/'cases'/cid/case['testcase']['workload']
     plan_hash = hashlib.sha256(plan_file.read_bytes()).hexdigest()
     output = folder/'cpu-captures'/f'round-{round_number}'
@@ -128,6 +133,11 @@ def shell(command):
         receipt['fixture_sha256']=fixture_hash
     (output/'capture.json').write_text(json.dumps(receipt,indent=2)+'\n')
     if receipt['status']=='CAPTURED':
+        if music_service:
+            after=prepare_music_service(remote,case)
+            same_instance(service_fixture,after)
+            receipt['service_fixture_before']=service_fixture
+            receipt['service_fixture_after']=after
         remote.download(remote_base+'/report.json',output/'report.json')
         # The device's JSON reporter includes all processes even with --pids.
         # Attribution must therefore be explicit; never use its system total.
@@ -156,12 +166,13 @@ def main():
     fixtures.add_argument('--local-song-fixture',type=Path)
     fixtures.add_argument('--poem-fixture',type=Path)
     fixtures.add_argument('--bundled-audio',action='store_true')
+    fixtures.add_argument('--music-service',action='store_true')
     parser.add_argument('--remote',default='cityuPC')
     args=parser.parse_args()
     remote=Remote(args.remote)
     remote.upload(ROOT/'tools/ui_driver.py','/home/research/ohm-clean/tools/ui_driver.py')
     case=json.loads((ROOT/'cases'/args.case/'case.json').read_text())
-    capture(remote,case,args.variant,args.round,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio)
+    capture(remote,case,args.variant,args.round,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.music_service)
 
 
 if __name__=='__main__':

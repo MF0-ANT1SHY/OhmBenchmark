@@ -74,12 +74,17 @@ progress proof from raw snapshots. A visible song title alone is not sufficient.
 
 CloudMusic online-list preparation uses the existing server configuration UI and
 ordinary music API responses from `tools/cloudmusic_data_service.py`. The
-source-grounded settings plan is `tools/fixtures/cloudmusic-api-setup.workload.json`;
-its device validation is still pending. Run the service on the device workstation,
+settings plan is `tools/fixtures/cloudmusic-api-setup.workload.json`, using the
+normal My/Settings/Cloud Service pages. Its real-device configuration proof is
+`validation/cloudmusic-online-setup.json`; this is not a list/performance verdict.
+Run the service on the device workstation,
 then, when the device is idle, use `hdc rport tcp:18490 tcp:18490` and the normal
 settings plan to configure `http://127.0.0.1:18490`. This does not add app endpoints
-or change application code. Workstation response checks do not validate device
-connectivity or the actual list workloads.
+or change application code. Use `--music-service` with the workload validator and
+CPU collector for the three online-list cases. Each trial hashes the complete
+ordinary catalogue before/after the workload and checks service continuity;
+workload validation also checks song titles and artist text against that data.
+Each pair still needs its own actual workload and performance acceptance.
 
 ```bash
 python3 tools/ui_driver.py cases/<id>/testcase/<name>.workload.json --remote cityuPC --phase setup
