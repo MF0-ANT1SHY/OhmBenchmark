@@ -71,6 +71,10 @@ def shell(command):
     code += f"assert hashlib.sha256(Path({sign['signed_hap']!r}).read_bytes()).hexdigest()=={sign['audit']['sha256']!r}\n"
     code += "plan=json.loads(plan_file.read_text());ui=UI(shell,plan['bundle'],plan['ability'])\n"
     code += "ui.run([{'op':'stop'},{'op':'launch'}]);ui.run(plan['setup'])\n"
+    if cid=='ytmusic_current_playing_timeupdate':
+        remote.upload(ROOT/'tools/playback_progress.py','/home/research/ohm-clean/tools/playback_progress.py')
+        code += "from playback_progress import check_progress\n"
+        code += "playback_start_layout=ui.layout();playback_start_time=time.monotonic()\n"
     token=uuid.uuid4().hex
     code += f"device_file='/data/local/tmp/profile-{token}.data'\n"
     code += "assert not shell('pidof hiperf').strip(),'another profiler session is active'\n"
@@ -85,6 +89,10 @@ def shell(command):
     code += " if 'fail' in record['start_output'].lower() or 'error' in record['start_output'].lower():raise RuntimeError(record['start_output'])\n"
     code += " record['action_start_monotonic']=time.monotonic()\n"
     code += " ui.run(plan['measured']);ui.run(plan['verify'])\n"
+    if cid=='ytmusic_current_playing_timeupdate':
+        code += " playback_end_layout=ui.layout();playback_elapsed=time.monotonic()-playback_start_time\n"
+        code += " record['playback_observation']={'start_layout':playback_start_layout,'end_layout':playback_end_layout,'elapsed_s':playback_elapsed}\n"
+        code += " record['playback_progress']=check_progress(playback_start_layout,playback_end_layout,plan['bundle'],playback_elapsed)\n"
     if cid=='browser_history_delete_no_transaction':
         # The button returns before its async database work completes. This is a
         # private evaluator check, outside the app and excluded from app attribution.

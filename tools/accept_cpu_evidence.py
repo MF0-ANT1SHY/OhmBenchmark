@@ -5,6 +5,7 @@ import hashlib
 import json
 import statistics
 from pathlib import Path
+from playback_progress import check_progress
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -26,6 +27,13 @@ def accept(cid, write=True):
                 workload.get('functional_check')!='all history rows and dates cleared through the production UI'
                 or workload.get('cleared_tables',0)<2):
             raise RuntimeError('complete history-row deletion through the UI is not proven')
+        if cid=='ytmusic_current_playing_timeupdate':
+            device=json.loads((folder/'workload-device.json').read_text())
+            phases=device['phases']
+            progress=check_progress(phases['setup']['layout'],phases['measured']['layout'],
+                                    case['host_app']['bundle_name'],phases['measured']['elapsed_s'])
+            if progress!=workload.get('playback_progress'):
+                raise RuntimeError('real playback progression is not proven')
         samples=[]
         captures=[]
         fixture_hashes=set()
@@ -38,6 +46,12 @@ def accept(cid, write=True):
                 raise RuntimeError('capture fixture differs from the validated workload')
             if cid=='browser_history_delete_no_transaction' and receipt.get('completion_check')!='database cleared before capture stop':
                 raise RuntimeError('async database completion within the capture is not proven')
+            if cid=='ytmusic_current_playing_timeupdate':
+                observation=receipt['playback_observation']
+                progress=check_progress(observation['start_layout'],observation['end_layout'],
+                                        case['host_app']['bundle_name'],observation['elapsed_s'])
+                if progress!=receipt.get('playback_progress'):
+                    raise RuntimeError('playback progression receipt differs from raw snapshots')
             report_path=capture_dir/'report.json'
             report=json.loads(report_path.read_text())
             events=[e for e in report['recordSampleInfo'] if e['eventConfigName']=='hw-instructions']

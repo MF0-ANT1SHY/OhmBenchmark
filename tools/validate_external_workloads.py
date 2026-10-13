@@ -19,6 +19,7 @@ from install_sqlite_fixture import install as install_fixture
 from remote_device import Remote
 from seed_local_songs import deploy as deploy_songs
 from bundled_audio_fixture import for_case as packaged_audio
+from playback_progress import check_progress
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -94,6 +95,12 @@ def shell(command):
         if device['status'] != 'PASS':
             raise RuntimeError(device['error'])
         result['phase_elapsed_s'] = {p:r['elapsed_s'] for p,r in device['phases'].items()}
+        if cid=='ytmusic_current_playing_timeupdate':
+            # The snapshots bracket measured idle playback. Dump latency is
+            # bounded by the progress check's tolerance; a title alone is not proof.
+            result['playback_progress']=check_progress(
+                device['phases']['setup']['layout'],device['phases']['measured']['layout'],
+                case['host_app']['bundle_name'],result['phase_elapsed_s']['measured'])
         if cid=='jingmo_random_poem_orderby_random':
             if not poem_fixture:
                 raise RuntimeError('random-poem validation requires a known fixture')
