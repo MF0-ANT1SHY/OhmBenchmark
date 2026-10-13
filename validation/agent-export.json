@@ -11,8 +11,11 @@
     "workload.json": "710a084b63faeb26d2aef5a85d1a812d860d32885fb94e4a6b17617eece7928e",
     "profile.json": "3ec676b83f689f6af84c5ab3041f095fc776519110b651ac74e61d03cc7c4326",
     "symptom.txt": "1acee50e017acea32505e23045399457e85a2c6931f9feb8f0ccde3d555dc32c",
-    "app.hap": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9"
+    "app.hap": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9",
+    "reproduce.py": "c3a8443a4d977de7ca811036e365090fd1407303dc3314f76c83615627ac9376"
   },
   "fixed_or_oracle_artifacts_exported": false,
-  "git_history_exported": false
+  "git_history_exported": false,
+  "standalone_reproduction_entrypoint": "reproduce.py",
+  "evaluator_or_profiler_dependencies_exported": false
 }

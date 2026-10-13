@@ -5,6 +5,7 @@ The benchmark checkout is evaluator-private. Never expose it as an agent's
 workspace: it contains fixed sources, repair diffs and performance oracles.
 """
 import argparse
+import ast
 import copy
 import hashlib
 import json
@@ -15,6 +16,30 @@ from clean_sources import app_ref
 from remote_device import Remote
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def reproduction_script():
+    """Package the normal UI actions without evaluator/profiler dependencies."""
+    parsed=ast.parse((ROOT/'tools/ui_driver.py').read_text())
+    ui=next(node for node in parsed.body if isinstance(node,ast.ClassDef) and node.name=='UI')
+    ui.body=[node for node in ui.body if not isinstance(node,ast.FunctionDef) or node.name!='profiled']
+    prefix='import argparse,json,re,shlex,subprocess,time,uuid\nfrom pathlib import Path\n\n'
+    main='''
+if __name__ == '__main__':
+    parser=argparse.ArgumentParser(description='Run ordinary application UI actions through hdc.')
+    parser.add_argument('--phase',choices=['all','setup','measured','verify'],default='all')
+    args=parser.parse_args()
+    plan=json.loads(Path(__file__).with_name('workload.json').read_text())
+    def shell(command):
+        result=subprocess.run(['hdc','shell',command],capture_output=True,text=True,check=True,timeout=90)
+        return result.stdout
+    ui=UI(shell,plan['bundle'],plan['ability'])
+    if args.phase in ('all','setup'):
+        ui.run([{'op':'stop'},{'op':'launch'}]);ui.run(plan['setup'])
+    if args.phase in ('all','measured'):ui.run(plan['measured'])
+    if args.phase in ('all','verify'):ui.run(plan['verify'])
+'''
+    return prefix+ast.unparse(ui)+'\n'+main
 
 
 def app_report(report, pids, bundle):
@@ -119,6 +144,7 @@ def export(cid, destination, symptom, round_number, remote_name='cityuPC'):
     workload = json.loads(plan.read_text())
     workload['description'] = 'Application UI reproduction'
     (destination/'workload.json').write_text(json.dumps(workload, ensure_ascii=False, indent=2)+'\n')
+    (destination/'reproduce.py').write_text(reproduction_script())
     (destination/'profile.json').write_text(json.dumps(report, ensure_ascii=False)+'\n')
     (destination/'symptom.txt').write_text(symptom+'\n')
     print(f'Exported app-only diagnosis data to {destination}')

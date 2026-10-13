@@ -1,13 +1,26 @@
 import copy
+import ast
 import sys
 import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from export_agent_data import app_report
+from export_agent_data import app_report,reproduction_script
 
 
 class AppReportTests(unittest.TestCase):
+    def test_reproduction_entrypoint_has_no_evaluator_or_profiler_dependencies(self):
+        source=reproduction_script()
+        parsed=ast.parse(source)
+        ui=next(n for n in parsed.body if isinstance(n,ast.ClassDef))
+        self.assertNotIn('profiled',[n.name for n in ui.body if isinstance(n,ast.FunctionDef)])
+        self.assertNotIn('remote_device',source)
+        self.assertNotIn('PerfTestCase',source)
+        arguments=[n for n in ast.walk(parsed) if isinstance(n,ast.List) and len(n.elts)==3]
+        self.assertTrue(any(isinstance(n.elts[0],ast.Constant) and n.elts[0].value=='hdc'
+            and isinstance(n.elts[1],ast.Constant) and n.elts[1].value=='shell'
+            and isinstance(n.elts[2],ast.Name) and n.elts[2].id=='command' for n in arguments))
+
     def report(self):
         def process(pid, symbol, file_id, count):
             return {'pid': pid, 'eventCount': count, 'threads': [
