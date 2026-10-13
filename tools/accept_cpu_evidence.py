@@ -7,6 +7,7 @@ import statistics
 from pathlib import Path
 from playback_progress import check_progress
 from music_service_fixture import same_instance
+from page_lifecycle import verify_reconstructions
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -24,6 +25,10 @@ def accept(cid, write=True, require_pass=True):
         workload=json.loads((folder/'workload.json').read_text())
         if workload['status']!='PASS' or workload['plan_sha256']!=plan_hash or workload['signed_sha256']!=sign['audit']['sha256']:
             raise RuntimeError('matching real workload execution not proven')
+        if cid=='sepweather_font_register_per_page':
+            device=json.loads((folder/'workload-device.json').read_text())
+            if verify_reconstructions(device['page_observations'],case['host_app']['bundle_name'])!=workload.get('page_reconstructions'):
+                raise RuntimeError('page reconstruction receipt differs from raw lifecycle observations')
         if cid=='browser_history_delete_no_transaction' and (
                 workload.get('functional_check')!='all history rows and dates cleared through the production UI'
                 or workload.get('cleared_tables',0)<2):
@@ -45,6 +50,9 @@ def accept(cid, write=True, require_pass=True):
                 raise RuntimeError('capture provenance mismatch')
             if receipt.get('fixture_sha256') != workload.get('fixture',{}).get('sha256'):
                 raise RuntimeError('capture fixture differs from the validated workload')
+            if cid=='sepweather_font_register_per_page':
+                if verify_reconstructions(receipt['page_observations'],case['host_app']['bundle_name'])!=receipt.get('page_reconstructions'):
+                    raise RuntimeError('page reconstruction within capture is not proven')
             if cid in {'cloudmusic_songcard_artists_concat','cloudmusic_search_result_foreach','cloudmusic_indexof_in_render'}:
                 if workload.get('functional_check')!='normal song titles and artist lines match the ordinary music catalogue':
                     raise RuntimeError('correct music catalogue rows in the UI are not proven')

@@ -77,7 +77,10 @@ assets from the audited HAP and requires the two fonts registered by MainPage.
 `validation/sepweather-bundled-fonts.json` proves identical packaged fonts across
 the pair, not repeated page creation or a CPU improvement. The current launch
 flags still need device lifecycle verification; a visible AddAddress button alone
-cannot prove MainPage was reconstructed in the same process.
+cannot prove MainPage was reconstructed in the same process. The validator and
+each capture archive native window identities plus raw process stat/cmdline;
+acceptance requires ten new ability windows in one unchanged process. Reused
+windows, process restarts or a summary differing from those observations fail.
 
 CloudMusic online-list preparation uses the existing server configuration UI and
 ordinary music API responses from `tools/cloudmusic_data_service.py`. The

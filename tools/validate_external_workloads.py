@@ -23,6 +23,7 @@ from playback_progress import check_progress
 from install_search_history_fixture import install as install_search_history
 from music_service_fixture import prepare as prepare_music_service, same_instance
 from bundled_font_fixture import for_case as packaged_fonts
+from page_lifecycle import verify_reconstructions
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -79,6 +80,14 @@ def shell(command):
         code += f"plan_path=Path({destination!r});plan=json.loads(plan_path.read_text())\n"
         code += f"assert hashlib.sha256(plan_path.read_bytes()).hexdigest()=={plan_hash!r}\n"
         code += "ui=UI(shell,plan['bundle'],plan['ability'])\nphases={}\n"
+        if cid=='sepweather_font_register_per_page':
+            for module in ('page_lifecycle.py','system_pss.py'):
+                remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
+            code += "from page_lifecycle import observe_page\npage_observations=[]\noriginal_find=ui.find\n"
+            code += "def observe_find(selector,timeout=15):\n"
+            code += " node=original_find(selector,timeout)\n"
+            code += " if selector.get('id')=='AddAddressBtn':page_observations.append(observe_page(shell,plan['bundle'],node))\n"
+            code += " return node\nui.find=observe_find\n"
         if cid=='jingmo_random_poem_orderby_random':
             code += "import re\nobserved_poem_titles=[]\noriginal_find=ui.find\n"
             code += "def observe_find(selector,timeout=15):\n"
@@ -97,6 +106,8 @@ def shell(command):
         code += " try:result['failure_layout']=ui.layout()\n except Exception:pass\n"
         if cid=='jingmo_random_poem_orderby_random':
             code += "result['observed_poem_titles']=observed_poem_titles\n"
+        if cid=='sepweather_font_register_per_page':
+            code += "result['page_observations']=page_observations\n"
         code += "plan_path.with_name('workload-device.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))\n"
         remote.python(code, timeout=600)
         remote.download(str(Path(destination).with_name('workload-device.json')), folder / 'workload-device.json')
@@ -104,6 +115,8 @@ def shell(command):
         if device['status'] != 'PASS':
             raise RuntimeError(device['error'])
         result['phase_elapsed_s'] = {p:r['elapsed_s'] for p,r in device['phases'].items()}
+        if cid=='sepweather_font_register_per_page':
+            result['page_reconstructions']=verify_reconstructions(device['page_observations'],case['host_app']['bundle_name'])
         if music_service:
             after=prepare_music_service(remote,case)
             same_instance(result['fixture'],after)

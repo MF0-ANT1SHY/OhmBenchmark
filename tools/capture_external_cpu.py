@@ -78,6 +78,14 @@ def shell(command):
     code += f"assert hashlib.sha256(plan_file.read_bytes()).hexdigest()=={plan_hash!r}\n"
     code += f"assert hashlib.sha256(Path({sign['signed_hap']!r}).read_bytes()).hexdigest()=={sign['audit']['sha256']!r}\n"
     code += "plan=json.loads(plan_file.read_text());ui=UI(shell,plan['bundle'],plan['ability'])\n"
+    if cid=='sepweather_font_register_per_page':
+        for module in ('page_lifecycle.py','system_pss.py'):
+            remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
+        code += "from page_lifecycle import observe_page,verify_reconstructions\npage_observations=[]\noriginal_find=ui.find\n"
+        code += "def observe_find(selector,timeout=15):\n"
+        code += " node=original_find(selector,timeout)\n"
+        code += " if selector.get('id')=='AddAddressBtn':page_observations.append(observe_page(shell,plan['bundle'],node))\n"
+        code += " return node\nui.find=observe_find\n"
     code += "ui.run([{'op':'stop'},{'op':'launch'}]);ui.run(plan['setup'])\n"
     if cid=='ytmusic_current_playing_timeupdate':
         remote.upload(ROOT/'tools/playback_progress.py','/home/research/ohm-clean/tools/playback_progress.py')
@@ -97,6 +105,9 @@ def shell(command):
     code += " if 'fail' in record['start_output'].lower() or 'error' in record['start_output'].lower():raise RuntimeError(record['start_output'])\n"
     code += " record['action_start_monotonic']=time.monotonic()\n"
     code += " ui.run(plan['measured']);ui.run(plan['verify'])\n"
+    if cid=='sepweather_font_register_per_page':
+        code += " record['page_observations']=page_observations\n"
+        code += " record['page_reconstructions']=verify_reconstructions(page_observations,plan['bundle'])\n"
     if cid=='ytmusic_current_playing_timeupdate':
         code += " playback_end_layout=ui.layout();playback_elapsed=time.monotonic()-playback_start_time\n"
         code += " record['playback_observation']={'start_layout':playback_start_layout,'end_layout':playback_end_layout,'elapsed_s':playback_elapsed}\n"
