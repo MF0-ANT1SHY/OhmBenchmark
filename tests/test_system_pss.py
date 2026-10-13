@@ -5,10 +5,36 @@ from unittest.mock import patch
 from pathlib import Path
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from system_pss import pss_bytes,read_process,start_ticks,capture_window
+from system_pss import pss_bytes,read_process,start_ticks,capture_window,verify_window
 
 
 class ProcessMemoryTests(unittest.TestCase):
+    def window(self):
+        samples=[]
+        for phase,stamp,kb in [('before',99,200),('workload',110,500),('after',125,300)]:
+            samples.append({'phase':phase,'monotonic':stamp,'read_start_monotonic':stamp-1,
+                'pid':123,'bundle':'app.bundle','process_start_ticks':100,
+                'raw_stat_before':self.stat(100),'raw_stat_after':self.stat(100),
+                'raw_cmdline_before':'app.bundle\x00','raw_cmdline_after':'app.bundle\x00',
+                'raw_smaps_rollup':f'Rss: 999 kB\nPss: {kb} kB\n','pss_bytes':kb*1024})
+        return {'action_start_monotonic':100,'action_end_monotonic':120,
+                'snapshots':samples,'app_pss_bytes':300*1024}
+
+    def test_raw_window_recomputes_final_pss(self):
+        self.assertEqual(verify_window(self.window(),'app.bundle'),300*1024)
+
+    def test_chosen_peak_or_wrong_kernel_identity_cannot_validate(self):
+        for kind in ['peak','restart','wrong-app','wrong-total','out-of-window','no-periodic']:
+            r=self.window()
+            if kind=='peak':r['app_pss_bytes']=500*1024
+            if kind=='restart':r['snapshots'][1]['raw_stat_after']=self.stat(200)
+            if kind=='wrong-app':r['snapshots'][1]['raw_cmdline_before']='observer\x00'
+            if kind=='wrong-total':r['snapshots'][1]['pss_bytes']=123
+            if kind=='out-of-window':r['snapshots'][1]['read_start_monotonic']=95
+            if kind=='no-periodic':r['snapshots'].pop(1)
+            with self.subTest(kind=kind),self.assertRaises(ValueError):
+                verify_window(r,'app.bundle')
+
     def stat(self,ticks):
         return '123 (app name (with spaces)) '+' '.join(['S']+['0']*18+[str(ticks)]+['0']*4)
 

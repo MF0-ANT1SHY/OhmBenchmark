@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 
 from remote_device import Remote
-from system_pss import capture_window
+from system_pss import capture_window,verify_window
 from install_search_history_fixture import install as install_search_history
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -71,6 +71,7 @@ def shell(command):
     # own memory and system totals can never become the app's PSS value.
     result=capture_window(remote,int(pids[0]),bundle,
                           lambda:remote.python(code+"ui.run(plan['measured']);ui.run(plan['verify'])\n",timeout=600))
+    verify_window(result,bundle)
     result.update(status='CAPTURED',case=cid,variant=variant,round=round_number,
                   metric='app_pss_bytes',plan_sha256=plan_hash,
                   signed_sha256=sign['audit']['sha256'],
