@@ -1,6 +1,6 @@
 {
-  "status": "source_grounded_candidate",
-  "device_validated": false,
+  "status": "normal_subscription_ui_executed",
+  "device_validated": true,
   "performance_verified": false,
   "assumptions": [
     "fresh subscription URL",
@@ -12,5 +12,15 @@
     "entry/src/main/ets/components/SidebarView.ets",
     "entry/src/main/ets/components/AddFeedDialog.ets"
   ],
-  "scope": "initial feed subscription preparation only; actual drawer, dialog and RSS ingestion must be verified"
+  "scope": "Initial ordinary subscription UI only. Existing unrelated subscriptions invalidate this state for performance comparisons; isolated fresh subscription preparation is running.",
+  "raw_ui_sha256": "333901be253751f9ec686941b77f4bc657309442ea9031b08204ba03996c06fd",
+  "dialog_closed": true,
+  "article_visible": "Journal 1 article 1",
+  "database_observation": {
+    "subscription_url": "http://127.0.0.1:18491/feeds/1.xml",
+    "article_count": 100,
+    "min_content_length": 32858,
+    "max_content_length": 32858,
+    "preexisting_subscriptions": 200
+  }
 }
