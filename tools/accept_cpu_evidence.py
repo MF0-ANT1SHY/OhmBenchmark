@@ -10,7 +10,7 @@ from music_service_fixture import same_instance
 from page_lifecycle import verify_reconstructions
 from reader_data_fixture import CASES as READER_CASES, verify_preparation
 from rss_refresh_progress import verify_observation
-from jingmo_import_fixture import CASE as POEM_IMPORT_CASE, verify_state as verify_poem_state, verify_preparation as verify_poem_preparation
+from jingmo_import_fixture import CASE as POEM_IMPORT_CASE, verify_state as verify_poem_state, verify_preparation as verify_poem_preparation, verify_capture_window as verify_poem_window
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -63,7 +63,7 @@ def accept(cid, write=True, require_pass=True):
             if receipt.get('fixture_sha256') != workload.get('fixture',{}).get('sha256'):
                 raise RuntimeError('capture fixture differs from the validated workload')
             if cid==POEM_IMPORT_CASE:
-                verify_poem_state(receipt['poem_import_state'],True)
+                verify_poem_window(receipt['poem_import_state'],receipt['action_start_monotonic'],receipt['action_end_monotonic'])
                 verify_poem_preparation(receipt['poem_import_fixture_before'],receipt['poem_import_fixture_after'])
                 if receipt['poem_import_fixture_before']['sha256']!=receipt['fixture_sha256']:
                     raise RuntimeError('poetry capture data identity differs from validated cold import')

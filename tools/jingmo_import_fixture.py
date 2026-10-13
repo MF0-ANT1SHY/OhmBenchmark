@@ -39,6 +39,7 @@ print(json.dumps({'sha256':PAYLOAD['sha256'],'source_sha256':PAYLOAD['source_sha
 
 
 def read_state(shell):
+    started = time.monotonic()
     count = shell(f"sqlite3 {DATABASE} 'SELECT COUNT(*) FROM classicalliterature_classicpoem;'").strip()
     if not count.isdigit():
         raise ValueError('ordinary poetry database did not return a row count')
@@ -46,7 +47,8 @@ def read_state(shell):
     rows = json.loads(raw) if raw.strip() else []
     if len(rows) != int(count):
         raise ValueError('poetry data changed during its snapshot')
-    return {'raw_rows': raw, 'count': int(count)}
+    return {'raw_rows': raw, 'count': int(count), 'started_monotonic': started,
+            'ended_monotonic': time.monotonic()}
 
 
 def verify_state(state, imported):
@@ -104,3 +106,9 @@ def verify_preparation(before, after):
         'data': before['service']['sha256']}, sort_keys=True).encode()).hexdigest()
     if digest != before['sha256'] or digest != after['sha256']:
         raise ValueError('poetry import data identity changed')
+
+
+def verify_capture_window(state, started, ended):
+    verify_state(state, True)
+    if not (started <= state['started_monotonic'] <= state['ended_monotonic'] <= ended):
+        raise ValueError('full poetry import completion was not observed within the measured window')
