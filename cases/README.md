@@ -69,6 +69,15 @@ The evaluator hashes the actual audited HAP's audio entries and verifies they ar
 identical across the pair; no audio events or player callbacks are synthesized.
 Real playback and progress advancement still require separate device validation.
 
+CloudMusic online-list preparation uses the existing server configuration UI and
+ordinary music API responses from `tools/cloudmusic_data_service.py`. The
+source-grounded settings plan is `tools/fixtures/cloudmusic-api-setup.workload.json`;
+its device validation is still pending. Run the service on the device workstation,
+then, when the device is idle, use `hdc rport tcp:18490 tcp:18490` and the normal
+settings plan to configure `http://127.0.0.1:18490`. This does not add app endpoints
+or change application code. Workstation response checks do not validate device
+connectivity or the actual list workloads.
+
 ```bash
 python3 tools/ui_driver.py cases/<id>/testcase/<name>.workload.json --remote cityuPC --phase setup
 python3 tools/ui_driver.py cases/<id>/testcase/<name>.workload.json --remote cityuPC --phase measured

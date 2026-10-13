@@ -1,0 +1,65 @@
+{
+  "bundle": "cc.chenlvin.cloudmusic",
+  "ability": "EntryAbility",
+  "description": "普通在线服务配置",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "发现",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "设置在线服务",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "input",
+      "selector": {
+        "type": "TextInput",
+        "index": 0
+      },
+      "value": "127.0.0.1"
+    },
+    {
+      "op": "input",
+      "selector": {
+        "type": "TextInput",
+        "index": 1
+      },
+      "value": "18490"
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "保存配置",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "正常"
+      },
+      "timeout_s": 30
+    },
+    {
+      "op": "key",
+      "key": "Back"
+    }
+  ],
+  "measured": [],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "发现",
+        "match": "exact"
+      }
+    }
+  ]
+}
