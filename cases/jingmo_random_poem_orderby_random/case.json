@@ -42,7 +42,7 @@
       "htrace",
       "hiperf"
     ],
-    "step_duration_s": 20,
+    "step_duration_s": 360,
     "rounds": 3,
     "outputs": [
       "htrace/trace.htrace",
@@ -55,11 +55,25 @@
   },
   "test_oracle": {
     "metric": "hiperf_instructions",
-    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "definition": "Sampled retired-instruction period sum (hw-instructions) attributed to the app process in the complete externally driven measured window.",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "pending_clean_measurement",
-      "note": "Legacy instrumented measurements do not validate these business-only builds."
+      "status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "unfixed": [
+        4350783146,
+        4361057665,
+        4332976122
+      ],
+      "fixed": [
+        557986288,
+        540454327,
+        554432218
+      ],
+      "median_ratio": 7.847276916364193,
+      "rounds_per_variant": 3,
+      "legacy_evidence_reused": false,
+      "note": "Every paired round exceeds 1.2x; app process explicitly selected from the system report."
     },
     "mechanism_oracle": {
       "metric": "elapsed_ms",
@@ -101,8 +115,8 @@
   },
   "clean_validation": {
     "policy": "no_app_injection",
-    "workload_validation": "pending",
-    "performance_validation": "pending",
+    "workload_validation": "verified",
+    "performance_validation": "verified",
     "variants": {
       "unfixed": {
         "ref": "clean-app/jingmo_random_poem_orderby_random/unfixed",
@@ -147,6 +161,95 @@
           "foreground_bundle": "com.hefengbao.jingmo.hw",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "jingmo_random_poem_orderby_random",
+          "variant": "unfixed",
+          "signed_sha256": "dfed739f69b5efda1071306817a46e5f9f8252ecd1b66e16b3561ba27f292c8b",
+          "plan_sha256": "f3184d7f8259a23f34e53bc6d4b35ddbce8144f089bdc85f07c0d562b27fe573",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "bundle": "com.hefengbao.jingmo.hw",
+            "database": "/data/app/el2/100/database/com.hefengbao.jingmo.hw/default/rdb/jingmo.db",
+            "backup": "/home/research/ohm-clean/backups/com.hefengbao.jingmo.hw/1791899659205663230/jingmo.db",
+            "fixture_tables": 1,
+            "integrity_check": "ok",
+            "sha256": "810da455b06d38ccfa778cb0c6bb635bd7091acc2f0b7dda544051086eb5fe30"
+          },
+          "phase_elapsed_s": {
+            "setup": 23.57142969800043,
+            "measured": 250.13953189400127,
+            "verify": 5.2926182039991545
+          },
+          "functional_check": "displayed poetry title and content match the database fixture",
+          "observed_refresh_titles": [
+            "山水诗 39075",
+            "山水诗 7204",
+            "山水诗 18686",
+            "山水诗 54214",
+            "山水诗 60224",
+            "山水诗 61501",
+            "山水诗 96987",
+            "山水诗 98692",
+            "山水诗 96339",
+            "山水诗 63702",
+            "山水诗 53105",
+            "山水诗 41862",
+            "山水诗 23587",
+            "山水诗 35591",
+            "山水诗 7074",
+            "山水诗 28871",
+            "山水诗 11703",
+            "山水诗 88249",
+            "山水诗 93796",
+            "山水诗 79285",
+            "山水诗 59721",
+            "山水诗 59721"
+          ],
+          "capture_duration_required_s": 255
+        },
+        "performance": {
+          "status": "PASS",
+          "metric": "hiperf_instructions",
+          "rounds": 3,
+          "samples": [
+            4350783146,
+            4361057665,
+            4332976122
+          ],
+          "median": 4350783146,
+          "paired_ratios": [
+            7.797294018809294,
+            8.06924368467495,
+            7.815159331162822
+          ],
+          "median_ratio": 7.847276916364193,
+          "plan_sha256": "f3184d7f8259a23f34e53bc6d4b35ddbce8144f089bdc85f07c0d562b27fe573",
+          "signed_sha256": "dfed739f69b5efda1071306817a46e5f9f8252ecd1b66e16b3561ba27f292c8b",
+          "fixture_sha256": "810da455b06d38ccfa778cb0c6bb635bd7091acc2f0b7dda544051086eb5fe30",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "c257a38e39a86834cceb25d36f260a2c0d9b3490f4050de32746ef2356b2241b",
+              "app_samples": 2968,
+              "remote_artifacts": "/home/research/ohm-clean/jingmo_random_poem_orderby_random/unfixed/cpu-captures/round-1"
+            },
+            {
+              "round": 2,
+              "report_sha256": "f0d9f79db4acc317b5d4f8995515a269e5e1883fe9ce7f6d9f4013076e6ea7b4",
+              "app_samples": 2969,
+              "remote_artifacts": "/home/research/ohm-clean/jingmo_random_poem_orderby_random/unfixed/cpu-captures/round-2"
+            },
+            {
+              "round": 3,
+              "report_sha256": "a3cf74b9bff680dd2fa656c35726840121e12cd3005aba6441d23501cdbf0c26",
+              "app_samples": 3124,
+              "remote_artifacts": "/home/research/ohm-clean/jingmo_random_poem_orderby_random/unfixed/cpu-captures/round-3"
+            }
+          ],
+          "legacy_evidence_reused": false
         }
       },
       "fixed": {
@@ -192,6 +295,95 @@
           "foreground_bundle": "com.hefengbao.jingmo.hw",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "jingmo_random_poem_orderby_random",
+          "variant": "fixed",
+          "signed_sha256": "ef9325e435ca099ae781edaaf64f61c4c8f1ab46e9c76a916b4b992860d45e9d",
+          "plan_sha256": "f3184d7f8259a23f34e53bc6d4b35ddbce8144f089bdc85f07c0d562b27fe573",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "bundle": "com.hefengbao.jingmo.hw",
+            "database": "/data/app/el2/100/database/com.hefengbao.jingmo.hw/default/rdb/jingmo.db",
+            "backup": "/home/research/ohm-clean/backups/com.hefengbao.jingmo.hw/1791899983573224886/jingmo.db",
+            "fixture_tables": 1,
+            "integrity_check": "ok",
+            "sha256": "810da455b06d38ccfa778cb0c6bb635bd7091acc2f0b7dda544051086eb5fe30"
+          },
+          "phase_elapsed_s": {
+            "setup": 23.674839101000543,
+            "measured": 251.12019021000015,
+            "verify": 5.272237481000047
+          },
+          "functional_check": "displayed poetry title and content match the database fixture",
+          "observed_refresh_titles": [
+            "山水诗 1720",
+            "山水诗 85875",
+            "山水诗 8101",
+            "山水诗 42926",
+            "山水诗 61148",
+            "山水诗 5177",
+            "山水诗 20208",
+            "山水诗 15853",
+            "山水诗 53165",
+            "山水诗 29038",
+            "山水诗 31871",
+            "山水诗 2229",
+            "山水诗 38137",
+            "山水诗 19491",
+            "山水诗 7627",
+            "山水诗 26894",
+            "山水诗 75118",
+            "山水诗 30531",
+            "山水诗 28303",
+            "山水诗 3611",
+            "山水诗 57488",
+            "山水诗 57488"
+          ],
+          "capture_duration_required_s": 256
+        },
+        "performance": {
+          "status": "PASS",
+          "metric": "hiperf_instructions",
+          "rounds": 3,
+          "samples": [
+            557986288,
+            540454327,
+            554432218
+          ],
+          "median": 554432218,
+          "paired_ratios": [
+            7.797294018809294,
+            8.06924368467495,
+            7.815159331162822
+          ],
+          "median_ratio": 7.847276916364193,
+          "plan_sha256": "f3184d7f8259a23f34e53bc6d4b35ddbce8144f089bdc85f07c0d562b27fe573",
+          "signed_sha256": "ef9325e435ca099ae781edaaf64f61c4c8f1ab46e9c76a916b4b992860d45e9d",
+          "fixture_sha256": "810da455b06d38ccfa778cb0c6bb635bd7091acc2f0b7dda544051086eb5fe30",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "d3c16b72cb934a182ec7c7e92a26eed843a576ba6237408218a2d4fc4eab514e",
+              "app_samples": 1494,
+              "remote_artifacts": "/home/research/ohm-clean/jingmo_random_poem_orderby_random/fixed/cpu-captures/round-1"
+            },
+            {
+              "round": 2,
+              "report_sha256": "1bee063bc768550c7988baabe9e973fa5f765b1cc9552be517f2e6cf81d5b474",
+              "app_samples": 1562,
+              "remote_artifacts": "/home/research/ohm-clean/jingmo_random_poem_orderby_random/fixed/cpu-captures/round-2"
+            },
+            {
+              "round": 3,
+              "report_sha256": "cbdad35d30a31d6042e1de7b003bb06ac823e9f46b0635d9aa85e9339fc3aca3",
+              "app_samples": 1573,
+              "remote_artifacts": "/home/research/ohm-clean/jingmo_random_poem_orderby_random/fixed/cpu-captures/round-3"
+            }
+          ],
+          "legacy_evidence_reused": false
         }
       }
     }
