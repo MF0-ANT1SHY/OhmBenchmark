@@ -134,6 +134,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "ytmusic_history_json_parse_per_row",
+          "variant": "unfixed",
+          "signed_sha256": "441c83955e2424c8fbb364ac3c7e45dc6c684ca062c00563e04c8b5543557aca",
+          "install": "[Info]App install path:/home/research/ohm-clean/ytmusic_history_json_parse_per_row/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            64553
+          ],
+          "foreground_bundle": "com.example.myapplication",
+          "status": "PASS",
+          "performance_verified": false
         }
       },
       "fixed": {
@@ -166,6 +179,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "ytmusic_history_json_parse_per_row",
+          "variant": "fixed",
+          "signed_sha256": "a1ad4d454f028655fd36cba349a91d055e0650f63350a90d8d9f488a0d33bfe6",
+          "install": "[Info]App install path:/home/research/ohm-clean/ytmusic_history_json_parse_per_row/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            65242
+          ],
+          "foreground_bundle": "com.example.myapplication",
+          "status": "PASS",
+          "performance_verified": false
         }
       }
     }

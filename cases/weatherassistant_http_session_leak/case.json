@@ -134,6 +134,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "weatherassistant_http_session_leak",
+          "variant": "unfixed",
+          "signed_sha256": "dd4a89db292ae4a9c48024fb14e5d1e66dc76315aed214301a9a600924aa7b72",
+          "install": "[Info]App install path:/home/research/ohm-clean/weatherassistant_http_session_leak/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            61943
+          ],
+          "foreground_bundle": "com.alatus.futureweather",
+          "status": "PASS",
+          "performance_verified": false
         }
       },
       "fixed": {
@@ -166,6 +179,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "weatherassistant_http_session_leak",
+          "variant": "fixed",
+          "signed_sha256": "9711924f552264e21e5155358fdb672939b452a83279a4e518f134201aa5a73e",
+          "install": "[Info]App install path:/home/research/ohm-clean/weatherassistant_http_session_leak/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            62335
+          ],
+          "foreground_bundle": "com.alatus.futureweather",
+          "status": "PASS",
+          "performance_verified": false
         }
       }
     }

@@ -133,6 +133,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "wanharmony_html_decode_per_render",
+          "variant": "unfixed",
+          "signed_sha256": "f56a69d48d3fcb31517579ce7ff54a27f84aec5f86a4408ca439546f0e4f709d",
+          "install": "[Info]App install path:/home/research/ohm-clean/wanharmony_html_decode_per_render/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            59566
+          ],
+          "foreground_bundle": "org.example.wan.ohos",
+          "status": "PASS",
+          "performance_verified": false
         }
       },
       "fixed": {
@@ -165,6 +178,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "wanharmony_html_decode_per_render",
+          "variant": "fixed",
+          "signed_sha256": "b2a69d03cf3b2909889e432a93e5324e666aaf3cb936c19aac407736ad36cb2d",
+          "install": "[Info]App install path:/home/research/ohm-clean/wanharmony_html_decode_per_render/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            59948
+          ],
+          "foreground_bundle": "org.example.wan.ohos",
+          "status": "PASS",
+          "performance_verified": false
         }
       }
     }

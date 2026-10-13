@@ -133,6 +133,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "ytmusic_current_playing_timeupdate",
+          "variant": "unfixed",
+          "signed_sha256": "8c7e42e915de35376800f3a3a96a11d96662fc12aec711bbc6043bf7eb3bbe6b",
+          "install": "[Info]App install path:/home/research/ohm-clean/ytmusic_current_playing_timeupdate/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            63471
+          ],
+          "foreground_bundle": "com.example.myapplication",
+          "status": "PASS",
+          "performance_verified": false
         }
       },
       "fixed": {
@@ -165,6 +178,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "ytmusic_current_playing_timeupdate",
+          "variant": "fixed",
+          "signed_sha256": "417711b3ab77af68e7f60d87a40343c1b95740dec639ccb43ccbfa897ddbcf28",
+          "install": "[Info]App install path:/home/research/ohm-clean/ytmusic_current_playing_timeupdate/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            64038
+          ],
+          "foreground_bundle": "com.example.myapplication",
+          "status": "PASS",
+          "performance_verified": false
         }
       }
     }

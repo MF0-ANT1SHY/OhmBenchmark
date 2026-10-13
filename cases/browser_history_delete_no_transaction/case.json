@@ -148,6 +148,29 @@
           "foreground_bundle": "com.example.nanvision",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "browser_history_delete_no_transaction",
+          "variant": "unfixed",
+          "signed_sha256": "4cc753261eacb91fd4d2b0e3473f71a734e1444990bf42c8cb8e7dbb8483703a",
+          "plan_sha256": "92e0edeb5422f45ee7f368bc20454a78026004e657cc181b231b36f5d341d867",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "bundle": "com.example.nanvision",
+            "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
+            "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791890978967479037/Histories.db",
+            "fixture_tables": 61,
+            "integrity_check": "ok",
+            "sha256": "3ae759987f895d18c9166a34ba924c2634a031dd0b6da4dc050f331ce5f70fbb"
+          },
+          "phase_elapsed_s": {
+            "setup": 15.23619798999971,
+            "measured": 5.976814230998571,
+            "verify": 4.358997341001668
+          },
+          "functional_check": "database cleared through the production UI",
+          "capture_duration_required_s": 11
         }
       },
       "fixed": {
@@ -195,6 +218,29 @@
           "foreground_bundle": "com.example.nanvision",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "browser_history_delete_no_transaction",
+          "variant": "fixed",
+          "signed_sha256": "578d2e95ea8fd24f832567ef7c471f0d340b60d81babe08ad4fce8a401e46327",
+          "plan_sha256": "92e0edeb5422f45ee7f368bc20454a78026004e657cc181b231b36f5d341d867",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "bundle": "com.example.nanvision",
+            "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
+            "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791891043300870339/Histories.db",
+            "fixture_tables": 61,
+            "integrity_check": "ok",
+            "sha256": "3ae759987f895d18c9166a34ba924c2634a031dd0b6da4dc050f331ce5f70fbb"
+          },
+          "phase_elapsed_s": {
+            "setup": 15.146047624000857,
+            "measured": 5.714518102000511,
+            "verify": 3.85886724699958
+          },
+          "functional_check": "database cleared through the production UI",
+          "capture_duration_required_s": 11
         }
       }
     }

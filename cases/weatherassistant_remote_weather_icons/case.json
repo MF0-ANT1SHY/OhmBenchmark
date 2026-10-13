@@ -126,6 +126,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "weatherassistant_remote_weather_icons",
+          "variant": "unfixed",
+          "signed_sha256": "12230719fe30a509377b743bc2002922cf21d43e185415a57be0f3b271bc5617",
+          "install": "[Info]App install path:/home/research/ohm-clean/weatherassistant_remote_weather_icons/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            62763
+          ],
+          "foreground_bundle": "com.alatus.futureweather",
+          "status": "PASS",
+          "performance_verified": false
         }
       },
       "fixed": {
@@ -158,6 +171,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "weatherassistant_remote_weather_icons",
+          "variant": "fixed",
+          "signed_sha256": "cd48452d25c7c37bad9e4c2e57769232eb0eeac9b7efe7b18189b54f3f8c2da3",
+          "install": "[Info]App install path:/home/research/ohm-clean/weatherassistant_remote_weather_icons/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            63124
+          ],
+          "foreground_bundle": "com.alatus.futureweather",
+          "status": "PASS",
+          "performance_verified": false
         }
       }
     }

@@ -136,6 +136,19 @@
           },
           "allowed_acls": [],
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "sheafreader_unread_counts_n_plus_1",
+          "variant": "unfixed",
+          "signed_sha256": "2e183f4ca68e575c23a5cba0edbbcddf3fd03298c23ed3e29abc65524bc0b682",
+          "install": "[Info]App install path:/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            57741
+          ],
+          "foreground_bundle": "com.sheafreader.hm",
+          "status": "PASS",
+          "performance_verified": false
         }
       },
       "fixed": {
@@ -171,6 +184,19 @@
           },
           "allowed_acls": [],
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "sheafreader_unread_counts_n_plus_1",
+          "variant": "fixed",
+          "signed_sha256": "6531ac887766ff2553696f9c95c595aaf4399dfb8a57e4edfd58a509b4ff732a",
+          "install": "[Info]App install path:/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            58127
+          ],
+          "foreground_bundle": "com.sheafreader.hm",
+          "status": "PASS",
+          "performance_verified": false
         }
       }
     }

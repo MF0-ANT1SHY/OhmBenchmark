@@ -125,6 +125,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "ytmusic_search_no_debounce",
+          "variant": "unfixed",
+          "signed_sha256": "3d56cf94f5976964feb24140784d539b30a5323a0633b2427ee420873d674662",
+          "install": "[Info]App install path:/home/research/ohm-clean/ytmusic_search_no_debounce/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            1376
+          ],
+          "foreground_bundle": "com.example.myapplication",
+          "status": "PASS",
+          "performance_verified": false
         }
       },
       "fixed": {
@@ -157,6 +170,19 @@
             "passed": true
           },
           "status": "PASS"
+        },
+        "smoke": {
+          "case": "ytmusic_search_no_debounce",
+          "variant": "fixed",
+          "signed_sha256": "55b4708c057fdcab89f6f084c8e8a2e0ccc79ebb0bf9cf45b028059e0a059e38",
+          "install": "[Info]App install path:/home/research/ohm-clean/ytmusic_search_no_debounce/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            2276
+          ],
+          "foreground_bundle": "com.example.myapplication",
+          "status": "PASS",
+          "performance_verified": false
         }
       }
     }

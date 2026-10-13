@@ -93,6 +93,18 @@ def shell(command):
     (output/'capture.json').write_text(json.dumps(receipt,indent=2)+'\n')
     if receipt['status']=='CAPTURED':
         remote.download(remote_base+'/report.json',output/'report.json')
+        # The device's JSON reporter includes all processes even with --pids.
+        # Attribution must therefore be explicit; never use its system total.
+        report=json.loads((output/'report.json').read_text())
+        events=[e for e in report.get('recordSampleInfo',[]) if e.get('eventConfigName')=='hw-instructions']
+        if len(events)!=1:raise RuntimeError('retired-instruction event is missing/ambiguous')
+        processes=[p for p in events[0]['processes'] if p['pid'] in receipt['pids']]
+        if len(processes)!=len(receipt['pids']):raise RuntimeError('app process missing from capture')
+        receipt['app_instruction_period_sum']=sum(p['eventCount'] for p in processes)
+        receipt['app_samples']=sum(t['sampleCount'] for p in processes for t in p['threads'])
+        if receipt['app_instruction_period_sum']<=0 or receipt['app_samples']<=0:
+            raise RuntimeError('app has no attributable instruction samples')
+        (output/'capture.json').write_text(json.dumps(receipt,indent=2)+'\n')
     print(f'{cid}/{variant}/round-{round_number}: {receipt["status"]} {receipt.get("error", "")}',flush=True)
 
 
