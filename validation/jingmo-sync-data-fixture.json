@@ -1,0 +1,17 @@
+{
+  "status": "ordinary_protocol_data_prepared",
+  "poems": 5000,
+  "files": {
+    "dataset_v2.json": {
+      "sha256": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+      "bytes": 54
+    },
+    "classicalliterature_classicpoem1.json": {
+      "sha256": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2",
+      "bytes": 1682826
+    }
+  },
+  "device_ingestion_verified": false,
+  "performance_verified": false,
+  "scope": "Only the existing dataset and poem-list API response shapes; no measurement/status/control endpoints"
+}
