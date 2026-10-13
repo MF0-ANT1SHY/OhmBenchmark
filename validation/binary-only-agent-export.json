@@ -14,5 +14,6 @@
   "app_samples": 959,
   "app_instruction_period_sum": 1777740431,
   "signed_sha256": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9",
-  "private_evaluator_files_exported": false
+  "private_evaluator_files_exported": false,
+  "build_signature_binding_verified": true
 }

@@ -122,6 +122,12 @@ def export(cid, destination, symptom, round_number, remote_name='cityuPC', inclu
     capture = json.loads((capture_folder/'capture.json').read_text())
     hap = folder/'app-export.hap'
     plan = ROOT/'cases'/cid/case['testcase']['workload']
+    if (build.get('status')!='PASS' or not build.get('hap',{}).get('passed')
+            or sign.get('unsigned_sha256')!=build['hap']['sha256']):
+        raise ValueError('signature belongs to a different clean build')
+    unsigned=folder/'app-unsigned.hap'
+    if hashlib.sha256(unsigned.read_bytes()).hexdigest()!=build['hap']['sha256']:
+        raise ValueError('unsigned artifact differs from audited clean build')
     if sign['status'] != 'PASS' or not sign['audit']['passed'] or capture['status'] != 'CAPTURED' or capture['signed_sha256'] != sign['audit']['sha256']:
         raise ValueError('unmatched capture/package')
     if not hap.exists() or hashlib.sha256(hap.read_bytes()).hexdigest() != sign['audit']['sha256']:

@@ -23,11 +23,13 @@ class AppReportTests(unittest.TestCase):
             def put(path,data):path.write_text(json.dumps(data))
             package=b'package';digest=hashlib.sha256(package).hexdigest()
             (folder/'app-export.hap').write_bytes(package)
+            (folder/'app-unsigned.hap').write_bytes(package)
             put(case_dir/'workload.json',{'description':'private-case','setup':[],'measured':[],'verify':[]})
             put(case_dir/'case.json',{'host_app':{'local_path':'repo','bundle_name':'app.bundle'},
                                      'testcase':{'workload':'workload.json'}})
-            put(folder/'build.json',{'source':{'tree':'tree','passed':True}})
-            put(folder/'sign.json',{'status':'PASS','audit':{'passed':True,'sha256':digest}})
+            put(folder/'build.json',{'status':'PASS','hap':{'passed':True,'sha256':digest},
+                                    'source':{'tree':'tree','passed':True}})
+            put(folder/'sign.json',{'status':'PASS','unsigned_sha256':digest,'audit':{'passed':True,'sha256':digest}})
             capture=folder/'cpu-captures/round-1';capture.mkdir(parents=True)
             put(capture/'capture.json',{'status':'CAPTURED','signed_sha256':digest,'pids':[10],
                                        'plan_sha256':hashlib.sha256((case_dir/'workload.json').read_bytes()).hexdigest()})
@@ -38,6 +40,11 @@ class AppReportTests(unittest.TestCase):
                 destination=root/'export'
                 export(cid,destination,'slow launch',1)
                 archive.assert_not_called()
+                put(folder/'sign.json',{'status':'PASS','unsigned_sha256':'other-build',
+                                       'audit':{'passed':True,'sha256':digest}})
+                with self.assertRaisesRegex(ValueError,'different clean build'):
+                    export(cid,root/'bad-export','slow launch',1)
+                self.assertFalse((root/'bad-export').exists())
             self.assertEqual({p.name for p in destination.iterdir()},
                              {'app.hap','workload.json','reproduce.py','profile.json','symptom.txt'})
             self.assertNotIn('private-case',(destination/'workload.json').read_text())
