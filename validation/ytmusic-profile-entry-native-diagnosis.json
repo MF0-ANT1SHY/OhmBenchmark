@@ -1,0 +1,32 @@
+{
+  "case": "ytmusic_history_json_parse_per_row",
+  "reason": "old percentage click y=256 misses the actual normal profile button ending at y=229",
+  "native_profile_button_bounds": "[1109,128][1210,229]",
+  "source_basis": "Home header declares notification, search, profile Button siblings in that order",
+  "replacement": "tap the third normal visible app Button; no app route or auth shortcut",
+  "retired_files": [
+    {
+      "original": "artifacts/clean/ytmusic_history_json_parse_per_row/unfixed/workload.json",
+      "archive": "artifacts/retired-clean/ytmusic_history_json_parse_per_row/profile-entry-missed-20261014/unfixed/workload.json",
+      "sha256": "053d18861768621c4d5ca8d1a78516e83698119b7f83851cecd2f021acbd0e86"
+    },
+    {
+      "original": "artifacts/clean/ytmusic_history_json_parse_per_row/unfixed/workload-device.json",
+      "archive": "artifacts/retired-clean/ytmusic_history_json_parse_per_row/profile-entry-missed-20261014/unfixed/workload-device.json",
+      "sha256": "b9c068fb94f3620aae84394d46a593f12239464d38f1b89d9c4b72352bc5eccc"
+    },
+    {
+      "original": "artifacts/clean/ytmusic_history_json_parse_per_row/fixed/workload.json",
+      "archive": "artifacts/retired-clean/ytmusic_history_json_parse_per_row/profile-entry-missed-20261014/fixed/workload.json",
+      "sha256": "daf2648fd9767e4a9c1c3559242f5bf2dd1bba1b61fbeb950340e69c788781e0"
+    },
+    {
+      "original": "artifacts/clean/ytmusic_history_json_parse_per_row/fixed/workload-device.json",
+      "archive": "artifacts/retired-clean/ytmusic_history_json_parse_per_row/profile-entry-missed-20261014/fixed/workload-device.json",
+      "sha256": "45765ed5ee010172f3ab230bf711c6a39a49b69a3d6d06af75e51c09f91163c0"
+    }
+  ],
+  "retired_plan_sha256": "d95c171c70ef4280f2d9ee8d32e8072b44795c8475eca667dd5a24a948baf20e",
+  "fresh_validation_required": true,
+  "performance_accepted": false
+}
