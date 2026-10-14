@@ -1,0 +1,20 @@
+{
+  "case": "jingmo_sync_page_reimport",
+  "reason": "Retire all mixed CLOCK_MONOTONIC-second/CLOCK_REALTIME-nanosecond display trials after source-confirmed formatter defect; no old-format measurements reused.",
+  "files": {
+    "unfixed/cpu-captures/round-1/capture.json": "7560c9abad49f366e03ba5035fb2f1816486622eba90d517a52cf23152e1623c",
+    "unfixed/cpu-captures/round-1/report.json": "d2e2fee023fdca282b71fde03db5eaec8c44f0868225fe8f4c28c9008377cf57",
+    "unfixed/cpu-captures/round-2/capture.json": "2fedefbf15eb24686e45da4501ad82edff4c70b4261c073d5bc0739c5104fdcd",
+    "unfixed/cpu-captures/round-2/report.json": "fcb18b9d92f5ae83dacf01079581d2d78cd1fcdf35c02bd5085d98da24013f8c",
+    "unfixed/cpu-captures/round-3/capture.json": "c86954ffd5e36bfd983194b43f1895952063d43a159d9c322dde6875a5253179",
+    "unfixed/workload.json": "f4fe362123cdc247c920324251ad0eff45c4550df2d55709bc083ad3b9a16e4a",
+    "unfixed/workload-device.json": "8edff44d28c9cbc36ea7fb6dc68d84f22b4b9f2bae3be83bfd287610205eea50",
+    "fixed/cpu-captures/round-1/capture.json": "56a6d230f838ac2244165a4762ce4337bfe492a270c21d668a43ac5ddbc4fdaa",
+    "fixed/cpu-captures/round-1/report.json": "033f98df58bcee34bc1fb3b813a01cc2d81db60afcdab3f63eec21c2d8134aa7",
+    "fixed/cpu-captures/round-2/capture.json": "5b327be2eecb2776498c2a94ec9ce4afa657234377d2762a1036a0cb747a30ab",
+    "fixed/cpu-captures/round-2/report.json": "5af92a25d84975e0224d633e1f7ce47cee6d8b7d117432e2e58211e6ecd04145",
+    "fixed/workload.json": "40fa7a2d208c84c36e4ae5d71c6cf1cefdd201eccc5b502b1f96f5a25b283af5",
+    "fixed/workload-device.json": "3b1668a9947228fce86c1a7f0e30b8297daf034a2cb96724ce3666951be8423d"
+  },
+  "next_protocol": "coherent epoch+nsec native business logs with unchanged full input, cycle, process and profiler-window checks"
+}
