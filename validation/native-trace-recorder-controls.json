@@ -1,0 +1,29 @@
+{
+  "status": "prepared_not_device_captured",
+  "readonly_device_probe": {
+    "trace_nodes": {
+      "returncode": 0,
+      "stdout": "available_events\nbuffer_size_kb\nevents\nprintk_formats\nsaved_cmdlines\nsaved_cmdlines_size\nsaved_tgids\nset_event\nset_event_pid\nsnapshot\nsnapshot_raw\ntrace\ntrace_clock\ntrace_marker\ntrace_pipe\ntrace_pipe_raw\ntracing_on\n",
+      "stderr": ""
+    },
+    "record_tgid": {
+      "returncode": 0,
+      "stdout": "/bin/sh: cat: /sys/kernel/tracing/options/record-tgid: No such file or directory\n",
+      "stderr": ""
+    },
+    "taskset_help": {
+      "returncode": 0,
+      "stdout": "usage: taskset [-ap] [mask] [PID | cmd [args...]]\n\nLaunch a new task which may only run on certain processors, or change\nthe processor affinity of an existing PID.\n\nMask is a hex string where each bit represents a processor the process\nis allowed to run on. PID without a mask displays existing affinity.\n\n-p\tSet/get the affinity of given PID instead of a new command\n-a\tSet/get the affinity of all threads of the PID\n",
+      "stderr": ""
+    },
+    "identity": {
+      "returncode": 0,
+      "stdout": "uid=0(root) gid=0(root) groups=0(root),1006(file_manager),1007(log),2000(shell),3009(readproc) context=u:r:su:s0\n",
+      "stderr": ""
+    }
+  },
+  "actual_trace_capture_performed": false,
+  "app_code_changed": false,
+  "case_performance_verified": false,
+  "tests": "103 unit tests passed; active-profiler guard and owned-session cleanup exercised"
+}
