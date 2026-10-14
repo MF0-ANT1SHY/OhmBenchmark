@@ -6986,6 +6986,21 @@
         "foreground_bundle": "com.example.myapplication",
         "status": "PASS",
         "performance_verified": false
+      },
+      "input_ui_validation": {
+        "case": "ytmusic_search_no_debounce",
+        "variant": "unfixed",
+        "signed_sha256": "3d56cf94f5976964feb24140784d539b30a5323a0633b2427ee420873d674662",
+        "plan_sha256": "69d02662ee3f957dc89b807e41d3b9ae8d4ebe6345523d12aabfbde0c3752c12",
+        "status": "PASS",
+        "performance_verified": false,
+        "phase_elapsed_s": {
+          "setup": 17.193647517,
+          "measured": 15.039726578,
+          "verify": 5.264499112999999
+        },
+        "capture_duration_required_s": 20,
+        "scope": "Normal search entry and final typed text only; event delivery spacing, public request completion, and performance remain unverified."
       }
     },
     {
@@ -7034,6 +7049,21 @@
         "foreground_bundle": "com.example.myapplication",
         "status": "PASS",
         "performance_verified": false
+      },
+      "input_ui_validation": {
+        "case": "ytmusic_search_no_debounce",
+        "variant": "fixed",
+        "signed_sha256": "55b4708c057fdcab89f6f084c8e8a2e0ccc79ebb0bf9cf45b028059e0a059e38",
+        "plan_sha256": "69d02662ee3f957dc89b807e41d3b9ae8d4ebe6345523d12aabfbde0c3752c12",
+        "status": "PASS",
+        "performance_verified": false,
+        "phase_elapsed_s": {
+          "setup": 17.676036331999995,
+          "measured": 15.212323842000004,
+          "verify": 5.2553634969999905
+        },
+        "capture_duration_required_s": 20,
+        "scope": "Normal search entry and final typed text only; event delivery spacing, public request completion, and performance remain unverified."
       }
     }
   ]

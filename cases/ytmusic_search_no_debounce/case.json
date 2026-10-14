@@ -185,6 +185,13 @@
           "performance_verified": false
         }
       }
+    },
+    "input_ui_validation": {
+      "status": "verified",
+      "proof": "../../validation/ytmusic-normal-keyboard-ui.json",
+      "successful_search_requests_verified": false,
+      "event_delivery_spacing_verified": false,
+      "full_workload_validation": "pending"
     }
   }
 }

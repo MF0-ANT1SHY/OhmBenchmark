@@ -211,7 +211,9 @@
       "app_injection": false,
       "workload_validation": "pending",
       "measurement_status": "pending_clean_measurement",
-      "rounds_recorded": 0
+      "rounds_recorded": 0,
+      "input_ui_validation": "verified",
+      "request_completion_verified": false
     }
   }
 }
