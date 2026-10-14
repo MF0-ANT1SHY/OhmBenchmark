@@ -1,0 +1,27 @@
+{
+  "before": {
+    "sha256": "5564f4bbf1e4c3abea1a3db6bf9387c3955382019e94b71dcafc07c9250f7ef1",
+    "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+    "base_url": "http://127.0.0.1:18492/api/",
+    "service_pid": 629,
+    "service_start_ticks": 22594,
+    "files": {
+      "/api/dataset_v2.json": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+      "/api/classicalliterature_classicpoem1.json": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+    }
+  },
+  "after": {
+    "sha256": "5564f4bbf1e4c3abea1a3db6bf9387c3955382019e94b71dcafc07c9250f7ef1",
+    "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+    "base_url": "http://127.0.0.1:18492/api/",
+    "service_pid": 629,
+    "service_start_ticks": 22594,
+    "files": {
+      "/api/dataset_v2.json": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+      "/api/classicalliterature_classicpoem1.json": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+    }
+  },
+  "ordinary_source_continuity_verified": true,
+  "hosting": "bounded foreground SSH lease",
+  "performance_verified": false
+}
