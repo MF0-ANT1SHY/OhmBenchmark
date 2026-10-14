@@ -1,0 +1,177 @@
+{
+  "status": "complete_gate_passed",
+  "git_head": "df7e5d6a11e1aa40f9bf7a04b303610dbf9d4252",
+  "gate": {
+    "stage": "complete",
+    "cases": 9,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "case_count": 9,
+  "bindings": [
+    {
+      "case": "browser_eager_history_load",
+      "case_sha256": "7e231d3dd5a4a922d154bc24373c1857a65829ea74a7a2bcd9a38799b347578a",
+      "variants": {
+        "unfixed": {
+          "build": "2a583a08d0756d166840da790be0c0a319cf0d1ee1ea45b8e5e4c6a2afd88504",
+          "sign": "9a02f85108bac0252d2f6ba1256deecc195b93640590a61bd362453bd50a2672",
+          "workload": "77922071c009cb9b035ee86a1a54e1f820df18be61a2347f5eba7c7ac587e23c",
+          "performance": "97f106d8f10f1c2a8cf086202694ad7f41e0191ed5e4011bcb1e88b1f8c6af12"
+        },
+        "fixed": {
+          "build": "05321c1045eb3c6139ec7d4ecdedc397e9fb6361227d9099a9069b2641f952ff",
+          "sign": "4b5cf4768958f421b049cb5b064f7c7a289ed4ab83786aec5a0a452f9db8e911",
+          "workload": "c5ffd234463d439a1e04d2f0ce74f7f55e448ea3043aaa36facf0c7641df0a2c",
+          "performance": "8dfee425da0fa7468a23ea2e1b0ddd2c161bfde6213667628839a0130d7cf9a2"
+        }
+      }
+    },
+    {
+      "case": "browser_history_delete_no_transaction",
+      "case_sha256": "525ee0036ed775f7a8c70dd7a583e317101adad2246c922ee86013e44ed93f49",
+      "variants": {
+        "unfixed": {
+          "build": "4be1d067183634edf544e6e70ce89bdf03d7ef95e0e090c66d9e23e325533abb",
+          "sign": "33676312126296216fb707c0c70c8dc421d9c36cb1187edd86b8a6a7af1b5476",
+          "workload": "48902fc0fabca4fc4076b39d8b8ab32d94aeefa5be5fbde2c9c1d29569d3ea3e",
+          "performance": "0024010ffbcafb703032d962e970b65ea9867cbc0863121fdf974ddc6de5a98c"
+        },
+        "fixed": {
+          "build": "ae2a1a234865de42810fa6d53b2b4ec8780199eecd213523122d29907c07d133",
+          "sign": "4975a18931587c4f84b9b779a753dd4ced0e34f6adce8fd606a9625a96f301fb",
+          "workload": "159629aeb85e9e4592f89f058241fc698c1dee35fd0a778135e8b0e4bb14dc0a",
+          "performance": "38e4e3ca0fda60ccd43e9cf73171a6f948ceefb700c2f1345cf5cdc0e01d0d48"
+        }
+      }
+    },
+    {
+      "case": "browser_history_list_foreach",
+      "case_sha256": "fe519e5394df5c93dcf8e3837a7ce8c23f5c1871553bfeaae051fcabd19ee864",
+      "variants": {
+        "unfixed": {
+          "build": "de3733a735ba87ef84fbe1f84b0da309fc21fd42a3949b6dfae8a5ae657a9fb7",
+          "sign": "b843be0bf0e23bf84fb33e1eb026975e4e6ef0b06f9cc96ab3b974628a0c4fa0",
+          "workload": "c1587aee5620d15ed30d350d062703ab8fef2e8e0d169549ca5fc00b50bb699d",
+          "performance": "71bcd013218659a84725300979ebc58868bb386d906a420d1458f2362362acc5"
+        },
+        "fixed": {
+          "build": "c5c8e5e9e0659fbb3b0ea5fac448b98a1a052290bbddd6e6919087f3b9cc0fe7",
+          "sign": "ae43844664b4e8cc383ec50760682fb73b361e9fb51684cb7a3ce58a39814646",
+          "workload": "1e6f8495113e9d0775c2d928b5f1c33ed03f8e74515094994a6070c829576743",
+          "performance": "af41718d03bb907791164c8127ee47fcdf1e3a88143efd0ae39f98e91137d222"
+        }
+      }
+    },
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "case_sha256": "86721759cc2a5b69acfb0d71f79d71303ef2c51e45f7c1c1c99ba6e66ee4d647",
+      "variants": {
+        "unfixed": {
+          "build": "3d3672b762c3411ce9a4382c786b4de5ae77aa3041529f0abb2b6e5a5144c3f7",
+          "sign": "90bd4f7ee9cc3d1fe49e625f6473ea5c7e8af77a3609e12055c2a09a14d6e8ea",
+          "workload": "faf5a3d750218f246a2da64a9cfd6ab482a2872eeec91c6b851953555241e158",
+          "performance": "ff4384208465e62f2fa04d2f447504f96f9f5b49d84772637f34104613ed6598"
+        },
+        "fixed": {
+          "build": "54fb6434bf08a5e578e3ef3fe63a78771a3b08ad15f7e836654b721cfaab1c56",
+          "sign": "73d0cefdf6a94a48aec6eac6eeb54ecb3558359d5136e8b7b4c4cd91162ba1dc",
+          "workload": "50738c982a559aba458b09b777a3da3b8265704d88c510f89367a3de7d5444f6",
+          "performance": "b989f043e2e920d0b84aafad80babc37fa0255e5dd0b26aaf0333189a53f8735"
+        }
+      }
+    },
+    {
+      "case": "jingmo_random_poem_orderby_random",
+      "case_sha256": "57de72129142ebd70f97629eeb09d9a829d623fecc2ff0b288e7373a80a8863f",
+      "variants": {
+        "unfixed": {
+          "build": "5d2c7cf7496355ffc440a1d45dc46ce1e66b5ac86e7b7686f33978d5cdf483e2",
+          "sign": "0693794070cbdda700d422fe1e7d7d2458bba28fddf1a2ccf2bca3cbb6d70a44",
+          "workload": "c981afd2bafe2bd230868e407f3eea7ca5c8ebb73c8641aa82569fac8393ab63",
+          "performance": "7b68590f0854495a1a8d1ce44a6478f79dd0fb6f92ac611989aa5baf0e0c302a"
+        },
+        "fixed": {
+          "build": "321a0203d5c50453f91c339e7bf4dc02187369551f6f7d8b4c4671af0e635d74",
+          "sign": "d2456d62835735385a1889a25d69a2976aa623a28bc6fdda4af546649041bcf5",
+          "workload": "06819628703d0dd320ca79056a3d582f7265347e5c21de9e9b2afc95607187bc",
+          "performance": "e0376fb08610eea71e1a48d38ec9a7cd56b5631a6e741c90fad693f617e78ef9"
+        }
+      }
+    },
+    {
+      "case": "sheafreader_article_list_foreach",
+      "case_sha256": "a9c748b6483599a9ceda6b55c3dec248a42515a4d08ad6e859a1dc4c934b9a4a",
+      "variants": {
+        "unfixed": {
+          "build": "3b268aefbb06e0c07cb7efc31bac9d62126971f969bf2db0bceafa2c03450bd9",
+          "sign": "0c714d4cbbc65ce2ee12268f27bb83f6c86b9eaf1b93a307cdc464e96c9211a1",
+          "workload": "73c63bd45959b38e9b411997cb8b6139ecf9534bad2ff2867626f6cedf13fe13",
+          "performance": "3136affb2aa2bd62006a8717e028a589ed3edf564b2cdd0d6344863f91d42068"
+        },
+        "fixed": {
+          "build": "172d863fa6537132c5c9323068c4307be7db40d0c766e9cf89ebc317c68a4f96",
+          "sign": "e72fb0cc8738a658f2109795692e498a05e884282a1f21f022e97eaa608cc85c",
+          "workload": "74f6c7ba544abd281b3e442d66f984005f6395fa00a3e0b73a74ba8cd9ebf6f8",
+          "performance": "f31b2e831adeeb0eb3a51da7d68e161d217c99274efab8d932e5167642b65db2"
+        }
+      }
+    },
+    {
+      "case": "sheafreader_extract_tag_tolowercase",
+      "case_sha256": "f725789d46011a62c96156ac94bb0e40550eab807969bed169149d4030ffce54",
+      "variants": {
+        "unfixed": {
+          "build": "d5b00ec12849a623945a356185239dbe7e0b6d22e56a492dcb8fec89c2de9ba7",
+          "sign": "de44867b8283f14c8e48680037522481798fe226c3e1c685b0863eadbdd2ce75",
+          "workload": "a3393dcf0d4742bca1d196d56d41349e2bea80655da1ba275b10337673ad9aad",
+          "performance": "c5732b8723384cbd6623b0d02377d4d023aa978833f5b885ec4a17a9249b8168"
+        },
+        "fixed": {
+          "build": "c962936098f14f60260a7a4d77096f2d492129a920ba8b677a14368062d25f36",
+          "sign": "934b36f4fc29a696e384016cde17bf90d85086bb311abd626aa940d35e4cc352",
+          "workload": "64441aabaef993fdc7cf501aec4d574938c4164fbfe74941b113d25d0536be05",
+          "performance": "ae78632b3a019fb75ab35bf44c73001f11567429c1cdaf728b3d36f474c8319b"
+        }
+      }
+    },
+    {
+      "case": "sheafreader_insert_duplicate_exception",
+      "case_sha256": "3ce7eaf9fab50ded1e7b343982f2c04e3bbfb380365a7b4f6646875ca4631f9b",
+      "variants": {
+        "unfixed": {
+          "build": "7feaf64ca62825a880e965f5a0b2fd7ea93d26036fc485c1faab45b41fbfde3c",
+          "sign": "8c0b4a6bff4b6c2cfcde1d9f1e4755af54d80278ce20d4ccf1e9a163df9893a7",
+          "workload": "b0a80c7a2360823a80893c509fccbd797bd01e4601fede06c24a7f60ebcd7622",
+          "performance": "183cec9f71692cf99ab8576b7ab2b3c459ad49b3df3266581f44cffdc7df0eaf"
+        },
+        "fixed": {
+          "build": "bc7a0dd12888476ac6f256c5be075acbcef6517a074d30a8ef5c13c83d68ed92",
+          "sign": "d9d0ba1c60ab8c2367c3cc28e3668ad08a67a2cbe374a93125e5f29171ebbc95",
+          "workload": "f34c0a34e765036aa6fabb7bac7bc900c1c51a1e765f4f7249f760e2816af3db",
+          "performance": "b7205d74f700571a6d8b558bd71e1c723260b30b85c097be2aad95a70d6c9981"
+        }
+      }
+    },
+    {
+      "case": "ytmusic_current_playing_timeupdate",
+      "case_sha256": "79cd3de1b0794610c3248b6e6a9fd9bc929d8d3d89ee29af8507dcf44a64b442",
+      "variants": {
+        "unfixed": {
+          "build": "f5e2d736e82b7ad4312c80f4637d1b9bb20277d4d383c050df4a492c04ff9769",
+          "sign": "0212fd2cc78b90af13e7076c021f28c830f6a365cfda0f008dc0bbe2f6e25850",
+          "workload": "8cf3377cad2a03a8ac5245d4d95079ce33a07d84867f40a6f081a6702e9ea8c2",
+          "performance": "1ef7e1b0f26442282f8edf92c6423a19a856dc1d5045e775059f114c261abe50"
+        },
+        "fixed": {
+          "build": "c67d3003e09b2dae1d9bfc4c87f14bee722233cbbc20c14ed4d3c6b305943195",
+          "sign": "bf9b4fe17887a84b7acf2d8a197d96fa021c8d009fcfe495d54e36fd91298b89",
+          "workload": "285b30431687f743e5c8c67d472a90b380df5eaf8e5ebb0d691f9f0640e5bc19",
+          "performance": "71395cc58a2041bab21adb6616f2c708934458a538f90d72fec6992049c4a6ee"
+        }
+      }
+    }
+  ],
+  "scope": "All nine accepted cases rechecked through source, unsigned bytecode, signature, normal UI, input preparation and raw performance recomputation after external collector changes; not a completion claim for the other 21 cases."
+}
