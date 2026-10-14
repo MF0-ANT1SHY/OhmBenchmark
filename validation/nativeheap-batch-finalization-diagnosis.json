@@ -1,0 +1,75 @@
+{
+  "status": "ACTUAL_HEADER_DIGEST_REPRODUCED_BY_MUTATING_BATCH_FINALIZATION",
+  "performance_accepted": false,
+  "calibration_only": true,
+  "raw_file": "artifacts/nativeheap-calibration/d5fc5eb505284943950936743bb5e166/trace.htrace",
+  "raw_sha256": "28ace65d72833e63b95db8f9c0520203175fb0592c9e89d1bb02db247fa4a4e2",
+  "header_digest": "fd056f4c9becd3b5f195aba71e166088b71008c0fa4a0e2edb11f98746824197",
+  "standard_payload_digest": "6b600958360f5fc7cca8b250ea90a7a6aff463b745a094dd8085e517132fda5b",
+  "records": 22,
+  "checkpoint_sequences_tested": 4194304,
+  "matching_models": [
+    {
+      "checkpoint_after_zero_based_records": [
+        1,
+        2,
+        4,
+        5,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "additional_finalizations_after_all_data": 3
+    },
+    {
+      "checkpoint_after_zero_based_records": [
+        1,
+        2,
+        4,
+        5,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "additional_finalizations_after_all_data": 2
+    }
+  ],
+  "equivalence": "The two models perform the same operations; finalizing after the last record plus two extra calls equals three final calls.",
+  "source_commit": "31a32072c2b1da4e3ee7cb27a0dd9938d27cc784",
+  "source_files_sha256": {
+    "device/services/plugin_service/src/plugin_service.cpp": "c235c224aa86798a5e7bd17ec0b85e35cbcc231677f788fb89cb921fe2f9aa82",
+    "device/services/profiler_service/src/trace_file_helper.cpp": "359e4ad333e0595ea7899a9936e9e8cf4d0ed96423e7ea901b988ef188cd1e78"
+  },
+  "source_observation": "ReadShareMemoryOffline calls TraceFileWriter.Finish after batches; Finish calls SHA256_Final on the live shared context, then later AddSegment calls SHA256_Update on that mutated context.",
+  "exact_device_binary_source_match_verified": false,
+  "raw_capture_modified": false,
+  "parser_integrity_check_relaxed": false,
+  "remaining_requirement": "Produce a fresh standard-checksum-valid native file through a corrected observer-only writer, and independently verify collection provenance before scoring.",
+  "successful_search_source": "tools/native_heap_checksum_batch_model.c",
+  "successful_search_source_sha256": "c5599a46d8b9de2185e7df7634272945364d538b1c9da880df39066a67085627",
+  "device_profiler_dynamic_sha256_calls_verified": true,
+  "device_hiprofilerd_sha256": "2ca42bd3b10f239b2f857e86d44dda9f3309f660a3304cc035b16db6e1b5a5b1"
+}
