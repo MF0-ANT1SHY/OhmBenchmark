@@ -23,3 +23,9 @@ class WanHistoryFixtureTest(unittest.TestCase):
     def test_requires_initialized_native_array_not_a_guessed_marker(self):
         for template in (b'<preferences/>',b'<preferences><string name="historyList">[]</string></preferences>',b'<preferences><string key="historyList">{}</string></preferences>',b'<preferences><string key="historyList">[]</string><string key="historyList">[]</string></preferences>'):
             with self.subTest(template=template),self.assertRaises(ValueError):preferences_bytes(template,self.entries)
+    def test_constructor_defaults_in_template_do_not_weaken_replacement_validation(self):
+        root=ET.fromstring(self.template)
+        root[0].text=json.dumps([{'url':'','title':'','time':'','sticky':False}])
+        template=ET.tostring(root)
+        self.assertEqual(json.loads(ET.fromstring(preferences_bytes(template,self.entries))[0].text),self.entries)
+        with self.assertRaises(ValueError):preferences_bytes(template,[{'url':'','title':'','time':'','sticky':False}])

@@ -1,0 +1,63 @@
+{
+  "case": "wanharmony_history_log_materialization",
+  "performance_accepted": false,
+  "normal_title_event_path_verified": false,
+  "variants": {
+    "unfixed": {
+      "deployment": {
+        "sha256": "e29c96503dc269b5d35af0767ba0e708b547f6fce724169fe3d9432d0c976ed5",
+        "deployed_sha256": "96de413208ba7ca3d75510997bfee46f4a6ed78c222f2c2d8991452d66348881",
+        "preferences": "/data/app/el2/100/base/org.example.wan.ohos/haps/entry/files/persistent_storage",
+        "backup": "/home/research/ohm-clean/backups/org.example.wan.ohos/1791970868079640541/persistent_storage.xml",
+        "entries": 466,
+        "fixture_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/wan-history-466",
+        "method": "ordinary WebData objects in the initialized native PersistentStorage array",
+        "installation_verified": true,
+        "functional_read_verified": false
+      },
+      "receipt": "artifacts/clean/wanharmony_history_log_materialization/unfixed/native-history-ui.json",
+      "receipt_sha256": "bf64b13d633feadedf6fd2480c9211002e16825d7c4f6c26ccc38b1e81d219ca",
+      "status": "PASS",
+      "preserved_entries": true,
+      "signed_sha256": "26d684d104e6c4d06d1570c350d4a26cba8d03cf506d8c5eb4eab1a74c45f708"
+    },
+    "fixed": {
+      "deployment": {
+        "sha256": "e29c96503dc269b5d35af0767ba0e708b547f6fce724169fe3d9432d0c976ed5",
+        "deployed_sha256": "96de413208ba7ca3d75510997bfee46f4a6ed78c222f2c2d8991452d66348881",
+        "preferences": "/data/app/el2/100/base/org.example.wan.ohos/haps/entry/files/persistent_storage",
+        "backup": "/home/research/ohm-clean/backups/org.example.wan.ohos/1791970938193230656/persistent_storage.xml",
+        "entries": 466,
+        "fixture_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/wan-history-466",
+        "method": "ordinary WebData objects in the initialized native PersistentStorage array",
+        "installation_verified": true,
+        "functional_read_verified": false
+      },
+      "receipt": "artifacts/clean/wanharmony_history_log_materialization/fixed/native-history-ui.json",
+      "receipt_sha256": "b78e0783420ac898f0d1e08dd2d9fd3bc821c38813116ffaa440b60df6e0f2ec",
+      "status": "PASS",
+      "preserved_entries": true,
+      "signed_sha256": "b9a6aea7be05e48bd221f5d17b1ca4b0da3f397e5779f2324b0c7b919ed21cbc"
+    }
+  },
+  "native_history_page_verified": true,
+  "native_preferences_path": "/data/app/el2/100/base/org.example.wan.ohos/haps/entry/files/persistent_storage",
+  "history_entries": 466,
+  "initialized_template_sha256": "f3545a0e7049d02cbcc183e5108dc4f1656f6d27f622cf9e5baa15f1f6f94171",
+  "unchanged_fields": [
+    "url",
+    "title",
+    "time",
+    "sticky"
+  ],
+  "app_source_modified": false,
+  "tests": {
+    "count": 7,
+    "status": "PASS"
+  },
+  "remaining_requirements": [
+    "Normal successful webpage title-event path.",
+    "External native sched trace collection, same-PID window and complete history preservation.",
+    "Three paired rounds passing the unchanged declared threshold."
+  ]
+}

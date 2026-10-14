@@ -52,8 +52,14 @@ def preferences_bytes(template, entries):
     existing = json.loads(matching[0].text or '')
     if not isinstance(existing, list):
         raise ValueError('initialized historyList must use a native JSON array')
-    if existing:
-        validate_entries(existing)
+    # The production constructor permits empty/default strings, and old
+    # visits can contain invalid URLs. Only the replacement catalogue must
+    # satisfy the stricter ordinary HTTP(S) input requirements above.
+    for entry in existing:
+        if (not isinstance(entry, dict) or set(entry) != FIELDS
+                or any(not isinstance(entry[k], str) for k in ('url', 'title', 'time'))
+                or type(entry['sticky']) is not bool):
+            raise ValueError('initialized historyList does not contain production WebData objects')
     matching[0].text = json.dumps(entries, ensure_ascii=False, separators=(',', ':'))
     return ET.tostring(root, encoding='utf-8', xml_declaration=True)
 
