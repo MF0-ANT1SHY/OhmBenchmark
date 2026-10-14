@@ -48,6 +48,13 @@
     "jingmo_dataset_import_no_transaction/unfixed": "PASS",
     "jingmo_dataset_import_no_transaction/fixed": "PASS",
     "jingmo_sync_page_reimport/unfixed": "PASS",
-    "jingmo_sync_page_reimport/fixed": "pending_device_transport"
+    "jingmo_sync_page_reimport/fixed": "PASS"
+  },
+  "smoke_gate": {
+    "stage": "smoke",
+    "cases": 2,
+    "errors": [],
+    "pending": [],
+    "passed": true
   }
 }
