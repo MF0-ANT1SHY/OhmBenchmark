@@ -88,7 +88,12 @@
     "Prepare the external workload fixtures; never apply measurement patches to the app.",
     "Copy all files from cases/wanharmony_history_log_materialization/testcase/ into perf_testing/hapray/testcases/org.example.wan.ohos/.",
     "Install each clean signed variant and run the PerfLoad_wanharmony_0010 HapRay testcase for >= 3 rounds.",
-    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict.",
+    "Requires working device networking and five successful ordinary webpage loads; error-page title callbacks are rejected.",
+    "python3 tools/validate_external_workloads.py wanharmony_history_log_materialization --wan-history-fixture artifacts/fixtures/wan-history-466",
+    "For each variant unfixed/fixed and round 1/2/3: python3 tools/capture_external_trace.py wanharmony_history_log_materialization VARIANT --round ROUND --wan-history-fixture artifacts/fixtures/wan-history-466",
+    "python3 tools/accept_trace_evidence.py wanharmony_history_log_materialization",
+    "python3 tools/verify_clean_cases.py --stage complete --case wanharmony_history_log_materialization"
   ],
   "legacy_source": {
     "unfixed_commit": "85a7398",
@@ -193,6 +198,15 @@
           "performance_verified": false
         }
       }
+    },
+    "native_trace_pipeline": {
+      "status": "implemented_not_device_accepted",
+      "preflight_proof": "../../validation/wan-trace-pipeline-preflight.json",
+      "normal_history_ui_proof": "../../validation/wan-history-native-ui.json",
+      "network_failure_proof": "../../validation/wan-normal-web-network-failure.json",
+      "fixture": "artifacts/fixtures/wan-history-466",
+      "metric_unchanged": "trace_cpu_ms",
+      "app_injection": false
     }
   }
 }

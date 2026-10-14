@@ -9,17 +9,24 @@ import statistics
 from reader_data_fixture import verify_preparation
 from rss_refresh_progress import verify_observation
 from scheduler_cpu import compute, window_from_markers
+from wan_history_progress import verify_observation as verify_wan_observation, BUNDLE as WAN_BUNDLE
+from install_wanharmony_history_fixture import verify_preparation as verify_wan_preparation
 
 ROOT = Path(__file__).resolve().parents[1]
 CASE = 'sheafreader_refresh_feeds_sequential'
+WAN_CASE = 'wanharmony_history_log_materialization'
 
 
 def verify_capture(receipt, trace):
+    cid = receipt.get('case', CASE)
+    if cid not in (CASE, WAN_CASE):
+        raise ValueError('unsupported native trace case')
+    bundle = 'com.sheafreader.hm' if cid == CASE else WAN_BUNDLE
     if receipt['status'] != 'CAPTURED' or receipt.get('configuration_cleanup_error'):
         raise ValueError('native recording or configuration cleanup failed')
     before, after = receipt['process_before'], receipt['process_after']
     if (before != after or receipt['pids'] != [before['pid']]
-            or 'com.sheafreader.hm' not in before['command']
+            or before['command'].split('\x00', 1)[0].strip() != bundle
             or type(before['start_ticks']) is not int or before['start_ticks'] <= 0):
         raise ValueError('native process identity changed or belongs to another app')
     if (receipt['online_cpus_before'] != receipt['online_cpus_after']
@@ -27,8 +34,11 @@ def verify_capture(receipt, trace):
             or '[boot]' not in receipt['clock_before']
             or receipt['buffer_size_kb_before'] != receipt['buffer_size_kb_after']):
         raise ValueError('native trace environment changed or was not restored')
-    progress = receipt['reader_refresh']
-    verify_observation(progress)
+    progress = receipt['reader_refresh' if cid == CASE else 'wan_history']
+    (verify_observation if cid == CASE else verify_wan_observation)(progress)
+    if cid == WAN_CASE and (progress['before']['pid'] != before['pid']
+                           or progress['before']['start_ticks'] != before['start_ticks']):
+        raise ValueError('web callbacks belong to a different native process')
     start, end = receipt['action_start_monotonic'], receipt['action_end_monotonic']
     if (not 0 < start < end or progress['before']['ended_monotonic'] > start
             or progress['after']['started_monotonic'] < start
@@ -42,7 +52,7 @@ def verify_capture(receipt, trace):
 
 
 def accept(cid, write=True, require_pass=True):
-    if cid != CASE:
+    if cid not in (CASE, WAN_CASE):
         raise ValueError('native trace acceptance is not implemented for this case')
     path = ROOT/'cases'/cid/'case.json'
     case = json.loads(path.read_text())
@@ -58,9 +68,14 @@ def accept(cid, write=True, require_pass=True):
                 or workload['signed_sha256'] != sign['audit']['sha256']):
             raise ValueError('matching ordinary UI workload is not proven')
         device = json.loads((folder/'workload-device.json').read_text())
-        if verify_observation(device['reader_refresh']) != workload['reader_refresh']:
-            raise ValueError('workload refresh summary differs from native data')
-        verify_preparation(workload['fixture'], workload['fixture_after'])
+        if cid == CASE:
+            if verify_observation(device['reader_refresh']) != workload['reader_refresh']:
+                raise ValueError('workload refresh summary differs from native data')
+            verify_preparation(workload['fixture'], workload['fixture_after'])
+        else:
+            if verify_wan_observation(device['wan_history']) != workload['wan_history']:
+                raise ValueError('workload web summary differs from native callback/history evidence')
+            verify_wan_preparation(workload['fixture'], device['wan_history']['before'])
         values, captures = [], []
         for number in range(1, 4):
             directory = folder/'trace-captures'/f'round-{number}'
@@ -70,8 +85,12 @@ def accept(cid, write=True, require_pass=True):
                     or receipt['signed_sha256'] != sign['audit']['sha256']
                     or receipt['fixture_sha256'] != workload['fixture']['sha256']):
                 raise ValueError('native trace provenance or input identity mismatch')
-            verify_preparation(receipt['reader_fixture_before'], receipt['reader_fixture_after'])
-            if receipt['reader_fixture_before']['sha256'] != receipt['fixture_sha256']:
+            preparation = receipt['reader_fixture_before' if cid == CASE else 'wan_history_fixture_before']
+            if cid == CASE:
+                verify_preparation(preparation, receipt['reader_fixture_after'])
+            else:
+                verify_wan_preparation(preparation, receipt['wan_history']['before'])
+            if preparation['sha256'] != receipt['fixture_sha256']:
                 raise ValueError('native trace fixture differs from the validated input')
             raw = verify_capture(receipt, directory/'trace.htrace')
             fixtures.add(receipt['fixture_sha256'])
@@ -111,5 +130,5 @@ def accept(cid, write=True, require_pass=True):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('case', choices=[CASE])
+    parser.add_argument('case', choices=[CASE, WAN_CASE])
     accept(parser.parse_args().case)

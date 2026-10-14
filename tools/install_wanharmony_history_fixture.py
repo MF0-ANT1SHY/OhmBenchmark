@@ -38,6 +38,21 @@ def fixture_state(folder):
     return receipt, blob
 
 
+def verify_preparation(preparation, state):
+    from wan_history_progress import history, PREFERENCES
+    folder = Path(preparation['fixture_dir'])
+    receipt, _ = fixture_state(folder)
+    entries = json.loads((folder/'history.json').read_text())
+    if (preparation.get('installation_verified') is not True
+            or preparation['preferences'] != PREFERENCES
+            or preparation['sha256'] != receipt['fixture_sha256']
+            or preparation['deployed_sha256'] != receipt['preferences_sha256']
+            or preparation['entries'] != receipt['entries']
+            or history(state) != entries):
+        raise ValueError('native browsing history input does not match its verified ordinary derivation')
+    return receipt
+
+
 def install(remote, case, folder, device_path):
     if case['id'] != CASE or case['host_app']['bundle_name'] != BUNDLE:
         raise ValueError('browsing-history fixture targets a different case or application')

@@ -107,5 +107,9 @@ class WanHistoryObserver:
 
     def complete(self, ui, before):
         observation = {'before': before, 'after': read_state(ui.shell), 'expected_visits': 5}
-        observation['progress'] = verify_observation(observation)
+        try:
+            observation['progress'] = verify_observation(observation)
+        except ValueError as exc:
+            exc.observation = observation
+            raise
         return observation

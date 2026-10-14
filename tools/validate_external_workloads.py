@@ -34,11 +34,13 @@ from reader_unread_badges import CASE as UNREAD_CASE, verify_layout as verify_un
 from install_ytmusic_history_fixture import install as install_listening_history, fixture_state as listening_fixture_state
 from ytmusic_history_progress import verify_layout as verify_history_layout, verify_state as verify_history_state, read_state as read_history_state
 from browser_visit_progress import CASE as BROWSER_VISIT_CASE, verify_observation as verify_browser_visits
+from install_wanharmony_history_fixture import install as install_wan_history, verify_preparation as verify_wan_preparation
+from wan_history_progress import PREFERENCES as WAN_PREFERENCES, verify_observation as verify_wan_progress
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, search_history_fixture=None, preferences_path=None, music_service=False, bundled_fonts=False, reader_fixture=None, poem_import_fixture=None, poem_sync_fixture=None, listening_history_fixture=None):
+def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, search_history_fixture=None, preferences_path=None, music_service=False, bundled_fonts=False, reader_fixture=None, poem_import_fixture=None, poem_sync_fixture=None, listening_history_fixture=None, wan_history_fixture=None):
     cid = case['id']
     folder = ROOT / 'artifacts/clean' / cid / variant
     signed = json.loads((folder / 'sign.json').read_text())
@@ -47,8 +49,13 @@ def validate(remote, case, variant, browser_fixture=None, local_song_fixture=Non
     result = {'case':cid, 'variant':variant, 'signed_sha256':signed['audit']['sha256'],
               'plan_sha256':plan_hash, 'status':'FAIL', 'performance_verified':False}
     try:
-        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture,search_history_fixture,reader_fixture,poem_import_fixture,poem_sync_fixture,listening_history_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
+        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture,search_history_fixture,reader_fixture,poem_import_fixture,poem_sync_fixture,listening_history_fixture,wan_history_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
             raise ValueError('only one fixture may be supplied')
+        if wan_history_fixture:
+            if cid != 'wanharmony_history_log_materialization':
+                raise ValueError('Wan browsing history provided to another case')
+            if not remote.hdc(['shell', 'ip route show']).strip():
+                raise ValueError('normal public webpages require device networking; no installs or UI actions performed')
         if bundled_audio:
             result['fixture']=packaged_audio(ROOT,case,variant,signed)
         if bundled_fonts:
@@ -64,6 +71,8 @@ def validate(remote, case, variant, browser_fixture=None, local_song_fixture=Non
         output = remote.hdc(['install','-r',signed['signed_hap']], timeout=180)
         if 'install bundle successfully' not in output:
             raise RuntimeError(output)
+        if wan_history_fixture:
+            result['fixture'] = install_wan_history(remote, case, wan_history_fixture, WAN_PREFERENCES)
         if browser_fixture and cid.startswith('browser_'):
             result['fixture'] = install_fixture(remote, case['host_app']['bundle_name'],
                                                 case['testcase']['module'], 'Histories.db', browser_fixture)
@@ -98,6 +107,12 @@ def shell(command):
         code += f"plan_path=Path({destination!r});plan=json.loads(plan_path.read_text())\n"
         code += f"assert hashlib.sha256(plan_path.read_bytes()).hexdigest()=={plan_hash!r}\n"
         code += "ui=UI(shell,plan['bundle'],plan['ability'])\nphases={}\n"
+        if wan_history_fixture:
+            for module in ('wan_history_progress.py', 'seed_wanharmony_history.py', 'system_pss.py'):
+                remote.upload(ROOT/'tools'/module, '/home/research/ohm-clean/tools/'+module)
+            entries = json.loads((wan_history_fixture/'history.json').read_text())
+            code += "from wan_history_progress import WanHistoryObserver\n"
+            code += f"wan_observer=WanHistoryObserver({entries!r})\n"
         if poem_import_fixture or poem_sync_fixture:
             for module in ('jingmo_import_fixture.py','jingmo_data_service.py','rss_service_fixture.py','rss_data_service.py','rss_dataset.py','install_sqlite_fixture.py','remote_device.py'):
                 remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
@@ -137,6 +152,8 @@ def shell(command):
         code += " for phase in ['setup','measured','verify']:\n"
         code += "  started=time.monotonic()\n  ui.run(plan[phase])\n"
         code += "  phases[phase]={'elapsed_s':time.monotonic()-started,'layout':ui.layout()}\n"
+        if wan_history_fixture:
+            code += "  if phase=='setup':wan_before=wan_observer.prepare(ui)\n"
         if browser_fixture and cid == BROWSER_VISIT_CASE:
             code += "  if phase=='setup':visits_before=read_visits(shell)\n"
             code += "  if phase=='measured':browser_visits=complete_visits(ui,visits_before)\n"
@@ -147,6 +164,8 @@ def shell(command):
         if poem_sync_fixture:
             code += "  if phase=='setup':sync_logs_before=read_sync_logs(shell)\n"
         code += " result={'phases':phases,'status':'PASS'}\n"
+        if wan_history_fixture:
+            code += " result['wan_history']=wan_observer.complete(ui,wan_before)\n"
         if poem_import_fixture:
             code += " result['poem_import_state']=complete_import(ui)\n"
         if poem_sync_fixture:
@@ -175,6 +194,10 @@ def shell(command):
         if device['status'] != 'PASS':
             raise RuntimeError(device['error'])
         result['phase_elapsed_s'] = {p:r['elapsed_s'] for p,r in device['phases'].items()}
+        if wan_history_fixture:
+            result['wan_history'] = verify_wan_progress(device['wan_history'])
+            verify_wan_preparation(result['fixture'], device['wan_history']['before'])
+            result['functional_check'] = 'five successful ordinary webpage loads, with the full production browsing history preserved'
         if browser_fixture and cid == BROWSER_VISIT_CASE:
             result['browser_visits']=verify_browser_visits(device['browser_visits'])
             result['fixture']['functional_read_verified']=True
@@ -300,6 +323,7 @@ def main():
     fixtures.add_argument('--poem-import-fixture',type=Path)
     fixtures.add_argument('--poem-sync-fixture',type=Path)
     fixtures.add_argument('--listening-history-fixture',type=Path)
+    fixtures.add_argument('--wan-history-fixture',type=Path)
     parser.add_argument('--preferences-path',help='actual initialized native history preference file; discover through normal app use')
     args=parser.parse_args()
     remote=Remote(args.remote)
@@ -308,7 +332,7 @@ def main():
     for cid in args.cases:
         case=json.loads((ROOT/'cases'/cid/'case.json').read_text())
         for variant in ('unfixed','fixed'):
-            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.search_history_fixture,args.preferences_path,args.music_service,args.bundled_fonts,args.reader_fixture,args.poem_import_fixture,args.poem_sync_fixture,args.listening_history_fixture)
+            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.search_history_fixture,args.preferences_path,args.music_service,args.bundled_fonts,args.reader_fixture,args.poem_import_fixture,args.poem_sync_fixture,args.listening_history_fixture,args.wan_history_fixture)
     return int(failed)
 
 

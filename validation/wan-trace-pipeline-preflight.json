@@ -1,0 +1,25 @@
+{
+  "case": "wanharmony_history_log_materialization",
+  "status": "REAL_DEVICE_PREFLIGHT_REJECTED_OFFLINE",
+  "performance_accepted": false,
+  "command": [
+    "python3",
+    "tools/capture_external_trace.py",
+    "wanharmony_history_log_materialization",
+    "unfixed",
+    "--round",
+    "1",
+    "--wan-history-fixture",
+    "artifacts/fixtures/wan-history-466"
+  ],
+  "exit_code": 1,
+  "failure": "normal public webpages require device networking; no installs or UI actions performed",
+  "native_capture_created": false,
+  "collector_acceptor_and_complete_gate_integrated": true,
+  "tests": {
+    "count": 156,
+    "status": "PASS"
+  },
+  "actual_successful_native_wan_capture_verified": false,
+  "existing_business_callbacks_only": true
+}

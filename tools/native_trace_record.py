@@ -132,6 +132,8 @@ def record(ui, plan, folder, observer=None):
         receipt['status'] = 'CAPTURED'
     except Exception as exc:
         receipt['error'] = str(exc)
+        if getattr(exc, 'observation', None) is not None:
+            receipt['failure_observation'] = exc.observation
     finally:
         if owned:
             try:
