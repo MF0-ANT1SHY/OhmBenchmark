@@ -96,9 +96,12 @@ def main():
             'workload_validation':case['clean_validation']['workload_validation'],
             'measurement_status':'measured_clean' if measured else 'measured_clean_failed' if failed else 'pending_clean_measurement',
             'rounds_recorded':case['test_oracle']['evidence'].get('rounds_per_variant',0) if measured or failed else 0}
+        if case.get('disposition'):
+            contracts[case['id']]['disposition'] = case['disposition']
     (ROOT/'cases/measurement-contract.json').write_text(json.dumps({
         '$comment':'External clean measurement contract. Historical instrumented evidence is archived and not reused.',
         'case_count':len(contracts),'measured_case_count':sum(c['measurement_status']=='measured_clean' for c in contracts.values()),
+        'skipped_case_count':sum(c.get('disposition',{}).get('status')=='skipped_by_user' for c in contracts.values()),
         'cases':contracts},indent=2)+'\n')
     print(f"{len(rows)}/60 clean build receipts published; old performance evidence archived")
 
