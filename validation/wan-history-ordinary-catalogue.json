@@ -1,0 +1,157 @@
+{
+  "case": "wanharmony_history_log_materialization",
+  "status": "ordinary_input_catalogue_prepared",
+  "history_entries": 466,
+  "source_pages": [
+    {
+      "url": "https://www.wanandroid.com/article/list/0/json",
+      "sha256": "7976530bbec1557570a972cf7734a35af4c969978fa399929748e566fb443771",
+      "records": 20
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/1/json",
+      "sha256": "85f45329218b9356d1e466517f4d4a9b52340c02e5661b81b28c4db83ef359aa",
+      "records": 20
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/2/json",
+      "sha256": "d02dbf99fd2d18b00355900a1b180f1f0069d22f974e60010fc20e9c4ef5251d",
+      "records": 18
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/3/json",
+      "sha256": "abdf8a6f31fadf61960ebe36a8e47417feaeb4810be2a0a9e8748215fc19b733",
+      "records": 18
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/4/json",
+      "sha256": "8449352b6bd38bbbc067f3d7ed178321c2813f21b126aff6332a41455d21068c",
+      "records": 20
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/5/json",
+      "sha256": "c03822ac3c74908d92aee0c5a451c21fda50eb58e1930bd243ca1cfe54eab8cd",
+      "records": 20
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/6/json",
+      "sha256": "5d1594e1e5ebb721968413b19804abfcb32790876467b840f5336810adb0e42c",
+      "records": 20
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/7/json",
+      "sha256": "0e067a471d10e1d957d24d64545a03266b7cff7a4bc9b385ea9c5e0deb549d62",
+      "records": 16
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/8/json",
+      "sha256": "c4c3da8400bc549f6613284d97873a7dd83891038f9fdc2db3e0d4be4ec71d0a",
+      "records": 17
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/9/json",
+      "sha256": "ac01d56fd27a92b26dac6e3c4ae4a2f5969d564a07701fc63fd005ceeb8c5528",
+      "records": 17
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/10/json",
+      "sha256": "084f1d80aa9e3d43e81a5fca0b44b4492dae8e60f1781c962d5633aa42baaba3",
+      "records": 19
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/11/json",
+      "sha256": "c6df2c6f0c3a45ac37916a979bbacfc1e278069a71ad996a31b2469c338f37fe",
+      "records": 17
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/12/json",
+      "sha256": "bf036c2ec5f023fb644fa1bdba2b964972f1396570eedd769daf7ad9a4359998",
+      "records": 18
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/13/json",
+      "sha256": "200055f34499a2308b055d545413574ffe917a7d22d133c6be3a769982be7268",
+      "records": 19
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/14/json",
+      "sha256": "bc8acd95f52b7e13926ce529bfb33c579d2729187d6b161f86d3aa1048152459",
+      "records": 19
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/15/json",
+      "sha256": "94402e87d2665a548faff9a132b7a44db0ff5091c91f6204bf5c56233619c5c7",
+      "records": 20
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/16/json",
+      "sha256": "a026fe51a5a36abbb32bfd7aab2705106e5066e0aa1c9c299078a3097c7f8d52",
+      "records": 20
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/17/json",
+      "sha256": "8de5651a2b316e9332b46b6c5463fb718fdf58bc82e3e3ec731bf97c91cbc33a",
+      "records": 19
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/18/json",
+      "sha256": "2c6a1b720c9dec2475be70b2e604ea6c19e0ab81db7d12385640e7257ac4c8d1",
+      "records": 19
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/19/json",
+      "sha256": "efaacf7f8fa12409045d476e4e362a1d3219d1a9e0e1473fdbf08d06975faa75",
+      "records": 20
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/20/json",
+      "sha256": "df1655999930cb1bf2ebb920ccf857182b5fefbf6ae09781ed2905b0ffa7ff8b",
+      "records": 18
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/21/json",
+      "sha256": "8a74a75a47f6beb42bf4268d4417e50956ad95970b27e7b64138ba964bfc4b60",
+      "records": 20
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/22/json",
+      "sha256": "8ef5e4f9d1429a76402e7efe75a4fc2feee3d5e049b41a7c6c2322a92b248f47",
+      "records": 20
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/23/json",
+      "sha256": "bcb7dc907c03b55d8dbfa3ecc810e0d9e00a4d71c09e614577833e5cef93ca6f",
+      "records": 19
+    },
+    {
+      "url": "https://www.wanandroid.com/article/list/24/json",
+      "sha256": "c6d12b6fd4e47d2bd8b23ff37f3e3049c0514864fe23aab60ce03d56e6a1ec6d",
+      "records": 18
+    }
+  ],
+  "history_sha256": "3f8181b459d08286b7d4f37bb4e813fb41e6e1e5a522d65f7ff884794404c8e4",
+  "visit_times": "ordinary externally prepared reproduction history times, not claimed actual past device visits",
+  "native_initialized_template_verified": false,
+  "device_validation": "pending",
+  "performance_accepted": false,
+  "fields": [
+    "url",
+    "title",
+    "time",
+    "sticky"
+  ],
+  "payload_padding": false,
+  "business_source": {
+    "commit": "85a73986cd4eee9c04cdbffc96aefc947e1f3bab",
+    "files_sha256": {
+      "entry/src/main/ets/data/WebData.ets": "c3660e0986c84c8702b70e362ed82b7e020ea8daa11550abcecea4c1f9c67161",
+      "entry/src/main/ets/pages/WebPage.ets": "0d8e533a2a4f5ec4248e46bd5c47d37af10cf1ebb75591ed68371c9eb9d69581"
+    }
+  },
+  "raw_api_records": 471,
+  "duplicate_urls_removed": 5,
+  "tests": {
+    "count": 3,
+    "status": "PASS"
+  }
+}
