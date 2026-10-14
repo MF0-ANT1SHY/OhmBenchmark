@@ -19,8 +19,12 @@ class UI:
         # prevents a failed dump from reusing a prior app's successful layout.
         path = f'/data/local/tmp/workload-layout-{uuid.uuid4().hex}.json'
         try:
-            self.shell(f"uitest dumpLayout -p {path}")
-            return json.loads(self.shell(f"cat {path}"))
+            dump_output = self.shell(f"uitest dumpLayout -p {path}")
+            raw = self.shell(f"cat {path}")
+            try:
+                return json.loads(raw)
+            except json.JSONDecodeError as exc:
+                raise RuntimeError(f'Invalid fresh UI layout: dump={dump_output[:500]!r}, read={raw[:500]!r}') from exc
         finally:
             self.shell(f'rm -f {path}')
 
