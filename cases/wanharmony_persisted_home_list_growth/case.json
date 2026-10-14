@@ -80,6 +80,15 @@
         4611977
       ],
       "note": "38.9M vs 4.56M median hw-instructions (8.5x, disjoint ranges, high unfixed variance); mechanism counter 284970 vs 5111 persisted bytes per load-more (measurements-staging)."
+    },
+    "supplementary_clean_evidence": {
+      "status": "offline_cold_cache_verified_not_full_case_acceptance",
+      "proof": "../../validation/wan-home-cold-cache-pss-supplement.json",
+      "metric": "app_pss_bytes",
+      "median_ratio": 2.9869011000469214,
+      "rounds_per_variant": 3,
+      "app_injection": false,
+      "original_successful_load_more_and_write_volume_pending": true
     }
   },
   "reproduction": [
