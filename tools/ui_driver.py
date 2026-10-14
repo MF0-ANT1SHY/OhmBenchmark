@@ -122,6 +122,33 @@ class UI:
             self.shell(f'uitest uiInput swipe {x} {bottom} {x} {top} 1000')
             time.sleep(.4)
 
+    def type_keys(self, selector, value, interval_ms=50):
+        """Type ordinary lowercase keys in one device-side command.
+
+        No intermediate layout dumps or text replacements interrupt the burst.
+        Requested intervals do not prove application event delivery timing.
+        """
+        if (not isinstance(value, str) or not re.fullmatch(r'[a-z]{1,100}', value)
+                or type(interval_ms) is not int or not 1 <= interval_ms <= 15000):
+            raise ValueError('invalid keyboard typing burst')
+        node = self.find(selector)
+        if str(node.get('text', '')):
+            raise RuntimeError('keyboard typing requires an empty input')
+        x, y = self.center(node)
+        self.shell(f'uitest uiInput click {x} {y}')
+        parts = ['uinput -K']
+        for index, letter in enumerate(value):
+            if index:
+                parts.append(f'-i {interval_ms}')
+            key = 2017 + ord(letter) - ord('a')
+            parts.append(f'-d {key} -u {key}')
+        output = self.shell(' '.join(parts))
+        if any(f'you raised the key {2017 + ord(letter) - ord("a")}' not in output
+               for letter in value):
+            raise RuntimeError('native keyboard injection did not confirm key release')
+        if str(self.find(selector).get('text', '')) != value:
+            raise RuntimeError('keyboard input does not match the requested text')
+
     def run(self, actions):
         for action in actions:
             op = action["op"]
@@ -137,6 +164,8 @@ class UI:
                 self.tap(action["selector"])
             elif op == "input":
                 self.input(action["selector"], action["value"], action.get('cleared_text',''))
+            elif op == "type_keys":
+                self.type_keys(action['selector'], action['value'], action.get('interval_ms', 50))
             elif op == "wait":
                 self.find(action["selector"], action.get("timeout_s", 15))
             elif op == "pause":

@@ -10,9 +10,11 @@
       }
     },
     {
-      "op": "point",
-      "x": 0.83,
-      "y": 0.09
+      "op": "tap",
+      "selector": {
+        "type": "Button",
+        "index": 1
+      }
     },
     {
       "op": "wait",
@@ -23,39 +25,13 @@
   ],
   "measured": [
     {
-      "op": "input",
+      "op": "type_keys",
       "selector": {
-        "hint": "搜索歌曲、音乐人、播客"
+        "hint": "搜索歌曲、音乐人、播客",
+        "match": "exact"
       },
-      "value": "m"
-    },
-    {
-      "op": "input",
-      "selector": {
-        "hint": "搜索歌曲、音乐人、播客"
-      },
-      "value": "mu"
-    },
-    {
-      "op": "input",
-      "selector": {
-        "hint": "搜索歌曲、音乐人、播客"
-      },
-      "value": "mus"
-    },
-    {
-      "op": "input",
-      "selector": {
-        "hint": "搜索歌曲、音乐人、播客"
-      },
-      "value": "musi"
-    },
-    {
-      "op": "input",
-      "selector": {
-        "hint": "搜索歌曲、音乐人、播客"
-      },
-      "value": "music"
+      "value": "music",
+      "interval_ms": 50
     },
     {
       "op": "pause",
@@ -66,7 +42,9 @@
     {
       "op": "wait",
       "selector": {
-        "text": "music"
+        "hint": "搜索歌曲、音乐人、播客",
+        "text": "music",
+        "match": "exact"
       }
     }
   ]

@@ -1,0 +1,53 @@
+{
+  "case": "ytmusic_search_no_debounce",
+  "status": "normal_keyboard_ui_verified",
+  "performance_accepted": false,
+  "event_delivery_timing_verified": false,
+  "network_result_verified": false,
+  "test_count": 141,
+  "test_status": "PASS",
+  "variants": {
+    "unfixed": {
+      "receipt": "artifacts/clean/ytmusic_search_no_debounce/unfixed/workload.json",
+      "receipt_sha256": "277a8377407bfb2441e804644b65ac682803ca78cf2a0ceb54a0824d9a3510cd",
+      "workload": {
+        "case": "ytmusic_search_no_debounce",
+        "variant": "unfixed",
+        "signed_sha256": "3d56cf94f5976964feb24140784d539b30a5323a0633b2427ee420873d674662",
+        "plan_sha256": "69d02662ee3f957dc89b807e41d3b9ae8d4ebe6345523d12aabfbde0c3752c12",
+        "status": "PASS",
+        "performance_verified": false,
+        "phase_elapsed_s": {
+          "setup": 17.193647517,
+          "measured": 15.039726578,
+          "verify": 5.264499112999999
+        },
+        "capture_duration_required_s": 20
+      }
+    },
+    "fixed": {
+      "receipt": "artifacts/clean/ytmusic_search_no_debounce/fixed/workload.json",
+      "receipt_sha256": "321791c876120db0f3365de332a157a60e5ad15c9a35a163215acf35040904ea",
+      "workload": {
+        "case": "ytmusic_search_no_debounce",
+        "variant": "fixed",
+        "signed_sha256": "55b4708c057fdcab89f6f084c8e8a2e0ccc79ebb0bf9cf45b028059e0a059e38",
+        "plan_sha256": "69d02662ee3f957dc89b807e41d3b9ae8d4ebe6345523d12aabfbde0c3752c12",
+        "status": "PASS",
+        "performance_verified": false,
+        "phase_elapsed_s": {
+          "setup": 17.676036331999995,
+          "measured": 15.212323842000004,
+          "verify": 5.2553634969999905
+        },
+        "capture_duration_required_s": 20
+      }
+    }
+  },
+  "remaining_requirements": [
+    "Prove actual per-key delivery/onChange spacing without app injection.",
+    "Prove ordinary public search request completion and reduced request count.",
+    "Collect and pass the declared native metric over at least three rounds per variant."
+  ],
+  "plan_sha256": "69d02662ee3f957dc89b807e41d3b9ae8d4ebe6345523d12aabfbde0c3752c12"
+}
