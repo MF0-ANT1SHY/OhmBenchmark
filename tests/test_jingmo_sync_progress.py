@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from jingmo_sync_progress import verify_observation, verify_capture, complete_sync
+from jingmo_sync_progress import verify_observation, verify_capture, complete_sync, read_state, records
 
 
 class SyncCompletionTest(unittest.TestCase):
@@ -63,6 +63,17 @@ class SyncCompletionTest(unittest.TestCase):
             complete_sync(UI(), obs['before'], timeout=0)
         self.assertEqual(failure.exception.observation['after']['raw_logs'], raw)
         self.assertEqual(failure.exception.observation['before'], obs['before'])
+
+    def test_log_read_uses_one_clock_and_preserves_epoch_nanoseconds(self):
+        calls=[]
+        def shell(command):
+            calls.append(command)
+            if command.startswith('pidof '):return '42'
+            return '1791940000.123456789 42 42 I A0FF00/JINGMO@SyncData: classic poem dataset size: 1332826\n'
+        state=read_state(shell)
+        self.assertIn('-v epoch -v nsec',calls[-1])
+        self.assertNotIn('-v monotonic',calls[-1])
+        self.assertEqual(records(state)[0][0],1791940000123456789)
 
 
 if __name__ == '__main__':

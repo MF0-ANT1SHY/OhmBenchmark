@@ -1,6 +1,7 @@
 """Observe existing business completion logs outside the application."""
 import re
 import time
+from decimal import Decimal
 
 EXPRESSION = 'classic poem dataset size:|Batch insert is |dataset already imported'
 
@@ -10,9 +11,13 @@ def read_state(shell):
     pid = shell('pidof com.hefengbao.jingmo.hw').strip()
     if not pid.isdigit():
         raise ValueError('one live poetry app process is required')
-    raw = shell(f"hilog -x -P {pid} -e '{EXPRESSION}' -v monotonic")
+    # HiLog's monotonic formatter combines mono_sec with CLOCK_REALTIME's
+    # tv_nsec. That display can move backwards across a wall-clock second.
+    # Epoch+nsec uses one coherent native clock; capture bracketing continues
+    # to use the observer's monotonic clock independently.
+    raw = shell(f"hilog -x -P {pid} -e '{EXPRESSION}' -v epoch -v nsec")
     return {'pid': int(pid), 'raw_logs': raw, 'started_monotonic': started,
-            'ended_monotonic': time.monotonic()}
+            'ended_monotonic': time.monotonic(), 'log_clock': 'realtime_epoch_nsec'}
 
 
 def records(state):
@@ -35,7 +40,7 @@ def records(state):
               and 'dataset already imported (5000 rows), skip import' in text):
             kind = 'skip'
         if kind:
-            found.append((float(stamp), kind, line))
+            found.append((int(Decimal(stamp)*1000000000), kind, line))
     return found
 
 

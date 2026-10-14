@@ -1,0 +1,32 @@
+{
+  "case": "jingmo_sync_page_reimport",
+  "status": "native_log_formatter_defect_identified",
+  "failure_observation": {
+    "before": {
+      "pid": 47869,
+      "raw_logs": "",
+      "started_monotonic": 5439.718564151,
+      "ended_monotonic": 5442.984576707
+    },
+    "after": {
+      "pid": 47869,
+      "raw_logs": " 2401799.190 47869 47869 I A0FF00/com.hefengbao.jingmo.hw/JINGMO@SyncData: classic poem dataset size: 1332826, %{public}s\n 2401799.424 47869 47869 I A0FF00/com.hefengbao.jingmo.hw/JINGMO@ClassicPoemDao: Batch insert is successful, rowCount = 5000, %{public}s\n 2401822.894 47869 47869 I A0FF00/com.hefengbao.jingmo.hw/JINGMO@SyncData: classic poem dataset size: 1332826, %{public}s\n 2401822.086 47869 47869 I A0FF00/com.hefengbao.jingmo.hw/JINGMO@ClassicPoemDao: Batch insert is successful, rowCount = 5000, %{public}s\n 2401847.366 47869 47869 I A0FF00/com.hefengbao.jingmo.hw/JINGMO@SyncData: classic poem dataset size: 1332826, %{public}s\n 2401847.554 47869 47869 I A0FF00/com.hefengbao.jingmo.hw/JINGMO@ClassicPoemDao: Batch insert is successful, rowCount = 5000, %{public}s\n",
+      "started_monotonic": 5640.287856341,
+      "ended_monotonic": 5643.253905906
+    },
+    "expected_cycles": 3
+  },
+  "capture_sha256": "c86954ffd5e36bfd983194b43f1895952063d43a159d9c322dde6875a5253179",
+  "primary_source_branch": "OpenHarmony-v5.1.0-Release",
+  "primary_sources": [
+    "https://github.com/openharmony/hiviewdfx_hilog/blob/OpenHarmony-v5.1.0-Release/frameworks/libhilog/utils/log_print.cpp",
+    "https://github.com/openharmony/hiviewdfx_hilog/blob/OpenHarmony-v5.1.0-Release/frameworks/libhilog/hilog_printf.cpp"
+  ],
+  "source_sha256": {
+    "log_print.cpp": "edff7a07d815da1ba2dea2830e03862c34d9c9f9ca9d89d553824f8a3d7e5898",
+    "hilog_printf.cpp": "1d1d9c80e1192ba21b6a21938380c9f12644fadc578a755a95611d7d351da053"
+  },
+  "finding": "MONOTONIC display prints mono_sec then tv_nsec; producer obtains mono_sec from CLOCK_MONOTONIC but tv_nsec from CLOCK_REALTIME. Same-thread second download/finish displays 2401822.894 -> 2401822.086 despite coherent stream order.",
+  "change": "Use epoch seconds and nanoseconds from CLOCK_REALTIME. Retain all native ordering, three-cycle, process, input and capture-window checks. Retire old-format trials rather than reusing them.",
+  "performance_verified": false
+}
