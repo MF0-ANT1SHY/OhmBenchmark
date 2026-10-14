@@ -77,7 +77,7 @@ def record(ui, plan, folder):
         receipt['buffer_size_kb_before'] = int(original_buffer)
         if shell(f'cat {TRACE_ROOT}/tracing_on').strip() != '0':
             raise ValueError('a native trace began during UI setup; it is not ours')
-        started = shell('hitrace --trace_begin --text --trace_clock boot -b 65536 sched')
+        started = shell('hitrace --trace_begin --trace_clock boot -b 65536 sched')
         receipt['trace_begin_output'] = started
         if 'OpenRecording done' not in started:
             raise ValueError('native trace start was not acknowledged')
@@ -108,7 +108,7 @@ def record(ui, plan, folder):
                 or receipt['clock_after'] != receipt['clock_before']):
             raise ValueError('process, CPU mask or clock changed during the native trace')
         receipt['saved_tgids'] = shell(f'cat {TRACE_ROOT}/saved_tgids')
-        receipt['trace_finish_output'] = shell('hitrace --trace_finish --text -o ' + device_file)
+        receipt['trace_finish_output'] = shell('hitrace --trace_finish -o ' + device_file)
         if shell(f'cat {TRACE_ROOT}/tracing_on').strip() != '0':
             raise ValueError('our native trace did not stop')
         owned = False

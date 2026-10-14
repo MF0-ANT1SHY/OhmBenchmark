@@ -38,6 +38,7 @@ class NativeTraceOwnershipTest(unittest.TestCase):
                 if command.startswith('cat ') and command.endswith('/buffer_size_kb'): return str(self.buffer)
                 if command.startswith('echo 18432 > '): self.buffer = 18432; return ''
                 if command.startswith('hitrace --trace_begin'):
+                    if '--text' in command:raise AssertionError('long and short recording modes cannot coexist')
                     self.active = True; self.buffer = 65536; return 'OpenRecording done'
                 if command.endswith('/trace_clock'): return '[mono] boot'
                 if command == 'hitrace --trace_finish_nodump':

@@ -1,0 +1,9 @@
+{
+  "case": "sheafreader_refresh_feeds_sequential",
+  "status": "native_cli_recording_not_started",
+  "native_error": "2026/10/14 13:05:24 error: the parameter is set incorrectly, RECORDING_LONG_BEGIN and RECORDING_SHORT_TEXT cannot coexist.\n2026/10/14 13:05:24 error: parsing args failed, exit.\n",
+  "capture_sha256": "eaaeccc9ef6a89ae62102cfe214df225860e4ef72577db13c07b98794305032f",
+  "retired_path": "artifacts/retired-clean/sheafreader_refresh_feeds_sequential/native-cli-conflict-20261014/unfixed/round-1",
+  "change": "Remove --text from long-mode begin/finish, retaining the native default text format",
+  "performance_verified": false
+}
