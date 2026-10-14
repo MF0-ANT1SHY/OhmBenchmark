@@ -1,0 +1,67 @@
+{
+  "case": "sheafreader_refresh_feeds_sequential",
+  "status": "calibration_only_not_performance_accepted",
+  "archive": "artifacts/retired-clean/sheafreader_refresh_feeds_sequential/native-format-calibration-20261014/unfixed/round-1",
+  "files": {
+    "capture.json": "71dd06a88403bb6832dc261268885397cad68d116bd6c92f03e118d59a8f1839",
+    "trace.htrace": "755e48370e1f319415b8f394e49954df53666306680a6766f587884799be8448"
+  },
+  "scheduler_cpu": {
+    "metric": "trace_cpu_ms",
+    "app_cpu_ns": 1237187000,
+    "app_cpu_ms": 1237.187,
+    "per_thread_ns": {
+      "53532": 683805000,
+      "54734": 5272000,
+      "54736": 6657000,
+      "54739": 269000,
+      "54740": 27763000,
+      "54742": 5193000,
+      "54743": 4876000,
+      "54744": 1217000,
+      "54745": 3793000,
+      "54755": 468000,
+      "54756": 6194000,
+      "54801": 543000,
+      "54804": 16865000,
+      "55173": 417857000,
+      "55174": 2248000,
+      "55175": 147000,
+      "55176": 10289000,
+      "55177": 4998000,
+      "55179": 4465000,
+      "55184": 3660000,
+      "55256": 1589000,
+      "55257": 1752000,
+      "55258": 1024000,
+      "55328": 10133000,
+      "55352": 14656000,
+      "55393": 1454000
+    },
+    "app_pids": [
+      53532
+    ],
+    "online_cpus": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "window_start_ns": 2402535905614000,
+    "window_end_ns": 2402564459014000,
+    "sched_switch_records": 308639,
+    "trace_sha256": "755e48370e1f319415b8f394e49954df53666306680a6766f587884799be8448",
+    "method": "native per-CPU sched_switch intervals, clipped to the native-clock window and attributed by TGID"
+  },
+  "reason": "First real trace established native transition-prefix format. Input-after snapshot was not persisted before the old parser raised; do not reconstruct missing provenance or use this calibration as a scored round.",
+  "next_step": "Fresh paired captures with native format support and persisted post-workload input evidence",
+  "performance_verified": false
+}
