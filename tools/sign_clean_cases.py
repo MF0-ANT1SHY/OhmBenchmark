@@ -10,7 +10,7 @@ from remote_device import Remote
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def sign_case(remote, case, variant, artifacts, remote_root='/home/research/ohm-clean'):
+def sign_case(remote, case, variant, artifacts, remote_root='/home/research/ohm-clean', renew=False):
     cid, bundle = case["id"], case["host_app"]["bundle_name"]
     local = artifacts / cid / variant
     build = json.loads((local / "build.json").read_text())
@@ -21,7 +21,7 @@ def sign_case(remote, case, variant, artifacts, remote_root='/home/research/ohm-
     with zipfile.ZipFile(local / "app-unsigned.hap") as package:
         requested = {p['name'] for p in json.loads(package.read('module.json'))['module'].get('requestPermissions', [])}
     allowed_acls = sorted(requested & {'ohos.permission.SYSTEM_FLOAT_WINDOW'})
-    if record.exists():
+    if record.exists() and not renew:
         previous = json.loads(record.read_text())
         if (previous.get("status") == "PASS" and previous.get("unsigned_sha256") == build["hap"]["sha256"]
                 and previous.get("allowed_acls", []) == allowed_acls
@@ -32,6 +32,14 @@ def sign_case(remote, case, variant, artifacts, remote_root='/home/research/ohm-
             print(f"{cid}/{variant}: verified existing signed artifact", flush=True)
             return
     remote_source = folder + "/app-unsigned.hap"
+    if renew and record.exists():
+        previous = json.loads(record.read_text())
+        if previous['signed_hap'] == folder + '/app.hap':
+            raise ValueError('--renew requires a new --remote-root to preserve the old signed artifact')
+        archive = local / 'sign-history' / (previous['audit']['sha256'] + '.json')
+        archive.parent.mkdir(exist_ok=True)
+        if not archive.exists():
+            archive.write_bytes(record.read_bytes())
     remote.upload(local / "app-unsigned.hap", remote_source)
     # Reuse the established signing identity, never generate a replacement or
     # uninstall the app. Audit the signed package before any device installation.
@@ -60,6 +68,8 @@ def main():
     parser.add_argument("cases", nargs="*")
     parser.add_argument("--remote", default="cityuPC")
     parser.add_argument("--artifacts", type=Path, default=ROOT / "artifacts/clean")
+    parser.add_argument('--renew', action='store_true', help='renew profile, retaining old signed artifacts and receipts')
+    parser.add_argument('--remote-root', default='/home/research/ohm-clean')
     args = parser.parse_args()
     remote = Remote(args.remote)
     remote.upload(ROOT / "tools/audit_clean_app.py", "/home/research/ohm-clean/tools/audit_clean_app.py")
@@ -69,7 +79,7 @@ def main():
         if args.cases and case["id"] not in args.cases:
             continue
         for variant in ("unfixed", "fixed"):
-            sign_case(remote, case, variant, args.artifacts)
+            sign_case(remote, case, variant, args.artifacts, args.remote_root, args.renew)
 
 
 if __name__ == "__main__":

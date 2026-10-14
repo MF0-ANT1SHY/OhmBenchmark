@@ -1,0 +1,56 @@
+{
+  "case": "browser_insert_date_lookup_cache",
+  "status": "BLOCKED_BEFORE_RENEWAL",
+  "reason": "System launch dialog: 应用已过期; SDK debug profile not-after=1705127532, earlier than network-synchronized device date 2026-10-14.",
+  "performance_accepted": false,
+  "app_injection": false,
+  "old_signed_artifacts_preserved": true,
+  "variants": {
+    "unfixed": {
+      "workload_receipt_sha256": "beb67c78936ef0a9baaf545a0c8aa1cae90c70b59ad01462a5265bc0b12d9766",
+      "error": "UI target not found: {'text': '小狐狸浏览器'}",
+      "renewed_sign": {
+        "case": "browser_insert_date_lookup_cache",
+        "variant": "unfixed",
+        "unsigned_sha256": "964710080bce771321ea022db94d33ff2873d0b5ad65fd52e812a1dbcf172669",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/browser_insert_date_lookup_cache/unfixed/app.hap",
+        "audit": {
+          "sha256": "85ae29da8fa6fbf345edca185af00a7d657438c3f17c0e93b44d6c74ac0ede11",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign_receipts": [
+        "artifacts/clean/browser_insert_date_lookup_cache/unfixed/sign-history/c5557aaa6231ab000c7823372a48182a663151d6c62276c033519a80ca26583e.json"
+      ]
+    },
+    "fixed": {
+      "workload_receipt_sha256": "3091c95efeb4e0e2ea076e48b3a5f29de4011c150fb27c29c2cbcdc56cf8d57a",
+      "error": "UI target not found: {'text': '小狐狸浏览器'}",
+      "renewed_sign": {
+        "case": "browser_insert_date_lookup_cache",
+        "variant": "fixed",
+        "unsigned_sha256": "783a6e8d904e197430ce578fbbdec2f2e1595805774853997bc6bf5be3fcb92d",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/browser_insert_date_lookup_cache/fixed/app.hap",
+        "audit": {
+          "sha256": "17edd9a49ea0afef6e211fedaa6be4f5eb0d8ae0eaea0e6f8d665193a6ab8f3e",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign_receipts": [
+        "artifacts/clean/browser_insert_date_lookup_cache/fixed/sign-history/6967ee493f0d8cc6e0f89c4da06de8050a9207930e73ca794154768fb6a5d1b0.json"
+      ]
+    }
+  }
+}

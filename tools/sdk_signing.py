@@ -39,6 +39,7 @@ import json
 import re
 import subprocess
 import sys
+import time
 import zipfile
 from pathlib import Path
 
@@ -131,6 +132,10 @@ def sign(inp, outp, bundle):
     if not app.exists():
         sys.exit('run `prepare` first')
     tpl = json.loads((lib() / 'UnsgnedDebugProfileTemplate.json').read_text(encoding='utf-8'))
+    # The SDK template has historical dates; issue a bounded current debug
+    # profile using the existing certificate/key, not the template's expiry.
+    now = int(time.time())
+    tpl['validity'] = {'not-before': now - 300, 'not-after': now + 30 * 86400}
     tpl['bundle-info']['bundle-name'] = bundle
     tpl['bundle-info']['development-certificate'] = leaf_pem(app)
     tpl['debug-info']['device-ids'] = [udid()]
