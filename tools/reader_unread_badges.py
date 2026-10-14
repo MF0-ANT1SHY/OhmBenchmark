@@ -2,32 +2,39 @@
 import re
 import time
 
-from ui_driver import UI
-
 BUNDLE = 'com.sheafreader.hm'
 CASE = 'sheafreader_unread_counts_n_plus_1'
 
 
-def verify_layout(layout):
-    observed = {}
+def badge_rows(layout):
     def walk(node, inherited=None):
         attrs = node.get('attributes', {})
         bundle = attrs.get('bundleName') or inherited
         if attrs.get('type') == 'Row' and bundle == BUNDLE and attrs.get('visible') != 'false':
-            texts = [n.get('text', '') for child in node.get('children', [])
-                     for n in UI.nodes(child, bundle)
-                     if n.get('bundleName') == BUNDLE and n.get('visible') != 'false']
+            # SidebarView has title/count Text siblings directly in its Row.
+            # Article cards also show the feed title, but pair it with an age
+            # (e.g. 13d) and are not unread badges.
+            texts = [child.get('attributes', {}).get('text', '') for child in node.get('children', [])
+                     if child.get('attributes', {}).get('type') == 'Text'
+                     and (child.get('attributes', {}).get('bundleName') or bundle) == BUNDLE
+                     and child.get('attributes', {}).get('visible') != 'false']
             feeds = [x for x in texts if re.fullmatch(r'Journal (?:[1-9]|10)', x)]
-            if len(feeds) == 1:
-                values = [int(x) for x in texts if x.isdigit()]
-                if values != [100]:
-                    raise ValueError('ordinary feed badge does not show its 100 unread articles')
-                if feeds[0] in observed:
-                    raise ValueError('ambiguous duplicate feed badge')
-                observed[feeds[0]] = values[0]
+            values = [int(x) for x in texts if x.isdigit()]
+            if len(feeds) == 1 and values:
+                yield feeds[0], values
         for child in node.get('children', []):
-            walk(child, bundle)
-    walk(layout)
+            yield from walk(child, bundle)
+    yield from walk(layout)
+
+
+def verify_layout(layout):
+    observed = {}
+    for feed, values in badge_rows(layout):
+        if values != [100]:
+            raise ValueError('ordinary feed badge does not show its 100 unread articles')
+        if feed in observed:
+            raise ValueError('ambiguous duplicate feed badge')
+        observed[feed] = values[0]
     expected = {f'Journal {i}': 100 for i in range(1, 11)}
     if observed != expected:
         raise ValueError('all ten ordinary feed unread badges are not visible')
@@ -37,9 +44,7 @@ def verify_layout(layout):
 def complete_badges(ui, timeout=120):
     started = time.monotonic()
     layout = ui.layout()
-    names = {n.get('text') for n in UI.nodes(layout)
-             if n.get('bundleName') == BUNDLE and n.get('visible') != 'false'}
-    if 'Journal 1' not in names:
+    if not list(badge_rows(layout)):
         # Normal F1 sidebar shortcut, verified in the host source and SDK enum.
         ui.run([{'op': 'key', 'key': 2090}])
     deadline = time.monotonic() + timeout

@@ -1,0 +1,23 @@
+{
+  "case": "sheafreader_unread_counts_n_plus_1",
+  "variant": "unfixed",
+  "workload_device_sha256": "9ccd656c1e6fe185fe64abed1e07a8cad650a2056804447301779e75c5aeada6",
+  "original_status": "FAIL",
+  "original_error": "ordinary feed badge does not show its 100 unread articles",
+  "actual_sidebar_counts": {
+    "Journal 1": 100,
+    "Journal 2": 100,
+    "Journal 3": 100,
+    "Journal 4": 100,
+    "Journal 5": 100,
+    "Journal 6": 100,
+    "Journal 7": 100,
+    "Journal 8": 100,
+    "Journal 9": 100,
+    "Journal 10": 100
+  },
+  "business_source": "SidebarView title and unreadCount are direct Text siblings; article footer title and age are different UI rows",
+  "original_receipts_modified": false,
+  "fresh_functional_validation_required": true,
+  "performance_accepted": false
+}
