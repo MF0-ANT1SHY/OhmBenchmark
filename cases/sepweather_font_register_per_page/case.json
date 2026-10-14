@@ -11,7 +11,7 @@
   "android_source_case": "calculator_themed_font_lookup",
   "android_mechanism": "Themed-font handling repeated expensive font work; fix performs the lookup/registration once",
   "category": "latency",
-  "bug_description": "MainPage.aboutToAppear unconditionally calls font.registerFont for two custom font families (iconfont.ttf and DINCOROS-Regular.ttf) every time the main page component is created. Each registration re-loads and re-parses the TTF files; navigating back to the main page (router.replaceUrl flows) repeats the work and delays page build, growing memory with duplicate typeface entries.",
+  "bug_description": "MainPage.aboutToAppear unconditionally registers iconfont.ttf and DINCOROS-Regular.ttf whenever a MainPage component is created. The business fix guards registration once per process. Repeated same-process MainPage creation via normal UI has not been established: clean source uses router.pushUrl and router.back, not the previously claimed router.replaceUrl flow. Duplicate file parsing, typeface retention, and resulting latency remain unverified without native evidence.",
   "perf_scenarios": [
     "页面启动",
     "页面切换"
@@ -240,6 +240,7 @@
           "error": "UI target not found: {'id': 'AddAddressBtn'}"
         }
       }
-    }
+    },
+    "reproduction_diagnosis": "../../validation/sepweather-clean-routing-premise.json"
   }
 }

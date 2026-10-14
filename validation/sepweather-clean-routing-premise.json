@@ -1,0 +1,20 @@
+{
+  "case": "sepweather_font_register_per_page",
+  "status": "reproduction_premise_corrected",
+  "performance_accepted": false,
+  "business_commit": "30cc357936f8fff776d9c0e6b7e6f4b29668367b",
+  "source_sha256": {
+    "entry/src/main/ets/pages/MainPage.ets": "438d20273a2ef6076f6aa40e0ddec88ee6bcf50aac57b5ec64b3d6892d35f903",
+    "entry/src/main/ets/view/InfoBarComponent.ets": "ed0fb47bfd8ffb352fcc1d1e858a56b13893996ee8d1f9d654b52cd43849d12d",
+    "entry/src/main/ets/entryability/EntryAbility.ets": "77d17932777fef7cb7fdc3ee80ddd19aa7e1083233b8a53fb94acf56ca39d47f"
+  },
+  "router_calls": [
+    "clean-app/sepweather_font_register_per_page/unfixed:entry/src/main/ets/pages/MainPage.ets:158:                            router.pushUrl({",
+    "clean-app/sepweather_font_register_per_page/unfixed:entry/src/main/ets/pages/MainPage.ets:272:                        router.pushUrl({",
+    "clean-app/sepweather_font_register_per_page/unfixed:entry/src/main/ets/pages/MainPage.ets:333:                        router.pushUrl({",
+    "clean-app/sepweather_font_register_per_page/unfixed:entry/src/main/ets/view/InfoBarComponent.ets:23:                    router.back({"
+  ],
+  "replace_url_found": false,
+  "raw_device_failure": "validation/sepweather-page-reconstruction-failure.json",
+  "conclusion": "Normal UI router calls found in the clean source push secondary pages and back to MainPage; the claimed replaceUrl flow is absent. Existing launch observations reuse the native window and do not prove repeated MainPage creation. No font registration, duplicate typeface retention, page-build latency, or instruction improvement is inferred. Other genuine page creation paths remain unverified."
+}
