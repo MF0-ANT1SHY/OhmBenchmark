@@ -87,9 +87,11 @@ def records(path):
     return blob, messages
 
 
-def compute(path, pid):
+def compute(path, pid, end_ns=None):
     if type(pid) is not int or pid <= 0:
         raise ValueError('a positive native application PID is required')
+    if end_ns is not None and (type(end_ns) is not int or end_ns <= 0):
+        raise ValueError('native allocation cutoff must be positive monotonic nanoseconds')
     blob, messages = records(path)
     config_count, events = 0, []
     for message in messages:
@@ -128,7 +130,10 @@ def compute(path, pid):
         raise ValueError('one matching nativehook configuration and memory events are required')
     live, unknown_frees = {}, set()
     allocations = frees = 0
+    cutoff_state = None
     for stamp, kind, address, size in sorted(events, key=lambda item: item[0]):
+        if end_ns is not None and stamp > end_ns and cutoff_state is None:
+            cutoff_state = (dict(live), set(unknown_frees), allocations, frees)
         if kind == 3:
             if not address or address in live:
                 raise ValueError('invalid or duplicate live native allocation address')
@@ -141,7 +146,12 @@ def compute(path, pid):
             if address in unknown_frees:
                 raise ValueError('repeated unmatched free suggests incomplete native allocation history')
             unknown_frees.add(address)
-    return {'metric': 'nativehook_retained_bytes', 'app_pid': pid,
+    if end_ns is not None:
+        if end_ns < min(event[0] for event in events):
+            raise ValueError('native cutoff precedes all observed allocation events')
+        if cutoff_state is not None:
+            live, unknown_frees, allocations, frees = cutoff_state
+    result = {'metric': 'nativehook_retained_bytes', 'app_pid': pid,
             'retained_bytes': sum(live.values()), 'retained_allocations': len(live),
             'observed_allocations': allocations, 'matched_frees': frees,
             'preexisting_unmatched_frees': len(unknown_frees),
@@ -150,3 +160,7 @@ def compute(path, pid):
             'trace_sha256': hashlib.sha256(blob).hexdigest(),
             'method': 'live observed malloc blocks after exact address-matched free events',
             'collection_provenance_verified': False, 'performance_accepted': False}
+
+    if end_ns is not None:
+        result['evaluation_end_ns'] = end_ns
+    return result

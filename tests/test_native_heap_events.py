@@ -49,6 +49,14 @@ class NativeHeapEventTest(unittest.TestCase):
         self.assertEqual(result['preexisting_unmatched_frees'],1)
         self.assertFalse(result['performance_accepted'])
 
+    def test_business_end_does_not_include_later_free_or_address_reuse(self):
+        self.write([event(3,1,128,second=10),event(4,1,second=12),event(3,1,4096,second=13)])
+        self.assertEqual(compute(self.path,100,11_000_000_000)['retained_bytes'],128)
+        self.assertEqual(compute(self.path,100,12_000_000_000)['retained_bytes'],0)
+        self.assertEqual(compute(self.path,100)['retained_bytes'],4096)
+        for cutoff in (True,0,9_000_000_000):
+            with self.subTest(cutoff=cutoff),self.assertRaises(ValueError):compute(self.path,100,cutoff)
+
     def test_truncated_corrupt_and_incomplete_container_rejected(self):
         self.write([event(3,1,128)]);original=self.path.read_bytes()
         for kind in ('truncate','corrupt','segments','datatype'):
