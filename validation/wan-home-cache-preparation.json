@@ -1,0 +1,117 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "bundle": "org.example.wan.ohos",
+  "articles": 471,
+  "first_page_articles": 20,
+  "sources": [
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-0.json",
+      "sha256": "7976530bbec1557570a972cf7734a35af4c969978fa399929748e566fb443771"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-1.json",
+      "sha256": "85f45329218b9356d1e466517f4d4a9b52340c02e5661b81b28c4db83ef359aa"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-2.json",
+      "sha256": "d02dbf99fd2d18b00355900a1b180f1f0069d22f974e60010fc20e9c4ef5251d"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-3.json",
+      "sha256": "abdf8a6f31fadf61960ebe36a8e47417feaeb4810be2a0a9e8748215fc19b733"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-4.json",
+      "sha256": "8449352b6bd38bbbc067f3d7ed178321c2813f21b126aff6332a41455d21068c"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-5.json",
+      "sha256": "c03822ac3c74908d92aee0c5a451c21fda50eb58e1930bd243ca1cfe54eab8cd"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-6.json",
+      "sha256": "5d1594e1e5ebb721968413b19804abfcb32790876467b840f5336810adb0e42c"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-7.json",
+      "sha256": "0e067a471d10e1d957d24d64545a03266b7cff7a4bc9b385ea9c5e0deb549d62"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-8.json",
+      "sha256": "c4c3da8400bc549f6613284d97873a7dd83891038f9fdc2db3e0d4be4ec71d0a"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-9.json",
+      "sha256": "ac01d56fd27a92b26dac6e3c4ae4a2f5969d564a07701fc63fd005ceeb8c5528"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-10.json",
+      "sha256": "084f1d80aa9e3d43e81a5fca0b44b4492dae8e60f1781c962d5633aa42baaba3"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-11.json",
+      "sha256": "c6df2c6f0c3a45ac37916a979bbacfc1e278069a71ad996a31b2469c338f37fe"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-12.json",
+      "sha256": "bf036c2ec5f023fb644fa1bdba2b964972f1396570eedd769daf7ad9a4359998"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-13.json",
+      "sha256": "200055f34499a2308b055d545413574ffe917a7d22d133c6be3a769982be7268"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-14.json",
+      "sha256": "bc8acd95f52b7e13926ce529bfb33c579d2729187d6b161f86d3aa1048152459"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-15.json",
+      "sha256": "94402e87d2665a548faff9a132b7a44db0ff5091c91f6204bf5c56233619c5c7"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-16.json",
+      "sha256": "a026fe51a5a36abbb32bfd7aab2705106e5066e0aa1c9c299078a3097c7f8d52"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-17.json",
+      "sha256": "8de5651a2b316e9332b46b6c5463fb718fdf58bc82e3e3ec731bf97c91cbc33a"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-18.json",
+      "sha256": "2c6a1b720c9dec2475be70b2e604ea6c19e0ab81db7d12385640e7257ac4c8d1"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-19.json",
+      "sha256": "efaacf7f8fa12409045d476e4e362a1d3219d1a9e0e1473fdbf08d06975faa75"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-20.json",
+      "sha256": "df1655999930cb1bf2ebb920ccf857182b5fefbf6ae09781ed2905b0ffa7ff8b"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-21.json",
+      "sha256": "8a74a75a47f6beb42bf4268d4417e50956ad95970b27e7b64138ba964bfc4b60"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-22.json",
+      "sha256": "8ef5e4f9d1429a76402e7efe75a4fc2feee3d5e049b41a7c6c2322a92b248f47"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-23.json",
+      "sha256": "bcb7dc907c03b55d8dbfa3ecc810e0d9e00a4d71c09e614577833e5cef93ca6f"
+    },
+    {
+      "file": "artifacts/reference/wan-history-catalogue-20261014/page-24.json",
+      "sha256": "c6d12b6fd4e47d2bd8b23ff37f3e3049c0514864fe23aab60ce03d56e6a1ec6d"
+    }
+  ],
+  "fixture_sha256": "3cbdcbcae836f09fb0501c149e84451d1201a5825af4c47bb60f89b064e6ca1f",
+  "preferences_sha256": "9b425b8f6b04b7cf1bec5a209c92be7203bbcb3b3cabcd7e2647a9143a8ec86f",
+  "initialized_template_sha256": "12ef79e3b28b71a16c51d6b285e11bbe5ff0345d2ba73d844cd4acba8e48c4d0",
+  "same_native_bytes_for_both_variants": true,
+  "app_source_modified": false,
+  "payload_padding": false,
+  "network_load_more_verified": false,
+  "cold_cache_ui_verified": false,
+  "performance_accepted": false
+}
