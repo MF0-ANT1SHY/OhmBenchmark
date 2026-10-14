@@ -1,0 +1,18 @@
+{
+  "device": "Pura 70 Ultra",
+  "read_only": true,
+  "default_route_present": false,
+  "numeric_internet_probe": "Network unreachable",
+  "named_host_probe": "Name does not resolve",
+  "wifi_interface_state": "DORMANT / NO-CARRIER",
+  "native_http_error": 2300006,
+  "private_snapshot_sha256": {
+    "routes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "internet_numeric": "a7dc65a2e411158a61fbc904fb1c9e56a12df8a1bbcb58f251cb0abd71222724",
+    "internet_named": "4e2e3b88d61d72716082c88e4be97ea6a9ca7990206a0b6f5d4317563aca4399",
+    "interfaces": "0b918b33ac3ff06f48155c820a8e22debf3c4afa455fa2fa8d0f87de24a5826d"
+  },
+  "app_code_modified": false,
+  "connectivity_restored": false,
+  "next_action": "use an available legitimate network; continue offline cases without modifying business login code"
+}
