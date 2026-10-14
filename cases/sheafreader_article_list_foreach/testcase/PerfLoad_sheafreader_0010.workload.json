@@ -1,26 +1,62 @@
 {
   "bundle": "com.sheafreader.hm",
   "ability": "EntryAbility",
-  "description": "Sheaf-Reader (束阅 RSS 阅读器)页面操作",
+  "description": "正常重启阅读器并加载300篇文章的第一页，再浏览真实文章列表",
   "setup": [
     {
       "op": "wait",
       "selector": {
-        "type": "Button"
+        "text": "300 (?:篇|articles)",
+        "match": "regex"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Journal (?:[1-9]|10) article (?:[1-9][0-9]?|100)",
+        "match": "regex"
       }
     }
   ],
   "measured": [
     {
+      "op": "stop"
+    },
+    {
+      "op": "launch"
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "300 (?:篇|articles)",
+        "match": "regex"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Journal (?:[1-9]|10) article (?:[1-9][0-9]?|100)",
+        "match": "regex"
+      }
+    },
+    {
       "op": "swipe",
-      "count": 6
+      "count": 3
     }
   ],
   "verify": [
     {
       "op": "wait",
       "selector": {
-        "type": "List"
+        "text": "300 (?:篇|articles)",
+        "match": "regex"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Journal (?:[1-9]|10) article (?:[1-9][0-9]?|100)",
+        "match": "regex"
       }
     }
   ]

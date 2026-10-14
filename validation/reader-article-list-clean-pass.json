@@ -1,0 +1,245 @@
+{
+  "case": "sheafreader_article_list_foreach",
+  "status": "measured_clean",
+  "criteria_unchanged": true,
+  "complete_gate": {
+    "stage": "complete",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "results": {
+    "unfixed": {
+      "status": "PASS",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        12212669871,
+        12238308976,
+        11967515145
+      ],
+      "median": 12212669871,
+      "paired_ratios": [
+        2.3947583966693298,
+        2.4245582513894344,
+        2.3737256694168116
+      ],
+      "median_ratio": 2.4194788320261957,
+      "plan_sha256": "5a8a10fd7bc4bd0284ccd587bb07481aa71504af6bfeda9b336b7bc26b3626d4",
+      "signed_sha256": "72b95a0c7415f7e675f19cbe74a83d95820cf542dc4a9f28fe590eb9696e5250",
+      "fixture_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "25dc1571e6c4fede0df65a1b8cf4703c5de57f7407ba42e872844c2dbcbb6479",
+          "app_samples": 9356,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_article_list_foreach/unfixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "a2bfe836d8b0eac2f45614482fcf2c438c15c4a4e2b7993c6f66558628bba86d",
+          "app_samples": 8670,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_article_list_foreach/unfixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "4477f339add3d9ba9debb26c38208d93b28fdca602ff2544de6e9b13be738d26",
+          "app_samples": 9477,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_article_list_foreach/unfixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    },
+    "fixed": {
+      "status": "PASS",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        5099750308,
+        5047644852,
+        5041658899
+      ],
+      "median": 5047644852,
+      "paired_ratios": [
+        2.3947583966693298,
+        2.4245582513894344,
+        2.3737256694168116
+      ],
+      "median_ratio": 2.4194788320261957,
+      "plan_sha256": "5a8a10fd7bc4bd0284ccd587bb07481aa71504af6bfeda9b336b7bc26b3626d4",
+      "signed_sha256": "71444bd5659f1031a7eab0ded76489b21a84bc56f24a2e7ae60a399b87cb99b8",
+      "fixture_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "b37d43e01e40417fb7ea38c4d56ab3dca01c15dd925b3c2782d422323b09689e",
+          "app_samples": 6030,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_article_list_foreach/fixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "dae0b69487167c057285edbff09d241a780981a269dc707207a5678580d8a08e",
+          "app_samples": 5902,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_article_list_foreach/fixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "ab475e4711f1e9bfbf269eeb69617eca62fb1e47e4e81e3766cf317ac2d9e76d",
+          "app_samples": 5336,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_article_list_foreach/fixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    }
+  },
+  "render_checks": [
+    {
+      "variant": "unfixed",
+      "round": 1,
+      "capture_sha256": "2cb99172d62253a68e3cf912c7394b06ee7551696cff122bfb1f2f2ebe974fe3",
+      "process_before": 37578,
+      "process_after": 38109,
+      "loaded_articles": 300,
+      "visible_article_titles": [
+        "Journal 1 article 1",
+        "Journal 1 article 2",
+        "Journal 1 article 3",
+        "Journal 1 article 4",
+        "Journal 1 article 5",
+        "Journal 1 article 6",
+        "Journal 1 article 7"
+      ],
+      "input_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+      "database_semantic_sha256": "e599882adfc721e7aced634f87a5df1d0ec11c3d8de3cfc2dd95cdc144b85aa2",
+      "input_preserved": true,
+      "render_started_monotonic": 4399.119168521,
+      "render_ended_monotonic": 4406.676547979,
+      "action_start_monotonic": 4340.712051493,
+      "action_end_monotonic": 4406.677339816
+    },
+    {
+      "variant": "unfixed",
+      "round": 2,
+      "capture_sha256": "283b79f7b507e16db2dfc48daaa90b8ab382107358144b13a218fa3bd9b31973",
+      "process_before": 40503,
+      "process_after": 41446,
+      "loaded_articles": 300,
+      "visible_article_titles": [
+        "Journal 1 article 1",
+        "Journal 1 article 2",
+        "Journal 1 article 3",
+        "Journal 1 article 4",
+        "Journal 1 article 5",
+        "Journal 1 article 6",
+        "Journal 1 article 7"
+      ],
+      "input_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+      "database_semantic_sha256": "e599882adfc721e7aced634f87a5df1d0ec11c3d8de3cfc2dd95cdc144b85aa2",
+      "input_preserved": true,
+      "render_started_monotonic": 4739.633573495,
+      "render_ended_monotonic": 4747.373595078,
+      "action_start_monotonic": 4680.248772008,
+      "action_end_monotonic": 4747.374116656
+    },
+    {
+      "variant": "unfixed",
+      "round": 3,
+      "capture_sha256": "ce51876728b9ac61da0942e37fc9a040f626594122aaa58ef6cb0733c711b14f",
+      "process_before": 43705,
+      "process_after": 44720,
+      "loaded_articles": 300,
+      "visible_article_titles": [
+        "Journal 1 article 1",
+        "Journal 1 article 2",
+        "Journal 1 article 3",
+        "Journal 1 article 4",
+        "Journal 1 article 5",
+        "Journal 1 article 6",
+        "Journal 1 article 7"
+      ],
+      "input_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+      "database_semantic_sha256": "e599882adfc721e7aced634f87a5df1d0ec11c3d8de3cfc2dd95cdc144b85aa2",
+      "input_preserved": true,
+      "render_started_monotonic": 5078.63676043,
+      "render_ended_monotonic": 5086.169035521,
+      "action_start_monotonic": 5020.309630371,
+      "action_end_monotonic": 5086.169517871
+    },
+    {
+      "variant": "fixed",
+      "round": 1,
+      "capture_sha256": "35e3bc7399727a0682de3d5b55bb668dc122659a1f286f076e14ead3587a3ce2",
+      "process_before": 38662,
+      "process_after": 39634,
+      "loaded_articles": 300,
+      "visible_article_titles": [
+        "Journal 1 article 1",
+        "Journal 1 article 2",
+        "Journal 1 article 3",
+        "Journal 1 article 4",
+        "Journal 1 article 5",
+        "Journal 1 article 6",
+        "Journal 1 article 7"
+      ],
+      "input_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+      "database_semantic_sha256": "e599882adfc721e7aced634f87a5df1d0ec11c3d8de3cfc2dd95cdc144b85aa2",
+      "input_preserved": true,
+      "render_started_monotonic": 4567.941225916,
+      "render_ended_monotonic": 4575.329974912,
+      "action_start_monotonic": 4511.628553791,
+      "action_end_monotonic": 4575.330727654
+    },
+    {
+      "variant": "fixed",
+      "round": 2,
+      "capture_sha256": "22ece18c4d34199eebc783f2eb366213dd470cd4c86c21817cdd83665379e92b",
+      "process_before": 42015,
+      "process_after": 43133,
+      "loaded_articles": 300,
+      "visible_article_titles": [
+        "Journal 1 article 1",
+        "Journal 1 article 2",
+        "Journal 1 article 3",
+        "Journal 1 article 4",
+        "Journal 1 article 5",
+        "Journal 1 article 6",
+        "Journal 1 article 7"
+      ],
+      "input_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+      "database_semantic_sha256": "e599882adfc721e7aced634f87a5df1d0ec11c3d8de3cfc2dd95cdc144b85aa2",
+      "input_preserved": true,
+      "render_started_monotonic": 4910.333359819,
+      "render_ended_monotonic": 4917.843559232,
+      "action_start_monotonic": 4853.388961856,
+      "action_end_monotonic": 4917.844267956
+    },
+    {
+      "variant": "fixed",
+      "round": 3,
+      "capture_sha256": "6daa17334d568fb51e6953694a6ea9839ecbffa3e44b1e4220043898191f5368",
+      "process_before": 45277,
+      "process_after": 46318,
+      "loaded_articles": 300,
+      "visible_article_titles": [
+        "Journal 1 article 1",
+        "Journal 1 article 2",
+        "Journal 1 article 3",
+        "Journal 1 article 4",
+        "Journal 1 article 5",
+        "Journal 1 article 6",
+        "Journal 1 article 7"
+      ],
+      "input_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+      "database_semantic_sha256": "e599882adfc721e7aced634f87a5df1d0ec11c3d8de3cfc2dd95cdc144b85aa2",
+      "input_preserved": true,
+      "render_started_monotonic": 5248.132365512,
+      "render_ended_monotonic": 5255.688382166,
+      "action_start_monotonic": 5191.242364998,
+      "action_end_monotonic": 5255.688888805
+    }
+  ],
+  "scope": "Normal app restart and browsing of the 300-article first page from 1000 ordinary RSS articles. Each trial restores and verifies full business data externally, observes a new app process rendering actual titles within the profiler window, and preserves all stored articles. No app instrumentation or old captures reused."
+}
