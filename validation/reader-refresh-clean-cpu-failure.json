@@ -1,0 +1,110 @@
+{
+  "case": "sheafreader_refresh_feeds_sequential",
+  "policy": "no_app_injection",
+  "status": "VALID_CLEAN_MEASUREMENT_FAILED_ORACLE",
+  "performance_accepted": false,
+  "unchanged_minimum_paired_ratio": 1.2,
+  "legacy_evidence_reused": false,
+  "results": {
+    "unfixed": {
+      "status": "FAIL",
+      "metric": "trace_cpu_ms",
+      "rounds": 3,
+      "samples": [
+        1365.899,
+        1464.501,
+        1420.71
+      ],
+      "median": 1420.71,
+      "paired_ratios": [
+        0.3569015519049265,
+        0.3770666883628983,
+        0.40010521451115383
+      ],
+      "median_ratio": 0.37122335092627506,
+      "plan_sha256": "978efb0ea035de33f9492d5e25ca2efbdb637b9396784fd451fc6beec8f5d7fd",
+      "signed_sha256": "bf210a42b9fb8fcaff45d292b844330a3cfdfeed86136f4497003555d238fb63",
+      "fixture_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+      "captures": [
+        {
+          "round": 1,
+          "trace_sha256": "48a84e36cbdb01df5b7cac46384bfd63534d9a43effe527d6aea18b3ef021e8e",
+          "capture_sha256": "4d5dfae2fd7badb590bbcebe9895fb44e853bc9ffdf75dcc4a3a1394416fede2",
+          "app_cpu_ns": 1365899000,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_refresh_feeds_sequential/unfixed/trace-captures/round-1"
+        },
+        {
+          "round": 2,
+          "trace_sha256": "eff1e9abd0e9dea4d384eef989a8632eb7b020a20cd66851c8b7d85b92dae0d0",
+          "capture_sha256": "b0aa1bb3bf8b0d2bb33bb0f587e448cf0b1fa0eeccb13582be29a7e7e91a0390",
+          "app_cpu_ns": 1464501000,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_refresh_feeds_sequential/unfixed/trace-captures/round-2"
+        },
+        {
+          "round": 3,
+          "trace_sha256": "b9cf0a8be06f1d26430a68532cbab968865f9468786bfa908355730d0106bd18",
+          "capture_sha256": "4e920b93e9297cc1e32e44b2559d9fcc25d46529eda5922c6fdc54dd33fded29",
+          "app_cpu_ns": 1420710000,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_refresh_feeds_sequential/unfixed/trace-captures/round-3"
+        }
+      ],
+      "method": "app on-CPU sched_switch intervals clipped to native-clock external markers",
+      "legacy_evidence_reused": false
+    },
+    "fixed": {
+      "status": "FAIL",
+      "metric": "trace_cpu_ms",
+      "rounds": 3,
+      "samples": [
+        3827.103,
+        3883.931,
+        3550.841
+      ],
+      "median": 3827.103,
+      "paired_ratios": [
+        0.3569015519049265,
+        0.3770666883628983,
+        0.40010521451115383
+      ],
+      "median_ratio": 0.37122335092627506,
+      "plan_sha256": "978efb0ea035de33f9492d5e25ca2efbdb637b9396784fd451fc6beec8f5d7fd",
+      "signed_sha256": "3b3a0cb27ac6e01625a467c90430951866783d14825682dfff78b9cd8af95323",
+      "fixture_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+      "captures": [
+        {
+          "round": 1,
+          "trace_sha256": "e94f7ca581666d65aad9e0d152a2aed54916bf7deaded538d12c64c2c4ea3150",
+          "capture_sha256": "3b4fc2c99ac176756195d110af5ac2bd9b11dafe18f1cd6989e275f0b3b9681e",
+          "app_cpu_ns": 3827103000,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_refresh_feeds_sequential/fixed/trace-captures/round-1"
+        },
+        {
+          "round": 2,
+          "trace_sha256": "b6b1f17c5bd4b346e45e40b9fb08d3173e370554a07bfce0ca09b6f0b07980f2",
+          "capture_sha256": "ae631efd346e98561c681babfa981f6c4936f56d307761a65d4c0b62eae2e0c2",
+          "app_cpu_ns": 3883931000,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_refresh_feeds_sequential/fixed/trace-captures/round-2"
+        },
+        {
+          "round": 3,
+          "trace_sha256": "76dfa5c180c8065a6cdfaa9d2ef1da2de6151d6a9722fca4a95142112c0943ee",
+          "capture_sha256": "5663632faba68aeef7a921aeec11386de9340f502bb99f61885216346a28dc2d",
+          "app_cpu_ns": 3550841000,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_refresh_feeds_sequential/fixed/trace-captures/round-3"
+        }
+      ],
+      "method": "app on-CPU sched_switch intervals clipped to native-clock external markers",
+      "legacy_evidence_reused": false
+    }
+  },
+  "native_raw_recomputed": true,
+  "functional_requirement": "all ten ordinary RSS feeds refreshed and all 1000 complete stored articles preserved",
+  "note": "Fixed bounded parallel refresh consumes more application CPU in all three native scheduling trials; no CPU gain is claimed.",
+  "source_sign_smoke_gate": {
+    "stage": "smoke",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  }
+}
