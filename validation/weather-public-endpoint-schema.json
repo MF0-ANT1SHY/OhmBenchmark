@@ -1,0 +1,45 @@
+{
+  "app_source_modified": false,
+  "request_key_printed": false,
+  "cities": {
+    "440300": {
+      "http_status": 200,
+      "api_status": "0",
+      "info": "INVALID_USER_KEY",
+      "infocode": "10001",
+      "forecasts": 0,
+      "response_sha256": "f96a1cd43bcc56663a8964ff82583fd5caf25bd449b7a3572214559e2d2891b8"
+    },
+    "440100": {
+      "http_status": 200,
+      "api_status": "0",
+      "info": "INVALID_USER_KEY",
+      "infocode": "10001",
+      "forecasts": 0,
+      "response_sha256": "f96a1cd43bcc56663a8964ff82583fd5caf25bd449b7a3572214559e2d2891b8"
+    }
+  },
+  "performance_accepted": false,
+  "device_business_validation": false,
+  "normal_forecast_ui_required": [
+    "深圳市",
+    "近期天气"
+  ],
+  "source_model": "forecasts[0].city and forecasts[0].casts are consumed by Index.initDate and cityView",
+  "source_files_sha256": {
+    "pages/Index.ets": "f56b08bd622e89ff90080a8340dfc61bb91999bfa12b192c96d35644410b9ba5",
+    "pages/AddCity.ets": "c88e480498ce7aca9c1dc359d3676c4a3abcac256ff179c625d5cf477fb28ad7",
+    "viewmodel/getWeatherUtil.ets": "e534fb68d45ffbf4cb7f4881e01a4e64e7870e8232e3fb0fcb24a1f3cc01d877",
+    "view/cityView.ets": "40bbb893c31e1dbf2ea040aefa1dd77a20fdd913a0772af70602735bce72c4bc"
+  },
+  "key_not_disclosed": true,
+  "same_source_configuration_for_clean_variants": {
+    "weatherassistant_http_session_leak/unfixed": true,
+    "weatherassistant_http_session_leak/fixed": true,
+    "weatherassistant_remote_weather_icons/unfixed": true,
+    "weatherassistant_remote_weather_icons/fixed": true
+  },
+  "source_default_request_count_per_return": 2,
+  "planned_return_cycles": 15,
+  "successful_requests_not_verified": true
+}

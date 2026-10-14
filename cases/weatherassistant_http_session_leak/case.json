@@ -194,6 +194,12 @@
           "performance_verified": false
         }
       }
+    },
+    "business_reproduction_blocker": {
+      "status": "invalid_builtin_weather_key",
+      "proof": "../../validation/weather-public-endpoint-schema.json",
+      "forecast_render_verified": false,
+      "performance_accepted": false
     }
   }
 }

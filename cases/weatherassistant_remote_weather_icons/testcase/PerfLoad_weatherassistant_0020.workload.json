@@ -11,6 +11,22 @@
     },
     {
       "op": "stop"
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "深圳市",
+        "match": "exact"
+      },
+      "timeout_s": 60
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "近期天气",
+        "match": "exact"
+      },
+      "timeout_s": 60
     }
   ],
   "measured": [
