@@ -1,0 +1,239 @@
+{
+  "case": "jingmo_dataset_import_no_transaction",
+  "status": "measured_clean",
+  "criteria_unchanged": true,
+  "complete_gate": {
+    "stage": "complete",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "results": {
+    "unfixed": {
+      "status": "PASS",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        3318602834,
+        3231131575,
+        3258196691
+      ],
+      "median": 3258196691,
+      "paired_ratios": [
+        2.2016823252182167,
+        2.15835244411133,
+        2.1889947400355347
+      ],
+      "median_ratio": 2.176431577663407,
+      "plan_sha256": "7a31fe814b434fec981188a3aa65ac2c9c0370101e3e1b64bcc9abcae2ec8fe0",
+      "signed_sha256": "88868da64bcc4780db1e0bdf0eabafd1265e254ec84f256cde8b5dd3f3ad20b7",
+      "fixture_sha256": "6f80806056174a9c5024ca0b63d1559e5ee7ce30e940605c669cf8cbf209e500",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "99e659b238ba3dd3b3c20b3cc83fbbcc8e5d5fdfdf0421ccc6bae2095c1ef752",
+          "app_samples": 9109,
+          "remote_artifacts": "/home/research/ohm-clean/jingmo_dataset_import_no_transaction/unfixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "96b53cd1fab9451ca7708c8f88621070c445373bc0baef44a83ca4606710ebf7",
+          "app_samples": 8746,
+          "remote_artifacts": "/home/research/ohm-clean/jingmo_dataset_import_no_transaction/unfixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "6130e8099db5f4cf8244f01199854260bc2909fa2cf93dfbeb9d82430e7c69be",
+          "app_samples": 8985,
+          "remote_artifacts": "/home/research/ohm-clean/jingmo_dataset_import_no_transaction/unfixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    },
+    "fixed": {
+      "status": "PASS",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        1507303209,
+        1497036123,
+        1488444276
+      ],
+      "median": 1497036123,
+      "paired_ratios": [
+        2.2016823252182167,
+        2.15835244411133,
+        2.1889947400355347
+      ],
+      "median_ratio": 2.176431577663407,
+      "plan_sha256": "7a31fe814b434fec981188a3aa65ac2c9c0370101e3e1b64bcc9abcae2ec8fe0",
+      "signed_sha256": "e441d217d259c968ebbe542e802bea1a4e6bdc1b07deb8f8a450aec9780b8f45",
+      "fixture_sha256": "6f80806056174a9c5024ca0b63d1559e5ee7ce30e940605c669cf8cbf209e500",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "cb72cd80c6a5840f578d118a2c34bc78412c6998c25fb3264eaf059994238ad0",
+          "app_samples": 450,
+          "remote_artifacts": "/home/research/ohm-clean/jingmo_dataset_import_no_transaction/fixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "0831afaff3238a470aa4ce2dfa5b8955453e0499505407616e239a2ffde792e5",
+          "app_samples": 387,
+          "remote_artifacts": "/home/research/ohm-clean/jingmo_dataset_import_no_transaction/fixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "36bfab309e115812cef0d958b43b28cd71d7c1c623a38fa0a702152d704d413d",
+          "app_samples": 415,
+          "remote_artifacts": "/home/research/ohm-clean/jingmo_dataset_import_no_transaction/fixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    }
+  },
+  "data_checks": [
+    {
+      "variant": "unfixed",
+      "round": 1,
+      "capture_sha256": "55744f8445dcca0f66ecb432c6f1a7694930bf9969a80e599cf83711b13feb20",
+      "before_rows": 0,
+      "completed_rows": 5000,
+      "after_rows": 5000,
+      "completion_started_monotonic": 797.712342779,
+      "completion_ended_monotonic": 804.229809569,
+      "action_start_monotonic": 780.464083031,
+      "action_end_monotonic": 804.240222115,
+      "source": {
+        "sha256": "5564f4bbf1e4c3abea1a3db6bf9387c3955382019e94b71dcafc07c9250f7ef1",
+        "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+        "base_url": "http://127.0.0.1:18492/api/",
+        "service_pid": 629,
+        "service_start_ticks": 22594,
+        "files": {
+          "/api/dataset_v2.json": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+          "/api/classicalliterature_classicpoem1.json": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+        }
+      }
+    },
+    {
+      "variant": "unfixed",
+      "round": 2,
+      "capture_sha256": "3848f1db6273147fbae2b61bbb6f01d7d6a3b6270f4674f61f971e2f2f5d314e",
+      "before_rows": 0,
+      "completed_rows": 5000,
+      "after_rows": 5000,
+      "completion_started_monotonic": 1124.341873189,
+      "completion_ended_monotonic": 1130.866149199,
+      "action_start_monotonic": 1107.353132459,
+      "action_end_monotonic": 1130.876939227,
+      "source": {
+        "sha256": "5564f4bbf1e4c3abea1a3db6bf9387c3955382019e94b71dcafc07c9250f7ef1",
+        "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+        "base_url": "http://127.0.0.1:18492/api/",
+        "service_pid": 629,
+        "service_start_ticks": 22594,
+        "files": {
+          "/api/dataset_v2.json": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+          "/api/classicalliterature_classicpoem1.json": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+        }
+      }
+    },
+    {
+      "variant": "unfixed",
+      "round": 3,
+      "capture_sha256": "b79a3b7ee37065da2d62a2e24a8313080033e9728eb47fed9a06beb997023769",
+      "before_rows": 0,
+      "completed_rows": 5000,
+      "after_rows": 5000,
+      "completion_started_monotonic": 1444.53304304,
+      "completion_ended_monotonic": 1450.979573306,
+      "action_start_monotonic": 1427.600379128,
+      "action_end_monotonic": 1450.989462613,
+      "source": {
+        "sha256": "5564f4bbf1e4c3abea1a3db6bf9387c3955382019e94b71dcafc07c9250f7ef1",
+        "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+        "base_url": "http://127.0.0.1:18492/api/",
+        "service_pid": 629,
+        "service_start_ticks": 22594,
+        "files": {
+          "/api/dataset_v2.json": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+          "/api/classicalliterature_classicpoem1.json": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+        }
+      }
+    },
+    {
+      "variant": "fixed",
+      "round": 1,
+      "capture_sha256": "baac36d85d16ad54969c3f1f6aa94c55cbe2d08886e4a5fbe060cfc565580ba1",
+      "before_rows": 0,
+      "completed_rows": 5000,
+      "after_rows": 5000,
+      "completion_started_monotonic": 962.091469075,
+      "completion_ended_monotonic": 968.526377418,
+      "action_start_monotonic": 945.253183119,
+      "action_end_monotonic": 968.536255413,
+      "source": {
+        "sha256": "5564f4bbf1e4c3abea1a3db6bf9387c3955382019e94b71dcafc07c9250f7ef1",
+        "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+        "base_url": "http://127.0.0.1:18492/api/",
+        "service_pid": 629,
+        "service_start_ticks": 22594,
+        "files": {
+          "/api/dataset_v2.json": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+          "/api/classicalliterature_classicpoem1.json": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+        }
+      }
+    },
+    {
+      "variant": "fixed",
+      "round": 2,
+      "capture_sha256": "30aa2e12d2c8af7819ea4e15ee51681517d8411bee8783d5f5bde99688240215",
+      "before_rows": 0,
+      "completed_rows": 5000,
+      "after_rows": 5000,
+      "completion_started_monotonic": 1287.839365302,
+      "completion_ended_monotonic": 1294.286092041,
+      "action_start_monotonic": 1271.085403261,
+      "action_end_monotonic": 1294.296263981,
+      "source": {
+        "sha256": "5564f4bbf1e4c3abea1a3db6bf9387c3955382019e94b71dcafc07c9250f7ef1",
+        "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+        "base_url": "http://127.0.0.1:18492/api/",
+        "service_pid": 629,
+        "service_start_ticks": 22594,
+        "files": {
+          "/api/dataset_v2.json": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+          "/api/classicalliterature_classicpoem1.json": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+        }
+      }
+    },
+    {
+      "variant": "fixed",
+      "round": 3,
+      "capture_sha256": "4717e72d3a5c8e8a287a18240e8c48c40bdc8c1ee92f9850c20a82867e91b364",
+      "before_rows": 0,
+      "completed_rows": 5000,
+      "after_rows": 5000,
+      "completion_started_monotonic": 1603.331563771,
+      "completion_ended_monotonic": 1609.73494248,
+      "action_start_monotonic": 1586.323592709,
+      "action_end_monotonic": 1609.745294151,
+      "source": {
+        "sha256": "5564f4bbf1e4c3abea1a3db6bf9387c3955382019e94b71dcafc07c9250f7ef1",
+        "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+        "base_url": "http://127.0.0.1:18492/api/",
+        "service_pid": 629,
+        "service_start_ticks": 22594,
+        "files": {
+          "/api/dataset_v2.json": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+          "/api/classicalliterature_classicpoem1.json": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+        }
+      }
+    }
+  ],
+  "scope": "Normal user-configurable dataset source, identical in both variants. Empty ordinary SQLite data restored externally, then full import of 5000 poems through Sync Data. All fields verified and import completion inside the OS profiler window. No app instrumentation or legacy captures reused."
+}
