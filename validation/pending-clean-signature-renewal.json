@@ -1,0 +1,936 @@
+{
+  "status": "PASS",
+  "scope": "Signing renewal and clean bytecode audit only; not UI or performance acceptance",
+  "case_count": 12,
+  "variant_count": 24,
+  "signing_identity_changed": false,
+  "app_code_changed": false,
+  "device_clock_changed": false,
+  "old_signed_artifacts_retained": true,
+  "variants": [
+    {
+      "case": "browser_insert_date_lookup_cache",
+      "variant": "unfixed",
+      "renewed_sign": {
+        "case": "browser_insert_date_lookup_cache",
+        "variant": "unfixed",
+        "unsigned_sha256": "964710080bce771321ea022db94d33ff2873d0b5ad65fd52e812a1dbcf172669",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/browser_insert_date_lookup_cache/unfixed/app.hap",
+        "audit": {
+          "sha256": "85ae29da8fa6fbf345edca185af00a7d657438c3f17c0e93b44d6c74ac0ede11",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "browser_insert_date_lookup_cache",
+          "variant": "unfixed",
+          "unsigned_sha256": "964710080bce771321ea022db94d33ff2873d0b5ad65fd52e812a1dbcf172669",
+          "signed_hap": "/home/research/ohm-clean/browser_insert_date_lookup_cache/unfixed/app.hap",
+          "audit": {
+            "sha256": "c5557aaa6231ab000c7823372a48182a663151d6c62276c033519a80ca26583e",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "browser_insert_date_lookup_cache",
+      "variant": "fixed",
+      "renewed_sign": {
+        "case": "browser_insert_date_lookup_cache",
+        "variant": "fixed",
+        "unsigned_sha256": "783a6e8d904e197430ce578fbbdec2f2e1595805774853997bc6bf5be3fcb92d",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/browser_insert_date_lookup_cache/fixed/app.hap",
+        "audit": {
+          "sha256": "17edd9a49ea0afef6e211fedaa6be4f5eb0d8ae0eaea0e6f8d665193a6ab8f3e",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "browser_insert_date_lookup_cache",
+          "variant": "fixed",
+          "unsigned_sha256": "783a6e8d904e197430ce578fbbdec2f2e1595805774853997bc6bf5be3fcb92d",
+          "signed_hap": "/home/research/ohm-clean/browser_insert_date_lookup_cache/fixed/app.hap",
+          "audit": {
+            "sha256": "6967ee493f0d8cc6e0f89c4da06de8050a9207930e73ca794154768fb6a5d1b0",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "interviewapp_response_log_full_stringify",
+      "variant": "unfixed",
+      "renewed_sign": {
+        "case": "interviewapp_response_log_full_stringify",
+        "variant": "unfixed",
+        "unsigned_sha256": "b2659a41c0242c40f590fc888c6c882dcd166e96a984d9739afb28356069486e",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/interviewapp_response_log_full_stringify/unfixed/app.hap",
+        "audit": {
+          "sha256": "390abd812e915a5285c1329265ff8e8cc12b3c1515515afc8a1ff4aa0b0a8729",
+          "abc_modules_checked": [
+            "ets/modules.abc",
+            "ets/widgets.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "interviewapp_response_log_full_stringify",
+          "variant": "unfixed",
+          "unsigned_sha256": "b2659a41c0242c40f590fc888c6c882dcd166e96a984d9739afb28356069486e",
+          "signed_hap": "/home/research/ohm-clean/interviewapp_response_log_full_stringify/unfixed/app.hap",
+          "audit": {
+            "sha256": "e285b251e7ba8282477b4af02206b1e14b62f3d245b4d028043e9623163bd952",
+            "abc_modules_checked": [
+              "ets/modules.abc",
+              "ets/widgets.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "interviewapp_response_log_full_stringify",
+      "variant": "fixed",
+      "renewed_sign": {
+        "case": "interviewapp_response_log_full_stringify",
+        "variant": "fixed",
+        "unsigned_sha256": "2ee29e3f04dcfc018483fc7c773ddf8ec9fcc53c95ddcb22b29125ae5e06c38b",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/interviewapp_response_log_full_stringify/fixed/app.hap",
+        "audit": {
+          "sha256": "e304703dd5d1238f4bb033ed5471b7334876fea43cb9b77c75626bd9e2f6fa2a",
+          "abc_modules_checked": [
+            "ets/modules.abc",
+            "ets/widgets.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "interviewapp_response_log_full_stringify",
+          "variant": "fixed",
+          "unsigned_sha256": "2ee29e3f04dcfc018483fc7c773ddf8ec9fcc53c95ddcb22b29125ae5e06c38b",
+          "signed_hap": "/home/research/ohm-clean/interviewapp_response_log_full_stringify/fixed/app.hap",
+          "audit": {
+            "sha256": "1a67c147168c589aea1ca69d8c5a493adbd5418cb37e5089eb205622a5b326b3",
+            "abc_modules_checked": [
+              "ets/modules.abc",
+              "ets/widgets.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "interviewapp_search_history_sync_flush",
+      "variant": "unfixed",
+      "renewed_sign": {
+        "case": "interviewapp_search_history_sync_flush",
+        "variant": "unfixed",
+        "unsigned_sha256": "a081ea6e32ccfbe50e32884dd39097ca0c92d89c342cfb8d39e1c37e20f7aa2a",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/interviewapp_search_history_sync_flush/unfixed/app.hap",
+        "audit": {
+          "sha256": "8d691b4d1afcbb4fc37a658b754c10d728c2857d2965688128b454459a96c5f9",
+          "abc_modules_checked": [
+            "ets/modules.abc",
+            "ets/widgets.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "interviewapp_search_history_sync_flush",
+          "variant": "unfixed",
+          "unsigned_sha256": "a081ea6e32ccfbe50e32884dd39097ca0c92d89c342cfb8d39e1c37e20f7aa2a",
+          "signed_hap": "/home/research/ohm-clean/interviewapp_search_history_sync_flush/unfixed/app.hap",
+          "audit": {
+            "sha256": "0d93bb3d0a5e52817fa2032da6adbe505d3167e4f8edf0c0bd893e8025ab73cc",
+            "abc_modules_checked": [
+              "ets/modules.abc",
+              "ets/widgets.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "interviewapp_search_history_sync_flush",
+      "variant": "fixed",
+      "renewed_sign": {
+        "case": "interviewapp_search_history_sync_flush",
+        "variant": "fixed",
+        "unsigned_sha256": "92e0f1fefdeed4f2fd43778a0f012c66bd160bab407b0e655d25d827d36d2abc",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/interviewapp_search_history_sync_flush/fixed/app.hap",
+        "audit": {
+          "sha256": "ce7d0a5afacdd99379c36883ef0cc942efde3c6a2800b0dd201267ebc79663c7",
+          "abc_modules_checked": [
+            "ets/modules.abc",
+            "ets/widgets.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "interviewapp_search_history_sync_flush",
+          "variant": "fixed",
+          "unsigned_sha256": "92e0f1fefdeed4f2fd43778a0f012c66bd160bab407b0e655d25d827d36d2abc",
+          "signed_hap": "/home/research/ohm-clean/interviewapp_search_history_sync_flush/fixed/app.hap",
+          "audit": {
+            "sha256": "6eec7877bdeb7b90dd2031296e36759514f319be07da3ccadb16bcd183712183",
+            "abc_modules_checked": [
+              "ets/modules.abc",
+              "ets/widgets.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "interviewapp_search_history_unbounded",
+      "variant": "unfixed",
+      "renewed_sign": {
+        "case": "interviewapp_search_history_unbounded",
+        "variant": "unfixed",
+        "unsigned_sha256": "82852c0c1e05422b84aa9d3f1c70c60bf77d5f371ca5c41a2ca5c787cec3532e",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/interviewapp_search_history_unbounded/unfixed/app.hap",
+        "audit": {
+          "sha256": "6f02bc78ed03c93b319945316a834e5f070f9d6cc11000524849587a0b2256c9",
+          "abc_modules_checked": [
+            "ets/modules.abc",
+            "ets/widgets.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "interviewapp_search_history_unbounded",
+          "variant": "unfixed",
+          "unsigned_sha256": "82852c0c1e05422b84aa9d3f1c70c60bf77d5f371ca5c41a2ca5c787cec3532e",
+          "signed_hap": "/home/research/ohm-clean/interviewapp_search_history_unbounded/unfixed/app.hap",
+          "audit": {
+            "sha256": "854316c15663fb5a93d874a4c392602febbbb9dd553080a9856d83bcb218a36c",
+            "abc_modules_checked": [
+              "ets/modules.abc",
+              "ets/widgets.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "interviewapp_search_history_unbounded",
+      "variant": "fixed",
+      "renewed_sign": {
+        "case": "interviewapp_search_history_unbounded",
+        "variant": "fixed",
+        "unsigned_sha256": "dc8c86eba41cb1b96150e052ac156f337a4ab8dd018c869294d3b446568c0c93",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/interviewapp_search_history_unbounded/fixed/app.hap",
+        "audit": {
+          "sha256": "a4d9e2d2c7ad6e50d2c6b59ab31ee0978ea18e3f6c9f6b56368952c8048c5b04",
+          "abc_modules_checked": [
+            "ets/modules.abc",
+            "ets/widgets.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "interviewapp_search_history_unbounded",
+          "variant": "fixed",
+          "unsigned_sha256": "dc8c86eba41cb1b96150e052ac156f337a4ab8dd018c869294d3b446568c0c93",
+          "signed_hap": "/home/research/ohm-clean/interviewapp_search_history_unbounded/fixed/app.hap",
+          "audit": {
+            "sha256": "c802d64e5a6189c856d4d189f266e25a5644af5cb20d2b3c4a4624d72475f928",
+            "abc_modules_checked": [
+              "ets/modules.abc",
+              "ets/widgets.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "sepweather_font_register_per_page",
+      "variant": "unfixed",
+      "renewed_sign": {
+        "case": "sepweather_font_register_per_page",
+        "variant": "unfixed",
+        "unsigned_sha256": "522f316a9c31440e202be7d3b726aab42317f1c3d59f95173460096284f4c67f",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/sepweather_font_register_per_page/unfixed/app.hap",
+        "audit": {
+          "sha256": "3ad5c4ef5dd440ba0638001484eab812955b254b7938d84ecb423ad72cef354f",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "sepweather_font_register_per_page",
+          "variant": "unfixed",
+          "unsigned_sha256": "522f316a9c31440e202be7d3b726aab42317f1c3d59f95173460096284f4c67f",
+          "signed_hap": "/home/research/ohm-clean/sepweather_font_register_per_page/unfixed/app.hap",
+          "audit": {
+            "sha256": "effefb72e7c738ff6714ddbe303aa54a3cb9b59d6f31c12ca57146442e625d9d",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "sepweather_font_register_per_page",
+      "variant": "fixed",
+      "renewed_sign": {
+        "case": "sepweather_font_register_per_page",
+        "variant": "fixed",
+        "unsigned_sha256": "dcba512e7da08e5cf095b2678f351370e21457d1567ce1bb1e1b09b481bc2526",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/sepweather_font_register_per_page/fixed/app.hap",
+        "audit": {
+          "sha256": "a5f76a85ce9cedd8db574bcb9077ad95761e4879fe4c73d7a96e331d170d2893",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "sepweather_font_register_per_page",
+          "variant": "fixed",
+          "unsigned_sha256": "dcba512e7da08e5cf095b2678f351370e21457d1567ce1bb1e1b09b481bc2526",
+          "signed_hap": "/home/research/ohm-clean/sepweather_font_register_per_page/fixed/app.hap",
+          "audit": {
+            "sha256": "00fa3c507f02679f7033c3257bb9ab9afb45fdba1a87b793e446bcb6b9643ea3",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "wanharmony_history_log_materialization",
+      "variant": "unfixed",
+      "renewed_sign": {
+        "case": "wanharmony_history_log_materialization",
+        "variant": "unfixed",
+        "unsigned_sha256": "db2e9771b7e993302e7f2a3fc6236097b0eab50da62c3460551cfd702a85b8bd",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/wanharmony_history_log_materialization/unfixed/app.hap",
+        "audit": {
+          "sha256": "b0653227fb2af8b871fe8683be83f7d4d055d16b7032d311af6d8e942e841e03",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "wanharmony_history_log_materialization",
+          "variant": "unfixed",
+          "unsigned_sha256": "db2e9771b7e993302e7f2a3fc6236097b0eab50da62c3460551cfd702a85b8bd",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_history_log_materialization/unfixed/app.hap",
+          "audit": {
+            "sha256": "26d684d104e6c4d06d1570c350d4a26cba8d03cf506d8c5eb4eab1a74c45f708",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "wanharmony_history_log_materialization",
+      "variant": "fixed",
+      "renewed_sign": {
+        "case": "wanharmony_history_log_materialization",
+        "variant": "fixed",
+        "unsigned_sha256": "4a499cf607d52b77169c49fdc35960a5b3af4f877208d29088d81845840d08ee",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/wanharmony_history_log_materialization/fixed/app.hap",
+        "audit": {
+          "sha256": "e70783aacd74405ee736737f3fd85721ca7dcc4bda8597d8ffce014caf83fb12",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "wanharmony_history_log_materialization",
+          "variant": "fixed",
+          "unsigned_sha256": "4a499cf607d52b77169c49fdc35960a5b3af4f877208d29088d81845840d08ee",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_history_log_materialization/fixed/app.hap",
+          "audit": {
+            "sha256": "b9a6aea7be05e48bd221f5d17b1ca4b0da3f397e5779f2324b0c7b919ed21cbc",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "wanharmony_html_decode_per_render",
+      "variant": "unfixed",
+      "renewed_sign": {
+        "case": "wanharmony_html_decode_per_render",
+        "variant": "unfixed",
+        "unsigned_sha256": "57bf465688d66e69f1547c202a0a50481426aabad2b042edecede1c8b2cdd046",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/wanharmony_html_decode_per_render/unfixed/app.hap",
+        "audit": {
+          "sha256": "ef7e73073952ff08aa71c74db6a32ace6088b0e51b6e61d09ea80eb032052a8e",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "wanharmony_html_decode_per_render",
+          "variant": "unfixed",
+          "unsigned_sha256": "57bf465688d66e69f1547c202a0a50481426aabad2b042edecede1c8b2cdd046",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_html_decode_per_render/unfixed/app.hap",
+          "audit": {
+            "sha256": "f56a69d48d3fcb31517579ce7ff54a27f84aec5f86a4408ca439546f0e4f709d",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "wanharmony_html_decode_per_render",
+      "variant": "fixed",
+      "renewed_sign": {
+        "case": "wanharmony_html_decode_per_render",
+        "variant": "fixed",
+        "unsigned_sha256": "a5a3cabf07632435f6a587429d1685754edd657cb2657ec74fa1473739affb13",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/wanharmony_html_decode_per_render/fixed/app.hap",
+        "audit": {
+          "sha256": "6b6717eb71d6a57a81036cccdf69bc6a1ac3c1a268a5154086f84ee48e19a4f8",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "wanharmony_html_decode_per_render",
+          "variant": "fixed",
+          "unsigned_sha256": "a5a3cabf07632435f6a587429d1685754edd657cb2657ec74fa1473739affb13",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_html_decode_per_render/fixed/app.hap",
+          "audit": {
+            "sha256": "b2a69d03cf3b2909889e432a93e5324e666aaf3cb936c19aac407736ad36cb2d",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "wanharmony_persisted_home_list_growth",
+      "variant": "unfixed",
+      "renewed_sign": {
+        "case": "wanharmony_persisted_home_list_growth",
+        "variant": "unfixed",
+        "unsigned_sha256": "0f49cab6d143afade5ff2f597154434b01f022b3898d8129180c3435f8783c11",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/wanharmony_persisted_home_list_growth/unfixed/app.hap",
+        "audit": {
+          "sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "wanharmony_persisted_home_list_growth",
+          "variant": "unfixed",
+          "unsigned_sha256": "0f49cab6d143afade5ff2f597154434b01f022b3898d8129180c3435f8783c11",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_persisted_home_list_growth/unfixed/app.hap",
+          "audit": {
+            "sha256": "06787426f0293f1010bbc8a6a21095dc8a23f020860207453dcd2de0ffbb6653",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "wanharmony_persisted_home_list_growth",
+      "variant": "fixed",
+      "renewed_sign": {
+        "case": "wanharmony_persisted_home_list_growth",
+        "variant": "fixed",
+        "unsigned_sha256": "df1d6aa039fe134c34ac639b3eb73e708f4f942da69024b29dd2cdd5083c10ca",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/wanharmony_persisted_home_list_growth/fixed/app.hap",
+        "audit": {
+          "sha256": "a1abaaef2d68f521d312abac0b219569995ee040a9e1248a8d3cd1aa89206937",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "wanharmony_persisted_home_list_growth",
+          "variant": "fixed",
+          "unsigned_sha256": "df1d6aa039fe134c34ac639b3eb73e708f4f942da69024b29dd2cdd5083c10ca",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_persisted_home_list_growth/fixed/app.hap",
+          "audit": {
+            "sha256": "24157c61b0d37098dc74ea8d359f519d374e34513aa52ee8c511fe8ae8b036de",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "wanharmony_web_progress_log_storm",
+      "variant": "unfixed",
+      "renewed_sign": {
+        "case": "wanharmony_web_progress_log_storm",
+        "variant": "unfixed",
+        "unsigned_sha256": "b7e2eab978f168e855005cf1e67e9cb685bfa7d4e4642fed85300855e81de8cf",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/wanharmony_web_progress_log_storm/unfixed/app.hap",
+        "audit": {
+          "sha256": "91b9c9577ae045613216cc4f5d94aefba621ec3a88a705a5030011042176eda8",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "wanharmony_web_progress_log_storm",
+          "variant": "unfixed",
+          "unsigned_sha256": "b7e2eab978f168e855005cf1e67e9cb685bfa7d4e4642fed85300855e81de8cf",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_web_progress_log_storm/unfixed/app.hap",
+          "audit": {
+            "sha256": "fe902792f6486d3d4a54a8404e19fa8d5946ecdfe6d3ec47934be537e902edc5",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "wanharmony_web_progress_log_storm",
+      "variant": "fixed",
+      "renewed_sign": {
+        "case": "wanharmony_web_progress_log_storm",
+        "variant": "fixed",
+        "unsigned_sha256": "7543e176a60fbbd66f0f5f1fd89e82d77407bdef53ef49c4b9ecc184f898b72b",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/wanharmony_web_progress_log_storm/fixed/app.hap",
+        "audit": {
+          "sha256": "ff8517900a803fb9d29f7e422d3e7b232ca3f5b544e9b4537730fe295a86c794",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "wanharmony_web_progress_log_storm",
+          "variant": "fixed",
+          "unsigned_sha256": "7543e176a60fbbd66f0f5f1fd89e82d77407bdef53ef49c4b9ecc184f898b72b",
+          "signed_hap": "/home/research/ohm-clean/wanharmony_web_progress_log_storm/fixed/app.hap",
+          "audit": {
+            "sha256": "5de101a391a294f2a036bdcee11b5eafda54082ca4ce4e3b2cabd3a25fd5851b",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "weatherassistant_http_session_leak",
+      "variant": "unfixed",
+      "renewed_sign": {
+        "case": "weatherassistant_http_session_leak",
+        "variant": "unfixed",
+        "unsigned_sha256": "4cacc61b8ca69b12fd44ab88cbc19bb4ee666d64f059f7427d63fa19e409e0b6",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/weatherassistant_http_session_leak/unfixed/app.hap",
+        "audit": {
+          "sha256": "2c30e2bedd312e316f82c4e1a79f34ef01a91b3cdec6d21f8ca440dc14d3b511",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "weatherassistant_http_session_leak",
+          "variant": "unfixed",
+          "unsigned_sha256": "4cacc61b8ca69b12fd44ab88cbc19bb4ee666d64f059f7427d63fa19e409e0b6",
+          "signed_hap": "/home/research/ohm-clean/weatherassistant_http_session_leak/unfixed/app.hap",
+          "audit": {
+            "sha256": "dd4a89db292ae4a9c48024fb14e5d1e66dc76315aed214301a9a600924aa7b72",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "weatherassistant_http_session_leak",
+      "variant": "fixed",
+      "renewed_sign": {
+        "case": "weatherassistant_http_session_leak",
+        "variant": "fixed",
+        "unsigned_sha256": "404f2887764ec596574bc5fe8ede81401d25ad78b13f6aeab446e250dffd36fc",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/weatherassistant_http_session_leak/fixed/app.hap",
+        "audit": {
+          "sha256": "bcde9544badcc933e4c4abbab6a36b9724ce704f22eedba4ee96206c153e4537",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "weatherassistant_http_session_leak",
+          "variant": "fixed",
+          "unsigned_sha256": "404f2887764ec596574bc5fe8ede81401d25ad78b13f6aeab446e250dffd36fc",
+          "signed_hap": "/home/research/ohm-clean/weatherassistant_http_session_leak/fixed/app.hap",
+          "audit": {
+            "sha256": "9711924f552264e21e5155358fdb672939b452a83279a4e518f134201aa5a73e",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "weatherassistant_remote_weather_icons",
+      "variant": "unfixed",
+      "renewed_sign": {
+        "case": "weatherassistant_remote_weather_icons",
+        "variant": "unfixed",
+        "unsigned_sha256": "f61f7bc56a4a82e22d0b7558cf6df63e8aef5db32bce13a0c3bbd0a79195abc9",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/weatherassistant_remote_weather_icons/unfixed/app.hap",
+        "audit": {
+          "sha256": "28d32160a981647ea36ba9d7f44f6a95c8e006031bc9e1648d9f8183dae06930",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "weatherassistant_remote_weather_icons",
+          "variant": "unfixed",
+          "unsigned_sha256": "f61f7bc56a4a82e22d0b7558cf6df63e8aef5db32bce13a0c3bbd0a79195abc9",
+          "signed_hap": "/home/research/ohm-clean/weatherassistant_remote_weather_icons/unfixed/app.hap",
+          "audit": {
+            "sha256": "12230719fe30a509377b743bc2002922cf21d43e185415a57be0f3b271bc5617",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "weatherassistant_remote_weather_icons",
+      "variant": "fixed",
+      "renewed_sign": {
+        "case": "weatherassistant_remote_weather_icons",
+        "variant": "fixed",
+        "unsigned_sha256": "56091d86c7bf4acf2f2c13d24a1fb0f67789b623cfcd50b1bbc4f63f4a012fd9",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/weatherassistant_remote_weather_icons/fixed/app.hap",
+        "audit": {
+          "sha256": "c64f762b9964c5596d9fbb62828faa8a53eff42ccfcd7b1d5c04857cdec784db",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "weatherassistant_remote_weather_icons",
+          "variant": "fixed",
+          "unsigned_sha256": "56091d86c7bf4acf2f2c13d24a1fb0f67789b623cfcd50b1bbc4f63f4a012fd9",
+          "signed_hap": "/home/research/ohm-clean/weatherassistant_remote_weather_icons/fixed/app.hap",
+          "audit": {
+            "sha256": "cd48452d25c7c37bad9e4c2e57769232eb0eeac9b7efe7b18189b54f3f8c2da3",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "ytmusic_search_no_debounce",
+      "variant": "unfixed",
+      "renewed_sign": {
+        "case": "ytmusic_search_no_debounce",
+        "variant": "unfixed",
+        "unsigned_sha256": "10757512790d4f51d28b45e3be90ddbb3d21ba1e772524f0a28a88e349cc42b7",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/ytmusic_search_no_debounce/unfixed/app.hap",
+        "audit": {
+          "sha256": "fce0d167ee2f48c860b838dbbe45fd9b77435927f077879263ca0970ef4bf293",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "ytmusic_search_no_debounce",
+          "variant": "unfixed",
+          "unsigned_sha256": "10757512790d4f51d28b45e3be90ddbb3d21ba1e772524f0a28a88e349cc42b7",
+          "signed_hap": "/home/research/ohm-clean/ytmusic_search_no_debounce/unfixed/app.hap",
+          "audit": {
+            "sha256": "3d56cf94f5976964feb24140784d539b30a5323a0633b2427ee420873d674662",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    },
+    {
+      "case": "ytmusic_search_no_debounce",
+      "variant": "fixed",
+      "renewed_sign": {
+        "case": "ytmusic_search_no_debounce",
+        "variant": "fixed",
+        "unsigned_sha256": "70715cb25a89ebe42f17bcd4464ba86f1ff8179b6ca150f1750f40039124f68d",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/ytmusic_search_no_debounce/fixed/app.hap",
+        "audit": {
+          "sha256": "0a5771b33850943a918217b8060b946dcdaf2b34fed81ca9fa2aa4755e06012c",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "allowed_acls": [],
+        "status": "PASS"
+      },
+      "previous_sign": [
+        {
+          "case": "ytmusic_search_no_debounce",
+          "variant": "fixed",
+          "unsigned_sha256": "70715cb25a89ebe42f17bcd4464ba86f1ff8179b6ca150f1750f40039124f68d",
+          "signed_hap": "/home/research/ohm-clean/ytmusic_search_no_debounce/fixed/app.hap",
+          "audit": {
+            "sha256": "55b4708c057fdcab89f6f084c8e8a2e0ccc79ebb0bf9cf45b028059e0a059e38",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "performance_accepted": false
+    }
+  ]
+}
