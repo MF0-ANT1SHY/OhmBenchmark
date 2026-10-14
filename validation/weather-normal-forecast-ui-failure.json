@@ -1,0 +1,62 @@
+{
+  "status": "ALL_FOUR_CLEAN_WEATHER_UI_RUNS_FAILED_FORECAST_GUARD",
+  "performance_accepted": false,
+  "cases": {
+    "weatherassistant_http_session_leak": {
+      "unfixed": {
+        "receipt": {
+          "case": "weatherassistant_http_session_leak",
+          "variant": "unfixed",
+          "signed_sha256": "dd4a89db292ae4a9c48024fb14e5d1e66dc76315aed214301a9a600924aa7b72",
+          "plan_sha256": "66fdc3b56e9a442b76e92463c57aacc8dbc9d1636602a93a9cf653fc69655c7b",
+          "status": "FAIL",
+          "performance_verified": false,
+          "error": "UI target not found: {'text': '深圳市', 'match': 'exact'}"
+        },
+        "raw_ui_receipt_sha256": "b3412b0cc614342d7106bf73e768b60b1cab3cbf21f708318b6d428a9f3e2a13"
+      },
+      "fixed": {
+        "receipt": {
+          "case": "weatherassistant_http_session_leak",
+          "variant": "fixed",
+          "signed_sha256": "9711924f552264e21e5155358fdb672939b452a83279a4e518f134201aa5a73e",
+          "plan_sha256": "66fdc3b56e9a442b76e92463c57aacc8dbc9d1636602a93a9cf653fc69655c7b",
+          "status": "FAIL",
+          "performance_verified": false,
+          "error": "UI target not found: {'text': '深圳市', 'match': 'exact'}"
+        },
+        "raw_ui_receipt_sha256": "0ff7d621d36ed85508694e49e0ef46a1c5f665d62cb0ba114de475e4bb0bcfb8"
+      }
+    },
+    "weatherassistant_remote_weather_icons": {
+      "unfixed": {
+        "receipt": {
+          "case": "weatherassistant_remote_weather_icons",
+          "variant": "unfixed",
+          "signed_sha256": "12230719fe30a509377b743bc2002922cf21d43e185415a57be0f3b271bc5617",
+          "plan_sha256": "cac0ad5e06cdc720fc62fbca0c666ded3d6f666aa87844e2f9df4c2838a27668",
+          "status": "FAIL",
+          "performance_verified": false,
+          "error": "UI target not found: {'text': '深圳市', 'match': 'exact'}"
+        },
+        "raw_ui_receipt_sha256": "cfbf9ab62f235695bf78c99172e0499f1c50d47b67e82e7571d3d902dad8b650"
+      },
+      "fixed": {
+        "receipt": {
+          "case": "weatherassistant_remote_weather_icons",
+          "variant": "fixed",
+          "signed_sha256": "cd48452d25c7c37bad9e4c2e57769232eb0eeac9b7efe7b18189b54f3f8c2da3",
+          "plan_sha256": "cac0ad5e06cdc720fc62fbca0c666ded3d6f666aa87844e2f9df4c2838a27668",
+          "status": "FAIL",
+          "performance_verified": false,
+          "error": "UI target not found: {'text': '深圳市', 'match': 'exact'}"
+        },
+        "raw_ui_receipt_sha256": "6de046ea4a1e88a0e11eb1319cf89223f5fadd391494559a06b07e2aac596b1d"
+      }
+    }
+  },
+  "workstation_api_configuration_failure": "validation/weather-public-endpoint-schema.json",
+  "device_network_failure": "validation/device-offline-network-diagnosis.json",
+  "causal_limitation": "Absent forecast UI does not distinguish invalid API key from missing device networking; both have independent evidence.",
+  "performance_captures_started": false
+}

@@ -1,0 +1,316 @@
+{
+  "goal": "彻底剥离harness，重建30个cases",
+  "goal_complete": false,
+  "cases": 30,
+  "business_only_builds": 60,
+  "source_and_signed_artifact_proof": "validation/all-clean-signed-integrity.json",
+  "primary_passed": 11,
+  "valid_primary_measurement_failed": 7,
+  "pending_primary_measurement": 12,
+  "native_heap_collector_calibration_only_proof": "validation/nativeheap-device-clock-calibration.json",
+  "supplementary_cold_cache_not_counted": "validation/wan-home-cold-cache-pss-supplement.json",
+  "rows": [
+    {
+      "case": "browser_eager_history_load",
+      "primary_measurement_status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "recorded_primary_pass": true
+    },
+    {
+      "case": "browser_history_delete_no_transaction",
+      "primary_measurement_status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "recorded_primary_pass": true
+    },
+    {
+      "case": "browser_history_list_foreach",
+      "primary_measurement_status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "recorded_primary_pass": true
+    },
+    {
+      "case": "browser_insert_date_lookup_cache",
+      "primary_measurement_status": "pending_clean_measurement",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "blockers": [
+        "device_networking",
+        "complete_normal_workload_and_three_paired_measurements"
+      ],
+      "proof": [
+        "validation/device-offline-network-diagnosis.json"
+      ],
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "cloudmusic_indexof_in_render",
+      "primary_measurement_status": "measured_clean_failed",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "next_requirement": "A faithful normal workload or authorized defect redesign that meets the original criterion; thresholds and input payloads are not silently changed.",
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "cloudmusic_local_song_memory_filter",
+      "primary_measurement_status": "measured_clean_failed",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "next_requirement": "A faithful normal workload or authorized defect redesign that meets the original criterion; thresholds and input payloads are not silently changed.",
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "cloudmusic_play_time_high_frequency_update",
+      "primary_measurement_status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "recorded_primary_pass": true
+    },
+    {
+      "case": "cloudmusic_search_result_foreach",
+      "primary_measurement_status": "measured_clean_failed",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "next_requirement": "A faithful normal workload or authorized defect redesign that meets the original criterion; thresholds and input payloads are not silently changed.",
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "cloudmusic_songcard_artists_concat",
+      "primary_measurement_status": "measured_clean_failed",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "next_requirement": "A faithful normal workload or authorized defect redesign that meets the original criterion; thresholds and input payloads are not silently changed.",
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "interviewapp_response_log_full_stringify",
+      "primary_measurement_status": "pending_clean_measurement",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "blockers": [
+        "device_networking",
+        "complete_normal_workload_and_three_paired_measurements"
+      ],
+      "proof": [
+        "validation/device-offline-network-diagnosis.json"
+      ],
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "interviewapp_search_history_sync_flush",
+      "primary_measurement_status": "pending_clean_measurement",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "blockers": [
+        "device_networking",
+        "complete_normal_workload_and_three_paired_measurements"
+      ],
+      "proof": [
+        "validation/device-offline-network-diagnosis.json"
+      ],
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "interviewapp_search_history_unbounded",
+      "primary_measurement_status": "pending_clean_measurement",
+      "metric": "app_pss_bytes",
+      "app_injection": false,
+      "blockers": [
+        "device_networking",
+        "complete_normal_workload_and_three_paired_measurements"
+      ],
+      "proof": [
+        "validation/device-offline-network-diagnosis.json"
+      ],
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "primary_measurement_status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "recorded_primary_pass": true
+    },
+    {
+      "case": "jingmo_random_poem_orderby_random",
+      "primary_measurement_status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "recorded_primary_pass": true
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "primary_measurement_status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "recorded_primary_pass": true
+    },
+    {
+      "case": "sepweather_font_register_per_page",
+      "primary_measurement_status": "pending_clean_measurement",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "blockers": [
+        "normal_same_process_MainPage_reconstruction_not_proven"
+      ],
+      "proof": [
+        "validation/sepweather-clean-routing-premise.json"
+      ],
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "sheafreader_article_list_foreach",
+      "primary_measurement_status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "recorded_primary_pass": true
+    },
+    {
+      "case": "sheafreader_extract_tag_tolowercase",
+      "primary_measurement_status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "recorded_primary_pass": true
+    },
+    {
+      "case": "sheafreader_insert_duplicate_exception",
+      "primary_measurement_status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "recorded_primary_pass": true
+    },
+    {
+      "case": "sheafreader_refresh_feeds_sequential",
+      "primary_measurement_status": "measured_clean_failed",
+      "metric": "trace_cpu_ms",
+      "app_injection": false,
+      "next_requirement": "A faithful normal workload or authorized defect redesign that meets the original criterion; thresholds and input payloads are not silently changed.",
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "sheafreader_unread_counts_n_plus_1",
+      "primary_measurement_status": "measured_clean_failed",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "next_requirement": "A faithful normal workload or authorized defect redesign that meets the original criterion; thresholds and input payloads are not silently changed.",
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "wanharmony_history_log_materialization",
+      "primary_measurement_status": "pending_clean_measurement",
+      "metric": "trace_cpu_ms",
+      "app_injection": false,
+      "blockers": [
+        "device_networking",
+        "complete_normal_workload_and_three_paired_measurements"
+      ],
+      "proof": [
+        "validation/device-offline-network-diagnosis.json"
+      ],
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "wanharmony_html_decode_per_render",
+      "primary_measurement_status": "pending_clean_measurement",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "blockers": [
+        "device_networking",
+        "complete_normal_workload_and_three_paired_measurements"
+      ],
+      "proof": [
+        "validation/device-offline-network-diagnosis.json"
+      ],
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "wanharmony_persisted_home_list_growth",
+      "primary_measurement_status": "pending_clean_measurement",
+      "metric": "app_pss_bytes",
+      "app_injection": false,
+      "blockers": [
+        "device_networking",
+        "complete_normal_workload_and_three_paired_measurements"
+      ],
+      "proof": [
+        "validation/device-offline-network-diagnosis.json"
+      ],
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "wanharmony_web_progress_log_storm",
+      "primary_measurement_status": "pending_clean_measurement",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "blockers": [
+        "device_networking",
+        "complete_normal_workload_and_three_paired_measurements"
+      ],
+      "proof": [
+        "validation/device-offline-network-diagnosis.json"
+      ],
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "weatherassistant_http_session_leak",
+      "primary_measurement_status": "pending_clean_measurement",
+      "metric": "nativehook_retained_bytes",
+      "app_injection": false,
+      "blockers": [
+        "device_networking",
+        "valid_weather_api_configuration"
+      ],
+      "proof": [
+        "validation/weather-normal-forecast-ui-failure.json",
+        "validation/weather-public-endpoint-schema.json"
+      ],
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "weatherassistant_remote_weather_icons",
+      "primary_measurement_status": "pending_clean_measurement",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "blockers": [
+        "device_networking",
+        "valid_weather_api_configuration"
+      ],
+      "proof": [
+        "validation/weather-normal-forecast-ui-failure.json",
+        "validation/weather-public-endpoint-schema.json"
+      ],
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "ytmusic_current_playing_timeupdate",
+      "primary_measurement_status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "recorded_primary_pass": true
+    },
+    {
+      "case": "ytmusic_history_json_parse_per_row",
+      "primary_measurement_status": "measured_clean_failed",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "next_requirement": "A faithful normal workload or authorized defect redesign that meets the original criterion; thresholds and input payloads are not silently changed.",
+      "recorded_primary_pass": false
+    },
+    {
+      "case": "ytmusic_search_no_debounce",
+      "primary_measurement_status": "pending_clean_measurement",
+      "metric": "hiperf_instructions",
+      "app_injection": false,
+      "blockers": [
+        "device_networking",
+        "complete_normal_workload_and_three_paired_measurements"
+      ],
+      "proof": [
+        "validation/device-offline-network-diagnosis.json"
+      ],
+      "recorded_primary_pass": false
+    }
+  ]
+}
