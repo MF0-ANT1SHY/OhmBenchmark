@@ -1,0 +1,251 @@
+{
+  "case": "jingmo_sync_page_reimport",
+  "status": "measured_clean",
+  "criteria_unchanged": true,
+  "complete_gate": {
+    "stage": "complete",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "results": {
+    "unfixed": {
+      "status": "PASS",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        4506681633,
+        4499744652,
+        4511747452
+      ],
+      "median": 4506681633,
+      "paired_ratios": [
+        4.269069793286625,
+        4.092319725110015,
+        4.214346675412424
+      ],
+      "median_ratio": 4.209614779913391,
+      "plan_sha256": "78d345feabc34adb717011e72dfa25e69e696c021f3fcacdf094fba5de0bb4d3",
+      "signed_sha256": "692d37c1c95e0c48266f56f80d81417e5126c70d15e93bbbcdf4f8732ac8e046",
+      "fixture_sha256": "d438fdfd28d14a1b5b4feef5b75e08042627833f0fb1d1a7cb28177ec76b6413",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "4c9d1fc9fd25766b1d9f5bd700935ce58e8386017480390fa79866f19a82592b",
+          "app_samples": 1695,
+          "remote_artifacts": "/home/research/ohm-clean/jingmo_sync_page_reimport/unfixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "8e8b65bffb549b9547be106f8ad237ff2bf94bcbf233c59c4a9f5f25f9a2251e",
+          "app_samples": 1611,
+          "remote_artifacts": "/home/research/ohm-clean/jingmo_sync_page_reimport/unfixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "8f18607213d87533a569545ab302857040aa4cddd07bc6c29817cf089e2df7a3",
+          "app_samples": 1620,
+          "remote_artifacts": "/home/research/ohm-clean/jingmo_sync_page_reimport/unfixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    },
+    "fixed": {
+      "status": "PASS",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        1055658926,
+        1099558430,
+        1070568655
+      ],
+      "median": 1070568655,
+      "paired_ratios": [
+        4.269069793286625,
+        4.092319725110015,
+        4.214346675412424
+      ],
+      "median_ratio": 4.209614779913391,
+      "plan_sha256": "78d345feabc34adb717011e72dfa25e69e696c021f3fcacdf094fba5de0bb4d3",
+      "signed_sha256": "90ee8c4e416507081ffc9aba01524ac1228381cbdba2b3e411fefd6f028ee349",
+      "fixture_sha256": "d438fdfd28d14a1b5b4feef5b75e08042627833f0fb1d1a7cb28177ec76b6413",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "09defa0abee273cb899cb4aa058fb4bf05118bd811017bdaab5f68ca63a9eb6c",
+          "app_samples": 928,
+          "remote_artifacts": "/home/research/ohm-clean/jingmo_sync_page_reimport/fixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "132ca2923e7199d8e7bffd9c6e885a92f6e121df630d4561f17f8e95ee7f6c8e",
+          "app_samples": 1055,
+          "remote_artifacts": "/home/research/ohm-clean/jingmo_sync_page_reimport/fixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "1f344991e0f9a5f05757890cb8359cc9aaf9afef2fe2310a3ec575c2267917f0",
+          "app_samples": 1040,
+          "remote_artifacts": "/home/research/ohm-clean/jingmo_sync_page_reimport/fixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    }
+  },
+  "cycle_and_data_checks": [
+    {
+      "variant": "unfixed",
+      "round": 1,
+      "capture_sha256": "5204648ca8e0eba0b374cd2af64875bb2091e9516f93d802d520dfe03b4d0855",
+      "completed_cycles": 3,
+      "native_log_clock": "realtime_epoch_nsec",
+      "cached_rows_before": 5000,
+      "cached_rows_after": 5000,
+      "input_sha256": "d438fdfd28d14a1b5b4feef5b75e08042627833f0fb1d1a7cb28177ec76b6413",
+      "source": {
+        "sha256": "5564f4bbf1e4c3abea1a3db6bf9387c3955382019e94b71dcafc07c9250f7ef1",
+        "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+        "base_url": "http://127.0.0.1:18492/api/",
+        "service_pid": 29048,
+        "service_start_ticks": 652675,
+        "files": {
+          "/api/dataset_v2.json": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+          "/api/classicalliterature_classicpoem1.json": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+        }
+      },
+      "completion_started_monotonic": 7139.540932023,
+      "completion_ended_monotonic": 7142.496359424,
+      "action_start_monotonic": 7065.81123627,
+      "action_end_monotonic": 7148.976486674
+    },
+    {
+      "variant": "unfixed",
+      "round": 2,
+      "capture_sha256": "5f8e76288bca6a0776708310cfe89bf2b2f184ea5dd4c952386dd2931e627272",
+      "completed_cycles": 3,
+      "native_log_clock": "realtime_epoch_nsec",
+      "cached_rows_before": 5000,
+      "cached_rows_after": 5000,
+      "input_sha256": "d438fdfd28d14a1b5b4feef5b75e08042627833f0fb1d1a7cb28177ec76b6413",
+      "source": {
+        "sha256": "5564f4bbf1e4c3abea1a3db6bf9387c3955382019e94b71dcafc07c9250f7ef1",
+        "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+        "base_url": "http://127.0.0.1:18492/api/",
+        "service_pid": 29048,
+        "service_start_ticks": 652675,
+        "files": {
+          "/api/dataset_v2.json": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+          "/api/classicalliterature_classicpoem1.json": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+        }
+      },
+      "completion_started_monotonic": 7614.262119828,
+      "completion_ended_monotonic": 7617.248621061,
+      "action_start_monotonic": 7540.776942144,
+      "action_end_monotonic": 7623.59252952
+    },
+    {
+      "variant": "unfixed",
+      "round": 3,
+      "capture_sha256": "bd7f437040d6d6306295072f0f69cc6b44ae44228e3e39a8f1f5e679264c5339",
+      "completed_cycles": 3,
+      "native_log_clock": "realtime_epoch_nsec",
+      "cached_rows_before": 5000,
+      "cached_rows_after": 5000,
+      "input_sha256": "d438fdfd28d14a1b5b4feef5b75e08042627833f0fb1d1a7cb28177ec76b6413",
+      "source": {
+        "sha256": "5564f4bbf1e4c3abea1a3db6bf9387c3955382019e94b71dcafc07c9250f7ef1",
+        "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+        "base_url": "http://127.0.0.1:18492/api/",
+        "service_pid": 29048,
+        "service_start_ticks": 652675,
+        "files": {
+          "/api/dataset_v2.json": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+          "/api/classicalliterature_classicpoem1.json": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+        }
+      },
+      "completion_started_monotonic": 8090.985571986,
+      "completion_ended_monotonic": 8094.268245763,
+      "action_start_monotonic": 8018.085141445,
+      "action_end_monotonic": 8100.64482285
+    },
+    {
+      "variant": "fixed",
+      "round": 1,
+      "capture_sha256": "b352cd58bf9ed05f53020eab549730e533232999548d329c2969747a7c0be7f1",
+      "completed_cycles": 3,
+      "native_log_clock": "realtime_epoch_nsec",
+      "cached_rows_before": 5000,
+      "cached_rows_after": 5000,
+      "input_sha256": "d438fdfd28d14a1b5b4feef5b75e08042627833f0fb1d1a7cb28177ec76b6413",
+      "source": {
+        "sha256": "5564f4bbf1e4c3abea1a3db6bf9387c3955382019e94b71dcafc07c9250f7ef1",
+        "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+        "base_url": "http://127.0.0.1:18492/api/",
+        "service_pid": 29048,
+        "service_start_ticks": 652675,
+        "files": {
+          "/api/dataset_v2.json": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+          "/api/classicalliterature_classicpoem1.json": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+        }
+      },
+      "completion_started_monotonic": 7374.455233312,
+      "completion_ended_monotonic": 7377.442906944,
+      "action_start_monotonic": 7301.100743888,
+      "action_end_monotonic": 7383.858209848
+    },
+    {
+      "variant": "fixed",
+      "round": 2,
+      "capture_sha256": "1de0c0d7e33bc526e3ce55c5933e0063b37cb2afaf9499c5778b5c4ba98d63df",
+      "completed_cycles": 3,
+      "native_log_clock": "realtime_epoch_nsec",
+      "cached_rows_before": 5000,
+      "cached_rows_after": 5000,
+      "input_sha256": "d438fdfd28d14a1b5b4feef5b75e08042627833f0fb1d1a7cb28177ec76b6413",
+      "source": {
+        "sha256": "5564f4bbf1e4c3abea1a3db6bf9387c3955382019e94b71dcafc07c9250f7ef1",
+        "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+        "base_url": "http://127.0.0.1:18492/api/",
+        "service_pid": 29048,
+        "service_start_ticks": 652675,
+        "files": {
+          "/api/dataset_v2.json": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+          "/api/classicalliterature_classicpoem1.json": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+        }
+      },
+      "completion_started_monotonic": 7851.948447994,
+      "completion_ended_monotonic": 7854.910831409,
+      "action_start_monotonic": 7778.889798287,
+      "action_end_monotonic": 7861.320373425
+    },
+    {
+      "variant": "fixed",
+      "round": 3,
+      "capture_sha256": "c63ceb255f3c3971b1f893435700f4f269c6bd2d4c4bccd81160ffec770d6a59",
+      "completed_cycles": 3,
+      "native_log_clock": "realtime_epoch_nsec",
+      "cached_rows_before": 5000,
+      "cached_rows_after": 5000,
+      "input_sha256": "d438fdfd28d14a1b5b4feef5b75e08042627833f0fb1d1a7cb28177ec76b6413",
+      "source": {
+        "sha256": "5564f4bbf1e4c3abea1a3db6bf9387c3955382019e94b71dcafc07c9250f7ef1",
+        "source_sha256": "8c3b60e00b2ec9a9c8f192ae27016117a88cab20ae7dae9cd28923e2ade779f7",
+        "base_url": "http://127.0.0.1:18492/api/",
+        "service_pid": 29048,
+        "service_start_ticks": 652675,
+        "files": {
+          "/api/dataset_v2.json": "cf0dee7b34478aff9df46825782adfefcfa8c9ba28f7c57ff0e61d021a77e9f7",
+          "/api/classicalliterature_classicpoem1.json": "b4ff44bb311436d9475785e6934fb2d5ed86bb1b454fb35a31b31f06c041f0f2"
+        }
+      },
+      "completion_started_monotonic": 8326.824183635,
+      "completion_ended_monotonic": 8329.812172576,
+      "action_start_monotonic": 8253.36870555,
+      "action_end_monotonic": 8336.178306623
+    }
+  ],
+  "scope": "Three normal Sync Data visits per trial with 5000 cached ordinary poems. Existing download and completion/skip logs use coherent epoch+nsec timestamps; complete three-cycle observations lie inside each OS profiling window. Full database records and identical ordinary source verified before/after every trial. All mixed-clock trials retired; no app measurement code or old evidence reused."
+}

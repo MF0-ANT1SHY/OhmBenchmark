@@ -1,7 +1,7 @@
 {
   "bundle": "com.hefengbao.jingmo.hw",
   "ability": "EntryAbility",
-  "description": "jingmo (京墨文库)页面操作",
+  "description": "通过普通同步页面重复检查已导入的文库数据",
   "setup": [
     {
       "op": "wait",
@@ -15,18 +15,37 @@
       "y": 0.07
     },
     {
-      "op": "tap",
+      "op": "wait",
       "selector": {
-        "text": "同步数据"
+        "text": "设置"
       }
     },
     {
-      "op": "pause",
-      "seconds": 3
+      "op": "input",
+      "selector": {
+        "hint": "数据源地址",
+        "match": "exact"
+      },
+      "value": "http://127.0.0.1:18492/api/"
     },
     {
       "op": "key",
       "key": "Back"
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "type": "Button",
+        "text": "保存数据源",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "已保存",
+        "match": "exact"
+      }
     }
   ],
   "measured": [
@@ -37,16 +56,31 @@
         {
           "op": "tap",
           "selector": {
-            "text": "同步数据"
+            "text": "同步数据",
+            "match": "exact"
           }
         },
         {
           "op": "pause",
-          "seconds": 1
+          "seconds": 3
+        },
+        {
+          "op": "wait",
+          "selector": {
+            "text": "同步数据",
+            "match": "exact"
+          }
         },
         {
           "op": "key",
           "key": "Back"
+        },
+        {
+          "op": "wait",
+          "selector": {
+            "text": "设置",
+            "match": "exact"
+          }
         }
       ]
     }
@@ -55,7 +89,8 @@
     {
       "op": "wait",
       "selector": {
-        "text": "同步数据"
+        "text": "设置",
+        "match": "exact"
       }
     }
   ]

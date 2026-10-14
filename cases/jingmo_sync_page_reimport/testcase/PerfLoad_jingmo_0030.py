@@ -35,5 +35,5 @@ class PerfLoad_jingmo_0030(PerfTestCase):
         ui.run([{'op': 'stop'}, {'op': 'launch'}])
         ui.run(self._plan['setup'])
         ui.profiled(self.execute_performance_step,
-            'jingmo (京墨文库)页面操作', 15, self._plan['measured'])
+            '通过普通同步页面重复检查已导入的文库数据', 180, self._plan['measured'])
         ui.run(self._plan['verify'])
