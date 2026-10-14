@@ -14,6 +14,7 @@ from jingmo_import_fixture import CASE as POEM_IMPORT_CASE, verify_state as veri
 from jingmo_sync_fixture import CASE as POEM_SYNC_CASE, verify_preparation as verify_sync_preparation
 from jingmo_sync_progress import verify_observation as verify_sync_progress, verify_capture as verify_sync_capture
 from reader_list_progress import CASE as READER_LIST_CASE, verify_observation as verify_list_render, verify_capture as verify_list_capture
+from reader_unread_badges import CASE as UNREAD_CASE, verify_layout as verify_unread_layout
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -42,6 +43,9 @@ def accept(cid, write=True, require_pass=True):
             verify_sync_preparation(workload['fixture'],workload['fixture_after'])
         if cid in READER_CASES:
             device=json.loads((folder/'workload-device.json').read_text())
+            if cid == UNREAD_CASE:
+                if verify_unread_layout(device['reader_unread_badges']['layout'])!=workload.get('reader_unread_badges'):
+                    raise RuntimeError('correct ordinary feed unread counts are not proven')
             if cid == READER_LIST_CASE:
                 if verify_list_render(device['reader_list_render'])!=workload.get('reader_list_render'):
                     raise RuntimeError('normal complete article rendering is not proven')
@@ -85,6 +89,12 @@ def accept(cid, write=True, require_pass=True):
                 if receipt['poem_sync_fixture_before']['sha256']!=receipt['fixture_sha256']:
                     raise RuntimeError('cached poetry capture input differs from the validated data')
             if cid in READER_CASES:
+                if cid == UNREAD_CASE:
+                    badges=receipt['reader_unread_badges']
+                    if verify_unread_layout(badges['layout'])!=badges['counts']:
+                        raise RuntimeError('unread badge summary differs from native UI')
+                    if not receipt['action_start_monotonic']<=badges['started_monotonic']<=badges['ended_monotonic']<=receipt['action_end_monotonic']:
+                        raise RuntimeError('unread badges were not observed inside the measured window')
                 verify_preparation(receipt['reader_fixture_before'],receipt['reader_fixture_after'])
                 if receipt['reader_fixture_before']['sha256']!=receipt['fixture_sha256']:
                     raise RuntimeError('reader capture input differs from its verified native database')

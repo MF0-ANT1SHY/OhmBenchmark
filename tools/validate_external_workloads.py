@@ -30,6 +30,7 @@ from jingmo_import_fixture import prepare as prepare_import, finish as finish_im
 from jingmo_sync_fixture import prepare as prepare_sync, finish as finish_sync
 from jingmo_sync_progress import verify_observation as verify_sync_progress
 from reader_list_progress import CASE as READER_LIST_CASE, verify_observation as verify_list_render
+from reader_unread_badges import CASE as UNREAD_CASE, verify_layout as verify_unread_layout
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -105,6 +106,9 @@ def shell(command):
         if reader_fixture and cid == READER_LIST_CASE:
             remote.upload(ROOT/'tools/reader_list_progress.py','/home/research/ohm-clean/tools/reader_list_progress.py')
             code += "from reader_list_progress import observe,complete_render\n"
+        if reader_fixture and cid == UNREAD_CASE:
+            remote.upload(ROOT/'tools/reader_unread_badges.py','/home/research/ohm-clean/tools/reader_unread_badges.py')
+            code += "from reader_unread_badges import complete_badges\n"
         if cid=='sepweather_font_register_per_page':
             for module in ('page_lifecycle.py','system_pss.py'):
                 remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
@@ -141,6 +145,8 @@ def shell(command):
             code += " result['reader_refresh']=complete_refresh(ui,reader_before)\n"
         if reader_fixture and cid == READER_LIST_CASE:
             code += " result['reader_list_render']=complete_render(ui,reader_launch_before)\n"
+        if reader_fixture and cid == UNREAD_CASE:
+            code += " result['reader_unread_badges']=complete_badges(ui)\n"
         code += "except Exception as exc:\n"
         code += " result={'phases':phases,'status':'FAIL','error':str(exc)}\n"
         code += " if getattr(exc,'observation',None) is not None:result['failure_observation']=exc.observation\n"
@@ -166,6 +172,11 @@ def shell(command):
             result['fixture_after']=finish_sync(remote,result['fixture'])
             result['functional_check']='all 5000 full ordinary cached poetry records preserved after normal repeat sync actions'
         if reader_fixture:
+            if cid == UNREAD_CASE:
+                observation=device['reader_unread_badges']
+                if verify_unread_layout(observation['layout'])!=observation['counts']:
+                    raise ValueError('unread badge summary differs from native UI')
+                result['reader_unread_badges']=observation['counts']
             if cid == READER_LIST_CASE:
                 result['reader_list_render']=verify_list_render(device['reader_list_render'])
             else:
