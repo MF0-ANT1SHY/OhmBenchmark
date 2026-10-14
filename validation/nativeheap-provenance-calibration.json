@@ -1,0 +1,47 @@
+{
+  "calibration_only": true,
+  "performance_accepted": false,
+  "raw_artifacts": "artifacts/profiler-owned-snapshot/1373d99c44cb4a7295b5778a7f6e8ce1",
+  "owned_daemon_cleanup_verified": true,
+  "app_source_modified": false,
+  "error": null,
+  "standard_container_integrity_verified": true,
+  "result": {
+    "metric": "nativehook_retained_bytes",
+    "app_pid": 17410,
+    "retained_bytes": 1328,
+    "retained_allocations": 11,
+    "observed_allocations": 44,
+    "matched_frees": 33,
+    "preexisting_unmatched_frees": 8,
+    "first_event_ns": 643030522620110,
+    "last_event_ns": 643035464248755,
+    "trace_sha256": "400f0858cdb9a08b225c381d1bef22023ad944a02e498ab6ee441b72c8da64fd",
+    "method": "live observed malloc blocks after exact address-matched free events",
+    "collection_provenance_verified": false,
+    "performance_accepted": false
+  },
+  "native_memory_events_verified": true,
+  "independent_provenance_result": {
+    "metric": "nativehook_retained_bytes",
+    "app_pid": 17410,
+    "retained_bytes": 1328,
+    "retained_allocations": 11,
+    "observed_allocations": 44,
+    "matched_frees": 33,
+    "preexisting_unmatched_frees": 8,
+    "first_event_ns": 643030522620110,
+    "last_event_ns": 643035464248755,
+    "trace_sha256": "400f0858cdb9a08b225c381d1bef22023ad944a02e498ab6ee441b72c8da64fd",
+    "method": "live observed malloc blocks after exact address-matched free events",
+    "collection_provenance_verified": true,
+    "performance_accepted": false,
+    "profiler_pid": 26173
+  },
+  "collection_provenance_verified": true,
+  "normal_business_workload_verified": false,
+  "tests": {
+    "count": 2,
+    "status": "PASS"
+  }
+}
