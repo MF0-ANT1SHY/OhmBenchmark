@@ -9,7 +9,7 @@ from unittest.mock import patch
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from export_agent_data import app_report,reproduction_script,export,app_scheduler_report
+from export_agent_data import app_report,reproduction_script,export,app_scheduler_report,app_memory_report
 
 
 class AppReportTests(unittest.TestCase):
@@ -58,6 +58,22 @@ class AppReportTests(unittest.TestCase):
                 native_profile=json.loads((trace_destination/'profile.json').read_text())
                 self.assertEqual(native_profile['app_cpu_ns'],8000000)
                 self.assertNotIn('marker_token',(trace_destination/'profile.json').read_text())
+                archive.assert_not_called()
+                from test_system_pss import ProcessMemoryTests
+                memory_folder=folder/'pss-captures/round-1';memory_folder.mkdir(parents=True)
+                memory_capture=ProcessMemoryTests().window()
+                memory_capture.update({'status':'CAPTURED','signed_sha256':digest,
+                    'plan_sha256':hashlib.sha256((case_dir/'workload.json').read_bytes()).hexdigest()})
+                put(memory_folder/'capture.json',memory_capture)
+                put(case_dir/'case.json',{'host_app':{'local_path':'repo','bundle_name':'app.bundle'},
+                    'testcase':{'workload':'workload.json'},'test_oracle':{'metric':'app_pss_bytes'}})
+                memory_destination=root/'memory-export'
+                export(cid,memory_destination,'memory grows during use',1)
+                self.assertEqual({p.name for p in memory_destination.iterdir()},
+                                 {'app.hap','workload.json','reproduce.py','profile.json','symptom.txt'})
+                memory_profile=json.loads((memory_destination/'profile.json').read_text())
+                self.assertEqual(len(memory_profile['snapshots']),3)
+                self.assertEqual(memory_profile['processNameMap'],{'123':'app.bundle'})
                 archive.assert_not_called()
                 put(folder/'sign.json',{'status':'PASS','unsigned_sha256':'other-build',
                                        'audit':{'passed':True,'sha256':digest}})
@@ -159,6 +175,22 @@ class AppReportTests(unittest.TestCase):
         capture['process_after']['start_ticks']+=1
         with self.assertRaises(ValueError):
             app_scheduler_report(fixture.trace,capture,'com.sheafreader.hm')
+
+    def test_memory_export_preserves_all_observations_without_private_metadata(self):
+        from test_system_pss import ProcessMemoryTests
+        record=ProcessMemoryTests().window()
+        record.update({'case':'private-case','fixture_sha256':'private-input','preparation':{'path':'private-path'},
+                       'paired_ratios':[2,2,2],'remote_artifacts':'private-artifacts'})
+        result=app_memory_report(record,'app.bundle')
+        self.assertEqual(result['processNameMap'],{'123':'app.bundle'})
+        self.assertEqual([s['pss_bytes'] for s in result['snapshots']],[200*1024,500*1024,300*1024])
+        self.assertEqual([s['time_ns'] for s in result['snapshots']],[0,11000000000,26000000000])
+        self.assertEqual(result['workload_start_ns'],1000000000)
+        for private in ('private-case','private-input','private-path','private-artifacts','paired_ratios','raw_stat'):
+            self.assertNotIn(private,json.dumps(result))
+        record['snapshots'][1]['pss_bytes']=1
+        with self.assertRaises(ValueError):
+            app_memory_report(record,'app.bundle')
 
 
 if __name__ == '__main__':

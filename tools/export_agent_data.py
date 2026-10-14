@@ -15,6 +15,7 @@ from pathlib import Path
 from clean_sources import app_ref
 from remote_device import Remote
 from scheduler_cpu import compute, window_from_markers
+from system_pss import verify_window
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -137,15 +138,30 @@ def app_scheduler_report(trace, capture, bundle):
             'method': 'App-only native scheduling intervals; timestamps are relative to the recorded window.'}
 
 
+def app_memory_report(capture, bundle):
+    verify_window(capture, bundle)
+    first = capture['snapshots'][0]
+    origin = first['monotonic']
+    # Kernel identity and raw totals are verified above. Export the observed
+    # values, not evaluator fixture, preparation, comparison or oracle fields.
+    return {'schema': 'app_memory_profile_v1', 'processNameMap': {str(first['pid']): bundle},
+            'metric': 'process_pss_bytes',
+            'workload_start_ns': round((capture['action_start_monotonic']-origin)*1000000000),
+            'workload_end_ns': round((capture['action_end_monotonic']-origin)*1000000000),
+            'snapshots': [{'phase': s['phase'], 'time_ns': round((s['monotonic']-origin)*1000000000),
+                           'pss_bytes': s['pss_bytes']} for s in capture['snapshots']],
+            'method': 'App-only kernel process PSS snapshots; times are relative to the first observation.'}
+
+
 def export(cid, destination, symptom, round_number, remote_name='cityuPC', include_source=False):
     case = json.loads((ROOT/'cases'/cid/'case.json').read_text())
     folder = ROOT/'artifacts/clean'/cid/'unfixed'
     build = json.loads((folder/'build.json').read_text())
     sign = json.loads((folder/'sign.json').read_text())
     metric=case.get('test_oracle',{}).get('metric','hiperf_instructions')
-    if metric not in ('hiperf_instructions','trace_cpu_ms'):
+    if metric not in ('hiperf_instructions','trace_cpu_ms','app_pss_bytes'):
         raise ValueError('agent data export is not implemented for this metric')
-    capture_folder = folder/('trace-captures' if metric=='trace_cpu_ms' else 'cpu-captures')/f'round-{round_number}'
+    capture_folder = folder/{'trace_cpu_ms':'trace-captures','app_pss_bytes':'pss-captures','hiperf_instructions':'cpu-captures'}[metric]/f'round-{round_number}'
     capture = json.loads((capture_folder/'capture.json').read_text())
     hap = folder/'app-export.hap'
     plan = ROOT/'cases'/cid/case['testcase']['workload']
@@ -170,6 +186,8 @@ def export(cid, destination, symptom, round_number, remote_name='cityuPC', inclu
         raise ValueError('source/build mismatch')
     if metric=='trace_cpu_ms':
         report=app_scheduler_report(capture_folder/'trace.htrace',capture,case['host_app']['bundle_name'])
+    elif metric=='app_pss_bytes':
+        report=app_memory_report(capture,case['host_app']['bundle_name'])
     else:
         report=app_report(json.loads((capture_folder/'report.json').read_text()), capture['pids'], case['host_app']['bundle_name'])
     # Refuse a pre-existing destination: stale fixed packages/receipts must not
