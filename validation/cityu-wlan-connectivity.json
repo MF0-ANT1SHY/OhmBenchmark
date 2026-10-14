@@ -22,5 +22,15 @@
       "verified": true,
       "output": "CONNECTION ESTABLISHED\nProtocol version: TLSv1.3\nCiphersuite: TLS_AES_256_GCM_SHA384\nPeer certificate: CN = example.com\nHash used: SHA256\nSignature type: ECDSA\nVerification: OK\nVerified peername: example.com\nServer Temp Key: X25519, 253 bits\nDONE\n"
     }
+  },
+  "current_tls_verified_hosts": [
+    "api-harmony-teach.itheima.net",
+    "example.com",
+    "www.wanandroid.com"
+  ],
+  "wan_restoration_proof": "validation/wan-public-dns-restoration.json",
+  "regression_tests": {
+    "tests": 176,
+    "status": "PASS"
   }
 }
