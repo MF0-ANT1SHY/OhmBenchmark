@@ -1,0 +1,54 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "performance_accepted": false,
+  "network_load_more_verified": false,
+  "variants": {
+    "unfixed": {
+      "deployment": {
+        "sha256": "3cbdcbcae836f09fb0501c149e84451d1201a5825af4c47bb60f89b064e6ca1f",
+        "deployed_sha256": "9b425b8f6b04b7cf1bec5a209c92be7203bbcb3b3cabcd7e2647a9143a8ec86f",
+        "preferences": "/data/app/el2/100/base/org.example.wan.ohos/haps/entry/files/persistent_storage",
+        "backup": "/home/research/ohm-clean/backups/org.example.wan.ohos/1791973057855581287/persistent_storage.xml",
+        "articles": 471,
+        "fixture_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/wan-home-cache",
+        "method": "ordinary API articles in the initialized native PersistentStorage cache arrays",
+        "installation_verified": true,
+        "functional_read_verified": false
+      },
+      "status": "PASS",
+      "receipt": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/cold-cache-ui.json",
+      "sha256": "dbafcaf1c2cd62c064a652810e0b3cded8d00fc50afa62c0d30bb6dd61dcda7b",
+      "signed_sha256": "06787426f0293f1010bbc8a6a21095dc8a23f020860207453dcd2de0ffbb6653"
+    },
+    "fixed": {
+      "deployment": {
+        "sha256": "3cbdcbcae836f09fb0501c149e84451d1201a5825af4c47bb60f89b064e6ca1f",
+        "deployed_sha256": "9b425b8f6b04b7cf1bec5a209c92be7203bbcb3b3cabcd7e2647a9143a8ec86f",
+        "preferences": "/data/app/el2/100/base/org.example.wan.ohos/haps/entry/files/persistent_storage",
+        "backup": "/home/research/ohm-clean/backups/org.example.wan.ohos/1791973112626461650/persistent_storage.xml",
+        "articles": 471,
+        "fixture_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/wan-home-cache",
+        "method": "ordinary API articles in the initialized native PersistentStorage cache arrays",
+        "installation_verified": true,
+        "functional_read_verified": false
+      },
+      "status": "PASS",
+      "receipt": "artifacts/clean/wanharmony_persisted_home_list_growth/fixed/cold-cache-ui.json",
+      "sha256": "4d85a90b08d003f17a3048181a949fd4ca5fca1e22ed1db5dd2d2e4cad4ba532",
+      "signed_sha256": "24157c61b0d37098dc74ea8d359f519d374e34513aa52ee8c511fe8ae8b036de"
+    }
+  },
+  "cold_cache_ui_verified": true,
+  "identical_deployed_preferences_verified": true,
+  "articles": 471,
+  "first_page_articles": 20,
+  "app_source_modified": false,
+  "tests": {
+    "count": 6,
+    "status": "PASS"
+  },
+  "remaining_requirements": [
+    "Three paired final absolute process-PSS trials from kernel smaps_rollup.",
+    "Successful load-more persistence/write-volume mechanism verification; not claimed by this offline cold-cache read."
+  ]
+}
