@@ -188,7 +188,7 @@ def shell(command):
         if cid=='sepweather_font_register_per_page':
             code += "result['page_observations']=page_observations\n"
         code += "plan_path.with_name('workload-device.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))\n"
-        remote.python(code, timeout=600)
+        remote.python(code, timeout=max(600, int(case['collection']['step_duration_s']) + 300))
         remote.download(str(Path(destination).with_name('workload-device.json')), folder / 'workload-device.json')
         device = json.loads((folder / 'workload-device.json').read_text())
         if device['status'] != 'PASS':

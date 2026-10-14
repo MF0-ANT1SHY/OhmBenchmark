@@ -70,7 +70,8 @@ def shell(command):
     # Kernel reads are independent of the normal UI driver. The SSH observer's
     # own memory and system totals can never become the app's PSS value.
     result=capture_window(remote,int(pids[0]),bundle,
-                          lambda:remote.python(code+"ui.run(plan['measured']);ui.run(plan['verify'])\n",timeout=600))
+                          lambda:remote.python(code+"ui.run(plan['measured']);ui.run(plan['verify'])\n",
+                                               timeout=max(600, int(case['collection']['step_duration_s']) + 300)))
     verify_window(result,bundle)
     result.update(status='CAPTURED',case=cid,variant=variant,round=round_number,
                   metric='app_pss_bytes',plan_sha256=plan_hash,
