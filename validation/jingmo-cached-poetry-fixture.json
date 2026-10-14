@@ -1,0 +1,9 @@
+{
+  "status": "ordinary_cached_poetry_fixture_prepared",
+  "records": 5000,
+  "all_business_fields_match_source": true,
+  "database_sha256": "4628397db54c4b7542d93e69648fadb5bc8b25d06d272befbe43b5c9b8050b8f",
+  "device_validation": "pending",
+  "performance_verified": false,
+  "scope": "ordinary previously imported data for the repeat-sync case; no counters or evaluator columns"
+}
