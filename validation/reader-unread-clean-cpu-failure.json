@@ -1,0 +1,137 @@
+{
+  "case": "sheafreader_unread_counts_n_plus_1",
+  "policy": "no_app_injection",
+  "status": "VALID_CLEAN_MEASUREMENT_FAILED_ORACLE",
+  "performance_accepted": false,
+  "unchanged_minimum_paired_ratio": 1.2,
+  "legacy_evidence_reused": false,
+  "raw_reports_recomputed": true,
+  "results": {
+    "unfixed": {
+      "status": "FAIL",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        3251413985,
+        3276146561,
+        3288083024
+      ],
+      "median": 3276146561,
+      "paired_ratios": [
+        0.9872568288437087,
+        0.9994222447771333,
+        1.0042930381630248
+      ],
+      "median_ratio": 0.9994222447771333,
+      "plan_sha256": "060592a1b1171e0677edc5f5d7cfec6a35145a4ac722d6e911b737f216347192",
+      "signed_sha256": "2e183f4ca68e575c23a5cba0edbbcddf3fd03298c23ed3e29abc65524bc0b682",
+      "fixture_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "0c09b0416679466a7c622a5597aeefca6b06fc5ece26ef817c9fb336d2640492",
+          "app_samples": 3925,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/unfixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "b870443238ac37c74eaac2ddff892edca71e1461192588c7ab112cf54941afc9",
+          "app_samples": 3816,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/unfixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "0a739f6af6fbd200be5d70a49fced62a4b933554381474754319662813b63660",
+          "app_samples": 3662,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/unfixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    },
+    "fixed": {
+      "status": "FAIL",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        3293382117,
+        3278040466,
+        3274027499
+      ],
+      "median": 3278040466,
+      "paired_ratios": [
+        0.9872568288437087,
+        0.9994222447771333,
+        1.0042930381630248
+      ],
+      "median_ratio": 0.9994222447771333,
+      "plan_sha256": "060592a1b1171e0677edc5f5d7cfec6a35145a4ac722d6e911b737f216347192",
+      "signed_sha256": "6531ac887766ff2553696f9c95c595aaf4399dfb8a57e4edfd58a509b4ff732a",
+      "fixture_sha256": "ea62b3a6437bff22b23200407ad5307aba20ea4f78edd4ce0bb9ff7b0a32eb4e",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "2285350ef4d47c83ddb8b2624992e086fa04d6f0a29160a22f708ab12bd074e1",
+          "app_samples": 3956,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/fixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "271c5a3f75f905471a215a7632a844091b38f4873c06e86577b311b64da407b6",
+          "app_samples": 3756,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/fixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "6436ab6d68c4818a31ce6984d5a6eca1cb824f074381a7e02379de20b7d58b04",
+          "app_samples": 3809,
+          "remote_artifacts": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/fixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    }
+  },
+  "functional_requirement": "all ten actual sidebar counts equal 100; all ordinary RSS articles preserved after completed refresh",
+  "native_ui": {
+    "unfixed": {
+      "status": "PASS",
+      "counts": {
+        "Journal 1": 100,
+        "Journal 2": 100,
+        "Journal 3": 100,
+        "Journal 4": 100,
+        "Journal 5": 100,
+        "Journal 6": 100,
+        "Journal 7": 100,
+        "Journal 8": 100,
+        "Journal 9": 100,
+        "Journal 10": 100
+      },
+      "device_receipt_sha256": "ae1f59d93344b368a9ed5f6677d609692b8079fd5ae8be380019c54c1cbe5e6e"
+    },
+    "fixed": {
+      "status": "PASS",
+      "counts": {
+        "Journal 1": 100,
+        "Journal 2": 100,
+        "Journal 3": 100,
+        "Journal 4": 100,
+        "Journal 5": 100,
+        "Journal 6": 100,
+        "Journal 7": 100,
+        "Journal 8": 100,
+        "Journal 9": 100,
+        "Journal 10": 100
+      },
+      "device_receipt_sha256": "b2c4c91f723536db2b7aafefc1bdfed283c5dc8ecdd49263650a6c707448e6ea"
+    }
+  },
+  "source_sign_smoke_gate": {
+    "stage": "smoke",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  }
+}

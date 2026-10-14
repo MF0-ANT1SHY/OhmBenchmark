@@ -35,5 +35,5 @@ class PerfLoad_sheafreader_0050(PerfTestCase):
         ui.run([{'op': 'stop'}, {'op': 'launch'}])
         ui.run(self._plan['setup'])
         ui.profiled(self.execute_performance_step,
-            'Sheaf-Reader (束阅 RSS 阅读器)页面操作', 30, self._plan['measured'])
+            '正常刷新并检查订阅未读数', 120, self._plan['measured'])
         ui.run(self._plan['verify'])
