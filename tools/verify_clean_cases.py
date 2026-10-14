@@ -10,6 +10,7 @@ from audit_clean_app import audit_hap, audit_source
 from clean_sources import app_ref
 from accept_cpu_evidence import accept as validate_cpu
 from accept_pss_evidence import accept as validate_pss
+from accept_trace_evidence import accept as validate_trace
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -82,9 +83,9 @@ def verify(stage, selected=None):
         if stage=='complete' and evidence_status!='measured_clean':
             pending.append(f'{cid}: clean performance oracle not accepted ({evidence_status})')
         if stage == 'complete' and c['test_oracle']['evidence'].get('status')=='measured_clean':
-            if c['test_oracle']['metric'] in ('hiperf_instructions','app_pss_bytes'):
+            if c['test_oracle']['metric'] in ('hiperf_instructions','app_pss_bytes') or cid=='sheafreader_refresh_feeds_sequential':
                 try:
-                    validator=validate_cpu if c['test_oracle']['metric']=='hiperf_instructions' else validate_pss
+                    validator={'hiperf_instructions':validate_cpu,'app_pss_bytes':validate_pss,'trace_cpu_ms':validate_trace}[c['test_oracle']['metric']]
                     recomputed=validator(cid,write=False)
                     for variant,expected in recomputed.items():
                         actual=json.loads((ROOT/'artifacts/clean'/cid/variant/'performance.json').read_text())
