@@ -81,5 +81,30 @@ class PSSEvidenceTest(unittest.TestCase):
         self.assertEqual(json.loads((self.case/'case.json').read_text())['test_oracle']['evidence']['status'],
                          'measured_clean_failed')
 
+    def test_negative_screen_cannot_accept_or_write_partial_positive_data(self):
+        with patch('accept_pss_evidence.ROOT',self.root):
+            for options in ({}, {'write':False}, {'require_pass':False}):
+                with self.assertRaises(ValueError):
+                    accept(self.cid,negative_screen=True,**options)
+            with self.assertRaisesRegex(ValueError,'three complete pairs'):
+                accept(self.cid,write=False,require_pass=False,negative_screen=True)
+
+    def test_first_failed_pair_rejects_without_later_trials_or_file_changes(self):
+        folder=self.root/'artifacts/clean'/self.cid
+        for variant in ('unfixed','fixed'):
+            for n in (2,3):
+                (folder/variant/f'pss-captures/round-{n}/capture.json').unlink()
+        path=folder/'unfixed/pss-captures/round-1/capture.json'
+        record=json.loads(path.read_text());record['app_pss_bytes']=110*1024
+        record['snapshots'][-1].update(pss_bytes=110*1024,raw_smaps_rollup='Pss: 110 kB\n')
+        self.put(path,record)
+        before={p:p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        with patch('accept_pss_evidence.ROOT',self.root):
+            result=accept(self.cid,write=False,require_pass=False,negative_screen=True)
+            with self.assertRaises(FileNotFoundError):accept(self.cid,write=False)
+        self.assertEqual(result['unfixed']['status'],'FAIL')
+        self.assertEqual(result['unfixed']['rounds'],1)
+        self.assertEqual(before,{p:p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+
 
 if __name__=='__main__':unittest.main()

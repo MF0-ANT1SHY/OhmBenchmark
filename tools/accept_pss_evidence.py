@@ -12,7 +12,12 @@ from system_pss import verify_window
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def accept(cid,write=True,require_pass=True):
+def accept(cid,write=True,require_pass=True,*,negative_screen=False):
+    # A failed mandatory first pair already disproves the all-pairs criterion.
+    # This read-only screen can reject, but can never accept a partial run.
+    if negative_screen and (write or require_pass):
+        raise ValueError('negative screening must be read-only and cannot accept performance')
+    round_count = 1 if negative_screen else 3
     path=ROOT/'cases'/cid/'case.json'
     case=json.loads(path.read_text())
     if case['test_oracle']['metric']!='app_pss_bytes':
@@ -32,7 +37,7 @@ def accept(cid,write=True,require_pass=True):
         if not workload.get('fixture',{}).get('functional_read_verified'):
             raise ValueError('normal UI read of the preference fixture is not proven')
         values=[];captures=[]
-        for number in range(1,4):
+        for number in range(1,round_count+1):
             capture_path=folder/'pss-captures'/f'round-{number}'/'capture.json'
             record=json.loads(capture_path.read_text())
             if (record['status']!='CAPTURED' or record['metric']!='app_pss_bytes'
@@ -59,9 +64,11 @@ def accept(cid,write=True,require_pass=True):
     ratios=[u/f for u,f in zip(variants['unfixed']['samples'],variants['fixed']['samples'])]
     median_ratio=statistics.median(variants['unfixed']['samples'])/statistics.median(variants['fixed']['samples'])
     passed=min(ratios)>=1.2 and median_ratio>=1.2
+    if negative_screen and passed:
+        raise ValueError('first pair is not negative; three complete pairs are required for acceptance')
     results={}
     for variant,data in variants.items():
-        result={'status':'PASS' if passed else 'FAIL','metric':'app_pss_bytes','rounds':3,
+        result={'status':'PASS' if passed else 'FAIL','metric':'app_pss_bytes','rounds':round_count,
                 'samples':data['samples'],'median':statistics.median(data['samples']),
                 'paired_ratios':ratios,'median_ratio':median_ratio,'plan_sha256':plan_hash,
                 'signed_sha256':data['signed_sha256'],'fixture_sha256':next(iter(identities)),
@@ -72,7 +79,7 @@ def accept(cid,write=True,require_pass=True):
             (ROOT/'artifacts/clean'/cid/variant/'performance.json').write_text(json.dumps(result,indent=2)+'\n')
     case['test_oracle']['evidence']={'status':'measured_clean' if passed else 'measured_clean_failed',
         'metric':'app_pss_bytes','unfixed':variants['unfixed']['samples'],'fixed':variants['fixed']['samples'],
-        'median_ratio':median_ratio,'rounds_per_variant':3,'legacy_evidence_reused':False,
+        'median_ratio':median_ratio,'rounds_per_variant':round_count,'legacy_evidence_reused':False,
         'note':'Every paired round and the median exceed 1.2x.' if passed else
                'Raw clean PSS trials are valid, but the unchanged 1.2x criterion is not met.'}
     if write:

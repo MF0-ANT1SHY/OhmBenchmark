@@ -72,6 +72,9 @@ def main():
         if oracle['evidence'].get('status')=='measured_clean_failed' and all(
                 clean['variants'][v].get('performance',{}).get('status')=='FAIL' for v in ('unfixed','fixed')):
             clean['performance_validation']='failed'
+        if oracle['evidence'].get('status')=='negative_screen_failed' and all(
+                clean['variants'][v].get('performance',{}).get('status')=='NEGATIVE_SCREEN_FAILED' for v in ('unfixed','fixed')):
+            clean['performance_validation']='negative_screen_failed'
         c["clean_validation"] = clean
         c["reproduction"] = [
             "python3 tools/reconstruct_clean_hosts.py",
@@ -92,10 +95,11 @@ def main():
         case=json.loads(path.read_text())
         measured=case['clean_validation']['performance_validation']=='verified'
         failed=case['clean_validation']['performance_validation']=='failed'
+        screened=case['clean_validation']['performance_validation']=='negative_screen_failed'
         contracts[case['id']]={'oracle_metric':case['test_oracle']['metric'],'app_injection':False,
             'workload_validation':case['clean_validation']['workload_validation'],
-            'measurement_status':'measured_clean' if measured else 'measured_clean_failed' if failed else 'pending_clean_measurement',
-            'rounds_recorded':case['test_oracle']['evidence'].get('rounds_per_variant',0) if measured or failed else 0}
+            'measurement_status':'measured_clean' if measured else 'measured_clean_failed' if failed else 'negative_screen_failed' if screened else 'pending_clean_measurement',
+            'rounds_recorded':case['test_oracle']['evidence'].get('rounds_per_variant',0) if measured or failed or screened else 0}
         if case.get('disposition'):
             contracts[case['id']]['disposition'] = case['disposition']
     (ROOT/'cases/measurement-contract.json').write_text(json.dumps({
