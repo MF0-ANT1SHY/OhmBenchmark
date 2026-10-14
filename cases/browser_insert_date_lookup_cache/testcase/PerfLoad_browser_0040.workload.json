@@ -1,13 +1,21 @@
 {
   "bundle": "com.example.nanvision",
   "ability": "EntryAbility",
-  "description": "浏览器页面操作",
+  "description": "通过普通搜索栏导航15次并保存同一日期的浏览记录",
   "setup": [
     {
       "op": "wait",
       "selector": {
         "text": "小狐狸浏览器"
       }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "hint": "搜索或输入网址",
+        "match": "exact"
+      },
+      "timeout_s": 30
     }
   ],
   "measured": [
@@ -18,13 +26,22 @@
         {
           "op": "input",
           "selector": {
-            "type": "SearchField"
+            "hint": "搜索或输入网址",
+            "match": "exact"
           },
           "value": "https://example.com"
         },
         {
           "op": "key",
           "key": 2054
+        },
+        {
+          "op": "wait",
+          "selector": {
+            "text": "Example Domain",
+            "match": "exact"
+          },
+          "timeout_s": 60
         },
         {
           "op": "pause",

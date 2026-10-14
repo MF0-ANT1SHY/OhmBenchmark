@@ -1,0 +1,51 @@
+{
+  "case": "browser_insert_date_lookup_cache",
+  "status": "NORMAL_NAVIGATION_PLAN_FAILED_PAGE_GUARD",
+  "performance_accepted": false,
+  "plan_sha256": "39e86ed03e2904741c42e458d407813a71c529e855ad500bd805b6e538aaf453",
+  "capture_duration_s": 300,
+  "saved_visits_verified": false,
+  "variants": {
+    "unfixed": {
+      "workload": {
+        "case": "browser_insert_date_lookup_cache",
+        "variant": "unfixed",
+        "signed_sha256": "c5557aaa6231ab000c7823372a48182a663151d6c62276c033519a80ca26583e",
+        "plan_sha256": "39e86ed03e2904741c42e458d407813a71c529e855ad500bd805b6e538aaf453",
+        "status": "FAIL",
+        "performance_verified": false,
+        "fixture": {
+          "bundle": "com.example.nanvision",
+          "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
+          "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791961974317161368/Histories.db",
+          "fixture_tables": 1,
+          "integrity_check": "ok",
+          "sha256": "cf2c15ea1e7129f410c49662e1d38fad7f6959c28586f3c25d4968301f3df7bc"
+        },
+        "error": "UI target not found: {'text': 'Example Domain', 'match': 'exact'}"
+      },
+      "raw_ui_sha256": "35668a5219a9658395a92a0860087f2bcb32a66f1f361db8bf8ff68e0b108484"
+    },
+    "fixed": {
+      "workload": {
+        "case": "browser_insert_date_lookup_cache",
+        "variant": "fixed",
+        "signed_sha256": "6967ee493f0d8cc6e0f89c4da06de8050a9207930e73ca794154768fb6a5d1b0",
+        "plan_sha256": "39e86ed03e2904741c42e458d407813a71c529e855ad500bd805b6e538aaf453",
+        "status": "FAIL",
+        "performance_verified": false,
+        "fixture": {
+          "bundle": "com.example.nanvision",
+          "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
+          "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791962107236148678/Histories.db",
+          "fixture_tables": 1,
+          "integrity_check": "ok",
+          "sha256": "cf2c15ea1e7129f410c49662e1d38fad7f6959c28586f3c25d4968301f3df7bc"
+        },
+        "error": "UI target not found: {'text': 'Example Domain', 'match': 'exact'}"
+      },
+      "raw_ui_sha256": "2cc406de3e4cc78a25987a8a3580f8acce9c1ad5642a54103f222a9421bbf0a8"
+    }
+  },
+  "network_blocker": "validation/device-offline-network-diagnosis.json"
+}

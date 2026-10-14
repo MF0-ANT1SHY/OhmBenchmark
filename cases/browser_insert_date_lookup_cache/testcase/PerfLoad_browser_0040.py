@@ -35,5 +35,5 @@ class PerfLoad_browser_0040(PerfTestCase):
         ui.run([{'op': 'stop'}, {'op': 'launch'}])
         ui.run(self._plan['setup'])
         ui.profiled(self.execute_performance_step,
-            '浏览器页面操作', 30, self._plan['measured'])
+            '通过普通搜索栏导航15次并保存同一日期的浏览记录', 300, self._plan['measured'])
         ui.run(self._plan['verify'])
