@@ -1,0 +1,8 @@
+{
+  "calibration_only": true,
+  "performance_accepted": false,
+  "raw_artifacts": "artifacts/profiler-owned-snapshot/dcadcfe9e8524037a27c80bf6f4a0ae2",
+  "owned_daemon_cleanup_verified": true,
+  "app_source_modified": false,
+  "error": "list index out of range"
+}

@@ -1,0 +1,20 @@
+{
+  "calibration_only": true,
+  "performance_accepted": false,
+  "raw_artifacts": "artifacts/profiler-sha-snapshot/bcb42f5c177a43fda6bc005a307f6025",
+  "observer_library_sha256": "ae6e475aa108ec311425e05596f501149be6769ee7f1aa0d06ceda2fb4c0a542",
+  "source_sha256": "1aa609a62f4742e6b884a5af981e420903c8daa7f5d6964087f5703c5380360d",
+  "app_library_injection": false,
+  "profiler_cleanup_verified": true,
+  "native_format_verified": false,
+  "error": "one matching nativehook configuration and memory events are required",
+  "standard_container_integrity_verified": true,
+  "memory_events_verified": false,
+  "trace_sha256": "6a43714e660bd5329153a114b3aa7060240c8dbd2138bef7760d799dfad652f2",
+  "activation_receipts": "ls: /data/local/tmp/profiler-sha-snapshot-*.receipt: No such file or directory\n",
+  "observer_repair_activation_verified": false,
+  "limitations": [
+    "The -s option starts daemons via init parameters; LD_PRELOAD on the CLI is not inherited.",
+    "The checksum-valid file contained only nativehook_config; this is not evidence that the observer repair worked."
+  ]
+}

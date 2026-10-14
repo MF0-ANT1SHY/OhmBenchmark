@@ -1,0 +1,16 @@
+{
+  "calibration_only": true,
+  "performance_accepted": false,
+  "raw_artifacts": "artifacts/profiler-owned-snapshot/c697af74462f4a45a16e132128c8d600",
+  "owned_daemon_cleanup_verified": false,
+  "app_source_modified": false,
+  "error": "owned daemon exited before identity read: native_daemon",
+  "post_cleanup_verified": true,
+  "original_cleanup_result_preserved": false,
+  "cleanup_detail": "Only the recorded owned hiprofiler_plugins PID 19951 with matching start ticks 242386180 was terminated with SIGKILL after it ignored SIGTERM. All four profiler pidof checks subsequently returned empty.",
+  "observer_library_loaded_into_owned_profiler_verified": true,
+  "control_socket_contract_missing": true,
+  "platform_or_app_binaries_modified": false,
+  "unit_test_status": "PASS",
+  "source_sha256": "1aa609a62f4742e6b884a5af981e420903c8daa7f5d6964087f5703c5380360d"
+}
