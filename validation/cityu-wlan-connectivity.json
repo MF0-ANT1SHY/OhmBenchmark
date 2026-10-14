@@ -1,0 +1,26 @@
+{
+  "status": "CONNECTED",
+  "ssid": "CityU WLAN (WPA)",
+  "eap": "PEAP",
+  "phase2": "MSCHAPV2",
+  "ca_validation": "system certificates",
+  "authentication_domain": "auth.wifi.cityu.edu.hk",
+  "credentials_recorded": false,
+  "app_injection": false,
+  "performance_accepted": false,
+  "raw_tls_sha256": "6a2519abebdc77898175ddd51423344b4904c9fc06262ce8f43af15f308347e7",
+  "tls": {
+    "api-harmony-teach.itheima.net": {
+      "verified": true,
+      "output": "CONNECTION ESTABLISHED\nProtocol version: TLSv1.2\nCiphersuite: ECDHE-RSA-AES128-GCM-SHA256\nPeer certificate: CN = *.itheima.net\nHash used: SHA256\nSignature type: RSA-PSS\nVerification: OK\nVerified peername: *.itheima.net\nSupported Elliptic Curve Point Formats: uncompressed:ansiX962_compressed_prime:ansiX962_compressed_char2\nServer Temp Key: X25519, 253 bits\nDONE\n"
+    },
+    "www.wanandroid.com": {
+      "verified": false,
+      "output": "70BEC22A5A000000:error:8000006F:system library:BIO_connect:reason(111)::0:calling connect()\n70BEC22A5A000000:error:10000067:BIO routines:BIO_connect:connect error::0:\nconnect:errno=111\n"
+    },
+    "example.com": {
+      "verified": true,
+      "output": "CONNECTION ESTABLISHED\nProtocol version: TLSv1.3\nCiphersuite: TLS_AES_256_GCM_SHA384\nPeer certificate: CN = example.com\nHash used: SHA256\nSignature type: ECDSA\nVerification: OK\nVerified peername: example.com\nServer Temp Key: X25519, 253 bits\nDONE\n"
+    }
+  }
+}
