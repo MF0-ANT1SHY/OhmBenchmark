@@ -1,31 +1,87 @@
 {
   "bundle": "cc.chenlvin.cloudmusic",
   "ability": "EntryAbility",
-  "description": "CloudMusic-HarmonyOSNext (仿网易云音乐)页面操作",
+  "description": "通过普通本地曲库菜单播放真实60秒音频，在完整播放器观察播放进度推进",
   "setup": [
     {
       "op": "wait",
       "selector": {
-        "text": "Explore"
-      }
+        "text": "发现",
+        "match": "exact"
+      },
+      "timeout_s": 60
     },
     {
       "op": "tap",
       "selector": {
-        "text": "Me"
+        "text": "本地曲库",
+        "match": "exact"
       }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "共 10000 首歌曲",
+        "match": "exact"
+      },
+      "timeout_s": 60
     },
     {
       "op": "tap",
       "selector": {
-        "text": "Local Songs"
+        "text": "Track 9999",
+        "match": "exact",
+        "type": "Text"
       }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "播放",
+        "match": "exact"
+      },
+      "timeout_s": 60
     },
     {
       "op": "tap",
       "selector": {
-        "text": "Track 0"
+        "text": "播放",
+        "match": "exact"
       }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Track 9999",
+        "match": "exact",
+        "type": "Text",
+        "index": 1
+      },
+      "timeout_s": 60
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "Track 9999",
+        "match": "exact",
+        "type": "Text",
+        "index": 1
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "本地文件播放中",
+        "match": "exact"
+      },
+      "timeout_s": 60
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "type": "Slider"
+      },
+      "timeout_s": 60
     }
   ],
   "measured": [
@@ -38,7 +94,15 @@
     {
       "op": "wait",
       "selector": {
-        "text": "Track 0"
+        "text": "本地文件播放中",
+        "match": "exact"
+      },
+      "timeout_s": 60
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "type": "Slider"
       }
     }
   ]

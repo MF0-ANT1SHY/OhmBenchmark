@@ -54,11 +54,25 @@
   },
   "test_oracle": {
     "metric": "hiperf_instructions",
-    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "definition": "Sampled retired-instruction period sum (hw-instructions) attributed to the app process in the complete externally driven measured window.",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "pending_clean_measurement",
-      "note": "Legacy instrumented measurements do not validate these business-only builds."
+      "status": "measured_clean",
+      "metric": "hiperf_instructions",
+      "unfixed": [
+        529265934,
+        528154427,
+        524562798
+      ],
+      "fixed": [
+        178970205,
+        174382547,
+        174760908
+      ],
+      "median_ratio": 3.022154285213487,
+      "rounds_per_variant": 3,
+      "legacy_evidence_reused": false,
+      "note": "Every paired round exceeds 1.2x; app process explicitly selected from the system report."
     },
     "mechanism_oracle": {
       "metric": "player_page_rerenders_per_minute",
@@ -100,8 +114,8 @@
   },
   "clean_validation": {
     "policy": "no_app_injection",
-    "workload_validation": "pending",
-    "performance_validation": "pending",
+    "workload_validation": "verified",
+    "performance_validation": "verified",
     "variants": {
       "unfixed": {
         "ref": "clean-app-v4/cloudmusic_play_time_high_frequency_update/unfixed",
@@ -152,6 +166,80 @@
           "foreground_bundle": "cc.chenlvin.cloudmusic",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "cloudmusic_play_time_high_frequency_update",
+          "variant": "unfixed",
+          "signed_sha256": "96e15c4a5979da602dcac54e919eded35e729cb2e85a42e7ecaadcb1d320ca17",
+          "plan_sha256": "431f41849f7458dc0cbdee75e027cd37188be03bfb64eda28fb57b45b01b234a",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "bundle": "cc.chenlvin.cloudmusic",
+            "database": "/data/app/el2/100/database/cc.chenlvin.cloudmusic/entry/rdb/LocalSongs.db",
+            "backup": "/home/research/ohm-clean/backups/cc.chenlvin.cloudmusic/1791957913539989564/LocalSongs.db",
+            "fixture_tables": 1,
+            "integrity_check": "ok",
+            "audio_sha256": "e0a685d74829d610ba9436ddbd1b3e19916f04028a4560adac5b2d1a99e6c6dd",
+            "audio_files": 10000,
+            "database_sha256": "723e699f4211a2cdee2b22d3ca30df82b5b889927c3aef05e60326d4f86ab51d",
+            "fixture_sha256": "a1b73574e51b9a05b17ccdca41a7b8ee129d27822112e79dc949bb293b1e9637",
+            "sha256": "a1b73574e51b9a05b17ccdca41a7b8ee129d27822112e79dc949bb293b1e9637"
+          },
+          "phase_elapsed_s": {
+            "setup": 62.171150350999596,
+            "measured": 20.00016812099966,
+            "verify": 11.24523693899937
+          },
+          "playback_progress": {
+            "start_position_ms": 26885.0,
+            "end_position_ms": 53759.0,
+            "elapsed_s": 20.00016812099966,
+            "advanced_ms": 26874.0
+          },
+          "capture_duration_required_s": 25
+        },
+        "performance": {
+          "status": "PASS",
+          "metric": "hiperf_instructions",
+          "rounds": 3,
+          "samples": [
+            529265934,
+            528154427,
+            524562798
+          ],
+          "median": 528154427,
+          "paired_ratios": [
+            2.957285174926184,
+            3.028711508612155,
+            3.0016026124103226
+          ],
+          "median_ratio": 3.022154285213487,
+          "plan_sha256": "431f41849f7458dc0cbdee75e027cd37188be03bfb64eda28fb57b45b01b234a",
+          "signed_sha256": "96e15c4a5979da602dcac54e919eded35e729cb2e85a42e7ecaadcb1d320ca17",
+          "fixture_sha256": "a1b73574e51b9a05b17ccdca41a7b8ee129d27822112e79dc949bb293b1e9637",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "620c8b085310462940368e015e159cc3a9de0086d3be28ed6db4bbaddb42d689",
+              "app_samples": 3110,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/unfixed/cpu-captures/round-1"
+            },
+            {
+              "round": 2,
+              "report_sha256": "477f1c7cd3f0efb373ab172a460733b162450b71c1dbf4de8a105d75f7bd1ae5",
+              "app_samples": 3037,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/unfixed/cpu-captures/round-2"
+            },
+            {
+              "round": 3,
+              "report_sha256": "5c4ca2f61ca4724192dee1d08a932022d5b14ce80601db24df9766136763acaa",
+              "app_samples": 2998,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/unfixed/cpu-captures/round-3"
+            }
+          ],
+          "legacy_evidence_reused": false
         }
       },
       "fixed": {
@@ -203,6 +291,80 @@
           "foreground_bundle": "cc.chenlvin.cloudmusic",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "cloudmusic_play_time_high_frequency_update",
+          "variant": "fixed",
+          "signed_sha256": "a071d92851a1b684ac086a328cc3c99e4c222ee54ecacde53182c8c50b49a17a",
+          "plan_sha256": "431f41849f7458dc0cbdee75e027cd37188be03bfb64eda28fb57b45b01b234a",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "bundle": "cc.chenlvin.cloudmusic",
+            "database": "/data/app/el2/100/database/cc.chenlvin.cloudmusic/entry/rdb/LocalSongs.db",
+            "backup": "/home/research/ohm-clean/backups/cc.chenlvin.cloudmusic/1791958099677299876/LocalSongs.db",
+            "fixture_tables": 1,
+            "integrity_check": "ok",
+            "audio_sha256": "e0a685d74829d610ba9436ddbd1b3e19916f04028a4560adac5b2d1a99e6c6dd",
+            "audio_files": 10000,
+            "database_sha256": "723e699f4211a2cdee2b22d3ca30df82b5b889927c3aef05e60326d4f86ab51d",
+            "fixture_sha256": "a1b73574e51b9a05b17ccdca41a7b8ee129d27822112e79dc949bb293b1e9637",
+            "sha256": "a1b73574e51b9a05b17ccdca41a7b8ee129d27822112e79dc949bb293b1e9637"
+          },
+          "phase_elapsed_s": {
+            "setup": 62.28565112799879,
+            "measured": 20.000074315999882,
+            "verify": 11.288873780000358
+          },
+          "playback_progress": {
+            "start_position_ms": 27065.0,
+            "end_position_ms": 54065.0,
+            "elapsed_s": 20.000074315999882,
+            "advanced_ms": 27000.0
+          },
+          "capture_duration_required_s": 25
+        },
+        "performance": {
+          "status": "PASS",
+          "metric": "hiperf_instructions",
+          "rounds": 3,
+          "samples": [
+            178970205,
+            174382547,
+            174760908
+          ],
+          "median": 174760908,
+          "paired_ratios": [
+            2.957285174926184,
+            3.028711508612155,
+            3.0016026124103226
+          ],
+          "median_ratio": 3.022154285213487,
+          "plan_sha256": "431f41849f7458dc0cbdee75e027cd37188be03bfb64eda28fb57b45b01b234a",
+          "signed_sha256": "a071d92851a1b684ac086a328cc3c99e4c222ee54ecacde53182c8c50b49a17a",
+          "fixture_sha256": "a1b73574e51b9a05b17ccdca41a7b8ee129d27822112e79dc949bb293b1e9637",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "35bd7d0d9eed150915ca3b61dbfc9e755f83c6a8d0bdc821428f53908a53fac1",
+              "app_samples": 942,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/fixed/cpu-captures/round-1"
+            },
+            {
+              "round": 2,
+              "report_sha256": "8488f2b52ce1466a0f0d0f5169d386839285b09e9c784e3eb7999b2babf406bf",
+              "app_samples": 947,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/fixed/cpu-captures/round-2"
+            },
+            {
+              "round": 3,
+              "report_sha256": "a231fc82bd0dcc23db75fd7448126f7eb1594d15e761af595a786733f344b59f",
+              "app_samples": 833,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/fixed/cpu-captures/round-3"
+            }
+          ],
+          "legacy_evidence_reused": false
         }
       }
     }
