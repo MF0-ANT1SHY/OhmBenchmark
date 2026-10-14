@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export business-only unfixed sources and app-scoped system samples.
+"""Export the business-only unfixed app and app-scoped native diagnostic data.
 
 The benchmark checkout is evaluator-private. Never expose it as an agent's
 workspace: it contains fixed sources, repair diffs and performance oracles.
@@ -14,6 +14,7 @@ from pathlib import Path
 
 from clean_sources import app_ref
 from remote_device import Remote
+from scheduler_cpu import compute, window_from_markers
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -113,12 +114,38 @@ def app_report(report, pids, bundle):
     return result
 
 
+def app_scheduler_report(trace, capture, bundle):
+    before, after = capture['process_before'], capture['process_after']
+    if (before != after or capture['pids'] != [before['pid']]
+            or bundle not in before['command']
+            or capture['online_cpus_before'] != capture['online_cpus_after']
+            or capture['clock_before'] != capture['clock_after']
+            or '[boot]' not in capture['clock_before']):
+        raise ValueError('native scheduler process or environment identity mismatch')
+    start, end = window_from_markers(trace, capture['marker_token'], capture['pids'])
+    native = compute(trace, capture['pids'], start, end, capture['online_cpus_before'], include_intervals=True)
+    intervals = native.pop('app_intervals')
+    if native != capture['scheduler_cpu']:
+        raise ValueError('scheduler profile differs from the captured native evidence')
+    # Whitelist app-only scheduling data, never copy the raw system trace,
+    # evaluator markers, fixture identities, ratios or private artifact paths.
+    return {'schema': 'app_scheduler_profile_v1', 'processNameMap': {str(before['pid']): bundle},
+            'duration_ns': end-start, 'app_cpu_ns': native['app_cpu_ns'],
+            'per_thread_ns': native['per_thread_ns'],
+            'intervals': [{'tid': x['tid'], 'cpu': x['cpu'], 'start_ns': x['start_ns']-start,
+                           'duration_ns': x['end_ns']-x['start_ns']} for x in intervals],
+            'method': 'App-only native scheduling intervals; timestamps are relative to the recorded window.'}
+
+
 def export(cid, destination, symptom, round_number, remote_name='cityuPC', include_source=False):
     case = json.loads((ROOT/'cases'/cid/'case.json').read_text())
     folder = ROOT/'artifacts/clean'/cid/'unfixed'
     build = json.loads((folder/'build.json').read_text())
     sign = json.loads((folder/'sign.json').read_text())
-    capture_folder = folder/'cpu-captures'/f'round-{round_number}'
+    metric=case.get('test_oracle',{}).get('metric','hiperf_instructions')
+    if metric not in ('hiperf_instructions','trace_cpu_ms'):
+        raise ValueError('agent data export is not implemented for this metric')
+    capture_folder = folder/('trace-captures' if metric=='trace_cpu_ms' else 'cpu-captures')/f'round-{round_number}'
     capture = json.loads((capture_folder/'capture.json').read_text())
     hap = folder/'app-export.hap'
     plan = ROOT/'cases'/cid/case['testcase']['workload']
@@ -141,7 +168,10 @@ def export(cid, destination, symptom, round_number, remote_name='cityuPC', inclu
     tree = subprocess.check_output(['git', '-C', str(repo), 'rev-parse', ref+'^{tree}'], text=True).strip()
     if tree != build['source']['tree'] or not build['source']['passed']:
         raise ValueError('source/build mismatch')
-    report = app_report(json.loads((capture_folder/'report.json').read_text()), capture['pids'], case['host_app']['bundle_name'])
+    if metric=='trace_cpu_ms':
+        report=app_scheduler_report(capture_folder/'trace.htrace',capture,case['host_app']['bundle_name'])
+    else:
+        report=app_report(json.loads((capture_folder/'report.json').read_text()), capture['pids'], case['host_app']['bundle_name'])
     # Refuse a pre-existing destination: stale fixed packages/receipts must not
     # survive in the diagnosis workspace. No git history is exported.
     destination.mkdir(parents=True, exist_ok=False)

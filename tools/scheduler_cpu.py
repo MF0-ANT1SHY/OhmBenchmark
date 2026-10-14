@@ -74,7 +74,7 @@ def switches(path):
                    'tgid': int(owner) if owner and owner.isdigit() else None}
 
 
-def compute(path, app_pids, start_ns, end_ns, online_cpus, thread_owners=None):
+def compute(path, app_pids, start_ns, end_ns, online_cpus, thread_owners=None, include_intervals=False):
     if (type(start_ns) is not int or type(end_ns) is not int
             or not 0 < start_ns < end_ns):
         raise ValueError('a positive native-clock scheduling window is required')
@@ -92,6 +92,7 @@ def compute(path, app_pids, start_ns, end_ns, online_cpus, thread_owners=None):
             owners[tid] = owner
     active, first, last = {}, {}, {}
     per_thread = defaultdict(int)
+    intervals = []
     count = 0
     for event in switches(path):
         cpu, stamp = event['cpu'], event['time_ns']
@@ -107,6 +108,8 @@ def compute(path, app_pids, start_ns, end_ns, online_cpus, thread_owners=None):
                     raise ValueError('scheduled thread has no native TGID attribution')
                 if owners[tid] in pids:
                     per_thread[tid] += right - left
+                    if include_intervals:
+                        intervals.append({'tid': tid, 'cpu': cpu, 'start_ns': left, 'end_ns': right})
         else:
             first[cpu] = stamp
         active[cpu] = (stamp, event['next'])
@@ -121,9 +124,12 @@ def compute(path, app_pids, start_ns, end_ns, online_cpus, thread_owners=None):
     with Path(path).open('rb') as stream:
         for block in iter(lambda: stream.read(1024 * 1024), b''):
             digest.update(block)
-    return {'metric': 'trace_cpu_ms', 'app_cpu_ns': total, 'app_cpu_ms': total / 1000000,
+    result = {'metric': 'trace_cpu_ms', 'app_cpu_ns': total, 'app_cpu_ms': total / 1000000,
             'per_thread_ns': {str(k): v for k, v in sorted(per_thread.items())},
             'app_pids': sorted(pids), 'online_cpus': sorted(cpus),
             'window_start_ns': start_ns, 'window_end_ns': end_ns,
             'sched_switch_records': count, 'trace_sha256': digest.hexdigest(),
             'method': 'native per-CPU sched_switch intervals, clipped to the native-clock window and attributed by TGID'}
+    if include_intervals:
+        result['app_intervals'] = intervals
+    return result

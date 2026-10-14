@@ -9,7 +9,7 @@ from unittest.mock import patch
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from export_agent_data import app_report,reproduction_script,export
+from export_agent_data import app_report,reproduction_script,export,app_scheduler_report
 
 
 class AppReportTests(unittest.TestCase):
@@ -39,6 +39,25 @@ class AppReportTests(unittest.TestCase):
                     patch('export_agent_data.subprocess.run') as archive:
                 destination=root/'export'
                 export(cid,destination,'slow launch',1)
+                archive.assert_not_called()
+                from test_trace_evidence import NativeTraceEvidenceTest
+                fixture=NativeTraceEvidenceTest();fixture.setUp()
+                self.addCleanup(fixture.doCleanups)
+                native_folder=folder/'trace-captures/round-1';native_folder.mkdir(parents=True)
+                (native_folder/'trace.htrace').write_bytes(fixture.trace.read_bytes())
+                native_capture=copy.deepcopy(fixture.receipt)
+                native_capture.update({'signed_sha256':digest,
+                    'plan_sha256':hashlib.sha256((case_dir/'workload.json').read_bytes()).hexdigest()})
+                put(native_folder/'capture.json',native_capture)
+                put(case_dir/'case.json',{'host_app':{'local_path':'repo','bundle_name':'com.sheafreader.hm'},
+                    'testcase':{'workload':'workload.json'},'test_oracle':{'metric':'trace_cpu_ms'}})
+                trace_destination=root/'trace-export'
+                export(cid,trace_destination,'slow refresh',1)
+                self.assertEqual({p.name for p in trace_destination.iterdir()},
+                                 {'app.hap','workload.json','reproduce.py','profile.json','symptom.txt'})
+                native_profile=json.loads((trace_destination/'profile.json').read_text())
+                self.assertEqual(native_profile['app_cpu_ns'],8000000)
+                self.assertNotIn('marker_token',(trace_destination/'profile.json').read_text())
                 archive.assert_not_called()
                 put(folder/'sign.json',{'status':'PASS','unsigned_sha256':'other-build',
                                        'audit':{'passed':True,'sha256':digest}})
@@ -108,6 +127,38 @@ class AppReportTests(unittest.TestCase):
         result = app_report(raw, [10], 'app.bundle')
         self.assertEqual(result['SymbolMap']['7'], {'file':0,'symbol':'[unresolved]'})
         self.assertEqual(result['recordSampleInfo'][0]['eventCount'], 100)
+
+    def test_scheduler_export_contains_only_relative_app_intervals(self):
+        from test_trace_evidence import NativeTraceEvidenceTest
+        fixture=NativeTraceEvidenceTest()
+        fixture.setUp()
+        self.addCleanup(fixture.doCleanups)
+        capture=copy.deepcopy(fixture.receipt)
+        capture.update({'fixture_sha256':'private-input','remote_artifacts':'private-location',
+                        'paired_ratios':[2,2,2],'case':'private-case'})
+        profile=app_scheduler_report(fixture.trace,capture,'com.sheafreader.hm')
+        text=json.dumps(profile)
+        self.assertEqual(profile['processNameMap'],{'100':'com.sheafreader.hm'})
+        self.assertEqual(sum(x['duration_ns'] for x in profile['intervals']),8000000)
+        self.assertEqual({x['tid'] for x in profile['intervals']},{100,101,102})
+        self.assertTrue(all(0<=x['start_ns']<6000000 for x in profile['intervals']))
+        for private in ('marker_token','private-input','private-location','private-case','paired_ratios','W:'+('a'*32)):
+            self.assertNotIn(private,text)
+        self.assertNotIn('999',text)
+
+    def test_scheduler_export_rejects_forged_values_and_changed_process(self):
+        from test_trace_evidence import NativeTraceEvidenceTest
+        fixture=NativeTraceEvidenceTest()
+        fixture.setUp()
+        self.addCleanup(fixture.doCleanups)
+        capture=copy.deepcopy(fixture.receipt)
+        capture['scheduler_cpu']['app_cpu_ns']=1
+        with self.assertRaises(ValueError):
+            app_scheduler_report(fixture.trace,capture,'com.sheafreader.hm')
+        capture=copy.deepcopy(fixture.receipt)
+        capture['process_after']['start_ticks']+=1
+        with self.assertRaises(ValueError):
+            app_scheduler_report(fixture.trace,capture,'com.sheafreader.hm')
 
 
 if __name__ == '__main__':
