@@ -74,6 +74,26 @@ class SchedulingCPUTimeTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 window_from_markers(self.path, token, [100])
 
+    def test_incoming_context_and_native_idle_alias_keep_the_same_cpu_total(self):
+        changed=[]
+        import re
+        for line in self.events:
+            following=int(re.search(r'next_pid=(\d+)',line)[1])
+            owner=100 if following in (100,101,102) else following
+            prefix=re.match(r'.*?\[\d+\]',line)[0]
+            if following:
+                replacement=re.sub(r'worker-\d+ \(\d+\)',f'worker-{following} ({owner})',prefix)
+            else:
+                cpu=int(re.search(r'\[(\d+)\]',prefix)[1])
+                replacement=re.sub(r'worker-\d+ \(\d+\)',f'tppmgr-idle-{cpu}-{187+cpu} (2)',prefix)
+            changed.append(line.replace(prefix,replacement,1))
+        self.assertEqual(self.calculate(changed)['app_cpu_ns'],8000000)
+
+    def test_unrelated_prefix_or_wrong_idle_cpu_is_not_attributed(self):
+        changed=list(self.events)
+        changed[0]=changed[0].replace('worker-0 (0)','stranger-555 (555)')
+        with self.assertRaises(ValueError):self.calculate(changed)
+
 
 if __name__ == '__main__':
     unittest.main()

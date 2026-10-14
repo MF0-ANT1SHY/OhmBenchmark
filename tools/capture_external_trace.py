@@ -67,6 +67,7 @@ record(UI(shell,plan['bundle'],plan['ability']),plan,root)
     if receipt['status'] != 'CAPTURED':
         raise RuntimeError(receipt.get('error', 'native trace was not captured'))
     receipt['reader_fixture_after'] = finish(remote, case, before)
+    (output/'capture.json').write_text(json.dumps(receipt, indent=2)+'\n')
     remote.download(base+'/trace.htrace', output/'trace.htrace')
     started, ended = window_from_markers(output/'trace.htrace', receipt['marker_token'], receipt['pids'])
     receipt['scheduler_cpu'] = compute(output/'trace.htrace', receipt['pids'], started, ended,

@@ -10,7 +10,7 @@ from pathlib import Path
 import re
 
 SWITCH = re.compile(
-    r'^\s*.+-(?P<tid>\d+)\s+(?:\(\s*(?P<tgid>\d+|-----)\s*\)\s+)?'
+    r'^\s*(?P<comm>.+)-(?P<tid>\d+)\s+(?:\(\s*(?P<tgid>\d+|-----)\s*\)\s+)?'
     r'\[(?P<cpu>\d+)\]\s+\S+\s+(?P<time>\d+\.\d+):\s+sched_switch:\s+(?P<body>.+)$')
 MARKER = re.compile(
     r'^\s*.+-(?P<tid>\d+)\s+\(\s*(?P<tgid>\d+)\s*\)\s+'
@@ -66,12 +66,23 @@ def switches(path):
             if not previous or not following:
                 raise ValueError('scheduler record has no complete thread transition')
             tid = int(match['tid'])
-            if tid != int(previous[1]):
-                raise ValueError('scheduler caller is not the outgoing thread')
             owner = match['tgid']
+            previous_tid, next_tid = int(previous[1]), int(following[1])
+            # Device-native records can be emitted in incoming context. The
+            # prefix TGID belongs to its prefix TID, not automatically prev_pid.
+            if tid == previous_tid or tid == next_tid:
+                owner_tid = tid
+                owner_tgid = int(owner) if owner and owner.isdigit() else None
+            elif (next_tid == 0 and owner == '2'
+                  and match['comm'].strip() == f"tppmgr-idle-{int(match['cpu'])}"):
+                # This kernel gives each idle task a real prefix TID while the
+                # scheduling payload consistently represents idle as PID 0.
+                owner_tid, owner_tgid = 0, 0
+            else:
+                raise ValueError('scheduler prefix matches neither transition thread nor known native idle task')
             yield {'cpu': int(match['cpu']), 'time_ns': timestamp_ns(match['time']),
-                   'previous': tid, 'next': int(following[1]),
-                   'tgid': int(owner) if owner and owner.isdigit() else None}
+                   'previous': previous_tid, 'next': next_tid,
+                   'owner_tid': owner_tid, 'tgid': owner_tgid}
 
 
 def compute(path, app_pids, start_ns, end_ns, online_cpus, thread_owners=None, include_intervals=False):
@@ -85,7 +96,7 @@ def compute(path, app_pids, start_ns, end_ns, online_cpus, thread_owners=None, i
         raise ValueError('the native online CPU set is required')
     owners = {0: 0, **dict(thread_owners or {})}
     for event in switches(path):
-        tid, owner = event['previous'], event['tgid']
+        tid, owner = event['owner_tid'], event['tgid']
         if owner is not None:
             if tid in owners and owners[tid] != owner:
                 raise ValueError('thread TGID changed within the scheduling trace')
