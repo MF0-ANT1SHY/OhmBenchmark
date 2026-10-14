@@ -15,6 +15,8 @@ from jingmo_sync_fixture import CASE as POEM_SYNC_CASE, verify_preparation as ve
 from jingmo_sync_progress import verify_observation as verify_sync_progress, verify_capture as verify_sync_capture
 from reader_list_progress import CASE as READER_LIST_CASE, verify_observation as verify_list_render, verify_capture as verify_list_capture
 from reader_unread_badges import CASE as UNREAD_CASE, verify_layout as verify_unread_layout
+from install_ytmusic_history_fixture import fixture_state as listening_fixture_state, CASE as LISTENING_HISTORY_CASE
+from ytmusic_history_progress import verify_layout as verify_history_layout, verify_state as verify_history_state, verify_capture as verify_history_capture
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -32,6 +34,17 @@ def accept(cid, write=True, require_pass=True):
         workload=json.loads((folder/'workload.json').read_text())
         if workload['status']!='PASS' or workload['plan_sha256']!=plan_hash or workload['signed_sha256']!=sign['audit']['sha256']:
             raise RuntimeError('matching real workload execution not proven')
+        if cid==LISTENING_HISTORY_CASE:
+            fixture=workload['fixture']
+            fixture_folder=Path(fixture['fixture_dir'])
+            history_fixture,_=listening_fixture_state(fixture_folder)
+            songs=json.loads((fixture_folder/'songs.json').read_text())
+            device=json.loads((folder/'workload-device.json').read_text())
+            if (not fixture.get('installation_verified') or not fixture.get('functional_read_verified')
+                    or fixture['sha256']!=history_fixture['fixture_sha256']
+                    or verify_history_layout(device['phases']['verify']['layout'],songs)!=workload.get('history_rows')):
+                raise RuntimeError('ordinary listening-history data and rendered song rows are not proven')
+            verify_history_state(workload['history_state']['raw_xml'],songs)
         if cid==POEM_IMPORT_CASE:
             device=json.loads((folder/'workload-device.json').read_text())
             verify_poem_state(device['poem_import_state'],True)
@@ -77,6 +90,13 @@ def accept(cid, write=True, require_pass=True):
                 raise RuntimeError('capture provenance mismatch')
             if receipt.get('fixture_sha256') != workload.get('fixture',{}).get('sha256'):
                 raise RuntimeError('capture fixture differs from the validated workload')
+            if cid==LISTENING_HISTORY_CASE:
+                preparation=receipt['listening_history_fixture_before']
+                if (not preparation.get('installation_verified') or preparation['sha256']!=receipt['fixture_sha256']
+                        or preparation['deployed_sha256']!=history_fixture['preferences_sha256']):
+                    raise RuntimeError('listening-history capture input was not reset to the verified ordinary catalogue')
+                verify_history_state(receipt['listening_history_state_after']['raw_xml'],songs)
+                verify_history_capture(receipt['listening_history_rows'],songs,receipt['action_start_monotonic'],receipt['action_end_monotonic'])
             if cid==POEM_IMPORT_CASE:
                 verify_poem_window(receipt['poem_import_state'],receipt['action_start_monotonic'],receipt['action_end_monotonic'])
                 verify_poem_preparation(receipt['poem_import_fixture_before'],receipt['poem_import_fixture_after'])

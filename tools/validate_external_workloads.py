@@ -31,11 +31,13 @@ from jingmo_sync_fixture import prepare as prepare_sync, finish as finish_sync
 from jingmo_sync_progress import verify_observation as verify_sync_progress
 from reader_list_progress import CASE as READER_LIST_CASE, verify_observation as verify_list_render
 from reader_unread_badges import CASE as UNREAD_CASE, verify_layout as verify_unread_layout
+from install_ytmusic_history_fixture import install as install_listening_history, fixture_state as listening_fixture_state
+from ytmusic_history_progress import verify_layout as verify_history_layout, verify_state as verify_history_state, read_state as read_history_state
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, search_history_fixture=None, preferences_path=None, music_service=False, bundled_fonts=False, reader_fixture=None, poem_import_fixture=None, poem_sync_fixture=None):
+def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, search_history_fixture=None, preferences_path=None, music_service=False, bundled_fonts=False, reader_fixture=None, poem_import_fixture=None, poem_sync_fixture=None, listening_history_fixture=None):
     cid = case['id']
     folder = ROOT / 'artifacts/clean' / cid / variant
     signed = json.loads((folder / 'sign.json').read_text())
@@ -44,7 +46,7 @@ def validate(remote, case, variant, browser_fixture=None, local_song_fixture=Non
     result = {'case':cid, 'variant':variant, 'signed_sha256':signed['audit']['sha256'],
               'plan_sha256':plan_hash, 'status':'FAIL', 'performance_verified':False}
     try:
-        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture,search_history_fixture,reader_fixture,poem_import_fixture,poem_sync_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
+        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture,search_history_fixture,reader_fixture,poem_import_fixture,poem_sync_fixture,listening_history_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
             raise ValueError('only one fixture may be supplied')
         if bundled_audio:
             result['fixture']=packaged_audio(ROOT,case,variant,signed)
@@ -73,6 +75,8 @@ def validate(remote, case, variant, browser_fixture=None, local_song_fixture=Non
             result['fixture']['sha256']=hashlib.sha256(poem_fixture.read_bytes()).hexdigest()
         if search_history_fixture:
             result['fixture']=install_search_history(remote,case,variant,search_history_fixture,preferences_path or '')
+        if listening_history_fixture:
+            result['fixture']=install_listening_history(remote,case,listening_history_fixture,preferences_path or '')
         if reader_fixture:
             result['fixture']=prepare_reader(remote,case,reader_fixture)
         if poem_import_fixture:
@@ -210,6 +214,14 @@ def shell(command):
                 raise RuntimeError('normal search-history UI did not read the deployed preference fixture')
             result['fixture']['functional_read_verified']=True
             result['functional_check']='normal history UI displays entries from the ordinary preference fixture'
+        if listening_history_fixture:
+            listening_fixture_state(listening_history_fixture)
+            songs=json.loads((listening_history_fixture/'songs.json').read_text())
+            result['history_rows']=verify_history_layout(device['phases']['verify']['layout'],songs)
+            result['history_state']=read_history_state(remote,preferences_path)
+            verify_history_state(result['history_state']['raw_xml'],songs)
+            result['fixture']['functional_read_verified']=True
+            result['functional_check']='normal history page renders catalogue song names and creators; all native history strings preserved'
         if cid in PLAYBACK_CASES:
             # The snapshots bracket measured idle playback. Dump latency is
             # bounded by the progress check's tolerance; a title alone is not proof.
@@ -274,7 +286,8 @@ def main():
     fixtures.add_argument('--reader-fixture',type=Path)
     fixtures.add_argument('--poem-import-fixture',type=Path)
     fixtures.add_argument('--poem-sync-fixture',type=Path)
-    parser.add_argument('--preferences-path',help='actual initialized historyStore file; discover through normal app use')
+    fixtures.add_argument('--listening-history-fixture',type=Path)
+    parser.add_argument('--preferences-path',help='actual initialized native history preference file; discover through normal app use')
     args=parser.parse_args()
     remote=Remote(args.remote)
     remote.upload(ROOT/'tools/ui_driver.py','/home/research/ohm-clean/tools/ui_driver.py')
@@ -282,7 +295,7 @@ def main():
     for cid in args.cases:
         case=json.loads((ROOT/'cases'/cid/'case.json').read_text())
         for variant in ('unfixed','fixed'):
-            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.search_history_fixture,args.preferences_path,args.music_service,args.bundled_fonts,args.reader_fixture,args.poem_import_fixture,args.poem_sync_fixture)
+            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.search_history_fixture,args.preferences_path,args.music_service,args.bundled_fonts,args.reader_fixture,args.poem_import_fixture,args.poem_sync_fixture,args.listening_history_fixture)
     return int(failed)
 
 

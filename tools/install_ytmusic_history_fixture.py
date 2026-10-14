@@ -84,5 +84,6 @@ def install(remote, case, folder, device_path):
     remote.hdc(['shell', 'rm -f '+temporary])
     return {'sha256': receipt['fixture_sha256'], 'deployed_sha256': receipt['preferences_sha256'],
             'preferences': device_path, 'backup': backup, 'songs': receipt['songs'],
+            'fixture_dir': str(folder.resolve()),
             'method': 'ordinary SongProps strings in the initialized native PersistentStorage Set',
             'installation_verified': True, 'functional_read_verified': False}

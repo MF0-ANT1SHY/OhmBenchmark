@@ -22,13 +22,15 @@ from jingmo_sync_fixture import prepare as prepare_sync, finish as finish_sync
 from reader_list_progress import CASE as READER_LIST_CASE
 from reader_unread_badges import CASE as UNREAD_CASE
 from playback_progress import CASES as PLAYBACK_CASES
+from install_ytmusic_history_fixture import install as install_listening_history
+from ytmusic_history_progress import verify_layout as verify_history_layout, verify_state as verify_history_state, read_state as read_history_state
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def capture(remote, case, variant, round_number, fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, music_service=False, bundled_fonts=False, reader_fixture=None, poem_import_fixture=None, poem_sync_fixture=None):
+def capture(remote, case, variant, round_number, fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, music_service=False, bundled_fonts=False, reader_fixture=None, poem_import_fixture=None, poem_sync_fixture=None, listening_history_fixture=None, preferences_path=None):
     cid = case['id']
-    if sum(p is not None for p in (fixture,local_song_fixture,poem_fixture,reader_fixture,poem_import_fixture,poem_sync_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
+    if sum(p is not None for p in (fixture,local_song_fixture,poem_fixture,reader_fixture,poem_import_fixture,poem_sync_fixture,listening_history_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
         raise ValueError('only one fixture may be supplied')
     if local_song_fixture and case['host_app']['bundle_name']!='cc.chenlvin.cloudmusic':
         raise ValueError('local song fixture provided to a different app')
@@ -79,6 +81,9 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
     if poem_sync_fixture:
         sync_before=prepare_sync(remote,case,poem_sync_fixture)
         fixture_hash=sync_before['sha256']
+    if listening_history_fixture:
+        history_before=install_listening_history(remote,case,listening_history_fixture,preferences_path or '')
+        fixture_hash=history_before['sha256']
     remote.upload(plan_file,remote_plan)
     code = """import hashlib,json,subprocess,sys,time,traceback
 from pathlib import Path
@@ -167,6 +172,9 @@ def shell(command):
         code += "  if time.monotonic()>deadline:raise RuntimeError('clear-history operation did not finish')\n"
         code += "  time.sleep(.1)\n"
         code += " record['completion_check']='database cleared before capture stop'\n"
+    if listening_history_fixture:
+        code += " history_started=time.monotonic();history_layout=ui.layout();history_ended=time.monotonic()\n"
+        code += " record['listening_history_rows']={'layout':history_layout,'started_monotonic':history_started,'ended_monotonic':history_ended}\n"
     code += " record['action_end_monotonic']=time.monotonic()\n"
     code += " pid_text=shell('pidof '+plan['bundle']).strip()\n"
     code += " assert pid_text and all(x.isdigit() for x in pid_text.split()),'app is not alive'\n"
@@ -190,8 +198,16 @@ def shell(command):
                     'performance_verified':False})
     if fixture_hash:
         receipt['fixture_sha256']=fixture_hash
+    if listening_history_fixture:
+        receipt['listening_history_fixture_before']=history_before
     (output/'capture.json').write_text(json.dumps(receipt,indent=2)+'\n')
     if receipt['status']=='CAPTURED':
+        if listening_history_fixture:
+            songs=json.loads((listening_history_fixture/'songs.json').read_text())
+            receipt['listening_history_state_after']=read_history_state(remote,preferences_path)
+            (output/'capture.json').write_text(json.dumps(receipt,indent=2)+'\n')
+            verify_history_state(receipt['listening_history_state_after']['raw_xml'],songs)
+            receipt['listening_history_rows']['rows']=verify_history_layout(receipt['listening_history_rows']['layout'],songs)
         if poem_import_fixture:
             receipt['poem_import_fixture_before']=import_before
             receipt['poem_import_fixture_after']=finish_import(remote,import_before)
@@ -239,12 +255,14 @@ def main():
     fixtures.add_argument('--reader-fixture',type=Path)
     fixtures.add_argument('--poem-import-fixture',type=Path)
     fixtures.add_argument('--poem-sync-fixture',type=Path)
+    fixtures.add_argument('--listening-history-fixture',type=Path)
+    parser.add_argument('--preferences-path',help='actual initialized native history preference path')
     parser.add_argument('--remote',default='cityuPC')
     args=parser.parse_args()
     remote=Remote(args.remote)
     remote.upload(ROOT/'tools/ui_driver.py','/home/research/ohm-clean/tools/ui_driver.py')
     case=json.loads((ROOT/'cases'/args.case/'case.json').read_text())
-    capture(remote,case,args.variant,args.round,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.music_service,args.bundled_fonts,args.reader_fixture,args.poem_import_fixture,args.poem_sync_fixture)
+    capture(remote,case,args.variant,args.round,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.music_service,args.bundled_fonts,args.reader_fixture,args.poem_import_fixture,args.poem_sync_fixture,args.listening_history_fixture,args.preferences_path)
 
 
 if __name__=='__main__':
