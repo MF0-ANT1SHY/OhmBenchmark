@@ -35,5 +35,5 @@ class PerfLoad_ytmusic_0020(PerfTestCase):
         ui.run([{'op': 'stop'}, {'op': 'launch'}])
         ui.run(self._plan['setup'])
         ui.profiled(self.execute_performance_step,
-            'Youtube-Music-ArkTS-Clone页面操作', 15, self._plan['measured'])
+            '普通观看记录列表渲染与滚动', 60, self._plan['measured'])
         ui.run(self._plan['verify'])

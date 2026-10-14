@@ -1,0 +1,200 @@
+{
+  "case": "ytmusic_history_json_parse_per_row",
+  "policy": "no_app_injection",
+  "status": "VALID_CLEAN_MEASUREMENT_FAILED_ORACLE",
+  "performance_accepted": false,
+  "unchanged_minimum_paired_ratio": 1.2,
+  "raw_reports_recomputed": true,
+  "legacy_evidence_reused": false,
+  "ordinary_song_fields": [
+    "img",
+    "name",
+    "creator",
+    "time"
+  ],
+  "history_records": 200,
+  "additional_payload_fields": false,
+  "results": {
+    "unfixed": {
+      "status": "FAIL",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        1994346658,
+        1952064886,
+        1921477589
+      ],
+      "median": 1952064886,
+      "paired_ratios": [
+        1.015127260037454,
+        1.0169528341940266,
+        0.9791469106355875
+      ],
+      "median_ratio": 0.9947335911848152,
+      "plan_sha256": "b78726fab95f48c59941b27905ebaa93fcb094f579782bbc6d076628cf37d1ee",
+      "signed_sha256": "441c83955e2424c8fbb364ac3c7e45dc6c684ca062c00563e04c8b5543557aca",
+      "fixture_sha256": "ed8636be371cd9a6ce3bb452a08b63712a63e6347e3d1617a820faed9221c1c3",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "7097c938fecc58aeceb1808f216b6739148587964eb59f46ad092875990583e6",
+          "app_samples": 3648,
+          "remote_artifacts": "/home/research/ohm-clean/ytmusic_history_json_parse_per_row/unfixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "e055e521a7987a3bc880442a03222caa1481131cc00f98ebc9a21353bd49dee0",
+          "app_samples": 3546,
+          "remote_artifacts": "/home/research/ohm-clean/ytmusic_history_json_parse_per_row/unfixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "51a0704a5d6fc5da1835f8f368e50e7f1ad6d75ba1ffafe10bf8254857aae695",
+          "app_samples": 3477,
+          "remote_artifacts": "/home/research/ohm-clean/ytmusic_history_json_parse_per_row/unfixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    },
+    "fixed": {
+      "status": "FAIL",
+      "metric": "hiperf_instructions",
+      "rounds": 3,
+      "samples": [
+        1964627231,
+        1919523522,
+        1962399685
+      ],
+      "median": 1962399685,
+      "paired_ratios": [
+        1.015127260037454,
+        1.0169528341940266,
+        0.9791469106355875
+      ],
+      "median_ratio": 0.9947335911848152,
+      "plan_sha256": "b78726fab95f48c59941b27905ebaa93fcb094f579782bbc6d076628cf37d1ee",
+      "signed_sha256": "a1ad4d454f028655fd36cba349a91d055e0650f63350a90d8d9f488a0d33bfe6",
+      "fixture_sha256": "ed8636be371cd9a6ce3bb452a08b63712a63e6347e3d1617a820faed9221c1c3",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "7a9ae13d6cda716aec504f5b8b05da87f8f6d4a7c703885f79df1db3ac73b7aa",
+          "app_samples": 3520,
+          "remote_artifacts": "/home/research/ohm-clean/ytmusic_history_json_parse_per_row/fixed/cpu-captures/round-1"
+        },
+        {
+          "round": 2,
+          "report_sha256": "9a763555b2052e9f838fe0238bccc00b318e5bd1bd759e5b58c71319fcac289a",
+          "app_samples": 3591,
+          "remote_artifacts": "/home/research/ohm-clean/ytmusic_history_json_parse_per_row/fixed/cpu-captures/round-2"
+        },
+        {
+          "round": 3,
+          "report_sha256": "0802625ab409e93f8cfaf81a74a7e8e3f417ee6d58ea049f0b21558865c23c2b",
+          "app_samples": 3539,
+          "remote_artifacts": "/home/research/ohm-clean/ytmusic_history_json_parse_per_row/fixed/cpu-captures/round-3"
+        }
+      ],
+      "legacy_evidence_reused": false
+    }
+  },
+  "functional": {
+    "unfixed": {
+      "status": "PASS",
+      "rows": {
+        "catalogue_songs": 200,
+        "visible_songs": [
+          [
+            "Listening Track 178",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 179",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 180",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 181",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 182",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 183",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 184",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 185",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 186",
+            "My Chemical Romance"
+          ]
+        ]
+      },
+      "native_history_preserved": true,
+      "device_receipt_sha256": "23b67d4901120e28b76dbf83155556a7b81900e13fe3be3e00ab1839af745448"
+    },
+    "fixed": {
+      "status": "PASS",
+      "rows": {
+        "catalogue_songs": 200,
+        "visible_songs": [
+          [
+            "Listening Track 179",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 180",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 181",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 182",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 183",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 184",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 185",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 186",
+            "My Chemical Romance"
+          ]
+        ]
+      },
+      "native_history_preserved": true,
+      "device_receipt_sha256": "48cf04b4b30ffc7c587535eb62713618ae07f6f48b94a82ca8723ba53ce36d5b"
+    }
+  },
+  "source_sign_smoke_gate": {
+    "stage": "smoke",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  }
+}

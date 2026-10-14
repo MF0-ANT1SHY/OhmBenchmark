@@ -202,9 +202,9 @@
     "ytmusic_history_json_parse_per_row": {
       "oracle_metric": "hiperf_instructions",
       "app_injection": false,
-      "workload_validation": "pending",
-      "measurement_status": "pending_clean_measurement",
-      "rounds_recorded": 0
+      "workload_validation": "verified",
+      "measurement_status": "measured_clean_failed",
+      "rounds_recorded": 3
     },
     "ytmusic_search_no_debounce": {
       "oracle_metric": "hiperf_instructions",
