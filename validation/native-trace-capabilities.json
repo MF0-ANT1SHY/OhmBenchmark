@@ -1,0 +1,41 @@
+{
+  "status": "capability_probe_only",
+  "device": "2MU0123C26000031",
+  "source_sha256": "372923be47017644df326a9110c2d60d26131a8a40a0908e744f313847824e43",
+  "queries": {
+    "help": {
+      "exit_code": 0,
+      "stdout": "2026/10/14 12:13:19 hitrace enter, running_state is SHOW_HELP\nusage: hitrace [options] [categories...]\noptions include:\n  -b N                   Set the size of the buffer (KB) for storing and reading traces.\n                         The default buffer size is 18432 KB.\n  --buffer_size N        Like \"-b N\".\n  -l                     List available hitrace categories.\n  --list_categories      Like \"-l\".\n  -t N                   Set the hitrace running duration in seconds (5s by default), which depends on\n                         the time required for analysis.\n  --time N               Like \"-t N\".\n  --trace_clock clock    Sets the type of the clock for adding a timestamp to a trace, which can be\n                         boot (default), global, mono, uptime, or perf.\n  --trace_begin          Start capturing traces.\n  --trace_dump           Dump traces to a specified path (stdout by default).\n  --trace_finish         Stop capturing traces and dumps traces to a specified path (stdout by default).\n  --trace_finish_nodump  Stop capturing traces and not dumps traces.\n  --record               Enable or disable long-term trace collection tasks in conjunction with\n                         \"--trace_begin\" and \"--trace_finish\".\n  --overwrite            Set the action to take when the buffer is full. If this option is used,\n                         the latest traces are discarded; if this option is not used (default setting),\n                         the earliest traces are discarded.\n  -o filename            Specifies the name of the target file (stdout by default).\n  --output filename      Like \"-o filename\".\n  -z                     Compresses a captured trace.\n  --text                 Specify the output format of trace as text.\n  --raw                  Specify the output format of trace as raw trace, the default format is text.\n  --start_bgsrv          Enable trace_service in snapshot mode.\n  --dump_bgsrv           Trigger the dump trace task of the trace_service.\n  --stop_bgsrv           Disable trace_service in snapshot mode.\n  --file_size            Sets the size of the raw trace (KB). The default file size is 102400 KB.\n                         Only effective in raw trace mode\n  --trace_level level    Set the system parameter \"persist.hitrace.level.threshold\", which can control\n                         the level threshold of tracing. Valid values for \"level\" include\n                         D or Debug, I or Info, C or Critical, M or Commercial.\n  --get_level            Query the system parameter \"persist.hitrace.level.threshold\",\n                         which can control the level threshold of tracing.\n",
+      "stderr": ""
+    },
+    "clock": {
+      "exit_code": 0,
+      "stdout": "[boot] mono\n",
+      "stderr": ""
+    },
+    "options": {
+      "exit_code": 0,
+      "stdout": "/bin/sh: cat: /sys/kernel/tracing/trace_options: No such file or directory\n",
+      "stderr": ""
+    },
+    "online_cpus": {
+      "exit_code": 0,
+      "stdout": "0-11\n",
+      "stderr": ""
+    },
+    "tracing_on": {
+      "exit_code": 0,
+      "stdout": "0\n",
+      "stderr": ""
+    }
+  },
+  "findings": {
+    "native_hitrace_text_controls_available": true,
+    "native_clock": "boot",
+    "online_cpus": "0-11",
+    "tracing_on_during_readonly_probe": "0",
+    "trace_options_node": "not present; native scheduling/TGID format still requires actual capture validation"
+  },
+  "reference": "https://github.com/openharmony/docs/blob/master/en/application-dev/dfx/hitrace.md",
+  "performance_verified": false
+}
