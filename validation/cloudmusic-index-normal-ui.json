@@ -1,0 +1,126 @@
+{
+  "case": "cloudmusic_indexof_in_render",
+  "status": "normal_playlist_ui_verified",
+  "performance_accepted": false,
+  "main_oracle_pending": true,
+  "capture_duration_s": 60,
+  "fixture_songs": 10000,
+  "complete_playlist_materialization_verified": false,
+  "limitations": [
+    "Track 9999 in the current UI is in the bottom player, not proof of rendering the last playlist row.",
+    "The external catalogue contains 10000 songs; complete application-side list loading remains unverified.",
+    "No instruction reduction or per-row build-time improvement is inferred from UI validation."
+  ],
+  "variants": {
+    "unfixed": {
+      "workload": {
+        "case": "cloudmusic_indexof_in_render",
+        "variant": "unfixed",
+        "signed_sha256": "c86222b842fa82c41c63539c75776792a962f93fc38444d615d31ea853407462",
+        "plan_sha256": "a2eeaf3a901178a82aeb3fc61ea391899888aa05df1895a57fb48cf3f733ee00",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+          "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+          "songs": 10000,
+          "artist_count": 12,
+          "base_url": "http://127.0.0.1:18490",
+          "service_pid": 638,
+          "service_start_ticks": 6055,
+          "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+        },
+        "phase_elapsed_s": {
+          "setup": 52.895016640999984,
+          "measured": 38.64868604199998,
+          "verify": 11.347432423000015
+        },
+        "fixture_after": {
+          "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+          "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+          "songs": 10000,
+          "artist_count": 12,
+          "base_url": "http://127.0.0.1:18490",
+          "service_pid": 638,
+          "service_start_ticks": 6055,
+          "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+        },
+        "functional_check": "normal song titles and artist lines match the ordinary music catalogue",
+        "observed_titles": [
+          "Track 33",
+          "Track 34",
+          "Track 35",
+          "Track 36",
+          "Track 37",
+          "Track 38",
+          "Track 39",
+          "Track 40",
+          "Track 41",
+          "Track 42",
+          "Track 43",
+          "Track 44",
+          "Track 45",
+          "Track 46",
+          "Track 9999"
+        ],
+        "capture_duration_required_s": 44
+      },
+      "raw_ui_receipt_sha256": "fb0d2bf6457517744a99a1905cb111cfed2e867ab8c5df53be8b2d9dfc235421"
+    },
+    "fixed": {
+      "workload": {
+        "case": "cloudmusic_indexof_in_render",
+        "variant": "fixed",
+        "signed_sha256": "16b7e4564ff60f505c4717dccbd915f29e2ba0d147dd38c0ea07875c3efbaab0",
+        "plan_sha256": "a2eeaf3a901178a82aeb3fc61ea391899888aa05df1895a57fb48cf3f733ee00",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+          "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+          "songs": 10000,
+          "artist_count": 12,
+          "base_url": "http://127.0.0.1:18490",
+          "service_pid": 638,
+          "service_start_ticks": 6055,
+          "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+        },
+        "phase_elapsed_s": {
+          "setup": 50.996259536000025,
+          "measured": 39.21551138700005,
+          "verify": 11.696613670999966
+        },
+        "fixture_after": {
+          "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+          "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+          "songs": 10000,
+          "artist_count": 12,
+          "base_url": "http://127.0.0.1:18490",
+          "service_pid": 638,
+          "service_start_ticks": 6055,
+          "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+        },
+        "functional_check": "normal song titles and artist lines match the ordinary music catalogue",
+        "observed_titles": [
+          "Track 33",
+          "Track 34",
+          "Track 35",
+          "Track 36",
+          "Track 37",
+          "Track 38",
+          "Track 39",
+          "Track 40",
+          "Track 41",
+          "Track 42",
+          "Track 43",
+          "Track 44",
+          "Track 45",
+          "Track 46",
+          "Track 9999"
+        ],
+        "capture_duration_required_s": 44
+      },
+      "raw_ui_receipt_sha256": "4aa45837b93e6ae9a4e9512f54498f33cc0d1572da9dec92642e422b175229e7"
+    }
+  }
+}

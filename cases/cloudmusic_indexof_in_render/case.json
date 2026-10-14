@@ -41,7 +41,7 @@
       "htrace",
       "hiperf"
     ],
-    "step_duration_s": 25,
+    "step_duration_s": 60,
     "rounds": 3,
     "outputs": [
       "htrace/trace.htrace",

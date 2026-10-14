@@ -35,5 +35,5 @@ class PerfLoad_cloudmusic_0010(PerfTestCase):
         ui.run([{'op': 'stop'}, {'op': 'launch'}])
         ui.run(self._plan['setup'])
         ui.profiled(self.execute_performance_step,
-            'CloudMusic-HarmonyOSNext (仿网易云音乐)页面操作', 25, self._plan['measured'])
+            '打开歌单并浏览歌曲列表', 60, self._plan['measured'])
         ui.run(self._plan['verify'])

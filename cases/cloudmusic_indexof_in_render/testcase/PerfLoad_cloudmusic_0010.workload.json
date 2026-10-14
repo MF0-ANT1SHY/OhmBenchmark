@@ -1,29 +1,33 @@
 {
   "bundle": "cc.chenlvin.cloudmusic",
   "ability": "EntryAbility",
-  "description": "CloudMusic-HarmonyOSNext (仿网易云音乐)页面操作",
+  "description": "打开歌单并浏览歌曲列表",
   "setup": [
     {
       "op": "wait",
       "selector": {
-        "text": "Explore"
+        "text": "音乐云盘",
+        "match": "exact"
       }
     },
     {
-      "op": "point",
-      "x": 0.92,
-      "y": 0.07
+      "op": "tap",
+      "selector": {
+        "hint": "搜索内容"
+      }
     },
     {
       "op": "wait",
       "selector": {
-        "type": "SearchField"
+        "text": "搜索",
+        "match": "exact"
       }
     },
     {
       "op": "input",
       "selector": {
-        "hint": "Search something"
+        "type": "SearchField",
+        "hint": "搜索内容"
       },
       "value": "music"
     },
@@ -32,15 +36,24 @@
       "key": 2054
     },
     {
+      "op": "wait",
+      "selector": {
+        "text": "单曲",
+        "match": "exact"
+      }
+    },
+    {
       "op": "tap",
       "selector": {
-        "text": "歌单"
+        "text": "歌单",
+        "match": "exact"
       }
     },
     {
       "op": "wait",
       "selector": {
-        "text": "Collection"
+        "text": "Collection",
+        "match": "exact"
       }
     }
   ],
@@ -48,8 +61,17 @@
     {
       "op": "tap",
       "selector": {
-        "text": "Collection"
+        "text": "Collection",
+        "match": "exact"
       }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Track 1",
+        "match": "exact"
+      },
+      "timeout_s": 60
     },
     {
       "op": "swipe",
@@ -60,7 +82,15 @@
     {
       "op": "wait",
       "selector": {
-        "text": "Track"
+        "text": "Track [1-9][0-9]*",
+        "match": "regex"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Artist 1, Artist 2, Artist 3, Artist 4, Artist 5, Artist 6, Artist 7, Artist 8, Artist 9, Artist 10, Artist 11, Artist 12",
+        "match": "exact"
       }
     }
   ]
