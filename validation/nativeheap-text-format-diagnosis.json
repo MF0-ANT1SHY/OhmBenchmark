@@ -1,0 +1,52 @@
+{
+  "calibration_only": true,
+  "performance_accepted": false,
+  "raw_artifacts": "artifacts/nativeheap-text/5d4e1f9f2cfa4da5839e3c4a3c82ee71",
+  "capture": {
+    "calibration_only": true,
+    "performance_accepted": false,
+    "pid": 34270,
+    "config": "request_id: 1\nsession_config { buffers { pages: 4096 } result_file: \"/data/local/tmp/nativeheap-text-5d4e1f9f2cfa4da5839e3c4a3c82ee71.htrace\" sample_duration: 5000 }\nplugin_configs { plugin_name: \"nativehook\" sample_interval: 1000 is_protobuf_serialize: true\nconfig_data { pid: 34270 save_file: true file_name: \"/data/local/tmp/nativeheap-text-5d4e1f9f2cfa4da5839e3c4a3c82ee71.events\" filter_size: 0 smb_pages: 4096 max_stack_depth: 10 malloc_disable: false mmap_disable: true blocked: true record_accurately: true statistics_interval: 0 sample_interval: 0 clock: \"monotonic\" } }\n",
+    "stat_before": "34270 (e.myapplication) S 618 1 1 0 0 0 11912 11912 10257 10257 389 29 0 0 -14 -10 17 0 241646409 39220830208 35332 0 0 0 545573706272 0 0 0 0 0 0 0 8734 0 0 2 13 1 0 0 0 371886364784 371886372184 380720406528 545573706954 545573707229 545573707229 545573707728 0 0\n",
+    "tool_output": "Read config from /data/local/tmp/nativeheap-text-5d4e1f9f2cfa4da5839e3c4a3c82ee71.txt\nkeepSecond: 5s\ntracing 5000 ms....\nStopSession done!\nDestroySession done!\nDONE\n",
+    "stat_after": "34270 (e.myapplication) S 618 1 1 0 0 0 11913 11913 14350 14350 412 36 0 0 -14 -10 17 0 241646409 39220985856 35955 0 0 0 545573706272 0 0 0 0 0 0 0 8731 0 0 2 13 1 0 0 0 371886364784 371886372184 380720406528 545573706954 545573707229 545573707229 545573707728 0 0\n",
+    "hiprofiler_cmd_after": "",
+    "hiprofilerd_after": "",
+    "native_daemon_after": "",
+    "events_transfer": "FileTransfer finish, Size:3413345, File count = 1, time:52ms rate:65641.25kB/s\n",
+    "events_bytes": 3413345,
+    "events_sha256": "08b707a5a5704ba449dd277db854f67f08926909a9d1ceefd77e57f4ee138b8c",
+    "htrace_transfer": "FileTransfer finish, Size:1533, File count = 1, time:20ms rate:76.65kB/s\n",
+    "htrace_bytes": 1533,
+    "htrace_sha256": "062ca4e9f164675a2ade3225ec992253519af4da9cf7087963b4ffd85d5aaa42"
+  },
+  "event_counts": {
+    "malloc": 2186,
+    "free": 2295
+  },
+  "event_field_counts": {
+    "6": 4481
+  },
+  "addresses_available": false,
+  "retained_bytes_computable": false,
+  "device_public_version": {
+    "api": 21,
+    "fullname": "OpenHarmony-6.0.1.112",
+    "product_version": "HBP-AL00 6.0.0.112(SP55C00E112R5P4)"
+  },
+  "official_source": {
+    "repo": "https://gitcode.com/openharmony/developtools_profiler.git",
+    "branch": "OpenHarmony-6.0-Release",
+    "commit": "31a32072c2b1da4e3ee7cb27a0dd9938d27cc784",
+    "sha256": {
+      "device/base/src/common.cpp": "2a5e4e264fb692107e1ce7a293f827434172aed7bbbda46cb0271adc09b3feac",
+      "device/plugins/native_daemon/src/stack_preprocess.cpp": "5926d243eea30868344fda52cb265096868212773476c46326436b9742eaf13f",
+      "protos/types/plugins/native_hook/native_hook_config.proto": "dec26b82520c7c36f92ea1584650fd89dec6567b895816f25ddaf97e325f404b"
+    },
+    "exact_device_build_match_verified": false
+  },
+  "format_diagnosis": "The 6.0 WriteFrames format emits six fields, omitting allocation address. Actual device text records match this shape. They cannot support exact allocation/free address matching.",
+  "clock_diagnosis": "GetClockId maps mono to CLOCK_MONOTONIC; monotonic is unrecognized and falls back to CLOCK_REALTIME. Historical configs are therefore invalid for the intended clock.",
+  "checksum_bypass_used": false,
+  "parser_correction": "Require native config clock field mono; reject monotonic even though its English meaning suggests a monotonic clock."
+}

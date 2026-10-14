@@ -1,0 +1,27 @@
+{
+  "calibration_only": true,
+  "performance_accepted": false,
+  "local_artifacts": "artifacts/nativeheap-calibration/beb782f16abe400eb859205674427efd",
+  "remote_artifacts": "/home/research/ohm-clean/nativeheap-calibration/beb782f16abe400eb859205674427efd",
+  "pid": 34270,
+  "profiler_cleanup_verified": true,
+  "native_format_verified": false,
+  "error": "native profiler payload checksum mismatch",
+  "trace_sha256": "253657ce397eae992da3392c2bbb5d7ab3edaea0b8a1e220cceeacdeff848d16",
+  "diagnostic_only_structure_read": true,
+  "configuration_clock": [
+    "mono"
+  ],
+  "plugin_envelope_clock_ids": [
+    0
+  ],
+  "allocation_event_time_range_ns": [
+    635123164569233,
+    635128067929649
+  ],
+  "event_count": 4529,
+  "clock_spelling_corrected": true,
+  "checksum_validation": "REJECTED",
+  "retained_bytes_computed": false,
+  "collection_provenance_verified": false
+}

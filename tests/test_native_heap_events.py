@@ -30,7 +30,7 @@ class NativeHeapEventTest(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
         self.path=Path(self.temp.name)/'trace.htrace'
-        self.config_fields={1:100,9:1,16:1,17:1,23:b'monotonic'}
+        self.config_fields={1:100,9:1,16:1,17:1,23:b'mono'}
         self.config=b''.join(field(k,v) for k,v in self.config_fields.items())
 
     def write(self,events,config=None):
@@ -67,7 +67,7 @@ class NativeHeapEventTest(unittest.TestCase):
             with self.assertRaises(ValueError):compute(self.path,100)
 
     def test_sampling_filtering_wrong_clock_or_nonaccurate_config_rejected(self):
-        for number,value in ((24,4096),(4,4096),(17,0),(23,b'realtime')):
+        for number,value in ((24,4096),(4,4096),(17,0),(23,b'realtime'),(23,b'monotonic')):
             changed={**self.config_fields,number:value}
             self.write([event(3,1,128)],b''.join(field(k,v) for k,v in changed.items()))
             with self.subTest(number=number),self.assertRaises(ValueError):compute(self.path,100)

@@ -58,7 +58,7 @@ def validate_config(message, pid):
             or scalar(message, 9) != 1 or scalar(message, 17) != 1
             or scalar(message, 16) != 1 or scalar(message, 22) != 0
             or scalar(message, 24) > 1 or scalar(message, 4) > 1
-            or scalar(message, 23, 2, b'') != b'monotonic'):
+            or scalar(message, 23, 2, b'') != b'mono'):
         raise ValueError('full accurate blocked malloc-only monotonic collection is not proven')
 
 
