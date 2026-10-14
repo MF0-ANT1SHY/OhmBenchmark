@@ -12,6 +12,7 @@ from reader_data_fixture import CASES as READER_CASES, verify_preparation
 from rss_refresh_progress import verify_observation
 from jingmo_import_fixture import CASE as POEM_IMPORT_CASE, verify_state as verify_poem_state, verify_preparation as verify_poem_preparation, verify_capture_window as verify_poem_window
 from jingmo_sync_fixture import CASE as POEM_SYNC_CASE, verify_preparation as verify_sync_preparation
+from jingmo_sync_progress import verify_observation as verify_sync_progress, verify_capture as verify_sync_capture
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -35,6 +36,7 @@ def accept(cid, write=True, require_pass=True):
             verify_poem_preparation(workload['fixture'],workload['fixture_after'])
         if cid==POEM_SYNC_CASE:
             device=json.loads((folder/'workload-device.json').read_text())
+            verify_sync_progress(device['poem_sync_progress'])
             verify_poem_state(device['poem_sync_state'],True)
             verify_sync_preparation(workload['fixture'],workload['fixture_after'])
         if cid in READER_CASES:
@@ -73,6 +75,7 @@ def accept(cid, write=True, require_pass=True):
                 if receipt['poem_import_fixture_before']['sha256']!=receipt['fixture_sha256']:
                     raise RuntimeError('poetry capture data identity differs from validated cold import')
             if cid==POEM_SYNC_CASE:
+                verify_sync_capture(receipt['poem_sync_progress'],receipt['action_start_monotonic'],receipt['action_end_monotonic'])
                 verify_poem_window(receipt['poem_sync_state'],receipt['action_start_monotonic'],receipt['action_end_monotonic'])
                 verify_sync_preparation(receipt['poem_sync_fixture_before'],receipt['poem_sync_fixture_after'])
                 if receipt['poem_sync_fixture_before']['sha256']!=receipt['fixture_sha256']:

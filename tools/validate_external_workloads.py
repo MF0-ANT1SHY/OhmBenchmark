@@ -28,6 +28,7 @@ from reader_data_fixture import prepare as prepare_reader, finish as finish_read
 from rss_refresh_progress import verify_observation
 from jingmo_import_fixture import prepare as prepare_import, finish as finish_import, verify_state
 from jingmo_sync_fixture import prepare as prepare_sync, finish as finish_sync
+from jingmo_sync_progress import verify_observation as verify_sync_progress
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -94,6 +95,9 @@ def shell(command):
             for module in ('jingmo_import_fixture.py','jingmo_data_service.py','rss_service_fixture.py','rss_data_service.py','rss_dataset.py','install_sqlite_fixture.py','remote_device.py'):
                 remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
             code += "from jingmo_import_fixture import complete_import,read_state,verify_state\n"
+        if poem_sync_fixture:
+            remote.upload(ROOT/'tools/jingmo_sync_progress.py','/home/research/ohm-clean/tools/jingmo_sync_progress.py')
+            code += "from jingmo_sync_progress import read_state as read_sync_logs,complete_sync\n"
         if reader_fixture:
             remote.upload(ROOT/'tools/rss_refresh_progress.py','/home/research/ohm-clean/tools/rss_refresh_progress.py')
             code += "from rss_refresh_progress import read_state,complete_refresh\n"
@@ -119,10 +123,13 @@ def shell(command):
         code += "  phases[phase]={'elapsed_s':time.monotonic()-started,'layout':ui.layout()}\n"
         if reader_fixture:
             code += "  if phase=='setup':reader_before=read_state(shell)\n"
+        if poem_sync_fixture:
+            code += "  if phase=='setup':sync_logs_before=read_sync_logs(shell)\n"
         code += " result={'phases':phases,'status':'PASS'}\n"
         if poem_import_fixture:
             code += " result['poem_import_state']=complete_import(ui)\n"
         if poem_sync_fixture:
+            code += " result['poem_sync_progress']=complete_sync(ui,sync_logs_before)\n"
             code += " result['poem_sync_state']=read_state(shell);verify_state(result['poem_sync_state'],True)\n"
         if reader_fixture:
             code += " result['reader_refresh']=complete_refresh(ui,reader_before)\n"
@@ -145,6 +152,7 @@ def shell(command):
             result['fixture_after']=finish_import(remote,result['fixture'])
             result['functional_check']='all 5000 full ordinary poetry records imported from the configured source'
         if poem_sync_fixture:
+            result['poem_sync_progress']=verify_sync_progress(device['poem_sync_progress'])
             verify_state(device['poem_sync_state'],True)
             result['fixture_after']=finish_sync(remote,result['fixture'])
             result['functional_check']='all 5000 full ordinary cached poetry records preserved after normal repeat sync actions'

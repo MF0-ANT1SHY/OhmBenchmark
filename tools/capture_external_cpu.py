@@ -103,6 +103,9 @@ def shell(command):
         code += " if selector.get('id')=='AddAddressBtn':page_observations.append(observe_page(shell,plan['bundle'],node))\n"
         code += " return node\nui.find=observe_find\n"
     code += "ui.run([{'op':'stop'},{'op':'launch'}]);ui.run(plan['setup'])\n"
+    if poem_sync_fixture:
+        remote.upload(ROOT/'tools/jingmo_sync_progress.py','/home/research/ohm-clean/tools/jingmo_sync_progress.py')
+        code += "from jingmo_sync_progress import read_state as read_sync_logs,complete_sync\nsync_logs_before=read_sync_logs(shell)\n"
     if reader_fixture:
         remote.upload(ROOT/'tools/rss_refresh_progress.py','/home/research/ohm-clean/tools/rss_refresh_progress.py')
         code += "from rss_refresh_progress import read_state,complete_refresh\nreader_before=read_state(shell)\n"
@@ -127,6 +130,7 @@ def shell(command):
     if poem_import_fixture:
         code += " record['poem_import_state']=complete_import(ui)\n"
     if poem_sync_fixture:
+        code += " record['poem_sync_progress']=complete_sync(ui,sync_logs_before)\n"
         code += " record['poem_sync_state']=read_state(shell);verify_state(record['poem_sync_state'],True)\n"
     if reader_fixture:
         code += " record['reader_refresh']=complete_refresh(ui,reader_before)\n"
