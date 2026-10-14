@@ -35,5 +35,5 @@ class MemLoad_interviewapp_0030(PerfTestCase):
         ui.run([{'op': 'stop'}, {'op': 'launch'}])
         ui.run(self._plan['setup'])
         ui.profiled(self.execute_performance_step,
-            'interview-handbook-project (面试通)页面操作', 20, self._plan['measured'])
+            'interview-handbook-project (面试通)页面操作', 900, self._plan['measured'])
         ui.run(self._plan['verify'])

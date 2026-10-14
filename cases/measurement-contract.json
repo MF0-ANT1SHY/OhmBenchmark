@@ -107,9 +107,16 @@
     "interviewapp_search_history_unbounded": {
       "oracle_metric": "app_pss_bytes",
       "app_injection": false,
-      "workload_validation": "pending",
-      "measurement_status": "pending_clean_measurement",
-      "rounds_recorded": 0
+      "workload_validation": "verified",
+      "measurement_status": "negative_screen_failed",
+      "rounds_recorded": 1,
+      "disposition": {
+        "status": "skipped_by_user",
+        "reason": "A verified mandatory pair fails the unchanged 1.2x criterion; user instructed to skip negative cases.",
+        "performance_passed": false,
+        "original_evidence_preserved": true,
+        "full_three_pair_run_completed": false
+      }
     },
     "jingmo_dataset_import_no_transaction": {
       "oracle_metric": "hiperf_instructions",
@@ -258,5 +265,5 @@
       "request_completion_verified": false
     }
   },
-  "skipped_case_count": 7
+  "skipped_case_count": 8
 }

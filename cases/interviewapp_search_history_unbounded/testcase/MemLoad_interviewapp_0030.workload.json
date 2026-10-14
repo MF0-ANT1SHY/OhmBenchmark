@@ -10,9 +10,11 @@
       }
     },
     {
-      "op": "point",
-      "x": 0.4,
-      "y": 0.09
+      "op": "tap",
+      "selector": {
+        "text": "搜索题目",
+        "match": "exact"
+      }
     },
     {
       "op": "wait",

@@ -2385,6 +2385,73 @@
         },
         "allowed_acls": [],
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "interviewapp_search_history_unbounded",
+        "variant": "unfixed",
+        "signed_sha256": "6f02bc78ed03c93b319945316a834e5f070f9d6cc11000524849587a0b2256c9",
+        "install": "[Info]App install path:/home/research/ohm-clean/renewed-20261014/interviewapp_search_history_unbounded/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          24892
+        ],
+        "foreground_bundle": "com.itcast.pass_interview",
+        "status": "PASS",
+        "performance_verified": false
+      },
+      "workload": {
+        "case": "interviewapp_search_history_unbounded",
+        "variant": "unfixed",
+        "signed_sha256": "6f02bc78ed03c93b319945316a834e5f070f9d6cc11000524849587a0b2256c9",
+        "plan_sha256": "2155824a06bf57a8127fee8f40e6e6ac09257d1175e379be3bb0f07f54720ce6",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "sha256": "4837f37f9658128b042670c6f41479403e37e8b826e9e2112f06a2297c1ed414",
+          "deployed_sha256": "8d36b89f2ac34d3b9ca8bbe090e2a7e02020a683b25921b7cdcb9231d131a548",
+          "fixture_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/interviewapp-history-1000",
+          "variant": "unfixed",
+          "preferences": "/data/app/el2/100/base/com.itcast.pass_interview/haps/phone/preferences/historyStore",
+          "backup": "/home/research/ohm-clean/backups/com.itcast.pass_interview/1791996708312438998/historyStore.xml",
+          "method": "ordinary production preferences after identical search submissions",
+          "installation_verified": true,
+          "functional_read_verified": true
+        },
+        "phase_elapsed_s": {
+          "setup": 23.79680344999997,
+          "measured": 520.3831136770001,
+          "verify": 5.199415546999944
+        },
+        "functional_check": "normal history UI displays entries from the ordinary preference fixture",
+        "capture_duration_required_s": 525
+      },
+      "performance": {
+        "status": "NEGATIVE_SCREEN_FAILED",
+        "metric": "app_pss_bytes",
+        "rounds": 1,
+        "samples": [
+          106369024
+        ],
+        "median": 106369024,
+        "paired_ratios": [
+          1.1864627474272138
+        ],
+        "median_ratio": 1.1864627474272138,
+        "plan_sha256": "2155824a06bf57a8127fee8f40e6e6ac09257d1175e379be3bb0f07f54720ce6",
+        "signed_sha256": "6f02bc78ed03c93b319945316a834e5f070f9d6cc11000524849587a0b2256c9",
+        "fixture_sha256": "4837f37f9658128b042670c6f41479403e37e8b826e9e2112f06a2297c1ed414",
+        "captures": [
+          {
+            "round": 1,
+            "capture_sha256": "1f854009687b21770feed8ae81e80141ab5551e49b2d1371f9ed40a679fded6d",
+            "snapshots": 52
+          }
+        ],
+        "legacy_evidence_reused": false,
+        "method": "final absolute process PSS from raw kernel smaps_rollup; not RSS, growth or a selected peak",
+        "performance_accepted": false,
+        "required_rounds": 3,
+        "full_performance_run_completed": false
       }
     },
     {
@@ -2423,6 +2490,73 @@
         },
         "allowed_acls": [],
         "status": "PASS"
+      },
+      "smoke": {
+        "case": "interviewapp_search_history_unbounded",
+        "variant": "fixed",
+        "signed_sha256": "a4d9e2d2c7ad6e50d2c6b59ab31ee0978ea18e3f6c9f6b56368952c8048c5b04",
+        "install": "[Info]App install path:/home/research/ohm-clean/renewed-20261014/interviewapp_search_history_unbounded/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          25447
+        ],
+        "foreground_bundle": "com.itcast.pass_interview",
+        "status": "PASS",
+        "performance_verified": false
+      },
+      "workload": {
+        "case": "interviewapp_search_history_unbounded",
+        "variant": "fixed",
+        "signed_sha256": "a4d9e2d2c7ad6e50d2c6b59ab31ee0978ea18e3f6c9f6b56368952c8048c5b04",
+        "plan_sha256": "2155824a06bf57a8127fee8f40e6e6ac09257d1175e379be3bb0f07f54720ce6",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "sha256": "4837f37f9658128b042670c6f41479403e37e8b826e9e2112f06a2297c1ed414",
+          "deployed_sha256": "2e225eced597c59e44f51d3291c632d07ecb276468e51de296ea5ffc88674fcb",
+          "fixture_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/interviewapp-history-1000",
+          "variant": "fixed",
+          "preferences": "/data/app/el2/100/base/com.itcast.pass_interview/haps/phone/preferences/historyStore",
+          "backup": "/home/research/ohm-clean/backups/com.itcast.pass_interview/1791997321789838088/historyStore.xml",
+          "method": "ordinary production preferences after identical search submissions",
+          "installation_verified": true,
+          "functional_read_verified": true
+        },
+        "phase_elapsed_s": {
+          "setup": 23.807424715000025,
+          "measured": 508.93855119299997,
+          "verify": 5.193817975999991
+        },
+        "functional_check": "normal history UI displays entries from the ordinary preference fixture",
+        "capture_duration_required_s": 514
+      },
+      "performance": {
+        "status": "NEGATIVE_SCREEN_FAILED",
+        "metric": "app_pss_bytes",
+        "rounds": 1,
+        "samples": [
+          89652224
+        ],
+        "median": 89652224,
+        "paired_ratios": [
+          1.1864627474272138
+        ],
+        "median_ratio": 1.1864627474272138,
+        "plan_sha256": "2155824a06bf57a8127fee8f40e6e6ac09257d1175e379be3bb0f07f54720ce6",
+        "signed_sha256": "a4d9e2d2c7ad6e50d2c6b59ab31ee0978ea18e3f6c9f6b56368952c8048c5b04",
+        "fixture_sha256": "4837f37f9658128b042670c6f41479403e37e8b826e9e2112f06a2297c1ed414",
+        "captures": [
+          {
+            "round": 1,
+            "capture_sha256": "d16d3905b55cc4370e86a6f7108dfb4dce15b0c0cdfefb50fd1670da36ebad99",
+            "snapshots": 52
+          }
+        ],
+        "legacy_evidence_reused": false,
+        "method": "final absolute process PSS from raw kernel smaps_rollup; not RSS, growth or a selected peak",
+        "performance_accepted": false,
+        "required_rounds": 3,
+        "full_performance_run_completed": false
       }
     },
     {

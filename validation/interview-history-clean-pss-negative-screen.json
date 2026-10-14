@@ -1,0 +1,118 @@
+{
+  "case": "interviewapp_search_history_unbounded",
+  "status": "NEGATIVE_SCREEN_FAILED_SKIPPED_BY_USER",
+  "app_injection": false,
+  "performance_accepted": false,
+  "complete_paired_rounds": 1,
+  "required_paired_rounds_for_acceptance": 3,
+  "full_performance_run_completed": false,
+  "criterion": "Every mandatory paired round must be >=1.2x; the verified first pair violates this necessary condition.",
+  "threshold_unchanged": true,
+  "results": {
+    "unfixed": {
+      "status": "NEGATIVE_SCREEN_FAILED",
+      "metric": "app_pss_bytes",
+      "rounds": 1,
+      "samples": [
+        106369024
+      ],
+      "median": 106369024,
+      "paired_ratios": [
+        1.1864627474272138
+      ],
+      "median_ratio": 1.1864627474272138,
+      "plan_sha256": "2155824a06bf57a8127fee8f40e6e6ac09257d1175e379be3bb0f07f54720ce6",
+      "signed_sha256": "6f02bc78ed03c93b319945316a834e5f070f9d6cc11000524849587a0b2256c9",
+      "fixture_sha256": "4837f37f9658128b042670c6f41479403e37e8b826e9e2112f06a2297c1ed414",
+      "captures": [
+        {
+          "round": 1,
+          "capture_sha256": "1f854009687b21770feed8ae81e80141ab5551e49b2d1371f9ed40a679fded6d",
+          "snapshots": 52
+        }
+      ],
+      "legacy_evidence_reused": false,
+      "method": "final absolute process PSS from raw kernel smaps_rollup; not RSS, growth or a selected peak",
+      "performance_accepted": false,
+      "required_rounds": 3,
+      "full_performance_run_completed": false
+    },
+    "fixed": {
+      "status": "NEGATIVE_SCREEN_FAILED",
+      "metric": "app_pss_bytes",
+      "rounds": 1,
+      "samples": [
+        89652224
+      ],
+      "median": 89652224,
+      "paired_ratios": [
+        1.1864627474272138
+      ],
+      "median_ratio": 1.1864627474272138,
+      "plan_sha256": "2155824a06bf57a8127fee8f40e6e6ac09257d1175e379be3bb0f07f54720ce6",
+      "signed_sha256": "a4d9e2d2c7ad6e50d2c6b59ab31ee0978ea18e3f6c9f6b56368952c8048c5b04",
+      "fixture_sha256": "4837f37f9658128b042670c6f41479403e37e8b826e9e2112f06a2297c1ed414",
+      "captures": [
+        {
+          "round": 1,
+          "capture_sha256": "d16d3905b55cc4370e86a6f7108dfb4dce15b0c0cdfefb50fd1670da36ebad99",
+          "snapshots": 52
+        }
+      ],
+      "legacy_evidence_reused": false,
+      "method": "final absolute process PSS from raw kernel smaps_rollup; not RSS, growth or a selected peak",
+      "performance_accepted": false,
+      "required_rounds": 3,
+      "full_performance_run_completed": false
+    }
+  },
+  "extra_unpaired_completed_capture": {
+    "path": "artifacts/clean/interviewapp_search_history_unbounded/unfixed/pss-captures/round-2/capture.json",
+    "sha256": "e759159714d8ad5681a554f476bbac0ce47d1f4713634a20ca5e8fab490c9688",
+    "not_used_as_paired_evidence": true
+  },
+  "boundary_stop": {
+    "pid": 2666816,
+    "start_ticks": "7763022895",
+    "status": "STOPPED_AFTER_COMPLETE_TRIAL",
+    "completed_trial": "unfixed/round-2",
+    "reason": "first paired round violates mandatory per-pair 1.2x criterion; user instructed to skip negative cases"
+  },
+  "gates": {
+    "build": {
+      "stage": "build",
+      "cases": 1,
+      "errors": [],
+      "pending": [],
+      "passed": true
+    },
+    "sign": {
+      "stage": "sign",
+      "cases": 1,
+      "errors": [],
+      "pending": [],
+      "passed": true
+    },
+    "smoke": {
+      "stage": "smoke",
+      "cases": 1,
+      "errors": [],
+      "pending": [],
+      "passed": true
+    },
+    "complete": {
+      "stage": "complete",
+      "cases": 1,
+      "errors": [
+        "interviewapp_search_history_unbounded/unfixed: oracle coverage/rounds not proven",
+        "interviewapp_search_history_unbounded/fixed: oracle coverage/rounds not proven"
+      ],
+      "pending": [
+        "interviewapp_search_history_unbounded/unfixed: performance not validated",
+        "interviewapp_search_history_unbounded/fixed: performance not validated",
+        "interviewapp_search_history_unbounded: clean performance oracle not accepted (negative_screen_failed)"
+      ],
+      "passed": false
+    }
+  }
+}
