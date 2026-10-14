@@ -149,6 +149,15 @@
           "foreground_bundle": "com.itcast.pass_interview",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "interviewapp_search_history_unbounded",
+          "variant": "unfixed",
+          "signed_sha256": "854316c15663fb5a93d874a4c392602febbbb9dd553080a9856d83bcb218a36c",
+          "plan_sha256": "1de21acdcbd5e6cdb70ad0c4482be1800e6ae8ee174f8b4183cb68d09bfd4c3f",
+          "status": "FAIL",
+          "performance_verified": false,
+          "error": "UI target not found: {'hint': '请输入关键词'}"
         }
       },
       "fixed": {
@@ -198,6 +207,8 @@
           "performance_verified": false
         }
       }
-    }
+    },
+    "normal_login_diagnosis": "../../validation/interview-normal-entry-retry-diagnosis.json",
+    "device_network_diagnosis": "../../validation/device-offline-network-diagnosis.json"
   }
 }
