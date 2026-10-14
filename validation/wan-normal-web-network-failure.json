@@ -1,0 +1,27 @@
+{
+  "case": "wanharmony_history_log_materialization",
+  "status": "NORMAL_WEB_LOAD_FAILED_NETWORK",
+  "performance_accepted": false,
+  "native_history_page_verified": true,
+  "normal_successful_title_event_path_verified": false,
+  "pid": 53314,
+  "default_routes": "",
+  "native_web_error": "(-106) ERR_INTERNET_DISCONNECTED",
+  "error_page_still_emits": [
+    "onPageEnd",
+    "onTitleReceive"
+  ],
+  "raw_ui_receipt": "artifacts/clean/wanharmony_history_log_materialization/normal-web-check.json",
+  "raw_ui_receipt_sha256": "07e8fc4da74de5d82dd09d05fa2196e0db5211c6dd5de9f3e2a45109616f4494",
+  "raw_callback_receipt": "artifacts/clean/wanharmony_history_log_materialization/normal-web-callbacks.log",
+  "raw_callback_sha256": "a83315e68858d4b1752ad688df055b0eb9df6e68a5146c3ec97f5f484c1caa53",
+  "app_source_modified": false,
+  "guard": "Reject all new onErrorReceive callbacks; begin/end/title presence alone cannot prove a successful workload.",
+  "native_trace_adapter": "implemented, no successful Wan trace or performance evidence claimed",
+  "process_start_ticks": 241889961,
+  "same_native_process_verified": true,
+  "tests": {
+    "count": 153,
+    "status": "PASS"
+  }
+}

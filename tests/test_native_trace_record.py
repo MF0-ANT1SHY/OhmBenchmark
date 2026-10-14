@@ -5,10 +5,24 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from native_trace_record import BUNDLE, cpu_set, record
+from native_trace_record import BUNDLE, cpu_set, record, process
 
 
 class NativeTraceOwnershipTest(unittest.TestCase):
+    def test_foreign_observer_cannot_start_ui_or_trace(self):
+        class Observer:
+            bundle = 'another.app'
+            receipt_key = 'wan_history'
+        with tempfile.TemporaryDirectory() as folder, self.assertRaises(ValueError):
+            record(None, {'bundle': 'org.example.wan.ohos'}, folder, Observer())
+
+    def test_process_identity_is_exact_not_a_bundle_substring(self):
+        def shell(command):
+            if command.startswith('pidof '):return '123'
+            if command.endswith('/cmdline'):return BUNDLE+'.other\x00'
+            return '123 (app) S 0'
+        with self.assertRaisesRegex(ValueError,'provenance'):process(shell)
+
     def test_online_cpu_ranges_are_native_and_bounded(self):
         self.assertEqual(cpu_set('0-3,6,8-11\n'), [0, 1, 2, 3, 6, 8, 9, 10, 11])
         for value in ('', '4-2', '0-300', 'command failed'):

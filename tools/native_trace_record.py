@@ -1,4 +1,4 @@
-"""External native scheduler recording for an ordinary reader refresh."""
+"""External native scheduler recording for verified ordinary app workloads."""
 import json
 from pathlib import Path
 import re
@@ -25,13 +25,15 @@ def cpu_set(raw):
     return sorted(result)
 
 
-def process(shell):
-    pid = shell('pidof ' + BUNDLE).strip()
+def process(shell, bundle=BUNDLE):
+    if bundle not in (BUNDLE, 'org.example.wan.ohos'):
+        raise ValueError('unsupported native scheduling target')
+    pid = shell('pidof ' + bundle).strip()
     if not pid.isdigit():
         raise ValueError('one live reader process is required')
     command = shell(f'cat /proc/{pid}/cmdline')
     stat = shell(f'cat /proc/{pid}/stat')
-    if BUNDLE not in command or ')' not in stat:
+    if command.split('\x00', 1)[0].strip() != bundle or ')' not in stat:
         raise ValueError('reader PID provenance is not proven')
     ticks = stat.rsplit(')', 1)[1].split()[19]
     if not ticks.isdigit():
@@ -48,9 +50,13 @@ def bracket_cpus(shell, cpus):
             raise ValueError('native observer affinity failed: ' + result)
 
 
-def record(ui, plan, folder):
-    if plan['bundle'] != BUNDLE:
-        raise ValueError('reader trace recorder provided to a different app')
+def record(ui, plan, folder, observer=None):
+    if observer is None:
+        if plan['bundle'] != BUNDLE:
+            raise ValueError('reader trace recorder provided to a different app')
+    elif (plan['bundle'] != 'org.example.wan.ohos'
+          or observer.bundle != plan['bundle'] or observer.receipt_key != 'wan_history'):
+        raise ValueError('native workload observer targets a different app')
     shell = ui.shell
     if shell('pidof hiperf').strip() or shell(f'cat {TRACE_ROOT}/tracing_on').strip() != '0':
         raise ValueError('another native profiler is active; no device state changed')
@@ -65,9 +71,12 @@ def record(ui, plan, folder):
     try:
         ui.run([{'op': 'stop'}, {'op': 'launch'}])
         ui.run(plan['setup'])
-        ui.find(REFRESH_BUTTON, 120)
-        before = read_state(shell)
-        initial = process(shell)
+        if observer is None:
+            ui.find(REFRESH_BUTTON, 120)
+            before = read_state(shell)
+        else:
+            before = observer.prepare(ui)
+        initial = process(shell) if observer is None else process(shell, plan['bundle'])
         cpus = cpu_set(shell('cat /sys/devices/system/cpu/online'))
         receipt['process_before'] = initial
         receipt['online_cpus_before'] = cpus
@@ -95,13 +104,16 @@ def record(ui, plan, folder):
         receipt['action_start_monotonic'] = time.monotonic()
         ui.run(plan['measured'])
         ui.run(plan['verify'])
-        receipt['reader_refresh'] = complete_refresh(ui, before)
+        if observer is None:
+            receipt['reader_refresh'] = complete_refresh(ui, before)
+        else:
+            receipt[observer.receipt_key] = observer.complete(ui, before)
         receipt['action_end_monotonic'] = time.monotonic()
         output = shell(f"echo 'W:{token}:end' > {TRACE_ROOT}/trace_marker")
         if output.strip():
             raise ValueError('native end marker write failed: ' + output)
         bracket_cpus(shell, cpus)
-        receipt['process_after'] = process(shell)
+        receipt['process_after'] = process(shell) if observer is None else process(shell, plan['bundle'])
         receipt['online_cpus_after'] = cpu_set(shell('cat /sys/devices/system/cpu/online'))
         receipt['clock_after'] = shell(f'cat {TRACE_ROOT}/trace_clock').strip()
         if (receipt['process_after'] != initial or receipt['online_cpus_after'] != cpus
