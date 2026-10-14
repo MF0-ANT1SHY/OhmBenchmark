@@ -1,0 +1,12 @@
+{
+  "case": "interviewapp_search_history_unbounded",
+  "status": "FAIL",
+  "error": "UI target not found: {'text': '\u70ed\u95e8\u9898\u5e93', 'match': 'exact'}",
+  "normal_login_attempted": false,
+  "device_receipt_sha256": "1e3f97d4336ae2f8eece75b495ef581b9577e37b72a7207e400d9d0131b04882",
+  "remote_artifacts": "/home/research/ohm-clean/interviewapp_search_history_unbounded/normal-entry-82512137f07c43d6b0474ccd36dc542e",
+  "history_preference_paths": [],
+  "app_injection": false,
+  "performance_accepted": false,
+  "reason": "System expiration dialog blocked launch before login; see renewed SDK profile fix."
+}
