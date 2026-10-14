@@ -3,6 +3,8 @@ import math
 
 from ui_driver import UI
 
+CASES = {'ytmusic_current_playing_timeupdate', 'cloudmusic_play_time_high_frequency_update'}
+
 
 def check_progress(start_layout, end_layout, bundle, elapsed_s):
     def position(layout):

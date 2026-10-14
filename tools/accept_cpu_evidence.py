@@ -5,7 +5,7 @@ import hashlib
 import json
 import statistics
 from pathlib import Path
-from playback_progress import check_progress
+from playback_progress import check_progress, CASES as PLAYBACK_CASES
 from music_service_fixture import same_instance
 from page_lifecycle import verify_reconstructions
 from reader_data_fixture import CASES as READER_CASES, verify_preparation
@@ -60,7 +60,7 @@ def accept(cid, write=True, require_pass=True):
                 workload.get('functional_check')!='all history rows and dates cleared through the production UI'
                 or workload.get('cleared_tables',0)<2):
             raise RuntimeError('complete history-row deletion through the UI is not proven')
-        if cid=='ytmusic_current_playing_timeupdate':
+        if cid in PLAYBACK_CASES:
             device=json.loads((folder/'workload-device.json').read_text())
             phases=device['phases']
             progress=check_progress(phases['setup']['layout'],phases['measured']['layout'],
@@ -119,7 +119,7 @@ def accept(cid, write=True, require_pass=True):
                     raise RuntimeError('music data identity differs from capture fixture')
             if cid=='browser_history_delete_no_transaction' and receipt.get('completion_check')!='database cleared before capture stop':
                 raise RuntimeError('async database completion within the capture is not proven')
-            if cid=='ytmusic_current_playing_timeupdate':
+            if cid in PLAYBACK_CASES:
                 observation=receipt['playback_observation']
                 progress=check_progress(observation['start_layout'],observation['end_layout'],
                                         case['host_app']['bundle_name'],observation['elapsed_s'])

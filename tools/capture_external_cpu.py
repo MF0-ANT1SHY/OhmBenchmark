@@ -21,6 +21,7 @@ from jingmo_import_fixture import prepare as prepare_import, finish as finish_im
 from jingmo_sync_fixture import prepare as prepare_sync, finish as finish_sync
 from reader_list_progress import CASE as READER_LIST_CASE
 from reader_unread_badges import CASE as UNREAD_CASE
+from playback_progress import CASES as PLAYBACK_CASES
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -117,7 +118,7 @@ def shell(command):
     if reader_fixture and cid == UNREAD_CASE:
         remote.upload(ROOT/'tools/reader_unread_badges.py','/home/research/ohm-clean/tools/reader_unread_badges.py')
         code += "from reader_unread_badges import complete_badges\n"
-    if cid=='ytmusic_current_playing_timeupdate':
+    if cid in PLAYBACK_CASES:
         remote.upload(ROOT/'tools/playback_progress.py','/home/research/ohm-clean/tools/playback_progress.py')
         code += "from playback_progress import check_progress\n"
         code += "playback_start_layout=ui.layout();playback_start_time=time.monotonic()\n"
@@ -151,7 +152,7 @@ def shell(command):
     if cid=='sepweather_font_register_per_page':
         code += " record['page_observations']=page_observations\n"
         code += " record['page_reconstructions']=verify_reconstructions(page_observations,plan['bundle'])\n"
-    if cid=='ytmusic_current_playing_timeupdate':
+    if cid in PLAYBACK_CASES:
         code += " playback_end_layout=ui.layout();playback_elapsed=time.monotonic()-playback_start_time\n"
         code += " record['playback_observation']={'start_layout':playback_start_layout,'end_layout':playback_end_layout,'elapsed_s':playback_elapsed}\n"
         code += " record['playback_progress']=check_progress(playback_start_layout,playback_end_layout,plan['bundle'],playback_elapsed)\n"

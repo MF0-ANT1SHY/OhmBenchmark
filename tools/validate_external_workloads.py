@@ -19,7 +19,7 @@ from install_sqlite_fixture import install as install_fixture
 from remote_device import Remote
 from seed_local_songs import deploy as deploy_songs
 from bundled_audio_fixture import for_case as packaged_audio
-from playback_progress import check_progress
+from playback_progress import check_progress, CASES as PLAYBACK_CASES
 from install_search_history_fixture import install as install_search_history
 from music_service_fixture import prepare as prepare_music_service, same_instance
 from bundled_font_fixture import for_case as packaged_fonts
@@ -210,7 +210,7 @@ def shell(command):
                 raise RuntimeError('normal search-history UI did not read the deployed preference fixture')
             result['fixture']['functional_read_verified']=True
             result['functional_check']='normal history UI displays entries from the ordinary preference fixture'
-        if cid=='ytmusic_current_playing_timeupdate':
+        if cid in PLAYBACK_CASES:
             # The snapshots bracket measured idle playback. Dump latency is
             # bounded by the progress check's tolerance; a title alone is not proof.
             result['playback_progress']=check_progress(
