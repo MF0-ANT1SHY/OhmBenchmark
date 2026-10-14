@@ -1,0 +1,657 @@
+{
+  "cases": 30,
+  "signed_variants": 60,
+  "signed_hashes_match_prior_actual_abc_audits": true,
+  "app_source_injection": false,
+  "performance_accepted_cases": 11,
+  "signed_artifacts": [
+    {
+      "case": "browser_eager_history_load",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/browser_eager_history_load/unfixed/app.hap",
+      "expected_sha256": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9",
+      "matched": true,
+      "bytes": 452772
+    },
+    {
+      "case": "browser_eager_history_load",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/browser_eager_history_load/fixed/app.hap",
+      "expected_sha256": "248a222109a97a8bf1dcb5163910ba48184d307e311b6ccb8a2fd81534976709",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "248a222109a97a8bf1dcb5163910ba48184d307e311b6ccb8a2fd81534976709",
+      "matched": true,
+      "bytes": 452705
+    },
+    {
+      "case": "browser_history_delete_no_transaction",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/browser_history_delete_no_transaction/unfixed/app.hap",
+      "expected_sha256": "4cc753261eacb91fd4d2b0e3473f71a734e1444990bf42c8cb8e7dbb8483703a",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "4cc753261eacb91fd4d2b0e3473f71a734e1444990bf42c8cb8e7dbb8483703a",
+      "matched": true,
+      "bytes": 456588
+    },
+    {
+      "case": "browser_history_delete_no_transaction",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/browser_history_delete_no_transaction/fixed/app.hap",
+      "expected_sha256": "578d2e95ea8fd24f832567ef7c471f0d340b60d81babe08ad4fce8a401e46327",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "578d2e95ea8fd24f832567ef7c471f0d340b60d81babe08ad4fce8a401e46327",
+      "matched": true,
+      "bytes": 451299
+    },
+    {
+      "case": "browser_history_list_foreach",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/browser_history_list_foreach/unfixed/app.hap",
+      "expected_sha256": "6311f1cea71ed49307bc022f80baec3f4ed57d98700b5a1f34c0952501afe2dd",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "6311f1cea71ed49307bc022f80baec3f4ed57d98700b5a1f34c0952501afe2dd",
+      "matched": true,
+      "bytes": 451397
+    },
+    {
+      "case": "browser_history_list_foreach",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/browser_history_list_foreach/fixed/app.hap",
+      "expected_sha256": "54062ffc30474a26df9120937bf51e4b323096d05e16923cfeab182bd4f727b9",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "54062ffc30474a26df9120937bf51e4b323096d05e16923cfeab182bd4f727b9",
+      "matched": true,
+      "bytes": 457872
+    },
+    {
+      "case": "browser_insert_date_lookup_cache",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/browser_insert_date_lookup_cache/unfixed/app.hap",
+      "expected_sha256": "c5557aaa6231ab000c7823372a48182a663151d6c62276c033519a80ca26583e",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "c5557aaa6231ab000c7823372a48182a663151d6c62276c033519a80ca26583e",
+      "matched": true,
+      "bytes": 452704
+    },
+    {
+      "case": "browser_insert_date_lookup_cache",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/browser_insert_date_lookup_cache/fixed/app.hap",
+      "expected_sha256": "6967ee493f0d8cc6e0f89c4da06de8050a9207930e73ca794154768fb6a5d1b0",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "6967ee493f0d8cc6e0f89c4da06de8050a9207930e73ca794154768fb6a5d1b0",
+      "matched": true,
+      "bytes": 452534
+    },
+    {
+      "case": "cloudmusic_indexof_in_render",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/cloudmusic_indexof_in_render/unfixed/app.hap",
+      "expected_sha256": "c86222b842fa82c41c63539c75776792a962f93fc38444d615d31ea853407462",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "c86222b842fa82c41c63539c75776792a962f93fc38444d615d31ea853407462",
+      "matched": true,
+      "bytes": 2783467
+    },
+    {
+      "case": "cloudmusic_indexof_in_render",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/cloudmusic_indexof_in_render/fixed/app.hap",
+      "expected_sha256": "16b7e4564ff60f505c4717dccbd915f29e2ba0d147dd38c0ea07875c3efbaab0",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "16b7e4564ff60f505c4717dccbd915f29e2ba0d147dd38c0ea07875c3efbaab0",
+      "matched": true,
+      "bytes": 2783571
+    },
+    {
+      "case": "cloudmusic_local_song_memory_filter",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/cloudmusic_local_song_memory_filter/unfixed/app.hap",
+      "expected_sha256": "1ef83d8d67aabb9d0f745ced3322c25542201dab36d2ae0588d7837e37726e62",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "1ef83d8d67aabb9d0f745ced3322c25542201dab36d2ae0588d7837e37726e62",
+      "matched": true,
+      "bytes": 2784796
+    },
+    {
+      "case": "cloudmusic_local_song_memory_filter",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/cloudmusic_local_song_memory_filter/fixed/app.hap",
+      "expected_sha256": "5989ec9fa82bc0b5147cb51a2a0f1630fcfe96a46046ea60f105e94503d85dda",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "5989ec9fa82bc0b5147cb51a2a0f1630fcfe96a46046ea60f105e94503d85dda",
+      "matched": true,
+      "bytes": 2784529
+    },
+    {
+      "case": "cloudmusic_play_time_high_frequency_update",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/unfixed/app.hap",
+      "expected_sha256": "96e15c4a5979da602dcac54e919eded35e729cb2e85a42e7ecaadcb1d320ca17",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "96e15c4a5979da602dcac54e919eded35e729cb2e85a42e7ecaadcb1d320ca17",
+      "matched": true,
+      "bytes": 2784528
+    },
+    {
+      "case": "cloudmusic_play_time_high_frequency_update",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/cloudmusic_play_time_high_frequency_update/fixed/app.hap",
+      "expected_sha256": "a071d92851a1b684ac086a328cc3c99e4c222ee54ecacde53182c8c50b49a17a",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "a071d92851a1b684ac086a328cc3c99e4c222ee54ecacde53182c8c50b49a17a",
+      "matched": true,
+      "bytes": 2784433
+    },
+    {
+      "case": "cloudmusic_search_result_foreach",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/cloudmusic_search_result_foreach/unfixed/app.hap",
+      "expected_sha256": "3e5c26c7909ac4a8ac5a1057f41e15c79d16a2da7d8879d9294a5d5fa283d02f",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "3e5c26c7909ac4a8ac5a1057f41e15c79d16a2da7d8879d9294a5d5fa283d02f",
+      "matched": true,
+      "bytes": 2799277
+    },
+    {
+      "case": "cloudmusic_search_result_foreach",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/cloudmusic_search_result_foreach/fixed/app.hap",
+      "expected_sha256": "c9370192b53e02d4ce12758a489d691052866891931a340bc4c4c94761e2783a",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "c9370192b53e02d4ce12758a489d691052866891931a340bc4c4c94761e2783a",
+      "matched": true,
+      "bytes": 2789466
+    },
+    {
+      "case": "cloudmusic_songcard_artists_concat",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/cloudmusic_songcard_artists_concat/unfixed/app.hap",
+      "expected_sha256": "2b564840358e206ab42e656128e5e2f52dc6955ec1dc39c95f636dfefebd6cb3",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "2b564840358e206ab42e656128e5e2f52dc6955ec1dc39c95f636dfefebd6cb3",
+      "matched": true,
+      "bytes": 2789464
+    },
+    {
+      "case": "cloudmusic_songcard_artists_concat",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/cloudmusic_songcard_artists_concat/fixed/app.hap",
+      "expected_sha256": "21253d8a97af9cfd2685897d21f80d733a11a70d8bceea580fc3784abd483958",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "21253d8a97af9cfd2685897d21f80d733a11a70d8bceea580fc3784abd483958",
+      "matched": true,
+      "bytes": 2789472
+    },
+    {
+      "case": "interviewapp_response_log_full_stringify",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/interviewapp_response_log_full_stringify/unfixed/app.hap",
+      "expected_sha256": "e285b251e7ba8282477b4af02206b1e14b62f3d245b4d028043e9623163bd952",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "e285b251e7ba8282477b4af02206b1e14b62f3d245b4d028043e9623163bd952",
+      "matched": true,
+      "bytes": 3065334
+    },
+    {
+      "case": "interviewapp_response_log_full_stringify",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/interviewapp_response_log_full_stringify/fixed/app.hap",
+      "expected_sha256": "1a67c147168c589aea1ca69d8c5a493adbd5418cb37e5089eb205622a5b326b3",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "1a67c147168c589aea1ca69d8c5a493adbd5418cb37e5089eb205622a5b326b3",
+      "matched": true,
+      "bytes": 3065301
+    },
+    {
+      "case": "interviewapp_search_history_sync_flush",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/interviewapp_search_history_sync_flush/unfixed/app.hap",
+      "expected_sha256": "0d93bb3d0a5e52817fa2032da6adbe505d3167e4f8edf0c0bd893e8025ab73cc",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "0d93bb3d0a5e52817fa2032da6adbe505d3167e4f8edf0c0bd893e8025ab73cc",
+      "matched": true,
+      "bytes": 3065718
+    },
+    {
+      "case": "interviewapp_search_history_sync_flush",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/interviewapp_search_history_sync_flush/fixed/app.hap",
+      "expected_sha256": "6eec7877bdeb7b90dd2031296e36759514f319be07da3ccadb16bcd183712183",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "6eec7877bdeb7b90dd2031296e36759514f319be07da3ccadb16bcd183712183",
+      "matched": true,
+      "bytes": 3065333
+    },
+    {
+      "case": "interviewapp_search_history_unbounded",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/interviewapp_search_history_unbounded/unfixed/app.hap",
+      "expected_sha256": "854316c15663fb5a93d874a4c392602febbbb9dd553080a9856d83bcb218a36c",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "854316c15663fb5a93d874a4c392602febbbb9dd553080a9856d83bcb218a36c",
+      "matched": true,
+      "bytes": 3065300
+    },
+    {
+      "case": "interviewapp_search_history_unbounded",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/interviewapp_search_history_unbounded/fixed/app.hap",
+      "expected_sha256": "c802d64e5a6189c856d4d189f266e25a5644af5cb20d2b3c4a4624d72475f928",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "c802d64e5a6189c856d4d189f266e25a5644af5cb20d2b3c4a4624d72475f928",
+      "matched": true,
+      "bytes": 3064297
+    },
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/jingmo_dataset_import_no_transaction/unfixed/app.hap",
+      "expected_sha256": "88868da64bcc4780db1e0bdf0eabafd1265e254ec84f256cde8b5dd3f3ad20b7",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "88868da64bcc4780db1e0bdf0eabafd1265e254ec84f256cde8b5dd3f3ad20b7",
+      "matched": true,
+      "bytes": 382579
+    },
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/jingmo_dataset_import_no_transaction/fixed/app.hap",
+      "expected_sha256": "e441d217d259c968ebbe542e802bea1a4e6bdc1b07deb8f8a450aec9780b8f45",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "e441d217d259c968ebbe542e802bea1a4e6bdc1b07deb8f8a450aec9780b8f45",
+      "matched": true,
+      "bytes": 389379
+    },
+    {
+      "case": "jingmo_random_poem_orderby_random",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/jingmo_random_poem_orderby_random/unfixed/app.hap",
+      "expected_sha256": "dfed739f69b5efda1071306817a46e5f9f8252ecd1b66e16b3561ba27f292c8b",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "dfed739f69b5efda1071306817a46e5f9f8252ecd1b66e16b3561ba27f292c8b",
+      "matched": true,
+      "bytes": 394449
+    },
+    {
+      "case": "jingmo_random_poem_orderby_random",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/jingmo_random_poem_orderby_random/fixed/app.hap",
+      "expected_sha256": "ef9325e435ca099ae781edaaf64f61c4c8f1ab46e9c76a916b4b992860d45e9d",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "ef9325e435ca099ae781edaaf64f61c4c8f1ab46e9c76a916b4b992860d45e9d",
+      "matched": true,
+      "bytes": 386232
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/jingmo_sync_page_reimport/unfixed/app.hap",
+      "expected_sha256": "692d37c1c95e0c48266f56f80d81417e5126c70d15e93bbbcdf4f8732ac8e046",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "692d37c1c95e0c48266f56f80d81417e5126c70d15e93bbbcdf4f8732ac8e046",
+      "matched": true,
+      "bytes": 389380
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/jingmo_sync_page_reimport/fixed/app.hap",
+      "expected_sha256": "90ee8c4e416507081ffc9aba01524ac1228381cbdba2b3e411fefd6f028ee349",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "90ee8c4e416507081ffc9aba01524ac1228381cbdba2b3e411fefd6f028ee349",
+      "matched": true,
+      "bytes": 388239
+    },
+    {
+      "case": "sepweather_font_register_per_page",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/sepweather_font_register_per_page/unfixed/app.hap",
+      "expected_sha256": "effefb72e7c738ff6714ddbe303aa54a3cb9b59d6f31c12ca57146442e625d9d",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "effefb72e7c738ff6714ddbe303aa54a3cb9b59d6f31c12ca57146442e625d9d",
+      "matched": true,
+      "bytes": 1847869
+    },
+    {
+      "case": "sepweather_font_register_per_page",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/sepweather_font_register_per_page/fixed/app.hap",
+      "expected_sha256": "00fa3c507f02679f7033c3257bb9ab9afb45fdba1a87b793e446bcb6b9643ea3",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "00fa3c507f02679f7033c3257bb9ab9afb45fdba1a87b793e446bcb6b9643ea3",
+      "matched": true,
+      "bytes": 1847648
+    },
+    {
+      "case": "sheafreader_article_list_foreach",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/sheafreader_article_list_foreach/unfixed/app.hap",
+      "expected_sha256": "72b95a0c7415f7e675f19cbe74a83d95820cf542dc4a9f28fe590eb9696e5250",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "72b95a0c7415f7e675f19cbe74a83d95820cf542dc4a9f28fe590eb9696e5250",
+      "matched": true,
+      "bytes": 924900
+    },
+    {
+      "case": "sheafreader_article_list_foreach",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/sheafreader_article_list_foreach/fixed/app.hap",
+      "expected_sha256": "71444bd5659f1031a7eab0ded76489b21a84bc56f24a2e7ae60a399b87cb99b8",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "71444bd5659f1031a7eab0ded76489b21a84bc56f24a2e7ae60a399b87cb99b8",
+      "matched": true,
+      "bytes": 923164
+    },
+    {
+      "case": "sheafreader_extract_tag_tolowercase",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/unfixed/app.hap",
+      "expected_sha256": "14140ea223bb7445d626f6967bf0889ac095c7a54db93fc4b6ceefb98ebc828d",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "14140ea223bb7445d626f6967bf0889ac095c7a54db93fc4b6ceefb98ebc828d",
+      "matched": true,
+      "bytes": 924210
+    },
+    {
+      "case": "sheafreader_extract_tag_tolowercase",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/sheafreader_extract_tag_tolowercase/fixed/app.hap",
+      "expected_sha256": "4a677f7196ad16fc71218dd5686e42ca7f78525501c6bacbfe89166b3e9388f6",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "4a677f7196ad16fc71218dd5686e42ca7f78525501c6bacbfe89166b3e9388f6",
+      "matched": true,
+      "bytes": 923463
+    },
+    {
+      "case": "sheafreader_insert_duplicate_exception",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/unfixed/app.hap",
+      "expected_sha256": "1eb035fa2f86535e2c887e4c1d9a2e0c0a90d76ef88d25e9deb05d75d238fee5",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "1eb035fa2f86535e2c887e4c1d9a2e0c0a90d76ef88d25e9deb05d75d238fee5",
+      "matched": true,
+      "bytes": 930266
+    },
+    {
+      "case": "sheafreader_insert_duplicate_exception",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/sheafreader_insert_duplicate_exception/fixed/app.hap",
+      "expected_sha256": "fc4694b3a0021eaac8179a8bec2077266648e30fb9b666ce12338068d47ddbfd",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "fc4694b3a0021eaac8179a8bec2077266648e30fb9b666ce12338068d47ddbfd",
+      "matched": true,
+      "bytes": 930195
+    },
+    {
+      "case": "sheafreader_refresh_feeds_sequential",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/sheafreader_refresh_feeds_sequential/unfixed/app.hap",
+      "expected_sha256": "bf210a42b9fb8fcaff45d292b844330a3cfdfeed86136f4497003555d238fb63",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "bf210a42b9fb8fcaff45d292b844330a3cfdfeed86136f4497003555d238fb63",
+      "matched": true,
+      "bytes": 923164
+    },
+    {
+      "case": "sheafreader_refresh_feeds_sequential",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/sheafreader_refresh_feeds_sequential/fixed/app.hap",
+      "expected_sha256": "3b3a0cb27ac6e01625a467c90430951866783d14825682dfff78b9cd8af95323",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "3b3a0cb27ac6e01625a467c90430951866783d14825682dfff78b9cd8af95323",
+      "matched": true,
+      "bytes": 930718
+    },
+    {
+      "case": "sheafreader_unread_counts_n_plus_1",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/unfixed/app.hap",
+      "expected_sha256": "2e183f4ca68e575c23a5cba0edbbcddf3fd03298c23ed3e29abc65524bc0b682",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "2e183f4ca68e575c23a5cba0edbbcddf3fd03298c23ed3e29abc65524bc0b682",
+      "matched": true,
+      "bytes": 930716
+    },
+    {
+      "case": "sheafreader_unread_counts_n_plus_1",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/sheafreader_unread_counts_n_plus_1/fixed/app.hap",
+      "expected_sha256": "6531ac887766ff2553696f9c95c595aaf4399dfb8a57e4edfd58a509b4ff732a",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "6531ac887766ff2553696f9c95c595aaf4399dfb8a57e4edfd58a509b4ff732a",
+      "matched": true,
+      "bytes": 930267
+    },
+    {
+      "case": "wanharmony_history_log_materialization",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/wanharmony_history_log_materialization/unfixed/app.hap",
+      "expected_sha256": "26d684d104e6c4d06d1570c350d4a26cba8d03cf506d8c5eb4eab1a74c45f708",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "26d684d104e6c4d06d1570c350d4a26cba8d03cf506d8c5eb4eab1a74c45f708",
+      "matched": true,
+      "bytes": 3066142
+    },
+    {
+      "case": "wanharmony_history_log_materialization",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/wanharmony_history_log_materialization/fixed/app.hap",
+      "expected_sha256": "b9a6aea7be05e48bd221f5d17b1ca4b0da3f397e5779f2324b0c7b919ed21cbc",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "b9a6aea7be05e48bd221f5d17b1ca4b0da3f397e5779f2324b0c7b919ed21cbc",
+      "matched": true,
+      "bytes": 3066879
+    },
+    {
+      "case": "wanharmony_html_decode_per_render",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/wanharmony_html_decode_per_render/unfixed/app.hap",
+      "expected_sha256": "f56a69d48d3fcb31517579ce7ff54a27f84aec5f86a4408ca439546f0e4f709d",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "f56a69d48d3fcb31517579ce7ff54a27f84aec5f86a4408ca439546f0e4f709d",
+      "matched": true,
+      "bytes": 3066636
+    },
+    {
+      "case": "wanharmony_html_decode_per_render",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/wanharmony_html_decode_per_render/fixed/app.hap",
+      "expected_sha256": "b2a69d03cf3b2909889e432a93e5324e666aaf3cb936c19aac407736ad36cb2d",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "b2a69d03cf3b2909889e432a93e5324e666aaf3cb936c19aac407736ad36cb2d",
+      "matched": true,
+      "bytes": 3066144
+    },
+    {
+      "case": "wanharmony_persisted_home_list_growth",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/wanharmony_persisted_home_list_growth/unfixed/app.hap",
+      "expected_sha256": "06787426f0293f1010bbc8a6a21095dc8a23f020860207453dcd2de0ffbb6653",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "06787426f0293f1010bbc8a6a21095dc8a23f020860207453dcd2de0ffbb6653",
+      "matched": true,
+      "bytes": 3066878
+    },
+    {
+      "case": "wanharmony_persisted_home_list_growth",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/wanharmony_persisted_home_list_growth/fixed/app.hap",
+      "expected_sha256": "24157c61b0d37098dc74ea8d359f519d374e34513aa52ee8c511fe8ae8b036de",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "24157c61b0d37098dc74ea8d359f519d374e34513aa52ee8c511fe8ae8b036de",
+      "matched": true,
+      "bytes": 3066213
+    },
+    {
+      "case": "wanharmony_web_progress_log_storm",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/wanharmony_web_progress_log_storm/unfixed/app.hap",
+      "expected_sha256": "fe902792f6486d3d4a54a8404e19fa8d5946ecdfe6d3ec47934be537e902edc5",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "fe902792f6486d3d4a54a8404e19fa8d5946ecdfe6d3ec47934be537e902edc5",
+      "matched": true,
+      "bytes": 3066216
+    },
+    {
+      "case": "wanharmony_web_progress_log_storm",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/wanharmony_web_progress_log_storm/fixed/app.hap",
+      "expected_sha256": "5de101a391a294f2a036bdcee11b5eafda54082ca4ce4e3b2cabd3a25fd5851b",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "5de101a391a294f2a036bdcee11b5eafda54082ca4ce4e3b2cabd3a25fd5851b",
+      "matched": true,
+      "bytes": 3066164
+    },
+    {
+      "case": "weatherassistant_http_session_leak",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/weatherassistant_http_session_leak/unfixed/app.hap",
+      "expected_sha256": "dd4a89db292ae4a9c48024fb14e5d1e66dc76315aed214301a9a600924aa7b72",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "dd4a89db292ae4a9c48024fb14e5d1e66dc76315aed214301a9a600924aa7b72",
+      "matched": true,
+      "bytes": 177468
+    },
+    {
+      "case": "weatherassistant_http_session_leak",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/weatherassistant_http_session_leak/fixed/app.hap",
+      "expected_sha256": "9711924f552264e21e5155358fdb672939b452a83279a4e518f134201aa5a73e",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "9711924f552264e21e5155358fdb672939b452a83279a4e518f134201aa5a73e",
+      "matched": true,
+      "bytes": 177369
+    },
+    {
+      "case": "weatherassistant_remote_weather_icons",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/weatherassistant_remote_weather_icons/unfixed/app.hap",
+      "expected_sha256": "12230719fe30a509377b743bc2002922cf21d43e185415a57be0f3b271bc5617",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "12230719fe30a509377b743bc2002922cf21d43e185415a57be0f3b271bc5617",
+      "matched": true,
+      "bytes": 177370
+    },
+    {
+      "case": "weatherassistant_remote_weather_icons",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/weatherassistant_remote_weather_icons/fixed/app.hap",
+      "expected_sha256": "cd48452d25c7c37bad9e4c2e57769232eb0eeac9b7efe7b18189b54f3f8c2da3",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "cd48452d25c7c37bad9e4c2e57769232eb0eeac9b7efe7b18189b54f3f8c2da3",
+      "matched": true,
+      "bytes": 185773
+    },
+    {
+      "case": "ytmusic_current_playing_timeupdate",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/ytmusic_current_playing_timeupdate/unfixed/app.hap",
+      "expected_sha256": "8c7e42e915de35376800f3a3a96a11d96662fc12aec711bbc6043bf7eb3bbe6b",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "8c7e42e915de35376800f3a3a96a11d96662fc12aec711bbc6043bf7eb3bbe6b",
+      "matched": true,
+      "bytes": 371490089
+    },
+    {
+      "case": "ytmusic_current_playing_timeupdate",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/ytmusic_current_playing_timeupdate/fixed/app.hap",
+      "expected_sha256": "417711b3ab77af68e7f60d87a40343c1b95740dec639ccb43ccbfa897ddbcf28",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "417711b3ab77af68e7f60d87a40343c1b95740dec639ccb43ccbfa897ddbcf28",
+      "matched": true,
+      "bytes": 371489873
+    },
+    {
+      "case": "ytmusic_history_json_parse_per_row",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/ytmusic_history_json_parse_per_row/unfixed/app.hap",
+      "expected_sha256": "441c83955e2424c8fbb364ac3c7e45dc6c684ca062c00563e04c8b5543557aca",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "441c83955e2424c8fbb364ac3c7e45dc6c684ca062c00563e04c8b5543557aca",
+      "matched": true,
+      "bytes": 371490432
+    },
+    {
+      "case": "ytmusic_history_json_parse_per_row",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/ytmusic_history_json_parse_per_row/fixed/app.hap",
+      "expected_sha256": "a1ad4d454f028655fd36cba349a91d055e0650f63350a90d8d9f488a0d33bfe6",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "a1ad4d454f028655fd36cba349a91d055e0650f63350a90d8d9f488a0d33bfe6",
+      "matched": true,
+      "bytes": 371490319
+    },
+    {
+      "case": "ytmusic_search_no_debounce",
+      "variant": "unfixed",
+      "path": "/home/research/ohm-clean/ytmusic_search_no_debounce/unfixed/app.hap",
+      "expected_sha256": "3d56cf94f5976964feb24140784d539b30a5323a0633b2427ee420873d674662",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "3d56cf94f5976964feb24140784d539b30a5323a0633b2427ee420873d674662",
+      "matched": true,
+      "bytes": 371490319
+    },
+    {
+      "case": "ytmusic_search_no_debounce",
+      "variant": "fixed",
+      "path": "/home/research/ohm-clean/ytmusic_search_no_debounce/fixed/app.hap",
+      "expected_sha256": "55b4708c057fdcab89f6f084c8e8a2e0ccc79ebb0bf9cf45b028059e0a059e38",
+      "prior_bytecode_audit_passed": true,
+      "actual_sha256": "55b4708c057fdcab89f6f084c8e8a2e0ccc79ebb0bf9cf45b028059e0a059e38",
+      "matched": true,
+      "bytes": 371490089
+    }
+  ],
+  "performance_acceptance_not_inferred_from_builds": true,
+  "build_gate": {
+    "stage": "build",
+    "cases": 30,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "sign_receipt_binding_gate": {
+    "stage": "sign",
+    "cases": 30,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "performance_statuses": {
+    "browser_eager_history_load": "measured_clean",
+    "browser_history_delete_no_transaction": "measured_clean",
+    "browser_history_list_foreach": "measured_clean",
+    "browser_insert_date_lookup_cache": "pending_clean_measurement",
+    "cloudmusic_indexof_in_render": "measured_clean_failed",
+    "cloudmusic_local_song_memory_filter": "measured_clean_failed",
+    "cloudmusic_play_time_high_frequency_update": "measured_clean",
+    "cloudmusic_search_result_foreach": "measured_clean_failed",
+    "cloudmusic_songcard_artists_concat": "measured_clean_failed",
+    "interviewapp_response_log_full_stringify": "pending_clean_measurement",
+    "interviewapp_search_history_sync_flush": "pending_clean_measurement",
+    "interviewapp_search_history_unbounded": "pending_clean_measurement",
+    "jingmo_dataset_import_no_transaction": "measured_clean",
+    "jingmo_random_poem_orderby_random": "measured_clean",
+    "jingmo_sync_page_reimport": "measured_clean",
+    "sepweather_font_register_per_page": "pending_clean_measurement",
+    "sheafreader_article_list_foreach": "measured_clean",
+    "sheafreader_extract_tag_tolowercase": "measured_clean",
+    "sheafreader_insert_duplicate_exception": "measured_clean",
+    "sheafreader_refresh_feeds_sequential": "measured_clean_failed",
+    "sheafreader_unread_counts_n_plus_1": "measured_clean_failed",
+    "wanharmony_history_log_materialization": "pending_clean_measurement",
+    "wanharmony_html_decode_per_render": "pending_clean_measurement",
+    "wanharmony_persisted_home_list_growth": "pending_clean_measurement",
+    "wanharmony_web_progress_log_storm": "pending_clean_measurement",
+    "weatherassistant_http_session_leak": "pending_clean_measurement",
+    "weatherassistant_remote_weather_icons": "pending_clean_measurement",
+    "ytmusic_current_playing_timeupdate": "measured_clean",
+    "ytmusic_history_json_parse_per_row": "measured_clean_failed",
+    "ytmusic_search_no_debounce": "pending_clean_measurement"
+  },
+  "scope": "All 30 cases rebuilt as business-only unfixed/fixed source and audited binaries; this does not claim all cases reproduce or pass their performance oracle."
+}

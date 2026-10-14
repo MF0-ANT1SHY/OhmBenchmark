@@ -80,12 +80,41 @@ def verify_observation(observation):
     urls = {entry['url'] for entry in first}
     if len(first) < 100 or {entry['url'] for entry in last} != urls or len(last) != len(first):
         raise ValueError('the ordinary large browsing history was not preserved')
-    begins = [value for _, kind, value, _ in new if kind == 'begin']
-    ends = [value for _, kind, value, _ in new if kind == 'end']
-    titles = [value for _, kind, value, _ in new if kind == 'title']
-    if (len(begins) != expected or ends != begins or not set(begins) <= urls
-            or len(titles) != expected or any(not title.strip() for title in titles)):
+    active, completed = None, []
+    for _, kind, value, _ in new:
+        if kind == 'begin':
+            if active is not None:
+                if 'title' not in active or 'ended' not in active:
+                    raise ValueError('overlapping or unrelated page loads cannot identify title ownership')
+                completed.append(active)
+            if value not in urls:
+                raise ValueError('overlapping or unrelated page loads cannot identify title ownership')
+            active = {'url': value}
+        elif kind == 'end':
+            if active is None or active['url'] != value or 'ended' in active:
+                raise ValueError('page completion does not match its normal load')
+            active['ended'] = True
+        elif kind == 'title':
+            if active is None or not value.strip():
+                raise ValueError('title does not belong to one unambiguous normal page load')
+            # A normal document can update its title more than once. Preserve
+            # the last callback for this completed load, as the app does.
+            active['title'] = value
+    if active is not None and 'title' in active and 'ended' in active:
+        completed.append(active)
+    else:
         raise ValueError('five normal completed page loads and nonempty titles are not proven')
+    if len(completed) != expected:
+        raise ValueError('five normal completed page loads and nonempty titles are not proven')
+    original = {entry['url']: entry for entry in first}
+    retained = {entry['url']: entry for entry in last}
+    visited = {page['url']: page['title'] for page in completed}
+    for url in urls - visited.keys():
+        if retained[url] != original[url]:
+            raise ValueError('unvisited production history fields were modified')
+    for url, title in visited.items():
+        if retained[url]['title'] != title or retained[url]['sticky'] is not False:
+            raise ValueError('visited history does not match the production title callback update')
     return {'completed_visits': expected, 'history_entries_preserved': len(last),
             'method': 'existing native WebPage begin/end/title callbacks with no network-error callbacks, plus preserved production WebData history'}
 
