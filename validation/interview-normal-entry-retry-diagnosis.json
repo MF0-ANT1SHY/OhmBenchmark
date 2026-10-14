@@ -1,0 +1,16 @@
+{
+  "case": "interviewapp_search_history_unbounded",
+  "status": "FAIL",
+  "error": "UI target not found: {'hint': '\u8bf7\u8f93\u5165\u5173\u952e\u8bcd', 'match': 'exact'}",
+  "normal_login_attempted": true,
+  "device_receipt_sha256": "b388ecda4434ab2550a8b66ed32d6dd93d35c978dc11e341e88cf0dd198c96b6",
+  "remote_artifacts": "/home/research/ohm-clean/interviewapp_search_history_unbounded/normal-entry-8dba6cb2c8ed4a1fa6b0e7a783007b25",
+  "history_preference_paths": [],
+  "app_injection": false,
+  "performance_accepted": false,
+  "native_network_error": 2300006,
+  "failure_classification": "host_DNS_resolution_failed",
+  "public_endpoint_workstation_login_succeeded": true,
+  "classification_source": "https://developer.huawei.com/consumer/en/doc/harmonyos-references-V2/errorcode-net-http-0000001544704013-V2",
+  "next_action": "read-only device DNS/default-network diagnosis between profiling jobs; preserve original business login path"
+}
