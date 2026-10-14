@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from jingmo_sync_progress import verify_observation, verify_capture
+from jingmo_sync_progress import verify_observation, verify_capture, complete_sync
 
 
 class SyncCompletionTest(unittest.TestCase):
@@ -52,6 +52,17 @@ class SyncCompletionTest(unittest.TestCase):
         obs['progress'] = verify_observation(obs)
         with self.assertRaises(ValueError):
             verify_capture(obs, 3, 10.5)
+
+    def test_failed_completion_preserves_raw_log_evidence(self):
+        obs = self.observation(True)
+        raw = obs['after']['raw_logs'].replace('105.000', '103.500')
+        class UI:
+            def shell(self, command):
+                return '42' if command.startswith('pidof ') else raw
+        with self.assertRaisesRegex(ValueError, 'out of order') as failure:
+            complete_sync(UI(), obs['before'], timeout=0)
+        self.assertEqual(failure.exception.observation['after']['raw_logs'], raw)
+        self.assertEqual(failure.exception.observation['before'], obs['before'])
 
 
 if __name__ == '__main__':

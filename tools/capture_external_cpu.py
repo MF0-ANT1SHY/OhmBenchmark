@@ -121,6 +121,8 @@ def shell(command):
     code += f"device_file='/data/local/tmp/profile-{token}.data'\n"
     code += "assert not shell('pidof hiperf').strip(),'another profiler session is active'\n"
     code += "record={'status':'FAIL','event':'hw-instructions'}\n"
+    if poem_sync_fixture:
+        code += "record['poem_sync_logs_before']=sync_logs_before\n"
     code += "prepared_ok=False\n"
     code += "try:\n"
     code += " prepared=shell('hiperf record --control prepare -a --exclude-hiperf --cpu-limit 100 -f 1000 -e hw-instructions --call-stack dwarf --clockid boottime --kernel-callchain -m 1024 -o '+device_file)\n"
@@ -171,6 +173,7 @@ def shell(command):
     code += " json.loads((root/'report.json').read_text())\n"
     code += " record['status']='CAPTURED'\n"
     code += "except Exception as exc:\n record['error']=str(exc)\n if prepared_ok:shell('hiperf record --control stop')\n"
+    code += " if getattr(exc,'observation',None) is not None:record['failure_observation']=exc.observation\n"
     code += "(root/'capture.json').write_text(json.dumps(record,indent=2))\n"
     remote.python(code,timeout=600)
     remote.download(remote_base+'/capture.json',output/'capture.json')

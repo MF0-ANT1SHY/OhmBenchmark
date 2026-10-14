@@ -1,0 +1,22 @@
+{
+  "case": "jingmo_sync_page_reimport",
+  "status": "pending_clean_measurement",
+  "rounds_1_and_2_paired_ratios": [
+    4.277885,
+    4.428171
+  ],
+  "failure": "fixed third capture rejected because native business completion log timestamps were out of order; raw failure snapshots were not preserved by the old collector",
+  "archived_third_pair": "artifacts/retired-clean/jingmo_sync_page_reimport/log-order-failure-20261014",
+  "archive_files": {
+    "unfixed": {
+      "capture.json": "940102f1b8ee44bb173fe805750000860a1357fb836dda33fabe6fd1b5b5e925",
+      "report.json": "fa7730cf622b95e94c88640104b111b12f49ca3588466b1f3c585d04e708a3ac"
+    },
+    "fixed": {
+      "capture.json": "b1a23ce8d9c6efac342c58136111bb524edc639b91558ed52fbb787357abe4ac"
+    }
+  },
+  "criteria_unchanged": true,
+  "performance_verified": false,
+  "next_step": "retain failed raw observations and retry only the incomplete third pair after the owned reader job terminates; do not overwrite or reuse failed captures"
+}

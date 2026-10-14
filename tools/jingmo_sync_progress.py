@@ -67,8 +67,9 @@ def complete_sync(ui, before, timeout=120):
         try:
             observation['progress'] = verify_observation(observation)
             return observation
-        except ValueError:
+        except ValueError as exc:
             if time.monotonic() >= deadline:
+                exc.observation = observation
                 raise
             time.sleep(1)
 

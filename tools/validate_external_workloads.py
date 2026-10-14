@@ -143,6 +143,7 @@ def shell(command):
             code += " result['reader_list_render']=complete_render(ui,reader_launch_before)\n"
         code += "except Exception as exc:\n"
         code += " result={'phases':phases,'status':'FAIL','error':str(exc)}\n"
+        code += " if getattr(exc,'observation',None) is not None:result['failure_observation']=exc.observation\n"
         code += " try:result['failure_layout']=ui.layout()\n except Exception:pass\n"
         if cid=='jingmo_random_poem_orderby_random':
             code += "result['observed_poem_titles']=observed_poem_titles\n"
