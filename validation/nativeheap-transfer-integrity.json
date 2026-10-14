@@ -1,0 +1,13 @@
+{
+  "remote_sha256": "28ace65d72833e63b95db8f9c0520203175fb0592c9e89d1bb02db247fa4a4e2",
+  "remote_bytes": 137177,
+  "hiperf": "",
+  "hiprofiler_cmd": "",
+  "hiprofilerd": "",
+  "native_daemon": "",
+  "device_sha256_output": "28ace65d72833e63b95db8f9c0520203175fb0592c9e89d1bb02db247fa4a4e2  /data/local/tmp/nativeheap-protobuf-d5fc5eb505284943950936743bb5e166.htrace",
+  "local_sha256": "28ace65d72833e63b95db8f9c0520203175fb0592c9e89d1bb02db247fa4a4e2",
+  "transfer_integrity_verified": true,
+  "calibration_only": true,
+  "performance_accepted": false
+}
