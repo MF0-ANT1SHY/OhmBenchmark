@@ -24,7 +24,9 @@ class UI:
             try:
                 return json.loads(raw)
             except json.JSONDecodeError as exc:
-                raise RuntimeError(f'Invalid fresh UI layout: dump={dump_output[:500]!r}, read={raw[:500]!r}') from exc
+                raise json.JSONDecodeError(
+                    f'Invalid fresh UI layout: dump={dump_output[:500]!r}, read={raw[:500]!r}',
+                    exc.doc, exc.pos) from exc
         finally:
             self.shell(f'rm -f {path}')
 

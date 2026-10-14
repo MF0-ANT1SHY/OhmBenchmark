@@ -13,6 +13,7 @@ from rss_refresh_progress import verify_observation
 from jingmo_import_fixture import CASE as POEM_IMPORT_CASE, verify_state as verify_poem_state, verify_preparation as verify_poem_preparation, verify_capture_window as verify_poem_window
 from jingmo_sync_fixture import CASE as POEM_SYNC_CASE, verify_preparation as verify_sync_preparation
 from jingmo_sync_progress import verify_observation as verify_sync_progress, verify_capture as verify_sync_capture
+from reader_list_progress import CASE as READER_LIST_CASE, verify_observation as verify_list_render, verify_capture as verify_list_capture
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -41,7 +42,10 @@ def accept(cid, write=True, require_pass=True):
             verify_sync_preparation(workload['fixture'],workload['fixture_after'])
         if cid in READER_CASES:
             device=json.loads((folder/'workload-device.json').read_text())
-            if verify_observation(device['reader_refresh'])!=workload.get('reader_refresh'):
+            if cid == READER_LIST_CASE:
+                if verify_list_render(device['reader_list_render'])!=workload.get('reader_list_render'):
+                    raise RuntimeError('normal complete article rendering is not proven')
+            elif verify_observation(device['reader_refresh'])!=workload.get('reader_refresh'):
                 raise RuntimeError('normal complete reader refresh is not proven')
             verify_preparation(workload['fixture'],workload['fixture_after'])
         if cid=='sepweather_font_register_per_page':
@@ -81,15 +85,18 @@ def accept(cid, write=True, require_pass=True):
                 if receipt['poem_sync_fixture_before']['sha256']!=receipt['fixture_sha256']:
                     raise RuntimeError('cached poetry capture input differs from the validated data')
             if cid in READER_CASES:
-                verify_observation(receipt['reader_refresh'])
                 verify_preparation(receipt['reader_fixture_before'],receipt['reader_fixture_after'])
                 if receipt['reader_fixture_before']['sha256']!=receipt['fixture_sha256']:
                     raise RuntimeError('reader capture input differs from its verified native database')
-                observation=receipt['reader_refresh']
-                if (observation['before']['ended_monotonic']>receipt['action_start_monotonic']
-                        or observation['after']['started_monotonic']<receipt['action_start_monotonic']
-                        or observation['after']['ended_monotonic']>receipt['action_end_monotonic']):
-                    raise RuntimeError('reader completion was not observed within the measured window')
+                if cid == READER_LIST_CASE:
+                    verify_list_capture(receipt['reader_list_render'],receipt['action_start_monotonic'],receipt['action_end_monotonic'],receipt['pids'])
+                else:
+                    verify_observation(receipt['reader_refresh'])
+                    observation=receipt['reader_refresh']
+                    if (observation['before']['ended_monotonic']>receipt['action_start_monotonic']
+                            or observation['after']['started_monotonic']<receipt['action_start_monotonic']
+                            or observation['after']['ended_monotonic']>receipt['action_end_monotonic']):
+                        raise RuntimeError('reader completion was not observed within the measured window')
             if cid=='sepweather_font_register_per_page':
                 if verify_reconstructions(receipt['page_observations'],case['host_app']['bundle_name'])!=receipt.get('page_reconstructions'):
                     raise RuntimeError('page reconstruction within capture is not proven')

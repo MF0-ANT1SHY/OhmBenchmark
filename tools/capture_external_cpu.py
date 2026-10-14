@@ -19,6 +19,7 @@ from bundled_font_fixture import for_case as packaged_fonts
 from reader_data_fixture import prepare as prepare_reader, finish as finish_reader
 from jingmo_import_fixture import prepare as prepare_import, finish as finish_import
 from jingmo_sync_fixture import prepare as prepare_sync, finish as finish_sync
+from reader_list_progress import CASE as READER_LIST_CASE
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -106,9 +107,12 @@ def shell(command):
     if poem_sync_fixture:
         remote.upload(ROOT/'tools/jingmo_sync_progress.py','/home/research/ohm-clean/tools/jingmo_sync_progress.py')
         code += "from jingmo_sync_progress import read_state as read_sync_logs,complete_sync\nsync_logs_before=read_sync_logs(shell)\n"
-    if reader_fixture:
+    if reader_fixture and cid != READER_LIST_CASE:
         remote.upload(ROOT/'tools/rss_refresh_progress.py','/home/research/ohm-clean/tools/rss_refresh_progress.py')
         code += "from rss_refresh_progress import read_state,complete_refresh\nreader_before=read_state(shell)\n"
+    if reader_fixture and cid == READER_LIST_CASE:
+        remote.upload(ROOT/'tools/reader_list_progress.py','/home/research/ohm-clean/tools/reader_list_progress.py')
+        code += "from reader_list_progress import observe,complete_render\nreader_launch_before=observe(ui)\n"
     if cid=='ytmusic_current_playing_timeupdate':
         remote.upload(ROOT/'tools/playback_progress.py','/home/research/ohm-clean/tools/playback_progress.py')
         code += "from playback_progress import check_progress\n"
@@ -132,8 +136,10 @@ def shell(command):
     if poem_sync_fixture:
         code += " record['poem_sync_progress']=complete_sync(ui,sync_logs_before)\n"
         code += " record['poem_sync_state']=read_state(shell);verify_state(record['poem_sync_state'],True)\n"
-    if reader_fixture:
+    if reader_fixture and cid != READER_LIST_CASE:
         code += " record['reader_refresh']=complete_refresh(ui,reader_before)\n"
+    if reader_fixture and cid == READER_LIST_CASE:
+        code += " record['reader_list_render']=complete_render(ui,reader_launch_before)\n"
     if cid=='sepweather_font_register_per_page':
         code += " record['page_observations']=page_observations\n"
         code += " record['page_reconstructions']=verify_reconstructions(page_observations,plan['bundle'])\n"
