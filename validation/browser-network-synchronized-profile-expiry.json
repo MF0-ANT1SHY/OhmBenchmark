@@ -52,5 +52,9 @@
         "artifacts/clean/browser_insert_date_lookup_cache/fixed/sign-history/6967ee493f0d8cc6e0f89c4da06de8050a9207930e73ca794154768fb6a5d1b0.json"
       ]
     }
-  }
+  },
+  "renewal_launch_verified": true,
+  "retained_system_dialog_dismissed": "Cancel; no uninstall",
+  "normal_home_text": "小狐狸浏览器",
+  "normal_home_input_hint": "搜索或输入网址"
 }

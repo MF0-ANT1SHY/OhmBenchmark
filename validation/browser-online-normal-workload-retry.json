@@ -1,0 +1,62 @@
+{
+  "case": "browser_insert_date_lookup_cache",
+  "status": "BLOCKED_FUNCTIONAL",
+  "performance_accepted": false,
+  "new_cpu_captures": 0,
+  "device_networking_verified": true,
+  "note": "Default Wi-Fi route is in policy table 2045. Normal Bing pages loaded. Complete unfixed 15-visit workflow passed; fixed retry received missing/blank webpage content, so no CPU capture was permitted. Not a negative performance case and not user-skipped.",
+  "variants": {
+    "unfixed": {
+      "workload": {
+        "case": "browser_insert_date_lookup_cache",
+        "variant": "unfixed",
+        "signed_sha256": "85ae29da8fa6fbf345edca185af00a7d657438c3f17c0e93b44d6c74ac0ede11",
+        "plan_sha256": "d98b7a16e09209aa7fb63938273210640dbf45d7971735c20e18d6c734fdb778",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "bundle": "com.example.nanvision",
+          "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
+          "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791986853586606150/Histories.db",
+          "fixture_tables": 1,
+          "integrity_check": "ok",
+          "sha256": "cf2c15ea1e7129f410c49662e1d38fad7f6959c28586f3c25d4968301f3df7bc",
+          "functional_read_verified": true
+        },
+        "phase_elapsed_s": {
+          "setup": 16.655887615000097,
+          "measured": 481.7840092570001,
+          "verify": 13.067091312999992
+        },
+        "browser_visits": {
+          "saved_visits": 15,
+          "history_table": "history_2026_10_14",
+          "method": "ordinary same-day Example Domain rows appended through normal browser navigation"
+        },
+        "functional_check": "fifteen normal same-day page navigations saved with correct titles, URLs and timestamps",
+        "capture_duration_required_s": 487
+      },
+      "device_sha256": "2c3d641cdd9d4a69c72b9232d639e2578eecb815876a98a24ec4a8dc7b38f43f"
+    },
+    "fixed": {
+      "workload": {
+        "case": "browser_insert_date_lookup_cache",
+        "variant": "fixed",
+        "signed_sha256": "17edd9a49ea0afef6e211fedaa6be4f5eb0d8ae0eaea0e6f8d665193a6ab8f3e",
+        "plan_sha256": "d98b7a16e09209aa7fb63938273210640dbf45d7971735c20e18d6c734fdb778",
+        "status": "FAIL",
+        "performance_verified": false,
+        "fixture": {
+          "bundle": "com.example.nanvision",
+          "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
+          "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791987636657722124/Histories.db",
+          "fixture_tables": 1,
+          "integrity_check": "ok",
+          "sha256": "cf2c15ea1e7129f410c49662e1d38fad7f6959c28586f3c25d4968301f3df7bc"
+        },
+        "error": "UI target not found: {'text': 'This domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.', 'match': 'exact'}"
+      },
+      "device_sha256": "80f7978e2022cbfef18203b64f22c0eef3d4c0fc35056920f12d84adc8ee221f"
+    }
+  }
+}
