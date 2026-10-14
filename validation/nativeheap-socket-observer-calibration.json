@@ -1,0 +1,38 @@
+{
+  "calibration_only": true,
+  "performance_accepted": false,
+  "raw_artifacts": "artifacts/profiler-owned-snapshot/0f0be83d79a54b3f8dde03d4ad8ad7b4",
+  "owned_daemon_cleanup_verified": true,
+  "app_source_modified": false,
+  "error": null,
+  "standard_container_integrity_verified": true,
+  "result": {
+    "metric": "nativehook_retained_bytes",
+    "app_pid": 17410,
+    "retained_bytes": 208,
+    "retained_allocations": 3,
+    "observed_allocations": 17,
+    "matched_frees": 14,
+    "preexisting_unmatched_frees": 13,
+    "first_event_ns": 642776040756086,
+    "last_event_ns": 642780634225356,
+    "trace_sha256": "dee7e5ee674fe20e24e856341f4a0a7c2fa8ab8ae2b606a83c72d79558664ce0",
+    "method": "live observed malloc blocks after exact address-matched free events",
+    "collection_provenance_verified": false,
+    "performance_accepted": false
+  },
+  "native_memory_events_verified": true,
+  "profiler_repair_activation_verified": true,
+  "app_observer_library_injection": false,
+  "strict_parser_unchanged": true,
+  "system_binaries_modified": false,
+  "source_sha256": "0d2e1a6ff43ea77e211d439f05e7bc75f9f8147163542bd18182ec03af64d578",
+  "launcher_sha256": "26e5b7b8265b42f25a9add2d385216e742ccc37b9f9a7cbebac07c44710c60f8",
+  "repair_library_sha256": "ae6e475aa108ec311425e05596f501149be6769ee7f1aa0d06ceda2fb4c0a542",
+  "socket_contract_source": "https://github.com/openharmony/startup_init/blob/master/interfaces/innerkits/socket/init_socket.c",
+  "socket_contract_source_sha256": "461b4e30c1381f5a6653c42167a15226e704c9ea2972298292135cf9e968ce81",
+  "launcher_tests": {
+    "count": 3,
+    "status": "PASS"
+  }
+}

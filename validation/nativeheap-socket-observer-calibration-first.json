@@ -1,0 +1,25 @@
+{
+  "calibration_only": true,
+  "performance_accepted": false,
+  "raw_artifacts": "artifacts/profiler-owned-snapshot/04401030b4314c36924990e958189b95",
+  "owned_daemon_cleanup_verified": true,
+  "app_source_modified": false,
+  "error": null,
+  "standard_container_integrity_verified": true,
+  "result": {
+    "metric": "nativehook_retained_bytes",
+    "app_pid": 17410,
+    "retained_bytes": 4008,
+    "retained_allocations": 15,
+    "observed_allocations": 74,
+    "matched_frees": 59,
+    "preexisting_unmatched_frees": 11,
+    "first_event_ns": 642476877287903,
+    "last_event_ns": 642481477820194,
+    "trace_sha256": "7b39eda39a363b2ae0b951df1cb22575241686de5314325a15fafc4c362208dc",
+    "method": "live observed malloc blocks after exact address-matched free events",
+    "collection_provenance_verified": false,
+    "performance_accepted": false
+  },
+  "native_memory_events_verified": true
+}
