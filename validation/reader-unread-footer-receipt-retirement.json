@@ -1,0 +1,33 @@
+{
+  "case": "sheafreader_unread_counts_n_plus_1",
+  "reason": "old UI observer mistook article footer feed labels for sidebar unread badges",
+  "files": [
+    {
+      "original": "artifacts/clean/sheafreader_unread_counts_n_plus_1/unfixed/workload.json",
+      "archive": "artifacts/retired-clean/sheafreader_unread_counts_n_plus_1/article-footer-misidentification-20261014/unfixed/workload.json",
+      "sha256": "d741e5e903cb9a617b60373f55992cd426fb6093ae7bdceb1ae9e8508d9f6f60",
+      "bytes": 4086
+    },
+    {
+      "original": "artifacts/clean/sheafreader_unread_counts_n_plus_1/unfixed/workload-device.json",
+      "archive": "artifacts/retired-clean/sheafreader_unread_counts_n_plus_1/article-footer-misidentification-20261014/unfixed/workload-device.json",
+      "sha256": "9ccd656c1e6fe185fe64abed1e07a8cad650a2056804447301779e75c5aeada6",
+      "bytes": 3585682
+    },
+    {
+      "original": "artifacts/clean/sheafreader_unread_counts_n_plus_1/fixed/workload.json",
+      "archive": "artifacts/retired-clean/sheafreader_unread_counts_n_plus_1/article-footer-misidentification-20261014/fixed/workload.json",
+      "sha256": "6f826eb1c1e48c33ec018f9a3a32ca5bdbe46eff4d3236654de107d604c1a40c",
+      "bytes": 4084
+    },
+    {
+      "original": "artifacts/clean/sheafreader_unread_counts_n_plus_1/fixed/workload-device.json",
+      "archive": "artifacts/retired-clean/sheafreader_unread_counts_n_plus_1/article-footer-misidentification-20261014/fixed/workload-device.json",
+      "sha256": "c5d16eda044ef4f15c2b8ce642fc7fd3add158daeb31feec92174dec1859ed91",
+      "bytes": 3585681
+    }
+  ],
+  "old_status_preserved": "FAIL",
+  "performance_accepted": false,
+  "fresh_validation_required": true
+}

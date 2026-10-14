@@ -1,0 +1,19 @@
+{
+  "case": "ytmusic_history_json_parse_per_row",
+  "native_xml_sha256": "a922eb82fdeb025f126000f53b30b40a3a9359479ee59cd7a060226ed3af7dd5",
+  "xml_root": "preferences",
+  "storage_key": "history",
+  "set_marker": "_____set_replacer__",
+  "stored_value_type": "JSON song strings",
+  "ordinary_song_fields": [
+    "creator",
+    "img",
+    "name",
+    "time"
+  ],
+  "initialized_records": 1,
+  "device_source": "actual existing native persistent_storage file; read-only transfer after prior profiler stopped",
+  "fixture_records": 200,
+  "additional_song_fields": false,
+  "performance_accepted": false
+}
