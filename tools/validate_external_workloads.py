@@ -27,11 +27,12 @@ from page_lifecycle import verify_reconstructions
 from reader_data_fixture import prepare as prepare_reader, finish as finish_reader
 from rss_refresh_progress import verify_observation
 from jingmo_import_fixture import prepare as prepare_import, finish as finish_import, verify_state
+from jingmo_sync_fixture import prepare as prepare_sync, finish as finish_sync
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, search_history_fixture=None, preferences_path=None, music_service=False, bundled_fonts=False, reader_fixture=None, poem_import_fixture=None):
+def validate(remote, case, variant, browser_fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, search_history_fixture=None, preferences_path=None, music_service=False, bundled_fonts=False, reader_fixture=None, poem_import_fixture=None, poem_sync_fixture=None):
     cid = case['id']
     folder = ROOT / 'artifacts/clean' / cid / variant
     signed = json.loads((folder / 'sign.json').read_text())
@@ -40,7 +41,7 @@ def validate(remote, case, variant, browser_fixture=None, local_song_fixture=Non
     result = {'case':cid, 'variant':variant, 'signed_sha256':signed['audit']['sha256'],
               'plan_sha256':plan_hash, 'status':'FAIL', 'performance_verified':False}
     try:
-        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture,search_history_fixture,reader_fixture,poem_import_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
+        if sum(p is not None for p in (browser_fixture,local_song_fixture,poem_fixture,search_history_fixture,reader_fixture,poem_import_fixture,poem_sync_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
             raise ValueError('only one fixture may be supplied')
         if bundled_audio:
             result['fixture']=packaged_audio(ROOT,case,variant,signed)
@@ -73,6 +74,8 @@ def validate(remote, case, variant, browser_fixture=None, local_song_fixture=Non
             result['fixture']=prepare_reader(remote,case,reader_fixture)
         if poem_import_fixture:
             result['fixture']=prepare_import(remote,case,poem_import_fixture)
+        if poem_sync_fixture:
+            result['fixture']=prepare_sync(remote,case,poem_sync_fixture)
         destination = f'/home/research/ohm-clean/{cid}/{variant}/workload-plan.json'
         remote.upload(plan_path, destination)
         code = """import hashlib,json,subprocess,sys,time,traceback
@@ -87,10 +90,10 @@ def shell(command):
         code += f"plan_path=Path({destination!r});plan=json.loads(plan_path.read_text())\n"
         code += f"assert hashlib.sha256(plan_path.read_bytes()).hexdigest()=={plan_hash!r}\n"
         code += "ui=UI(shell,plan['bundle'],plan['ability'])\nphases={}\n"
-        if poem_import_fixture:
+        if poem_import_fixture or poem_sync_fixture:
             for module in ('jingmo_import_fixture.py','jingmo_data_service.py','rss_service_fixture.py','rss_data_service.py','rss_dataset.py','install_sqlite_fixture.py','remote_device.py'):
                 remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
-            code += "from jingmo_import_fixture import complete_import\n"
+            code += "from jingmo_import_fixture import complete_import,read_state,verify_state\n"
         if reader_fixture:
             remote.upload(ROOT/'tools/rss_refresh_progress.py','/home/research/ohm-clean/tools/rss_refresh_progress.py')
             code += "from rss_refresh_progress import read_state,complete_refresh\n"
@@ -119,6 +122,8 @@ def shell(command):
         code += " result={'phases':phases,'status':'PASS'}\n"
         if poem_import_fixture:
             code += " result['poem_import_state']=complete_import(ui)\n"
+        if poem_sync_fixture:
+            code += " result['poem_sync_state']=read_state(shell);verify_state(result['poem_sync_state'],True)\n"
         if reader_fixture:
             code += " result['reader_refresh']=complete_refresh(ui,reader_before)\n"
         code += "except Exception as exc:\n"
@@ -139,6 +144,10 @@ def shell(command):
             verify_state(device['poem_import_state'],True)
             result['fixture_after']=finish_import(remote,result['fixture'])
             result['functional_check']='all 5000 full ordinary poetry records imported from the configured source'
+        if poem_sync_fixture:
+            verify_state(device['poem_sync_state'],True)
+            result['fixture_after']=finish_sync(remote,result['fixture'])
+            result['functional_check']='all 5000 full ordinary cached poetry records preserved after normal repeat sync actions'
         if reader_fixture:
             result['reader_refresh']=verify_observation(device['reader_refresh'])
             result['fixture_after']=finish_reader(remote,case,result['fixture'])
@@ -232,6 +241,7 @@ def main():
     fixtures.add_argument('--bundled-fonts',action='store_true')
     fixtures.add_argument('--reader-fixture',type=Path)
     fixtures.add_argument('--poem-import-fixture',type=Path)
+    fixtures.add_argument('--poem-sync-fixture',type=Path)
     parser.add_argument('--preferences-path',help='actual initialized historyStore file; discover through normal app use')
     args=parser.parse_args()
     remote=Remote(args.remote)
@@ -240,7 +250,7 @@ def main():
     for cid in args.cases:
         case=json.loads((ROOT/'cases'/cid/'case.json').read_text())
         for variant in ('unfixed','fixed'):
-            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.search_history_fixture,args.preferences_path,args.music_service,args.bundled_fonts,args.reader_fixture,args.poem_import_fixture)
+            failed |= not validate(remote,case,variant,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.search_history_fixture,args.preferences_path,args.music_service,args.bundled_fonts,args.reader_fixture,args.poem_import_fixture,args.poem_sync_fixture)
     return int(failed)
 
 

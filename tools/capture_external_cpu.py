@@ -18,13 +18,14 @@ from music_service_fixture import prepare as prepare_music_service, same_instanc
 from bundled_font_fixture import for_case as packaged_fonts
 from reader_data_fixture import prepare as prepare_reader, finish as finish_reader
 from jingmo_import_fixture import prepare as prepare_import, finish as finish_import
+from jingmo_sync_fixture import prepare as prepare_sync, finish as finish_sync
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def capture(remote, case, variant, round_number, fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, music_service=False, bundled_fonts=False, reader_fixture=None, poem_import_fixture=None):
+def capture(remote, case, variant, round_number, fixture=None, local_song_fixture=None, poem_fixture=None, bundled_audio=False, music_service=False, bundled_fonts=False, reader_fixture=None, poem_import_fixture=None, poem_sync_fixture=None):
     cid = case['id']
-    if sum(p is not None for p in (fixture,local_song_fixture,poem_fixture,reader_fixture,poem_import_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
+    if sum(p is not None for p in (fixture,local_song_fixture,poem_fixture,reader_fixture,poem_import_fixture,poem_sync_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
         raise ValueError('only one fixture may be supplied')
     if local_song_fixture and case['host_app']['bundle_name']!='cc.chenlvin.cloudmusic':
         raise ValueError('local song fixture provided to a different app')
@@ -72,6 +73,9 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
     if poem_import_fixture:
         import_before=prepare_import(remote,case,poem_import_fixture)
         fixture_hash=import_before['sha256']
+    if poem_sync_fixture:
+        sync_before=prepare_sync(remote,case,poem_sync_fixture)
+        fixture_hash=sync_before['sha256']
     remote.upload(plan_file,remote_plan)
     code = """import hashlib,json,subprocess,sys,time,traceback
 from pathlib import Path
@@ -86,10 +90,10 @@ def shell(command):
     code += f"assert hashlib.sha256(plan_file.read_bytes()).hexdigest()=={plan_hash!r}\n"
     code += f"assert hashlib.sha256(Path({sign['signed_hap']!r}).read_bytes()).hexdigest()=={sign['audit']['sha256']!r}\n"
     code += "plan=json.loads(plan_file.read_text());ui=UI(shell,plan['bundle'],plan['ability'])\n"
-    if poem_import_fixture:
+    if poem_import_fixture or poem_sync_fixture:
         for module in ('jingmo_import_fixture.py','jingmo_data_service.py','rss_service_fixture.py','rss_data_service.py','rss_dataset.py','install_sqlite_fixture.py','remote_device.py'):
             remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
-        code += "from jingmo_import_fixture import complete_import\n"
+        code += "from jingmo_import_fixture import complete_import,read_state,verify_state\n"
     if cid=='sepweather_font_register_per_page':
         for module in ('page_lifecycle.py','system_pss.py'):
             remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
@@ -122,6 +126,8 @@ def shell(command):
     code += " ui.run(plan['measured']);ui.run(plan['verify'])\n"
     if poem_import_fixture:
         code += " record['poem_import_state']=complete_import(ui)\n"
+    if poem_sync_fixture:
+        code += " record['poem_sync_state']=read_state(shell);verify_state(record['poem_sync_state'],True)\n"
     if reader_fixture:
         code += " record['reader_refresh']=complete_refresh(ui,reader_before)\n"
     if cid=='sepweather_font_register_per_page':
@@ -169,6 +175,9 @@ def shell(command):
         if poem_import_fixture:
             receipt['poem_import_fixture_before']=import_before
             receipt['poem_import_fixture_after']=finish_import(remote,import_before)
+        if poem_sync_fixture:
+            receipt['poem_sync_fixture_before']=sync_before
+            receipt['poem_sync_fixture_after']=finish_sync(remote,sync_before)
         if reader_fixture:
             receipt['reader_fixture_before']=reader_before
             receipt['reader_fixture_after']=finish_reader(remote,case,reader_before)
@@ -209,12 +218,13 @@ def main():
     fixtures.add_argument('--bundled-fonts',action='store_true')
     fixtures.add_argument('--reader-fixture',type=Path)
     fixtures.add_argument('--poem-import-fixture',type=Path)
+    fixtures.add_argument('--poem-sync-fixture',type=Path)
     parser.add_argument('--remote',default='cityuPC')
     args=parser.parse_args()
     remote=Remote(args.remote)
     remote.upload(ROOT/'tools/ui_driver.py','/home/research/ohm-clean/tools/ui_driver.py')
     case=json.loads((ROOT/'cases'/args.case/'case.json').read_text())
-    capture(remote,case,args.variant,args.round,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.music_service,args.bundled_fonts,args.reader_fixture,args.poem_import_fixture)
+    capture(remote,case,args.variant,args.round,args.browser_fixture,args.local_song_fixture,args.poem_fixture,args.bundled_audio,args.music_service,args.bundled_fonts,args.reader_fixture,args.poem_import_fixture,args.poem_sync_fixture)
 
 
 if __name__=='__main__':

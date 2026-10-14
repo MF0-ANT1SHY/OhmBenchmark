@@ -11,6 +11,7 @@ from page_lifecycle import verify_reconstructions
 from reader_data_fixture import CASES as READER_CASES, verify_preparation
 from rss_refresh_progress import verify_observation
 from jingmo_import_fixture import CASE as POEM_IMPORT_CASE, verify_state as verify_poem_state, verify_preparation as verify_poem_preparation, verify_capture_window as verify_poem_window
+from jingmo_sync_fixture import CASE as POEM_SYNC_CASE, verify_preparation as verify_sync_preparation
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -32,6 +33,10 @@ def accept(cid, write=True, require_pass=True):
             device=json.loads((folder/'workload-device.json').read_text())
             verify_poem_state(device['poem_import_state'],True)
             verify_poem_preparation(workload['fixture'],workload['fixture_after'])
+        if cid==POEM_SYNC_CASE:
+            device=json.loads((folder/'workload-device.json').read_text())
+            verify_poem_state(device['poem_sync_state'],True)
+            verify_sync_preparation(workload['fixture'],workload['fixture_after'])
         if cid in READER_CASES:
             device=json.loads((folder/'workload-device.json').read_text())
             if verify_observation(device['reader_refresh'])!=workload.get('reader_refresh'):
@@ -67,6 +72,11 @@ def accept(cid, write=True, require_pass=True):
                 verify_poem_preparation(receipt['poem_import_fixture_before'],receipt['poem_import_fixture_after'])
                 if receipt['poem_import_fixture_before']['sha256']!=receipt['fixture_sha256']:
                     raise RuntimeError('poetry capture data identity differs from validated cold import')
+            if cid==POEM_SYNC_CASE:
+                verify_poem_window(receipt['poem_sync_state'],receipt['action_start_monotonic'],receipt['action_end_monotonic'])
+                verify_sync_preparation(receipt['poem_sync_fixture_before'],receipt['poem_sync_fixture_after'])
+                if receipt['poem_sync_fixture_before']['sha256']!=receipt['fixture_sha256']:
+                    raise RuntimeError('cached poetry capture input differs from the validated data')
             if cid in READER_CASES:
                 verify_observation(receipt['reader_refresh'])
                 verify_preparation(receipt['reader_fixture_before'],receipt['reader_fixture_after'])
