@@ -6,6 +6,15 @@
   "removed_override": "127.0.0.1 www.wanandroid.com wanandroid.com",
   "unrelated_entries_removed": false,
   "app_code_changed": false,
-  "tls_verified": false,
-  "tls_output": "705E92005A000000:error:8000006F:system library:BIO_connect:reason(111)::0:calling connect()\n705E92005A000000:error:10000067:BIO routines:BIO_connect:connect error::0:\nconnect:errno=111\n"
+  "tls_verified": true,
+  "tls_output": "705E92005A000000:error:8000006F:system library:BIO_connect:reason(111)::0:calling connect()\n705E92005A000000:error:10000067:BIO routines:BIO_connect:connect error::0:\nconnect:errno=111\n",
+  "native_dns_cache_flush": {
+    "/data/local/tmp/ohm-flush-native-dns --flush-current-network": "{\"current_network_dns_flush_result\":400}\n",
+    "ping -c 1 -W 1 www.wanandroid.com": "Ping www.wanandroid.com (39.101.178.149): 56(84) bytes.\n64 bytes from 39.101.178.149: icmp_seq=1 ttl=45 time=72 ms\n\n--- 39.101.178.149 ping statistics ---\n1 packets transmitted, 1 received, 0% packet loss\nround-trip min/avg/max = 72/72/72 ms\n",
+    "timeout 20 openssl s_client -4 -connect www.wanandroid.com:443 -servername www.wanandroid.com -verify_hostname www.wanandroid.com -verify_return_error -CAfile /etc/ssl/certs/cacert.pem -brief </dev/null": "CONNECTION ESTABLISHED\nProtocol version: TLSv1.2\nCiphersuite: ECDHE-RSA-AES256-SHA384\nPeer certificate: CN = wanandroid.com\nHash used: SHA256\nSignature type: RSA\nVerification: OK\nVerified peername: www.wanandroid.com\nServer Temp Key: ECDH, prime256v1, 256 bits\nDONE\n"
+  },
+  "dns_flush_request_succeeded": false,
+  "dns_flush_request_result": 400,
+  "public_resolution_restored": true,
+  "restoration_note": "The optional native cache-flush request returned 400 and is not claimed successful. A subsequent normal resolution returned the public IPv4 address and native TLS certificate/hostname verification succeeded after removal of the localhost hosts override."
 }
