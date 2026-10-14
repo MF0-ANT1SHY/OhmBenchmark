@@ -828,6 +828,100 @@
         "foreground_bundle": "cc.chenlvin.cloudmusic",
         "status": "PASS",
         "performance_verified": false
+      },
+      "workload": {
+        "case": "cloudmusic_indexof_in_render",
+        "variant": "unfixed",
+        "signed_sha256": "c86222b842fa82c41c63539c75776792a962f93fc38444d615d31ea853407462",
+        "plan_sha256": "a2eeaf3a901178a82aeb3fc61ea391899888aa05df1895a57fb48cf3f733ee00",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+          "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+          "songs": 10000,
+          "artist_count": 12,
+          "base_url": "http://127.0.0.1:18490",
+          "service_pid": 638,
+          "service_start_ticks": 6055,
+          "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+        },
+        "phase_elapsed_s": {
+          "setup": 52.895016640999984,
+          "measured": 38.64868604199998,
+          "verify": 11.347432423000015
+        },
+        "fixture_after": {
+          "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+          "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+          "songs": 10000,
+          "artist_count": 12,
+          "base_url": "http://127.0.0.1:18490",
+          "service_pid": 638,
+          "service_start_ticks": 6055,
+          "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+        },
+        "functional_check": "normal song titles and artist lines match the ordinary music catalogue",
+        "observed_titles": [
+          "Track 33",
+          "Track 34",
+          "Track 35",
+          "Track 36",
+          "Track 37",
+          "Track 38",
+          "Track 39",
+          "Track 40",
+          "Track 41",
+          "Track 42",
+          "Track 43",
+          "Track 44",
+          "Track 45",
+          "Track 46",
+          "Track 9999"
+        ],
+        "capture_duration_required_s": 44
+      },
+      "performance": {
+        "status": "FAIL",
+        "metric": "hiperf_instructions",
+        "rounds": 3,
+        "samples": [
+          5952383770,
+          5935725421,
+          5910313879
+        ],
+        "median": 5935725421,
+        "paired_ratios": [
+          1.00987067961785,
+          1.009365014533709,
+          1.0006820891336203
+        ],
+        "median_ratio": 1.0070444542137138,
+        "plan_sha256": "a2eeaf3a901178a82aeb3fc61ea391899888aa05df1895a57fb48cf3f733ee00",
+        "signed_sha256": "c86222b842fa82c41c63539c75776792a962f93fc38444d615d31ea853407462",
+        "fixture_sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+        "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+        "captures": [
+          {
+            "round": 1,
+            "report_sha256": "202a6e6330aa27fb9e58b6f63f5b0dc5adc0e9ff1b42f6c87b27677400eeb0dc",
+            "app_samples": 7655,
+            "remote_artifacts": "/home/research/ohm-clean/cloudmusic_indexof_in_render/unfixed/cpu-captures/round-1"
+          },
+          {
+            "round": 2,
+            "report_sha256": "abda8da92a1da00aab87de43dbd26451196de23f5938f007cf06a4696c7dc2bd",
+            "app_samples": 7500,
+            "remote_artifacts": "/home/research/ohm-clean/cloudmusic_indexof_in_render/unfixed/cpu-captures/round-2"
+          },
+          {
+            "round": 3,
+            "report_sha256": "acd9b585140c8a9dd9dbf0c8ac593ff2693b4a0bd6ecaf4ccfaed118e2e80294",
+            "app_samples": 7461,
+            "remote_artifacts": "/home/research/ohm-clean/cloudmusic_indexof_in_render/unfixed/cpu-captures/round-3"
+          }
+        ],
+        "legacy_evidence_reused": false
       }
     },
     {
@@ -879,6 +973,100 @@
         "foreground_bundle": "cc.chenlvin.cloudmusic",
         "status": "PASS",
         "performance_verified": false
+      },
+      "workload": {
+        "case": "cloudmusic_indexof_in_render",
+        "variant": "fixed",
+        "signed_sha256": "16b7e4564ff60f505c4717dccbd915f29e2ba0d147dd38c0ea07875c3efbaab0",
+        "plan_sha256": "a2eeaf3a901178a82aeb3fc61ea391899888aa05df1895a57fb48cf3f733ee00",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+          "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+          "songs": 10000,
+          "artist_count": 12,
+          "base_url": "http://127.0.0.1:18490",
+          "service_pid": 638,
+          "service_start_ticks": 6055,
+          "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+        },
+        "phase_elapsed_s": {
+          "setup": 50.996259536000025,
+          "measured": 39.21551138700005,
+          "verify": 11.696613670999966
+        },
+        "fixture_after": {
+          "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+          "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+          "songs": 10000,
+          "artist_count": 12,
+          "base_url": "http://127.0.0.1:18490",
+          "service_pid": 638,
+          "service_start_ticks": 6055,
+          "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+        },
+        "functional_check": "normal song titles and artist lines match the ordinary music catalogue",
+        "observed_titles": [
+          "Track 33",
+          "Track 34",
+          "Track 35",
+          "Track 36",
+          "Track 37",
+          "Track 38",
+          "Track 39",
+          "Track 40",
+          "Track 41",
+          "Track 42",
+          "Track 43",
+          "Track 44",
+          "Track 45",
+          "Track 46",
+          "Track 9999"
+        ],
+        "capture_duration_required_s": 44
+      },
+      "performance": {
+        "status": "FAIL",
+        "metric": "hiperf_instructions",
+        "rounds": 3,
+        "samples": [
+          5894203971,
+          5880653020,
+          5906285266
+        ],
+        "median": 5894203971,
+        "paired_ratios": [
+          1.00987067961785,
+          1.009365014533709,
+          1.0006820891336203
+        ],
+        "median_ratio": 1.0070444542137138,
+        "plan_sha256": "a2eeaf3a901178a82aeb3fc61ea391899888aa05df1895a57fb48cf3f733ee00",
+        "signed_sha256": "16b7e4564ff60f505c4717dccbd915f29e2ba0d147dd38c0ea07875c3efbaab0",
+        "fixture_sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+        "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+        "captures": [
+          {
+            "round": 1,
+            "report_sha256": "74690024bd38e2dd9ed2f6eae13d6c608205f4a99cb4b4c4fae161ecf0e8086f",
+            "app_samples": 7539,
+            "remote_artifacts": "/home/research/ohm-clean/cloudmusic_indexof_in_render/fixed/cpu-captures/round-1"
+          },
+          {
+            "round": 2,
+            "report_sha256": "15d74b03e5cc6e30cf68a738edc6ed08bad2ec34695dd9dda12d35736d1ace3d",
+            "app_samples": 7378,
+            "remote_artifacts": "/home/research/ohm-clean/cloudmusic_indexof_in_render/fixed/cpu-captures/round-2"
+          },
+          {
+            "round": 3,
+            "report_sha256": "810cf6a7abce59ab925d89f57e38767886adb984fe8cdc77ff7d1e9caafc07f2",
+            "app_samples": 7587,
+            "remote_artifacts": "/home/research/ohm-clean/cloudmusic_indexof_in_render/fixed/cpu-captures/round-3"
+          }
+        ],
+        "legacy_evidence_reused": false
       }
     },
     {
