@@ -1,0 +1,18 @@
+{
+  "reference_repository": "https://gitcode.com/openharmony/developtools_profiler.git",
+  "reference_branch": "OpenHarmony-5.1.0-Release",
+  "reference_commit": "58c739a3cab85711eaab99226471455dd514dedc",
+  "files": {
+    "protos/types/plugins/native_hook/native_hook_config.proto": "fb606cc0d8b70ed6c624ee9de185c6015309f274b63dbe65b7807b2315fb0d61",
+    "protos/types/plugins/native_hook/native_hook_result.proto": "b7cfb8be293c1dcfaf86c0a5dee6222bd0eec54e291e1e5f72a192e271ca5dd2",
+    "protos/services/common_types.proto": "00cfbc311c835ae7d0f71f77cd89cc8e20a8d21b3e2d3ac886b725fb294d3694",
+    "device/services/profiler_service/src/trace_file_header.h": "bf7f7cae4790428852a905dfd8113d71e7c9392169f441d68d7f9c441d577b9c",
+    "device/services/profiler_service/src/trace_file_helper.cpp": "359e4ad333e0595ea7899a9936e9e8cf4d0ed96423e7ea901b988ef188cd1e78",
+    "device/services/profiler_service/src/profiler_service.cpp": "5705b5561e744e3ce20e614a53d7feae62d0be1d9bc8a1d3c3f7166072e86db8"
+  },
+  "parser_scope": "standard 1024-byte-header protobuf files; exact observed malloc/free address matching",
+  "unsupported": "standalone dataType 1000, sampling, filtered small allocations, aggregate statistics, mmap metrics",
+  "actual_device_capture_verified": false,
+  "benchmark_case_completed": false,
+  "app_injection": false
+}
