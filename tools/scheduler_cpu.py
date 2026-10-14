@@ -68,15 +68,20 @@ def switches(path):
             tid = int(match['tid'])
             owner = match['tgid']
             previous_tid, next_tid = int(previous[1]), int(following[1])
+            next_name = re.search(r'\bnext_comm=(\S+)', match['body'])
             # Device-native records can be emitted in incoming context. The
             # prefix TGID belongs to its prefix TID, not automatically prev_pid.
             if tid == previous_tid or tid == next_tid:
                 owner_tid = tid
                 owner_tgid = int(owner) if owner and owner.isdigit() else None
             elif (next_tid == 0 and owner == '2'
-                  and match['comm'].strip() == f"tppmgr-idle-{int(match['cpu'])}"):
+                  and (match['comm'].strip() == f"tppmgr-idle-{int(match['cpu'])}"
+                       or (match['comm'].strip() == '<...>'
+                           and next_name and next_name[1] == f"tppmgr-idle-{int(match['cpu'])}"))):
                 # This kernel gives each idle task a real prefix TID while the
                 # scheduling payload consistently represents idle as PID 0.
+                # Its task-name cache can print <...>; accept that only when
+                # the payload explicitly names this CPU's idle task and TGID 2.
                 owner_tid, owner_tgid = 0, 0
             else:
                 raise ValueError('scheduler prefix matches neither transition thread nor known native idle task')

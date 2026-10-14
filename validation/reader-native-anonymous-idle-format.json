@@ -1,0 +1,242 @@
+{
+  "case": "sheafreader_refresh_feeds_sequential",
+  "variant": "fixed",
+  "round": 2,
+  "raw_sha256": "b6b1f17c5bd4b346e45e40b9fb08d3173e370554a07bfce0ca09b6f0b07980f2",
+  "anonymous_idle_records": [
+    {
+      "line": 88191,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 88573,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 88754,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 88963,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 143947,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 158681,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 158777,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 158810,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 158859,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 158964,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 158987,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 159003,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 159253,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 159258,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 159286,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 159359,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 159386,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 159501,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 159698,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 159720,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 160086,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 160623,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 160626,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 166479,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 169442,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 169581,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 169812,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 169832,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 169866,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 170140,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 170166,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 170489,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 171378,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 172483,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 172862,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 193662,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 207118,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 235622,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 237379,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 239280,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 239784,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 240267,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 279873,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 339725,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 339937,
+      "tid": 198,
+      "cpu": 11
+    },
+    {
+      "line": 340301,
+      "tid": 198,
+      "cpu": 11
+    }
+  ],
+  "recomputed_app_cpu_ms": 3883.931,
+  "recovered_without_recapture": true,
+  "performance_accepted": false,
+  "basis": "anonymous kernel TGID 2 prefix; payload names matching CPU native idle task and PID 0; same TID 198 identified as tppmgr-idle-11 in earlier native captures"
+}

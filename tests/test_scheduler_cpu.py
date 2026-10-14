@@ -94,6 +94,20 @@ class SchedulingCPUTimeTest(unittest.TestCase):
         changed[0]=changed[0].replace('worker-0 (0)','stranger-555 (555)')
         with self.assertRaises(ValueError):self.calculate(changed)
 
+    def test_anonymous_native_idle_requires_matching_payload_cpu_and_kernel_tgid(self):
+        changed=list(self.events)
+        changed[0]=changed[0].replace('worker-0 (0)', 'worker-100 (100)')
+        changed[1]=changed[1].replace('worker-100 (100)', 'worker-101 (100)')
+        changed[2]=changed[2].replace('worker-101 (100)', '<...>-187 (2)').replace(
+            'next_comm=worker', 'next_comm=tppmgr-idle-0')
+        self.assertEqual(self.calculate(changed)['app_cpu_ns'],8000000)
+        for replacement in ('next_comm=tppmgr-idle-1', 'next_comm=worker'):
+            bad=list(changed)
+            bad[2]=bad[2].replace('next_comm=tppmgr-idle-0',replacement)
+            with self.assertRaises(ValueError):self.calculate(bad)
+        bad=list(changed);bad[2]=bad[2].replace('(2)', '(100)')
+        with self.assertRaises(ValueError):self.calculate(bad)
+
 
 if __name__ == '__main__':
     unittest.main()
