@@ -1,0 +1,14 @@
+{
+  "case": "interviewapp_search_history_unbounded",
+  "status": "FAIL",
+  "error": "UI target not found: {'hint': '\u8bf7\u8f93\u5165\u5173\u952e\u8bcd', 'match': 'exact'}",
+  "normal_login_attempted": true,
+  "device_receipt_sha256": "023f7b8a1b57e8936c0fe0dedc6b85a97628fe5c30baf5d404466d76c193d709",
+  "remote_artifacts": "/home/research/ohm-clean/interviewapp_search_history_unbounded/normal-entry-5202b1a228704e149622ca8753289d5c",
+  "history_preference_paths": [],
+  "app_injection": false,
+  "performance_accepted": false,
+  "native_http_error": 2300060,
+  "tls_diagnosis": "validation/device-online-tls-blocker.json",
+  "login_succeeded": false
+}

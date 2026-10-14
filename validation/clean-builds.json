@@ -2373,9 +2373,9 @@
         "case": "interviewapp_search_history_unbounded",
         "variant": "unfixed",
         "unsigned_sha256": "82852c0c1e05422b84aa9d3f1c70c60bf77d5f371ca5c41a2ca5c787cec3532e",
-        "signed_hap": "/home/research/ohm-clean/interviewapp_search_history_unbounded/unfixed/app.hap",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/interviewapp_search_history_unbounded/unfixed/app.hap",
         "audit": {
-          "sha256": "854316c15663fb5a93d874a4c392602febbbb9dd553080a9856d83bcb218a36c",
+          "sha256": "6f02bc78ed03c93b319945316a834e5f070f9d6cc11000524849587a0b2256c9",
           "abc_modules_checked": [
             "ets/modules.abc",
             "ets/widgets.abc"
@@ -2383,29 +2383,8 @@
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
-      },
-      "smoke": {
-        "case": "interviewapp_search_history_unbounded",
-        "variant": "unfixed",
-        "signed_sha256": "854316c15663fb5a93d874a4c392602febbbb9dd553080a9856d83bcb218a36c",
-        "install": "[Info]App install path:/home/research/ohm-clean/interviewapp_search_history_unbounded/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
-        "launch": "start ability successfully.",
-        "pids": [
-          42122
-        ],
-        "foreground_bundle": "com.itcast.pass_interview",
-        "status": "PASS",
-        "performance_verified": false
-      },
-      "workload": {
-        "case": "interviewapp_search_history_unbounded",
-        "variant": "unfixed",
-        "signed_sha256": "854316c15663fb5a93d874a4c392602febbbb9dd553080a9856d83bcb218a36c",
-        "plan_sha256": "1de21acdcbd5e6cdb70ad0c4482be1800e6ae8ee174f8b4183cb68d09bfd4c3f",
-        "status": "FAIL",
-        "performance_verified": false,
-        "error": "UI target not found: {'hint': '请输入关键词'}"
       }
     },
     {
@@ -2432,9 +2411,9 @@
         "case": "interviewapp_search_history_unbounded",
         "variant": "fixed",
         "unsigned_sha256": "dc8c86eba41cb1b96150e052ac156f337a4ab8dd018c869294d3b446568c0c93",
-        "signed_hap": "/home/research/ohm-clean/interviewapp_search_history_unbounded/fixed/app.hap",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/interviewapp_search_history_unbounded/fixed/app.hap",
         "audit": {
-          "sha256": "c802d64e5a6189c856d4d189f266e25a5644af5cb20d2b3c4a4624d72475f928",
+          "sha256": "a4d9e2d2c7ad6e50d2c6b59ab31ee0978ea18e3f6c9f6b56368952c8048c5b04",
           "abc_modules_checked": [
             "ets/modules.abc",
             "ets/widgets.abc"
@@ -2442,20 +2421,8 @@
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
-      },
-      "smoke": {
-        "case": "interviewapp_search_history_unbounded",
-        "variant": "fixed",
-        "signed_sha256": "c802d64e5a6189c856d4d189f266e25a5644af5cb20d2b3c4a4624d72475f928",
-        "install": "[Info]App install path:/home/research/ohm-clean/interviewapp_search_history_unbounded/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
-        "launch": "start ability successfully.",
-        "pids": [
-          42328
-        ],
-        "foreground_bundle": "com.itcast.pass_interview",
-        "status": "PASS",
-        "performance_verified": false
       }
     },
     {

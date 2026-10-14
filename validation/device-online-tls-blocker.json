@@ -1,0 +1,49 @@
+{
+  "status": "BLOCKED_DEVICE_TLS",
+  "app_code_changed": false,
+  "app_injection": false,
+  "performance_accepted": false,
+  "certificate_verification_disabled": false,
+  "raw_receipt": "artifacts/reference/device-readonly/tls-online-20261014.json",
+  "raw_sha256": "cb2255c52eb64cae64afcb79953c8da4d69a7774269a20037c47301f54bf2489",
+  "hosts": {
+    "api-harmony-teach.itheima.net": {
+      "returncode": 0,
+      "verification_lines": [
+        "verify error:num=18:self-signed certificate",
+        "subject=name = SSLA-Self-Signed-Certificate",
+        "issuer=name = SSLA-Self-Signed-Certificate",
+        "Verification error: self-signed certificate",
+        "Verify return code: 18 (self-signed certificate)"
+      ],
+      "leaf_der_sha256": "7f92cb252d9c3b616843eca22ca0d24616220ab49c11e028a5a81a9dfa6d9202",
+      "tls_verified": false
+    },
+    "www.wanandroid.com": {
+      "returncode": 0,
+      "verification_lines": [],
+      "leaf_der_sha256": null,
+      "tls_verified": false
+    },
+    "example.com": {
+      "returncode": 0,
+      "verification_lines": [
+        "verify error:num=18:self-signed certificate",
+        "subject=name = SSLA-Self-Signed-Certificate",
+        "issuer=name = SSLA-Self-Signed-Certificate",
+        "Verification error: self-signed certificate",
+        "Verify return code: 18 (self-signed certificate)"
+      ],
+      "leaf_der_sha256": "7f92cb252d9c3b616843eca22ca0d24616220ab49c11e028a5a81a9dfa6d9202",
+      "tls_verified": false
+    }
+  },
+  "workstation_tls": {
+    "api-harmony-teach.itheima.net": "verified HTTP 401",
+    "www.wanandroid.com": "verified HTTP 200",
+    "example.com": "verified HTTP 200"
+  },
+  "official_error_reference": "https://raw.githubusercontent.com/openharmony/docs/master/en/application-dev/reference/apis-network-kit/errorcode-net-http.md",
+  "observed_native_http_error": 2300060,
+  "inference": "Device-network TLS interception or captive gateway is returning a self-signed identity instead of the requested server identity. Exact gateway configuration is not yet established."
+}
