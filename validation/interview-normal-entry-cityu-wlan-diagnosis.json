@@ -1,0 +1,14 @@
+{
+  "case": "interviewapp_search_history_unbounded",
+  "status": "PASS",
+  "error": null,
+  "normal_login_attempted": true,
+  "device_receipt_sha256": "0cc29016fd42fdeeb94e6e9ef12beb24e35843237f5545521cfaaf49b3b00df7",
+  "remote_artifacts": "/home/research/ohm-clean/interviewapp_search_history_unbounded/normal-entry-092dace9827f4598a46dc8668b43f394",
+  "history_preference_paths": [
+    "/data/app/el2/100/base/com.itcast.pass_interview/haps/phone/preferences/historyStore.lock",
+    "/data/app/el2/100/base/com.itcast.pass_interview/haps/phone/preferences/historyStore"
+  ],
+  "app_injection": false,
+  "performance_accepted": false
+}

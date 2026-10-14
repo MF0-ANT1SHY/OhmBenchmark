@@ -1,0 +1,11 @@
+{
+  "status": "RESTORED_PUBLIC_DNS",
+  "before_sha256": "b3e25379f641bf497e055646a21140d70c175afae4c255ce10677ca66405526d",
+  "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "backup": "/home/research/ohm-clean/backups/network/d9d622665bf44595b008fb4a1e55229d/hosts.before",
+  "removed_override": "127.0.0.1 www.wanandroid.com wanandroid.com",
+  "unrelated_entries_removed": false,
+  "app_code_changed": false,
+  "tls_verified": false,
+  "tls_output": "705E92005A000000:error:8000006F:system library:BIO_connect:reason(111)::0:calling connect()\n705E92005A000000:error:10000067:BIO routines:BIO_connect:connect error::0:\nconnect:errno=111\n"
+}
