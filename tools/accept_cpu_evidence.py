@@ -17,6 +17,7 @@ from reader_list_progress import CASE as READER_LIST_CASE, verify_observation as
 from reader_unread_badges import CASE as UNREAD_CASE, verify_layout as verify_unread_layout
 from install_ytmusic_history_fixture import fixture_state as listening_fixture_state, CASE as LISTENING_HISTORY_CASE
 from ytmusic_history_progress import verify_layout as verify_history_layout, verify_state as verify_history_state, verify_capture as verify_history_capture
+from browser_visit_progress import CASE as BROWSER_VISIT_CASE, verify_observation as verify_browser_visits, verify_capture as verify_browser_visit_capture
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -34,6 +35,11 @@ def accept(cid, write=True, require_pass=True):
         workload=json.loads((folder/'workload.json').read_text())
         if workload['status']!='PASS' or workload['plan_sha256']!=plan_hash or workload['signed_sha256']!=sign['audit']['sha256']:
             raise RuntimeError('matching real workload execution not proven')
+        if cid==BROWSER_VISIT_CASE:
+            device=json.loads((folder/'workload-device.json').read_text())
+            if (not workload.get('fixture',{}).get('functional_read_verified')
+                    or verify_browser_visits(device['browser_visits'])!=workload.get('browser_visits')):
+                raise RuntimeError('fifteen complete ordinary saved navigations are not proven')
         if cid==LISTENING_HISTORY_CASE:
             fixture=workload['fixture']
             fixture_folder=Path(fixture['fixture_dir'])
@@ -90,6 +96,8 @@ def accept(cid, write=True, require_pass=True):
                 raise RuntimeError('capture provenance mismatch')
             if receipt.get('fixture_sha256') != workload.get('fixture',{}).get('sha256'):
                 raise RuntimeError('capture fixture differs from the validated workload')
+            if cid==BROWSER_VISIT_CASE:
+                verify_browser_visit_capture(receipt['browser_visits'],receipt['action_start_monotonic'],receipt['action_end_monotonic'])
             if cid==LISTENING_HISTORY_CASE:
                 preparation=receipt['listening_history_fixture_before']
                 if (not preparation.get('installation_verified') or preparation['sha256']!=receipt['fixture_sha256']

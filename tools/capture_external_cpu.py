@@ -24,6 +24,7 @@ from reader_unread_badges import CASE as UNREAD_CASE
 from playback_progress import CASES as PLAYBACK_CASES
 from install_ytmusic_history_fixture import install as install_listening_history
 from ytmusic_history_progress import verify_layout as verify_history_layout, verify_state as verify_history_state, read_state as read_history_state
+from browser_visit_progress import CASE as BROWSER_VISIT_CASE
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -111,6 +112,9 @@ def shell(command):
         code += " if selector.get('id')=='AddAddressBtn':page_observations.append(observe_page(shell,plan['bundle'],node))\n"
         code += " return node\nui.find=observe_find\n"
     code += "ui.run([{'op':'stop'},{'op':'launch'}]);ui.run(plan['setup'])\n"
+    if fixture and cid == BROWSER_VISIT_CASE:
+        remote.upload(ROOT/'tools/browser_visit_progress.py','/home/research/ohm-clean/tools/browser_visit_progress.py')
+        code += "from browser_visit_progress import read_state as read_visits,complete_visits\nvisits_before=read_visits(shell)\n"
     if poem_sync_fixture:
         remote.upload(ROOT/'tools/jingmo_sync_progress.py','/home/research/ohm-clean/tools/jingmo_sync_progress.py')
         code += "from jingmo_sync_progress import read_state as read_sync_logs,complete_sync\nsync_logs_before=read_sync_logs(shell)\n"
@@ -143,6 +147,8 @@ def shell(command):
     code += " if 'fail' in record['start_output'].lower() or 'error' in record['start_output'].lower():raise RuntimeError(record['start_output'])\n"
     code += " record['action_start_monotonic']=time.monotonic()\n"
     code += " ui.run(plan['measured']);ui.run(plan['verify'])\n"
+    if fixture and cid == BROWSER_VISIT_CASE:
+        code += " record['browser_visits']=complete_visits(ui,visits_before)\n"
     if poem_import_fixture:
         code += " record['poem_import_state']=complete_import(ui)\n"
     if poem_sync_fixture:

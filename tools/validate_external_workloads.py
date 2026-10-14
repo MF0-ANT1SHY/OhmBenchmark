@@ -33,6 +33,7 @@ from reader_list_progress import CASE as READER_LIST_CASE, verify_observation as
 from reader_unread_badges import CASE as UNREAD_CASE, verify_layout as verify_unread_layout
 from install_ytmusic_history_fixture import install as install_listening_history, fixture_state as listening_fixture_state
 from ytmusic_history_progress import verify_layout as verify_history_layout, verify_state as verify_history_state, read_state as read_history_state
+from browser_visit_progress import CASE as BROWSER_VISIT_CASE, verify_observation as verify_browser_visits
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -113,6 +114,9 @@ def shell(command):
         if reader_fixture and cid == UNREAD_CASE:
             remote.upload(ROOT/'tools/reader_unread_badges.py','/home/research/ohm-clean/tools/reader_unread_badges.py')
             code += "from reader_unread_badges import complete_badges\n"
+        if browser_fixture and cid == BROWSER_VISIT_CASE:
+            remote.upload(ROOT/'tools/browser_visit_progress.py','/home/research/ohm-clean/tools/browser_visit_progress.py')
+            code += "from browser_visit_progress import read_state as read_visits,complete_visits\n"
         if cid=='sepweather_font_register_per_page':
             for module in ('page_lifecycle.py','system_pss.py'):
                 remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
@@ -133,6 +137,9 @@ def shell(command):
         code += " for phase in ['setup','measured','verify']:\n"
         code += "  started=time.monotonic()\n  ui.run(plan[phase])\n"
         code += "  phases[phase]={'elapsed_s':time.monotonic()-started,'layout':ui.layout()}\n"
+        if browser_fixture and cid == BROWSER_VISIT_CASE:
+            code += "  if phase=='setup':visits_before=read_visits(shell)\n"
+            code += "  if phase=='measured':browser_visits=complete_visits(ui,visits_before)\n"
         if reader_fixture and cid != READER_LIST_CASE:
             code += "  if phase=='setup':reader_before=read_state(shell)\n"
         if reader_fixture and cid == READER_LIST_CASE:
@@ -151,6 +158,8 @@ def shell(command):
             code += " result['reader_list_render']=complete_render(ui,reader_launch_before)\n"
         if reader_fixture and cid == UNREAD_CASE:
             code += " result['reader_unread_badges']=complete_badges(ui)\n"
+        if browser_fixture and cid == BROWSER_VISIT_CASE:
+            code += " result['browser_visits']=browser_visits\n"
         code += "except Exception as exc:\n"
         code += " result={'phases':phases,'status':'FAIL','error':str(exc)}\n"
         code += " if getattr(exc,'observation',None) is not None:result['failure_observation']=exc.observation\n"
@@ -166,6 +175,10 @@ def shell(command):
         if device['status'] != 'PASS':
             raise RuntimeError(device['error'])
         result['phase_elapsed_s'] = {p:r['elapsed_s'] for p,r in device['phases'].items()}
+        if browser_fixture and cid == BROWSER_VISIT_CASE:
+            result['browser_visits']=verify_browser_visits(device['browser_visits'])
+            result['fixture']['functional_read_verified']=True
+            result['functional_check']='fifteen normal same-day page navigations saved with correct titles, URLs and timestamps'
         if poem_import_fixture:
             verify_state(device['poem_import_state'],True)
             result['fixture_after']=finish_import(remote,result['fixture'])
