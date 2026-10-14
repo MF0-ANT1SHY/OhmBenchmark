@@ -1,0 +1,22 @@
+{
+  "calibration_only": true,
+  "performance_accepted": false,
+  "local_artifacts": "artifacts/nativeheap-calibration/d5fc5eb505284943950936743bb5e166",
+  "remote_artifacts": "/home/research/ohm-clean/nativeheap-calibration/d5fc5eb505284943950936743bb5e166",
+  "pid": 21245,
+  "profiler_cleanup_verified": true,
+  "native_format_verified": false,
+  "error": "native profiler payload checksum mismatch",
+  "trace_sha256": "28ace65d72833e63b95db8f9c0520203175fb0592c9e89d1bb02db247fa4a4e2",
+  "serializer_mode": "explicit is_protobuf_serialize=true",
+  "app_source_modified": false,
+  "checksum_validation": "REJECTED",
+  "scored_evidence_reused": false,
+  "excluded_explanations": [
+    "simple full payload SHA256",
+    "message-only SHA256",
+    "record-length-only SHA256",
+    "checksum of an earlier complete record prefix"
+  ],
+  "previous_calibration_retained": true
+}
