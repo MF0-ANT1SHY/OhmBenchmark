@@ -1,0 +1,15 @@
+{
+  "case": "browser_insert_date_lookup_cache",
+  "database_sha256": "cf2c15ea1e7129f410c49662e1d38fad7f6959c28586f3c25d4968301f3df7bc",
+  "integrity_check": "ok",
+  "date_rows": 0,
+  "user_version": 1,
+  "tables": [
+    [
+      "date_table"
+    ]
+  ],
+  "schema": "CREATE TABLE date_table (date TEXT PRIMARY KEY)",
+  "device_validation": "pending",
+  "performance_verified": false
+}

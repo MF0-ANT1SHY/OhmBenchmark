@@ -8,6 +8,8 @@ from pathlib import Path
 
 
 def generate(path, days, per_day):
+    if days < 0 or per_day <= 0:
+        raise ValueError('days must be nonnegative and rows per day positive')
     if path.exists():
         raise FileExistsError(f"refusing to replace existing fixture: {path}")
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -28,11 +30,11 @@ def generate(path, days, per_day):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("output", type=Path)
-    parser.add_argument("--days", type=int, default=60)
+    parser.add_argument("--days", type=int, default=60, help='0 prepares ordinary empty browser history')
     parser.add_argument("--per-day", type=int, default=100)
     args = parser.parse_args()
-    if args.days <= 0 or args.per_day <= 0:
-        parser.error("fixture sizes must be positive")
+    if args.days < 0 or args.per_day <= 0:
+        parser.error("days must be nonnegative and rows per day positive")
     print(json.dumps(generate(args.output, args.days, args.per_day)))
 
 

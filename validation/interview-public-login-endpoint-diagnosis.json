@@ -1,0 +1,19 @@
+{
+  "method": "existing public demo defaults from the business login component; HTTP response data and credentials not retained",
+  "device_login_verified": false,
+  "http_status": 200,
+  "business_code": 10000,
+  "message": "success",
+  "data_fields": [
+    "avatar",
+    "clockinNumbers",
+    "id",
+    "nickName",
+    "refreshToken",
+    "shareInfo",
+    "token",
+    "totalTime",
+    "username"
+  ],
+  "token_present": true
+}
