@@ -1,0 +1,60 @@
+{
+  "calibration_only": true,
+  "performance_accepted": false,
+  "raw_artifacts": "artifacts/profiler-owned-snapshot/603f675f3ce543149a1902bc364e2a51",
+  "owned_daemon_cleanup_verified": true,
+  "app_source_modified": false,
+  "error": null,
+  "standard_container_integrity_verified": true,
+  "result": {
+    "metric": "nativehook_retained_bytes",
+    "app_pid": 17410,
+    "retained_bytes": 1328,
+    "retained_allocations": 11,
+    "observed_allocations": 44,
+    "matched_frees": 33,
+    "preexisting_unmatched_frees": 10,
+    "first_event_ns": 643453603242441,
+    "last_event_ns": 643458522372649,
+    "trace_sha256": "b1b312d18f35fde5f1142270304162a20506161262b213daab6b54a0a6a5dfd4",
+    "method": "live observed malloc blocks after exact address-matched free events",
+    "collection_provenance_verified": false,
+    "performance_accepted": false
+  },
+  "native_memory_events_verified": true,
+  "device_clock_span": {
+    "clock": "CLOCK_MONOTONIC",
+    "before_ns": 643451886959629,
+    "after_ns": 643460124134107
+  },
+  "independent_provenance_result": {
+    "metric": "nativehook_retained_bytes",
+    "app_pid": 17410,
+    "retained_bytes": 1328,
+    "retained_allocations": 11,
+    "observed_allocations": 44,
+    "matched_frees": 33,
+    "preexisting_unmatched_frees": 10,
+    "first_event_ns": 643453603242441,
+    "last_event_ns": 643458522372649,
+    "trace_sha256": "b1b312d18f35fde5f1142270304162a20506161262b213daab6b54a0a6a5dfd4",
+    "method": "live observed malloc blocks after exact address-matched free events",
+    "collection_provenance_verified": true,
+    "performance_accepted": false,
+    "profiler_pid": 30183
+  },
+  "collection_provenance_verified": true,
+  "normal_business_workload_verified": false,
+  "device_clock_source_sha256": "a37ecf33588921dc482b4abbcbffa4632f1557e8853049e67bea167bc83bea4d",
+  "device_clock_binary_sha256": "f79ff6eb9dde98c9fad76ce6f93fc0a97c42e97ec3d545f5f1855a7b5e8ce2f0",
+  "tests": {
+    "count": 8,
+    "status": "PASS"
+  },
+  "post_calibration_device_status": {
+    "ip route show": "",
+    "pidof hiprofilerd": "",
+    "pidof native_daemon": "",
+    "pidof hiprofiler_cmd": ""
+  }
+}

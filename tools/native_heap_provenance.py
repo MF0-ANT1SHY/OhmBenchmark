@@ -53,9 +53,21 @@ def verify(receipt, trace, bundle, library, expected_library_sha256):
         if parent not in owned:
             raise ValueError('profiler is not a child of a recorded owned supervisor')
     result = compute(trace, pid)
+    if 'collection_clock_before_ns' in receipt or 'collection_clock_after_ns' in receipt:
+        verify_device_clock_span(receipt, result)
     if hashlib.sha256(Path(trace).read_bytes()).hexdigest() != receipt['trace_sha256']:
         raise ValueError('native capture differs from the collected file')
     result['collection_provenance_verified'] = True
     result['performance_accepted'] = False
     result['profiler_pid'] = server_pid
     return result
+
+
+def verify_device_clock_span(receipt, result):
+    before = receipt.get('collection_clock_before_ns')
+    after = receipt.get('collection_clock_after_ns')
+    if (type(before) is not int or type(after) is not int
+            or not 0 < before < after
+            or not before <= result['first_event_ns'] <= result['last_event_ns'] <= after):
+        raise ValueError('native allocation clocks do not lie within the observed device clock span')
+    return {'clock': 'CLOCK_MONOTONIC', 'before_ns': before, 'after_ns': after}

@@ -2,7 +2,7 @@ import copy,hashlib,sys,unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 import test_native_heap_events as native_fixture
-from native_heap_provenance import verify
+from native_heap_provenance import verify,verify_device_clock_span
 class NativeHeapProvenanceTest(unittest.TestCase):
     def setUp(self):
         self.source=native_fixture.NativeHeapEventTest();self.source.setUp();self.addCleanup(self.source.doCleanups)
@@ -32,3 +32,10 @@ class NativeHeapProvenanceTest(unittest.TestCase):
             if change=='trace':r['trace_sha256']='other'
             if change=='pid':r['application']['raw_cmdline']='another.app'
             with self.subTest(change=change),self.assertRaises(ValueError):self.check(r)
+
+    def test_device_clock_span_rejects_host_clock_or_missing_boundary(self):
+        result={'first_event_ns':100,'last_event_ns':200}
+        self.assertEqual(verify_device_clock_span({'collection_clock_before_ns':90,'collection_clock_after_ns':210},result)['clock'],'CLOCK_MONOTONIC')
+        for before,after in [(True,210),(210,90),(101,210),(90,199),(90,None)]:
+            with self.subTest(before=before,after=after),self.assertRaises(ValueError):
+                verify_device_clock_span({'collection_clock_before_ns':before,'collection_clock_after_ns':after},result)
