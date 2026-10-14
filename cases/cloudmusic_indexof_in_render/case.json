@@ -402,5 +402,11 @@
         }
       }
     }
+  },
+  "disposition": {
+    "status": "skipped_by_user",
+    "reason": "Confirmed negative clean performance case; user instructed to skip negative cases on 2026-10-14.",
+    "performance_passed": false,
+    "original_evidence_preserved": true
   }
 }
