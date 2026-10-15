@@ -1,0 +1,441 @@
+{
+  "status": "ALL_ACCEPTED_REPRODUCTION_DELIVERIES_VERIFIED",
+  "scope": "Current delivery for the 11 performance-accepted cases only; not completion of all 30 cases",
+  "goal_complete": false,
+  "checked_at": 1792042640.0495741,
+  "cases": 11,
+  "variants": 22,
+  "binary_only_agent_exports": 11,
+  "historical_measured_artifacts_retained": true,
+  "rows": [
+    {
+      "case": "browser_eager_history_load",
+      "case_proof": "validation/browser-eager-current-signature-agent-export.json",
+      "case_proof_sha256": "141595d2581b405c800b6ba3ab64241936f7ae6a7e570188b01d706326e9e3d7",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "5be37229908e5977b84f834914b9f86bff78026c84b8d2c2f3f4f43b1f415b9d",
+          "measured_signed_sha256": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9",
+          "current_validity": {
+            "bundle": "com.example.nanvision",
+            "not_before": 1792039812,
+            "not_after": 1794632112,
+            "checked_at": 1792040116.0024555
+          },
+          "fresh_launch_receipt_sha256": "1ced2ef6354b26718ff0133ffb9a33c2fc91351277cdc96b162c06f1b9fd36cc",
+          "identity_receipt_sha256": "bda44be12a78fd25f2c904da4a69bb5f14d477e8a7af606ce99e39b4d026985c"
+        },
+        "fixed": {
+          "signed_sha256": "9f7e8665e4b43a25248391ba02902aa2c931d50434ad6837a11e2712c2e0d8c5",
+          "measured_signed_sha256": "248a222109a97a8bf1dcb5163910ba48184d307e311b6ccb8a2fd81534976709",
+          "current_validity": {
+            "bundle": "com.example.nanvision",
+            "not_before": 1792039822,
+            "not_after": 1794632122,
+            "checked_at": 1792040127.0300624
+          },
+          "fresh_launch_receipt_sha256": "218a03b5aa6c19743f17142a8ca44711f9129f0ca2c1a37847bc99295895b57a",
+          "identity_receipt_sha256": "3c7c5b73d8652b952c7b60055c14d58dd6f17fc84e030fc02dc8ca61b80dab7b"
+        }
+      },
+      "agent_export": "artifacts/agent-exports/current-browser-5ac363f9a5724227b9f5720449c5bfcc",
+      "agent_files_sha256": {
+        "app.hap": "5be37229908e5977b84f834914b9f86bff78026c84b8d2c2f3f4f43b1f415b9d",
+        "profile.json": "3ec676b83f689f6af84c5ab3041f095fc776519110b651ac74e61d03cc7c4326",
+        "reproduce.py": "92f41642ccb26830db85a9f77b4d74629e463e7d95960a340b670d517211e77d",
+        "symptom.txt": "bac47448871057fb8e5d2cb6766c6ccfabba573271de2de4b19637d40afd775a",
+        "workload.json": "710a084b63faeb26d2aef5a85d1a812d860d32885fb94e4a6b17617eece7928e"
+      }
+    },
+    {
+      "case": "browser_history_delete_no_transaction",
+      "case_proof": "validation/browser_history_delete_no_transaction-current-reproduction-delivery.json",
+      "case_proof_sha256": "ae44b239183acddcfe44d81cd7093d1118c1a5d8023780401e909760dc8a81b1",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "6d78ed2ffa4b529a339e1fee69b593648105a1694007894e3e1dfccf49e066e5",
+          "measured_signed_sha256": "4cc753261eacb91fd4d2b0e3473f71a734e1444990bf42c8cb8e7dbb8483703a",
+          "current_validity": {
+            "bundle": "com.example.nanvision",
+            "not_before": 1792039835,
+            "not_after": 1794632135,
+            "checked_at": 1792040139.4116595
+          },
+          "fresh_launch_receipt_sha256": "f17c72e65eea1cf5268ba583eda7f5a05b53e5d04d89b6cf160e05f4f9383af0",
+          "identity_receipt_sha256": "36f8840a32852f0d25124dc0e03af26ba17106a55400e87bbd6133ac3deb9e2b"
+        },
+        "fixed": {
+          "signed_sha256": "881ae3404e006adf6a9b3e83b901cb7c3cc3f93b2c3637447f97e8a655a55189",
+          "measured_signed_sha256": "578d2e95ea8fd24f832567ef7c471f0d340b60d81babe08ad4fce8a401e46327",
+          "current_validity": {
+            "bundle": "com.example.nanvision",
+            "not_before": 1792039848,
+            "not_after": 1794632148,
+            "checked_at": 1792040152.1624715
+          },
+          "fresh_launch_receipt_sha256": "9fc8cbed1be086f75fd4ecdecfce77fadf1726fe6d1d411b740b106edb6b8a93",
+          "identity_receipt_sha256": "158b5aa630fbfa48926d1c5c3a82468b946669d8dcf574851c75e1b53509e937"
+        }
+      },
+      "agent_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-1cbea14e222848459f9995283e5b2260",
+      "agent_files_sha256": {
+        "app.hap": "6d78ed2ffa4b529a339e1fee69b593648105a1694007894e3e1dfccf49e066e5",
+        "profile.json": "262dd99a9217aba74c9f232b7c8b87bdf683d0a2c19b62f443ef8d658218a309",
+        "reproduce.py": "92f41642ccb26830db85a9f77b4d74629e463e7d95960a340b670d517211e77d",
+        "symptom.txt": "aed3a7a5ecff3513d6e11232917c5121d87149606f321343394bae1a7b9ccd61",
+        "workload.json": "918717049626355000532517e2c3f2ef0404906aef3163675340ef0a67192dea"
+      }
+    },
+    {
+      "case": "browser_history_list_foreach",
+      "case_proof": "validation/browser_history_list_foreach-current-reproduction-delivery.json",
+      "case_proof_sha256": "e9965ad408a8e2dab24d0c1e21b530cb517cad8b662b5ba439e46da5265559e8",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "5f43b4d4549d32086ec6892023b790221377d44f53797d0970666fb5e7edfc68",
+          "measured_signed_sha256": "6311f1cea71ed49307bc022f80baec3f4ed57d98700b5a1f34c0952501afe2dd",
+          "current_validity": {
+            "bundle": "com.example.nanvision",
+            "not_before": 1792039881,
+            "not_after": 1794632181,
+            "checked_at": 1792040185.8219063
+          },
+          "fresh_launch_receipt_sha256": "2b058d3a61a2476e1c87b51133078fa2f0de95043378ef37638fb298b5fec72c",
+          "identity_receipt_sha256": "31a319f430ec9a294c47bfb39b01d0c5d096158e42dd7132dd7c97d5d51fb99f"
+        },
+        "fixed": {
+          "signed_sha256": "d148df4f03c84c64128ec6218490f8ebeab11f238193d1cf6e5e5b48be652739",
+          "measured_signed_sha256": "54062ffc30474a26df9120937bf51e4b323096d05e16923cfeab182bd4f727b9",
+          "current_validity": {
+            "bundle": "com.example.nanvision",
+            "not_before": 1792039915,
+            "not_after": 1794632215,
+            "checked_at": 1792040219.6094358
+          },
+          "fresh_launch_receipt_sha256": "c6d16fe019c4719dbc0b2355f0e2e00887ab4209c77a72fb621e494a6c781cd7",
+          "identity_receipt_sha256": "c92a4d96559a2a44a61543bcde3aab8e4021299cb9a80c852a8101f255f8241d"
+        }
+      },
+      "agent_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-a665b8f1adc24c32a334c794c0f76167",
+      "agent_files_sha256": {
+        "app.hap": "5f43b4d4549d32086ec6892023b790221377d44f53797d0970666fb5e7edfc68",
+        "profile.json": "f60a4f128f26ebb2a096d106a98f121cb19a8de9c2b3a5d8f42af79693a2f10a",
+        "reproduce.py": "92f41642ccb26830db85a9f77b4d74629e463e7d95960a340b670d517211e77d",
+        "symptom.txt": "aad23378ae61c0e517a73086958958482c02b0e674a66db637458b85fb9b3226",
+        "workload.json": "70a6f4082c9e73ed6ab0816ebbfe44463c940ab53e95482dd1742d44980a72e6"
+      }
+    },
+    {
+      "case": "cloudmusic_play_time_high_frequency_update",
+      "case_proof": "validation/cloudmusic_play_time_high_frequency_update-current-reproduction-delivery.json",
+      "case_proof_sha256": "26690bc83138a6ba5c35bc2f32ec86bf306e66c4fa156371836fe55f0a6a41d6",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "931a4d50bc6430cc852203ce7700e0b70cc36c5bbd014829edcf49d186d013f5",
+          "measured_signed_sha256": "96e15c4a5979da602dcac54e919eded35e729cb2e85a42e7ecaadcb1d320ca17",
+          "current_validity": {
+            "bundle": "cc.chenlvin.cloudmusic",
+            "not_before": 1792039065,
+            "not_after": 1794631365,
+            "checked_at": 1792039369.3885748
+          },
+          "fresh_launch_receipt_sha256": "a9a3e45183e89ac02c1b33fc28efdc2e92b2e7f3857be3f73ca02b67cddbdbc7",
+          "identity_receipt_sha256": "156c6887e569af29ffaf856b69a02135cc08ff2d6e93df1f5b25c3e585bb1c3a"
+        },
+        "fixed": {
+          "signed_sha256": "8ba6674172a7d9a2fda792712fbda9cb83106ee72c1fd340933a49b76d3ef3c0",
+          "measured_signed_sha256": "a071d92851a1b684ac086a328cc3c99e4c222ee54ecacde53182c8c50b49a17a",
+          "current_validity": {
+            "bundle": "cc.chenlvin.cloudmusic",
+            "not_before": 1792039090,
+            "not_after": 1794631390,
+            "checked_at": 1792039395.0212388
+          },
+          "fresh_launch_receipt_sha256": "e3852a00d3460fc2a238c3b45d6f499d7b355bc482d5251a350c17d605dcd210",
+          "identity_receipt_sha256": "a7a0f26aa0fa229fb6f1afda577a4438c13e8bda9da48f7fd920aeefee38bdac"
+        }
+      },
+      "agent_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-70a2249d76354342a7946e696a82d20b",
+      "agent_files_sha256": {
+        "app.hap": "931a4d50bc6430cc852203ce7700e0b70cc36c5bbd014829edcf49d186d013f5",
+        "profile.json": "b1fb98a57b192379ca08b9a4aeb79c3bcd47f6f8114ffbdce4fc20b8f9258698",
+        "reproduce.py": "92f41642ccb26830db85a9f77b4d74629e463e7d95960a340b670d517211e77d",
+        "symptom.txt": "68c4844f2978bf841a14b3f51aa82101ace8043ebdabb417f3c112c9ef079d98",
+        "workload.json": "27b763961142f9bbad8331a3b3e3f1d297cf7609130a653cdd11fca5f97a323c"
+      }
+    },
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "case_proof": "validation/jingmo_dataset_import_no_transaction-current-reproduction-delivery.json",
+      "case_proof_sha256": "7403bffb9afa66c81b1060f1d856b7be5c5faec4d7a468e82fd9d78e9a3debff",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "d6838c60c1f18556e0e5af3b08bd07dc113ef8b55926066628b8b8aa57deb47b",
+          "measured_signed_sha256": "88868da64bcc4780db1e0bdf0eabafd1265e254ec84f256cde8b5dd3f3ad20b7",
+          "current_validity": {
+            "bundle": "com.hefengbao.jingmo.hw",
+            "not_before": 1792039106,
+            "not_after": 1794631406,
+            "checked_at": 1792039411.3457036
+          },
+          "fresh_launch_receipt_sha256": "a96f98652a796e596195b3c4f10427253827d35ed891eade1fd4e9d40ceefda7",
+          "identity_receipt_sha256": "2c0c296e3c88592c002bef94535d59ab93fcfe569875874245536aedaa01bf7e"
+        },
+        "fixed": {
+          "signed_sha256": "50e9b0c689650ec33a3b9706a0324af601671e389474999d09b43159a6808701",
+          "measured_signed_sha256": "e441d217d259c968ebbe542e802bea1a4e6bdc1b07deb8f8a450aec9780b8f45",
+          "current_validity": {
+            "bundle": "com.hefengbao.jingmo.hw",
+            "not_before": 1792039124,
+            "not_after": 1794631424,
+            "checked_at": 1792039427.593294
+          },
+          "fresh_launch_receipt_sha256": "842b98b3902f4823787ecc7b0df7ec81190bd92d36cf41d63dfd33fc1d529b4b",
+          "identity_receipt_sha256": "3dc167d12123bba7bcdd8c961e213055d52118d0bea1062e797efb6baf99c5fb"
+        }
+      },
+      "agent_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-b79c9744b9814d459fb4bbb8ea4d0335",
+      "agent_files_sha256": {
+        "app.hap": "d6838c60c1f18556e0e5af3b08bd07dc113ef8b55926066628b8b8aa57deb47b",
+        "profile.json": "ea3c55d8d25067ebd2f61e97a2b964e494bddb9696e26230f8c4a2e3e4c27662",
+        "reproduce.py": "d21f09a579dd49aa501118a9bb8bb0abe32e00e0affacc7dcca57f13623413cd",
+        "symptom.txt": "9775cc091441a71b58f69dc0324fcd987ba99089c83eb3c1dde6d51984696e68",
+        "workload.json": "45f5600b575abb571e1712eff0e35da6786f4a7f39f3f037e8a5ae64c87b7235"
+      }
+    },
+    {
+      "case": "jingmo_random_poem_orderby_random",
+      "case_proof": "validation/jingmo_random_poem_orderby_random-current-reproduction-delivery.json",
+      "case_proof_sha256": "7674f35614e6ee41be2774355bcebb68a6b75ea757dc9e79793a3550a1916063",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "8e1a41a891d272531f8e13057f98f6a42741079383e9865791576332a4153d84",
+          "measured_signed_sha256": "dfed739f69b5efda1071306817a46e5f9f8252ecd1b66e16b3561ba27f292c8b",
+          "current_validity": {
+            "bundle": "com.hefengbao.jingmo.hw",
+            "not_before": 1792039997,
+            "not_after": 1794632297,
+            "checked_at": 1792040300.8795748
+          },
+          "fresh_launch_receipt_sha256": "29524a7ce96b96142eb3d2b7a9200a2dbd4ac2cd9077921fdeb347ed4ef65be8",
+          "identity_receipt_sha256": "0bce1115de1756dd940db6460ded2a502c53e3b8483a8ceca5d4fef1b2046ba9"
+        },
+        "fixed": {
+          "signed_sha256": "f7ce92f0d934c909871b0c89f937886f34a99fe298dfd86e3ad3ed19bb57a645",
+          "measured_signed_sha256": "ef9325e435ca099ae781edaaf64f61c4c8f1ab46e9c76a916b4b992860d45e9d",
+          "current_validity": {
+            "bundle": "com.hefengbao.jingmo.hw",
+            "not_before": 1792040076,
+            "not_after": 1794632376,
+            "checked_at": 1792040380.3873918
+          },
+          "fresh_launch_receipt_sha256": "a93b444f36fa033b0a45d89e5f213065a3669ce1368160dc2c394314672ab332",
+          "identity_receipt_sha256": "9fa182e8b6920ce4d0bb36f8b25d2c25a99251c3cd6b0e0fdffd9b7e4b6cb5bb"
+        }
+      },
+      "agent_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-c07ac79e8e8f4f908e694b28220f87bc",
+      "agent_files_sha256": {
+        "app.hap": "8e1a41a891d272531f8e13057f98f6a42741079383e9865791576332a4153d84",
+        "profile.json": "a0acac211828888f03bdb5da00059b117e12c99dd0b3c77affdba05c5847184a",
+        "reproduce.py": "d21f09a579dd49aa501118a9bb8bb0abe32e00e0affacc7dcca57f13623413cd",
+        "symptom.txt": "7c2339a1c1dc2c6517decd16150aa4b9638876125053ab520825ddee2a38f92f",
+        "workload.json": "8371a9dc613cedc108ab93699e50266900d8a4912ac13f7787c6d8d63ecdf0d9"
+      }
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "case_proof": "validation/jingmo_sync_page_reimport-current-reproduction-delivery.json",
+      "case_proof_sha256": "406b4861991f18bd2c36d2fc1f21bf8f36723bc58a8d54c318667a0ae23da0c1",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "4cd29113642396c8d8aa0c6126d1443892002d862decfc9c86ba2870a030d35a",
+          "measured_signed_sha256": "692d37c1c95e0c48266f56f80d81417e5126c70d15e93bbbcdf4f8732ac8e046",
+          "current_validity": {
+            "bundle": "com.hefengbao.jingmo.hw",
+            "not_before": 1792039322,
+            "not_after": 1794631622,
+            "checked_at": 1792039625.7646663
+          },
+          "fresh_launch_receipt_sha256": "5c7efe0fae7b346ab8a1e63483898967ecf2f210e25371be878912f1b518a4cb",
+          "identity_receipt_sha256": "47c0e068d9159bd40120c241d3dfd84620e3d200fe325119477fad1535cb14b9"
+        },
+        "fixed": {
+          "signed_sha256": "90ff1c5ddd517ed97a8efd0a69c90cd4f50f2223130649e49d92ccb552020fba",
+          "measured_signed_sha256": "90ee8c4e416507081ffc9aba01524ac1228381cbdba2b3e411fefd6f028ee349",
+          "current_validity": {
+            "bundle": "com.hefengbao.jingmo.hw",
+            "not_before": 1792039358,
+            "not_after": 1794631658,
+            "checked_at": 1792039661.2077844
+          },
+          "fresh_launch_receipt_sha256": "bef46e16e73f91f6ee1d1e294cd1ab9cdb961681bfe91c0e0a2e477bd4af7fbd",
+          "identity_receipt_sha256": "fedb9ad961ce58711c93b1c4ef857cab332544fa814a45b4adeda91bf51c368d"
+        }
+      },
+      "agent_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-13d22ea123d44283bb4ee3436c137d96",
+      "agent_files_sha256": {
+        "app.hap": "4cd29113642396c8d8aa0c6126d1443892002d862decfc9c86ba2870a030d35a",
+        "profile.json": "96ce72714f26e2fb03191c4f1ff5a281ef013a02ad41c789044dff54437f49a0",
+        "reproduce.py": "d21f09a579dd49aa501118a9bb8bb0abe32e00e0affacc7dcca57f13623413cd",
+        "symptom.txt": "93a73483bc38bf1aa8119d1a502be64baab8d7a1c19ab616cb64facbada8b340",
+        "workload.json": "99b15081faee0537adddfa962228d4794920dc3a1d71fb53ae52d9cd7c8aedea"
+      }
+    },
+    {
+      "case": "sheafreader_article_list_foreach",
+      "case_proof": "validation/sheafreader_article_list_foreach-current-reproduction-delivery.json",
+      "case_proof_sha256": "512c4293cab89572389b048a4564cb1788d6d86c8d69b44786f6564c69c33264",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "385c4b208191e84cb19f6330912c4527e910e908eb12ef6849be4bd9d745d48f",
+          "measured_signed_sha256": "72b95a0c7415f7e675f19cbe74a83d95820cf542dc4a9f28fe590eb9696e5250",
+          "current_validity": {
+            "bundle": "com.sheafreader.hm",
+            "not_before": 1792039396,
+            "not_after": 1794631696,
+            "checked_at": 1792039700.784668
+          },
+          "fresh_launch_receipt_sha256": "185459d81b0884bdcce42a1fd93df589678f1c2b311020fb299985f94ff339e5",
+          "identity_receipt_sha256": "af0d0e3f9194d498d0a163ddf17902152fc30fffb7c4da42cd1bfcbf7da2b2a4"
+        },
+        "fixed": {
+          "signed_sha256": "0244111610490324043b757f2636e8104d7bc3cff669eef883bbb10483afa9f3",
+          "measured_signed_sha256": "71444bd5659f1031a7eab0ded76489b21a84bc56f24a2e7ae60a399b87cb99b8",
+          "current_validity": {
+            "bundle": "com.sheafreader.hm",
+            "not_before": 1792039440,
+            "not_after": 1794631740,
+            "checked_at": 1792039744.4398208
+          },
+          "fresh_launch_receipt_sha256": "45cca19694226b9bda3156c521a0e13aaad8692bf5682476af8e2f0e0958d979",
+          "identity_receipt_sha256": "8d8e1cdf01f4e37a621172b0ed30a3bf44d1f4d25613cdbeada9febd0dacd4d0"
+        }
+      },
+      "agent_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-2799458cc0c640b2ac2c1e0652c7d717",
+      "agent_files_sha256": {
+        "app.hap": "385c4b208191e84cb19f6330912c4527e910e908eb12ef6849be4bd9d745d48f",
+        "profile.json": "fdbd0a3ccc4a830e95cc944d492333d9f4a3ed7dfc8449a14ca9db35fbde68f3",
+        "reproduce.py": "d21f09a579dd49aa501118a9bb8bb0abe32e00e0affacc7dcca57f13623413cd",
+        "symptom.txt": "25b4f01f86ca2e989952bf91856f12364195054723903edabc708805fb471510",
+        "workload.json": "8ad964b158e10b891ca7e1f7c8995adf630855959e25bda7d603c9fd02c04585"
+      }
+    },
+    {
+      "case": "sheafreader_extract_tag_tolowercase",
+      "case_proof": "validation/sheafreader_extract_tag_tolowercase-current-reproduction-delivery.json",
+      "case_proof_sha256": "1bf4261fe1d3d7d2bb3cc5fc439cc042e2fdb03157427e106dabcedc84a8c334",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "706aa7a9e4a90be9c1ea16711451246f2ef3fc3e87d953df09660167e02a524c",
+          "measured_signed_sha256": "14140ea223bb7445d626f6967bf0889ac095c7a54db93fc4b6ceefb98ebc828d",
+          "current_validity": {
+            "bundle": "com.sheafreader.hm",
+            "not_before": 1792036255,
+            "not_after": 1794628555,
+            "checked_at": 1792038941.2402122
+          },
+          "fresh_launch_receipt_sha256": "7c01f08ac57e0b9a54138f2e6d4d03ccc2f7377136a070bebdff2d060aeba617",
+          "identity_receipt_sha256": "d4f1471182857b5f7b8a040ce7c942641c16f2139e5e112cc03d180f937aef43"
+        },
+        "fixed": {
+          "signed_sha256": "496450c3edda52c1d3a02ff4dbd80a78509dd21ba023de9d4cd5b7db890abfa4",
+          "measured_signed_sha256": "4a677f7196ad16fc71218dd5686e42ca7f78525501c6bacbfe89166b3e9388f6",
+          "current_validity": {
+            "bundle": "com.sheafreader.hm",
+            "not_before": 1792039482,
+            "not_after": 1794631782,
+            "checked_at": 1792039785.6666338
+          },
+          "fresh_launch_receipt_sha256": "6e345f12846431e549dd22256dff197e70720e7f26f6524511fa7bb631e8a566",
+          "identity_receipt_sha256": "0f336dd00c1e3ecd847c0e3ee6a1f71f23e344c140d75656b7be61a2b18293fe"
+        }
+      },
+      "agent_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-27e612103dc440c6b30ed87249d7976c",
+      "agent_files_sha256": {
+        "app.hap": "706aa7a9e4a90be9c1ea16711451246f2ef3fc3e87d953df09660167e02a524c",
+        "profile.json": "cefb57026919e76e88813fcb8c58702edcdb5651941196a44c5e702ef894fbfc",
+        "reproduce.py": "d21f09a579dd49aa501118a9bb8bb0abe32e00e0affacc7dcca57f13623413cd",
+        "symptom.txt": "79449b253f645cfb12a474f97b65c88e96abcd87b0fa7b37ce7bbe0ea11adc0a",
+        "workload.json": "96e75a4f9e5b535c9cf1a4ac8259d12cc4f3c21e801fdc5ae057136d7e42b2bd"
+      }
+    },
+    {
+      "case": "sheafreader_insert_duplicate_exception",
+      "case_proof": "validation/sheafreader_insert_duplicate_exception-current-reproduction-delivery.json",
+      "case_proof_sha256": "87e8e66a57e8f4d9c2acf7f7e80db2476d982efc2ad7a728cc6ae06d19cb46af",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "4b247a719e5132b1af65f0bcb3ca66cca59c15a4c8b2c10bad070b9c91f56795",
+          "measured_signed_sha256": "1eb035fa2f86535e2c887e4c1d9a2e0c0a90d76ef88d25e9deb05d75d238fee5",
+          "current_validity": {
+            "bundle": "com.sheafreader.hm",
+            "not_before": 1792039499,
+            "not_after": 1794631799,
+            "checked_at": 1792039803.868431
+          },
+          "fresh_launch_receipt_sha256": "e3cad419c39c410ba572fbcf8db26c735d85fee84d8302d62d63517e4ed9a4df",
+          "identity_receipt_sha256": "b0300f7d92027deefd2a1278f500a075eb665f4eeb32636c5d28942e0c599abb"
+        },
+        "fixed": {
+          "signed_sha256": "6068e936f51926a7e142a1676efc4fa438df7703488b8cd9604a3eae6e329262",
+          "measured_signed_sha256": "fc4694b3a0021eaac8179a8bec2077266648e30fb9b666ce12338068d47ddbfd",
+          "current_validity": {
+            "bundle": "com.sheafreader.hm",
+            "not_before": 1792039517,
+            "not_after": 1794631817,
+            "checked_at": 1792039821.1213462
+          },
+          "fresh_launch_receipt_sha256": "9d9f36cc186b7653390bf2dc3bf2d381b5697eaf59237bc1ac3af19f1b5ad95c",
+          "identity_receipt_sha256": "204dcf6c7f5c1539dac42e8fd8383344b9e44d9fa4117185b62c7ee4da8bc13a"
+        }
+      },
+      "agent_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-a5f9fda4746b42efa79dc4df949bb427",
+      "agent_files_sha256": {
+        "app.hap": "4b247a719e5132b1af65f0bcb3ca66cca59c15a4c8b2c10bad070b9c91f56795",
+        "profile.json": "d3d529c0f54a6d82c59ec9ec06d34f1de63cdac7edf49975fde37f44d4f3458d",
+        "reproduce.py": "d21f09a579dd49aa501118a9bb8bb0abe32e00e0affacc7dcca57f13623413cd",
+        "symptom.txt": "79449b253f645cfb12a474f97b65c88e96abcd87b0fa7b37ce7bbe0ea11adc0a",
+        "workload.json": "96e75a4f9e5b535c9cf1a4ac8259d12cc4f3c21e801fdc5ae057136d7e42b2bd"
+      }
+    },
+    {
+      "case": "ytmusic_current_playing_timeupdate",
+      "case_proof": "validation/ytmusic_current_playing_timeupdate-current-reproduction-delivery.json",
+      "case_proof_sha256": "ba9453bedd7eed46e5adb691f6f271046d6821c2d3e1f2a55f29931369e5e0ef",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "d7d2c810428aab929f38063ce759b4c75472f9e70f9294336211090e88c5b366",
+          "measured_signed_sha256": "8c7e42e915de35376800f3a3a96a11d96662fc12aec711bbc6043bf7eb3bbe6b",
+          "current_validity": {
+            "bundle": "com.example.myapplication",
+            "not_before": 1792040112,
+            "not_after": 1794632412,
+            "checked_at": 1792040428.690149
+          },
+          "fresh_launch_receipt_sha256": "9e7dfb0b6e01f679482a6be78f6a302dd057473fd4429d106b6f0a324b71419e",
+          "identity_receipt_sha256": "36b6dc09bf87345044b1bb85d19798ce5ee521cc6fc1123ff6172ea139cad080"
+        },
+        "fixed": {
+          "signed_sha256": "269660962dfa53b95d0660a5434e48fa1dc35fab99262e183e8040bf163eb90c",
+          "measured_signed_sha256": "417711b3ab77af68e7f60d87a40343c1b95740dec639ccb43ccbfa897ddbcf28",
+          "current_validity": {
+            "bundle": "com.example.myapplication",
+            "not_before": 1792040167,
+            "not_after": 1794632467,
+            "checked_at": 1792040487.4582975
+          },
+          "fresh_launch_receipt_sha256": "764e69dcbcd110619b2e84f10ba0153475c5275125ecd95e89d2a93b27b2ab63",
+          "identity_receipt_sha256": "843d596fe8440adeb860c37e16a961a75f9750bf7894ed7f03037712e2c887da"
+        }
+      },
+      "agent_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-330bf5c5673e413aa788c4c85a878532",
+      "agent_files_sha256": {
+        "app.hap": "d7d2c810428aab929f38063ce759b4c75472f9e70f9294336211090e88c5b366",
+        "profile.json": "b10a4096a1cf9af82f744c3e9270b7109ac62b223153abe8482d1021f59f5e6f",
+        "reproduce.py": "d21f09a579dd49aa501118a9bb8bb0abe32e00e0affacc7dcca57f13623413cd",
+        "symptom.txt": "68c4844f2978bf841a14b3f51aa82101ace8043ebdabb417f3c112c9ef079d98",
+        "workload.json": "d0b64b532f710a80cc3bbdc739a12caef92aabfef49c2f2cc1578497e228b32a"
+      }
+    }
+  ]
+}
