@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 from seed_wanharmony_history import validate_entries, preferences_bytes
 
 CASE = 'wanharmony_history_log_materialization'
+CASES = {CASE, 'wanharmony_web_progress_log_storm'}
 BUNDLE = 'org.example.wan.ohos'
 ROOT = Path(__file__).resolve().parents[1]
 DEPLOYMENT = 'history_key_only_preserving_live_preferences'
@@ -73,7 +74,7 @@ def verify_deployment(preparation, entries, fixture):
 
 
 def install(remote, case, folder, device_path):
-    if case['id'] != CASE or case['host_app']['bundle_name'] != BUNDLE:
+    if case['id'] not in CASES or case['host_app']['bundle_name'] != BUNDLE:
         raise ValueError('browsing-history fixture targets a different case or application')
     if not re.fullmatch(r'/data/app/el[12]/100/base/org\.example\.wan\.ohos/'
                         r'(?:haps/entry/)?files/persistent_storage(?:\.xml)?', device_path):

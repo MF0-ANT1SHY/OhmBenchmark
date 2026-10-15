@@ -20,6 +20,7 @@ from ytmusic_history_progress import verify_layout as verify_history_layout, ver
 from browser_visit_progress import CASE as BROWSER_VISIT_CASE, verify_observation as verify_browser_visits, verify_capture as verify_browser_visit_capture
 from interview_response_progress import CASE as INTERVIEW_RESPONSE_CASE, verify_observation as verify_interview_responses, verify_capture as verify_interview_response_capture
 from interview_empty_history_fixture import CASE as HISTORY_SYNC_CASE, verify as verify_empty_history
+from wan_web_progress import CASE as WAN_WEB_CASE, verify as verify_web, verify_capture as verify_web_capture, verify_fixture as verify_web_fixture
 from interview_history_progress import verify_observation as verify_search_history, verify_capture as verify_search_capture
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -57,6 +58,12 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
                     verify_empty_history(preparation)!=preparation['sha256'] or
                     verify_search_history(observation['before'],observation['after'],observation['values'])!=workload['interview_history']):
                 raise RuntimeError('real twenty-query workload and empty input preparation are not proven')
+        if cid==WAN_WEB_CASE:
+            device=json.loads((folder/'workload-device.json').read_text())
+            if (not workload.get('fixture',{}).get('functional_read_verified') or
+                    verify_web_fixture(workload['fixture'],device['wan_web'])!=workload['fixture']['sha256'] or
+                    verify_web(device['wan_web'])!=workload.get('wan_web')):
+                raise RuntimeError('five genuine complete normal Web refreshes are not proven')
         if cid==LISTENING_HISTORY_CASE:
             fixture=workload['fixture']
             fixture_folder=Path(fixture['fixture_dir'])
@@ -120,6 +127,10 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
                 if preparation['variant']!=variant or verify_empty_history(preparation)!=receipt['fixture_sha256']:
                     raise RuntimeError('CPU trial did not reset the dedicated search-history store')
                 verify_search_capture(receipt['interview_history'],receipt['action_start_monotonic'],receipt['action_end_monotonic'],receipt['pids'])
+            if cid==WAN_WEB_CASE:
+                if verify_web_fixture(receipt['wan_web_preparation'],receipt['wan_web'])!=receipt['fixture_sha256']:
+                    raise RuntimeError('CPU refresh history input differs from its verified production fixture')
+                verify_web_capture(receipt['wan_web'],receipt['action_start_monotonic'],receipt['action_end_monotonic'],receipt['pids'],capture_dir)
             if cid==BROWSER_VISIT_CASE:
                 verify_browser_visit_capture(receipt['browser_visits'],receipt['action_start_monotonic'],receipt['action_end_monotonic'])
             if cid==LISTENING_HISTORY_CASE:
@@ -207,6 +218,8 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
         raise ValueError('first pair is not negative; three complete pairs are required for acceptance')
     if passed and cid==HISTORY_SYNC_CASE:
         raise RuntimeError('primary criterion met; independent native flush-mechanism verification is still required')
+    if passed and cid==WAN_WEB_CASE:
+        raise RuntimeError('primary criterion met; independent per-load log and UI-thread CPU mechanism verification is still required')
     results={}
     for variant,data in variants.items():
         result={'status':'PASS' if passed else 'FAIL','metric':'hiperf_instructions','rounds':round_count,'samples':data['samples'],

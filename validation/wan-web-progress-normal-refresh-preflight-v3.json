@@ -1,0 +1,18 @@
+{
+  "case": "wanharmony_web_progress_log_storm",
+  "variant": "unfixed",
+  "status": "FIVE_NORMAL_REFRESHES_DIAGNOSTIC_CAPTURED",
+  "error": null,
+  "signed_sha256": "91b9c9577ae045613216cc4f5d94aefba621ec3a88a705a5030011042176eda8",
+  "local_raw_artifacts": "artifacts/clean/wanharmony_web_progress_log_storm/unfixed/web-preflight/55dea87b5ab84c008ad2503ae2a51a8e",
+  "receipt_sha256": "b6ae7d6f33ce791b5c0506ba2d3156643d8e97413db364efecad12a344c5174e",
+  "performance_accepted": false,
+  "app_injection": false,
+  "new_callback_counts": {
+    "onPageBegin url:": 5,
+    "onPageEnd url:": 5,
+    "onErrorReceive url:": 0,
+    "onProgressChange progress:": 25,
+    "onTitleReceive title:": 5
+  }
+}

@@ -10,13 +10,35 @@
       }
     },
     {
-      "op": "point",
-      "x": 0.4,
-      "y": 0.4
+      "op": "tap",
+      "selector": {
+        "text": "个人",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "浏览历史",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "Android 技术周刊 （2026-10-07 ~ 2026-10-14）"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "type": "Web",
+        "match": "exact"
+      }
     },
     {
       "op": "pause",
-      "seconds": 2
+      "seconds": 8
     }
   ],
   "measured": [
@@ -27,7 +49,8 @@
         {
           "op": "tap",
           "selector": {
-            "text": "刷新"
+            "id": "__NavdestinationField__NavigationMenu__MenuItem1__",
+            "match": "exact"
           }
         },
         {

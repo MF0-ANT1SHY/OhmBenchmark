@@ -1,0 +1,11 @@
+{
+  "case": "wanharmony_web_progress_log_storm",
+  "variant": "unfixed",
+  "status": "FAIL",
+  "error": "UI target not found: {'text': '\u5237\u65b0', 'match': 'exact'}",
+  "signed_sha256": "91b9c9577ae045613216cc4f5d94aefba621ec3a88a705a5030011042176eda8",
+  "local_raw_artifacts": "artifacts/clean/wanharmony_web_progress_log_storm/unfixed/web-preflight/4d04b7906d9e45668e87d7af76d432a8",
+  "receipt_sha256": "9a7bb107c2047e05102c27a219fc0ce7e028617060849722949a5a5ef7388bf1",
+  "performance_accepted": false,
+  "app_injection": false
+}

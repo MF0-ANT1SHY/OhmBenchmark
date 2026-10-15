@@ -1,0 +1,14 @@
+{
+  "case": "wanharmony_web_progress_log_storm",
+  "status": "ONE_ORDINARY_WEB_HISTORY_ENTRY_PREPARED_NOT_DEVICE_VALIDATED",
+  "fixture": "artifacts/fixtures/wan-web-weekly-page",
+  "entries": 1,
+  "url": "https://www.wanandroid.com/blog/show/3942",
+  "fixture_sha256": "d5bacd41490c002107ecb58ca913bb3bf10b679910222d61388f2a618efd0766",
+  "source_catalogue": "validation/wan-history-ordinary-catalogue.json",
+  "source_history_sha256": "3f8181b459d08286b7d4f37bb4e813fb41e6e1e5a522d65f7ff884794404c8e4",
+  "past_device_visit_claimed": false,
+  "app_injection": false,
+  "performance_accepted": false,
+  "purpose": "Same ordinary initial history in both variants; no large unrelated-history stress or artificial Web progress events."
+}

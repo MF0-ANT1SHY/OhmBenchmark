@@ -1,0 +1,121 @@
+{
+  "case": "wanharmony_web_progress_log_storm",
+  "status": "BOTH_VARIANTS_REAL_FIVE_RELOADS_VERIFIED_PRIMARY_CPU_PENDING",
+  "app_injection": false,
+  "performance_accepted": false,
+  "variants": {
+    "unfixed": {
+      "raw_artifacts": "artifacts/clean/wanharmony_web_progress_log_storm/unfixed/web-preflight/55dea87b5ab84c008ad2503ae2a51a8e",
+      "raw_receipt_sha256": "b6ae7d6f33ce791b5c0506ba2d3156643d8e97413db364efecad12a344c5174e",
+      "signed_sha256": "91b9c9577ae045613216cc4f5d94aefba621ec3a88a705a5030011042176eda8",
+      "status": "FIVE_ERROR_FREE_NATIVE_RELOADS_VERIFIED",
+      "progress": {
+        "completed_refreshes": 5,
+        "url": "https://www.wanandroid.com/blog/show/3942",
+        "progress_logs_per_load": [
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "progress_values_per_load": [
+          [
+            10,
+            20,
+            70,
+            100,
+            100
+          ],
+          [
+            10,
+            20,
+            70,
+            100,
+            100
+          ],
+          [
+            10,
+            20,
+            70,
+            100,
+            100
+          ],
+          [
+            10,
+            20,
+            70,
+            100,
+            100
+          ],
+          [
+            10,
+            20,
+            70,
+            100,
+            100
+          ]
+        ],
+        "native_page_durations_ms": [
+          1572.971874,
+          2447.757812,
+          1088.402083,
+          1546.376042,
+          1404.729166
+        ],
+        "app_injection": false,
+        "performance_accepted": false,
+        "method": "existing native begin/end/title/progress logs; all native error callbacks rejected"
+      }
+    },
+    "fixed": {
+      "raw_artifacts": "artifacts/clean/wanharmony_web_progress_log_storm/fixed/web-preflight/ea9b92e76d364cb1acb51cb67357b889",
+      "raw_receipt_sha256": "6a7436f6abdbceda14f134f1beff213bda44e1bf4fdd38316a9cce5e2f462789",
+      "signed_sha256": "ff8517900a803fb9d29f7e422d3e7b232ca3f5b544e9b4537730fe295a86c794",
+      "status": "FIVE_ERROR_FREE_NATIVE_RELOADS_VERIFIED",
+      "progress": {
+        "completed_refreshes": 5,
+        "url": "https://www.wanandroid.com/blog/show/3942",
+        "progress_logs_per_load": [
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "progress_values_per_load": [
+          [
+            100,
+            100
+          ],
+          [
+            100,
+            100
+          ],
+          [
+            100,
+            100
+          ],
+          [
+            100,
+            100
+          ],
+          [
+            100,
+            100
+          ]
+        ],
+        "native_page_durations_ms": [
+          1686.665104,
+          1390.080208,
+          1133.83177,
+          4070.286458,
+          1448.17552
+        ],
+        "app_injection": false,
+        "performance_accepted": false,
+        "method": "existing native begin/end/title/progress logs; all native error callbacks rejected"
+      }
+    }
+  }
+}

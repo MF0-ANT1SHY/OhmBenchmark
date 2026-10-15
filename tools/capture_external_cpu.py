@@ -29,6 +29,8 @@ from ytmusic_history_progress import verify_layout as verify_history_layout, ver
 from browser_visit_progress import CASE as BROWSER_VISIT_CASE
 from interview_response_progress import CASE as INTERVIEW_RESPONSE_CASE
 from interview_empty_history_fixture import CASE as HISTORY_SYNC_CASE, prepare as prepare_empty_history
+from wan_web_progress import CASE as WAN_WEB_CASE
+from install_wanharmony_history_fixture import install as prepare_wan_history
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -39,6 +41,8 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
         raise ValueError('only one fixture may be supplied')
     if cid==HISTORY_SYNC_CASE and (any(p is not None for p in (fixture,local_song_fixture,poem_fixture,reader_fixture,poem_import_fixture,poem_sync_fixture,listening_history_fixture)) or bundled_audio or music_service or bundled_fonts):
         raise ValueError('search-flush trials require their own fresh empty native history fixture')
+    if cid==WAN_WEB_CASE and (any(p is not None for p in (fixture,local_song_fixture,poem_fixture,reader_fixture,poem_import_fixture,poem_sync_fixture,listening_history_fixture)) or bundled_audio or music_service or bundled_fonts):
+        raise ValueError('Web refresh trials require their own ordinary one-page native history fixture')
     if local_song_fixture and case['host_app']['bundle_name']!='cc.chenlvin.cloudmusic':
         raise ValueError('local song fixture provided to a different app')
     if poem_fixture and case['host_app']['bundle_name']!='com.hefengbao.jingmo.hw':
@@ -59,6 +63,8 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
     output = folder/'cpu-captures'/f'round-{round_number}'
     if cid==HISTORY_SYNC_CASE and output.exists():
         raise FileExistsError('preserve the original search-flush CPU trial before any retry')
+    if cid==WAN_WEB_CASE and output.exists():
+        raise FileExistsError('preserve the original Web refresh CPU trial before any retry')
     output.mkdir(parents=True,exist_ok=True)
     remote_base = f'/home/research/ohm-clean/{cid}/{variant}/cpu-captures/round-{round_number}'
     remote_plan = remote_base+'/plan.json'
@@ -98,6 +104,12 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
         fixture_hash=empty_history_before['sha256']
         for module in ('ui_driver.py','interview_history_progress.py','system_pss.py'):
             remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
+    if cid==WAN_WEB_CASE:
+        from wan_history_progress import PREFERENCES
+        web_preparation=prepare_wan_history(remote,case,ROOT/'artifacts/fixtures/wan-web-weekly-page',PREFERENCES)
+        fixture_hash=web_preparation['sha256']
+        for module in ('ui_driver.py','wan_web_progress.py','native_hilog.py','system_pss.py','wan_history_progress.py','seed_wanharmony_history.py'):
+            remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
     remote.upload(plan_file,remote_plan)
     code = """import hashlib,json,subprocess,sys,time,traceback
 from pathlib import Path
@@ -125,6 +137,8 @@ def shell(command):
         code += " if selector.get('id')=='AddAddressBtn':page_observations.append(observe_page(shell,plan['bundle'],node))\n"
         code += " return node\nui.find=observe_find\n"
     code += "ui.run([{'op':'stop'},{'op':'launch'}]);ui.run(plan['setup'])\n"
+    if cid==WAN_WEB_CASE:
+        code += "from wan_web_progress import read_state as read_web_state,verify as verify_web\nweb_before=read_web_state(shell,root/'native-logs','before')\n"
     if cid == INTERVIEW_RESPONSE_CASE:
         for module in ('interview_response_progress.py','system_pss.py'):
             remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
@@ -168,6 +182,10 @@ def shell(command):
     code += " if 'fail' in record['start_output'].lower() or 'error' in record['start_output'].lower():raise RuntimeError(record['start_output'])\n"
     code += " record['action_start_monotonic']=time.monotonic()\n"
     code += " ui.run(plan['measured']);ui.run(plan['verify'])\n"
+    if cid==WAN_WEB_CASE:
+        code += " web_actions_end=time.monotonic();web_after=read_web_state(shell,root/'native-logs','after')\n"
+        code += " record['wan_web']={'pid':web_before['pid'],'stat_before':web_before['raw_stat'],'stat_after':web_after['raw_stat'],'before':web_before,'after':web_after,'actions_start_monotonic':record['action_start_monotonic'],'actions_end_monotonic':web_actions_end}\n"
+        code += " record['wan_web']['progress']=verify_web(record['wan_web'])\n"
     if cid == INTERVIEW_RESPONSE_CASE:
         code += " record['interview_responses']=complete_responses(ui,responses_before)\n"
     if cid==HISTORY_SYNC_CASE:
@@ -234,10 +252,28 @@ def shell(command):
         receipt['fixture_sha256']=fixture_hash
     if cid==HISTORY_SYNC_CASE:
         receipt['empty_history_preparation']=empty_history_before
+    if cid==WAN_WEB_CASE:
+        receipt['wan_web_preparation']=web_preparation
     if listening_history_fixture:
         receipt['listening_history_fixture_before']=history_before
     (output/'capture.json').write_text(json.dumps(receipt,indent=2)+'\n')
     if receipt['status']=='CAPTURED':
+        if cid==WAN_WEB_CASE:
+            from wan_web_progress import verify_capture as verify_web_capture, verify_fixture as verify_web_fixture
+            for label in ('before','after'):
+                for stream in ('stdout','stderr'):
+                    name=label+'.'+stream+'.bin'
+                    remote.download(remote_base+'/native-logs/'+name,output/'native-logs'/name)
+            verify_web_capture(receipt['wan_web'],receipt['action_start_monotonic'],receipt['action_end_monotonic'],receipt['pids'],output)
+            verify_web_fixture(web_preparation,receipt['wan_web'])
+            if round_number==1:
+                retired=ROOT/'artifacts/retired-clean'/cid/variant/('pre-native-web-workload-'+str(time.time_ns()))
+                retired.mkdir(parents=True,exist_ok=False)
+                for name in ('workload.json','workload-device.json'):
+                    if (folder/name).exists():shutil.copy2(folder/name,retired/name)
+                preparation=dict(web_preparation,functional_read_verified=True)
+                (folder/'workload-device.json').write_text(json.dumps({'status':'PASS','wan_web':receipt['wan_web'],'source':'same original CPU trial; no UI rerun'},indent=2)+'\n')
+                (folder/'workload.json').write_text(json.dumps({'case':cid,'variant':variant,'status':'PASS','plan_sha256':plan_hash,'signed_sha256':sign['audit']['sha256'],'fixture':preparation,'wan_web':receipt['wan_web']['progress'],'performance_verified':False,'source':'functional native callback checks in original first CPU trial'},indent=2)+'\n')
         if cid==HISTORY_SYNC_CASE:
             from interview_history_progress import verify_capture as verify_search_capture
             verify_search_capture(receipt['interview_history'],receipt['action_start_monotonic'],receipt['action_end_monotonic'],receipt['pids'])

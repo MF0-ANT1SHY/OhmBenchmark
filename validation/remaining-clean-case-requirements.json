@@ -324,7 +324,9 @@
       "recorded_primary_pass": false,
       "remaining_requirements": [
         "complete_normal_workload_and_three_paired_measurements"
-      ]
+      ],
+      "latest_diagnostic": "validation/wan-web-progress-real-reload-diagnosis.json",
+      "next_requirement": "Capture original five normal refreshes with verified equal one-entry native history in both variants; reject incomplete/error pages. Full primary acceptance still requires all three >=1.2x CPU pairs and independent per-load log/UI-thread CPU mechanism evidence."
     },
     {
       "case": "weatherassistant_http_session_leak",

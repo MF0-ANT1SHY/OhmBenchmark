@@ -1,0 +1,11 @@
+{
+  "case": "wanharmony_web_progress_log_storm",
+  "variant": "unfixed",
+  "status": "FAIL",
+  "error": "UI target not found: {'text': 'Android \u6280\u672f\u5468\u520a \uff082026-10-07 ~ 2026-10-14\uff09', 'match': 'exact'}",
+  "signed_sha256": "91b9c9577ae045613216cc4f5d94aefba621ec3a88a705a5030011042176eda8",
+  "local_raw_artifacts": "artifacts/clean/wanharmony_web_progress_log_storm/unfixed/web-preflight/18a987e7a1b84da4baeea9abe15380af",
+  "receipt_sha256": "a8d687a3a8bffcdebd1aad562088fd257a9a4571b49319979a0528d3c3f028a7",
+  "performance_accepted": false,
+  "app_injection": false
+}
