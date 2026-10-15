@@ -203,7 +203,9 @@ def shell(command):
     code += "except Exception as exc:\n record['error']=str(exc)\n if prepared_ok:shell('hiperf record --control stop')\n"
     code += " if getattr(exc,'observation',None) is not None:record['failure_observation']=exc.observation\n"
     code += "(root/'capture.json').write_text(json.dumps(record,indent=2))\n"
-    remote.python(code,timeout=600)
+    # Long normal UI plans also need time to finalize/transfer/report native
+    # samples. This is a transport budget, not added work or measured idle time.
+    remote.python(code,timeout=max(600,int(case['collection']['step_duration_s'])+300))
     remote.download(remote_base+'/capture.json',output/'capture.json')
     receipt=json.loads((output/'capture.json').read_text())
     receipt.update({'case':cid,'variant':variant,'round':round_number,'plan_sha256':plan_hash,
