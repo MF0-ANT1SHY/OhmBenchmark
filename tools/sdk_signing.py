@@ -126,19 +126,32 @@ def leaf_pem(chain: Path) -> str:
             '\n-----END CERTIFICATE-----\n')
 
 
-def sign(inp, outp, bundle):
+def sign(inp, outp, bundle, *, device_udid=None, measured_profile=None):
+    if device_udid is not None and (not isinstance(device_udid,str) or not re.fullmatch(r'[0-9A-F]{64}',device_udid)):
+        raise ValueError('explicit signing UDID must be 64 uppercase hexadecimal characters')
     k = ks()
     app = WORK / 'app.pem'
     if not app.exists():
         sys.exit('run `prepare` first')
-    tpl = json.loads((lib() / 'UnsgnedDebugProfileTemplate.json').read_text(encoding='utf-8'))
+    if measured_profile is None:
+        tpl = json.loads((lib() / 'UnsgnedDebugProfileTemplate.json').read_text(encoding='utf-8'))
+    else:
+        # Reproduction renewals retain the verified historical provisioning
+        # document exactly (including legacy empty ACL placeholders). This is
+        # separate from configuring a newly built application's permissions.
+        tpl = json.loads(json.dumps(measured_profile))
+        if (tpl.get('type') != 'debug' or tpl.get('bundle-info',{}).get('bundle-name') != bundle or
+                tpl['bundle-info'].get('development-certificate') != leaf_pem(app) or
+                device_udid is None or tpl.get('debug-info',{}).get('device-ids') != [device_udid]):
+            raise ValueError('measured provisioning identity does not match the existing signing key, bundle and device binding')
     # The SDK template has historical dates; issue a bounded current debug
     # profile using the existing certificate/key, not the template's expiry.
     now = int(time.time())
     tpl['validity'] = {'not-before': now - 300, 'not-after': now + 30 * 86400}
-    tpl['bundle-info']['bundle-name'] = bundle
-    tpl['bundle-info']['development-certificate'] = leaf_pem(app)
-    tpl['debug-info']['device-ids'] = [udid()]
+    if measured_profile is None:
+        tpl['bundle-info']['bundle-name'] = bundle
+        tpl['bundle-info']['development-certificate'] = leaf_pem(app)
+        tpl['debug-info']['device-ids'] = [udid() if device_udid is None else device_udid]
     # Keep the original production manifest. The floating-lyrics feature requests
     # an ACL-controlled permission; authorize exactly that request in the device
     # debug profile rather than dropping the feature or altering app bytecode.
@@ -146,7 +159,8 @@ def sign(inp, outp, bundle):
         module = json.loads(package.read('module.json'))['module']
     requested = {p['name'] for p in module.get('requestPermissions', [])}
     allowed = sorted(requested & {'ohos.permission.SYSTEM_FLOAT_WINDOW'})
-    tpl['acls']['allowed-acls'] = allowed
+    if measured_profile is None:
+        tpl['acls']['allowed-acls'] = allowed
     prof_json = WORK / f'{bundle}.profile.json'
     prof_json.write_text(json.dumps(tpl, indent=2), encoding='utf-8')
     p7b = WORK / f'{bundle}.p7b'
