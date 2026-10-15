@@ -1,0 +1,22 @@
+{
+  "case": "wanharmony_history_log_materialization",
+  "status": "NATIVE_HISTORY_ONLY_DEPLOYMENT_VERIFIED_UI_AND_PERFORMANCE_PENDING",
+  "app_injection": false,
+  "performance_accepted": false,
+  "history_entries": 466,
+  "history_fixture_sha256": "e29c96503dc269b5d35af0767ba0e708b547f6fce724169fe3d9432d0c976ed5",
+  "source_fixture_unchanged": true,
+  "live_unrelated_preferences_preserved": true,
+  "stale_template_other_preferences_match": false,
+  "preparation_dir": "artifacts/fixture-preparations/wan-history/1792035958564654041",
+  "private_preference_contents_exported": false,
+  "native_before_and_readback_sha256": {
+    "before": "9b425b8f6b04b7cf1bec5a209c92be7203bbcb3b3cabcd7e2647a9143a8ec86f",
+    "readback": "e773edbbca710fe8afaa8795ef180953faac8d2ff51265571334b5d021e725c0"
+  },
+  "regression_tests": {
+    "count": 210,
+    "status": "PASS"
+  },
+  "scope": "One stopped-app deployment preserves all live non-history preferences. This is not a real webpage completion or performance verdict."
+}
