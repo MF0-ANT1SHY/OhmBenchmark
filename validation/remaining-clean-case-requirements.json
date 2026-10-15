@@ -325,8 +325,8 @@
       "remaining_requirements": [
         "complete_normal_workload_and_three_paired_measurements"
       ],
-      "latest_diagnostic": "validation/wan-web-progress-real-reload-diagnosis.json",
-      "next_requirement": "Capture original five normal refreshes with verified equal one-entry native history in both variants; reject incomplete/error pages. Full primary acceptance still requires all three >=1.2x CPU pairs and independent per-load log/UI-thread CPU mechanism evidence."
+      "latest_diagnostic": "validation/wan-web-progress-first-native-cpu-precondition.json",
+      "next_requirement": "Add an explicit external native begin/end/title completion barrier for each ordinary refresh before the next tap. Preserve this original trial; keep five refreshes and the unchanged 1.2x CPU criterion."
     },
     {
       "case": "weatherassistant_http_session_leak",
