@@ -1,0 +1,53 @@
+{
+  "case": "jingmo_dataset_import_no_transaction",
+  "status": "PASS",
+  "scope": "Current reproduction delivery only; historical performance evidence unchanged",
+  "variants": {
+    "unfixed": {
+      "status": "PASS",
+      "business_and_provisioning_identity_verified": true,
+      "signed_sha256": "d6838c60c1f18556e0e5af3b08bd07dc113ef8b55926066628b8b8aa57deb47b",
+      "launch_receipt": {
+        "case": "jingmo_dataset_import_no_transaction",
+        "variant": "unfixed",
+        "signed_sha256": "d6838c60c1f18556e0e5af3b08bd07dc113ef8b55926066628b8b8aa57deb47b",
+        "install": "[Info]App install path:/home/research/ohm-clean/reproduction-signatures-e17b48444efc407f9fce244af7e315fd/jingmo_dataset_import_no_transaction/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          2971
+        ],
+        "foreground_bundle": "com.hefengbao.jingmo.hw",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    "fixed": {
+      "status": "PASS",
+      "business_and_provisioning_identity_verified": true,
+      "signed_sha256": "50e9b0c689650ec33a3b9706a0324af601671e389474999d09b43159a6808701",
+      "launch_receipt": {
+        "case": "jingmo_dataset_import_no_transaction",
+        "variant": "fixed",
+        "signed_sha256": "50e9b0c689650ec33a3b9706a0324af601671e389474999d09b43159a6808701",
+        "install": "[Info]App install path:/home/research/ohm-clean/reproduction-signatures-7ba69269baa14f4088906a5899adfe07/jingmo_dataset_import_no_transaction/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          3573
+        ],
+        "foreground_bundle": "com.hefengbao.jingmo.hw",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    }
+  },
+  "binary_only_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-b79c9744b9814d459fb4bbb8ea4d0335",
+  "files": [
+    "app.hap",
+    "profile.json",
+    "reproduce.py",
+    "symptom.txt",
+    "workload.json"
+  ],
+  "main_artifacts_unchanged": true,
+  "new_performance_measurement_claimed": false
+}
