@@ -70,10 +70,25 @@ def verify_observation(observation):
     expected = observation['expected_visits']
     if type(expected) is not int or expected != 5:
         raise ValueError('the ordinary history workload requires five visits')
+    during = observation.get('during', [])
+    if not isinstance(during,list) or ('during' in observation and len(during) != expected):
+        raise ValueError('one native callback snapshot per normal page return is required')
+    previous_end = before['ended_monotonic']
+    combined = {}
     old = {line for _, _, _, line in records(before)}
-    new = [r for r in records(after) if r[3] not in old]
-    if len({r[3] for r in new}) != len(new) or any(a[0] > b[0] for a, b in zip(new, new[1:])):
-        raise ValueError('duplicate or out-of-order web callbacks')
+    for state in [*during, after]:
+        if ((state['pid'],state['start_ticks']) != (before['pid'],before['start_ticks']) or
+                state['started_monotonic'] <= previous_end):
+            raise ValueError('page snapshots changed process or observation order')
+        previous_end = state['ended_monotonic']
+        rows = records(state)
+        if len({r[3] for r in rows}) != len(rows) or any(a[0] > b[0] for a,b in zip(rows,rows[1:])):
+            raise ValueError('duplicate or out-of-order web callbacks')
+        # Overlapping native log snapshots repeat existing records. Deduplicate
+        # only across snapshots, retaining every original raw snapshot privately.
+        for row in rows:
+            if row[3] not in old:combined[row[3]] = row
+    new = sorted(combined.values(),key=lambda row:row[0])
     if any(kind == 'error' for _, kind, _, _ in new):
         raise ValueError('network error pages cannot validate successful title-event work')
     first, last = history(before), history(after)
@@ -132,10 +147,19 @@ class WanHistoryObserver:
         state = read_state(ui.shell)
         if history(state) != self.expected_entries:
             raise ValueError('ordinary history input was not reset before capture')
+        self.snapshots = []
+        self.original_shell = ui.shell
+        def observe_return(command):
+            if command == 'uitest uiInput keyEvent Back':
+                self.snapshots.append(read_state(self.original_shell))
+            return self.original_shell(command)
+        ui.shell = observe_return
         return state
 
     def complete(self, ui, before):
-        observation = {'before': before, 'after': read_state(ui.shell), 'expected_visits': 5}
+        ui.shell = self.original_shell
+        observation = {'before': before, 'after': read_state(ui.shell), 'expected_visits': 5,
+                       'during': self.snapshots}
         try:
             observation['progress'] = verify_observation(observation)
         except ValueError as exc:

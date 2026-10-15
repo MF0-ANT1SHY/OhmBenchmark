@@ -44,6 +44,9 @@ def verify_capture(receipt, trace):
             or progress['after']['started_monotonic'] < start
             or progress['after']['ended_monotonic'] > end):
         raise ValueError('normal complete refresh was not observed inside the measured window')
+    if cid == WAN_CASE and any(not start <= state['started_monotonic'] <= state['ended_monotonic'] <= end
+                               for state in progress.get('during', [])):
+        raise ValueError('native page snapshots were not observed inside the measured window')
     started, ended = window_from_markers(trace, receipt['marker_token'], receipt['pids'])
     raw = compute(trace, receipt['pids'], started, ended, receipt['online_cpus_before'])
     if raw != receipt['scheduler_cpu']:

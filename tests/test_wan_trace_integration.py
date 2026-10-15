@@ -37,3 +37,11 @@ class WanTraceIntegrationTest(unittest.TestCase):
             if change=='clock_window':r['wan_history']['after']['ended_monotonic']=8
             if change=='error':r['wan_history']['after']['raw_logs']+='\n15.000000000 100 100 E A00000/org.example.wan.ohos/WebPage: onErrorReceive url: https://example.com/0'
             with self.subTest(change=change),self.assertRaises(ValueError):verify_capture(r,trace)
+
+    def test_native_callback_checkpoints_must_be_inside_the_profile_window(self):
+        receipt,trace=self.receipt();observation=receipt['wan_history']
+        template=observation['after'];observation['during']=[{**template,
+            'started_monotonic':3.1+i*.3,'ended_monotonic':3.2+i*.3} for i in range(5)]
+        self.assertEqual(verify_capture(receipt,trace)['app_cpu_ms'],8)
+        observation['during'][0].update(started_monotonic=2.5,ended_monotonic=2.6)
+        with self.assertRaisesRegex(ValueError,'inside the measured window'):verify_capture(receipt,trace)
