@@ -1,0 +1,29 @@
+{
+  "status": "REGISTRATION_AND_REMOVAL_CALIBRATED_ONLY",
+  "app_injection": false,
+  "performance_accepted": false,
+  "probe_only": true,
+  "key_events_recorded": false,
+  "binary_sha256": "b22c21dfdee2e1b8ea24706a6d483cd66f223fd7ca9d815b559ca8f4a12e6975",
+  "source_sha256": "cd9280ec3c5490e52f0ac690a2f1a80b9a32e2aa8f00bfee0ca386da03a08cda",
+  "sdk_header_sha256": "93350f9deec150f5d1e2589dcacbae346059c70ea14c4b8aadf881de3ca6d511",
+  "registration": {
+    "kind": "registration",
+    "result": 0,
+    "pid": 3145,
+    "window_id": -1,
+    "probe": true,
+    "monotonic_ns": 699977342572358
+  },
+  "removal": {
+    "kind": "removal",
+    "result": 0,
+    "monotonic_ns": 699977352803087
+  },
+  "raw_receipt_sha256": "9d046a9c67c661c3ac5713dff4df5b582062fbe81f41163f4637541511201510",
+  "raw_receipt": "artifacts/native-key-observer/probe-c7f7df76b96e43ed9d0f2a6eb5e8c51e.json",
+  "remote_artifacts": "/home/research/ohm-clean/calibration/key-monitor-c7f7df76b96e43ed9d0f2a6eb5e8c51e",
+  "binary_removed": true,
+  "compile_command": "clang --target=aarch64-linux-ohos --sysroot=<OpenHarmony native SDK sysroot> -O2 -Wall -Wextra -Werror tools/native_key_observer.c -lohinput -o native-key-observer",
+  "note": "Subscription permission probe only; no event spacing, ArkUI callback timing, request completion, or performance case acceptance is inferred."
+}
