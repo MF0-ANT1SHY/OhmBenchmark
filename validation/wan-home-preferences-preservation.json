@@ -1,0 +1,26 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "status": "OFFLINE_NATIVE_PREFERENCE_DERIVATION_VERIFIED",
+  "app_injection": false,
+  "performance_accepted": false,
+  "device_deployment_performed": false,
+  "source_scope": "Previously retained real stopped-app native preferences; not a new live-device observation",
+  "source_snapshot": "artifacts/fixture-preparations/wan-history/1792038527489324357/before.xml",
+  "fixture_sha256": "3cbdcbcae836f09fb0501c149e84451d1201a5825af4c47bb60f89b064e6ca1f",
+  "articles": 471,
+  "first_page_articles": 20,
+  "preparation": {
+    "deployment": "home_cache_keys_only_preserving_live_preferences",
+    "preparation_dir": "artifacts/fixture-preparations/wan-home-offline-derivation/1792041706379637630",
+    "before_sha256": "27d2080912ce79002d1f7cbfefad98c83825d939789920c309a86e2a0f3a1d1e",
+    "deployed_sha256": "e34f83eadcb57cbbe91944504525d90ffe08dcabd46d289a14da39badfb9c87d"
+  },
+  "unrelated_preferences_preserved": true,
+  "raw_preferences_exported_to_repository": false,
+  "private_directory_mode": "0o700",
+  "private_file_modes": {
+    "before.xml": "0o600",
+    "deployed.xml": "0o600"
+  },
+  "remaining_requirement": "Deploy during exclusive device ownership and validate the original online load-more workload; old offline cold-cache PSS remains supplementary only."
+}
