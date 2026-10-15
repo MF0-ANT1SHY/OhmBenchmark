@@ -54,11 +54,27 @@
   },
   "test_oracle": {
     "metric": "trace_cpu_ms",
-    "definition": "on-CPU time of the app process during the measured step, from the sched events in trace.htrace.",
+    "definition": "Native app on-CPU sched_switch intervals clipped to external native-clock markers around five complete normal history page loads; not wall time or app counters.",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "pending_clean_measurement",
-      "note": "Legacy instrumented measurements do not validate these business-only builds."
+      "status": "negative_screen_failed",
+      "metric": "trace_cpu_ms",
+      "unfixed": [
+        9277.974
+      ],
+      "fixed": [
+        9294.78
+      ],
+      "paired_ratios": [
+        0.9981918883502353
+      ],
+      "median_ratio": 0.9981918883502353,
+      "rounds_per_variant": 1,
+      "required_rounds": 3,
+      "full_performance_run_completed": false,
+      "performance_accepted": false,
+      "legacy_evidence_reused": false,
+      "note": "The complete mandatory first native pair fails the unchanged all-pairs >=1.2x criterion. User requested negative cases be skipped; this is early rejection, not a full three-pair run."
     },
     "mechanism_oracle": {
       "metric": "trace_cpu_ms",
@@ -101,7 +117,7 @@
   "clean_validation": {
     "policy": "no_app_injection",
     "workload_validation": "verified",
-    "performance_validation": "pending",
+    "performance_validation": "negative_screen_failed",
     "variants": {
       "unfixed": {
         "ref": "clean-app/wanharmony_history_log_materialization/unfixed",
@@ -181,6 +197,36 @@
           },
           "functional_check": "five successful ordinary webpage loads, with the full production browsing history preserved",
           "capture_duration_required_s": 137
+        },
+        "performance": {
+          "status": "NEGATIVE_SCREEN_FAILED",
+          "metric": "trace_cpu_ms",
+          "rounds": 1,
+          "samples": [
+            9277.974
+          ],
+          "median": 9277.974,
+          "paired_ratios": [
+            0.9981918883502353
+          ],
+          "median_ratio": 0.9981918883502353,
+          "plan_sha256": "b53f300ea568a822c4cdd540d8b4bc66e0184768840fe9ca257fda70d9aeaec2",
+          "signed_sha256": "b0653227fb2af8b871fe8683be83f7d4d055d16b7032d311af6d8e942e841e03",
+          "fixture_sha256": "e29c96503dc269b5d35af0767ba0e708b547f6fce724169fe3d9432d0c976ed5",
+          "captures": [
+            {
+              "round": 1,
+              "trace_sha256": "6660880855fa3d1afcb91e3f5297db81fc00b8fefc9f9f009a80c082911f5ed7",
+              "capture_sha256": "48c9836212a9988355ef44a746f1286e6a24fb92e0e38e2b8164b3a52f160f4b",
+              "app_cpu_ns": 9277974000,
+              "remote_artifacts": "/home/research/ohm-clean/wanharmony_history_log_materialization/unfixed/trace-captures/round-1-80dfddb5fe9b480db2c2e854f0d4749c"
+            }
+          ],
+          "method": "app on-CPU sched_switch intervals clipped to native-clock external markers",
+          "legacy_evidence_reused": false,
+          "performance_accepted": false,
+          "required_rounds": 3,
+          "full_performance_run_completed": false
         }
       },
       "fixed": {
@@ -261,8 +307,45 @@
           },
           "functional_check": "five successful ordinary webpage loads, with the full production browsing history preserved",
           "capture_duration_required_s": 137
+        },
+        "performance": {
+          "status": "NEGATIVE_SCREEN_FAILED",
+          "metric": "trace_cpu_ms",
+          "rounds": 1,
+          "samples": [
+            9294.78
+          ],
+          "median": 9294.78,
+          "paired_ratios": [
+            0.9981918883502353
+          ],
+          "median_ratio": 0.9981918883502353,
+          "plan_sha256": "b53f300ea568a822c4cdd540d8b4bc66e0184768840fe9ca257fda70d9aeaec2",
+          "signed_sha256": "e70783aacd74405ee736737f3fd85721ca7dcc4bda8597d8ffce014caf83fb12",
+          "fixture_sha256": "e29c96503dc269b5d35af0767ba0e708b547f6fce724169fe3d9432d0c976ed5",
+          "captures": [
+            {
+              "round": 1,
+              "trace_sha256": "99f471f09709ff8303f8f06b624e03b8e7fde30f6c5f3089534c26a62530b3f9",
+              "capture_sha256": "0c9fb408db7f8a822545dcf8f427489f6b66271b61b459d271bbdce76ecbd225",
+              "app_cpu_ns": 9294780000,
+              "remote_artifacts": "/home/research/ohm-clean/wanharmony_history_log_materialization/fixed/trace-captures/round-1-51335330038444e2b075ff389444435f"
+            }
+          ],
+          "method": "app on-CPU sched_switch intervals clipped to native-clock external markers",
+          "legacy_evidence_reused": false,
+          "performance_accepted": false,
+          "required_rounds": 3,
+          "full_performance_run_completed": false
         }
       }
     }
+  },
+  "disposition": {
+    "status": "skipped_by_user",
+    "reason": "Verified mandatory clean native pair fails unchanged criterion; user instructed to skip negative cases.",
+    "performance_passed": false,
+    "original_evidence_preserved": true,
+    "full_three_pair_run_completed": false
   }
 }
