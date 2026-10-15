@@ -30,8 +30,12 @@
         "hint": "搜索歌曲、音乐人、播客",
         "match": "exact"
       },
-      "value": "music",
+      "value": "electronic",
       "interval_ms": 50
+    },
+    {
+      "op": "key",
+      "key": 2054
     },
     {
       "op": "pause",
@@ -43,7 +47,7 @@
       "op": "wait",
       "selector": {
         "hint": "搜索歌曲、音乐人、播客",
-        "text": "music",
+        "text": "electronic",
         "match": "exact"
       }
     }

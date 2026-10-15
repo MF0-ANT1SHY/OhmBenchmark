@@ -41,7 +41,7 @@
       "htrace",
       "hiperf"
     ],
-    "step_duration_s": 30,
+    "step_duration_s": 60,
     "rounds": 3,
     "outputs": [
       "htrace/trace.htrace",
@@ -187,11 +187,19 @@
       }
     },
     "input_ui_validation": {
+      "status": "pending",
+      "successful_search_requests_verified": false,
+      "event_delivery_spacing_verified": false,
+      "full_workload_validation": "pending"
+    },
+    "historical_input_ui_validation": {
       "status": "verified",
       "proof": "../../validation/ytmusic-normal-keyboard-ui.json",
       "successful_search_requests_verified": false,
       "event_delivery_spacing_verified": false,
-      "full_workload_validation": "pending"
+      "full_workload_validation": "pending",
+      "plan_sha256": "69d02662ee3f957dc89b807e41d3b9ae8d4ebe6345523d12aabfbde0c3752c12",
+      "scope": "Historical five-character input-only validation; not proof for the ten-character-plus-submit workload."
     }
   }
 }

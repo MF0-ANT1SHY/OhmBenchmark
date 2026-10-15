@@ -261,7 +261,7 @@
       "workload_validation": "pending",
       "measurement_status": "pending_clean_measurement",
       "rounds_recorded": 0,
-      "input_ui_validation": "verified",
+      "input_ui_validation": "pending_current_ten_character_submit_workload",
       "request_completion_verified": false
     }
   },

@@ -1,0 +1,16 @@
+{
+  "case": "ytmusic_search_no_debounce",
+  "status": "PENDING_CURRENT_TEN_CHARACTER_UI_AND_NETWORK_VERIFICATION",
+  "performance_accepted": false,
+  "app_injection": false,
+  "query": "electronic",
+  "character_count": 10,
+  "submit_event_included": true,
+  "requested_key_interval_ms": 50,
+  "actual_event_spacing_verified": false,
+  "successful_requests_verified": false,
+  "current_workload_sha256": "11e24c31a8c56df6ad445b14c7ecc1c08d3f9b848eb64cb371a6907c07360371",
+  "historical_input_only_workload_sha256": "69d02662ee3f957dc89b807e41d3b9ae8d4ebe6345523d12aabfbde0c3752c12",
+  "historical_proof_not_reused": "validation/ytmusic-normal-keyboard-ui.json",
+  "reason": "Match the original mechanism definition: one ten-character query plus submit. Five-character input-only UI validation cannot prove the full case."
+}
