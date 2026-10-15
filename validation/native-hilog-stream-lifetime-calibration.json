@@ -1,0 +1,18 @@
+{
+  "status": "OWN_PID_NATIVE_LOGGER_LIFETIME_CALIBRATED",
+  "probe": {
+    "duration_s": 3.383602226999983,
+    "returncode": 0,
+    "stdout": "__OHM_HILOG_OWNER__23064\n1792051179.968056718 23064 23064 W C02D13/hdcd/HDC_LOG: [SetSelinuxLabel:140] SetSelinuxLabel con:u:r:su:s0 isRoot:1\n",
+    "stderr": ""
+  },
+  "native_owner_pid": 23064,
+  "native_owner_gone_after_probe": true,
+  "binary_removed": true,
+  "source_sha256": "cc34cf6107688ed2d0c51639733b9e8750a1f5a89b2bf77aa859042c00a4f670",
+  "binary_sha256": "81a1811cd4a90cb066444fec464fb9954142b4ef2f7d2f403c0723d65f5b8c34",
+  "app_log_stream_captured": false,
+  "all_five_http_results_verified": false,
+  "app_injection": false,
+  "performance_accepted": false
+}
