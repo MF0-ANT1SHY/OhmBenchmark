@@ -41,10 +41,11 @@ class QuerySequenceTest(unittest.TestCase):
 
     def test_all_submits_use_normal_keys_without_per_query_layout_round_trips(self):
         ui,calls=self.ui();ui.submit_queries({},['question'+str(i) for i in range(20)])
-        self.assertEqual(len(calls),2)
-        self.assertTrue(calls[1].startswith('uinput -K '))
-        self.assertEqual(calls[1].count('-d 2054 -u 2054'),20)
-        self.assertEqual(calls[1].count('-d 2072 -d 2017 -u 2017 -u 2072 -d 2055 -u 2055'),20)
+        self.assertEqual(len(calls),1)
+        self.assertTrue(calls[0].startswith('uinput -T -c '))
+        self.assertEqual(calls[0].count('uinput -T -c '),20)
+        self.assertEqual(calls[0].count('-d 2054 -u 2054'),20)
+        self.assertEqual(calls[0].count('-d 2072 -d 2017 -u 2017 -u 2072 -d 2055 -u 2055'),20)
 
     def test_missing_submit_and_wrong_final_text_are_not_success(self):
         for final,releases in [('question18',20),('question19',19)]:

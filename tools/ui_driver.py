@@ -163,9 +163,12 @@ class UI:
             raise ValueError('invalid native query sequence')
         node = self.find(selector)
         x, y = self.center(node)
-        self.shell(f'uitest uiInput click {x} {y}')
-        parts = ['uinput -K']
+        commands = []
         for index, value in enumerate(values):
+            # Search controls can leave edit mode on submit. Refocus through
+            # the normal touch path before every replacement, as input() does.
+            commands.append(f'uinput -T -c {x} {y}')
+            parts = ['uinput -K']
             if index and between_submits_ms:
                 parts.append(f'-i {between_submits_ms}')
             # Ctrl+A, release both keys, then Backspace: ordinary editable-text
@@ -175,7 +178,8 @@ class UI:
                 key = 2000 + int(character) if character.isdigit() else 2017 + ord(character)-ord('a')
                 parts.append(f'-i {interval_ms} -d {key} -u {key}')
             parts.append('-d 2054 -u 2054')
-        output = self.shell(' '.join(parts))
+            commands.append(' '.join(parts))
+        output = self.shell(' && '.join(commands))
         if output.count('you raised the key 2054') != len(values):
             raise RuntimeError('native keyboard did not confirm all submit releases')
         if str(self.find(selector).get('text', '')) != values[-1]:

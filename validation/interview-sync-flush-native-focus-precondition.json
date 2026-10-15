@@ -1,0 +1,28 @@
+{
+  "case": "interviewapp_search_history_sync_flush",
+  "status": "NATIVE_EVENTS_ALONE_DO_NOT_PROVE_BUSINESS_SUBMISSIONS",
+  "performance_accepted": false,
+  "variants": {
+    "unfixed": {
+      "status": "INPUT_ACTOR_REJECTED",
+      "native_submit_events": 20,
+      "final_field_value": "question0",
+      "final_field_focused": false,
+      "all_business_submissions_verified": false,
+      "observer_binary_removed": true,
+      "raw_artifacts": "artifacts/clean/interviewapp_search_history_sync_flush/unfixed/native-query-diagnostics/b34b278e1e604c118aabf1a13735e62c",
+      "receipt_sha256": "a708b82bf4538792f87c3ee469f4d181b59cd21a2638b52416ad6546fd3791cf"
+    },
+    "fixed": {
+      "status": "INPUT_ACTOR_REJECTED",
+      "native_submit_events": 20,
+      "final_field_value": "question0",
+      "final_field_focused": false,
+      "all_business_submissions_verified": false,
+      "observer_binary_removed": true,
+      "raw_artifacts": "artifacts/clean/interviewapp_search_history_sync_flush/fixed/native-query-diagnostics/1ada8017267d411bbbc0774ab89ca3a3",
+      "receipt_sha256": "10ad7202cba674ba6d1dc77c3929848d9eed6fa2fab22933080d5a282f5040fa"
+    }
+  },
+  "correction": "Refocus the ordinary search control through a native touch before each replacement. No app code, credentials or authentication token is injected."
+}

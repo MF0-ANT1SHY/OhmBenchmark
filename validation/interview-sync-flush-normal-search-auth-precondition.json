@@ -1,0 +1,35 @@
+{
+  "case": "interviewapp_search_history_sync_flush",
+  "status": "DIAGNOSTIC_ONLY",
+  "app_injection": false,
+  "performance_accepted": false,
+  "variants": {
+    "unfixed": {
+      "status": "FAIL",
+      "device_error": "UI target not found: {'hint': '\u8bf7\u8f93\u5165\u5173\u952e\u8bcd', 'match': 'exact'}",
+      "cleanup_error": null,
+      "observer_binary_removed": true,
+      "receipt_sha256": "a91d8a437d7daa3872f91facabae73d1f4710dbd535370d0d514f1c64a1faf66",
+      "local_artifacts": "artifacts/clean/interviewapp_search_history_sync_flush/unfixed/native-query-diagnostics/955268f2f45f42519872e2644462a9ef",
+      "signed_sha256": "8d691b4d1afcbb4fc37a658b754c10d728c2857d2965688128b454459a96c5f9"
+    },
+    "fixed": {
+      "status": "FAIL",
+      "device_error": "UI target not found: {'hint': '\u8bf7\u8f93\u5165\u5173\u952e\u8bcd', 'match': 'exact'}",
+      "cleanup_error": null,
+      "observer_binary_removed": true,
+      "receipt_sha256": "db24f1bebef94a2ad95236dcafd9d62ec25035ad3f149478b92ef004ed7d02e7",
+      "local_artifacts": "artifacts/clean/interviewapp_search_history_sync_flush/fixed/native-query-diagnostics/08162eb0d89d4207856fdc95600a95d0",
+      "signed_sha256": "ce7d0a5afacdd99379c36883ef0cc942efde3c6a2800b0dd201267ebc79663c7"
+    }
+  },
+  "observer_sha256": "0ac3ceec010f9b0a8a3e3cbce8e39fe0ebe60ef0ec8046115e1da12e6779b4bf",
+  "observer_source_sha256": "40a2eb2c31fb041004d46c0f223a3d012498dd43a665b676e2baf4e158534452",
+  "conclusion": "Both variants reached the source-defined login gate before search input. No test queries or native key observer were started. These are authentication-precondition failures, not negative performance evidence.",
+  "auth_source": {
+    "unfixed:features/mine/src/main/ets/views/LoginComp.ets": "c58a95a0384ef863bcd06932c5a835c1e32919b35ff63173264a658b641966b5",
+    "unfixed:commons/basic/src/main/ets/utils/auth.ets": "5d07327b076d7ccc8bad899d2fe4aa097eb25b068e039636ed87b56e00f3f920",
+    "fixed:features/mine/src/main/ets/views/LoginComp.ets": "c58a95a0384ef863bcd06932c5a835c1e32919b35ff63173264a658b641966b5",
+    "fixed:commons/basic/src/main/ets/utils/auth.ets": "5d07327b076d7ccc8bad899d2fe4aa097eb25b068e039636ed87b56e00f3f920"
+  }
+}
