@@ -1,0 +1,18 @@
+{
+  "case": "sheafreader_article_list_foreach",
+  "status": "PASS",
+  "scope": "Actual native profile processing and JSON serialization; not a new device run or performance verdict",
+  "source_report_sha256": "25dc1571e6c4fede0df65a1b8cf4703c5de57f7407ba42e872844c2dbcbb6479",
+  "source_report_bytes": 80897842,
+  "exported_profile_sha256": "fdbd0a3ccc4a830e95cc944d492333d9f4a3ed7dfc8449a14ca9db35fbde68f3",
+  "exported_profile_bytes": 19495332,
+  "app_call_tree_shape": {
+    "dictionary_nodes": 249507,
+    "maximum_container_depth": 512
+  },
+  "call_stack_frames_dropped": false,
+  "process_filter_verified": true,
+  "input_artifacts_unchanged": true,
+  "interpreter_recursion_limit_changed": false,
+  "private_profile": "artifacts/export-profile-regressions/5187b2724dff44a79e828594562de9d0/profile.json"
+}

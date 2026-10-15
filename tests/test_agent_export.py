@@ -143,6 +143,36 @@ class AppReportTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             app_report(raw, [10], 'app.bundle')
 
+    def test_deep_native_call_stacks_are_preserved_redacted_and_serializable(self):
+        raw = self.report()
+        node = {'symbol': 7, 'fileId': 1, 'callStack': []}
+        for _ in range(350):
+            node = {'symbol': 7, 'fileId': 1, 'callStack': [node]}
+        raw['recordSampleInfo'][0]['processes'][0]['threads'][0]['CallOrder'] = node
+        # Real report JSON is readable with the normal decoder limit. It must
+        # not require dropping frames or raising the interpreter's stack limit.
+        raw = json.loads(json.dumps(raw))
+        result = app_report(raw, [10], 'app.bundle')
+        serialized = json.dumps(result)
+        self.assertNotIn('PrivateOracle', serialized)
+        self.assertNotIn('private-checker', serialized)
+        leaf = result['recordSampleInfo'][0]['processes'][0]['threads'][0]['CallOrder']
+        depth = 0
+        while True:
+            self.assertEqual(leaf['symbol'], 7)
+            self.assertEqual(leaf['fileId'], 0)
+            if not leaf['callStack']:
+                break
+            depth += 1
+            leaf = leaf['callStack'][0]
+        self.assertEqual(depth, 350)
+        leaf['symbol'] = 99
+        original = raw['recordSampleInfo'][0]['processes'][0]['threads'][0]['CallOrder']
+        for _ in range(350):
+            original = original['callStack'][0]
+        self.assertEqual(original['symbol'], 7)
+        self.assertEqual(original['fileId'], 1)
+
     def test_unresolved_jit_frame_preserves_counts_without_inventing_name(self):
         raw = self.report()
         del raw['SymbolMap']['7']

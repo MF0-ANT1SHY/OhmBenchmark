@@ -6,7 +6,6 @@ workspace: it contains fixed sources, repair diffs and performance oracles.
 """
 import argparse
 import ast
-import copy
 import hashlib
 import json
 import subprocess
@@ -72,6 +71,40 @@ if __name__ == '__main__':
     return prefix+ast.unparse(ui)+'\n'+main
 
 
+def copy_json_tree(value):
+    """Copy a decoded JSON tree without recursive deepcopy's stack overhead."""
+    def container(source):
+        return {} if isinstance(source, dict) else [None] * len(source)
+    if not isinstance(value, (dict, list)):
+        return value
+    result = container(value)
+    pending = [(value, result)]
+    while pending:
+        source, target = pending.pop()
+        for key, child in (source.items() if isinstance(source, dict) else enumerate(source)):
+            if isinstance(child, (dict, list)):
+                target[key] = container(child)
+                pending.append((child, target[key]))
+            else:
+                target[key] = child
+    return result
+
+
+def profile_dicts(value):
+    """Visit all dictionaries in a decoded profile, preserving deep call stacks."""
+    pending = [value]
+    while pending:
+        current = pending.pop()
+        if isinstance(current, dict):
+            yield current
+            children = current.values()
+        elif isinstance(current, list):
+            children = current
+        else:
+            continue
+        pending.extend(child for child in children if isinstance(child, (dict, list)))
+
+
 def app_report(report, pids, bundle):
     selected = set(pids)
     if not selected:
@@ -80,26 +113,20 @@ def app_report(report, pids, bundle):
         raise ValueError('process identity mismatch')
     events = []
     for event in report['recordSampleInfo']:
-        processes = [copy.deepcopy(p) for p in event['processes'] if p['pid'] in selected]
+        processes = [copy_json_tree(p) for p in event['processes'] if p['pid'] in selected]
         if {p['pid'] for p in processes} != selected:
             raise ValueError('selected app missing from event')
         events.append({'eventConfigName': event['eventConfigName'],
                        'eventCount': sum(p['eventCount'] for p in processes), 'processes': processes})
     symbols, files, tids = set(), set(), set()
-    def references(value):
-        if isinstance(value, dict):
-            for key, child in value.items():
-                if key == 'symbol' and child != -1:
-                    symbols.add(str(child))
-                elif key == 'fileId':
-                    files.add(child)
-                elif key == 'tid':
-                    tids.add(str(child))
-                references(child)
-        elif isinstance(value, list):
-            for child in value:
-                references(child)
-    references(events)
+    for value in profile_dicts(events):
+        for key, child in value.items():
+            if key == 'symbol' and child != -1:
+                symbols.add(str(child))
+            elif key == 'fileId':
+                files.add(child)
+            elif key == 'tid':
+                tids.add(str(child))
     # Some device reports reference anonymous ArkTS/JIT frames without an entry
     # in SymbolMap. Keep their sample counts and IDs; do not invent a function
     # name or silently remove these business frames.
@@ -118,22 +145,15 @@ def app_report(report, pids, bundle):
     raw_files.append('[unresolved]')
     symbol_map = {}
     for sid in sorted(symbols, key=int):
-        symbol_map[sid] = copy.deepcopy(report['SymbolMap'].get(sid,
+        symbol_map[sid] = copy_json_tree(report['SymbolMap'].get(sid,
             {'file': symbol_files.get(sid, unknown_file), 'symbol': '[unresolved]'}))
     files.update(s['file'] for s in symbol_map.values())
     file_ids = {old: new for new, old in enumerate(sorted(files))}
     for symbol in symbol_map.values():
         symbol['file'] = file_ids[symbol['file']]
-    def remap(value):
-        if isinstance(value, dict):
-            if 'fileId' in value:
-                value['fileId'] = file_ids[value['fileId']]
-            for child in value.values():
-                remap(child)
-        elif isinstance(value, list):
-            for child in value:
-                remap(child)
-    remap(events)
+    for value in profile_dicts(events):
+        if 'fileId' in value:
+            value['fileId'] = file_ids[value['fileId']]
     result = {k: report[k] for k in ('deviceTime', 'deviceType', 'osVersion') if k in report}
     result.update({'totalRecordSamples': sum(t['sampleCount'] for e in events for p in e['processes'] for t in p['threads']),
                    'processNameMap': {str(pid): bundle for pid in sorted(selected)},
