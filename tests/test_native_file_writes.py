@@ -3,7 +3,7 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'tools'))
-from native_file_writes import returned_writes, verify_retention
+from native_file_writes import returned_writes, returned_file_writes, verify_retention
 
 
 def event(stamp, direction, offset, size, tail, tid=42210, ino=290353, kind='write'):
@@ -12,6 +12,14 @@ def event(stamp, direction, offset, size, tail, tid=42210, ino=290353, kind='wri
 
 
 class NativeWriteTest(unittest.TestCase):
+    def test_file_scoped_bytes_never_claim_app_thread_or_exclusive_key_attribution(self):
+        rows=self.pair()
+        raw='\n'.join(rows)
+        result=returned_file_writes(raw,[(260,79,290353)])
+        self.assertEqual(result['returned_bytes'],31)
+        self.assertFalse(result['app_thread_attribution_verified'])
+        with self.assertRaises(ValueError):returned_writes(raw,[99],[(260,79,290353)])
+
     def test_every_online_cpu_must_retain_both_exact_native_boundaries(self):
         token='a'*32
         def marker(cpu,side,stamp):

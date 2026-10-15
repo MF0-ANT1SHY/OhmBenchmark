@@ -1,0 +1,10 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "status": "CONTINUOUS_NORMAL_ENTRY_AND_SWIPE_DIAGNOSIS_CAPTURED",
+  "error": null,
+  "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/continuous-entry/f7d8a98d108249d9940400d15dd06cab",
+  "receipt_sha256": "9460f6c3de0d385a8734ab3ecc4c98b7ea8cf19c7ec8b413404b3167ffe57c45",
+  "binary_removed": true,
+  "logger_cleanup_error": null,
+  "performance_accepted": false
+}

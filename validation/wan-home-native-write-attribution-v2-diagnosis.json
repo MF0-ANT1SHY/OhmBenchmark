@@ -1,0 +1,81 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "variant": "unfixed",
+  "status": "ONE_REAL_PAGE_AND_BOUND_NATIVE_FILE_TRAFFIC_VERIFIED_EXCLUSIVE_MECHANISM_PENDING",
+  "error": null,
+  "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/write-attribution/39ae33bbb716413d84ed23facea5754c",
+  "receipt_sha256": "91183ba607c99d6317b9063a5f679ff8adb6a1c1b15e2dc91479749a9e9c048c",
+  "signed_sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+  "performance_accepted": false,
+  "ten_page_mechanism_verified": false,
+  "native_file_traffic": {
+    "returned_bytes": 69292,
+    "completed_writes": 1,
+    "writes": [
+      {
+        "tid": 52400,
+        "native_header_tgid": "52397",
+        "device_inode": [
+          260,
+          79,
+          533362
+        ],
+        "entry_epoch": "2503585.698200",
+        "offset": 0,
+        "requested_bytes": 69292,
+        "entry_line": "           <...>-52400   (  52397) [004] .... 2503585.698200: hmfs_write_enter: dev=260,79 ino=533362 offset=0 size=69292 i_size=0 entry_name=persistent_storage",
+        "exit_epoch": "2503585.698295",
+        "returned_bytes": 69292,
+        "exit_line": "           <...>-52400   (  52397) [004] .... 2503585.698295: hmfs_write_exit: dev=260,79 ino=533362 offset=69292 size=69292 res=69292"
+      }
+    ],
+    "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes",
+    "app_thread_attribution_verified": false,
+    "scope": "all native writers to caller-bound device/inodes; not exclusive home-list mutation bytes"
+  },
+  "retention": {
+    "cpus": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "window_begin_epoch": "2503536.769696",
+    "window_end_epoch": "2503597.225800",
+    "retained_boundary_markers": 24
+  },
+  "changed_preference_keys": [
+    "cookies",
+    "homeList"
+  ],
+  "before_articles": 20,
+  "after_articles": 30,
+  "file_observer_same_app_process": true,
+  "app_writer_thread_attribution_verified": false,
+  "exclusive_home_list_write_bytes_verified": false,
+  "native_business_page": {
+    "requested_pages": [
+      2
+    ],
+    "response_curpages": [
+      3
+    ]
+  },
+  "late_file_identity": {
+    "path": "/data/app/el2/100/base/org.example.wan.ohos/haps/entry/files/persistent_storage",
+    "device": 272629839,
+    "inode": 533362,
+    "file_bytes": 69292,
+    "owner_uid": 20020209,
+    "matches_observed_app_uid": true,
+    "receipt_sha256": "b05dfcb01c6c406db7d9c2d46fdb585101d89a8034d0328855576277d78d4cbf"
+  }
+}

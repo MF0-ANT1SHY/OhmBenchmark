@@ -324,9 +324,12 @@
       "primary_paired_rounds": 3,
       "complete_case_accepted": false,
       "native_write_collector_calibration": "validation/native-hmfs-write-retention-calibration.json",
-      "latest_diagnostic": "validation/wan-home-native-write-attribution-diagnosis.json",
-      "write_collection_next_step": "HMFS returned-byte and all-CPU retention calibration passed. First real app load-more diagnostic did not complete; retain continuous native request logs on fresh normal entry, then verify app thread/inode attribution and ten successful new pages.",
-      "ptrace_return_calibration_failure": "validation/native-syscall-own-child-raw-register-calibration.json"
+      "latest_diagnostic": "validation/wan-home-native-write-attribution-v2-diagnosis.json",
+      "write_collection_next_step": "Collect both variants under the original input conditions for ten successful new pages. Retain total native persistent-file traffic and home-list/cookie field changes separately; whole-file bytes are not exclusive home-list bytes. Do not accept based on the one-page diagnostic or JSON length estimates.",
+      "ptrace_return_calibration_failure": "validation/native-syscall-own-child-raw-register-calibration.json",
+      "read_only_file_observer_control": "validation/wan-home-readonly-file-observer-control.json",
+      "normal_load_more_connectivity": "fresh_normal_entry_and_later_page_succeeded_with_retained_native_HTTP_logs",
+      "native_file_traffic": "one_real_20_to_30_article_page_commit_wrote_69292_actual_file_bytes; file_owner_and_inode_verified; writer_app_thread_membership_not_proven"
     },
     {
       "case": "wanharmony_web_progress_log_storm",

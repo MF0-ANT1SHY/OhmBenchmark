@@ -2,7 +2,9 @@
 
 Supports the calibrated hmfs_write_enter/exit path only. Iterated writes on a
 selected inode fail closed until independently calibrated (no double counting).
-Process/thread and target inode attribution must be established by the caller.
+Native file identity must be established by the caller. Thread-scoped callers
+must also establish their native thread allowlist; file-scoped accounting never
+claims that a filesystem writer belongs to the app's process.
 """
 import re
 
@@ -44,9 +46,28 @@ def verify_retention(raw, token, cpus):
 
 
 def returned_writes(raw, tids, targets):
-    tids, targets = set(tids), {tuple(item) for item in targets}
-    if not tids or not targets:
+    if not tids:
         raise ValueError('explicit native thread and device/inode attribution required')
+    return _returned_writes(raw, set(tids), targets)
+
+
+def returned_file_writes(raw, targets):
+    """Count actual writes to explicitly bound files, regardless of writer.
+
+    This is filesystem traffic, not app-thread traffic or an exclusive count
+    of writes caused by one preference key. The caller must retain native
+    path/device/inode bindings and report other keys changed in each commit.
+    """
+    result = _returned_writes(raw, None, targets)
+    result['app_thread_attribution_verified'] = False
+    result['scope'] = 'all native writers to caller-bound device/inodes; not exclusive home-list mutation bytes'
+    return result
+
+
+def _returned_writes(raw, tids, targets):
+    targets = {tuple(item) for item in targets}
+    if not targets:
+        raise ValueError('explicit native device/inode attribution required')
     pending, completed, last = {}, [], {}
     for line in raw.splitlines():
         if re.search(r'\bLOST\b.*\bEVENTS\b', line):
@@ -60,7 +81,7 @@ def returned_writes(raw, tids, targets):
         tid, target = int(tid), (int(major), int(minor), int(ino))
         if target not in targets:
             continue
-        if tid not in tids:
+        if tids is not None and tid not in tids:
             raise ValueError('selected inode was written by an unattributed native thread')
         if event.startswith('write_iter_'):
             raise ValueError('selected inode uses an uncalibrated iterated write path')

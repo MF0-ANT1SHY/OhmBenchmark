@@ -37,7 +37,9 @@ def cache(raw,key):
     return rows
 
 
-def network_progress(before,after,pid):
+def network_progress(before,after,pid,first_page=1):
+    if type(first_page) is not int or first_page < 1:
+        raise ValueError('normal load-more pages must start at a positive page')
     def records(raw):
         found=[]
         for line in raw.splitlines():
@@ -63,7 +65,7 @@ def network_progress(before,after,pid):
         if message.startswith('(200) response: '):
             m=re.search(r'"curPage"\s*:\s*(\d+)',message[:160])
             if m:completed.append(int(m[1]))
-    if not requested or requested!=list(range(1,len(requested)+1)) or completed!=[x+1 for x in requested]:
+    if not requested or requested!=list(range(first_page,first_page+len(requested))) or completed!=[x+1 for x in requested]:
         raise ValueError('complete sequential successful online load-more pages are not proven')
     return {'requested_pages':requested,'response_curpages':completed}
 

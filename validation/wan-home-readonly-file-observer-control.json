@@ -1,0 +1,45 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "variant": "unfixed",
+  "status": "READ_ONLY_OBSERVER_CONTROL_NO_TARGET_FILE_WRITES",
+  "error": null,
+  "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/write-attribution/8ded5d4c52e447acbe724dde4bf06dfb",
+  "receipt_sha256": "7414b6487679d4cd6818f0adda78abbdf267485d7f19f8a319ce95849a9cba14",
+  "signed_sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+  "performance_accepted": false,
+  "ten_page_mechanism_verified": false,
+  "native_file_traffic": {
+    "returned_bytes": 0,
+    "completed_writes": 0,
+    "writes": [],
+    "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes",
+    "app_thread_attribution_verified": false,
+    "scope": "all native writers to caller-bound device/inodes; not exclusive home-list mutation bytes"
+  },
+  "retention": {
+    "cpus": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "window_begin_epoch": "2504118.169241",
+    "window_end_epoch": "2504129.648056",
+    "retained_boundary_markers": 24
+  },
+  "changed_preference_keys": [],
+  "before_articles": 30,
+  "after_articles": 30,
+  "file_observer_same_app_process": true,
+  "app_writer_thread_attribution_verified": false,
+  "exclusive_home_list_write_bytes_verified": false,
+  "no_ui_actions_inside_trace": true
+}

@@ -19,6 +19,11 @@ class WanHomePrimaryProgressTest(unittest.TestCase):
         for logs in ('',self.logs().replace('"curPage":4','"curPage":5'),self.logs().replace('page=2&','page=9&'),self.logs()+'\n'+self.line(120,'err = (1) network failure',level='E'),self.logs().replace(' 20 21 ',' 99 21 ')):
             with self.assertRaises(ValueError):network_progress('',logs,20)
         with self.assertRaises(ValueError):network_progress(self.logs(),self.logs(),20)
+    def test_retained_later_page_diagnostic_keeps_an_explicit_start_page(self):
+        earlier='\n'.join(self.logs().splitlines()[:2])
+        self.assertEqual(network_progress(earlier,self.logs(),20,first_page=2)['requested_pages'],[2,3])
+        with self.assertRaises(ValueError):network_progress(earlier,self.logs(),20)
+        with self.assertRaises(ValueError):network_progress(earlier,self.logs(),20,first_page=3)
     def layout(self,indices):
         return {'attributes':{'bundleName':BUNDLE},'children':[{'attributes':{'text':'Article '+str(i)}} for i in indices]}
     def test_original_swipes_allow_real_scroll_offset_difference_but_not_different_loaded_pages(self):
