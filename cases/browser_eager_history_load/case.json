@@ -338,5 +338,13 @@
         }
       }
     }
+  },
+  "reproduction_delivery": {
+    "status": "PASS",
+    "proof": "validation/browser-eager-current-signature-agent-export.json",
+    "business_identity_preserved": true,
+    "current_signature_launch_verified": true,
+    "binary_only_export_verified": true,
+    "historical_performance_evidence_unchanged": true
   }
 }
