@@ -1,0 +1,53 @@
+{
+  "case": "jingmo_sync_page_reimport",
+  "status": "PASS",
+  "scope": "Current reproduction delivery only; historical performance evidence unchanged",
+  "variants": {
+    "unfixed": {
+      "status": "PASS",
+      "business_and_provisioning_identity_verified": true,
+      "signed_sha256": "4cd29113642396c8d8aa0c6126d1443892002d862decfc9c86ba2870a030d35a",
+      "launch_receipt": {
+        "case": "jingmo_sync_page_reimport",
+        "variant": "unfixed",
+        "signed_sha256": "4cd29113642396c8d8aa0c6126d1443892002d862decfc9c86ba2870a030d35a",
+        "install": "[Info]App install path:/home/research/ohm-clean/reproduction-signatures-75cf6f8d16a3400e973c3618673edc3c/jingmo_sync_page_reimport/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          8260
+        ],
+        "foreground_bundle": "com.hefengbao.jingmo.hw",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    "fixed": {
+      "status": "PASS",
+      "business_and_provisioning_identity_verified": true,
+      "signed_sha256": "90ff1c5ddd517ed97a8efd0a69c90cd4f50f2223130649e49d92ccb552020fba",
+      "launch_receipt": {
+        "case": "jingmo_sync_page_reimport",
+        "variant": "fixed",
+        "signed_sha256": "90ff1c5ddd517ed97a8efd0a69c90cd4f50f2223130649e49d92ccb552020fba",
+        "install": "[Info]App install path:/home/research/ohm-clean/reproduction-signatures-a96bd29d1f814cd8ad39ef101037d5bc/jingmo_sync_page_reimport/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          8823
+        ],
+        "foreground_bundle": "com.hefengbao.jingmo.hw",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    }
+  },
+  "binary_only_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-13d22ea123d44283bb4ee3436c137d96",
+  "files": [
+    "app.hap",
+    "profile.json",
+    "reproduce.py",
+    "symptom.txt",
+    "workload.json"
+  ],
+  "main_artifacts_unchanged": true,
+  "new_performance_measurement_claimed": false
+}
