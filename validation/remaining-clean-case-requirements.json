@@ -6,7 +6,7 @@
   "source_and_signed_artifact_proof": "validation/all-clean-signed-integrity.json",
   "primary_passed": 11,
   "valid_primary_measurement_failed": 7,
-  "pending_primary_measurement": 11,
+  "pending_primary_measurement": 10,
   "native_heap_collector_calibration_only_proof": "validation/nativeheap-device-clock-calibration.json",
   "supplementary_cold_cache_not_counted": "validation/wan-home-cold-cache-pss-supplement.json",
   "rows": [
@@ -33,16 +33,22 @@
     },
     {
       "case": "browser_insert_date_lookup_cache",
-      "primary_measurement_status": "pending_clean_measurement",
+      "primary_measurement_status": "negative_screen_failed",
       "metric": "hiperf_instructions",
       "app_injection": false,
       "proof": [
-        "validation/cityu-wlan-connectivity.json"
+        "validation/browser-normal-navigation-clean-cpu.json"
       ],
       "recorded_primary_pass": false,
-      "remaining_requirements": [
-        "complete_normal_workload_and_three_paired_measurements"
-      ]
+      "disposition": {
+        "status": "skipped_by_user",
+        "reason": "Verified clean mandatory pair fails unchanged 1.2x criterion; user instructed to skip negative cases.",
+        "performance_passed": false,
+        "original_evidence_preserved": true,
+        "full_three_pair_run_completed": false
+      },
+      "full_performance_run_completed": false,
+      "next_requirement": "None: user-directed early negative skip; retain original complete first-pair evidence, not a full three-pair run."
     },
     {
       "case": "cloudmusic_indexof_in_render",
@@ -377,8 +383,8 @@
       ]
     }
   ],
-  "negative_screen_failed": 1,
-  "skipped_by_user": 8,
+  "negative_screen_failed": 2,
+  "skipped_by_user": 9,
   "renewed_signature_proof": "validation/pending-clean-signature-renewal.json",
   "inventory_note": "Per-case case.json evidence and user dispositions are authoritative. Full negative runs and mandatory-first-pair negative screens are separate; neither is a pass. Pending requirements are not claims of a current device outage.",
   "current_reproduction_signature_gate": {
