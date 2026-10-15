@@ -1,0 +1,87 @@
+{
+  "case": "interviewapp_response_log_full_stringify",
+  "status": "EXTERNAL_TRANSPORT_ENCODING_DIAGNOSTIC_ONLY",
+  "source_commit": "f1476586dfc8aea24b1489ff3166812a6f84f45d",
+  "source_url": "https://github.com/openharmony/communication_netstack/blob/f1476586dfc8aea24b1489ff3166812a6f84f45d/frameworks/js/napi/http/http_exec/src/http_exec.cpp",
+  "source_sha256": "ed2d18a87334417b243745e85848f0425b3c87384b6106b9d8f529e1f67cad6f",
+  "source_findings": [
+    "GetSizeFromCurl uses CURLINFO_SIZE_DOWNLOAD_T for GET, not response.GetResult().size().",
+    "Non-Windows setup enables CURLOPT_ACCEPT_ENCODING with an empty string (automatic supported compression and decoding)."
+  ],
+  "curl_primary_docs": [
+    "https://curl.se/libcurl/c/CURLINFO_SIZE_DOWNLOAD_T.html",
+    "https://curl.se/libcurl/c/CURLOPT_ACCEPT_ENCODING.html"
+  ],
+  "external_samples": [
+    {
+      "requested_encoding": "identity",
+      "content_encoding": "identity",
+      "status": 200,
+      "content_length": "4397",
+      "wire_bytes": 4397,
+      "decoded_bytes": 4397,
+      "wire_sha256": "7ba64c56ded1d110cf0bc95538f9e1941f2895689fe734d0ea5a31fa3cb68b40",
+      "decoded_sha256": "7ba64c56ded1d110cf0bc95538f9e1941f2895689fe734d0ea5a31fa3cb68b40",
+      "business_code": 10000
+    },
+    {
+      "requested_encoding": "gzip",
+      "content_encoding": "gzip",
+      "status": 200,
+      "content_length": null,
+      "wire_bytes": 873,
+      "decoded_bytes": 4397,
+      "wire_sha256": "0674a0b30457b82310fe0f8095f63aca0fabc210ec7587dc43a056ceb413c206",
+      "decoded_sha256": "7ba64c56ded1d110cf0bc95538f9e1941f2895689fe734d0ea5a31fa3cb68b40",
+      "business_code": 10000
+    }
+  ],
+  "raw_artifacts": "artifacts/reference/interview-http-content-encoding-1792049402465085576",
+  "actual_app_response_body_proven": false,
+  "all_five_native_http_completions_proven": false,
+  "performance_accepted": false,
+  "validator_relaxed": false,
+  "original_native_results": {
+    "unfixed": {
+      "raw_artifacts": "artifacts/clean/interviewapp_response_log_full_stringify/unfixed/input-diagnostics/7e5525abece84ec4b6a017f72dc788de/result.json",
+      "receipt_sha256": "a462bfda0aed1c8e4e9a6f345553984ed1ffd71a60acac04c24b71c00f0f5bd3",
+      "results": [
+        {
+          "size": 873,
+          "errCode": 0,
+          "RespCode": 200
+        },
+        {
+          "size": 873,
+          "errCode": 0,
+          "RespCode": 200
+        }
+      ],
+      "observed_result_count": 2
+    },
+    "fixed": {
+      "raw_artifacts": "artifacts/clean/interviewapp_response_log_full_stringify/fixed/input-diagnostics/7cb42aa4162b464aaaff988935c16c3f/result.json",
+      "receipt_sha256": "7255c38d52871304e47b018874c39cad440d6b3c3d373d5308a480ce05cbc5de",
+      "results": [
+        {
+          "size": 873,
+          "errCode": 0,
+          "RespCode": 200
+        },
+        {
+          "size": 873,
+          "errCode": 0,
+          "RespCode": 200
+        },
+        {
+          "size": 873,
+          "errCode": 0,
+          "RespCode": 200
+        }
+      ],
+      "observed_result_count": 3
+    }
+  },
+  "conclusion": "Independent gzip transfer is exactly 873 bytes and decodes to the same 4397-byte SHA-256 as the stable original backend brackets. This explains the unit mismatch without proving the actual app bodies or all five native completions. Completion-count and full rendered-input requirements remain unmet.",
+  "source_artifact": "artifacts/reference/netstack-f1476586dfc8aea24b1489ff3166812a6f84f45d/http_exec.cpp"
+}

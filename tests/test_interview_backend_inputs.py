@@ -29,9 +29,14 @@ class BackendInputTest(unittest.TestCase):
             return '\n'.join(f'100.{i:09} {pid} 21 I app/NETSTACK: [http_exec.cpp:499] taskid={i}, size:{size}, errCode:{code}, RespCode:200, method:GET' for i in range(count))
         result=verify_native_sizes('',logs(),20,100)
         self.assertFalse(result['actual_app_body_hash_verified'])
+        self.assertEqual(result['native_transfer_bytes'],100)
         for raw in (logs(99),logs(code=2300006),logs(pid=21),logs(count=4)):
             with self.assertRaises(ValueError):verify_native_sizes('',raw,20,100)
         with self.assertRaises(ValueError):verify_native_sizes(logs(),logs(),20,100)
+        # The actual sampled wire body can be smaller than decoded JSON. Do
+        # not compare the native curl transfer counter to decoded body length.
+        self.assertEqual(verify_native_sizes('',logs(size=873),20,873)['native_transfer_bytes'],873)
+        with self.assertRaises(ValueError):verify_native_sizes('',logs(size=873),20,4397)
 
     def test_actual_app_projection_cannot_come_from_another_window_or_partial_list(self):
         layout={'attributes':{'bundleName':'com.itcast.pass_interview'},'children':[{'attributes':{'text':'question'}}]}

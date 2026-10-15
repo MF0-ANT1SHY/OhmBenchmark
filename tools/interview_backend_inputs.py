@@ -72,16 +72,21 @@ def native_responses(raw_logs, pid):
     return records
 
 
-def verify_native_sizes(before_logs, after_logs, pid, response_bytes, expected=5):
+def verify_native_sizes(before_logs, after_logs, pid, transfer_bytes, expected=5):
+    """Compare native curl transfer bytes, never decoded JSON body lengths.
+
+    Compression can make these quantities different. A matching transfer size
+    remains only consistency evidence, not the actual app response body hash.
+    """
     old = {line for _, line, _ in native_responses(before_logs, pid)}
     new = [(stamp, line, fields) for stamp, line, fields in native_responses(after_logs, pid)
            if line not in old]
     if len(new) != expected or len({line for _, line, _ in new}) != expected:
         raise ValueError('exact normal native HTTP completion count is not proven')
-    if any(fields != {'size': response_bytes, 'errCode': 0, 'RespCode': 200}
+    if any(fields != {'size': transfer_bytes, 'errCode': 0, 'RespCode': 200}
            for _, _, fields in new):
-        raise ValueError('native response failed or differs in size from sampled backend input')
-    return {'successful_native_http_results': expected, 'response_bytes': response_bytes,
+        raise ValueError('native response failed or differs from the expected transfer-byte size')
+    return {'successful_native_http_results': expected, 'native_transfer_bytes': transfer_bytes,
             'actual_app_body_hash_verified': False}
 
 
