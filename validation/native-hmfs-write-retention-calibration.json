@@ -1,0 +1,79 @@
+{
+  "status": "OWN_PROCESS_HMFS_WRITE_AND_ALL_CPU_RETENTION_CALIBRATED",
+  "raw_artifacts": "artifacts/native-file-write-retention-calibration/c5358101f4cc4717904a807e5aef0c59",
+  "capture_sha256": "c015410d8470fcb96b33d94454d2ba689a0bed3aa9702fefd25abfb4d319776f",
+  "trace_sha256": "c87be7b1f59892053069389e2a053fbe26717ed1d881d0753226983e4b1cc789",
+  "retention": {
+    "cpus": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "window_begin_epoch": "2502481.603579",
+    "window_end_epoch": "2502484.835283",
+    "retained_boundary_markers": 24
+  },
+  "writes": {
+    "returned_bytes": 31,
+    "completed_writes": 2,
+    "writes": [
+      {
+        "tid": 44803,
+        "native_header_tgid": "779",
+        "device_inode": [
+          260,
+          79,
+          533705
+        ],
+        "entry_epoch": "2502483.203274",
+        "offset": 0,
+        "requested_bytes": 24,
+        "entry_line": "           <...>-44803   (    779) [007] .... 2502483.203274: hmfs_write_enter: dev=260,79 ino=533705 offset=0 size=24 i_size=0 entry_name=ohm-file-write-probe-c5358101f4cc4717904a807e5aef0c59d",
+        "exit_epoch": "2502483.203368",
+        "returned_bytes": 24,
+        "exit_line": "           <...>-44803   (    779) [007] .... 2502483.203368: hmfs_write_exit: dev=260,79 ino=533705 offset=24 size=24 res=24"
+      },
+      {
+        "tid": 44803,
+        "native_header_tgid": "779",
+        "device_inode": [
+          260,
+          79,
+          533705
+        ],
+        "entry_epoch": "2502483.203373",
+        "offset": 24,
+        "requested_bytes": 7,
+        "entry_line": "           <...>-44803   (    779) [007] .... 2502483.203373: hmfs_write_enter: dev=260,79 ino=533705 offset=24 size=7 i_size=24 entry_name=ohm-file-write-probe-c5358101f4cc4717904a807e5aef0c59d",
+        "exit_epoch": "2502483.203376",
+        "returned_bytes": 7,
+        "exit_line": "           <...>-44803   (    779) [007] .... 2502483.203376: hmfs_write_exit: dev=260,79 ino=533705 offset=31 size=7 res=7"
+      }
+    ],
+    "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes"
+  },
+  "app_attached": false,
+  "app_write_volume_proven": false,
+  "performance_accepted": false,
+  "tracing_on_after": "0",
+  "events_enabled_after": "0",
+  "buffer_size_restored": "512",
+  "both_writes_inside_all_cpu_retained_interval": true,
+  "executed_source_sha256": {
+    "native_file_trace.py": "c1f317f6cbddbbea392acd5690d5cfb0ec7b24966401ddebe7ce0ee73d69b44c",
+    "native_file_writes.py": "81981389dbd1fd15f32bfb02af50c2d5c189f7b9d28035dc2d064706e0b280f1",
+    "native_trace_record.py": "af24874bba4a3391d2850858adab05bfcd40de7c9d8c9a5285778961aa4448d8",
+    "rss_refresh_progress.py": "0a9d1b50c750ce4a839fa740a602608d892acefa2b5786de963faec93d689341",
+    "native_file_write_probe.c": "6f44d75b3159510abda14b239ba9399d3b3bcbff2765c8c7b023f7d142d9da1a"
+  },
+  "scope": "Standalone own-process calibration only. Ten normal app load-more pages, file/thread attribution, and paired mechanism comparison are not yet verified."
+}

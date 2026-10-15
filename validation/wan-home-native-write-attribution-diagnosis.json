@@ -1,0 +1,22 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "variant": "unfixed",
+  "status": "NORMAL_LOAD_MORE_DID_NOT_COMPLETE",
+  "error": "no normal load-more completion after eight swipes",
+  "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/write-attribution/f94ecf7f8b564f10a3458a8db5ca9571",
+  "receipt_sha256": "1170491db12866fe780e770af4de07412c9620c28190e534e75c7bc07291167c",
+  "late_native_network_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "late_observation_same_process": true,
+  "ui_workload_rerun": false,
+  "trace_cleanup_verified": true,
+  "performance_accepted": false,
+  "ten_page_mechanism_verified": false,
+  "late_unfiltered_native_log_sha256": "3f0769bcae2091c5f7bf8993dec12167015cae54fb445fb6767cc7884cf2b72d",
+  "late_unfiltered_log_findings": {
+    "onReachEnd_callbacks_observed": 2,
+    "loadMore_request_or_HTTP_failure_cause_verified": false
+  },
+  "partial_trace_retained": false,
+  "partial_trace_note": "Original recorder stopped the failed-action trace without dumping it; no app write-byte evidence is claimed. Recorder now preserves failed-action traces; the original trial is not rerun or relabeled.",
+  "next_requirement": "Fresh normal entry with continuous original native HTTP/business log retention, then verify a successful page and native thread/file attribution before the full ten-page mechanism."
+}

@@ -322,7 +322,11 @@
       "supplement_only": "validation/wan-home-cold-cache-pss-supplement.json",
       "primary_criterion_verified": true,
       "primary_paired_rounds": 3,
-      "complete_case_accepted": false
+      "complete_case_accepted": false,
+      "native_write_collector_calibration": "validation/native-hmfs-write-retention-calibration.json",
+      "latest_diagnostic": "validation/wan-home-native-write-attribution-diagnosis.json",
+      "write_collection_next_step": "HMFS returned-byte and all-CPU retention calibration passed. First real app load-more diagnostic did not complete; retain continuous native request logs on fresh normal entry, then verify app thread/inode attribution and ten successful new pages.",
+      "ptrace_return_calibration_failure": "validation/native-syscall-own-child-raw-register-calibration.json"
     },
     {
       "case": "wanharmony_web_progress_log_storm",

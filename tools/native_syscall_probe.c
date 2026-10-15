@@ -20,11 +20,12 @@
 #include <unistd.h>
 
 static volatile sig_atomic_t child_pid;
-static int nr_phase_mode, unanchored_writes;
+static int nr_phase_mode, unanchored_writes, raw_register_mode;
 
-/* Older arm64 kernels expose syscall direction through x7 at syscall stops.
+/* Linux arm64 kernels expose syscall direction through x7 at syscall stops.
  * Kernel ABI source: Linux arch/arm64/kernel/ptrace.c, report_syscall().
  * https://github.com/torvalds/linux/blob/v6.6/arch/arm64/kernel/ptrace.c
+ * This is a calibration hypothesis, NOT a promise for HongMeng Kernel.
  * Read-only GETREGSET fallback; no register or tracee memory writes.
  */
 static long syscall_info(pid_t child, struct ptrace_syscall_info *info)
@@ -40,6 +41,19 @@ static long syscall_info(pid_t child, struct ptrace_syscall_info *info)
     int saved_errno = errno;
     printf("{\"kind\":\"arm64_readonly_regset_result\",\"result\":%ld,\"errno\":%d,\"register_bytes\":%zu,\"x7\":%" PRIu64 "}\n",
            result, saved_errno, io.iov_len, regs.regs[7]);
+    if (raw_register_mode) {
+        printf("{\"kind\":\"own_child_raw_regset\",\"registers\":[");
+        for (int i = 0; i < 31; i++) printf("%s%" PRIu64, i ? "," : "", regs.regs[i]);
+        printf("],\"sp\":%" PRIu64 ",\"pc\":%" PRIu64 ",\"pstate\":%" PRIu64 "}\n", regs.sp, regs.pc, regs.pstate);
+        struct { uint64_t regs[31], sp, pc, pstate; } alternate;
+        memset(&alternate, 0, sizeof(alternate));
+        errno = 0;
+        long alternate_result = ptrace(PTRACE_GETREGS, child, 0, &alternate);
+        int alternate_errno = errno;
+        printf("{\"kind\":\"own_child_raw_getregs\",\"result\":%ld,\"errno\":%d,\"registers\":[", alternate_result, alternate_errno);
+        for (int i = 0; i < 31; i++) printf("%s%" PRIu64, i ? "," : "", alternate.regs[i]);
+        printf("],\"sp\":%" PRIu64 ",\"pc\":%" PRIu64 ",\"pstate\":%" PRIu64 "}\n", alternate.sp, alternate.pc, alternate.pstate);
+    }
     if (result || io.iov_len != sizeof(regs) || (!nr_phase_mode && regs.regs[7] > 1)) {
         errno = result ? saved_errno : EPROTO;
         return -1;
@@ -99,6 +113,7 @@ static void timeout_handler(int sig)
 int main(int argc, char **argv)
 {
     if (argc == 2 && !strcmp(argv[1], "--nr-phase")) nr_phase_mode = 1;
+    else if (argc == 2 && !strcmp(argv[1], "--raw-registers")) nr_phase_mode = raw_register_mode = 1;
     else if (argc != 1) return 2;
     int gate[2], status = 0, failed = 0;
     char path[128];

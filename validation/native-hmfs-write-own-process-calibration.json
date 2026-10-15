@@ -1,0 +1,66 @@
+{
+  "status": "OWN_PROCESS_HMFS_RETURNED_WRITE_BYTES_CALIBRATED",
+  "raw_artifacts": "artifacts/native-file-write-calibration/a57a8e49a4ae4b9bb9077d5fe1b893fa",
+  "receipt_sha256": "a0d794113600322fde7e4c6ef7453c2910c574e83a8c976b73a8054ed53c67ea",
+  "source_sha256": "6f44d75b3159510abda14b239ba9399d3b3bcbff2765c8c7b023f7d142d9da1a",
+  "binary_sha256": "25836063a2a66042107ee163b97fc74d261452ce0555025dc5f51aabe1208f7e",
+  "app_attached": false,
+  "app_write_volume_proven": false,
+  "performance_accepted": false,
+  "trace.txt_transfer_error": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000Traceback (most recent call last):\n  File \"<stdin>\", line 3, in <module>\n  File \"/usr/lib/python3.12/pathlib.py\", line 1021, in read_bytes\n    with self.open(mode='rb') as f:\n         ^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/pathlib.py\", line 1015, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/home/research/ohm-clean/hmfs-write-calibration/a57a8e49a4ae4b9bb9077d5fe1b893fa/trace.txt'\n",
+  "written.bin_sha256": "abb2e184683677df56e068f19f116c15ab9575c6081a50702c30ce393819ff73",
+  "native_returned_writes": {
+    "returned_bytes": 31,
+    "completed_writes": 2,
+    "writes": [
+      {
+        "tid": 42210,
+        "native_header_tgid": "42096",
+        "device_inode": [
+          260,
+          79,
+          290353
+        ],
+        "entry_epoch": "2502109.032075",
+        "offset": 0,
+        "requested_bytes": 24,
+        "entry_line": "           <...>-42210   (  42096) [008] .... 2502109.032075: hmfs_write_enter: dev=260,79 ino=290353 offset=0 size=24 i_size=0 entry_name=ohm-file-write-probe-a57a8e49a4ae4b9bb9077d5fe1b893fad",
+        "exit_epoch": "2502109.032139",
+        "returned_bytes": 24,
+        "exit_line": "           <...>-42210   (  42096) [008] .... 2502109.032139: hmfs_write_exit: dev=260,79 ino=290353 offset=24 size=24 res=24"
+      },
+      {
+        "tid": 42210,
+        "native_header_tgid": "42096",
+        "device_inode": [
+          260,
+          79,
+          290353
+        ],
+        "entry_epoch": "2502109.032143",
+        "offset": 24,
+        "requested_bytes": 7,
+        "entry_line": "           <...>-42210   (  42096) [008] .... 2502109.032143: hmfs_write_enter: dev=260,79 ino=290353 offset=24 size=7 i_size=24 entry_name=ohm-file-write-probe-a57a8e49a4ae4b9bb9077d5fe1b893fad",
+        "exit_epoch": "2502109.032146",
+        "returned_bytes": 7,
+        "exit_line": "           <...>-42210   (  42096) [008] .... 2502109.032146: hmfs_write_exit: dev=260,79 ino=290353 offset=31 size=7 res=7"
+      }
+    ],
+    "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes"
+  },
+  "probe": {
+    "pid": 42210,
+    "dev": 272629839,
+    "ino": 290353,
+    "write_return": 24,
+    "pwrite_return": 7,
+    "file_bytes": 31,
+    "passed": true
+  },
+  "recovery_receipt_sha256": "6a68c79409f6615564fe95a49dbf36605937f5000b640a64a4943fad2bc49e5f",
+  "recovered_trace_sha256": "fc0e7f32a6451f0b71c52cc77df26b50627446cf8a4e39e14f9790e779363be6",
+  "trace_stopped_and_events_disabled": true,
+  "initial_finish_syntax_failure_preserved": true,
+  "no_probe_rerun": true,
+  "scope": "Only the standalone own-process write/pwrite workload is calibrated. App thread/inode attribution, complete retention, and ten successful load-more cycles remain unproven."
+}

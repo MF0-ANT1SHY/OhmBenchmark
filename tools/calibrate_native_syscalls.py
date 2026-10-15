@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def calibrate(remote, binary, output, arguments=()):
-    if tuple(arguments) not in ((), ('--nr-phase',)):
+    if tuple(arguments) not in ((), ('--nr-phase',), ('--raw-registers',)):
         raise ValueError('only the explicit own-child calibration modes are allowed')
     if output.exists():
         raise FileExistsError('preserve previous native calibration evidence')
@@ -73,5 +73,9 @@ if __name__ == '__main__':
     parser.add_argument('--binary', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--nr-phase', action='store_true', help='Own-child-only syscall-number phase experiment')
+    parser.add_argument('--raw-registers', action='store_true', help='Compare read-only GETREGSET/GETREGS on the own child only')
     args = parser.parse_args()
-    print(calibrate(Remote(), args.binary, args.output, ('--nr-phase',) if args.nr_phase else ())['status'])
+    if args.nr_phase and args.raw_registers:
+        parser.error('select only one own-child calibration mode')
+    mode = ('--raw-registers',) if args.raw_registers else ('--nr-phase',) if args.nr_phase else ()
+    print(calibrate(Remote(), args.binary, args.output, mode)['status'])
