@@ -4,6 +4,7 @@
  */
 #define _GNU_SOURCE
 #include <errno.h>
+#include <elf.h>
 #include <fcntl.h>
 #include <inttypes.h>
 #include <linux/ptrace.h>
@@ -14,10 +15,50 @@
 #include <sys/prctl.h>
 #include <sys/ptrace.h>
 #include <sys/syscall.h>
+#include <sys/uio.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
 static volatile sig_atomic_t child_pid;
+
+/* Older arm64 kernels expose syscall direction through x7 at syscall stops.
+ * Kernel ABI source: Linux arch/arm64/kernel/ptrace.c, report_syscall().
+ * https://github.com/torvalds/linux/blob/v6.6/arch/arm64/kernel/ptrace.c
+ * Read-only GETREGSET fallback; no register or tracee memory writes.
+ */
+static long syscall_info(pid_t child, struct ptrace_syscall_info *info)
+{
+    long size = ptrace(PTRACE_GET_SYSCALL_INFO, child, sizeof(*info), info);
+    if (size >= 0 || errno != EINVAL) return size;
+#if defined(__aarch64__)
+    struct { uint64_t regs[31], sp, pc, pstate; } regs;
+    memset(&regs, 0, sizeof(regs));
+    struct iovec io = { &regs, sizeof(regs) };
+    errno = 0;
+    long result = ptrace(PTRACE_GETREGSET, child, (void *)(long)NT_PRSTATUS, &io);
+    int saved_errno = errno;
+    printf("{\"kind\":\"arm64_readonly_regset_result\",\"result\":%ld,\"errno\":%d,\"register_bytes\":%zu,\"x7\":%" PRIu64 "}\n",
+           result, saved_errno, io.iov_len, regs.regs[7]);
+    if (result || io.iov_len != sizeof(regs) || regs.regs[7] > 1) {
+        errno = result ? saved_errno : EPROTO;
+        return -1;
+    }
+    memset(info, 0, sizeof(*info));
+    if (regs.regs[7] == 0) {
+        info->op = PTRACE_SYSCALL_INFO_ENTRY;
+        info->entry.nr = regs.regs[8];
+        for (int i = 0; i < 6; i++) info->entry.args[i] = regs.regs[i];
+    } else {
+        info->op = PTRACE_SYSCALL_INFO_EXIT;
+        info->exit.rval = (int64_t)regs.regs[0];
+        info->exit.is_error = info->exit.rval < 0 && info->exit.rval >= -4095;
+    }
+    printf("{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":%u}\n", info->op);
+    return sizeof(*info);
+#else
+    return -1;
+#endif
+}
 static void timeout_handler(int sig)
 {
     (void)sig;
@@ -76,7 +117,7 @@ int main(void)
         if (!WIFSTOPPED(status) || WSTOPSIG(status) != (SIGTRAP | 0x80)) { failed = 1; break; }
         struct ptrace_syscall_info info;
         memset(&info, 0, sizeof(info));
-        long size = ptrace(PTRACE_GET_SYSCALL_INFO, child, sizeof(info), &info);
+        long size = syscall_info(child, &info);
         if (size < 0) {
             printf("{\"kind\":\"syscall_info_failure\",\"errno\":%d}\n", errno);
             failed = 1;

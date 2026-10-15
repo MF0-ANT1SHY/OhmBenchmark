@@ -1,0 +1,59 @@
+{
+  "status": "CAPABILITY_NOT_PROVEN",
+  "started_unix_ns": 1792048556029270121,
+  "ended_unix_ns": 1792048563016745259,
+  "source_sha256": "051d6e42eba5728857088e2764f0916ab6fd4caa10aa583b969b2f7203fb76b6",
+  "binary_sha256": "eae467cfabb607a5e27d4418006c118a319c65541983c6bc68ed8695bc7d809b",
+  "native_transport": {
+    "upload": {
+      "returncode": 0,
+      "stdout": "FileTransfer finish, Size:18440, File count = 1, time:15ms rate:1229.33kB/s\r\n",
+      "stderr": ""
+    },
+    "permission": {
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "run": {
+      "returncode": 0,
+      "stdout": "{\"kind\":\"seize_own_child\",\"result\":0,\"errno\":0}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"syscall_info_failure\",\"errno\":71}\n{\"kind\":\"calibration\",\"writes\":0,\"returned_bytes\":0,\"expected_bytes\":31,\"passed\":false,\"app_traced\":false}\n",
+      "stderr": ""
+    },
+    "cleanup": {
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  },
+  "events": [
+    {
+      "kind": "seize_own_child",
+      "result": 0,
+      "errno": 0
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "syscall_info_failure",
+      "errno": 71
+    },
+    {
+      "kind": "calibration",
+      "writes": 0,
+      "returned_bytes": 0,
+      "expected_bytes": 31,
+      "passed": false,
+      "app_traced": false
+    }
+  ],
+  "app_attached": false,
+  "app_attach_permission_proven": false,
+  "app_write_volume_proven": false,
+  "performance_accepted": false
+}

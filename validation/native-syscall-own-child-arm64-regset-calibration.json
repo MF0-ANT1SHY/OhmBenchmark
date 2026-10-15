@@ -1,0 +1,52 @@
+{
+  "status": "CAPABILITY_NOT_PROVEN",
+  "started_unix_ns": 1792048511805201461,
+  "ended_unix_ns": 1792048518149325940,
+  "source_sha256": "b9196704817cfd819f143acf4cb9956b24ffa3cb84fc95d569356dd46e2df897",
+  "binary_sha256": "96ab6b7c215d15bdfe3e4d94ee73ce1884aa69d75cfb8c6f04403335ea1a5a90",
+  "native_transport": {
+    "upload": {
+      "returncode": 0,
+      "stdout": "FileTransfer finish, Size:18232, File count = 1, time:25ms rate:729.28kB/s\r\n",
+      "stderr": ""
+    },
+    "permission": {
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "run": {
+      "returncode": 0,
+      "stdout": "{\"kind\":\"seize_own_child\",\"result\":0,\"errno\":0}\n{\"kind\":\"syscall_info_failure\",\"errno\":22}\n{\"kind\":\"calibration\",\"writes\":0,\"returned_bytes\":0,\"expected_bytes\":31,\"passed\":false,\"app_traced\":false}\n",
+      "stderr": ""
+    },
+    "cleanup": {
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  },
+  "events": [
+    {
+      "kind": "seize_own_child",
+      "result": 0,
+      "errno": 0
+    },
+    {
+      "kind": "syscall_info_failure",
+      "errno": 22
+    },
+    {
+      "kind": "calibration",
+      "writes": 0,
+      "returned_bytes": 0,
+      "expected_bytes": 31,
+      "passed": false,
+      "app_traced": false
+    }
+  ],
+  "app_attached": false,
+  "app_attach_permission_proven": false,
+  "app_write_volume_proven": false,
+  "performance_accepted": false
+}
