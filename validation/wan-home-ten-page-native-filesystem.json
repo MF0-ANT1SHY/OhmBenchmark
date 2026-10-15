@@ -1,0 +1,777 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "status": "USER_NEGATIVE_SKIP_NECESSARY_NATIVE_FILE_CRITERION_DISPROVEN",
+  "app_injection": false,
+  "performance_accepted": false,
+  "original_fixture_articles": 471,
+  "variants": {
+    "unfixed": {
+      "status": "TEN_NORMAL_NEW_PAGES_CAPTURED_NATIVE_MECHANISM_AUDIT_PENDING",
+      "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438",
+      "remote_root": "/home/research/ohm-clean/wan-home-ten-page/fad0791ce42c4136a66c5b0603bc5438",
+      "signed_sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+      "install_output": "[Info]App install path:/home/research/ohm-clean/renewed-20261014/wanharmony_persisted_home_list_growth/unfixed/app.hap msg:install bundle successfully. \nAppMod finish\n",
+      "preparation": {
+        "sha256": "3cbdcbcae836f09fb0501c149e84451d1201a5825af4c47bb60f89b064e6ca1f",
+        "deployed_sha256": "e0b7b6cef3c2ae29f6d1cb5b69c6878fa1c5aa2c1bd88442fde8ad2a3b19e693",
+        "deployment": "home_cache_keys_only_preserving_live_preferences",
+        "preparation_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixture-preparations/wan-home/1792056712157783364",
+        "before_sha256": "c35e91c270867dbbf6cd4fadbdcd5946166ded40f89bddd47db75b4fe34caf77",
+        "preferences": "/data/app/el2/100/base/org.example.wan.ohos/haps/entry/files/persistent_storage",
+        "backup": "/home/research/ohm-clean/backups/org.example.wan.ohos/1792056712157783364/persistent_storage.xml",
+        "articles": 471,
+        "fixture_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/wan-home-cache",
+        "method": "ordinary API articles in the initialized native PersistentStorage cache arrays",
+        "installation_verified": true,
+        "functional_read_verified": false
+      },
+      "cycles": [
+        {
+          "page": 1,
+          "status": "ONE_NORMAL_PAGE_NATIVE_FILE_TRACE_CAPTURED_AUDIT_PENDING",
+          "error": null,
+          "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438/page-1",
+          "receipt_sha256": "19fd44bbcff86325e6dfb168a313a17da20170f509ef7ddfe9aca8ddded4c6c1",
+          "archive_sha256": "1182d8d4ebdb31a5302a5aabfbcbe4dca0e0afa1722d5f2d533c1e53bea5d195",
+          "retention": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+            ],
+            "window_begin_epoch": "2504751.093918",
+            "window_end_epoch": "2504849.166955",
+            "retained_boundary_markers": 24
+          },
+          "native_progress": {
+            "requested_pages": [
+              1
+            ],
+            "response_curpages": [
+              2
+            ]
+          },
+          "selected_endpoint_inode_file_bytes": 69360,
+          "file_traffic": {
+            "returned_bytes": 69360,
+            "completed_writes": 1,
+            "writes": [
+              {
+                "tid": 60113,
+                "native_header_tgid": "3269",
+                "device_inode": [
+                  260,
+                  79,
+                  369678
+                ],
+                "entry_epoch": "2504803.742892",
+                "offset": 0,
+                "requested_bytes": 69360,
+                "entry_line": "           <...>-60113   (   3269) [008] .... 2504803.742892: hmfs_write_enter: dev=260,79 ino=369678 offset=0 size=69360 i_size=0 entry_name=persistent_storage",
+                "exit_epoch": "2504803.742972",
+                "returned_bytes": 69360,
+                "exit_line": "           <...>-60113   (   3269) [008] .... 2504803.742972: hmfs_write_exit: dev=260,79 ino=369678 offset=69360 size=69360 res=69360"
+              }
+            ],
+            "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes",
+            "app_thread_attribution_verified": false,
+            "scope": "all native writers to caller-bound device/inodes; not exclusive home-list mutation bytes"
+          },
+          "complete_persistence_traffic_verified": false,
+          "exclusive_home_list_bytes_verified": false
+        },
+        {
+          "page": 2,
+          "status": "ONE_NORMAL_PAGE_NATIVE_FILE_TRACE_CAPTURED_AUDIT_PENDING",
+          "error": null,
+          "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438/page-2",
+          "receipt_sha256": "d329f48ea275c63c9e94754770201cacf4ec943faff14ce62e061cb1beacd48b",
+          "archive_sha256": "16c287819b7575f35373a8e052eedf8710f35f7adbaeb3103870fb585767535c",
+          "retention": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+            ],
+            "window_begin_epoch": "2504895.606305",
+            "window_end_epoch": "2504994.335017",
+            "retained_boundary_markers": 24
+          },
+          "native_progress": {
+            "requested_pages": [
+              2
+            ],
+            "response_curpages": [
+              3
+            ]
+          },
+          "selected_endpoint_inode_file_bytes": 81380,
+          "file_traffic": {
+            "returned_bytes": 81380,
+            "completed_writes": 1,
+            "writes": [
+              {
+                "tid": 61231,
+                "native_header_tgid": "24193",
+                "device_inode": [
+                  260,
+                  79,
+                  533582
+                ],
+                "entry_epoch": "2504948.833409",
+                "offset": 0,
+                "requested_bytes": 81380,
+                "entry_line": "           <...>-61231   (  24193) [004] .... 2504948.833409: hmfs_write_enter: dev=260,79 ino=533582 offset=0 size=81380 i_size=0 entry_name=persistent_storage",
+                "exit_epoch": "2504948.833492",
+                "returned_bytes": 81380,
+                "exit_line": "           <...>-61231   (  24193) [004] .... 2504948.833492: hmfs_write_exit: dev=260,79 ino=533582 offset=81380 size=81380 res=81380"
+              }
+            ],
+            "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes",
+            "app_thread_attribution_verified": false,
+            "scope": "all native writers to caller-bound device/inodes; not exclusive home-list mutation bytes"
+          },
+          "complete_persistence_traffic_verified": false,
+          "exclusive_home_list_bytes_verified": false
+        },
+        {
+          "page": 3,
+          "status": "ONE_NORMAL_PAGE_NATIVE_FILE_TRACE_CAPTURED_AUDIT_PENDING",
+          "error": null,
+          "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438/page-3",
+          "receipt_sha256": "4e0d9ed388dd08f717ca51312592ebcf367ac661dbd6e00ba0e7e1f5f32d8f26",
+          "archive_sha256": "51e7ee53cb939fcc5d069f613981f4a48480ff272e3d19919b3a6ef26add0865",
+          "retention": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+            ],
+            "window_begin_epoch": "2505041.558555",
+            "window_end_epoch": "2505164.563529",
+            "retained_boundary_markers": 24
+          },
+          "native_progress": {
+            "requested_pages": [
+              3
+            ],
+            "response_curpages": [
+              4
+            ]
+          },
+          "selected_endpoint_inode_file_bytes": 93376,
+          "file_traffic": {
+            "returned_bytes": 93376,
+            "completed_writes": 1,
+            "writes": [
+              {
+                "tid": 62471,
+                "native_header_tgid": "44549",
+                "device_inode": [
+                  260,
+                  79,
+                  533672
+                ],
+                "entry_epoch": "2505116.831988",
+                "offset": 0,
+                "requested_bytes": 93376,
+                "entry_line": "           <...>-62471   (  44549) [004] .... 2505116.831988: hmfs_write_enter: dev=260,79 ino=533672 offset=0 size=93376 i_size=0 entry_name=persistent_storage",
+                "exit_epoch": "2505116.832088",
+                "returned_bytes": 93376,
+                "exit_line": "           <...>-62471   (  44549) [004] .... 2505116.832088: hmfs_write_exit: dev=260,79 ino=533672 offset=93376 size=93376 res=93376"
+              }
+            ],
+            "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes",
+            "app_thread_attribution_verified": false,
+            "scope": "all native writers to caller-bound device/inodes; not exclusive home-list mutation bytes"
+          },
+          "complete_persistence_traffic_verified": false,
+          "exclusive_home_list_bytes_verified": false
+        },
+        {
+          "page": 4,
+          "status": "ONE_NORMAL_PAGE_NATIVE_FILE_TRACE_CAPTURED_AUDIT_PENDING",
+          "error": null,
+          "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438/page-4-5e5c09ee4b5343f1b818311de641447f",
+          "receipt_sha256": "f5d0af7fe09d99f712f0c69ec41319a88e5a034d4f9035405a371943e7128869",
+          "archive_sha256": "c773f3a64f5b8b5d5a6644ad8220344815475a1ab11fd4e81fae0dd6f05341f2",
+          "retention": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+            ],
+            "window_begin_epoch": "2505518.847919",
+            "window_end_epoch": "2505614.623180",
+            "retained_boundary_markers": 24
+          },
+          "native_progress": {
+            "requested_pages": [
+              4
+            ],
+            "response_curpages": [
+              5
+            ]
+          },
+          "selected_endpoint_inode_file_bytes": 102997,
+          "file_traffic": {
+            "returned_bytes": 102997,
+            "completed_writes": 1,
+            "writes": [
+              {
+                "tid": 64596,
+                "native_header_tgid": "34397",
+                "device_inode": [
+                  260,
+                  79,
+                  95789
+                ],
+                "entry_epoch": "2505570.357726",
+                "offset": 0,
+                "requested_bytes": 102997,
+                "entry_line": "           <...>-64596   (  34397) [007] .... 2505570.357726: hmfs_write_enter: dev=260,79 ino=95789 offset=0 size=102997 i_size=0 entry_name=persistent_storage",
+                "exit_epoch": "2505570.357871",
+                "returned_bytes": 102997,
+                "exit_line": "           <...>-64596   (  34397) [007] .... 2505570.357871: hmfs_write_exit: dev=260,79 ino=95789 offset=102997 size=102997 res=102997"
+              }
+            ],
+            "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes",
+            "app_thread_attribution_verified": false,
+            "scope": "all native writers to caller-bound device/inodes; not exclusive home-list mutation bytes"
+          },
+          "complete_persistence_traffic_verified": false,
+          "exclusive_home_list_bytes_verified": false
+        },
+        {
+          "page": 5,
+          "status": "ONE_NORMAL_PAGE_NATIVE_FILE_TRACE_CAPTURED_AUDIT_PENDING",
+          "error": null,
+          "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438/page-5-01ba587f976049328e40114810a4b2f7",
+          "receipt_sha256": "4f8570f04e30806c814ea3f25624d51e5ee9c28f3c5e9a27b2d8d36216b69303",
+          "archive_sha256": "f25d19da1fc1653a6973b31847fb03bff229e61e25e2779690d36dca9a9019ad",
+          "retention": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+            ],
+            "window_begin_epoch": "2505662.365228",
+            "window_end_epoch": "2505740.442708",
+            "retained_boundary_markers": 24
+          },
+          "native_progress": {
+            "requested_pages": [
+              5
+            ],
+            "response_curpages": [
+              6
+            ]
+          },
+          "selected_endpoint_inode_file_bytes": 115048,
+          "file_traffic": {
+            "returned_bytes": 115048,
+            "completed_writes": 1,
+            "writes": [
+              {
+                "tid": 65533,
+                "native_header_tgid": "65533",
+                "device_inode": [
+                  260,
+                  79,
+                  74204
+                ],
+                "entry_epoch": "2505694.792114",
+                "offset": 0,
+                "requested_bytes": 115048,
+                "entry_line": "           <...>-65533   (  65533) [007] .... 2505694.792114: hmfs_write_enter: dev=260,79 ino=74204 offset=0 size=115048 i_size=0 entry_name=persistent_storage",
+                "exit_epoch": "2505694.792216",
+                "returned_bytes": 115048,
+                "exit_line": "           <...>-65533   (  65533) [007] .... 2505694.792216: hmfs_write_exit: dev=260,79 ino=74204 offset=115048 size=115048 res=115048"
+              }
+            ],
+            "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes",
+            "app_thread_attribution_verified": false,
+            "scope": "all native writers to caller-bound device/inodes; not exclusive home-list mutation bytes"
+          },
+          "complete_persistence_traffic_verified": false,
+          "exclusive_home_list_bytes_verified": false
+        },
+        {
+          "page": 6,
+          "status": "ONE_NORMAL_PAGE_NATIVE_FILE_TRACE_CAPTURED_AUDIT_PENDING",
+          "error": null,
+          "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438/page-6-b9b0639acbbe4821a633a77267d78e75",
+          "receipt_sha256": "f2e292af1b0f7ae1211125219108f2d1cfb87445f261b66b4a815ab3bb244dab",
+          "archive_sha256": "838252c50cfa3d0ef4a5a513e1fd9f272e14ced84f75eb987f2ae4a4d26ea6bd",
+          "retention": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+            ],
+            "window_begin_epoch": "2505786.136472",
+            "window_end_epoch": "2505885.630028",
+            "retained_boundary_markers": 24
+          },
+          "native_progress": {
+            "requested_pages": [
+              6
+            ],
+            "response_curpages": [
+              7
+            ]
+          },
+          "selected_endpoint_inode_file_bytes": 125929,
+          "file_traffic": {
+            "returned_bytes": 125929,
+            "completed_writes": 1,
+            "writes": [
+              {
+                "tid": 1838,
+                "native_header_tgid": "1301",
+                "device_inode": [
+                  260,
+                  79,
+                  107300
+                ],
+                "entry_epoch": "2505839.673214",
+                "offset": 0,
+                "requested_bytes": 125929,
+                "entry_line": "           <...>-1838    (   1301) [004] .... 2505839.673214: hmfs_write_enter: dev=260,79 ino=107300 offset=0 size=125929 i_size=0 entry_name=persistent_storage",
+                "exit_epoch": "2505839.673322",
+                "returned_bytes": 125929,
+                "exit_line": "           <...>-1838    (   1301) [004] .... 2505839.673322: hmfs_write_exit: dev=260,79 ino=107300 offset=125929 size=125929 res=125929"
+              }
+            ],
+            "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes",
+            "app_thread_attribution_verified": false,
+            "scope": "all native writers to caller-bound device/inodes; not exclusive home-list mutation bytes"
+          },
+          "complete_persistence_traffic_verified": false,
+          "exclusive_home_list_bytes_verified": false
+        },
+        {
+          "page": 7,
+          "status": "ONE_NORMAL_PAGE_NATIVE_FILE_TRACE_CAPTURED_AUDIT_PENDING",
+          "error": null,
+          "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438/page-7-b9e14afd042a4d0da5572102fda678da",
+          "receipt_sha256": "bf65d18f1577de61a50b42df4be0f7b0b0c0be8f1cb231b7535a97a449c1e929",
+          "archive_sha256": "1787b76daf00496e3aeb8750e058d64df074130dad2da26e0e4e17d8ce83f33f",
+          "retention": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+            ],
+            "window_begin_epoch": "2505934.122125",
+            "window_end_epoch": "2506030.805564",
+            "retained_boundary_markers": 24
+          },
+          "native_progress": {
+            "requested_pages": [
+              7
+            ],
+            "response_curpages": [
+              8
+            ]
+          },
+          "selected_endpoint_inode_file_bytes": 136696,
+          "file_traffic": {
+            "returned_bytes": 136696,
+            "completed_writes": 1,
+            "writes": [
+              {
+                "tid": 3145,
+                "native_header_tgid": "44549",
+                "device_inode": [
+                  260,
+                  79,
+                  77660
+                ],
+                "entry_epoch": "2505985.613618",
+                "offset": 0,
+                "requested_bytes": 136696,
+                "entry_line": "           <...>-3145    (  44549) [007] .... 2505985.613618: hmfs_write_enter: dev=260,79 ino=77660 offset=0 size=136696 i_size=0 entry_name=persistent_storage",
+                "exit_epoch": "2505985.614033",
+                "returned_bytes": 136696,
+                "exit_line": "           <...>-3145    (  44549) [007] .... 2505985.614033: hmfs_write_exit: dev=260,79 ino=77660 offset=136696 size=136696 res=136696"
+              }
+            ],
+            "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes",
+            "app_thread_attribution_verified": false,
+            "scope": "all native writers to caller-bound device/inodes; not exclusive home-list mutation bytes"
+          },
+          "complete_persistence_traffic_verified": false,
+          "exclusive_home_list_bytes_verified": false
+        },
+        {
+          "page": 8,
+          "status": "ONE_NORMAL_PAGE_NATIVE_FILE_TRACE_CAPTURED_AUDIT_PENDING",
+          "error": null,
+          "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438/page-8-73496eb2b0924a618a8c7a96af459171",
+          "receipt_sha256": "2d0670a65023d08331f8a6fdc174257d26fd0674a9770a47478bc11eca006e15",
+          "archive_sha256": "408eed1e54a9348c2b484b4bd33f01c106ea58b91c74e4554f328e0cf45c37a5",
+          "retention": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+            ],
+            "window_begin_epoch": "2506079.545827",
+            "window_end_epoch": "2506188.966668",
+            "retained_boundary_markers": 24
+          },
+          "native_progress": {
+            "requested_pages": [
+              8
+            ],
+            "response_curpages": [
+              9
+            ]
+          },
+          "selected_endpoint_inode_file_bytes": 149180,
+          "file_traffic": {
+            "returned_bytes": 149180,
+            "completed_writes": 1,
+            "writes": [
+              {
+                "tid": 4397,
+                "native_header_tgid": "4394",
+                "device_inode": [
+                  260,
+                  79,
+                  532501
+                ],
+                "entry_epoch": "2506146.687427",
+                "offset": 0,
+                "requested_bytes": 149180,
+                "entry_line": "           <...>-4397    (   4394) [008] .... 2506146.687427: hmfs_write_enter: dev=260,79 ino=532501 offset=0 size=149180 i_size=0 entry_name=persistent_storage",
+                "exit_epoch": "2506146.687598",
+                "returned_bytes": 149180,
+                "exit_line": "           <...>-4397    (   4394) [008] .... 2506146.687598: hmfs_write_exit: dev=260,79 ino=532501 offset=149180 size=149180 res=149180"
+              }
+            ],
+            "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes",
+            "app_thread_attribution_verified": false,
+            "scope": "all native writers to caller-bound device/inodes; not exclusive home-list mutation bytes"
+          },
+          "complete_persistence_traffic_verified": false,
+          "exclusive_home_list_bytes_verified": false
+        },
+        {
+          "page": 9,
+          "status": "ONE_NORMAL_PAGE_NATIVE_FILE_TRACE_CAPTURED_AUDIT_PENDING",
+          "error": null,
+          "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438/page-9-a4e249a8fde1411ebddf5882f177f8dc",
+          "receipt_sha256": "d5cd832216fb31003cd02e0fcc046693f1759e1914914d2ec61580746f1bc2b5",
+          "archive_sha256": "35a276dc802d7ad7ba22eeaa99e4ddc501c404e4d6231806bee7f6a91761f1bc",
+          "retention": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+            ],
+            "window_begin_epoch": "2506238.130783",
+            "window_end_epoch": "2506336.211522",
+            "retained_boundary_markers": 24
+          },
+          "native_progress": {
+            "requested_pages": [
+              9
+            ],
+            "response_curpages": [
+              10
+            ]
+          },
+          "selected_endpoint_inode_file_bytes": 162961,
+          "file_traffic": {
+            "returned_bytes": 162961,
+            "completed_writes": 1,
+            "writes": [
+              {
+                "tid": 5624,
+                "native_header_tgid": "1697",
+                "device_inode": [
+                  260,
+                  79,
+                  77893
+                ],
+                "entry_epoch": "2506291.330537",
+                "offset": 0,
+                "requested_bytes": 162961,
+                "entry_line": "           <...>-5624    (   1697) [007] .... 2506291.330537: hmfs_write_enter: dev=260,79 ino=77893 offset=0 size=162961 i_size=0 entry_name=persistent_storage",
+                "exit_epoch": "2506291.330653",
+                "returned_bytes": 162961,
+                "exit_line": "           <...>-5624    (   1697) [007] .... 2506291.330653: hmfs_write_exit: dev=260,79 ino=77893 offset=162961 size=162961 res=162961"
+              }
+            ],
+            "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes",
+            "app_thread_attribution_verified": false,
+            "scope": "all native writers to caller-bound device/inodes; not exclusive home-list mutation bytes"
+          },
+          "complete_persistence_traffic_verified": false,
+          "exclusive_home_list_bytes_verified": false
+        },
+        {
+          "page": 10,
+          "status": "ONE_NORMAL_PAGE_NATIVE_FILE_TRACE_CAPTURED_AUDIT_PENDING",
+          "error": null,
+          "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438/page-10-92d78693ee024eb9b21b06a357d647aa",
+          "receipt_sha256": "95d8a1496f116f975b63508ef50f7e7492bffb8d72489d94345a7e86aeee27a1",
+          "archive_sha256": "f2c32c687d089f91c88b9f407a13095fc96b13818fb190853fe1b6fc0f5576c2",
+          "retention": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+            ],
+            "window_begin_epoch": "2506386.897088",
+            "window_end_epoch": "2506506.475009",
+            "retained_boundary_markers": 24
+          },
+          "native_progress": {
+            "requested_pages": [
+              10
+            ],
+            "response_curpages": [
+              11
+            ]
+          },
+          "selected_endpoint_inode_file_bytes": 175228,
+          "file_traffic": {
+            "returned_bytes": 175228,
+            "completed_writes": 1,
+            "writes": [
+              {
+                "tid": 7285,
+                "native_header_tgid": "44549",
+                "device_inode": [
+                  260,
+                  79,
+                  136756
+                ],
+                "entry_epoch": "2506459.451596",
+                "offset": 0,
+                "requested_bytes": 175228,
+                "entry_line": "           <...>-7285    (  44549) [004] .... 2506459.451596: hmfs_write_enter: dev=260,79 ino=136756 offset=0 size=175228 i_size=0 entry_name=persistent_storage",
+                "exit_epoch": "2506459.452037",
+                "returned_bytes": 175228,
+                "exit_line": "           <...>-7285    (  44549) [004] .... 2506459.452037: hmfs_write_exit: dev=260,79 ino=136756 offset=175228 size=175228 res=175228"
+              }
+            ],
+            "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes",
+            "app_thread_attribution_verified": false,
+            "scope": "all native writers to caller-bound device/inodes; not exclusive home-list mutation bytes"
+          },
+          "complete_persistence_traffic_verified": false,
+          "exclusive_home_list_bytes_verified": false
+        }
+      ],
+      "failed_attempts": [
+        {
+          "page": 4,
+          "status": "FAIL",
+          "error": "normal public ten-article page required",
+          "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438/page-4",
+          "receipt_sha256": "b2756943ef555c48979b3c3f3ea793f9776e5595edc2a1085b74e6cf314f3a93",
+          "archive_sha256": "9865d7259e9ea08b066f48d026353494ff70c8bf213e1673896cce5965c89b8c"
+        }
+      ]
+    },
+    "fixed": {
+      "status": "VERIFIED_PREFIX_RETAINED_REMAINDER_USER_SKIPPED_AFTER_NECESSARY_FAILURE",
+      "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/fixed/ten-page-filesystem/b79f3f816a4f4d57aea258ed3130a46f",
+      "remote_root": "/home/research/ohm-clean/wan-home-ten-page/b79f3f816a4f4d57aea258ed3130a46f",
+      "signed_sha256": "a1abaaef2d68f521d312abac0b219569995ee040a9e1248a8d3cd1aa89206937",
+      "install_output": "[Info]App install path:/home/research/ohm-clean/renewed-20261014/wanharmony_persisted_home_list_growth/fixed/app.hap msg:install bundle successfully. \nAppMod finish\n",
+      "preparation": {
+        "sha256": "3cbdcbcae836f09fb0501c149e84451d1201a5825af4c47bb60f89b064e6ca1f",
+        "deployed_sha256": "9a36d3ff3044623a9fa86d7eb064a3d245405337ba1a87c38b1e9468e2d35480",
+        "deployment": "home_cache_keys_only_preserving_live_preferences",
+        "preparation_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixture-preparations/wan-home/1792058563772175879",
+        "before_sha256": "a02f49a2f076877fc30deae0128d975aa4615d7537da08dd92c8244115eb6efb",
+        "preferences": "/data/app/el2/100/base/org.example.wan.ohos/haps/entry/files/persistent_storage",
+        "backup": "/home/research/ohm-clean/backups/org.example.wan.ohos/1792058563772175879/persistent_storage.xml",
+        "articles": 471,
+        "fixture_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/wan-home-cache",
+        "method": "ordinary API articles in the initialized native PersistentStorage cache arrays",
+        "installation_verified": true,
+        "functional_read_verified": false
+      },
+      "cycles": [
+        {
+          "page": 1,
+          "status": "ONE_NORMAL_PAGE_NATIVE_FILE_TRACE_CAPTURED_AUDIT_PENDING",
+          "error": null,
+          "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/fixed/ten-page-filesystem/b79f3f816a4f4d57aea258ed3130a46f/page-1-167a05791f0b445aa229cb35f8c29b42",
+          "receipt_sha256": "2fb8ac67da76bd79682653533738f0450b88bd5e1f165244688e88d24a21b12b",
+          "archive_sha256": "1a7a022cf901291743a6908cb400e48f91aa79b735e356e31b54b16a8ace3294",
+          "retention": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+            ],
+            "window_begin_epoch": "2506601.686936",
+            "window_end_epoch": "2506705.627116",
+            "retained_boundary_markers": 24
+          },
+          "native_progress": {
+            "requested_pages": [
+              1
+            ],
+            "response_curpages": [
+              2
+            ]
+          },
+          "selected_endpoint_inode_file_bytes": 611898,
+          "file_traffic": {
+            "returned_bytes": 611898,
+            "completed_writes": 1,
+            "writes": [
+              {
+                "tid": 9547,
+                "native_header_tgid": "3269",
+                "device_inode": [
+                  260,
+                  79,
+                  123646
+                ],
+                "entry_epoch": "2506656.571452",
+                "offset": 0,
+                "requested_bytes": 611898,
+                "entry_line": "           <...>-9547    (   3269) [004] .... 2506656.571452: hmfs_write_enter: dev=260,79 ino=123646 offset=0 size=611898 i_size=0 entry_name=persistent_storage",
+                "exit_epoch": "2506656.572074",
+                "returned_bytes": 611898,
+                "exit_line": "           <...>-9547    (   3269) [004] .... 2506656.572074: hmfs_write_exit: dev=260,79 ino=123646 offset=611898 size=611898 res=611898"
+              }
+            ],
+            "method": "native hmfs_write_exit res, paired with matching thread/device/inode entry; not requested sizes",
+            "app_thread_attribution_verified": false,
+            "scope": "all native writers to caller-bound device/inodes; not exclusive home-list mutation bytes"
+          },
+          "complete_persistence_traffic_verified": false,
+          "exclusive_home_list_bytes_verified": false
+        }
+      ]
+    }
+  },
+  "resume_events": [
+    {
+      "reason": "Successful public page has fewer returned rows than requested maximum 10; original rejection occurred before any device action.",
+      "resume_page": 4,
+      "actual_server_rows": 8,
+      "original_proof_snapshot": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438/proof-before-resume-97058ede4a924b539130f2b35ee75246.json",
+      "original_proof_sha256": "182917dc1f5dd8cb44ebc271e60ab1167330834b85f9edaa555ba0b12fba1031",
+      "same_original_app_state_verified": true,
+      "new_collector_sha256": "22f2042537281c7a217bc9e1b092f510e02f6a92034c8acbdaa34154423be54a"
+    }
+  ],
+  "collection_process": {
+    "pid": 533116,
+    "stat": "533116 (python) R 533053 533053 533053 0 -1 0 4558 3847 0 0 6 1 7 1 20 0 1 0 7769040940 34230272 5795 18446744073709551615 93824992677888 93824995514013 140737488344656 0 0 0 0 16781312 2 0 0 0 17 9 0 0 0 0 0 93824997886064 93824998169976 93824998457344 140737488345547 140737488345643 140737488345643 140737488351208 0\n"
+  },
+  "full_fixed_ten_page_run_completed": false,
+  "negative_bound_proof": "validation/wan-home-native-write-negative-bound.json",
+  "boundary_control": "validation/wan-home-native-file-boundary-control.json",
+  "already_dispatched_extra_fixed_cycle": "validation/wan-home-already-dispatched-extra-fixed-cycle.json"
+}

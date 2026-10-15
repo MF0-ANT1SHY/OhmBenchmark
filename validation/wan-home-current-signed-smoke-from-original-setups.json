@@ -1,0 +1,42 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "status": "BOTH_CURRENT_SIGNED_SMOKES_DERIVED_FROM_ORIGINAL_NORMAL_SETUPS",
+  "ui_workload_rerun": false,
+  "performance_accepted": false,
+  "variants": {
+    "unfixed": {
+      "case": "wanharmony_persisted_home_list_growth",
+      "variant": "unfixed",
+      "status": "PASS",
+      "signed_sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+      "install": "[Info]App install path:/home/research/ohm-clean/renewed-20261014/wanharmony_persisted_home_list_growth/unfixed/app.hap msg:install bundle successfully. \nAppMod finish\n",
+      "launch": "Verified by the original normal native setup process, foreground app layout and successful real backend requests; no fresh UI rerun.",
+      "pids": [
+        58958
+      ],
+      "foreground_bundle": "org.example.wan.ohos",
+      "native_setup_file": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438/setup.json",
+      "native_setup_sha256": "374c6ee5f5fd2048069c630afee98a01681c943c89cbae298b8e78dfbd7bfb87",
+      "layout_sha256": "2c5915aa30639f362e662548209a4330b893f7fec35ca938b8ae504019d3169c",
+      "performance_verified": false,
+      "ui_workload_rerun": false
+    },
+    "fixed": {
+      "case": "wanharmony_persisted_home_list_growth",
+      "variant": "fixed",
+      "status": "PASS",
+      "signed_sha256": "a1abaaef2d68f521d312abac0b219569995ee040a9e1248a8d3cd1aa89206937",
+      "install": "[Info]App install path:/home/research/ohm-clean/renewed-20261014/wanharmony_persisted_home_list_growth/fixed/app.hap msg:install bundle successfully. \nAppMod finish\n",
+      "launch": "Verified by the original normal native setup process, foreground app layout and successful real backend requests; no fresh UI rerun.",
+      "pids": [
+        8260
+      ],
+      "foreground_bundle": "org.example.wan.ohos",
+      "native_setup_file": "artifacts/clean/wanharmony_persisted_home_list_growth/fixed/ten-page-filesystem/b79f3f816a4f4d57aea258ed3130a46f/setup.json",
+      "native_setup_sha256": "8fb52d5cee2031315ede61079f1bf8f9e812afb6494a22be86b5af35dadbba2a",
+      "layout_sha256": "b63742ca998c8dbb410003f1aa7fce4c4fe45d2c130c3fdfadb6682c0828528c",
+      "performance_verified": false,
+      "ui_workload_rerun": false
+    }
+  }
+}

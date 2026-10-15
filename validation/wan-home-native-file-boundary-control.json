@@ -1,0 +1,14 @@
+{
+  "status": "OWN_COORDINATOR_TERMINATED_AFTER_NEGATIVE_BOUND_AND_COMPLETED_INFLIGHT_UI_CYCLE",
+  "pid": 533116,
+  "start_ticks": 7769040940,
+  "fixed_remote_root": "/home/research/ohm-clean/wan-home-ten-page/b79f3f816a4f4d57aea258ed3130a46f",
+  "completed_fixed_pages_at_control": 1,
+  "app_process_signalled": false,
+  "remote_UI_child_stopped": false,
+  "reason": "The first fixed file-traffic lower bound may already make the unchanged threefold ten-page criterion impossible. Audit before dispatching further cycles; preserve any already-running cycle.",
+  "remote_inflight_cycle_completed_and_retained": true,
+  "native_trace_stopped_before_termination": true,
+  "own_coordinator_terminal": true,
+  "extra_cycle_proof": "validation/wan-home-already-dispatched-extra-fixed-cycle.json"
+}

@@ -1,0 +1,31 @@
+{
+  "status": "SOURCE_BINDINGS_ONLY_NOT_CASE_ACCEPTANCE",
+  "remote_helper_sha256": {
+    "wan_home_write_cycle.py": "482fd25dff11469603634e3eab8d48332a5238e8110011adf267f09826c56b8e",
+    "audit_wan_home_primary.py": "acbddcdb9bf2dfd9377b4c53df85021d23f464a1bb54c819d23b85a93f79a5cb",
+    "native_file_trace.py": "99962bf58e5f864c181d76085efec9852f5ab2cc6f381a061424d8e0ff37bd41",
+    "native_file_writes.py": "49894dcdcf1a35557378158c09dc1adb7ad5ec191c1652a9aaf3a78ffc1bd40c",
+    "native_hilog.py": "6346a4f313db76639d64686d8de765a166529bd0388a3e890f29683b8b06005f",
+    "ui_driver.py": "96600f16f3ecd9f701ff9d6e71d14ff2cd14be287093fa3ef65ebfcda9d56133",
+    "wan_html_inputs.py": "fef91afbb2be087091aff67b83beae0d86a829d7d673ccfc98da5ba4a0ba7ef2"
+  },
+  "coordinator_sha256": "672c72fc30c39cf8b2381db11ba1a2d4b9bb0514f033ac641c3f57794d84b864",
+  "app_injection": false,
+  "performance_accepted": false,
+  "retained_source_versions": {
+    "original_executed_helper": {
+      "sha256": "482fd25dff11469603634e3eab8d48332a5238e8110011adf267f09826c56b8e",
+      "source": "artifacts/collector-source-versions/482fd25dff11469603634e3eab8d48332a5238e8110011adf267f09826c56b8e/original_executed_helper.py"
+    },
+    "resumed_executed_helper": {
+      "sha256": "22f2042537281c7a217bc9e1b092f510e02f6a92034c8acbdaa34154423be54a",
+      "source": "artifacts/collector-source-versions/22f2042537281c7a217bc9e1b092f510e02f6a92034c8acbdaa34154423be54a/resumed_executed_helper.py"
+    },
+    "original_coordinator": {
+      "sha256": "672c72fc30c39cf8b2381db11ba1a2d4b9bb0514f033ac641c3f57794d84b864",
+      "source": "artifacts/collector-source-versions/672c72fc30c39cf8b2381db11ba1a2d4b9bb0514f033ac641c3f57794d84b864/original_coordinator.py"
+    }
+  },
+  "resumed_coordinator_sha256": "eaeb1091190739bf7e4a434e2dc776788aca96be98c1f1b01667e9baf131c5b5",
+  "boundary_preserver_sha256": "e45d08f4ed2211a966eda378fb99fdf2ece20a9594d6dee973e84a4f05ac7259"
+}

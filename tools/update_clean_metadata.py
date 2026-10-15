@@ -75,6 +75,9 @@ def main():
         if oracle['evidence'].get('status')=='negative_screen_failed' and all(
                 clean['variants'][v].get('performance',{}).get('status')=='NEGATIVE_SCREEN_FAILED' for v in ('unfixed','fixed')):
             clean['performance_validation']='negative_screen_failed'
+        if oracle['evidence'].get('status')=='primary_criterion_met_mechanism_screen_failed' and all(
+                clean['variants'][v].get('performance',{}).get('status')=='MECHANISM_SCREEN_FAILED' for v in ('unfixed','fixed')):
+            clean['performance_validation']='mechanism_screen_failed'
         c["clean_validation"] = clean
         c["reproduction"] = [
             "python3 tools/reconstruct_clean_hosts.py",
@@ -96,10 +99,13 @@ def main():
         measured=case['clean_validation']['performance_validation']=='verified'
         failed=case['clean_validation']['performance_validation']=='failed'
         screened=case['clean_validation']['performance_validation']=='negative_screen_failed'
+        mechanism_screened=case['clean_validation']['performance_validation']=='mechanism_screen_failed'
         contracts[case['id']]={'oracle_metric':case['test_oracle']['metric'],'app_injection':False,
             'workload_validation':case['clean_validation']['workload_validation'],
-            'measurement_status':'measured_clean' if measured else 'measured_clean_failed' if failed else 'negative_screen_failed' if screened else 'pending_clean_measurement',
-            'rounds_recorded':case['test_oracle']['evidence'].get('rounds_per_variant',0) if measured or failed or screened else 0}
+            'measurement_status':'measured_clean' if measured else 'measured_clean_failed' if failed else 'negative_screen_failed' if screened else 'primary_criterion_met_mechanism_screen_failed' if mechanism_screened else 'pending_clean_measurement',
+            'rounds_recorded':case['test_oracle']['evidence'].get('rounds_per_variant',0) if measured or failed or screened or mechanism_screened else 0}
+        if mechanism_screened:
+            contracts[case['id']].update(primary_criterion_met=True,mechanism_criterion_met=False,full_case_accepted=False)
         if case.get('disposition'):
             contracts[case['id']]['disposition'] = case['disposition']
     (ROOT/'cases/measurement-contract.json').write_text(json.dumps({
