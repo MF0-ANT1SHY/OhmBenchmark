@@ -1,0 +1,73 @@
+{
+  "case": "interviewapp_response_log_full_stringify",
+  "status": "FINAL_NATIVE_LOG_SNAPSHOT_INCOMPLETE_NEEDS_IN_WINDOW_RETENTION",
+  "variants": {
+    "unfixed": {
+      "raw_artifacts": "artifacts/clean/interviewapp_response_log_full_stringify/unfixed/input-diagnostics/7e5525abece84ec4b6a017f72dc788de/result.json",
+      "receipt_sha256": "a462bfda0aed1c8e4e9a6f345553984ed1ffd71a60acac04c24b71c00f0f5bd3",
+      "business_success_epochs": [
+        1792042705.352963,
+        1792042715.2186773,
+        1792042725.2834044,
+        1792042735.2982323,
+        1792042745.338321
+      ],
+      "native_results": [
+        {
+          "epoch": 1792042735.2946548,
+          "transfer_bytes": 873,
+          "status": 200,
+          "error": 0
+        },
+        {
+          "epoch": 1792042745.3339095,
+          "transfer_bytes": 873,
+          "status": 200,
+          "error": 0
+        }
+      ],
+      "native_results_only_cover_latest_business_successes": true,
+      "business_log_type_domain": "A0FF09",
+      "native_http_log_type_domain": "C015B0"
+    },
+    "fixed": {
+      "raw_artifacts": "artifacts/clean/interviewapp_response_log_full_stringify/fixed/input-diagnostics/7cb42aa4162b464aaaff988935c16c3f/result.json",
+      "receipt_sha256": "7255c38d52871304e47b018874c39cad440d6b3c3d373d5308a480ce05cbc5de",
+      "business_success_epochs": [
+        1792042821.7241867,
+        1792042831.1124818,
+        1792042840.8674548,
+        1792042850.4833963,
+        1792042860.4838781
+      ],
+      "native_results": [
+        {
+          "epoch": 1792042840.8640563,
+          "transfer_bytes": 873,
+          "status": 200,
+          "error": 0
+        },
+        {
+          "epoch": 1792042850.4798272,
+          "transfer_bytes": 873,
+          "status": 200,
+          "error": 0
+        },
+        {
+          "epoch": 1792042860.4802625,
+          "transfer_bytes": 873,
+          "status": 200,
+          "error": 0
+        }
+      ],
+      "native_results_only_cover_latest_business_successes": true,
+      "business_log_type_domain": "A0FF09",
+      "native_http_log_type_domain": "C015B0"
+    }
+  },
+  "log_eviction_cause_proven": false,
+  "inference": "Native HTTP result records match only the last business successes, while earlier business records remain. Different native/application log types make a retention-window mismatch plausible, but not proven. Capture during each refresh or continuously instead of relying on one final snapshot.",
+  "all_five_native_http_completions_proven": false,
+  "performance_accepted": false,
+  "app_injection": false
+}
