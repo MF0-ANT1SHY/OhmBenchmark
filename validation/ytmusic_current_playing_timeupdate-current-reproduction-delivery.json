@@ -1,0 +1,53 @@
+{
+  "case": "ytmusic_current_playing_timeupdate",
+  "status": "PASS",
+  "scope": "Current reproduction delivery only; historical performance evidence unchanged",
+  "variants": {
+    "unfixed": {
+      "status": "PASS",
+      "business_and_provisioning_identity_verified": true,
+      "signed_sha256": "d7d2c810428aab929f38063ce759b4c75472f9e70f9294336211090e88c5b366",
+      "launch_receipt": {
+        "case": "ytmusic_current_playing_timeupdate",
+        "variant": "unfixed",
+        "signed_sha256": "d7d2c810428aab929f38063ce759b4c75472f9e70f9294336211090e88c5b366",
+        "install": "[Info]App install path:/home/research/ohm-clean/reproduction-signatures-56bcc244eae74c1394d7e35745dd8dab/ytmusic_current_playing_timeupdate/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          17119
+        ],
+        "foreground_bundle": "com.example.myapplication",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    "fixed": {
+      "status": "PASS",
+      "business_and_provisioning_identity_verified": true,
+      "signed_sha256": "269660962dfa53b95d0660a5434e48fa1dc35fab99262e183e8040bf163eb90c",
+      "launch_receipt": {
+        "case": "ytmusic_current_playing_timeupdate",
+        "variant": "fixed",
+        "signed_sha256": "269660962dfa53b95d0660a5434e48fa1dc35fab99262e183e8040bf163eb90c",
+        "install": "[Info]App install path:/home/research/ohm-clean/reproduction-signatures-01036917e4df4fe1a8528604fbafc553/ytmusic_current_playing_timeupdate/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          17866
+        ],
+        "foreground_bundle": "com.example.myapplication",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    }
+  },
+  "binary_only_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-330bf5c5673e413aa788c4c85a878532",
+  "files": [
+    "app.hap",
+    "profile.json",
+    "reproduce.py",
+    "symptom.txt",
+    "workload.json"
+  ],
+  "main_artifacts_unchanged": true,
+  "new_performance_measurement_claimed": false
+}
