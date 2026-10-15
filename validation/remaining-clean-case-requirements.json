@@ -193,12 +193,14 @@
       "app_injection": false,
       "proof": [
         "validation/sepweather-clean-routing-premise.json",
-        "validation/cityu-wlan-connectivity.json"
+        "validation/cityu-wlan-connectivity.json",
+        "validation/sepweather-recents-reopen-process-identity.json"
       ],
       "recorded_primary_pass": false,
       "remaining_requirements": [
         "normal_same_process_MainPage_reconstruction_not_proven"
-      ]
+      ],
+      "normal_task_close_reopen": "restarts_process_not_valid_for_per_process_font_cache"
     },
     {
       "case": "sheafreader_article_list_foreach",

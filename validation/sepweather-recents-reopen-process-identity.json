@@ -1,0 +1,27 @@
+{
+  "case": "sepweather_font_register_per_page",
+  "status": "NORMAL_RECENTS_CLOSE_REOPEN_RESTARTS_PROCESS",
+  "performance_accepted": false,
+  "negative_performance_verdict": false,
+  "app_injection": false,
+  "route": "Native bottom-edge swipe with hold, identify only SepWeather task card, swipe that card up, normal launcher start",
+  "observer_notes": [
+    "Virtual multitask key 2210 returned No Error but did not open recents.",
+    "Simple bottom-edge swipe opened launcher, not recents.",
+    "Native touch swipe with 1000ms hold opened recents.",
+    "Only the task card next to the native SepWeather title was closed; clear-all was not used."
+  ],
+  "initial_pid": 60163,
+  "reopened_pid": 62072,
+  "initial_window": "546",
+  "reopened_window": "547",
+  "same_process": false,
+  "local_raw_artifacts": "artifacts/clean/sepweather_font_register_per_page/unfixed/recents-diagnostics/a00be56dc8af4b6ba7d587017a360f09",
+  "raw_sha256": {
+    "initial.json": "064113aa797dc060f732c89012638d183cba1e29f072a7be00c7baea34c2cadf",
+    "gesture.json": "8fb8b44be2095d26219551e8b275952bb9ddd4bdcf632ec504d388eb5ec17c43",
+    "hold-gesture.json": "4d5ecadc28c2dd252a0a97e5eba1a4bde0e5a64b7a17e379d53a98435ca2e551",
+    "close-reopen.json": "82531826b4f694e6d2fc9d8da65413381485b4b168f529908d0989895a78c89b"
+  },
+  "conclusion": "Normal task-card removal kills the old process. A new window after process restart does not establish same-process MainPage reconstruction or a font-cache advantage. Case remains pending, not a negative performance case."
+}
