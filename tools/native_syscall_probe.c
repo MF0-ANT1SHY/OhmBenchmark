@@ -20,6 +20,7 @@
 #include <unistd.h>
 
 static volatile sig_atomic_t child_pid;
+static int nr_phase_mode, unanchored_writes;
 
 /* Older arm64 kernels expose syscall direction through x7 at syscall stops.
  * Kernel ABI source: Linux arch/arm64/kernel/ptrace.c, report_syscall().
@@ -39,12 +40,41 @@ static long syscall_info(pid_t child, struct ptrace_syscall_info *info)
     int saved_errno = errno;
     printf("{\"kind\":\"arm64_readonly_regset_result\",\"result\":%ld,\"errno\":%d,\"register_bytes\":%zu,\"x7\":%" PRIu64 "}\n",
            result, saved_errno, io.iov_len, regs.regs[7]);
-    if (result || io.iov_len != sizeof(regs) || regs.regs[7] > 1) {
+    if (result || io.iov_len != sizeof(regs) || (!nr_phase_mode && regs.regs[7] > 1)) {
         errno = result ? saved_errno : EPROTO;
         return -1;
     }
     memset(info, 0, sizeof(*info));
-    if (regs.regs[7] == 0) {
+    unsigned direction = (unsigned)regs.regs[7];
+    if (nr_phase_mode) {
+        /* Own-child-only experiment: a syscall-number transition anchors an
+         * entry, then require paired equal-number entry/exit stops. Do not
+         * generalize this calibration to app-thread coverage or permission.
+         */
+        static int have_previous, anchored;
+        static uint64_t previous;
+        static unsigned next_direction;
+        uint64_t number = regs.regs[8];
+        if (!anchored) {
+            if (have_previous && number != previous) {
+                anchored = 1;
+                direction = 0;
+            } else {
+                if (number == SYS_write || number == SYS_pwrite64) unanchored_writes++;
+                previous = number;
+                have_previous = 1;
+                printf("{\"kind\":\"unanchored_own_child_stop\",\"syscall\":%" PRIu64 "}\n", number);
+                return sizeof(*info);
+            }
+        } else {
+            direction = next_direction;
+            if (direction == 1 && number != previous) { errno = EPROTO; return -1; }
+        }
+        previous = number;
+        next_direction = 1-direction;
+        printf("{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":%" PRIu64 ",\"direction\":%u}\n", number, direction);
+    }
+    if (direction == 0) {
         info->op = PTRACE_SYSCALL_INFO_ENTRY;
         info->entry.nr = regs.regs[8];
         for (int i = 0; i < 6; i++) info->entry.args[i] = regs.regs[i];
@@ -66,8 +96,10 @@ static void timeout_handler(int sig)
     _exit(124);
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
+    if (argc == 2 && !strcmp(argv[1], "--nr-phase")) nr_phase_mode = 1;
+    else if (argc != 1) return 2;
     int gate[2], status = 0, failed = 0;
     char path[128];
     snprintf(path, sizeof(path), "/data/local/tmp/ohm-syscall-calibration-%ld", (long)getpid());
@@ -140,9 +172,9 @@ int main(void)
             selected = 0;
         }
     }
-    failed |= writes != 2 || total != 31;
-    printf("{\"kind\":\"calibration\",\"writes\":%d,\"returned_bytes\":%" PRId64 ",\"expected_bytes\":31,\"passed\":%s,\"app_traced\":false}\n",
-           writes, total, failed ? "false" : "true");
+    failed |= writes != 2 || total != 31 || unanchored_writes != 0;
+    printf("{\"kind\":\"calibration\",\"writes\":%d,\"returned_bytes\":%" PRId64 ",\"expected_bytes\":31,\"passed\":%s,\"app_traced\":false,\"nr_phase_experiment\":%s,\"unanchored_write_stops\":%d}\n",
+           writes, total, failed ? "false" : "true", nr_phase_mode ? "true" : "false", unanchored_writes);
 cleanup:
     if (child_pid > 0) {
         kill(child, SIGKILL);

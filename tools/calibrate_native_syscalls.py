@@ -15,7 +15,9 @@ from remote_device import Remote
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def calibrate(remote, binary, output):
+def calibrate(remote, binary, output, arguments=()):
+    if tuple(arguments) not in ((), ('--nr-phase',)):
+        raise ValueError('only the explicit own-child calibration modes are allowed')
     if output.exists():
         raise FileExistsError('preserve previous native calibration evidence')
     if binary.read_bytes()[:4] != b'\x7fELF':
@@ -40,7 +42,8 @@ def call(args):
     code += f'upload=call({["hdc", "file", "send", remote_binary, device_binary]!r})\n'
     code += f'permission=call({["hdc", "shell", "chmod 700 " + device_binary]!r})\n'
     code += 'try:\n'
-    code += f' result=call({["hdc", "shell", device_binary]!r})\n'
+    command = device_binary + (' ' + ' '.join(arguments) if arguments else '')
+    code += f' result=call({["hdc", "shell", command]!r})\n'
     code += 'finally:\n'
     code += f' cleanup=call({["hdc", "shell", "rm -f " + device_binary]!r})\n'
     code += "print(json.dumps({'upload':upload,'permission':permission,'run':result,'cleanup':cleanup}))\n"
@@ -57,6 +60,7 @@ def call(args):
              'source_sha256': hashlib.sha256((ROOT/'tools/native_syscall_probe.c').read_bytes()).hexdigest(),
              'binary_sha256': hashlib.sha256(binary.read_bytes()).hexdigest(),
              'native_transport': transport, 'events': rows,
+             'probe_arguments': list(arguments),
              'app_attached': False, 'app_attach_permission_proven': False,
              'app_write_volume_proven': False, 'performance_accepted': False}
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -68,5 +72,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--binary', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--nr-phase', action='store_true', help='Own-child-only syscall-number phase experiment')
     args = parser.parse_args()
-    print(calibrate(Remote(), args.binary, args.output)['status'])
+    print(calibrate(Remote(), args.binary, args.output, ('--nr-phase',) if args.nr_phase else ())['status'])

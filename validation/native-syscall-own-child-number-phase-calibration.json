@@ -1,0 +1,415 @@
+{
+  "status": "CAPABILITY_NOT_PROVEN",
+  "started_unix_ns": 1792050239937249034,
+  "ended_unix_ns": 1792050246209252592,
+  "source_sha256": "fb5e4f53ddc229f49be3bb5ec622fa6cbdf03ee7b4dfd472023a694f05cad3c3",
+  "binary_sha256": "f9803741fa62f80d7400a81216f5a3b4a1ff97b463387adaa4bba852f355dbd6",
+  "native_transport": {
+    "upload": {
+      "returncode": 0,
+      "stdout": "FileTransfer finish, Size:19296, File count = 1, time:23ms rate:838.96kB/s\r\n",
+      "stderr": ""
+    },
+    "permission": {
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "run": {
+      "returncode": 0,
+      "stdout": "{\"kind\":\"seize_own_child\",\"result\":0,\"errno\":0}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"unanchored_own_child_stop\",\"syscall\":135}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"unanchored_own_child_stop\",\"syscall\":135}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"unanchored_own_child_stop\",\"syscall\":135}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"unanchored_own_child_stop\",\"syscall\":135}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":167,\"direction\":0}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":167,\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":2}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":173,\"direction\":0}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":173,\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":2}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":57,\"direction\":0}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":57,\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":2}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":63,\"direction\":0}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":63,\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":2}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":57,\"direction\":0}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":57,\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":2}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":56,\"direction\":0}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":56,\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":2}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":64,\"direction\":0}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":64,\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":2}\n{\"kind\":\"native_write_exit\",\"syscall\":64,\"returned_bytes\":3,\"is_error\":0}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":68,\"direction\":0}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":68,\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":2}\n{\"kind\":\"native_write_exit\",\"syscall\":68,\"returned_bytes\":3,\"is_error\":0}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":57,\"direction\":0}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":57,\"direction\":1}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":2}\n{\"kind\":\"arm64_readonly_regset_result\",\"result\":0,\"errno\":0,\"register_bytes\":272,\"x7\":3418352462953472355}\n{\"kind\":\"own_child_nr_phase_stop\",\"syscall\":94,\"direction\":0}\n{\"kind\":\"arm64_readonly_regset_stop\",\"direction\":1}\n{\"kind\":\"calibration\",\"writes\":2,\"returned_bytes\":6,\"expected_bytes\":31,\"passed\":false,\"app_traced\":false,\"nr_phase_experiment\":true,\"unanchored_write_stops\":0}\n",
+      "stderr": ""
+    },
+    "cleanup": {
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  },
+  "events": [
+    {
+      "kind": "seize_own_child",
+      "result": 0,
+      "errno": 0
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "unanchored_own_child_stop",
+      "syscall": 135
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "unanchored_own_child_stop",
+      "syscall": 135
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "unanchored_own_child_stop",
+      "syscall": 135
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "unanchored_own_child_stop",
+      "syscall": 135
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 167,
+      "direction": 0
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 167,
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 2
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 173,
+      "direction": 0
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 173,
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 2
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 57,
+      "direction": 0
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 57,
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 2
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 63,
+      "direction": 0
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 63,
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 2
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 57,
+      "direction": 0
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 57,
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 2
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 56,
+      "direction": 0
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 56,
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 2
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 64,
+      "direction": 0
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 64,
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 2
+    },
+    {
+      "kind": "native_write_exit",
+      "syscall": 64,
+      "returned_bytes": 3,
+      "is_error": 0
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 68,
+      "direction": 0
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 68,
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 2
+    },
+    {
+      "kind": "native_write_exit",
+      "syscall": 68,
+      "returned_bytes": 3,
+      "is_error": 0
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 57,
+      "direction": 0
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 57,
+      "direction": 1
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 2
+    },
+    {
+      "kind": "arm64_readonly_regset_result",
+      "result": 0,
+      "errno": 0,
+      "register_bytes": 272,
+      "x7": 3418352462953472355
+    },
+    {
+      "kind": "own_child_nr_phase_stop",
+      "syscall": 94,
+      "direction": 0
+    },
+    {
+      "kind": "arm64_readonly_regset_stop",
+      "direction": 1
+    },
+    {
+      "kind": "calibration",
+      "writes": 2,
+      "returned_bytes": 6,
+      "expected_bytes": 31,
+      "passed": false,
+      "app_traced": false,
+      "nr_phase_experiment": true,
+      "unanchored_write_stops": 0
+    }
+  ],
+  "probe_arguments": [
+    "--nr-phase"
+  ],
+  "app_attached": false,
+  "app_attach_permission_proven": false,
+  "app_write_volume_proven": false,
+  "performance_accepted": false,
+  "diagnosis": "The own-child number-phase experiment observes two writes but reports 6 bytes instead of the known successful 31-byte workload. It therefore does not calibrate actual syscall returns and MUST NOT be used as app write-volume evidence. The cause of the register/phase mismatch remains unproven.",
+  "actual_syscall_return_values_verified": false
+}
