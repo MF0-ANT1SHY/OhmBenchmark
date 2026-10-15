@@ -1,0 +1,34 @@
+{
+  "case": "interviewapp_response_log_full_stringify",
+  "status": "EXTERNAL_BACKEND_STABILITY_PREMISE_VERIFIED_APP_INPUT_IDENTITY_PENDING",
+  "app_injection": false,
+  "performance_accepted": false,
+  "url": "https://api-harmony-teach.itheima.net/hm/question/list?questionBankType=10&type=401&page=1&sort=0&keyword=",
+  "independent_snapshot_count": 3,
+  "response_bytes": 4397,
+  "sha256": "7ba64c56ded1d110cf0bc95538f9e1941f2895689fe734d0ea5a31fa3cb68b40",
+  "question_ids": [
+    "41292",
+    "41293",
+    "41294",
+    "41296",
+    "41306",
+    "41297",
+    "41300",
+    "41299",
+    "41301",
+    "41298"
+  ],
+  "question_rows": 10,
+  "total": 12,
+  "raw_artifacts": "artifacts/backend-diagnostics/interview-response/5b6a8329ede240dc9a30538a8f83edf1",
+  "summary_sha256": "30e16912a70047a17f35bce0c3e7c289c2b5d9fc66b16277a50f978192498835",
+  "actual_app_body_hash_verified": false,
+  "remaining_requirements": [
+    "Observe actual app native HTTP completion counts and successful response sizes during normal refresh.",
+    "Verify actual rendered question-list projection against sampled backend rows.",
+    "Collect bracketed independent snapshots for each paired trial and retain original backend bodies.",
+    "Complete native app-attributed instruction measurements under the unchanged criterion."
+  ],
+  "scope": "The new observer only checks independently sampled backend stability and native/UI consistency. It neither substitutes a backend nor claims cryptographic identity of actual app responses."
+}
