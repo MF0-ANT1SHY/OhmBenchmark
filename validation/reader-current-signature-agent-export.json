@@ -1,0 +1,21 @@
+{
+  "case": "sheafreader_extract_tag_tolowercase",
+  "status": "PASS",
+  "mode": "binary-only",
+  "measured_signed_sha256": "14140ea223bb7445d626f6967bf0889ac095c7a54db93fc4b6ceefb98ebc828d",
+  "exported_signed_sha256": "706aa7a9e4a90be9c1ea16711451246f2ef3fc3e87d953df09660167e02a524c",
+  "business_and_provisioning_identity_verified": true,
+  "fresh_launch_verified": true,
+  "historical_measurement_bindings_unchanged": true,
+  "new_performance_measurement_claimed": false,
+  "source_exported": false,
+  "private_evaluator_files_exported": false,
+  "files": [
+    "app.hap",
+    "profile.json",
+    "reproduce.py",
+    "symptom.txt",
+    "workload.json"
+  ],
+  "destination": "artifacts/agent-exports/reproduction-current-cea916e2125a499f985a0d24ab3a5912"
+}

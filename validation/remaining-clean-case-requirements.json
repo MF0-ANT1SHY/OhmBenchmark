@@ -6,7 +6,7 @@
   "source_and_signed_artifact_proof": "validation/all-clean-signed-integrity.json",
   "primary_passed": 11,
   "valid_primary_measurement_failed": 7,
-  "pending_primary_measurement": 10,
+  "pending_primary_measurement": 9,
   "native_heap_collector_calibration_only_proof": "validation/nativeheap-device-clock-calibration.json",
   "supplementary_cold_cache_not_counted": "validation/wan-home-cold-cache-pss-supplement.json",
   "rows": [
@@ -253,17 +253,22 @@
     },
     {
       "case": "wanharmony_history_log_materialization",
-      "primary_measurement_status": "pending_clean_measurement",
+      "primary_measurement_status": "negative_screen_failed",
       "metric": "trace_cpu_ms",
       "app_injection": false,
       "proof": [
-        "validation/cityu-wlan-connectivity.json",
-        "validation/wan-public-dns-restoration.json"
+        "validation/wan-history-clean-native-cpu.json"
       ],
       "recorded_primary_pass": false,
-      "remaining_requirements": [
-        "complete_normal_workload_and_three_paired_measurements"
-      ]
+      "disposition": {
+        "status": "skipped_by_user",
+        "reason": "Verified mandatory clean native pair fails unchanged criterion; user instructed to skip negative cases.",
+        "performance_passed": false,
+        "original_evidence_preserved": true,
+        "full_three_pair_run_completed": false
+      },
+      "full_performance_run_completed": false,
+      "next_requirement": "None: user-directed early negative skip; full three-pair run not claimed."
     },
     {
       "case": "wanharmony_html_decode_per_render",
@@ -383,15 +388,19 @@
       ]
     }
   ],
-  "negative_screen_failed": 2,
-  "skipped_by_user": 9,
+  "negative_screen_failed": 3,
+  "skipped_by_user": 10,
   "renewed_signature_proof": "validation/pending-clean-signature-renewal.json",
   "inventory_note": "Per-case case.json evidence and user dispositions are authoritative. Full negative runs and mandatory-first-pair negative screens are separate; neither is a pass. Pending requirements are not claims of a current device outage.",
   "current_reproduction_signature_gate": {
     "status": "additional_delivery_work_remains",
     "proof": "validation/accepted-hap-profile-validity-audit.json",
-    "scope": "Two cached historical accepted HAP exports were directly audited and are expired. Other historical exports still require a current-profile audit; accepted performance evidence is unchanged.",
+    "scope": "Two historical exports were directly found expired; Reader now has a separately identical renewed package with fresh launch and blind export proof. Remaining accepted variants still require audit/renewal and separate delivery checks; primary performance evidence is unchanged.",
     "requirement": "All delivered reproduction HAPs must have current valid provisioning profiles. Retain historical measured packages and capture bindings; no replacement is accepted without business-byte/permission equivalence and fresh launch proof.",
-    "performance_pass_count_is_not_full_delivery_completion": true
+    "performance_pass_count_is_not_full_delivery_completion": true,
+    "renewed_launch_and_blind_export_verified": [
+      "sheafreader_extract_tag_tolowercase"
+    ],
+    "renewal_proof": "validation/reader-current-signature-agent-export.json"
   }
 }

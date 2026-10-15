@@ -569,5 +569,15 @@
         "fixed": "clean-app-v2/sheafreader_extract_tag_tolowercase/fixed"
       }
     }
-  ]
+  ],
+  "reproduction_delivery": {
+    "status": "current_equivalent_signature_launch_and_blind_export_verified",
+    "variant": "unfixed",
+    "proof": "../../validation/reader-current-signature-agent-export.json",
+    "measured_signed_sha256": "14140ea223bb7445d626f6967bf0889ac095c7a54db93fc4b6ceefb98ebc828d",
+    "reproduction_signed_sha256": "706aa7a9e4a90be9c1ea16711451246f2ef3fc3e87d953df09660167e02a524c",
+    "unsigned_sha256": "be83d4a5203a04d189b40bb6f78cfe85e8b0cf744ba602a571ccbe602aedd574",
+    "historical_performance_evidence_unchanged": true,
+    "new_performance_measurement_claimed": false
+  }
 }
