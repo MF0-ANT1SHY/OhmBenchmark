@@ -380,5 +380,12 @@
   "negative_screen_failed": 1,
   "skipped_by_user": 8,
   "renewed_signature_proof": "validation/pending-clean-signature-renewal.json",
-  "inventory_note": "Per-case case.json evidence and user dispositions are authoritative. Full negative runs and mandatory-first-pair negative screens are separate; neither is a pass. Pending requirements are not claims of a current device outage."
+  "inventory_note": "Per-case case.json evidence and user dispositions are authoritative. Full negative runs and mandatory-first-pair negative screens are separate; neither is a pass. Pending requirements are not claims of a current device outage.",
+  "current_reproduction_signature_gate": {
+    "status": "additional_delivery_work_remains",
+    "proof": "validation/accepted-hap-profile-validity-audit.json",
+    "scope": "Two cached historical accepted HAP exports were directly audited and are expired. Other historical exports still require a current-profile audit; accepted performance evidence is unchanged.",
+    "requirement": "All delivered reproduction HAPs must have current valid provisioning profiles. Retain historical measured packages and capture bindings; no replacement is accepted without business-byte/permission equivalence and fresh launch proof.",
+    "performance_pass_count_is_not_full_delivery_completion": true
+  }
 }

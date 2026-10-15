@@ -16,6 +16,7 @@ from clean_sources import app_ref
 from remote_device import Remote
 from scheduler_cpu import compute, window_from_markers
 from system_pss import verify_window
+from hap_profile_validity import verify_installable_profile
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -177,6 +178,8 @@ def export(cid, destination, symptom, round_number, remote_name='cityuPC', inclu
         Remote(remote_name).download(sign['signed_hap'], hap)
     if hashlib.sha256(hap.read_bytes()).hexdigest() != sign['audit']['sha256']:
         raise ValueError('signed package hash mismatch')
+    verify_installable_profile(hap, case['host_app']['bundle_name'],
+        ROOT/'toolchain/command-line-tools/sdk/default/openharmony/toolchains/lib/hap-sign-tool.jar')
     if hashlib.sha256(plan.read_bytes()).hexdigest() != capture['plan_sha256']:
         raise ValueError('workload changed since capture')
     repo = ROOT/case['host_app']['local_path']

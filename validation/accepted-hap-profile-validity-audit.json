@@ -1,0 +1,22 @@
+{
+  "scope": "Current profile-date export gate only; historical performance evidence is not changed.",
+  "performance_evidence_changed": false,
+  "cases": [
+    {
+      "case": "sheafreader_extract_tag_tolowercase",
+      "signed_sha256": "14140ea223bb7445d626f6967bf0889ac095c7a54db93fc4b6ceefb98ebc828d",
+      "current_profile_valid": false,
+      "export_rejected": true,
+      "error": "signed app profile is expired; refusing an uninstallable export"
+    },
+    {
+      "case": "browser_eager_history_load",
+      "signed_sha256": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9",
+      "current_profile_valid": false,
+      "export_rejected": true,
+      "error": "signed app profile is expired; refusing an uninstallable export"
+    }
+  ],
+  "status": "EXPIRED_EXPORTS_REJECTED_HISTORICAL_EVIDENCE_RETAINED",
+  "remaining_delivery_requirement": "Renew reproduction signatures while preserving exact historical signed artifacts/capture bindings; establish business-byte and permission identity and fresh launch proof before allowing any replacement reproduction artifact."
+}

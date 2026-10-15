@@ -36,10 +36,15 @@ class AppReportTests(unittest.TestCase):
             put(capture/'report.json',self.report())
             with patch('export_agent_data.ROOT',root),patch('export_agent_data.app_ref',return_value='ref'),\
                     patch('export_agent_data.subprocess.check_output',return_value='tree\n'),\
+                    patch('export_agent_data.verify_installable_profile'),\
                     patch('export_agent_data.subprocess.run') as archive:
                 destination=root/'export'
                 export(cid,destination,'slow launch',1)
                 archive.assert_not_called()
+                with patch('export_agent_data.verify_installable_profile',side_effect=ValueError('signed app profile is expired')):
+                    with self.assertRaisesRegex(ValueError,'expired'):
+                        export(cid,root/'expired-export','slow launch',1)
+                self.assertFalse((root/'expired-export').exists())
                 from test_trace_evidence import NativeTraceEvidenceTest
                 fixture=NativeTraceEvidenceTest();fixture.setUp()
                 self.addCleanup(fixture.doCleanups)
