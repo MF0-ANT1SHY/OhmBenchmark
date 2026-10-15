@@ -1,0 +1,29 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "status": "DIAGNOSTIC_ORIGINAL_WORKLOAD_PSS_ONLY",
+  "performance_accepted": false,
+  "supplementary_cold_cache_reused": false,
+  "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+  "variants": {
+    "unfixed": {
+      "round": 3,
+      "status": "ORIGINAL_TWELVE_SWIPES_COMPLETED_INPUT_AND_NETWORK_AUDIT_PENDING",
+      "error": null,
+      "kernel_pss_bytes": 140647424,
+      "local_raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/online-diagnostics/93840e405dc04528abc63bb1f3401a25",
+      "capture_sha256": "70e8543751e885b7afe68e335dce240be553ec5d5d74306c59b135ef707d0ec1",
+      "input_preparation_verified": true,
+      "performance_accepted": false
+    },
+    "fixed": {
+      "round": 3,
+      "status": "ORIGINAL_TWELVE_SWIPES_COMPLETED_INPUT_AND_NETWORK_AUDIT_PENDING",
+      "error": null,
+      "kernel_pss_bytes": 105619456,
+      "local_raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/fixed/online-diagnostics/80da9c1fd412476180456ecc05957bfb",
+      "capture_sha256": "ad004d0d02b2d74f4414eb2e614af221437006e28e21c060357470d360a100a9",
+      "input_preparation_verified": true,
+      "performance_accepted": false
+    }
+  }
+}

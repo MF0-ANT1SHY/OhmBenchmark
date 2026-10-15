@@ -6,7 +6,7 @@
   "source_and_signed_artifact_proof": "validation/all-clean-signed-integrity.json",
   "primary_passed": 11,
   "valid_primary_measurement_failed": 7,
-  "pending_primary_measurement": 9,
+  "pending_primary_measurement": 8,
   "native_heap_collector_calibration_only_proof": "validation/nativeheap-device-clock-calibration.json",
   "supplementary_cold_cache_not_counted": "validation/wan-home-cold-cache-pss-supplement.json",
   "rows": [
@@ -288,20 +288,22 @@
     },
     {
       "case": "wanharmony_persisted_home_list_growth",
-      "primary_measurement_status": "pending_clean_measurement",
+      "primary_measurement_status": "primary_criterion_verified_mechanism_pending",
       "metric": "app_pss_bytes",
       "app_injection": false,
       "proof": [
         "validation/cityu-wlan-connectivity.json",
-        "validation/wan-public-dns-restoration.json"
+        "validation/wan-public-dns-restoration.json",
+        "validation/wan-home-original-primary-audit-three-pairs.json"
       ],
       "recorded_primary_pass": false,
       "remaining_requirements": [
-        "original_post_scroll_PSS_oracle",
-        "ten_new_pages_with_native_persistence_write_volume_evidence",
-        "unchanged_paired_measurement_criterion"
+        "ten_new_pages_with_native_persistence_write_volume_evidence"
       ],
-      "supplement_only": "validation/wan-home-cold-cache-pss-supplement.json"
+      "supplement_only": "validation/wan-home-cold-cache-pss-supplement.json",
+      "primary_criterion_verified": true,
+      "primary_paired_rounds": 3,
+      "complete_case_accepted": false
     },
     {
       "case": "wanharmony_web_progress_log_storm",
@@ -398,7 +400,7 @@
     "status": "all_accepted_case_deliveries_verified",
     "proof": "validation/accepted-current-reproduction-delivery.json",
     "historical_expiry_audit": "validation/accepted-hap-profile-validity-audit.json",
-    "scope": "All 11 accepted cases now have currently valid equivalent signatures for both variants, matching fresh launch receipts, and verified binary-only unfixed agent exports. Nine primary cases remain pending; historical measured packages and performance bindings are unchanged.",
+    "scope": "All 11 accepted cases have current equivalent signatures for both variants, matching fresh launches and verified binary-only exports. Eight primary cases and one separately verified-primary case awaiting its mechanism remain incomplete.",
     "requirement": "All delivered reproduction HAPs must have current valid provisioning profiles. Retain historical measured packages and capture bindings; no replacement is accepted without business-byte/permission equivalence and fresh launch proof.",
     "performance_pass_count_is_not_full_delivery_completion": true,
     "renewed_launch_and_blind_export_verified": [
@@ -415,5 +417,7 @@
       "ytmusic_current_playing_timeupdate"
     ],
     "variants_verified": 22
-  }
+  },
+  "primary_criterion_verified_pending_mechanism": 1,
+  "pending_complete_case_validation": 9
 }

@@ -1,0 +1,284 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "status": "PRIMARY_CRITERION_MET_MECHANISM_PENDING",
+  "full_case_accepted": false,
+  "performance_accepted": false,
+  "metric": "app_pss_bytes",
+  "original_workload_rounds": 3,
+  "primary_criterion_fully_evaluated": true,
+  "primary_criterion_met": true,
+  "mandatory_pair_below_threshold": false,
+  "samples": {
+    "unfixed": [
+      144357376,
+      144671744,
+      140647424
+    ],
+    "fixed": [
+      105409536,
+      105155584,
+      105619456
+    ]
+  },
+  "paired_ratios": [
+    1.3694906692312923,
+    1.375787556845293,
+    1.331643139688203
+  ],
+  "median_ratio": 1.3694906692312923,
+  "fixture_sha256": "3cbdcbcae836f09fb0501c149e84451d1201a5825af4c47bb60f89b064e6ca1f",
+  "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+  "rows": [
+    {
+      "round": 1,
+      "unfixed_pss_bytes": 144357376,
+      "fixed_pss_bytes": 105409536,
+      "raw_ratio": 1.3694906692312923,
+      "successful_load_more_pages": [
+        1,
+        2,
+        3
+      ],
+      "final_article_count": 40,
+      "actual_final_viewports": {
+        "unfixed": [
+          [
+            30,
+            31668
+          ],
+          [
+            31,
+            31679
+          ],
+          [
+            32,
+            31678
+          ],
+          [
+            33,
+            31677
+          ],
+          [
+            34,
+            31675
+          ]
+        ],
+        "fixed": [
+          [
+            30,
+            31668
+          ],
+          [
+            31,
+            31679
+          ],
+          [
+            32,
+            31678
+          ],
+          [
+            33,
+            31677
+          ],
+          [
+            34,
+            31675
+          ]
+        ],
+        "shared": [
+          [
+            30,
+            31668
+          ],
+          [
+            31,
+            31679
+          ],
+          [
+            32,
+            31678
+          ],
+          [
+            33,
+            31677
+          ],
+          [
+            34,
+            31675
+          ]
+        ],
+        "identical": true
+      },
+      "original_capture_sha256": {
+        "unfixed": "10545599750fd26e53907d3604e8082dd2f3acab1d1b6cf34551de4c74150c5c",
+        "fixed": "c50bfc877d8519220e636d66e0c9f4b295d14f46b473441d233d980d7c174f79"
+      },
+      "unfixed_late_logs_supplemental_only": true
+    },
+    {
+      "round": 2,
+      "unfixed_pss_bytes": 144671744,
+      "fixed_pss_bytes": 105155584,
+      "raw_ratio": 1.375787556845293,
+      "successful_load_more_pages": [
+        1,
+        2,
+        3
+      ],
+      "final_article_count": 40,
+      "actual_final_viewports": {
+        "unfixed": [
+          [
+            30,
+            31668
+          ],
+          [
+            31,
+            31679
+          ],
+          [
+            32,
+            31678
+          ],
+          [
+            33,
+            31677
+          ],
+          [
+            34,
+            31675
+          ]
+        ],
+        "fixed": [
+          [
+            28,
+            31685
+          ],
+          [
+            29,
+            31683
+          ],
+          [
+            30,
+            31668
+          ],
+          [
+            31,
+            31679
+          ],
+          [
+            32,
+            31678
+          ]
+        ],
+        "shared": [
+          [
+            30,
+            31668
+          ],
+          [
+            31,
+            31679
+          ],
+          [
+            32,
+            31678
+          ]
+        ],
+        "identical": false
+      },
+      "original_capture_sha256": {
+        "unfixed": "6e6426c9d440f1de7f4aef07591d6e7d291a0a9c9f116a04141281be370c9098",
+        "fixed": "51461338e2f51d894046d50a780ea9f39038d755b413dd85e873c09ef2c1be9f"
+      },
+      "unfixed_late_logs_supplemental_only": false
+    },
+    {
+      "round": 3,
+      "unfixed_pss_bytes": 140647424,
+      "fixed_pss_bytes": 105619456,
+      "raw_ratio": 1.331643139688203,
+      "successful_load_more_pages": [
+        1,
+        2,
+        3
+      ],
+      "final_article_count": 40,
+      "actual_final_viewports": {
+        "unfixed": [
+          [
+            28,
+            31685
+          ],
+          [
+            29,
+            31683
+          ],
+          [
+            30,
+            31668
+          ],
+          [
+            31,
+            31679
+          ],
+          [
+            32,
+            31678
+          ]
+        ],
+        "fixed": [
+          [
+            28,
+            31685
+          ],
+          [
+            29,
+            31683
+          ],
+          [
+            30,
+            31668
+          ],
+          [
+            31,
+            31679
+          ],
+          [
+            32,
+            31678
+          ]
+        ],
+        "shared": [
+          [
+            28,
+            31685
+          ],
+          [
+            29,
+            31683
+          ],
+          [
+            30,
+            31668
+          ],
+          [
+            31,
+            31679
+          ],
+          [
+            32,
+            31678
+          ]
+        ],
+        "identical": true
+      },
+      "original_capture_sha256": {
+        "unfixed": "70e8543751e885b7afe68e335dce240be553ec5d5d74306c59b135ef707d0ec1",
+        "fixed": "ad004d0d02b2d74f4414eb2e614af221437006e28e21c060357470d360a100a9"
+      },
+      "unfixed_late_logs_supplemental_only": false
+    }
+  ],
+  "pending_requirement": "Native filesystem write-volume mechanism after ten successful load-more pages; no legacy instrumented byte counters reused."
+}

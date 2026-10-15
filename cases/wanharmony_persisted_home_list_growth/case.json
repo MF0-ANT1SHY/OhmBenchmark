@@ -59,7 +59,7 @@
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
       "status": "pending_clean_measurement",
-      "note": "Legacy instrumented measurements do not validate these business-only builds."
+      "note": "Three original online twelve-swipe PSS pairs are independently verified; full acceptance still awaits the native ten-page persistence-write mechanism. Legacy instrumented counters are not reused."
     },
     "mechanism_oracle": {
       "metric": "persistent_write_bytes_per_loadmore",
@@ -204,5 +204,17 @@
         }
       }
     }
+  },
+  "primary_measurement_validation": {
+    "status": "PRIMARY_CRITERION_MET_MECHANISM_PENDING",
+    "proof": "validation/wan-home-original-primary-audit-three-pairs.json",
+    "rounds_per_variant": 3,
+    "paired_ratios": [
+      1.3694906692312923,
+      1.375787556845293,
+      1.331643139688203
+    ],
+    "full_case_accepted": false,
+    "remaining": "ten-page native filesystem write-volume mechanism"
   }
 }
