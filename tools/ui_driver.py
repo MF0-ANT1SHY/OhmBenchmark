@@ -181,9 +181,16 @@ class UI:
                 x, y = round(b[2]*action["x"]), round(b[3]*action["y"])
                 self.shell(f"uitest uiInput click {x} {y}")
             elif op == "swipe":
-                layout = self.layout()
-                b = list(map(int, re.findall(r"\d+", layout["attributes"]["bounds"])))
-                x, bottom, top = round(b[2]*0.5), round(b[3]*0.78), round(b[3]*0.3)
+                if action.get('selector'):
+                    bounds = self.find(action['selector'])['bounds']
+                else:
+                    bounds = self.layout()['attributes']['bounds']
+                b = list(map(int, re.findall(r"\d+", bounds)))
+                if len(b) != 4 or b[2] <= b[0] or b[3] <= b[1]:
+                    raise ValueError('invalid swipe bounds')
+                x = round((b[0]+b[2])*0.5)
+                bottom = round(b[1]+(b[3]-b[1])*0.78)
+                top = round(b[1]+(b[3]-b[1])*0.3)
                 if action.get("direction", "up") == "down":
                     bottom, top = top, bottom
                 for _ in range(action.get("count", 1)):

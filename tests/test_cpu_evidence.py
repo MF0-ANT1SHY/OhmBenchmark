@@ -106,6 +106,32 @@ class CPUEvidenceTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError,'fixture differs'):
                 accept(self.cid,write=False,require_pass=False)
 
+    def test_negative_screen_never_accepts_or_writes_partial_positive_trials(self):
+        with patch('accept_cpu_evidence.ROOT', self.root):
+            for options in ({}, {'write':False}, {'require_pass':False}):
+                with self.assertRaises(ValueError): accept(self.cid,negative_screen=True,**options)
+            with self.assertRaisesRegex(ValueError,'three complete pairs'):
+                accept(self.cid,write=False,require_pass=False,negative_screen=True)
+
+    def test_first_negative_pair_rejects_without_reading_later_trials_or_writing(self):
+        folder=self.root/'artifacts/clean'/self.cid
+        for variant in ('unfixed','fixed'):
+            for n in (2,3):
+                (folder/variant/f'cpu-captures/round-{n}/capture.json').unlink()
+        path=folder/'unfixed/cpu-captures/round-1/capture.json'
+        data=json.loads(path.read_text());data['app_instruction_period_sum']=110
+        self.put(path,data)
+        path=path.with_name('report.json');data=json.loads(path.read_text())
+        data['recordSampleInfo'][0]['processes'][0]['eventCount']=110
+        self.put(path,data)
+        before={p:p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        with patch('accept_cpu_evidence.ROOT',self.root):
+            result=accept(self.cid,write=False,require_pass=False,negative_screen=True)
+            with self.assertRaises(FileNotFoundError): accept(self.cid,write=False)
+        self.assertEqual(result['unfixed']['status'],'FAIL')
+        self.assertEqual(result['unfixed']['rounds'],1)
+        self.assertEqual(before,{p:p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+
 
 if __name__ == '__main__':
     unittest.main()

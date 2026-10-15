@@ -1,0 +1,81 @@
+{
+  "case": "interviewapp_response_log_full_stringify",
+  "status": "FUNCTIONAL_UI_VERIFIED_PERFORMANCE_PENDING",
+  "app_injection": false,
+  "performance_accepted": false,
+  "workload_sha256": "25e1c28127214cfe1a519fa85de1fa8305a027f5a67c34d21d3744ed89912ca0",
+  "capture_budget_s": 120,
+  "capture_budget_note": "Budget for external UI completion, not added measured UI actions or idle padding.",
+  "variants": {
+    "unfixed": {
+      "workload": "PASS",
+      "requests": {
+        "successful_question_lists": 5,
+        "method": "existing successful HTTP response business logs"
+      },
+      "phase_elapsed_s": {
+        "setup": 16.981456277000007,
+        "measured": 47.49916280299999,
+        "verify": 5.589511947999995
+      },
+      "signed_sha256": "390abd812e915a5285c1329265ff8e8cc12b3c1515515afc8a1ff4aa0b0a8729",
+      "device_receipt_sha256": "eca239725b996c0da5ce8577d2d59ff14777d2b3675a5a64faf05da79c4482c7"
+    },
+    "fixed": {
+      "workload": "PASS",
+      "requests": {
+        "successful_question_lists": 5,
+        "method": "existing successful HTTP response business logs"
+      },
+      "phase_elapsed_s": {
+        "setup": 17.044655094000007,
+        "measured": 47.03906179399996,
+        "verify": 5.984100344000012
+      },
+      "signed_sha256": "e304703dd5d1238f4bb033ed5471b7334876fea43cb9b77c75626bd9e2f6fa2a",
+      "device_receipt_sha256": "af0a2d554729f8f03cb43d72085eb5b597d4ce83b1bf550a3be4ed888cb6c0a7"
+    }
+  },
+  "gates": {
+    "build": {
+      "stage": "build",
+      "cases": 1,
+      "errors": [],
+      "pending": [],
+      "passed": true
+    },
+    "sign": {
+      "stage": "sign",
+      "cases": 1,
+      "errors": [],
+      "pending": [],
+      "passed": true
+    },
+    "smoke": {
+      "stage": "smoke",
+      "cases": 1,
+      "errors": [],
+      "pending": [],
+      "passed": true
+    },
+    "complete": {
+      "stage": "complete",
+      "cases": 1,
+      "errors": [],
+      "pending": [
+        "interviewapp_response_log_full_stringify/unfixed: performance evidence missing",
+        "interviewapp_response_log_full_stringify/fixed: performance evidence missing",
+        "interviewapp_response_log_full_stringify: clean performance oracle not accepted (pending_clean_measurement)"
+      ],
+      "passed": false
+    }
+  },
+  "regression_tests": {
+    "count": 188,
+    "status": "PASS"
+  },
+  "pending_requirements": [
+    "Comparable normal backend response inputs across paired captures; endpoint success alone is not input identity.",
+    "Native app-attributed instruction captures and the unchanged performance criterion; no legacy injected measurements reused."
+  ]
+}

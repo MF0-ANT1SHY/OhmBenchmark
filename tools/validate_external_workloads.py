@@ -34,6 +34,7 @@ from reader_unread_badges import CASE as UNREAD_CASE, verify_layout as verify_un
 from install_ytmusic_history_fixture import install as install_listening_history, fixture_state as listening_fixture_state
 from ytmusic_history_progress import verify_layout as verify_history_layout, verify_state as verify_history_state, read_state as read_history_state
 from browser_visit_progress import CASE as BROWSER_VISIT_CASE, verify_observation as verify_browser_visits
+from interview_response_progress import CASE as INTERVIEW_RESPONSE_CASE, verify_observation as verify_interview_responses
 from install_wanharmony_history_fixture import install as install_wan_history, verify_preparation as verify_wan_preparation
 from wan_history_progress import PREFERENCES as WAN_PREFERENCES, verify_observation as verify_wan_progress
 
@@ -107,6 +108,10 @@ def shell(command):
         code += f"plan_path=Path({destination!r});plan=json.loads(plan_path.read_text())\n"
         code += f"assert hashlib.sha256(plan_path.read_bytes()).hexdigest()=={plan_hash!r}\n"
         code += "ui=UI(shell,plan['bundle'],plan['ability'])\nphases={}\n"
+        if cid == INTERVIEW_RESPONSE_CASE:
+            for module in ('interview_response_progress.py','system_pss.py'):
+                remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
+            code += "from interview_response_progress import read_state as read_responses,complete as complete_responses\n"
         if wan_history_fixture:
             for module in ('wan_history_progress.py', 'seed_wanharmony_history.py', 'system_pss.py'):
                 remote.upload(ROOT/'tools'/module, '/home/research/ohm-clean/tools/'+module)
@@ -152,6 +157,9 @@ def shell(command):
         code += " for phase in ['setup','measured','verify']:\n"
         code += "  started=time.monotonic()\n  ui.run(plan[phase])\n"
         code += "  phases[phase]={'elapsed_s':time.monotonic()-started,'layout':ui.layout()}\n"
+        if cid == INTERVIEW_RESPONSE_CASE:
+            code += "  if phase=='setup':responses_before=read_responses(shell)\n"
+            code += "  if phase=='measured':interview_responses=complete_responses(ui,responses_before)\n"
         if wan_history_fixture:
             code += "  if phase=='setup':wan_before=wan_observer.prepare(ui)\n"
         if browser_fixture and cid == BROWSER_VISIT_CASE:
@@ -164,6 +172,8 @@ def shell(command):
         if poem_sync_fixture:
             code += "  if phase=='setup':sync_logs_before=read_sync_logs(shell)\n"
         code += " result={'phases':phases,'status':'PASS'}\n"
+        if cid == INTERVIEW_RESPONSE_CASE:
+            code += " result['interview_responses']=interview_responses\n"
         if wan_history_fixture:
             code += " result['wan_history']=wan_observer.complete(ui,wan_before)\n"
         if poem_import_fixture:
@@ -202,6 +212,9 @@ def shell(command):
             result['browser_visits']=verify_browser_visits(device['browser_visits'])
             result['fixture']['functional_read_verified']=True
             result['functional_check']='fifteen normal same-day page navigations saved with correct titles, URLs and timestamps'
+        if cid == INTERVIEW_RESPONSE_CASE:
+            result['interview_responses']=verify_interview_responses(device['interview_responses'])
+            result['functional_check']='five normal pull-to-refresh actions completed successful question-list requests'
         if poem_import_fixture:
             verify_state(device['poem_import_state'],True)
             result['fixture_after']=finish_import(remote,result['fixture'])

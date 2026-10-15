@@ -41,7 +41,7 @@
       "htrace",
       "hiperf"
     ],
-    "step_duration_s": 30,
+    "step_duration_s": 120,
     "rounds": 3,
     "outputs": [
       "htrace/trace.htrace",
@@ -100,7 +100,7 @@
   },
   "clean_validation": {
     "policy": "no_app_injection",
-    "workload_validation": "pending",
+    "workload_validation": "verified",
     "performance_validation": "pending",
     "variants": {
       "unfixed": {
@@ -124,9 +124,9 @@
           "case": "interviewapp_response_log_full_stringify",
           "variant": "unfixed",
           "unsigned_sha256": "b2659a41c0242c40f590fc888c6c882dcd166e96a984d9739afb28356069486e",
-          "signed_hap": "/home/research/ohm-clean/interviewapp_response_log_full_stringify/unfixed/app.hap",
+          "signed_hap": "/home/research/ohm-clean/renewed-20261014/interviewapp_response_log_full_stringify/unfixed/app.hap",
           "audit": {
-            "sha256": "e285b251e7ba8282477b4af02206b1e14b62f3d245b4d028043e9623163bd952",
+            "sha256": "390abd812e915a5285c1329265ff8e8cc12b3c1515515afc8a1ff4aa0b0a8729",
             "abc_modules_checked": [
               "ets/modules.abc",
               "ets/widgets.abc"
@@ -134,20 +134,40 @@
             "findings": [],
             "passed": true
           },
+          "allowed_acls": [],
           "status": "PASS"
         },
         "smoke": {
           "case": "interviewapp_response_log_full_stringify",
           "variant": "unfixed",
-          "signed_sha256": "e285b251e7ba8282477b4af02206b1e14b62f3d245b4d028043e9623163bd952",
-          "install": "[Info]App install path:/home/research/ohm-clean/interviewapp_response_log_full_stringify/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "signed_sha256": "390abd812e915a5285c1329265ff8e8cc12b3c1515515afc8a1ff4aa0b0a8729",
+          "install": "[Info]App install path:/home/research/ohm-clean/renewed-20261014/interviewapp_response_log_full_stringify/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
           "launch": "start ability successfully.",
           "pids": [
-            40295
+            62027
           ],
           "foreground_bundle": "com.itcast.pass_interview",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "interviewapp_response_log_full_stringify",
+          "variant": "unfixed",
+          "signed_sha256": "390abd812e915a5285c1329265ff8e8cc12b3c1515515afc8a1ff4aa0b0a8729",
+          "plan_sha256": "25e1c28127214cfe1a519fa85de1fa8305a027f5a67c34d21d3744ed89912ca0",
+          "status": "PASS",
+          "performance_verified": false,
+          "phase_elapsed_s": {
+            "setup": 16.981456277000007,
+            "measured": 47.49916280299999,
+            "verify": 5.589511947999995
+          },
+          "interview_responses": {
+            "successful_question_lists": 5,
+            "method": "existing successful HTTP response business logs"
+          },
+          "functional_check": "five normal pull-to-refresh actions completed successful question-list requests",
+          "capture_duration_required_s": 52
         }
       },
       "fixed": {
@@ -171,9 +191,9 @@
           "case": "interviewapp_response_log_full_stringify",
           "variant": "fixed",
           "unsigned_sha256": "2ee29e3f04dcfc018483fc7c773ddf8ec9fcc53c95ddcb22b29125ae5e06c38b",
-          "signed_hap": "/home/research/ohm-clean/interviewapp_response_log_full_stringify/fixed/app.hap",
+          "signed_hap": "/home/research/ohm-clean/renewed-20261014/interviewapp_response_log_full_stringify/fixed/app.hap",
           "audit": {
-            "sha256": "1a67c147168c589aea1ca69d8c5a493adbd5418cb37e5089eb205622a5b326b3",
+            "sha256": "e304703dd5d1238f4bb033ed5471b7334876fea43cb9b77c75626bd9e2f6fa2a",
             "abc_modules_checked": [
               "ets/modules.abc",
               "ets/widgets.abc"
@@ -181,20 +201,40 @@
             "findings": [],
             "passed": true
           },
+          "allowed_acls": [],
           "status": "PASS"
         },
         "smoke": {
           "case": "interviewapp_response_log_full_stringify",
           "variant": "fixed",
-          "signed_sha256": "1a67c147168c589aea1ca69d8c5a493adbd5418cb37e5089eb205622a5b326b3",
-          "install": "[Info]App install path:/home/research/ohm-clean/interviewapp_response_log_full_stringify/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "signed_sha256": "e304703dd5d1238f4bb033ed5471b7334876fea43cb9b77c75626bd9e2f6fa2a",
+          "install": "[Info]App install path:/home/research/ohm-clean/renewed-20261014/interviewapp_response_log_full_stringify/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
           "launch": "start ability successfully.",
           "pids": [
-            40713
+            62441
           ],
           "foreground_bundle": "com.itcast.pass_interview",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "interviewapp_response_log_full_stringify",
+          "variant": "fixed",
+          "signed_sha256": "e304703dd5d1238f4bb033ed5471b7334876fea43cb9b77c75626bd9e2f6fa2a",
+          "plan_sha256": "25e1c28127214cfe1a519fa85de1fa8305a027f5a67c34d21d3744ed89912ca0",
+          "status": "PASS",
+          "performance_verified": false,
+          "phase_elapsed_s": {
+            "setup": 17.044655094000007,
+            "measured": 47.03906179399996,
+            "verify": 5.984100344000012
+          },
+          "interview_responses": {
+            "successful_question_lists": 5,
+            "method": "existing successful HTTP response business logs"
+          },
+          "functional_check": "five normal pull-to-refresh actions completed successful question-list requests",
+          "capture_duration_required_s": 52
         }
       }
     }

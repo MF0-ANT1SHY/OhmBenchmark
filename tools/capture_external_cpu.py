@@ -25,6 +25,7 @@ from playback_progress import CASES as PLAYBACK_CASES
 from install_ytmusic_history_fixture import install as install_listening_history
 from ytmusic_history_progress import verify_layout as verify_history_layout, verify_state as verify_history_state, read_state as read_history_state
 from browser_visit_progress import CASE as BROWSER_VISIT_CASE
+from interview_response_progress import CASE as INTERVIEW_RESPONSE_CASE
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -112,6 +113,10 @@ def shell(command):
         code += " if selector.get('id')=='AddAddressBtn':page_observations.append(observe_page(shell,plan['bundle'],node))\n"
         code += " return node\nui.find=observe_find\n"
     code += "ui.run([{'op':'stop'},{'op':'launch'}]);ui.run(plan['setup'])\n"
+    if cid == INTERVIEW_RESPONSE_CASE:
+        for module in ('interview_response_progress.py','system_pss.py'):
+            remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
+        code += "from interview_response_progress import read_state as read_responses,complete as complete_responses\nresponses_before=read_responses(shell)\n"
     if fixture and cid == BROWSER_VISIT_CASE:
         remote.upload(ROOT/'tools/browser_visit_progress.py','/home/research/ohm-clean/tools/browser_visit_progress.py')
         code += "from browser_visit_progress import read_state as read_visits,complete_visits\nvisits_before=read_visits(shell)\n"
@@ -147,6 +152,8 @@ def shell(command):
     code += " if 'fail' in record['start_output'].lower() or 'error' in record['start_output'].lower():raise RuntimeError(record['start_output'])\n"
     code += " record['action_start_monotonic']=time.monotonic()\n"
     code += " ui.run(plan['measured']);ui.run(plan['verify'])\n"
+    if cid == INTERVIEW_RESPONSE_CASE:
+        code += " record['interview_responses']=complete_responses(ui,responses_before)\n"
     if fixture and cid == BROWSER_VISIT_CASE:
         code += " record['browser_visits']=complete_visits(ui,visits_before)\n"
     if poem_import_fixture:

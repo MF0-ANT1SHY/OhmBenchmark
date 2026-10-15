@@ -18,11 +18,15 @@ from reader_unread_badges import CASE as UNREAD_CASE, verify_layout as verify_un
 from install_ytmusic_history_fixture import fixture_state as listening_fixture_state, CASE as LISTENING_HISTORY_CASE
 from ytmusic_history_progress import verify_layout as verify_history_layout, verify_state as verify_history_state, verify_capture as verify_history_capture
 from browser_visit_progress import CASE as BROWSER_VISIT_CASE, verify_observation as verify_browser_visits, verify_capture as verify_browser_visit_capture
+from interview_response_progress import CASE as INTERVIEW_RESPONSE_CASE, verify_observation as verify_interview_responses, verify_capture as verify_interview_response_capture
 
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def accept(cid, write=True, require_pass=True):
+def accept(cid, write=True, require_pass=True, *, negative_screen=False):
+    if negative_screen and (write or require_pass):
+        raise ValueError('negative screening must be read-only and cannot accept performance')
+    round_count = 1 if negative_screen else 3
     path=ROOT/'cases'/cid/'case.json'
     case=json.loads(path.read_text())
     if case['test_oracle']['metric']!='hiperf_instructions':
@@ -35,6 +39,10 @@ def accept(cid, write=True, require_pass=True):
         workload=json.loads((folder/'workload.json').read_text())
         if workload['status']!='PASS' or workload['plan_sha256']!=plan_hash or workload['signed_sha256']!=sign['audit']['sha256']:
             raise RuntimeError('matching real workload execution not proven')
+        if cid == INTERVIEW_RESPONSE_CASE:
+            device=json.loads((folder/'workload-device.json').read_text())
+            if verify_interview_responses(device['interview_responses']) != workload.get('interview_responses'):
+                raise RuntimeError('successful normal question-list requests are not proven')
         if cid==BROWSER_VISIT_CASE:
             device=json.loads((folder/'workload-device.json').read_text())
             if (not workload.get('fixture',{}).get('functional_read_verified')
@@ -89,13 +97,15 @@ def accept(cid, write=True, require_pass=True):
         samples=[]
         captures=[]
         fixture_hashes=set()
-        for round_no in range(1,4):
+        for round_no in range(1,round_count+1):
             capture_dir=folder/'cpu-captures'/f'round-{round_no}'
             receipt=json.loads((capture_dir/'capture.json').read_text())
             if receipt['status']!='CAPTURED' or receipt['plan_sha256']!=plan_hash or receipt['signed_sha256']!=sign['audit']['sha256']:
                 raise RuntimeError('capture provenance mismatch')
             if receipt.get('fixture_sha256') != workload.get('fixture',{}).get('sha256'):
                 raise RuntimeError('capture fixture differs from the validated workload')
+            if cid == INTERVIEW_RESPONSE_CASE:
+                verify_interview_response_capture(receipt['interview_responses'],receipt['action_start_monotonic'],receipt['action_end_monotonic'],receipt['pids'])
             if cid==BROWSER_VISIT_CASE:
                 verify_browser_visit_capture(receipt['browser_visits'],receipt['action_start_monotonic'],receipt['action_end_monotonic'])
             if cid==LISTENING_HISTORY_CASE:
@@ -179,9 +189,11 @@ def accept(cid, write=True, require_pass=True):
     ratios=[u/f for u,f in zip(variants['unfixed']['samples'],variants['fixed']['samples'])]
     median_ratio=statistics.median(variants['unfixed']['samples'])/statistics.median(variants['fixed']['samples'])
     passed=min(ratios)>=1.2 and median_ratio>=1.2
+    if negative_screen and passed:
+        raise ValueError('first pair is not negative; three complete pairs are required for acceptance')
     results={}
     for variant,data in variants.items():
-        result={'status':'PASS' if passed else 'FAIL','metric':'hiperf_instructions','rounds':3,'samples':data['samples'],
+        result={'status':'PASS' if passed else 'FAIL','metric':'hiperf_instructions','rounds':round_count,'samples':data['samples'],
                 'median':statistics.median(data['samples']),'paired_ratios':ratios,'median_ratio':median_ratio,
                 'plan_sha256':plan_hash,'signed_sha256':data['signed_sha256'],'fixture_sha256':next(iter(fixtures)),
                 'method':'app-process sampled retired-instruction period sum from system hiperf; not system total',
@@ -191,7 +203,7 @@ def accept(cid, write=True, require_pass=True):
             (ROOT/'artifacts/clean'/cid/variant/'performance.json').write_text(json.dumps(result,indent=2)+'\n')
     case['test_oracle']['evidence']={'status':'measured_clean' if passed else 'measured_clean_failed','metric':'hiperf_instructions',
         'unfixed':variants['unfixed']['samples'],'fixed':variants['fixed']['samples'],'median_ratio':median_ratio,
-        'rounds_per_variant':3,'legacy_evidence_reused':False,'note':
+        'rounds_per_variant':round_count,'legacy_evidence_reused':False,'note':
         'Every paired round exceeds 1.2x; app process explicitly selected from the system report.' if passed else
         'Clean captures are valid, but the required 1.2x performance improvement is not met; this case is not accepted.'}
     case['test_oracle']['definition']='Sampled retired-instruction period sum (hw-instructions) attributed to the app process in the complete externally driven measured window.'

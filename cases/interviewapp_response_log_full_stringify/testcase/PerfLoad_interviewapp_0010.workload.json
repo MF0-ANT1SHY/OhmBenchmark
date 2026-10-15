@@ -8,6 +8,13 @@
       "selector": {
         "text": "热门题库"
       }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "如何合并两个对象?\n",
+        "match": "exact"
+      }
     }
   ],
   "measured": [
@@ -18,7 +25,11 @@
         {
           "op": "swipe",
           "count": 1,
-          "direction": "down"
+          "direction": "down",
+          "selector": {
+            "type": "Refresh",
+            "match": "exact"
+          }
         },
         {
           "op": "pause",
@@ -31,7 +42,8 @@
     {
       "op": "wait",
       "selector": {
-        "text": "热门题库"
+        "text": "ArkTS",
+        "match": "exact"
       }
     }
   ]

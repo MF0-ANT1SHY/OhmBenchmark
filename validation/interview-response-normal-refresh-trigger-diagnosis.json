@@ -1,0 +1,20 @@
+{
+  "case": "interviewapp_response_log_full_stringify",
+  "status": "FUNCTIONAL_TRIGGER_REJECTED",
+  "performance_accepted": false,
+  "reason": "Whole-screen gestures scrolled the nested home page rather than producing five successful first-page refreshes. Not a negative performance result.",
+  "variants": {
+    "unfixed": {
+      "status": "FAIL",
+      "error": "five successful normal question-list requests are not proven",
+      "receipt_sha256": "3757d9451276be777af76d5824f96d7042562de60fb116616d962b94a7e228ef",
+      "question_list_logs_including_setup": 2
+    },
+    "fixed": {
+      "status": "FAIL",
+      "error": "five successful normal question-list requests are not proven",
+      "receipt_sha256": "c9e86cb9e0245e6d13166ff5b8c7d71420ccc34f26436d3d2958ae214b010d1f",
+      "question_list_logs_including_setup": 0
+    }
+  }
+}
