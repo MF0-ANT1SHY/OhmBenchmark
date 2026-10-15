@@ -107,17 +107,19 @@ class PairedNativeAcceptanceTest(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(data))
 
-    def check(self, low_pair=False, require_pass=True):
+    def check(self, low_pair=False, require_pass=True, negative_screen=False, low_first_pair=False):
         def native(receipt, trace):
             value = 2000000 if receipt['variant'] == 'unfixed' else 1000000
             if low_pair and receipt['variant'] == 'fixed' and receipt['round'] == 3:
+                value = 1900000
+            if low_first_pair and receipt['variant'] == 'fixed' and receipt['round'] == 1:
                 value = 1900000
             return {'app_cpu_ns': value, 'trace_sha256': 'raw-native-hash'}
         with patch('accept_trace_evidence.ROOT', self.root), \
                 patch('accept_trace_evidence.verify_preparation'), \
                 patch('accept_trace_evidence.verify_observation', return_value={}), \
                 patch('accept_trace_evidence.verify_capture', side_effect=native):
-            return accept(CASE, write=False, require_pass=require_pass)
+            return accept(CASE, write=False, require_pass=require_pass, negative_screen=negative_screen)
 
     def test_all_six_valid_captures_are_required_without_writes(self):
         before = {p: p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
@@ -140,6 +142,23 @@ class PairedNativeAcceptanceTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'criterion not met'):
             self.check(low_pair=True)
         self.assertEqual(self.check(low_pair=True, require_pass=False)['unfixed']['status'], 'FAIL')
+
+    def test_negative_screen_cannot_accept_or_write_partial_positive_results(self):
+        for options in ({},{'write':False},{'require_pass':False}):
+            with self.subTest(options=options),self.assertRaises(ValueError):accept(CASE,negative_screen=True,**options)
+        with self.assertRaisesRegex(ValueError,'three complete pairs'):
+            self.check(require_pass=False,negative_screen=True)
+
+    def test_first_failed_pair_rejects_without_later_trials_or_writing_evidence(self):
+        for variant in ('unfixed','fixed'):
+            for number in (2,3):
+                (self.root/'artifacts/clean'/CASE/variant/f'trace-captures/round-{number}/capture.json').unlink()
+        before={p:p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        result=self.check(require_pass=False,negative_screen=True,low_first_pair=True)
+        self.assertEqual(result['unfixed']['status'],'FAIL')
+        self.assertEqual(result['unfixed']['rounds'],1)
+        self.assertEqual(before,{p:p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+        with self.assertRaises(FileNotFoundError):self.check()
 
 
 if __name__ == '__main__':

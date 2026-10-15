@@ -51,7 +51,10 @@ def verify_capture(receipt, trace):
     return raw
 
 
-def accept(cid, write=True, require_pass=True):
+def accept(cid, write=True, require_pass=True, *, negative_screen=False):
+    if negative_screen and (write or require_pass):
+        raise ValueError('negative screening must be read-only and cannot accept performance')
+    round_count = 1 if negative_screen else 3
     if cid not in (CASE, WAN_CASE):
         raise ValueError('native trace acceptance is not implemented for this case')
     path = ROOT/'cases'/cid/'case.json'
@@ -77,7 +80,7 @@ def accept(cid, write=True, require_pass=True):
                 raise ValueError('workload web summary differs from native callback/history evidence')
             verify_wan_preparation(workload['fixture'], device['wan_history']['before'])
         values, captures = [], []
-        for number in range(1, 4):
+        for number in range(1, round_count+1):
             directory = folder/'trace-captures'/f'round-{number}'
             receipt = json.loads((directory/'capture.json').read_text())
             if (receipt['case'] != cid or receipt['variant'] != variant or receipt['round'] != number
@@ -104,10 +107,12 @@ def accept(cid, write=True, require_pass=True):
     ratios = [u/f for u, f in zip(variants['unfixed']['values_ns'], variants['fixed']['values_ns'])]
     median_ratio = statistics.median(variants['unfixed']['values_ns'])/statistics.median(variants['fixed']['values_ns'])
     passed = min(ratios) >= 1.2 and median_ratio >= 1.2
+    if negative_screen and passed:
+        raise ValueError('first pair is not negative; three complete pairs are required for acceptance')
     results = {}
     for variant, data in variants.items():
         samples = [value/1000000 for value in data['values_ns']]
-        result = {'status': 'PASS' if passed else 'FAIL', 'metric': 'trace_cpu_ms', 'rounds': 3,
+        result = {'status': 'PASS' if passed else 'FAIL', 'metric': 'trace_cpu_ms', 'rounds': round_count,
                   'samples': samples, 'median': statistics.median(samples),
                   'paired_ratios': ratios, 'median_ratio': median_ratio,
                   'plan_sha256': plan_hash, 'signed_sha256': data['signed_sha256'],
@@ -119,7 +124,7 @@ def accept(cid, write=True, require_pass=True):
             (ROOT/'artifacts/clean'/cid/variant/'performance.json').write_text(json.dumps(result, indent=2)+'\n')
     case['test_oracle']['evidence'] = {'status': 'measured_clean' if passed else 'measured_clean_failed',
         'metric': 'trace_cpu_ms', 'unfixed': results['unfixed']['samples'], 'fixed': results['fixed']['samples'],
-        'median_ratio': median_ratio, 'rounds_per_variant': 3, 'legacy_evidence_reused': False,
+        'median_ratio': median_ratio, 'rounds_per_variant': round_count, 'legacy_evidence_reused': False,
         'note': 'Native scheduling recomputed for every round; unchanged 1.2x paired and median criteria.'}
     if write:
         path.write_text(json.dumps(case, indent=2, ensure_ascii=False)+'\n')
