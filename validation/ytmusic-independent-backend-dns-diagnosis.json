@@ -1,0 +1,19 @@
+{
+  "status": "DIAGNOSTIC_ONLY",
+  "host": "yt.c12k.dev",
+  "app_injection": false,
+  "performance_accepted": false,
+  "checks": [
+    {
+      "resolver": "google",
+      "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)>"
+    },
+    {
+      "resolver": "cloudflare",
+      "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)>"
+    }
+  ],
+  "upstream_app_repository": "https://github.com/Charles-Stark/Youtube-Music-ArkTS-Clone",
+  "upstream_backend_repository": "https://github.com/Charles-Stark/yt-music-backend",
+  "scope": "Independent resolver diagnostics; failure to query a resolver is not proof that the hostname is globally absent. Upstream documentation links the original Express/Prisma backend, not a verified replacement service."
+}
