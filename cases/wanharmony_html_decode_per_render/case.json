@@ -123,29 +123,17 @@
           "case": "wanharmony_html_decode_per_render",
           "variant": "unfixed",
           "unsigned_sha256": "57bf465688d66e69f1547c202a0a50481426aabad2b042edecede1c8b2cdd046",
-          "signed_hap": "/home/research/ohm-clean/wanharmony_html_decode_per_render/unfixed/app.hap",
+          "signed_hap": "/home/research/ohm-clean/renewed-20261014/wanharmony_html_decode_per_render/unfixed/app.hap",
           "audit": {
-            "sha256": "f56a69d48d3fcb31517579ce7ff54a27f84aec5f86a4408ca439546f0e4f709d",
+            "sha256": "ef7e73073952ff08aa71c74db6a32ace6088b0e51b6e61d09ea80eb032052a8e",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
             "findings": [],
             "passed": true
           },
+          "allowed_acls": [],
           "status": "PASS"
-        },
-        "smoke": {
-          "case": "wanharmony_html_decode_per_render",
-          "variant": "unfixed",
-          "signed_sha256": "f56a69d48d3fcb31517579ce7ff54a27f84aec5f86a4408ca439546f0e4f709d",
-          "install": "[Info]App install path:/home/research/ohm-clean/wanharmony_html_decode_per_render/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
-          "launch": "start ability successfully.",
-          "pids": [
-            59566
-          ],
-          "foreground_bundle": "org.example.wan.ohos",
-          "status": "PASS",
-          "performance_verified": false
         }
       },
       "fixed": {
@@ -168,29 +156,17 @@
           "case": "wanharmony_html_decode_per_render",
           "variant": "fixed",
           "unsigned_sha256": "a5a3cabf07632435f6a587429d1685754edd657cb2657ec74fa1473739affb13",
-          "signed_hap": "/home/research/ohm-clean/wanharmony_html_decode_per_render/fixed/app.hap",
+          "signed_hap": "/home/research/ohm-clean/renewed-20261014/wanharmony_html_decode_per_render/fixed/app.hap",
           "audit": {
-            "sha256": "b2a69d03cf3b2909889e432a93e5324e666aaf3cb936c19aac407736ad36cb2d",
+            "sha256": "6b6717eb71d6a57a81036cccdf69bc6a1ac3c1a268a5154086f84ee48e19a4f8",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
             "findings": [],
             "passed": true
           },
+          "allowed_acls": [],
           "status": "PASS"
-        },
-        "smoke": {
-          "case": "wanharmony_html_decode_per_render",
-          "variant": "fixed",
-          "signed_sha256": "b2a69d03cf3b2909889e432a93e5324e666aaf3cb936c19aac407736ad36cb2d",
-          "install": "[Info]App install path:/home/research/ohm-clean/wanharmony_html_decode_per_render/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
-          "launch": "start ability successfully.",
-          "pids": [
-            59948
-          ],
-          "foreground_bundle": "org.example.wan.ohos",
-          "status": "PASS",
-          "performance_verified": false
         }
       }
     }

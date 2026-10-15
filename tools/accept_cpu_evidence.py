@@ -21,6 +21,7 @@ from browser_visit_progress import CASE as BROWSER_VISIT_CASE, verify_observatio
 from interview_response_progress import CASE as INTERVIEW_RESPONSE_CASE, verify_observation as verify_interview_responses, verify_capture as verify_interview_response_capture
 from interview_empty_history_fixture import CASE as HISTORY_SYNC_CASE, verify as verify_empty_history
 from wan_web_progress import CASE as WAN_WEB_CASE, verify as verify_web, verify_capture as verify_web_capture, verify_fixture as verify_web_fixture
+from wan_html_inputs import CASE as WAN_HTML_CASE, verify_trial as verify_html_trial, verify_capture as verify_html_capture, verify_pair as verify_html_pair
 from interview_history_progress import verify_observation as verify_search_history, verify_capture as verify_search_capture
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -64,6 +65,13 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
                     verify_web_fixture(workload['fixture'],device['wan_web'])!=workload['fixture']['sha256'] or
                     verify_web(device['wan_web'])!=workload.get('wan_web')):
                 raise RuntimeError('five genuine complete normal Web refreshes are not proven')
+        if cid==WAN_HTML_CASE:
+            device=json.loads((folder/'workload-device.json').read_text())
+            observation=device['wan_html']
+            if (not workload.get('fixture',{}).get('functional_read_verified') or
+                    workload['fixture']['variant']!=variant or
+                    verify_html_trial(observation['setup'],observation['after'],observation['backend'],variant)!=workload.get('wan_html')):
+                raise RuntimeError('normal online article inputs and twelve swipes are not proven')
         if cid==LISTENING_HISTORY_CASE:
             fixture=workload['fixture']
             fixture_folder=Path(fixture['fixture_dir'])
@@ -131,6 +139,16 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
                 if verify_web_fixture(receipt['wan_web_preparation'],receipt['wan_web'])!=receipt['fixture_sha256']:
                     raise RuntimeError('CPU refresh history input differs from its verified production fixture')
                 verify_web_capture(receipt['wan_web'],receipt['action_start_monotonic'],receipt['action_end_monotonic'],receipt['pids'],capture_dir)
+            if cid==WAN_HTML_CASE:
+                preparation=receipt['wan_html_preparation']
+                if preparation['variant']!=variant or preparation['sha256']!=receipt['fixture_sha256']:
+                    raise RuntimeError('runtime native article input identity differs from its trial')
+                verify_html_capture(receipt['wan_html'],preparation,receipt['action_start_monotonic'],receipt['action_end_monotonic'],receipt['pids'],capture_dir)
+                if round_no==1 and receipt['wan_html']!=device['wan_html']:
+                    raise RuntimeError('functional article proof does not belong to the original CPU trial')
+                if variant=='fixed':
+                    paired=json.loads((ROOT/'artifacts/clean'/cid/'unfixed/cpu-captures'/f'round-{round_no}'/'capture.json').read_text())
+                    verify_html_pair(paired['wan_html']['after'],receipt['wan_html']['after'])
             if cid==BROWSER_VISIT_CASE:
                 verify_browser_visit_capture(receipt['browser_visits'],receipt['action_start_monotonic'],receipt['action_end_monotonic'])
             if cid==LISTENING_HISTORY_CASE:
@@ -220,6 +238,8 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
         raise RuntimeError('primary criterion met; independent native flush-mechanism verification is still required')
     if passed and cid==WAN_WEB_CASE:
         raise RuntimeError('primary criterion met; independent per-load log and UI-thread CPU mechanism verification is still required')
+    if passed and cid==WAN_HTML_CASE:
+        raise RuntimeError('primary criterion met; independent normal-input decoder/render mechanism verification is still required')
     results={}
     for variant,data in variants.items():
         result={'status':'PASS' if passed else 'FAIL','metric':'hiperf_instructions','rounds':round_count,'samples':data['samples'],

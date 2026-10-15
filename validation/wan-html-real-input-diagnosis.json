@@ -1,0 +1,297 @@
+{
+  "case": "wanharmony_html_decode_per_render",
+  "status": "BOTH_VARIANTS_NORMAL_INPUT_AND_TWELVE_SWIPES_VERIFIED_PRIMARY_CPU_PENDING",
+  "app_injection": false,
+  "performance_accepted": false,
+  "variants": {
+    "unfixed": {
+      "status": "NORMAL_REAL_INPUT_AND_TWELVE_SWIPES_VERIFIED",
+      "error": null,
+      "raw_artifacts": "artifacts/clean/wanharmony_html_decode_per_render/unfixed/real-input-diagnostics/fab7a3a2045b4702adfbdf84c7118fe7",
+      "receipt_sha256": "94838c0718206924656c904d02ebd10d5cf5db5e5b5aae90a60c6fac0665fc41",
+      "signed_sha256": "ef7e73073952ff08aa71c74db6a32ace6088b0e51b6e61d09ea80eb032052a8e",
+      "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+      "progress": {
+        "initial_ids": [
+          31845,
+          31844,
+          31842,
+          31831,
+          31828,
+          31826,
+          31824,
+          31822,
+          31821,
+          31820
+        ],
+        "final_ids": [
+          31845,
+          31844,
+          31842,
+          31831,
+          31828,
+          31826,
+          31824,
+          31822,
+          31821,
+          31820,
+          31818,
+          31817,
+          31816,
+          31815,
+          31710,
+          31708,
+          31707,
+          31705,
+          31704,
+          31703,
+          31702,
+          31701,
+          31699,
+          31698,
+          31693,
+          31690,
+          31689,
+          31687,
+          31685,
+          31683,
+          31668,
+          31679,
+          31678,
+          31677,
+          31675,
+          31673,
+          31672,
+          31671,
+          31669,
+          31667
+        ],
+        "network": {
+          "requested_pages": [
+            1,
+            2,
+            3
+          ],
+          "response_curpages": [
+            2,
+            3,
+            4
+          ]
+        },
+        "initial_visible": [
+          [
+            0,
+            31845
+          ],
+          [
+            1,
+            31844
+          ]
+        ],
+        "final_visible": [
+          [
+            28,
+            31685
+          ],
+          [
+            29,
+            31683
+          ],
+          [
+            30,
+            31668
+          ],
+          [
+            31,
+            31679
+          ],
+          [
+            32,
+            31678
+          ]
+        ],
+        "performance_accepted": false
+      }
+    },
+    "fixed": {
+      "status": "NORMAL_REAL_INPUT_AND_TWELVE_SWIPES_VERIFIED",
+      "error": null,
+      "raw_artifacts": "artifacts/clean/wanharmony_html_decode_per_render/fixed/real-input-diagnostics/37bfa92024dc4ecc98bb79f1ba760726",
+      "receipt_sha256": "c09f1ec48f1eb348e65120344fe2e59fc476bf821f5bfdfd4b2e643ea37872de",
+      "signed_sha256": "6b6717eb71d6a57a81036cccdf69bc6a1ac3c1a268a5154086f84ee48e19a4f8",
+      "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+      "progress": {
+        "initial_ids": [
+          31845,
+          31844,
+          31842,
+          31831,
+          31828,
+          31826,
+          31824,
+          31822,
+          31821,
+          31820
+        ],
+        "final_ids": [
+          31845,
+          31844,
+          31842,
+          31831,
+          31828,
+          31826,
+          31824,
+          31822,
+          31821,
+          31820,
+          31818,
+          31817,
+          31816,
+          31815,
+          31710,
+          31708,
+          31707,
+          31705,
+          31704,
+          31703,
+          31702,
+          31701,
+          31699,
+          31698,
+          31693,
+          31690,
+          31689,
+          31687,
+          31685,
+          31683,
+          31668,
+          31679,
+          31678,
+          31677,
+          31675,
+          31673,
+          31672,
+          31671,
+          31669,
+          31667
+        ],
+        "network": {
+          "requested_pages": [
+            1,
+            2,
+            3
+          ],
+          "response_curpages": [
+            2,
+            3,
+            4
+          ]
+        },
+        "initial_visible": [
+          [
+            0,
+            31845
+          ],
+          [
+            1,
+            31844
+          ]
+        ],
+        "final_visible": [
+          [
+            28,
+            31685
+          ],
+          [
+            29,
+            31683
+          ],
+          [
+            30,
+            31668
+          ],
+          [
+            31,
+            31679
+          ],
+          [
+            32,
+            31678
+          ]
+        ],
+        "performance_accepted": false
+      }
+    }
+  },
+  "paired_business_inputs": {
+    "articles": 40,
+    "same_complete_business_data_after_exact_transform": true,
+    "unfixed_visible": [
+      [
+        28,
+        31685
+      ],
+      [
+        29,
+        31683
+      ],
+      [
+        30,
+        31668
+      ],
+      [
+        31,
+        31679
+      ],
+      [
+        32,
+        31678
+      ]
+    ],
+    "fixed_visible": [
+      [
+        28,
+        31685
+      ],
+      [
+        29,
+        31683
+      ],
+      [
+        30,
+        31668
+      ],
+      [
+        31,
+        31679
+      ],
+      [
+        32,
+        31678
+      ]
+    ],
+    "shared": [
+      [
+        28,
+        31685
+      ],
+      [
+        29,
+        31683
+      ],
+      [
+        30,
+        31668
+      ],
+      [
+        31,
+        31679
+      ],
+      [
+        32,
+        31678
+      ]
+    ],
+    "performance_accepted": false
+  }
+}

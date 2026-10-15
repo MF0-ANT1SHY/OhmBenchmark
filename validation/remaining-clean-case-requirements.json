@@ -291,7 +291,9 @@
       "recorded_primary_pass": false,
       "remaining_requirements": [
         "complete_normal_workload_and_three_paired_measurements"
-      ]
+      ],
+      "latest_diagnostic": "validation/wan-html-real-input-diagnosis.json",
+      "next_requirement": "Capture the original twelve normal swipes in both variants with actual online first-page/native article input checks and matched decoded business data. Preserve 1.2x primary threshold and separate scroll-CPU-per-rendered-item mechanism gate."
     },
     {
       "case": "wanharmony_persisted_home_list_growth",

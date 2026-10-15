@@ -1,0 +1,20 @@
+{
+  "case": "wanharmony_html_decode_per_render",
+  "status": "EXACT_SOURCE_ORDERED_BUSINESS_DECODER_VERIFIED",
+  "sources": {
+    "unfixed": {
+      "tag": "clean-app/wanharmony_html_decode_per_render/unfixed",
+      "path": "entry/src/main/ets/utils/TextUtils.ets",
+      "sha256": "d62436f8bf7754f2e16e9939378e2b4af9343c22574e8effbc94580a54ad4838",
+      "exact_ordered_replacements_verified": true
+    },
+    "fixed": {
+      "tag": "clean-app/wanharmony_html_decode_per_render/fixed",
+      "path": "entry/src/main/ets/utils/TextUtils.ets",
+      "sha256": "c4d79d701b70fa6b7c6135cd61f56c4f05bb41cebd30c1bd4ccd3b40072fd400",
+      "exact_ordered_replacements_verified": true
+    }
+  },
+  "app_injection": false,
+  "performance_accepted": false
+}
