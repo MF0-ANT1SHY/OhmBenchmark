@@ -1,0 +1,22 @@
+{
+  "checked_utc": "2026-10-15T10:25:38.486636+00:00",
+  "app_source_modified": false,
+  "key_not_disclosed": true,
+  "source_key_file_sha256": "53580aa548250b387e729ac967862f4ee02c835ccefa566b17ad4d6047f9801c",
+  "key_sha256": "f5fd05a5dab9961f9c7b1269423857d2b0b712f710e0f48962dc1f3716a9d90a",
+  "performance_accepted": false,
+  "host_probe_only": true,
+  "weather": {
+    "http_status": 200,
+    "api_status": "0",
+    "info": "INVALID_USER_KEY",
+    "infocode": "10001",
+    "forecasts": 0,
+    "response_sha256": "f96a1cd43bcc56663a8964ff82583fd5caf25bd449b7a3572214559e2d2891b8"
+  },
+  "ytmusic_dns": {
+    "hostname": "yt.c12k.dev",
+    "error_number": -2,
+    "error_type": "gaierror"
+  }
+}

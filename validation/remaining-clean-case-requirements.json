@@ -213,7 +213,9 @@
       "remaining_requirements": [
         "normal_same_process_MainPage_reconstruction_not_proven"
       ],
-      "normal_task_close_reopen": "restarts_process_not_valid_for_per_process_font_cache"
+      "normal_task_close_reopen": "restarts_process_not_valid_for_per_process_font_cache",
+      "latest_diagnostic": "validation/sepweather-current-compiled-lifecycle-premise.json",
+      "normal_reconstruction_requirement": "A genuine normal same-process MainPage re-creation path, or user disposition as unreproducible. Current launches reuse singleton; root Back/reopen reuses window; task removal restarts process."
     },
     {
       "case": "sheafreader_article_list_foreach",
@@ -374,7 +376,9 @@
         "real_successful_forecast_completion",
         "normal_workload_and_paired_measurements",
         "business_window_native_heap_and_fd_socket_mechanism_evidence"
-      ]
+      ],
+      "latest_diagnostic": "validation/remaining-provider-current-host-recheck.json",
+      "external_configuration_requirement": "Valid provider configuration required: original source key still returns INVALID_USER_KEY; source unchanged."
     },
     {
       "case": "weatherassistant_remote_weather_icons",
@@ -391,7 +395,9 @@
         "valid_weather_api_configuration",
         "real_successful_forecast_completion",
         "normal_workload_and_paired_measurements"
-      ]
+      ],
+      "latest_diagnostic": "validation/remaining-provider-current-host-recheck.json",
+      "external_configuration_requirement": "Valid provider configuration required: original source key still returns INVALID_USER_KEY; source unchanged."
     },
     {
       "case": "ytmusic_current_playing_timeupdate",
@@ -428,7 +434,9 @@
         "native_key_delivery_spacing",
         "successful_normal_search_request_count",
         "comparable_inputs_and_paired_instruction_measurements"
-      ]
+      ],
+      "latest_diagnostic": "validation/remaining-provider-current-host-recheck.json",
+      "external_configuration_requirement": "Working original-compatible business search backend required; current public host DNS does not resolve yt.c12k.dev. No substitute backend or failed-response timing is used as a performance verdict."
     }
   ],
   "negative_screen_failed": 7,

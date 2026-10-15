@@ -1,0 +1,33 @@
+{
+  "case": "sepweather_font_register_per_page",
+  "status": "DECLARED_REENTRY_WORKLOAD_PREMISE_UNSUPPORTED_NOT_PERFORMANCE_NEGATIVE",
+  "performance_accepted": false,
+  "app_source_modified": false,
+  "app_injection": false,
+  "source_ref": "clean-app/sepweather_font_register_per_page/unfixed",
+  "business_commit": "30cc357936f8fff776d9c0e6b7e6f4b29668367b",
+  "source_sha256": {
+    "entry/src/main/module.json5": "36346a4119239367b269f8aaf7c6c0b6fb0ea2a56a514a38daf55af27d51cf66",
+    "entry/src/main/ets/entryability/EntryAbility.ets": "77d17932777fef7cb7fdc3ee80ddd19aa7e1083233b8a53fb94acf56ca39d47f",
+    "entry/src/main/ets/pages/MainPage.ets": "438d20273a2ef6076f6aa40e0ddec88ee6bcf50aac57b5ec64b3d6892d35f903"
+  },
+  "unsigned_hap_sha256": "522f316a9c31440e202be7d3b726aab42317f1c3d59f95173460096284f4c67f",
+  "compiled_module_sha256": "af47fefb6799827d18077ebe7da2eb075e44ba0f30a71e155ca8758e8b4c94df",
+  "compiled_entry_ability": {
+    "name": "EntryAbility",
+    "launchType": null,
+    "orientation": "portrait"
+  },
+  "entry_load_content_sites": 1,
+  "entry_on_new_want_override": false,
+  "source_lock_portrait": true,
+  "existing_native_proofs": [
+    "validation/sepweather-page-reconstruction-failure.json",
+    "validation/sepweather-normal-reopen.json",
+    "validation/sepweather-recents-reopen-process-identity.json"
+  ],
+  "official_launch_lifecycle_reference": "https://github.com/openharmony/docs/blob/master/en/application-dev/application-models/uiability-launch-type.md",
+  "conclusion": "The compiled entry omits launchType and locks portrait orientation. Singleton is the documented default. The only EntryAbility root loadContent call is in onWindowStageCreate; there is no onNewWant override. Existing exact launches and normal Back/reopen reuse the native window. Closing the recent task changes process identity. This does not fulfill the required ten same-process MainPage creations; no font-count reduction or CPU verdict is claimed.",
+  "compiled_launch_type_omitted": true,
+  "effective_launch_type_basis": "Singleton is the documented default when launchType is omitted; native reuse observations are consistent with that default."
+}

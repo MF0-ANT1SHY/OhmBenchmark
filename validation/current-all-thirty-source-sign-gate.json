@@ -1,0 +1,23 @@
+{
+  "checked_utc": "2026-10-15T10:30:07.263351+00:00",
+  "status": "ALL_THIRTY_BUSINESS_SOURCE_UNSIGNED_AND_SIGNATURE_GATES_PASSED",
+  "gate": {
+    "stage": "sign",
+    "cases": 30,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "cases": 30,
+  "variants": 60,
+  "performance_acceptance_not_implied": true,
+  "goal_complete": false,
+  "pending_cases": [
+    "sepweather_font_register_per_page",
+    "weatherassistant_http_session_leak",
+    "weatherassistant_remote_weather_icons",
+    "ytmusic_search_no_debounce"
+  ],
+  "provider_recheck": "validation/remaining-provider-current-host-recheck.json",
+  "sepweather_premise": "validation/sepweather-current-compiled-lifecycle-premise.json"
+}

@@ -1,0 +1,78 @@
+{
+  "status": "ALL_ELEVEN_EXISTING_AGENT_EXPORTS_AND_DELIVERY_PROOFS_UNCHANGED",
+  "checked_utc": "2026-10-15T10:31:18.127503+00:00",
+  "cases": 11,
+  "agent_files_rehashed": 55,
+  "original_proofs_rehashed": 11,
+  "new_ui_or_performance_runs": false,
+  "source_delivery_proof": "validation/accepted-current-reproduction-delivery.json",
+  "rows": [
+    {
+      "case": "browser_eager_history_load",
+      "exact_five_file_export_unchanged": true,
+      "both_recorded_profile_validities_current": true,
+      "original_delivery_proof_unchanged": true
+    },
+    {
+      "case": "browser_history_delete_no_transaction",
+      "exact_five_file_export_unchanged": true,
+      "both_recorded_profile_validities_current": true,
+      "original_delivery_proof_unchanged": true
+    },
+    {
+      "case": "browser_history_list_foreach",
+      "exact_five_file_export_unchanged": true,
+      "both_recorded_profile_validities_current": true,
+      "original_delivery_proof_unchanged": true
+    },
+    {
+      "case": "cloudmusic_play_time_high_frequency_update",
+      "exact_five_file_export_unchanged": true,
+      "both_recorded_profile_validities_current": true,
+      "original_delivery_proof_unchanged": true
+    },
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "exact_five_file_export_unchanged": true,
+      "both_recorded_profile_validities_current": true,
+      "original_delivery_proof_unchanged": true
+    },
+    {
+      "case": "jingmo_random_poem_orderby_random",
+      "exact_five_file_export_unchanged": true,
+      "both_recorded_profile_validities_current": true,
+      "original_delivery_proof_unchanged": true
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "exact_five_file_export_unchanged": true,
+      "both_recorded_profile_validities_current": true,
+      "original_delivery_proof_unchanged": true
+    },
+    {
+      "case": "sheafreader_article_list_foreach",
+      "exact_five_file_export_unchanged": true,
+      "both_recorded_profile_validities_current": true,
+      "original_delivery_proof_unchanged": true
+    },
+    {
+      "case": "sheafreader_extract_tag_tolowercase",
+      "exact_five_file_export_unchanged": true,
+      "both_recorded_profile_validities_current": true,
+      "original_delivery_proof_unchanged": true
+    },
+    {
+      "case": "sheafreader_insert_duplicate_exception",
+      "exact_five_file_export_unchanged": true,
+      "both_recorded_profile_validities_current": true,
+      "original_delivery_proof_unchanged": true
+    },
+    {
+      "case": "ytmusic_current_playing_timeupdate",
+      "exact_five_file_export_unchanged": true,
+      "both_recorded_profile_validities_current": true,
+      "original_delivery_proof_unchanged": true
+    }
+  ],
+  "goal_complete": false
+}
