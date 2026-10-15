@@ -1,0 +1,53 @@
+{
+  "case": "sheafreader_insert_duplicate_exception",
+  "status": "PASS",
+  "scope": "Current reproduction delivery only; historical performance evidence unchanged",
+  "variants": {
+    "unfixed": {
+      "status": "PASS",
+      "business_and_provisioning_identity_verified": true,
+      "signed_sha256": "4b247a719e5132b1af65f0bcb3ca66cca59c15a4c8b2c10bad070b9c91f56795",
+      "launch_receipt": {
+        "case": "sheafreader_insert_duplicate_exception",
+        "variant": "unfixed",
+        "signed_sha256": "4b247a719e5132b1af65f0bcb3ca66cca59c15a4c8b2c10bad070b9c91f56795",
+        "install": "[Info]App install path:/home/research/ohm-clean/reproduction-signatures-ee6a533a36674a009758a2d282492301/sheafreader_insert_duplicate_exception/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          15666
+        ],
+        "foreground_bundle": "com.sheafreader.hm",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    "fixed": {
+      "status": "PASS",
+      "business_and_provisioning_identity_verified": true,
+      "signed_sha256": "6068e936f51926a7e142a1676efc4fa438df7703488b8cd9604a3eae6e329262",
+      "launch_receipt": {
+        "case": "sheafreader_insert_duplicate_exception",
+        "variant": "fixed",
+        "signed_sha256": "6068e936f51926a7e142a1676efc4fa438df7703488b8cd9604a3eae6e329262",
+        "install": "[Info]App install path:/home/research/ohm-clean/reproduction-signatures-0755a0f46e10439ca6233362e76de9c4/sheafreader_insert_duplicate_exception/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          16200
+        ],
+        "foreground_bundle": "com.sheafreader.hm",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    }
+  },
+  "binary_only_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-a5f9fda4746b42efa79dc4df949bb427",
+  "files": [
+    "app.hap",
+    "profile.json",
+    "reproduce.py",
+    "symptom.txt",
+    "workload.json"
+  ],
+  "main_artifacts_unchanged": true,
+  "new_performance_measurement_claimed": false
+}
