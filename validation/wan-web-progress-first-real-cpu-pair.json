@@ -1,0 +1,125 @@
+{
+  "case": "wanharmony_web_progress_log_storm",
+  "status": "VERIFIED_REAL_WEB_FIRST_PAIR_NEGATIVE_USER_SKIPPED",
+  "app_injection": false,
+  "performance_accepted": false,
+  "full_three_pair_run_completed": false,
+  "samples": {
+    "unfixed": [
+      1350232653
+    ],
+    "fixed": [
+      1367926793
+    ]
+  },
+  "paired_ratios": [
+    0.9870649949320789
+  ],
+  "native_reload_progress": {
+    "unfixed": {
+      "completed_refreshes": 5,
+      "url": "https://www.wanandroid.com/blog/show/3942",
+      "progress_logs_per_load": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "progress_values_per_load": [
+        [
+          10,
+          20,
+          70,
+          100,
+          100
+        ],
+        [
+          10,
+          20,
+          70,
+          100,
+          100
+        ],
+        [
+          10,
+          20,
+          70,
+          100,
+          100
+        ],
+        [
+          10,
+          20,
+          70,
+          100,
+          100
+        ],
+        [
+          10,
+          20,
+          70,
+          100,
+          100
+        ]
+      ],
+      "native_page_durations_ms": [
+        1573.392187,
+        1898.634896,
+        2792.246353,
+        2404.360937,
+        1647.756249
+      ],
+      "app_injection": false,
+      "performance_accepted": false,
+      "method": "existing native begin/end/title/progress logs; all native error callbacks rejected"
+    },
+    "fixed": {
+      "completed_refreshes": 5,
+      "url": "https://www.wanandroid.com/blog/show/3942",
+      "progress_logs_per_load": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "progress_values_per_load": [
+        [
+          100,
+          100
+        ],
+        [
+          100,
+          100
+        ],
+        [
+          100,
+          100
+        ],
+        [
+          100,
+          100
+        ],
+        [
+          100,
+          100
+        ]
+      ],
+      "native_page_durations_ms": [
+        2647.802603,
+        1808.880208,
+        2438.744792,
+        1589.691666,
+        1424.217188
+      ],
+      "app_injection": false,
+      "performance_accepted": false,
+      "method": "existing native begin/end/title/progress logs; all native error callbacks rejected"
+    }
+  },
+  "raw_capture_sha256": {
+    "unfixed": "7c5d691c55db0e199a13192b5b35a5d970facc7c2b6dbd61cfac6f272e930b08",
+    "fixed": "165a36f02f84c1dbd93ddcfe05ad21f534b1984c10cc2c35997007eb2ce1ec2e"
+  }
+}

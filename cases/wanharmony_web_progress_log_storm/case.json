@@ -57,8 +57,24 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "pending_clean_measurement",
-      "note": "Legacy instrumented measurements do not validate these business-only builds."
+      "status": "negative_screen_failed",
+      "metric": "hiperf_instructions",
+      "unfixed": [
+        1350232653
+      ],
+      "fixed": [
+        1367926793
+      ],
+      "paired_ratios": [
+        0.9870649949320789
+      ],
+      "median_ratio": 0.9870649949320789,
+      "rounds_per_variant": 1,
+      "required_rounds": 3,
+      "full_performance_run_completed": false,
+      "performance_accepted": false,
+      "legacy_evidence_reused": false,
+      "note": "The complete mandatory first pair fails the unchanged all-pairs >=1.2x criterion. Both variants completed five real error-free Web refreshes with the same ordinary one-entry history input. User-directed early negative skip; no full three-pair run or UI-thread mechanism acceptance is claimed."
     },
     "mechanism_oracle": {
       "metric": "log_calls_per_pageload",
@@ -100,8 +116,8 @@
   },
   "clean_validation": {
     "policy": "no_app_injection",
-    "workload_validation": "pending",
-    "performance_validation": "pending",
+    "workload_validation": "verified",
+    "performance_validation": "negative_screen_failed",
     "variants": {
       "unfixed": {
         "ref": "clean-app/wanharmony_web_progress_log_storm/unfixed",
@@ -134,6 +150,116 @@
           },
           "allowed_acls": [],
           "status": "PASS"
+        },
+        "workload": {
+          "case": "wanharmony_web_progress_log_storm",
+          "variant": "unfixed",
+          "status": "PASS",
+          "plan_sha256": "97671060209b01c463c3abaef261a614102d2644fc256e44d6f346e3b8181c5b",
+          "signed_sha256": "91b9c9577ae045613216cc4f5d94aefba621ec3a88a705a5030011042176eda8",
+          "fixture": {
+            "sha256": "d5bacd41490c002107ecb58ca913bb3bf10b679910222d61388f2a618efd0766",
+            "deployed_sha256": "a96334ffca45c40b1d86c1e7dbc2924e68bcbe93a2a8702f63517934e27607ed",
+            "deployment": "history_key_only_preserving_live_preferences",
+            "preparation_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixture-preparations/wan-history/1792049756507856693",
+            "before_sha256": "da0d81e2e2f509afa4221089baaab4560e2271206b9271293ac9868844dbcde4",
+            "preferences": "/data/app/el2/100/base/org.example.wan.ohos/haps/entry/files/persistent_storage",
+            "backup": "/home/research/ohm-clean/backups/org.example.wan.ohos/1792049756507856693/persistent_storage.xml",
+            "entries": 1,
+            "fixture_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/wan-web-weekly-page",
+            "method": "ordinary WebData objects in the initialized native PersistentStorage array",
+            "installation_verified": true,
+            "functional_read_verified": true
+          },
+          "wan_web": {
+            "completed_refreshes": 5,
+            "url": "https://www.wanandroid.com/blog/show/3942",
+            "progress_logs_per_load": [
+              5,
+              5,
+              5,
+              5,
+              5
+            ],
+            "progress_values_per_load": [
+              [
+                10,
+                20,
+                70,
+                100,
+                100
+              ],
+              [
+                10,
+                20,
+                70,
+                100,
+                100
+              ],
+              [
+                10,
+                20,
+                70,
+                100,
+                100
+              ],
+              [
+                10,
+                20,
+                70,
+                100,
+                100
+              ],
+              [
+                10,
+                20,
+                70,
+                100,
+                100
+              ]
+            ],
+            "native_page_durations_ms": [
+              1573.392187,
+              1898.634896,
+              2792.246353,
+              2404.360937,
+              1647.756249
+            ],
+            "app_injection": false,
+            "performance_accepted": false,
+            "method": "existing native begin/end/title/progress logs; all native error callbacks rejected"
+          },
+          "performance_verified": false,
+          "source": "functional native callback checks in original first CPU trial"
+        },
+        "performance": {
+          "status": "NEGATIVE_SCREEN_FAILED",
+          "metric": "hiperf_instructions",
+          "rounds": 1,
+          "samples": [
+            1350232653
+          ],
+          "median": 1350232653,
+          "paired_ratios": [
+            0.9870649949320789
+          ],
+          "median_ratio": 0.9870649949320789,
+          "plan_sha256": "97671060209b01c463c3abaef261a614102d2644fc256e44d6f346e3b8181c5b",
+          "signed_sha256": "91b9c9577ae045613216cc4f5d94aefba621ec3a88a705a5030011042176eda8",
+          "fixture_sha256": "d5bacd41490c002107ecb58ca913bb3bf10b679910222d61388f2a618efd0766",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "c282677ef20b304e13100bab85f8dacaf8c0c18be3f1da7d20f0bf38231f6a46",
+              "app_samples": 4361,
+              "remote_artifacts": "/home/research/ohm-clean/wanharmony_web_progress_log_storm/unfixed/cpu-captures/round-1"
+            }
+          ],
+          "legacy_evidence_reused": false,
+          "required_rounds": 3,
+          "full_performance_run_completed": false,
+          "performance_accepted": false
         }
       },
       "fixed": {
@@ -167,8 +293,110 @@
           },
           "allowed_acls": [],
           "status": "PASS"
+        },
+        "workload": {
+          "case": "wanharmony_web_progress_log_storm",
+          "variant": "fixed",
+          "status": "PASS",
+          "plan_sha256": "97671060209b01c463c3abaef261a614102d2644fc256e44d6f346e3b8181c5b",
+          "signed_sha256": "ff8517900a803fb9d29f7e422d3e7b232ca3f5b544e9b4537730fe295a86c794",
+          "fixture": {
+            "sha256": "d5bacd41490c002107ecb58ca913bb3bf10b679910222d61388f2a618efd0766",
+            "deployed_sha256": "ef45b2ac245f7dda38bc0333ae930f32726f49ab5f3f962ce57d67874e7c4eee",
+            "deployment": "history_key_only_preserving_live_preferences",
+            "preparation_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixture-preparations/wan-history/1792049996781541983",
+            "before_sha256": "3c41b84a9e244e41e3c251d6b0235216cdc3112edf5f5a3da9a0dabf73461580",
+            "preferences": "/data/app/el2/100/base/org.example.wan.ohos/haps/entry/files/persistent_storage",
+            "backup": "/home/research/ohm-clean/backups/org.example.wan.ohos/1792049996781541983/persistent_storage.xml",
+            "entries": 1,
+            "fixture_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/wan-web-weekly-page",
+            "method": "ordinary WebData objects in the initialized native PersistentStorage array",
+            "installation_verified": true,
+            "functional_read_verified": true
+          },
+          "wan_web": {
+            "completed_refreshes": 5,
+            "url": "https://www.wanandroid.com/blog/show/3942",
+            "progress_logs_per_load": [
+              2,
+              2,
+              2,
+              2,
+              2
+            ],
+            "progress_values_per_load": [
+              [
+                100,
+                100
+              ],
+              [
+                100,
+                100
+              ],
+              [
+                100,
+                100
+              ],
+              [
+                100,
+                100
+              ],
+              [
+                100,
+                100
+              ]
+            ],
+            "native_page_durations_ms": [
+              2647.802603,
+              1808.880208,
+              2438.744792,
+              1589.691666,
+              1424.217188
+            ],
+            "app_injection": false,
+            "performance_accepted": false,
+            "method": "existing native begin/end/title/progress logs; all native error callbacks rejected"
+          },
+          "performance_verified": false,
+          "source": "functional native callback checks in original first CPU trial"
+        },
+        "performance": {
+          "status": "NEGATIVE_SCREEN_FAILED",
+          "metric": "hiperf_instructions",
+          "rounds": 1,
+          "samples": [
+            1367926793
+          ],
+          "median": 1367926793,
+          "paired_ratios": [
+            0.9870649949320789
+          ],
+          "median_ratio": 0.9870649949320789,
+          "plan_sha256": "97671060209b01c463c3abaef261a614102d2644fc256e44d6f346e3b8181c5b",
+          "signed_sha256": "ff8517900a803fb9d29f7e422d3e7b232ca3f5b544e9b4537730fe295a86c794",
+          "fixture_sha256": "d5bacd41490c002107ecb58ca913bb3bf10b679910222d61388f2a618efd0766",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "41fa8e6bab3f297c77a7e5c5d0a21797c9a8672ca567c48d73d2c4af0609f58e",
+              "app_samples": 4416,
+              "remote_artifacts": "/home/research/ohm-clean/wanharmony_web_progress_log_storm/fixed/cpu-captures/round-1"
+            }
+          ],
+          "legacy_evidence_reused": false,
+          "required_rounds": 3,
+          "full_performance_run_completed": false,
+          "performance_accepted": false
         }
       }
     }
+  },
+  "disposition": {
+    "status": "skipped_by_user",
+    "reason": "Verified five real normal refreshes fail the unchanged 1.2x mandatory first CPU pair; user instructed to skip negative cases.",
+    "performance_passed": false,
+    "original_evidence_preserved": true,
+    "full_three_pair_run_completed": false
   }
 }
