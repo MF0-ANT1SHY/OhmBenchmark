@@ -47,15 +47,13 @@
       "count": 5,
       "actions": [
         {
-          "op": "tap",
+          "op": "refresh_wan_web",
           "selector": {
             "id": "__NavdestinationField__NavigationMenu__MenuItem1__",
             "match": "exact"
-          }
-        },
-        {
-          "op": "pause",
-          "seconds": 1
+          },
+          "url": "https://www.wanandroid.com/blog/show/3942",
+          "timeout_s": 30
         }
       ]
     }

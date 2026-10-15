@@ -80,6 +80,66 @@ class UI:
         x, y = self.center(self.find(selector))
         self.shell(f"uitest uiInput click {x} {y}")
 
+    def refresh_wan_web(self, selector, url, timeout_s=30):
+        """Ordinary refresh tap with an external native completion barrier.
+
+        Keep this self-contained: the exported standalone reproducer includes
+        UI and standard-library imports, not private evaluator modules.
+        """
+        if self.bundle != 'org.example.wan.ohos' or url != 'https://www.wanandroid.com/blog/show/3942':
+            raise ValueError('native refresh barrier targets a different business page')
+        if not isinstance(timeout_s, (int, float)) or not 1 <= timeout_s <= 60:
+            raise ValueError('invalid native refresh deadline')
+        pid = self.shell('pidof org.example.wan.ohos').strip()
+        if not pid.isdigit():
+            raise RuntimeError('one live Wan process is required')
+        stat = self.shell(f'cat /proc/{pid}/stat')
+        ticks = stat.rsplit(')', 1)[1].split()[19]
+        command = (f"hilog -x -P {pid} -e 'onPageBegin url:|onPageEnd url:|"
+                   "onTitleReceive title:|onErrorReceive url:' -v epoch -v nsec")
+        old = set(self.shell(command).splitlines())
+        self.tap(selector)
+        # Retain the workload's original minimum one-second pause; the extra
+        # wait is event-based completion, not added synthetic app work.
+        time.sleep(1)
+        deadline = time.monotonic()+timeout_s
+        while True:
+            began = ended = False
+            title = ''
+            for line in self.shell(command).splitlines():
+                if line in old:
+                    continue
+                match = re.match(r'^\s*\d+\.\d{9}\s+(\d+)\s+\d+\s+[DIWEF]\s+'
+                                 r'\S*org\.example\.wan\.ohos/WebPage:\s+(.*)$', line)
+                if not match:
+                    continue
+                if match[1] != pid:
+                    raise RuntimeError('native refresh callback changed process')
+                message = match[2]
+                if message.startswith('onErrorReceive url: '):
+                    raise RuntimeError('native refresh page or resource failed')
+                if message.startswith('onPageBegin url: '):
+                    if began or message != 'onPageBegin url: '+url:
+                        raise RuntimeError('overlapping or redirected native refresh')
+                    began = True
+                elif message.startswith('onPageEnd url: '):
+                    if not began or ended or message != 'onPageEnd url: '+url:
+                        raise RuntimeError('native refresh end has no matching begin')
+                    ended = True
+                elif message.startswith('onTitleReceive title: '):
+                    if not began:
+                        raise RuntimeError('native refresh title has no matching begin')
+                    title = message[len('onTitleReceive title: '):].strip()
+            if began and ended and title:
+                after = self.shell(f'cat /proc/{pid}/stat')
+                if (not after.startswith(pid+' (') or
+                        after.rsplit(')', 1)[1].split()[19] != ticks):
+                    raise RuntimeError('native refresh process identity changed')
+                return
+            if time.monotonic() >= deadline:
+                raise RuntimeError('native refresh did not complete with begin/end/title callbacks')
+            time.sleep(.25)
+
     def input(self, selector, value, cleared_text=''):
         if cleared_text not in ('','0'):
             raise ValueError('unsupported cleared input state')
@@ -198,6 +258,8 @@ class UI:
                 self.shell(f"aa force-stop {shlex.quote(self.bundle)}")
             elif op == "tap":
                 self.tap(action["selector"])
+            elif op == "refresh_wan_web":
+                self.refresh_wan_web(action['selector'], action['url'], action.get('timeout_s', 30))
             elif op == "input":
                 self.input(action["selector"], action["value"], action.get('cleared_text',''))
             elif op == "type_keys":

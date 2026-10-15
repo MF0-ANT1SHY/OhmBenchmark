@@ -1,0 +1,11 @@
+{
+  "case": "wanharmony_web_progress_log_storm",
+  "status": "ORIGINAL_INCOMPLETE_REFRESH_TRIAL_PRESERVED_BEFORE_RETRY",
+  "original_local": "artifacts/clean/wanharmony_web_progress_log_storm/unfixed/cpu-captures/round-1",
+  "preserved_local": "artifacts/retired-clean/wanharmony_web_progress_log_storm/incomplete-refresh-1792049716598746768/unfixed/cpu-captures/round-1",
+  "original_remote": "/home/research/ohm-clean/wanharmony_web_progress_log_storm/unfixed/cpu-captures/round-1",
+  "preserved_remote": "/home/research/ohm-clean/wanharmony_web_progress_log_storm/unfixed/retired-cpu-captures/incomplete-refresh-1792049716598746768/round-1",
+  "capture_sha256": "e57d73169393891855d655c1d34eb4d87eb1e1aa10b15665646c2b58ec934740",
+  "original_receipt_unchanged": true,
+  "UI_actions_replayed_for_recovery": false
+}

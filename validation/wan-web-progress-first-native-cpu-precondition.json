@@ -2,7 +2,7 @@
   "case": "wanharmony_web_progress_log_storm",
   "status": "FIRST_NATIVE_CPU_TRIAL_INVALID_INCOMPLETE_OVERLAPPING_REFRESH",
   "variant": "unfixed",
-  "raw_artifacts": "artifacts/clean/wanharmony_web_progress_log_storm/unfixed/cpu-captures/round-1",
+  "raw_artifacts": "artifacts/retired-clean/wanharmony_web_progress_log_storm/incomplete-refresh-1792049716598746768/unfixed/cpu-captures/round-1",
   "capture_sha256": "e57d73169393891855d655c1d34eb4d87eb1e1aa10b15665646c2b58ec934740",
   "raw_native_streams_recovered_without_ui_rerun": true,
   "original_failed_receipt_unchanged": true,
@@ -17,5 +17,7 @@
   "negative_verdict": false,
   "performance_accepted": false,
   "app_injection": false,
-  "next_requirement": "Add an explicit external native begin/end/title completion barrier for each ordinary refresh before the next tap. Preserve this original trial; keep five refreshes and the unchanged 1.2x CPU criterion."
+  "next_requirement": "Add an explicit external native begin/end/title completion barrier for each ordinary refresh before the next tap. Preserve this original trial; keep five refreshes and the unchanged 1.2x CPU criterion.",
+  "original_raw_artifacts": "artifacts/clean/wanharmony_web_progress_log_storm/unfixed/cpu-captures/round-1",
+  "relocation_manifest": "validation/wan-web-progress-incomplete-trial-archive.json"
 }
