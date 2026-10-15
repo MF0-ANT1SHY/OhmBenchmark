@@ -6064,29 +6064,64 @@
         "case": "wanharmony_history_log_materialization",
         "variant": "unfixed",
         "unsigned_sha256": "db2e9771b7e993302e7f2a3fc6236097b0eab50da62c3460551cfd702a85b8bd",
-        "signed_hap": "/home/research/ohm-clean/wanharmony_history_log_materialization/unfixed/app.hap",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/wanharmony_history_log_materialization/unfixed/app.hap",
         "audit": {
-          "sha256": "26d684d104e6c4d06d1570c350d4a26cba8d03cf506d8c5eb4eab1a74c45f708",
+          "sha256": "b0653227fb2af8b871fe8683be83f7d4d055d16b7032d311af6d8e942e841e03",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       },
       "smoke": {
         "case": "wanharmony_history_log_materialization",
         "variant": "unfixed",
-        "signed_sha256": "26d684d104e6c4d06d1570c350d4a26cba8d03cf506d8c5eb4eab1a74c45f708",
-        "install": "[Info]App install path:/home/research/ohm-clean/wanharmony_history_log_materialization/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "signed_sha256": "b0653227fb2af8b871fe8683be83f7d4d055d16b7032d311af6d8e942e841e03",
+        "install": "[Info]App install path:/home/research/ohm-clean/renewed-20261014/wanharmony_history_log_materialization/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
         "launch": "start ability successfully.",
         "pids": [
-          58490
+          37354
         ],
         "foreground_bundle": "org.example.wan.ohos",
         "status": "PASS",
         "performance_verified": false
+      },
+      "workload": {
+        "case": "wanharmony_history_log_materialization",
+        "variant": "unfixed",
+        "signed_sha256": "b0653227fb2af8b871fe8683be83f7d4d055d16b7032d311af6d8e942e841e03",
+        "plan_sha256": "b53f300ea568a822c4cdd540d8b4bc66e0184768840fe9ca257fda70d9aeaec2",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "sha256": "e29c96503dc269b5d35af0767ba0e708b547f6fce724169fe3d9432d0c976ed5",
+          "deployed_sha256": "b824d74eb2105a6e0859fe612470f5621d80114945930cfa4606a55db4cbce6e",
+          "deployment": "history_key_only_preserving_live_preferences",
+          "preparation_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixture-preparations/wan-history/1792036933467422227",
+          "before_sha256": "00662786058ad24742cd10a9033da5d77a52b77d07c4d5bb6febf1ad81572040",
+          "preferences": "/data/app/el2/100/base/org.example.wan.ohos/haps/entry/files/persistent_storage",
+          "backup": "/home/research/ohm-clean/backups/org.example.wan.ohos/1792036933467422227/persistent_storage.xml",
+          "entries": 466,
+          "fixture_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/wan-history-466",
+          "method": "ordinary WebData objects in the initialized native PersistentStorage array",
+          "installation_verified": true,
+          "functional_read_verified": false
+        },
+        "phase_elapsed_s": {
+          "setup": 20.168800316000002,
+          "measured": 132.125483182,
+          "verify": 6.197779503999982
+        },
+        "wan_history": {
+          "completed_visits": 5,
+          "history_entries_preserved": 466,
+          "method": "existing native WebPage begin/end/title callbacks with no network-error callbacks, plus preserved production WebData history"
+        },
+        "functional_check": "five successful ordinary webpage loads, with the full production browsing history preserved",
+        "capture_duration_required_s": 137
       }
     },
     {
@@ -6112,29 +6147,64 @@
         "case": "wanharmony_history_log_materialization",
         "variant": "fixed",
         "unsigned_sha256": "4a499cf607d52b77169c49fdc35960a5b3af4f877208d29088d81845840d08ee",
-        "signed_hap": "/home/research/ohm-clean/wanharmony_history_log_materialization/fixed/app.hap",
+        "signed_hap": "/home/research/ohm-clean/renewed-20261014/wanharmony_history_log_materialization/fixed/app.hap",
         "audit": {
-          "sha256": "b9a6aea7be05e48bd221f5d17b1ca4b0da3f397e5779f2324b0c7b919ed21cbc",
+          "sha256": "e70783aacd74405ee736737f3fd85721ca7dcc4bda8597d8ffce014caf83fb12",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
+        "allowed_acls": [],
         "status": "PASS"
       },
       "smoke": {
         "case": "wanharmony_history_log_materialization",
         "variant": "fixed",
-        "signed_sha256": "b9a6aea7be05e48bd221f5d17b1ca4b0da3f397e5779f2324b0c7b919ed21cbc",
-        "install": "[Info]App install path:/home/research/ohm-clean/wanharmony_history_log_materialization/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "signed_sha256": "e70783aacd74405ee736737f3fd85721ca7dcc4bda8597d8ffce014caf83fb12",
+        "install": "[Info]App install path:/home/research/ohm-clean/renewed-20261014/wanharmony_history_log_materialization/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
         "launch": "start ability successfully.",
         "pids": [
-          59330
+          37757
         ],
         "foreground_bundle": "org.example.wan.ohos",
         "status": "PASS",
         "performance_verified": false
+      },
+      "workload": {
+        "case": "wanharmony_history_log_materialization",
+        "variant": "fixed",
+        "signed_sha256": "e70783aacd74405ee736737f3fd85721ca7dcc4bda8597d8ffce014caf83fb12",
+        "plan_sha256": "b53f300ea568a822c4cdd540d8b4bc66e0184768840fe9ca257fda70d9aeaec2",
+        "status": "PASS",
+        "performance_verified": false,
+        "fixture": {
+          "sha256": "e29c96503dc269b5d35af0767ba0e708b547f6fce724169fe3d9432d0c976ed5",
+          "deployed_sha256": "7299a3a0fe6f47122e4270df30d1228f50a2f44989cd4c4d205f981fcdd78298",
+          "deployment": "history_key_only_preserving_live_preferences",
+          "preparation_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixture-preparations/wan-history/1792037174522630739",
+          "before_sha256": "d947c88267eb5c552f9a26e1db427cd13833f56ec1faa35bdd387cd43f650e5d",
+          "preferences": "/data/app/el2/100/base/org.example.wan.ohos/haps/entry/files/persistent_storage",
+          "backup": "/home/research/ohm-clean/backups/org.example.wan.ohos/1792037174522630739/persistent_storage.xml",
+          "entries": 466,
+          "fixture_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixtures/wan-history-466",
+          "method": "ordinary WebData objects in the initialized native PersistentStorage array",
+          "installation_verified": true,
+          "functional_read_verified": false
+        },
+        "phase_elapsed_s": {
+          "setup": 19.86334823599998,
+          "measured": 131.86334587100004,
+          "verify": 6.740911402999984
+        },
+        "wan_history": {
+          "completed_visits": 5,
+          "history_entries_preserved": 466,
+          "method": "existing native WebPage begin/end/title callbacks with no network-error callbacks, plus preserved production WebData history"
+        },
+        "functional_check": "five successful ordinary webpage loads, with the full production browsing history preserved",
+        "capture_duration_required_s": 137
       }
     },
     {

@@ -35,5 +35,5 @@ class PerfLoad_wanharmony_0010(PerfTestCase):
         ui.run([{'op': 'stop'}, {'op': 'launch'}])
         ui.run(self._plan['setup'])
         ui.profiled(self.execute_performance_step,
-            'WanHarmony (WanAndroid 客户端)页面操作', 30, self._plan['measured'])
+            'WanHarmony (WanAndroid 客户端)页面操作', 180, self._plan['measured'])
         ui.run(self._plan['verify'])

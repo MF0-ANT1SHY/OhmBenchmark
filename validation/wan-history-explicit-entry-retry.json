@@ -1,0 +1,16 @@
+{
+  "case": "wanharmony_history_log_materialization",
+  "status": "CURRENT_NORMAL_ENTRY_UI_VERIFIED_PERFORMANCE_PENDING",
+  "performance_accepted": false,
+  "app_injection": false,
+  "old_workload_sha256": "4d2c18dd2cf3178425532a5799e3c7ea5d407adf7834038ddd0b9cd12e29cd85",
+  "new_workload_sha256": "b53f300ea568a822c4cdd540d8b4bc66e0184768840fe9ca257fda70d9aeaec2",
+  "history_entries_unchanged": 466,
+  "history_fixture_unchanged": true,
+  "normal_page_opens_unchanged": 5,
+  "selected_existing_history_url": "https://www.wanandroid.com/blog/show/3942",
+  "network_error_rejection_unchanged": true,
+  "reason": "Replace percentage coordinates with a stable ordinary article title selector; retain all 466 source history records and require five complete error-free page callbacks. Prior attempts had third-party resource errors and only four observed page begins, so were never accepted as performance evidence.",
+  "scope": "UI trigger verification only; native CPU verdict is recorded separately.",
+  "callback_protocol": "per-return existing native log snapshots with unchanged five-complete-page and no-error requirements"
+}

@@ -28,13 +28,21 @@
       "count": 5,
       "actions": [
         {
-          "op": "point",
-          "x": 0.4,
-          "y": 0.3
+          "op": "tap",
+          "selector": {
+            "text": "Android 技术周刊 （2026-10-07 ~ 2026-10-14）"
+          }
+        },
+        {
+          "op": "wait",
+          "selector": {
+            "type": "Web",
+            "match": "exact"
+          }
         },
         {
           "op": "pause",
-          "seconds": 0.5
+          "seconds": 2
         },
         {
           "op": "key",

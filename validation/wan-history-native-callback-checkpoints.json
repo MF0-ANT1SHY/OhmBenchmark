@@ -1,0 +1,42 @@
+{
+  "case": "wanharmony_history_log_materialization",
+  "status": "BOTH_NORMAL_WEB_WORKLOADS_VERIFIED_NATIVE_CPU_PENDING",
+  "app_injection": false,
+  "performance_accepted": false,
+  "native_app_logs_added": false,
+  "log_level_or_error_rejection_changed": false,
+  "variants": {
+    "unfixed": {
+      "device_receipt_sha256": "17c0ed34253bd6f77d36d2229eb86e4bb0753932605833c9b1ab6165ffa28249",
+      "return_snapshots": 5,
+      "page_begins_in_final_snapshot": 3,
+      "verified": {
+        "completed_visits": 5,
+        "history_entries_preserved": 466,
+        "method": "existing native WebPage begin/end/title callbacks with no network-error callbacks, plus preserved production WebData history"
+      },
+      "phase_elapsed_s": {
+        "setup": 20.169,
+        "measured": 132.125,
+        "verify": 6.198
+      }
+    },
+    "fixed": {
+      "device_receipt_sha256": "b9dbdae898138cf5b0b2e7fe665191f31324afe4756ef4cf97e8a099eb15c64f",
+      "return_snapshots": 5,
+      "page_begins_in_final_snapshot": 4,
+      "verified": {
+        "completed_visits": 5,
+        "history_entries_preserved": 466,
+        "method": "existing native WebPage begin/end/title callbacks with no network-error callbacks, plus preserved production WebData history"
+      },
+      "phase_elapsed_s": {
+        "setup": 19.863,
+        "measured": 131.863,
+        "verify": 6.741
+      }
+    }
+  },
+  "workload_sha256": "b53f300ea568a822c4cdd540d8b4bc66e0184768840fe9ca257fda70d9aeaec2",
+  "scope": "Functional UI/callback verification only; native CPU performance remains pending."
+}

@@ -19,8 +19,14 @@ class UI:
         # prevents a failed dump from reusing a prior app's successful layout.
         path = f'/data/local/tmp/workload-layout-{uuid.uuid4().hex}.json'
         try:
-            self.shell(f"uitest dumpLayout -p {path}")
-            return json.loads(self.shell(f"cat {path}"))
+            dump_output = self.shell(f"uitest dumpLayout -p {path}")
+            raw = self.shell(f"cat {path}")
+            try:
+                return json.loads(raw)
+            except json.JSONDecodeError as exc:
+                raise json.JSONDecodeError(
+                    f'Invalid fresh UI layout: dump={dump_output[:500]!r}, read={raw[:500]!r}',
+                    exc.doc, exc.pos) from exc
         finally:
             self.shell(f'rm -f {path}')
 
@@ -116,6 +122,33 @@ class UI:
             self.shell(f'uitest uiInput swipe {x} {bottom} {x} {top} 1000')
             time.sleep(.4)
 
+    def type_keys(self, selector, value, interval_ms=50):
+        """Type ordinary lowercase keys in one device-side command.
+
+        No intermediate layout dumps or text replacements interrupt the burst.
+        Requested intervals do not prove application event delivery timing.
+        """
+        if (not isinstance(value, str) or not re.fullmatch(r'[a-z]{1,100}', value)
+                or type(interval_ms) is not int or not 1 <= interval_ms <= 15000):
+            raise ValueError('invalid keyboard typing burst')
+        node = self.find(selector)
+        if str(node.get('text', '')):
+            raise RuntimeError('keyboard typing requires an empty input')
+        x, y = self.center(node)
+        self.shell(f'uitest uiInput click {x} {y}')
+        parts = ['uinput -K']
+        for index, letter in enumerate(value):
+            if index:
+                parts.append(f'-i {interval_ms}')
+            key = 2017 + ord(letter) - ord('a')
+            parts.append(f'-d {key} -u {key}')
+        output = self.shell(' '.join(parts))
+        if any(f'you raised the key {2017 + ord(letter) - ord("a")}' not in output
+               for letter in value):
+            raise RuntimeError('native keyboard injection did not confirm key release')
+        if str(self.find(selector).get('text', '')) != value:
+            raise RuntimeError('keyboard input does not match the requested text')
+
     def run(self, actions):
         for action in actions:
             op = action["op"]
@@ -131,6 +164,8 @@ class UI:
                 self.tap(action["selector"])
             elif op == "input":
                 self.input(action["selector"], action["value"], action.get('cleared_text',''))
+            elif op == "type_keys":
+                self.type_keys(action['selector'], action['value'], action.get('interval_ms', 50))
             elif op == "wait":
                 self.find(action["selector"], action.get("timeout_s", 15))
             elif op == "pause":
@@ -146,9 +181,16 @@ class UI:
                 x, y = round(b[2]*action["x"]), round(b[3]*action["y"])
                 self.shell(f"uitest uiInput click {x} {y}")
             elif op == "swipe":
-                layout = self.layout()
-                b = list(map(int, re.findall(r"\d+", layout["attributes"]["bounds"])))
-                x, bottom, top = round(b[2]*0.5), round(b[3]*0.78), round(b[3]*0.3)
+                if action.get('selector'):
+                    bounds = self.find(action['selector'])['bounds']
+                else:
+                    bounds = self.layout()['attributes']['bounds']
+                b = list(map(int, re.findall(r"\d+", bounds)))
+                if len(b) != 4 or b[2] <= b[0] or b[3] <= b[1]:
+                    raise ValueError('invalid swipe bounds')
+                x = round((b[0]+b[2])*0.5)
+                bottom = round(b[1]+(b[3]-b[1])*0.78)
+                top = round(b[1]+(b[3]-b[1])*0.3)
                 if action.get("direction", "up") == "down":
                     bottom, top = top, bottom
                 for _ in range(action.get("count", 1)):

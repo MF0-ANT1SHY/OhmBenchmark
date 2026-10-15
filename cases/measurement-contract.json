@@ -203,7 +203,7 @@
     "wanharmony_history_log_materialization": {
       "oracle_metric": "trace_cpu_ms",
       "app_injection": false,
-      "workload_validation": "pending",
+      "workload_validation": "verified",
       "measurement_status": "pending_clean_measurement",
       "rounds_recorded": 0
     },
