@@ -1,0 +1,43 @@
+{
+  "business_entries": 43,
+  "unchanged_signing_only_entries": [
+    ".pages.info"
+  ],
+  "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+  "unsigned_sha256": "be83d4a5203a04d189b40bb6f78cfe85e8b0cf744ba602a571ccbe602aedd574",
+  "measured_signed_sha256": "14140ea223bb7445d626f6967bf0889ac095c7a54db93fc4b6ceefb98ebc828d",
+  "renewed_signed_sha256": "706aa7a9e4a90be9c1ea16711451246f2ef3fc3e87d953df09660167e02a524c",
+  "profile_identity_sha256": "1ef7ea81c9d34067dc82e018ec04e6e54f6e5602d01c1f23320cdd8842982bf1",
+  "certificate_chain_sha256": "de33813600b3c19837d5e3bf14e8d5e5d8f2c6708ac41d7896c036d5f86ad3e0",
+  "historical_profile_validity": {
+    "not-before": 1610519532,
+    "not-after": 1705127532
+  },
+  "renewed_profile_validity": {
+    "bundle": "com.sheafreader.hm",
+    "not_before": 1792036255,
+    "not_after": 1794628555,
+    "checked_at": 1792036561.2768412
+  },
+  "historical_performance_evidence_changed": false,
+  "fresh_launch_verified": false,
+  "case": "sheafreader_extract_tag_tolowercase",
+  "main_artifacts_unchanged": true,
+  "reproduction_artifacts": "artifacts/reproduction-signatures/sheafreader_extract_tag_tolowercase/unfixed",
+  "sign_receipt": {
+    "case": "sheafreader_extract_tag_tolowercase",
+    "variant": "unfixed",
+    "unsigned_sha256": "be83d4a5203a04d189b40bb6f78cfe85e8b0cf744ba602a571ccbe602aedd574",
+    "signed_hap": "/home/research/ohm-clean/reproduction-signatures-43c290fe2c5942e4998db191bf7608b2/sheafreader_extract_tag_tolowercase/unfixed/app.hap",
+    "audit": {
+      "sha256": "706aa7a9e4a90be9c1ea16711451246f2ef3fc3e87d953df09660167e02a524c",
+      "abc_modules_checked": [
+        "ets/modules.abc"
+      ],
+      "findings": [],
+      "passed": true
+    },
+    "allowed_acls": [],
+    "status": "PASS"
+  }
+}

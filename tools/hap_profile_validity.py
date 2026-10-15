@@ -28,7 +28,7 @@ def verify_profile(profile, bundle, now=None):
             'checked_at': now}
 
 
-def verify_installable_profile(hap, bundle, sign_tool, now=None):
+def read_signed_profile(hap, sign_tool):
     # The SDK verify-app command verifies HAP digests but, on the installed
     # SDK, accepts an expired provisioning profile. Explicitly check its dates.
     with tempfile.TemporaryDirectory(prefix='hap-profile-') as temporary:
@@ -46,4 +46,9 @@ def verify_installable_profile(hap, bundle, sign_tool, now=None):
         if result.returncode:
             raise ValueError('signed provisioning profile CMS verification failed')
         profile = json.loads((root/'profile.json').read_bytes())
-        return verify_profile(profile, bundle, now)
+        return profile, (root/'chain.cer').read_bytes()
+
+
+def verify_installable_profile(hap, bundle, sign_tool, now=None):
+    profile, _ = read_signed_profile(hap, sign_tool)
+    return verify_profile(profile, bundle, now)
