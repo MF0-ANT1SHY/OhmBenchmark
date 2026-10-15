@@ -1,0 +1,84 @@
+{
+  "case": "ytmusic_search_no_debounce",
+  "status": "DIAGNOSTIC_ONLY",
+  "app_injection": false,
+  "performance_accepted": false,
+  "plan_sha256": "11e24c31a8c56df6ad445b14c7ecc1c08d3f9b848eb64cb371a6907c07360371",
+  "variants": {
+    "unfixed": {
+      "device_status": "INPUT_UI_VERIFIED_NATIVE_EVENTS_REQUIRE_AUDIT",
+      "device_error": null,
+      "receipt_sha256": "a2c3177f9d22bf9a07cdcae9765d518b96a1a2852349168fb3ceedde03fd4961",
+      "remote_artifacts": "/home/research/ohm-clean/keyboard-diagnostics/896e5917e8f34d349ba35822a961e8d4",
+      "observer_binary_removed": true,
+      "network_result_verified": false,
+      "mmi": {
+        "characters": 10,
+        "submit_observed": true,
+        "window_id": 542,
+        "mmi_key_down_spacing_ms": [
+          120.354688,
+          120.150521,
+          119.779166,
+          125.935417,
+          121.305208,
+          123.049479,
+          127.022396,
+          123.407813,
+          119.311458
+        ],
+        "all_adjacent_letters_under_300ms": true,
+        "arkui_callback_spacing_verified": false,
+        "method": "separate native OH_Input key monitor; not app instrumentation"
+      },
+      "status": "TEN_CHARACTER_INPUT_AND_MMI_VERIFIED_REQUESTS_PENDING",
+      "local_artifacts": "artifacts/clean/ytmusic_search_no_debounce/unfixed/keyboard-diagnostics/896e5917e8f34d349ba35822a961e8d4",
+      "native_keys_sha256": "4c5d23d97cd57af766056cf892fce90259fd294f6caee3652b6e1066bd0415ca",
+      "native_http_log_snapshot": {
+        "scope": "Existing app-process native HTTP result logs; not URL-attributed or accepted performance samples",
+        "result_records": 11,
+        "dns_error_2300006": 11,
+        "response_code_zero": 11,
+        "successful_http_result_records": 0
+      }
+    },
+    "fixed": {
+      "device_status": "INPUT_UI_VERIFIED_NATIVE_EVENTS_REQUIRE_AUDIT",
+      "device_error": null,
+      "receipt_sha256": "a465b40f123e418ac05d74b199a2a54e13d379abb22aa1a8fc9dba5392c7cea0",
+      "remote_artifacts": "/home/research/ohm-clean/keyboard-diagnostics/dcf95457c688437481bc9f34fbb1ef3f",
+      "observer_binary_removed": true,
+      "network_result_verified": false,
+      "mmi": {
+        "characters": 10,
+        "submit_observed": true,
+        "window_id": 543,
+        "mmi_key_down_spacing_ms": [
+          124.069271,
+          124.902084,
+          119.76875,
+          121.920833,
+          121.123958,
+          121.899479,
+          122.719792,
+          123.309375,
+          118.269271
+        ],
+        "all_adjacent_letters_under_300ms": true,
+        "arkui_callback_spacing_verified": false,
+        "method": "separate native OH_Input key monitor; not app instrumentation"
+      },
+      "status": "TEN_CHARACTER_INPUT_AND_MMI_VERIFIED_REQUESTS_PENDING",
+      "local_artifacts": "artifacts/clean/ytmusic_search_no_debounce/fixed/keyboard-diagnostics/dcf95457c688437481bc9f34fbb1ef3f",
+      "native_keys_sha256": "6dbcc9705d2f58a54042be01503bacf1ba9b7f6ae817d4b8182888e1b02ad9c9",
+      "native_http_log_snapshot": {
+        "scope": "Existing app-process native HTTP result logs; not URL-attributed or accepted performance samples",
+        "result_records": 2,
+        "dns_error_2300006": 2,
+        "response_code_zero": 2,
+        "successful_http_result_records": 0
+      }
+    }
+  },
+  "conclusion": "Ten-character input and native MMI timing verified in both variants. Successful backend search remains unverified; native HTTP snapshots contain DNS failures. Not a negative performance verdict."
+}

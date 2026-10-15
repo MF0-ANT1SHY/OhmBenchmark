@@ -187,10 +187,15 @@
       }
     },
     "input_ui_validation": {
-      "status": "pending",
+      "status": "verified_input_only",
       "successful_search_requests_verified": false,
       "event_delivery_spacing_verified": false,
-      "full_workload_validation": "pending"
+      "full_workload_validation": "pending",
+      "proof": "../../validation/ytmusic-ten-character-native-diagnosis.json",
+      "plan_sha256": "11e24c31a8c56df6ad445b14c7ecc1c08d3f9b848eb64cb371a6907c07360371",
+      "native_mmi_spacing_verified": true,
+      "arkui_callback_spacing_verified": false,
+      "scope": "Ten characters plus submit; native MMI timing only, not business callback timing or successful network work."
     },
     "historical_input_ui_validation": {
       "status": "verified",
