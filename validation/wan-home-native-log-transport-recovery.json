@@ -1,0 +1,21 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "variant": "unfixed",
+  "status": "ORIGINAL_PSS_AND_COMPLETED_ACTIONS_PRESERVED_LATE_LOG_BYTES_RECOVERED",
+  "performance_accepted": false,
+  "ui_workload_rerun": false,
+  "original_kernel_pss_bytes": 144357376,
+  "original_measurement_artifact_sha256": {
+    "capture.json": "10545599750fd26e53907d3604e8082dd2f3acab1d1b6cf34551de4c74150c5c",
+    "after.json": "124e59bef9d69d0ed53972b29a69c6144612d5f23fc039a2a1c9cc03bd5b4652",
+    "setup.json": "81ef8dc5decb4c23d1cd51c2bf3b6a2040cd69022c8804a9db918aa52bd039d6"
+  },
+  "pid": 22140,
+  "process_start_ticks": 249093790,
+  "recovered_raw_logs_sha256": "1321f9c504f7e4fbfcb60807cd53101839ec4a2ded9f1588371c29d9198dab32",
+  "recovered_raw_log_bytes": 38785,
+  "recovered_logs_strict_utf8": false,
+  "recovered_logs_after_original_measurement": true,
+  "private_raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/online-diagnostics/269df821081c4e59abc695b0ab91b830/recovered-hilog",
+  "scope": "Late native logs are supplemental only; they are not relabeled as in-window observations. Original kernel trial, completed twelve-swipe action timestamps and after-action preferences are unchanged. Input/network comparison and the fixed paired trial remain pending."
+}

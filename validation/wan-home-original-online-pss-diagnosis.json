@@ -1,0 +1,18 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "status": "DIAGNOSTIC_ORIGINAL_WORKLOAD_PSS_ONLY",
+  "performance_accepted": false,
+  "supplementary_cold_cache_reused": false,
+  "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+  "variants": {
+    "unfixed": {
+      "status": "FAIL",
+      "error": "'utf-8' codec can't decode bytes in position 33565-33566: invalid continuation byte",
+      "kernel_pss_bytes": 144357376,
+      "local_raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/online-diagnostics/269df821081c4e59abc695b0ab91b830",
+      "capture_sha256": "10545599750fd26e53907d3604e8082dd2f3acab1d1b6cf34551de4c74150c5c",
+      "input_preparation_verified": true,
+      "performance_accepted": false
+    }
+  }
+}
