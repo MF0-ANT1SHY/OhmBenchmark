@@ -35,6 +35,7 @@ class AppReportTests(unittest.TestCase):
                                        'plan_sha256':hashlib.sha256((case_dir/'workload.json').read_bytes()).hexdigest()})
             put(capture/'report.json',self.report())
             with patch('export_agent_data.ROOT',root),patch('export_agent_data.app_ref',return_value='ref'),\
+                    patch('export_agent_data.require_accepted_case'),\
                     patch('export_agent_data.subprocess.check_output',return_value='tree\n'),\
                     patch('export_agent_data.verify_installable_profile'),\
                     patch('export_agent_data.subprocess.run') as archive:

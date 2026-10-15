@@ -1,0 +1,58 @@
+{
+  "status": "NEGATIVE_CASES_AT_AUDIT_EXCLUDED",
+  "negative_cases": 8,
+  "pending_and_partial_evidence_excluded": true,
+  "full_readonly_raw_validation_required": true,
+  "cases": [
+    {
+      "case": "cloudmusic_indexof_in_render",
+      "export_rejected": true,
+      "source_status": "measured_clean_failed"
+    },
+    {
+      "case": "cloudmusic_local_song_memory_filter",
+      "export_rejected": true,
+      "source_status": "measured_clean_failed"
+    },
+    {
+      "case": "cloudmusic_search_result_foreach",
+      "export_rejected": true,
+      "source_status": "measured_clean_failed"
+    },
+    {
+      "case": "cloudmusic_songcard_artists_concat",
+      "export_rejected": true,
+      "source_status": "measured_clean_failed"
+    },
+    {
+      "case": "interviewapp_search_history_unbounded",
+      "export_rejected": true,
+      "source_status": "negative_screen_failed"
+    },
+    {
+      "case": "sheafreader_refresh_feeds_sequential",
+      "export_rejected": true,
+      "source_status": "measured_clean_failed"
+    },
+    {
+      "case": "sheafreader_unread_counts_n_plus_1",
+      "export_rejected": true,
+      "source_status": "measured_clean_failed"
+    },
+    {
+      "case": "ytmusic_history_json_parse_per_row",
+      "export_rejected": true,
+      "source_status": "measured_clean_failed"
+    }
+  ],
+  "performance_results_changed": false,
+  "audited_at_utc": "2026-10-15T03:31:59.298607+00:00",
+  "regression_tests": {
+    "count": 207,
+    "status": "PASS"
+  },
+  "positive_raw_gate_smoke": [
+    "browser_eager_history_load",
+    "sheafreader_extract_tag_tolowercase"
+  ]
+}

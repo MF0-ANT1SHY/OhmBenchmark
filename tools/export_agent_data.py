@@ -17,8 +17,34 @@ from remote_device import Remote
 from scheduler_cpu import compute, window_from_markers
 from system_pss import verify_window
 from hap_profile_validity import verify_installable_profile
+from accept_cpu_evidence import accept as validate_cpu
+from accept_trace_evidence import accept as validate_trace
+from accept_pss_evidence import accept as validate_pss
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def require_accepted_case(cid, case, round_number):
+    evidence = case.get('test_oracle', {}).get('evidence', {})
+    if (evidence.get('status') != 'measured_clean' or
+            case.get('disposition', {}).get('status') == 'skipped_by_user'):
+        raise ValueError('agent export requires accepted full evidence; pending and negative cases are excluded')
+    if type(round_number) is not int or not 1 <= round_number <= 3:
+        raise ValueError('selected round must belong to the three accepted paired rounds')
+    metric = case['test_oracle']['metric']
+    validator = {'hiperf_instructions':validate_cpu, 'trace_cpu_ms':validate_trace,
+                 'app_pss_bytes':validate_pss}.get(metric)
+    if validator is None:
+        raise ValueError('agent data export is not implemented for this metric')
+    # Recompute the original full criterion read-only. Flags or one favorable
+    # captured round cannot authorize an export, including after early rejection.
+    results = validator(cid, write=False)
+    if set(results) != {'unfixed','fixed'}:
+        raise ValueError('both complete paired variants are required')
+    for variant, result in results.items():
+        if (result['status'] != 'PASS' or result['rounds'] != 3 or result['metric'] != metric or
+                len(result['samples']) != 3 or evidence.get(variant) != result['samples']):
+            raise ValueError('full accepted evidence differs from recomputed paired measurements')
 
 
 def reproduction_script():
@@ -156,6 +182,7 @@ def app_memory_report(capture, bundle):
 
 def export(cid, destination, symptom, round_number, remote_name='cityuPC', include_source=False):
     case = json.loads((ROOT/'cases'/cid/'case.json').read_text())
+    require_accepted_case(cid, case, round_number)
     folder = ROOT/'artifacts/clean'/cid/'unfixed'
     build = json.loads((folder/'build.json').read_text())
     sign = json.loads((folder/'sign.json').read_text())
