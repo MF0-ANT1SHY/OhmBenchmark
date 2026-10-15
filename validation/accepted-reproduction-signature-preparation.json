@@ -1,0 +1,215 @@
+{
+  "status": "PREPARATION_COMPLETE_LAUNCHES_STILL_REQUIRED",
+  "scope": "Equivalent-package preparation only; no app install, launch or live device query; no performance evidence replaced.",
+  "cases_selected": 11,
+  "rows": [
+    {
+      "case": "browser_eager_history_load",
+      "variant": "unfixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "launch_or_performance_acceptance_claimed": false,
+      "retired_preparation": "artifacts/retired-clean/reproduction-preparation/1792040104428205387/browser_eager_history_load/unfixed",
+      "unsigned_sha256": "60cb5758870c38979c397996ca747a5289269c8f3afebbd37d81cf333fa63155",
+      "measured_signed_sha256": "2d2a7ee4039e9290327d91b3e443d6a2267dbf0caa279a29247d9dcbfd7798b9",
+      "renewed_signed_sha256": "5be37229908e5977b84f834914b9f86bff78026c84b8d2c2f3f4f43b1f415b9d"
+    },
+    {
+      "case": "browser_eager_history_load",
+      "variant": "fixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "launch_or_performance_acceptance_claimed": false,
+      "retired_preparation": "artifacts/retired-clean/reproduction-preparation/1792040104428205387/browser_eager_history_load/fixed",
+      "unsigned_sha256": "6bedaa0a8c722900518731cd26772395a01b197169921cfb0bd7e079a6ae11b5",
+      "measured_signed_sha256": "248a222109a97a8bf1dcb5163910ba48184d307e311b6ccb8a2fd81534976709",
+      "renewed_signed_sha256": "9f7e8665e4b43a25248391ba02902aa2c931d50434ad6837a11e2712c2e0d8c5"
+    },
+    {
+      "case": "browser_history_delete_no_transaction",
+      "variant": "unfixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "launch_or_performance_acceptance_claimed": false,
+      "retired_preparation": "artifacts/retired-clean/reproduction-preparation/1792040104428205387/browser_history_delete_no_transaction/unfixed",
+      "unsigned_sha256": "3a6ace31b223eb567a84b1d6d17d265cd3d000d94d19c5d38963e2cccba42f90",
+      "measured_signed_sha256": "4cc753261eacb91fd4d2b0e3473f71a734e1444990bf42c8cb8e7dbb8483703a",
+      "renewed_signed_sha256": "6d78ed2ffa4b529a339e1fee69b593648105a1694007894e3e1dfccf49e066e5"
+    },
+    {
+      "case": "browser_history_delete_no_transaction",
+      "variant": "fixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "launch_or_performance_acceptance_claimed": false,
+      "retired_preparation": "artifacts/retired-clean/reproduction-preparation/1792040104428205387/browser_history_delete_no_transaction/fixed",
+      "unsigned_sha256": "3338ed364eca4b86f77797ecbd658769223ebe409f3dbd5688f51a566c5fdf55",
+      "measured_signed_sha256": "578d2e95ea8fd24f832567ef7c471f0d340b60d81babe08ad4fce8a401e46327",
+      "renewed_signed_sha256": "881ae3404e006adf6a9b3e83b901cb7c3cc3f93b2c3637447f97e8a655a55189"
+    },
+    {
+      "case": "browser_history_list_foreach",
+      "variant": "unfixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "launch_or_performance_acceptance_claimed": false,
+      "retired_preparation": "artifacts/retired-clean/reproduction-preparation/1792040104428205387/browser_history_list_foreach/unfixed",
+      "unsigned_sha256": "01cdcb78bae2b553d8093dc9f58b1e309a16554f4f986f07ef234211a72306aa",
+      "measured_signed_sha256": "6311f1cea71ed49307bc022f80baec3f4ed57d98700b5a1f34c0952501afe2dd",
+      "renewed_signed_sha256": "5f43b4d4549d32086ec6892023b790221377d44f53797d0970666fb5e7edfc68"
+    },
+    {
+      "case": "browser_history_list_foreach",
+      "variant": "fixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "launch_or_performance_acceptance_claimed": false,
+      "retired_preparation": "artifacts/retired-clean/reproduction-preparation/1792040104428205387/browser_history_list_foreach/fixed",
+      "unsigned_sha256": "c3b2002c04af5ceb9ebe96d13b20a0603b1177074a1848fae60a4a0c10737520",
+      "measured_signed_sha256": "54062ffc30474a26df9120937bf51e4b323096d05e16923cfeab182bd4f727b9",
+      "renewed_signed_sha256": "d148df4f03c84c64128ec6218490f8ebeab11f238193d1cf6e5e5b48be652739"
+    },
+    {
+      "case": "cloudmusic_play_time_high_frequency_update",
+      "variant": "unfixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "unsigned_sha256": "e857d6f19362359404cecc6023ffd90623a6c10e76b7599a5d94d3d38a774953",
+      "measured_signed_sha256": "96e15c4a5979da602dcac54e919eded35e729cb2e85a42e7ecaadcb1d320ca17",
+      "renewed_signed_sha256": "931a4d50bc6430cc852203ce7700e0b70cc36c5bbd014829edcf49d186d013f5",
+      "launch_or_performance_acceptance_claimed": false
+    },
+    {
+      "case": "cloudmusic_play_time_high_frequency_update",
+      "variant": "fixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "unsigned_sha256": "bfce3dc40d63a7652feaad1c10486764d235389e3abebd776ac3e4ec320488ae",
+      "measured_signed_sha256": "a071d92851a1b684ac086a328cc3c99e4c222ee54ecacde53182c8c50b49a17a",
+      "renewed_signed_sha256": "8ba6674172a7d9a2fda792712fbda9cb83106ee72c1fd340933a49b76d3ef3c0",
+      "launch_or_performance_acceptance_claimed": false
+    },
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "variant": "unfixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "unsigned_sha256": "14273edd1e5cfef7f57b7e94b7aeb8bced8884315684cbcbe6d3b1a1c33f5062",
+      "measured_signed_sha256": "88868da64bcc4780db1e0bdf0eabafd1265e254ec84f256cde8b5dd3f3ad20b7",
+      "renewed_signed_sha256": "d6838c60c1f18556e0e5af3b08bd07dc113ef8b55926066628b8b8aa57deb47b",
+      "launch_or_performance_acceptance_claimed": false
+    },
+    {
+      "case": "jingmo_dataset_import_no_transaction",
+      "variant": "fixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "unsigned_sha256": "8c047e72875d5aadc3815291db9d39e935aee3d39d9e4fe7803e5386042ef376",
+      "measured_signed_sha256": "e441d217d259c968ebbe542e802bea1a4e6bdc1b07deb8f8a450aec9780b8f45",
+      "renewed_signed_sha256": "50e9b0c689650ec33a3b9706a0324af601671e389474999d09b43159a6808701",
+      "launch_or_performance_acceptance_claimed": false
+    },
+    {
+      "case": "jingmo_random_poem_orderby_random",
+      "variant": "unfixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "launch_or_performance_acceptance_claimed": false,
+      "retired_preparation": "artifacts/retired-clean/reproduction-preparation/1792040104428205387/jingmo_random_poem_orderby_random/unfixed",
+      "unsigned_sha256": "0aaf275aa3cf68b26cb9aecdb413b79796fc706eb8e80375d1522b514db61682",
+      "measured_signed_sha256": "dfed739f69b5efda1071306817a46e5f9f8252ecd1b66e16b3561ba27f292c8b",
+      "renewed_signed_sha256": "8e1a41a891d272531f8e13057f98f6a42741079383e9865791576332a4153d84"
+    },
+    {
+      "case": "jingmo_random_poem_orderby_random",
+      "variant": "fixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "launch_or_performance_acceptance_claimed": false,
+      "retired_preparation": "artifacts/retired-clean/reproduction-preparation/1792040104428205387/jingmo_random_poem_orderby_random/fixed",
+      "unsigned_sha256": "b33d400ce3eb5dada7a81f08b7bd3b841d0707d69b5d919d5e10a0ee887a9fa2",
+      "measured_signed_sha256": "ef9325e435ca099ae781edaaf64f61c4c8f1ab46e9c76a916b4b992860d45e9d",
+      "renewed_signed_sha256": "f7ce92f0d934c909871b0c89f937886f34a99fe298dfd86e3ad3ed19bb57a645"
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "variant": "unfixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "unsigned_sha256": "8c047e72875d5aadc3815291db9d39e935aee3d39d9e4fe7803e5386042ef376",
+      "measured_signed_sha256": "692d37c1c95e0c48266f56f80d81417e5126c70d15e93bbbcdf4f8732ac8e046",
+      "renewed_signed_sha256": "4cd29113642396c8d8aa0c6126d1443892002d862decfc9c86ba2870a030d35a",
+      "launch_or_performance_acceptance_claimed": false
+    },
+    {
+      "case": "jingmo_sync_page_reimport",
+      "variant": "fixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "unsigned_sha256": "4063f1ea6fec5ecfd7294b1dd913ff5d315b02df6106d38ba5701854341a9e7f",
+      "measured_signed_sha256": "90ee8c4e416507081ffc9aba01524ac1228381cbdba2b3e411fefd6f028ee349",
+      "renewed_signed_sha256": "90ff1c5ddd517ed97a8efd0a69c90cd4f50f2223130649e49d92ccb552020fba",
+      "launch_or_performance_acceptance_claimed": false
+    },
+    {
+      "case": "sheafreader_article_list_foreach",
+      "variant": "unfixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "unsigned_sha256": "fe8e45af23c444c3739b805adc19f2833bcee9dae358868b86b20ac34608ada7",
+      "measured_signed_sha256": "72b95a0c7415f7e675f19cbe74a83d95820cf542dc4a9f28fe590eb9696e5250",
+      "renewed_signed_sha256": "385c4b208191e84cb19f6330912c4527e910e908eb12ef6849be4bd9d745d48f",
+      "launch_or_performance_acceptance_claimed": false
+    },
+    {
+      "case": "sheafreader_article_list_foreach",
+      "variant": "fixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "unsigned_sha256": "1852850ec8d0db976946ea409dcf723216bf44c9de87f17897578ab27985c382",
+      "measured_signed_sha256": "71444bd5659f1031a7eab0ded76489b21a84bc56f24a2e7ae60a399b87cb99b8",
+      "renewed_signed_sha256": "0244111610490324043b757f2636e8104d7bc3cff669eef883bbb10483afa9f3",
+      "launch_or_performance_acceptance_claimed": false
+    },
+    {
+      "case": "sheafreader_extract_tag_tolowercase",
+      "variant": "unfixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "unsigned_sha256": "be83d4a5203a04d189b40bb6f78cfe85e8b0cf744ba602a571ccbe602aedd574",
+      "measured_signed_sha256": "14140ea223bb7445d626f6967bf0889ac095c7a54db93fc4b6ceefb98ebc828d",
+      "renewed_signed_sha256": "706aa7a9e4a90be9c1ea16711451246f2ef3fc3e87d953df09660167e02a524c",
+      "launch_or_performance_acceptance_claimed": false
+    },
+    {
+      "case": "sheafreader_extract_tag_tolowercase",
+      "variant": "fixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "unsigned_sha256": "045258596066ad562dc26511f10d7f874932d82e5a2c2d9be24bf60ab63cef86",
+      "measured_signed_sha256": "4a677f7196ad16fc71218dd5686e42ca7f78525501c6bacbfe89166b3e9388f6",
+      "renewed_signed_sha256": "496450c3edda52c1d3a02ff4dbd80a78509dd21ba023de9d4cd5b7db890abfa4",
+      "launch_or_performance_acceptance_claimed": false
+    },
+    {
+      "case": "sheafreader_insert_duplicate_exception",
+      "variant": "unfixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "unsigned_sha256": "d28fb329080692a17cf3c98155c66d717e692e0f998956c059f8de31cf37dad8",
+      "measured_signed_sha256": "1eb035fa2f86535e2c887e4c1d9a2e0c0a90d76ef88d25e9deb05d75d238fee5",
+      "renewed_signed_sha256": "4b247a719e5132b1af65f0bcb3ca66cca59c15a4c8b2c10bad070b9c91f56795",
+      "launch_or_performance_acceptance_claimed": false
+    },
+    {
+      "case": "sheafreader_insert_duplicate_exception",
+      "variant": "fixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "unsigned_sha256": "dc3476540d097090e8fd86f6cc9ae03646041440e8a144ee658e4f9fcaaeba78",
+      "measured_signed_sha256": "fc4694b3a0021eaac8179a8bec2077266648e30fb9b666ce12338068d47ddbfd",
+      "renewed_signed_sha256": "6068e936f51926a7e142a1676efc4fa438df7703488b8cd9604a3eae6e329262",
+      "launch_or_performance_acceptance_claimed": false
+    },
+    {
+      "case": "ytmusic_current_playing_timeupdate",
+      "variant": "unfixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "launch_or_performance_acceptance_claimed": false,
+      "retired_preparation": "artifacts/retired-clean/reproduction-preparation/1792040104428205387/ytmusic_current_playing_timeupdate/unfixed",
+      "unsigned_sha256": "744d22d0c5ffc50d8f0e51239b4ea99368a0292836f95924c66acf306fd4ec04",
+      "measured_signed_sha256": "8c7e42e915de35376800f3a3a96a11d96662fc12aec711bbc6043bf7eb3bbe6b",
+      "renewed_signed_sha256": "d7d2c810428aab929f38063ce759b4c75472f9e70f9294336211090e88c5b366"
+    },
+    {
+      "case": "ytmusic_current_playing_timeupdate",
+      "variant": "fixed",
+      "status": "BUSINESS_AND_PROVISIONING_IDENTITY_VERIFIED_LAUNCH_PENDING",
+      "launch_or_performance_acceptance_claimed": false,
+      "retired_preparation": "artifacts/retired-clean/reproduction-preparation/1792040104428205387/ytmusic_current_playing_timeupdate/fixed",
+      "unsigned_sha256": "585676afe9a6b5b26e31fc2fd5b465b38c77601caae8dd18404de98a1bff154c",
+      "measured_signed_sha256": "417711b3ab77af68e7f60d87a40343c1b95740dec639ccb43ccbfa897ddbcf28",
+      "renewed_signed_sha256": "269660962dfa53b95d0660a5434e48fa1dc35fab99262e183e8040bf163eb90c"
+    }
+  ]
+}
