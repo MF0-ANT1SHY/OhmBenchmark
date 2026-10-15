@@ -1,0 +1,118 @@
+{
+  "case": "browser_insert_date_lookup_cache",
+  "status": "NEGATIVE_SCREEN_FAILED_SKIPPED_BY_USER",
+  "app_injection": false,
+  "performance_accepted": false,
+  "threshold_unchanged": true,
+  "complete_paired_rounds": 1,
+  "required_paired_rounds_for_acceptance": 3,
+  "full_performance_run_completed": false,
+  "normal_saved_visits_per_trial": 15,
+  "results": {
+    "unfixed": {
+      "status": "NEGATIVE_SCREEN_FAILED",
+      "metric": "hiperf_instructions",
+      "rounds": 1,
+      "samples": [
+        6182832679
+      ],
+      "median": 6182832679,
+      "paired_ratios": [
+        0.9959949920506277
+      ],
+      "median_ratio": 0.9959949920506277,
+      "plan_sha256": "d98b7a16e09209aa7fb63938273210640dbf45d7971735c20e18d6c734fdb778",
+      "signed_sha256": "85ae29da8fa6fbf345edca185af00a7d657438c3f17c0e93b44d6c74ac0ede11",
+      "fixture_sha256": "cf2c15ea1e7129f410c49662e1d38fad7f6959c28586f3c25d4968301f3df7bc",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "8adc78dd2c1b2d65466728a24543960b0d8ad74da672f4f36e246d36e6e5f988",
+          "app_samples": 17607,
+          "remote_artifacts": "/home/research/ohm-clean/browser_insert_date_lookup_cache/unfixed/cpu-captures/round-1"
+        }
+      ],
+      "legacy_evidence_reused": false,
+      "performance_accepted": false,
+      "required_rounds": 3,
+      "full_performance_run_completed": false
+    },
+    "fixed": {
+      "status": "NEGATIVE_SCREEN_FAILED",
+      "metric": "hiperf_instructions",
+      "rounds": 1,
+      "samples": [
+        6207694545
+      ],
+      "median": 6207694545,
+      "paired_ratios": [
+        0.9959949920506277
+      ],
+      "median_ratio": 0.9959949920506277,
+      "plan_sha256": "d98b7a16e09209aa7fb63938273210640dbf45d7971735c20e18d6c734fdb778",
+      "signed_sha256": "17edd9a49ea0afef6e211fedaa6be4f5eb0d8ae0eaea0e6f8d665193a6ab8f3e",
+      "fixture_sha256": "cf2c15ea1e7129f410c49662e1d38fad7f6959c28586f3c25d4968301f3df7bc",
+      "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+      "captures": [
+        {
+          "round": 1,
+          "report_sha256": "4fa4ec6775b531ce9e132009e7bf2d60a40a5d4ff32653e12163919c338ff0e7",
+          "app_samples": 18066,
+          "remote_artifacts": "/home/research/ohm-clean/browser_insert_date_lookup_cache/fixed/cpu-captures/round-1"
+        }
+      ],
+      "legacy_evidence_reused": false,
+      "performance_accepted": false,
+      "required_rounds": 3,
+      "full_performance_run_completed": false
+    }
+  },
+  "gates": {
+    "build": {
+      "stage": "build",
+      "cases": 1,
+      "errors": [],
+      "pending": [],
+      "passed": true
+    },
+    "sign": {
+      "stage": "sign",
+      "cases": 1,
+      "errors": [],
+      "pending": [],
+      "passed": true
+    },
+    "smoke": {
+      "stage": "smoke",
+      "cases": 1,
+      "errors": [],
+      "pending": [],
+      "passed": true
+    },
+    "complete": {
+      "stage": "complete",
+      "cases": 1,
+      "errors": [
+        "browser_insert_date_lookup_cache/unfixed: oracle coverage/rounds not proven",
+        "browser_insert_date_lookup_cache/fixed: oracle coverage/rounds not proven"
+      ],
+      "pending": [
+        "browser_insert_date_lookup_cache/unfixed: performance not validated",
+        "browser_insert_date_lookup_cache/fixed: performance not validated",
+        "browser_insert_date_lookup_cache: clean performance oracle not accepted (negative_screen_failed)"
+      ],
+      "passed": false
+    }
+  },
+  "unfixed_first_trial_transport_recovery": {
+    "original_remote_python_pid": 3765,
+    "original_remote_start_ticks": 132847,
+    "native_artifact_sha256": {
+      "capture.json": "c0795a38313388c7eb11274196bdcf16ac2d4f5c12d258c9a8c7f8d68086c4aa",
+      "report.json": "8adc78dd2c1b2d65466728a24543960b0d8ad74da672f4f36e246d36e6e5f988",
+      "perf.data": "951d281f68994dd5e0faad942d8a178eba621dad68a47d954c732b42ec331502"
+    },
+    "ui_rerun": false
+  }
+}

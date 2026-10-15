@@ -57,8 +57,24 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "pending_clean_measurement",
-      "note": "Legacy instrumented measurements do not validate these business-only builds."
+      "status": "negative_screen_failed",
+      "metric": "hiperf_instructions",
+      "unfixed": [
+        6182832679
+      ],
+      "fixed": [
+        6207694545
+      ],
+      "paired_ratios": [
+        0.9959949920506277
+      ],
+      "median_ratio": 0.9959949920506277,
+      "rounds_per_variant": 1,
+      "required_rounds": 3,
+      "full_performance_run_completed": false,
+      "performance_accepted": false,
+      "legacy_evidence_reused": false,
+      "note": "The complete mandatory first pair violates the unchanged all-pairs >=1.2x criterion. Early rejection under the user instruction to skip negatives; not a full three-pair run."
     },
     "mechanism_oracle": {
       "metric": "rdb_statements_per_page_save",
@@ -100,8 +116,8 @@
   },
   "clean_validation": {
     "policy": "no_app_injection",
-    "workload_validation": "pending",
-    "performance_validation": "pending",
+    "workload_validation": "verified",
+    "performance_validation": "negative_screen_failed",
     "variants": {
       "unfixed": {
         "ref": "clean-app/browser_insert_date_lookup_cache/unfixed",
@@ -135,6 +151,19 @@
           "allowed_acls": [],
           "status": "PASS"
         },
+        "smoke": {
+          "case": "browser_insert_date_lookup_cache",
+          "variant": "unfixed",
+          "signed_sha256": "85ae29da8fa6fbf345edca185af00a7d657438c3f17c0e93b44d6c74ac0ede11",
+          "install": "[Info]App install path:/home/research/ohm-clean/renewed-20261014/browser_insert_date_lookup_cache/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            4564
+          ],
+          "foreground_bundle": "com.example.nanvision",
+          "status": "PASS",
+          "performance_verified": false
+        },
         "workload": {
           "case": "browser_insert_date_lookup_cache",
           "variant": "unfixed",
@@ -163,6 +192,35 @@
           },
           "functional_check": "fifteen normal same-day page navigations saved with correct titles, URLs and timestamps",
           "capture_duration_required_s": 487
+        },
+        "performance": {
+          "status": "NEGATIVE_SCREEN_FAILED",
+          "metric": "hiperf_instructions",
+          "rounds": 1,
+          "samples": [
+            6182832679
+          ],
+          "median": 6182832679,
+          "paired_ratios": [
+            0.9959949920506277
+          ],
+          "median_ratio": 0.9959949920506277,
+          "plan_sha256": "d98b7a16e09209aa7fb63938273210640dbf45d7971735c20e18d6c734fdb778",
+          "signed_sha256": "85ae29da8fa6fbf345edca185af00a7d657438c3f17c0e93b44d6c74ac0ede11",
+          "fixture_sha256": "cf2c15ea1e7129f410c49662e1d38fad7f6959c28586f3c25d4968301f3df7bc",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "8adc78dd2c1b2d65466728a24543960b0d8ad74da672f4f36e246d36e6e5f988",
+              "app_samples": 17607,
+              "remote_artifacts": "/home/research/ohm-clean/browser_insert_date_lookup_cache/unfixed/cpu-captures/round-1"
+            }
+          ],
+          "legacy_evidence_reused": false,
+          "performance_accepted": false,
+          "required_rounds": 3,
+          "full_performance_run_completed": false
         }
       },
       "fixed": {
@@ -197,31 +255,85 @@
           "allowed_acls": [],
           "status": "PASS"
         },
+        "smoke": {
+          "case": "browser_insert_date_lookup_cache",
+          "variant": "fixed",
+          "signed_sha256": "17edd9a49ea0afef6e211fedaa6be4f5eb0d8ae0eaea0e6f8d665193a6ab8f3e",
+          "install": "[Info]App install path:/home/research/ohm-clean/renewed-20261014/browser_insert_date_lookup_cache/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            5113
+          ],
+          "foreground_bundle": "com.example.nanvision",
+          "status": "PASS",
+          "performance_verified": false
+        },
         "workload": {
           "case": "browser_insert_date_lookup_cache",
           "variant": "fixed",
           "signed_sha256": "17edd9a49ea0afef6e211fedaa6be4f5eb0d8ae0eaea0e6f8d665193a6ab8f3e",
           "plan_sha256": "d98b7a16e09209aa7fb63938273210640dbf45d7971735c20e18d6c734fdb778",
-          "status": "FAIL",
+          "status": "PASS",
           "performance_verified": false,
           "fixture": {
             "bundle": "com.example.nanvision",
             "database": "/data/app/el2/100/database/com.example.nanvision/entry/rdb/Histories.db",
-            "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1791987636657722124/Histories.db",
+            "backup": "/home/research/ohm-clean/backups/com.example.nanvision/1792033371077331100/Histories.db",
             "fixture_tables": 1,
             "integrity_check": "ok",
-            "sha256": "cf2c15ea1e7129f410c49662e1d38fad7f6959c28586f3c25d4968301f3df7bc"
+            "sha256": "cf2c15ea1e7129f410c49662e1d38fad7f6959c28586f3c25d4968301f3df7bc",
+            "functional_read_verified": true
           },
-          "error": "UI target not found: {'text': 'This domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.', 'match': 'exact'}"
+          "phase_elapsed_s": {
+            "setup": 10.39507697099998,
+            "measured": 489.3742021690001,
+            "verify": 12.368998704999967
+          },
+          "browser_visits": {
+            "saved_visits": 15,
+            "history_table": "history_2026_10_15",
+            "method": "ordinary same-day Example Domain rows appended through normal browser navigation"
+          },
+          "functional_check": "fifteen normal same-day page navigations saved with correct titles, URLs and timestamps",
+          "capture_duration_required_s": 494
+        },
+        "performance": {
+          "status": "NEGATIVE_SCREEN_FAILED",
+          "metric": "hiperf_instructions",
+          "rounds": 1,
+          "samples": [
+            6207694545
+          ],
+          "median": 6207694545,
+          "paired_ratios": [
+            0.9959949920506277
+          ],
+          "median_ratio": 0.9959949920506277,
+          "plan_sha256": "d98b7a16e09209aa7fb63938273210640dbf45d7971735c20e18d6c734fdb778",
+          "signed_sha256": "17edd9a49ea0afef6e211fedaa6be4f5eb0d8ae0eaea0e6f8d665193a6ab8f3e",
+          "fixture_sha256": "cf2c15ea1e7129f410c49662e1d38fad7f6959c28586f3c25d4968301f3df7bc",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "4fa4ec6775b531ce9e132009e7bf2d60a40a5d4ff32653e12163919c338ff0e7",
+              "app_samples": 18066,
+              "remote_artifacts": "/home/research/ohm-clean/browser_insert_date_lookup_cache/fixed/cpu-captures/round-1"
+            }
+          ],
+          "legacy_evidence_reused": false,
+          "performance_accepted": false,
+          "required_rounds": 3,
+          "full_performance_run_completed": false
         }
       }
-    },
-    "network_retry": {
-      "status": "blocked_functional",
-      "unfixed_normal_15_visits": "PASS",
-      "fixed_normal_15_visits": "FAIL: webpage content missing",
-      "performance_accepted": false,
-      "proof": "validation/browser-online-normal-workload-retry.json"
     }
+  },
+  "disposition": {
+    "status": "skipped_by_user",
+    "reason": "Verified clean mandatory pair fails unchanged 1.2x criterion; user instructed to skip negative cases.",
+    "performance_passed": false,
+    "original_evidence_preserved": true,
+    "full_three_pair_run_completed": false
   }
 }
