@@ -1,0 +1,101 @@
+{
+  "case": "interviewapp_search_history_sync_flush",
+  "status": "NORMAL_INPUT_AND_PERSISTENCE_VERIFIED_TIMING_CALIBRATION_REMAINS",
+  "app_injection": false,
+  "performance_accepted": false,
+  "variants": {
+    "unfixed": {
+      "status": "NORMAL_SEARCH_INPUT_AND_PERSISTENCE_VERIFIED_PERFORMANCE_PENDING",
+      "device_error": null,
+      "cleanup_error": null,
+      "observer_binary_removed": true,
+      "receipt_sha256": "921dd647964c7acc8eb7ce15d01718fe93c23e98474671a78b083b4cc851d43b",
+      "local_artifacts": "artifacts/clean/interviewapp_search_history_sync_flush/unfixed/native-query-diagnostics/48701fe764c34662b0945dd8f4e5dabe",
+      "signed_sha256": "8d691b4d1afcbb4fc37a658b754c10d728c2857d2965688128b454459a96c5f9",
+      "mmi": {
+        "submitted_queries": 20,
+        "mmi_submit_spacing_ms": [
+          1852.815104,
+          1863.046354,
+          1881.953645,
+          1822.113021,
+          1864.115104,
+          1886.735937,
+          1892.127604,
+          1875.331771,
+          1884.551041,
+          2025.491145,
+          1985.878646,
+          2011.168229,
+          2010.248958,
+          2034.691666,
+          2005.723437,
+          2014.926563,
+          1981.387499,
+          1990.638021,
+          1993.621875
+        ],
+        "interval_limit_ms": 2000,
+        "all_submits_within_interval": false,
+        "arkui_callback_spacing_verified": false,
+        "business_history_updates_verified": false,
+        "method": "separate native OH_Input key monitor; not app instrumentation"
+      },
+      "history": {
+        "persisted_keywords": 20,
+        "final_preferences_sha256": "51f6745c6a71c52abd385d391f2f4b0186ef53bc28abe0ecce2ade18242d1033",
+        "method": "existing dedicated native preferences; no app instrumentation",
+        "individual_flush_count_verified": false
+      }
+    },
+    "fixed": {
+      "status": "NORMAL_SEARCH_INPUT_AND_PERSISTENCE_VERIFIED_PERFORMANCE_PENDING",
+      "device_error": null,
+      "cleanup_error": null,
+      "observer_binary_removed": true,
+      "receipt_sha256": "a5c69a15dab402615c3de17f9af4489cba165c405d9089fc7969a52c77420fbe",
+      "local_artifacts": "artifacts/clean/interviewapp_search_history_sync_flush/fixed/native-query-diagnostics/affe556a32bd455595b5356a89e47d45",
+      "signed_sha256": "ce7d0a5afacdd99379c36883ef0cc942efde3c6a2800b0dd201267ebc79663c7",
+      "mmi": {
+        "submitted_queries": 20,
+        "mmi_submit_spacing_ms": [
+          1826.003124,
+          1862.568229,
+          1874.180208,
+          1877.294271,
+          1877.127604,
+          1900.815104,
+          1861.795312,
+          1849.332291,
+          1888.865104,
+          1994.077604,
+          1985.842708,
+          2032.489583,
+          2007.129166,
+          1993.857813,
+          2031.066145,
+          1985.794271,
+          1994.107812,
+          2005.84427,
+          2001.417188
+        ],
+        "interval_limit_ms": 2000,
+        "all_submits_within_interval": false,
+        "arkui_callback_spacing_verified": false,
+        "business_history_updates_verified": false,
+        "method": "separate native OH_Input key monitor; not app instrumentation"
+      },
+      "history": {
+        "persisted_keywords": 20,
+        "final_preferences_sha256": "51f6745c6a71c52abd385d391f2f4b0186ef53bc28abe0ecce2ade18242d1033",
+        "method": "existing dedicated native preferences; no app instrumentation",
+        "individual_flush_count_verified": false
+      }
+    }
+  },
+  "observer_sha256": "0ac3ceec010f9b0a8a3e3cbce8e39fe0ebe60ef0ec8046115e1da12e6779b4bf",
+  "observer_source_sha256": "40a2eb2c31fb041004d46c0f223a3d012498dd43a665b676e2baf4e158534452",
+  "requested_character_interval_ms": 50,
+  "between_submits_ms": 150,
+  "conclusion": "Both real normal-UI variants persist the same twenty distinct submitted keywords from an empty native store. Native key records are complete, but some submit intervals exceed 2000ms. No app callback timing, individual flush count or performance acceptance is inferred."
+}

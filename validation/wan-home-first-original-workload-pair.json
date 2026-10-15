@@ -1,0 +1,96 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "status": "FIRST_ORIGINAL_WORKLOAD_PAIR_OBSERVED_FULL_ACCEPTANCE_PENDING",
+  "performance_accepted": false,
+  "full_case_accepted": false,
+  "app_injection": false,
+  "supplementary_offline_cold_cache_reused": false,
+  "paired_rounds_observed": 1,
+  "required_rounds": 3,
+  "raw_pss_ratio": 1.3694906692312923,
+  "variants": {
+    "unfixed": {
+      "pss_bytes": 144357376,
+      "capture_sha256": "10545599750fd26e53907d3604e8082dd2f3acab1d1b6cf34551de4c74150c5c",
+      "setup_sha256": "81ef8dc5decb4c23d1cd51c2bf3b6a2040cd69022c8804a9db918aa52bd039d6",
+      "after_sha256": "124e59bef9d69d0ed53972b29a69c6144612d5f23fc039a2a1c9cc03bd5b4652",
+      "fixture_sha256": "3cbdcbcae836f09fb0501c149e84451d1201a5825af4c47bb60f89b064e6ca1f",
+      "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+      "actual_first_page_ids": [
+        31845,
+        31844,
+        31842,
+        31831,
+        31828,
+        31826,
+        31824,
+        31822,
+        31821,
+        31820
+      ],
+      "load_more_request_pages": [
+        "1",
+        "2",
+        "3"
+      ],
+      "response_curpages": [
+        "2",
+        "3",
+        "4"
+      ],
+      "visible_final_article_indices": [
+        30,
+        31,
+        32,
+        33,
+        34
+      ],
+      "native_logs_after_original_measurement": true,
+      "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/online-diagnostics/269df821081c4e59abc695b0ab91b830"
+    },
+    "fixed": {
+      "pss_bytes": 105409536,
+      "capture_sha256": "c50bfc877d8519220e636d66e0c9f4b295d14f46b473441d233d980d7c174f79",
+      "setup_sha256": "f10ef05d61883e1d291eb0676cc4e01a955b6174575be471e38ad09f7b7facea",
+      "after_sha256": "27665e174022cae8d2a8eddac3265398e7e844ae508d690e86b731b36f092ea0",
+      "fixture_sha256": "3cbdcbcae836f09fb0501c149e84451d1201a5825af4c47bb60f89b064e6ca1f",
+      "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+      "actual_first_page_ids": [
+        31845,
+        31844,
+        31842,
+        31831,
+        31828,
+        31826,
+        31824,
+        31822,
+        31821,
+        31820
+      ],
+      "load_more_request_pages": [
+        "1",
+        "2",
+        "3"
+      ],
+      "response_curpages": [
+        "2",
+        "3",
+        "4"
+      ],
+      "visible_final_article_indices": [
+        30,
+        31,
+        32,
+        33,
+        34
+      ],
+      "native_logs_after_original_measurement": false,
+      "raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/fixed/online-diagnostics/05115ecffa784974ad8c791a435486ee"
+    }
+  },
+  "remaining_requirements": [
+    "Two more original-workload paired PSS trials, unless a mandatory pair disproves the criterion.",
+    "Complete primary input/provenance acceptance and ten-page persistence-write mechanism evidence."
+  ],
+  "scope": "Original twelve swipes and final absolute kernel PSS. The unfixed log transport failed only after completed actions and saved preferences; late recovered logs remain supplemental and are not relabeled as in-window observations."
+}

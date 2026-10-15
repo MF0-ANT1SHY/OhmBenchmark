@@ -1,0 +1,18 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "status": "DIAGNOSTIC_ORIGINAL_WORKLOAD_PSS_ONLY",
+  "performance_accepted": false,
+  "supplementary_cold_cache_reused": false,
+  "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+  "variants": {
+    "fixed": {
+      "status": "ORIGINAL_TWELVE_SWIPES_COMPLETED_INPUT_AND_NETWORK_AUDIT_PENDING",
+      "error": null,
+      "kernel_pss_bytes": 105409536,
+      "local_raw_artifacts": "artifacts/clean/wanharmony_persisted_home_list_growth/fixed/online-diagnostics/05115ecffa784974ad8c791a435486ee",
+      "capture_sha256": "c50bfc877d8519220e636d66e0c9f4b295d14f46b473441d233d980d7c174f79",
+      "input_preparation_verified": true,
+      "performance_accepted": false
+    }
+  }
+}
