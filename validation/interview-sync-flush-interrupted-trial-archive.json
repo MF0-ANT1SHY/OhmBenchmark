@@ -1,0 +1,24 @@
+{
+  "status": "ORIGINAL_INVALID_PAIR_PRESERVED_BEFORE_RETRY",
+  "trials": [
+    {
+      "variant": "unfixed",
+      "original_local": "artifacts/clean/interviewapp_search_history_sync_flush/unfixed/cpu-captures/round-1",
+      "preserved_local": "artifacts/retired-clean/interviewapp_search_history_sync_flush/invalid-session-first-pair-1792047940502501542/unfixed/cpu-captures/round-1",
+      "original_remote": "/home/research/ohm-clean/interviewapp_search_history_sync_flush/unfixed/cpu-captures/round-1",
+      "preserved_remote": "/home/research/ohm-clean/interviewapp_search_history_sync_flush/unfixed/retired-cpu-captures/invalid-session-first-pair-1792047940502501542/round-1",
+      "capture_sha256": "1d1c20344537ea1c0363156c4c34d2b32b494fd5076c10545b55cd1e31c5a4ce",
+      "original_receipt_unchanged": true
+    },
+    {
+      "variant": "fixed",
+      "original_local": "artifacts/clean/interviewapp_search_history_sync_flush/fixed/cpu-captures/round-1",
+      "preserved_local": "artifacts/retired-clean/interviewapp_search_history_sync_flush/invalid-session-first-pair-1792047940502501542/fixed/cpu-captures/round-1",
+      "original_remote": "/home/research/ohm-clean/interviewapp_search_history_sync_flush/fixed/cpu-captures/round-1",
+      "preserved_remote": "/home/research/ohm-clean/interviewapp_search_history_sync_flush/fixed/retired-cpu-captures/invalid-session-first-pair-1792047940502501542/round-1",
+      "capture_sha256": "bf072543886c4607b2952f574988e91b319f7c52a49cf7632badf0e7a490ea6f",
+      "original_receipt_unchanged": true
+    }
+  ],
+  "app_injection": false
+}

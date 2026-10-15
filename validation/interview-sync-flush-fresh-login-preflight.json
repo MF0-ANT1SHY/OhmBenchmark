@@ -1,0 +1,30 @@
+{
+  "case": "interviewapp_search_history_sync_flush",
+  "status": "FRESH_NORMAL_LOGIN_TWENTY_SEARCHES_PERSISTED",
+  "error": null,
+  "variant": "fixed",
+  "app_injection": false,
+  "performance_accepted": false,
+  "fixture": {
+    "case": "interviewapp_search_history_sync_flush",
+    "variant": "fixed",
+    "preferences": "/data/app/el2/100/base/com.itcast.pass_interview/haps/phone/preferences/historyStore",
+    "preparation_dir": "/data2/syang75/workspace/OhmBenchmark/artifacts/fixture-preparations/interview-empty/1792047787925339459",
+    "sha256": "b81988121e63d71fa3552ed4c82edac249e41106a06c1b157d33f52347fa3461",
+    "before_sha256": "b2bcbe591570a1c580ecc9eef59771e5276b7907b5bc569a8f78afc4617356cc",
+    "deployed_sha256": "a71ad7d15301db0b73ba6fc7cc0e4ba0bde3fd669816fc79f5a40d8051dd4e2b",
+    "remote_backup": "/home/research/ohm-clean/fixture-preparations/interview-empty-1792047787925339459/before.xml",
+    "installation_verified": true,
+    "functional_read_verified": false,
+    "method": "empty ordinary native historyStore; all authentication and other stores unchanged"
+  },
+  "raw_artifacts": "artifacts/clean/interviewapp_search_history_sync_flush/fixed/fresh-login-diagnostics/a3c6e5ea8f984268a59512157c5979b4",
+  "receipt_sha256": "14d8526840d5f6bc80d269f303c7044c98104fc8b26c54e9544d9b1b636cbbbe",
+  "plan_sha256": "29bf7267c6acef1559ee4ed444563f2ca711b8238bcc78b8f7b7603c39068557",
+  "progress": {
+    "persisted_keywords": 20,
+    "final_preferences_sha256": "51f6745c6a71c52abd385d391f2f4b0186ef53bc28abe0ecce2ade18242d1033",
+    "method": "existing dedicated native preferences; no app instrumentation",
+    "individual_flush_count_verified": false
+  }
+}

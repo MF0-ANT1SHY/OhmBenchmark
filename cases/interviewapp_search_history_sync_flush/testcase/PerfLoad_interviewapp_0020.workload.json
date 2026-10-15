@@ -19,16 +19,81 @@
     {
       "op": "if_present",
       "selector": {
+        "hint": "请输入关键词",
+        "match": "exact"
+      },
+      "actions": [
+        {
+          "op": "key",
+          "key": "Back"
+        },
+        {
+          "op": "tap",
+          "selector": {
+            "text": "我的",
+            "match": "exact"
+          }
+        },
+        {
+          "op": "tap",
+          "selector": {
+            "text": "设置",
+            "match": "exact"
+          }
+        },
+        {
+          "op": "wait",
+          "selector": {
+            "text": "退出账号",
+            "match": "exact"
+          }
+        },
+        {
+          "op": "tap",
+          "selector": {
+            "text": "退出账号",
+            "match": "exact"
+          }
+        },
+        {
+          "op": "tap",
+          "selector": {
+            "text": "首页",
+            "match": "exact"
+          }
+        },
+        {
+          "op": "tap",
+          "selector": {
+            "text": "搜索题目",
+            "match": "exact"
+          }
+        }
+      ]
+    },
+    {
+      "op": "if_present",
+      "selector": {
         "text": "立即登录",
         "match": "exact"
       },
       "actions": [
         {
-          "op": "tap",
+          "op": "if_present",
           "selector": {
             "type": "Checkbox",
+            "checked": "false",
             "match": "exact"
-          }
+          },
+          "actions": [
+            {
+              "op": "tap",
+              "selector": {
+                "type": "Checkbox",
+                "match": "exact"
+              }
+            }
+          ]
         },
         {
           "op": "tap",
