@@ -1,0 +1,53 @@
+{
+  "case": "cloudmusic_play_time_high_frequency_update",
+  "status": "PASS",
+  "scope": "Current reproduction delivery only; historical performance evidence unchanged",
+  "variants": {
+    "unfixed": {
+      "status": "PASS",
+      "business_and_provisioning_identity_verified": true,
+      "signed_sha256": "931a4d50bc6430cc852203ce7700e0b70cc36c5bbd014829edcf49d186d013f5",
+      "launch_receipt": {
+        "case": "cloudmusic_play_time_high_frequency_update",
+        "variant": "unfixed",
+        "signed_sha256": "931a4d50bc6430cc852203ce7700e0b70cc36c5bbd014829edcf49d186d013f5",
+        "install": "[Info]App install path:/home/research/ohm-clean/reproduction-signatures-a297fe7b6d6946ff8620f73be162675c/cloudmusic_play_time_high_frequency_update/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          1229
+        ],
+        "foreground_bundle": "cc.chenlvin.cloudmusic",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    "fixed": {
+      "status": "PASS",
+      "business_and_provisioning_identity_verified": true,
+      "signed_sha256": "8ba6674172a7d9a2fda792712fbda9cb83106ee72c1fd340933a49b76d3ef3c0",
+      "launch_receipt": {
+        "case": "cloudmusic_play_time_high_frequency_update",
+        "variant": "fixed",
+        "signed_sha256": "8ba6674172a7d9a2fda792712fbda9cb83106ee72c1fd340933a49b76d3ef3c0",
+        "install": "[Info]App install path:/home/research/ohm-clean/reproduction-signatures-40c6b4bb831645639b55b4775dee6999/cloudmusic_play_time_high_frequency_update/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          2099
+        ],
+        "foreground_bundle": "cc.chenlvin.cloudmusic",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    }
+  },
+  "binary_only_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-70a2249d76354342a7946e696a82d20b",
+  "files": [
+    "app.hap",
+    "profile.json",
+    "reproduce.py",
+    "symptom.txt",
+    "workload.json"
+  ],
+  "main_artifacts_unchanged": true,
+  "new_performance_measurement_claimed": false
+}
