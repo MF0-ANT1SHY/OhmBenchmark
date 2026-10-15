@@ -1,0 +1,53 @@
+{
+  "case": "browser_history_delete_no_transaction",
+  "status": "PASS",
+  "scope": "Current reproduction delivery only; historical performance evidence unchanged",
+  "variants": {
+    "unfixed": {
+      "status": "PASS",
+      "business_and_provisioning_identity_verified": true,
+      "signed_sha256": "6d78ed2ffa4b529a339e1fee69b593648105a1694007894e3e1dfccf49e066e5",
+      "launch_receipt": {
+        "case": "browser_history_delete_no_transaction",
+        "variant": "unfixed",
+        "signed_sha256": "6d78ed2ffa4b529a339e1fee69b593648105a1694007894e3e1dfccf49e066e5",
+        "install": "[Info]App install path:/home/research/ohm-clean/reproduction-signatures-b94c13a39f544f4cb7e915469925b869/browser_history_delete_no_transaction/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          62940
+        ],
+        "foreground_bundle": "com.example.nanvision",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    "fixed": {
+      "status": "PASS",
+      "business_and_provisioning_identity_verified": true,
+      "signed_sha256": "881ae3404e006adf6a9b3e83b901cb7c3cc3f93b2c3637447f97e8a655a55189",
+      "launch_receipt": {
+        "case": "browser_history_delete_no_transaction",
+        "variant": "fixed",
+        "signed_sha256": "881ae3404e006adf6a9b3e83b901cb7c3cc3f93b2c3637447f97e8a655a55189",
+        "install": "[Info]App install path:/home/research/ohm-clean/reproduction-signatures-f16895a1db1e47a6b8c6ee5084c78668/browser_history_delete_no_transaction/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          63718
+        ],
+        "foreground_bundle": "com.example.nanvision",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    }
+  },
+  "binary_only_export": "/data2/syang75/workspace/OhmBenchmark/artifacts/agent-exports/current-1cbea14e222848459f9995283e5b2260",
+  "files": [
+    "app.hap",
+    "profile.json",
+    "reproduce.py",
+    "symptom.txt",
+    "workload.json"
+  ],
+  "main_artifacts_unchanged": true,
+  "new_performance_measurement_claimed": false
+}
