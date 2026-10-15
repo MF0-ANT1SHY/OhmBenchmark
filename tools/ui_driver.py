@@ -207,6 +207,14 @@ class UI:
                                     action.get('between_submits_ms', 150))
             elif op == "wait":
                 self.find(action["selector"], action.get("timeout_s", 15))
+            elif op == "if_present":
+                try:
+                    self.find(action['selector'], action.get('timeout_s', 1))
+                except RuntimeError as exc:
+                    if not str(exc).startswith('UI target not found:'):
+                        raise
+                else:
+                    self.run(action['actions'])
             elif op == "pause":
                 time.sleep(action["seconds"])
             elif op == "key":

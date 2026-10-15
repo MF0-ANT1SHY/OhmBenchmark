@@ -1,0 +1,101 @@
+{
+  "case": "interviewapp_search_history_sync_flush",
+  "requested_character_interval_ms": 25,
+  "between_submits_ms": 150,
+  "status": "NORMAL_TWENTY_QUERY_INPUT_PERSISTENCE_AND_NATIVE_SUBMIT_SPACING_VERIFIED",
+  "app_injection": false,
+  "performance_accepted": false,
+  "variants": {
+    "unfixed": {
+      "status": "NORMAL_SEARCH_INPUT_AND_PERSISTENCE_VERIFIED_PERFORMANCE_PENDING",
+      "device_error": null,
+      "cleanup_error": null,
+      "observer_binary_removed": true,
+      "receipt_sha256": "404e73e8d053b19d4894202516b47c09048fb814984e041fcf5a6f783324dc40",
+      "local_artifacts": "artifacts/clean/interviewapp_search_history_sync_flush/unfixed/native-query-diagnostics/3b4c0f2c597f4091b963870064af9240",
+      "signed_sha256": "8d691b4d1afcbb4fc37a658b754c10d728c2857d2965688128b454459a96c5f9",
+      "mmi": {
+        "submitted_queries": 20,
+        "mmi_submit_spacing_ms": [
+          1617.538542,
+          1646.466666,
+          1606.08125,
+          1613.252083,
+          1639.828645,
+          1639.754688,
+          1663.984895,
+          1640.167188,
+          1646.639062,
+          1776.892708,
+          1802.015625,
+          1755.502603,
+          1735.652604,
+          1793.342188,
+          1714.853124,
+          1736.309375,
+          1758.979687,
+          1780.794792,
+          1748.182291
+        ],
+        "interval_limit_ms": 2000,
+        "all_submits_within_interval": true,
+        "arkui_callback_spacing_verified": false,
+        "business_history_updates_verified": false,
+        "method": "separate native OH_Input key monitor; not app instrumentation"
+      },
+      "history": {
+        "persisted_keywords": 20,
+        "final_preferences_sha256": "51f6745c6a71c52abd385d391f2f4b0186ef53bc28abe0ecce2ade18242d1033",
+        "method": "existing dedicated native preferences; no app instrumentation",
+        "individual_flush_count_verified": false
+      }
+    },
+    "fixed": {
+      "status": "NORMAL_SEARCH_INPUT_AND_PERSISTENCE_VERIFIED_PERFORMANCE_PENDING",
+      "device_error": null,
+      "cleanup_error": null,
+      "observer_binary_removed": true,
+      "receipt_sha256": "8f67ba63a90246c1eaf40802e703c69fb63db78501f20bbcfbf9df3537cddfd6",
+      "local_artifacts": "artifacts/clean/interviewapp_search_history_sync_flush/fixed/native-query-diagnostics/a90266e0c813485490114f9bcb34714e",
+      "signed_sha256": "ce7d0a5afacdd99379c36883ef0cc942efde3c6a2800b0dd201267ebc79663c7",
+      "mmi": {
+        "submitted_queries": 20,
+        "mmi_submit_spacing_ms": [
+          1627.525521,
+          1639.401041,
+          1648.806771,
+          1633.634375,
+          1698.816145,
+          1639.113542,
+          1701.36927,
+          1641.815104,
+          1626.457812,
+          1733.219271,
+          1751.240625,
+          1784.542187,
+          1760.009895,
+          1780.514583,
+          1701.491146,
+          1728.644271,
+          1773.231249,
+          1732.480208,
+          1753.511979
+        ],
+        "interval_limit_ms": 2000,
+        "all_submits_within_interval": true,
+        "arkui_callback_spacing_verified": false,
+        "business_history_updates_verified": false,
+        "method": "separate native OH_Input key monitor; not app instrumentation"
+      },
+      "history": {
+        "persisted_keywords": 20,
+        "final_preferences_sha256": "51f6745c6a71c52abd385d391f2f4b0186ef53bc28abe0ecce2ade18242d1033",
+        "method": "existing dedicated native preferences; no app instrumentation",
+        "individual_flush_count_verified": false
+      }
+    }
+  },
+  "observer_sha256": "0ac3ceec010f9b0a8a3e3cbce8e39fe0ebe60ef0ec8046115e1da12e6779b4bf",
+  "observer_source_sha256": "40a2eb2c31fb041004d46c0f223a3d012498dd43a665b676e2baf4e158534452",
+  "scope": "Preflight uses normal source-provided authentication, native touch/key events and existing preferences. Native submit spacing is verified; app callback timing and individual flush counts are not inferred."
+}

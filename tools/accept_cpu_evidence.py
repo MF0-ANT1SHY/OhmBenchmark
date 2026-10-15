@@ -19,6 +19,8 @@ from install_ytmusic_history_fixture import fixture_state as listening_fixture_s
 from ytmusic_history_progress import verify_layout as verify_history_layout, verify_state as verify_history_state, verify_capture as verify_history_capture
 from browser_visit_progress import CASE as BROWSER_VISIT_CASE, verify_observation as verify_browser_visits, verify_capture as verify_browser_visit_capture
 from interview_response_progress import CASE as INTERVIEW_RESPONSE_CASE, verify_observation as verify_interview_responses, verify_capture as verify_interview_response_capture
+from interview_empty_history_fixture import CASE as HISTORY_SYNC_CASE, verify as verify_empty_history
+from interview_history_progress import verify_observation as verify_search_history, verify_capture as verify_search_capture
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -48,6 +50,13 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
             if (not workload.get('fixture',{}).get('functional_read_verified')
                     or verify_browser_visits(device['browser_visits'])!=workload.get('browser_visits')):
                 raise RuntimeError('fifteen complete ordinary saved navigations are not proven')
+        if cid==HISTORY_SYNC_CASE:
+            device=json.loads((folder/'workload-device.json').read_text());observation=device['interview_history']
+            preparation=workload['fixture']
+            if (not preparation.get('functional_read_verified') or preparation['variant']!=variant or
+                    verify_empty_history(preparation)!=preparation['sha256'] or
+                    verify_search_history(observation['before'],observation['after'],observation['values'])!=workload['interview_history']):
+                raise RuntimeError('real twenty-query workload and empty input preparation are not proven')
         if cid==LISTENING_HISTORY_CASE:
             fixture=workload['fixture']
             fixture_folder=Path(fixture['fixture_dir'])
@@ -106,6 +115,11 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
                 raise RuntimeError('capture fixture differs from the validated workload')
             if cid == INTERVIEW_RESPONSE_CASE:
                 verify_interview_response_capture(receipt['interview_responses'],receipt['action_start_monotonic'],receipt['action_end_monotonic'],receipt['pids'])
+            if cid==HISTORY_SYNC_CASE:
+                preparation=receipt['empty_history_preparation']
+                if preparation['variant']!=variant or verify_empty_history(preparation)!=receipt['fixture_sha256']:
+                    raise RuntimeError('CPU trial did not reset the dedicated search-history store')
+                verify_search_capture(receipt['interview_history'],receipt['action_start_monotonic'],receipt['action_end_monotonic'],receipt['pids'])
             if cid==BROWSER_VISIT_CASE:
                 verify_browser_visit_capture(receipt['browser_visits'],receipt['action_start_monotonic'],receipt['action_end_monotonic'])
             if cid==LISTENING_HISTORY_CASE:
@@ -191,6 +205,8 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
     passed=min(ratios)>=1.2 and median_ratio>=1.2
     if negative_screen and passed:
         raise ValueError('first pair is not negative; three complete pairs are required for acceptance')
+    if passed and cid==HISTORY_SYNC_CASE:
+        raise RuntimeError('primary criterion met; independent native flush-mechanism verification is still required')
     results={}
     for variant,data in variants.items():
         result={'status':'PASS' if passed else 'FAIL','metric':'hiperf_instructions','rounds':round_count,'samples':data['samples'],

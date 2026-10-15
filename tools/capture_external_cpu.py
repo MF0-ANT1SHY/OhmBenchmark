@@ -8,6 +8,8 @@ import argparse
 import hashlib
 import json
 import uuid
+import time
+import shutil
 from pathlib import Path
 
 from install_sqlite_fixture import install as install_fixture
@@ -26,6 +28,7 @@ from install_ytmusic_history_fixture import install as install_listening_history
 from ytmusic_history_progress import verify_layout as verify_history_layout, verify_state as verify_history_state, read_state as read_history_state
 from browser_visit_progress import CASE as BROWSER_VISIT_CASE
 from interview_response_progress import CASE as INTERVIEW_RESPONSE_CASE
+from interview_empty_history_fixture import CASE as HISTORY_SYNC_CASE, prepare as prepare_empty_history
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -34,6 +37,8 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
     cid = case['id']
     if sum(p is not None for p in (fixture,local_song_fixture,poem_fixture,reader_fixture,poem_import_fixture,poem_sync_fixture,listening_history_fixture))+int(bundled_audio)+int(music_service)+int(bundled_fonts)>1:
         raise ValueError('only one fixture may be supplied')
+    if cid==HISTORY_SYNC_CASE and (any(p is not None for p in (fixture,local_song_fixture,poem_fixture,reader_fixture,poem_import_fixture,poem_sync_fixture,listening_history_fixture)) or bundled_audio or music_service or bundled_fonts):
+        raise ValueError('search-flush trials require their own fresh empty native history fixture')
     if local_song_fixture and case['host_app']['bundle_name']!='cc.chenlvin.cloudmusic':
         raise ValueError('local song fixture provided to a different app')
     if poem_fixture and case['host_app']['bundle_name']!='com.hefengbao.jingmo.hw':
@@ -52,6 +57,8 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
     plan_file = ROOT/'cases'/cid/case['testcase']['workload']
     plan_hash = hashlib.sha256(plan_file.read_bytes()).hexdigest()
     output = folder/'cpu-captures'/f'round-{round_number}'
+    if cid==HISTORY_SYNC_CASE and output.exists():
+        raise FileExistsError('preserve the original search-flush CPU trial before any retry')
     output.mkdir(parents=True,exist_ok=True)
     remote_base = f'/home/research/ohm-clean/{cid}/{variant}/cpu-captures/round-{round_number}'
     remote_plan = remote_base+'/plan.json'
@@ -86,6 +93,11 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
     if listening_history_fixture:
         history_before=install_listening_history(remote,case,listening_history_fixture,preferences_path or '')
         fixture_hash=history_before['sha256']
+    if cid==HISTORY_SYNC_CASE:
+        empty_history_before=prepare_empty_history(remote,case,variant)
+        fixture_hash=empty_history_before['sha256']
+        for module in ('ui_driver.py','interview_history_progress.py','system_pss.py'):
+            remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
     remote.upload(plan_file,remote_plan)
     code = """import hashlib,json,subprocess,sys,time,traceback
 from pathlib import Path
@@ -117,6 +129,10 @@ def shell(command):
         for module in ('interview_response_progress.py','system_pss.py'):
             remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
         code += "from interview_response_progress import read_state as read_responses,complete as complete_responses\nresponses_before=read_responses(shell)\n"
+    if cid==HISTORY_SYNC_CASE:
+        code += "from interview_history_progress import read_state as read_search_history,verify_observation as verify_search_history,keywords\n"
+        code += "search_history_before=read_search_history(shell);assert keywords(search_history_before['raw_preferences'])==[]\n"
+        code += "assert plan['measured'][0]['values']==['question'+str(i) for i in range(20)]\n"
     if fixture and cid == BROWSER_VISIT_CASE:
         remote.upload(ROOT/'tools/browser_visit_progress.py','/home/research/ohm-clean/tools/browser_visit_progress.py')
         code += "from browser_visit_progress import read_state as read_visits,complete_visits\nvisits_before=read_visits(shell)\n"
@@ -154,6 +170,9 @@ def shell(command):
     code += " ui.run(plan['measured']);ui.run(plan['verify'])\n"
     if cid == INTERVIEW_RESPONSE_CASE:
         code += " record['interview_responses']=complete_responses(ui,responses_before)\n"
+    if cid==HISTORY_SYNC_CASE:
+        code += " search_history_after=read_search_history(shell);values=plan['measured'][0]['values']\n"
+        code += " record['interview_history']={'before':search_history_before,'after':search_history_after,'values':values,'progress':verify_search_history(search_history_before,search_history_after,values)}\n"
     if fixture and cid == BROWSER_VISIT_CASE:
         code += " record['browser_visits']=complete_visits(ui,visits_before)\n"
     if poem_import_fixture:
@@ -213,10 +232,23 @@ def shell(command):
                     'performance_verified':False})
     if fixture_hash:
         receipt['fixture_sha256']=fixture_hash
+    if cid==HISTORY_SYNC_CASE:
+        receipt['empty_history_preparation']=empty_history_before
     if listening_history_fixture:
         receipt['listening_history_fixture_before']=history_before
     (output/'capture.json').write_text(json.dumps(receipt,indent=2)+'\n')
     if receipt['status']=='CAPTURED':
+        if cid==HISTORY_SYNC_CASE:
+            from interview_history_progress import verify_capture as verify_search_capture
+            verify_search_capture(receipt['interview_history'],receipt['action_start_monotonic'],receipt['action_end_monotonic'],receipt['pids'])
+            if round_number==1:
+                retired=ROOT/'artifacts/retired-clean'/cid/variant/('pre-native-query-workload-'+str(time.time_ns()))
+                retired.mkdir(parents=True,exist_ok=False)
+                for name in ('workload.json','workload-device.json'):
+                    if (folder/name).exists():shutil.copy2(folder/name,retired/name)
+                preparation=dict(empty_history_before,functional_read_verified=True)
+                (folder/'workload-device.json').write_text(json.dumps({'status':'PASS','interview_history':receipt['interview_history'],'source':'same original CPU trial; no UI rerun'},indent=2)+'\n')
+                (folder/'workload.json').write_text(json.dumps({'case':cid,'variant':variant,'status':'PASS','plan_sha256':plan_hash,'signed_sha256':sign['audit']['sha256'],'fixture':preparation,'interview_history':receipt['interview_history']['progress'],'performance_verified':False,'source':'functional checks in original first CPU trial'},indent=2)+'\n')
         if listening_history_fixture:
             songs=json.loads((listening_history_fixture/'songs.json').read_text())
             receipt['listening_history_state_after']=read_history_state(remote,preferences_path)

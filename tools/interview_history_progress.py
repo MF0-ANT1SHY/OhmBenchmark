@@ -61,3 +61,16 @@ def verify_observation(before,after,values):
     return {'persisted_keywords':len(values),'final_preferences_sha256':hashlib.sha256(after['raw_preferences'].encode()).hexdigest(),
             'method':'existing dedicated native preferences; no app instrumentation',
             'individual_flush_count_verified':False}
+
+
+def verify_capture(observation,start,end,pids):
+    values=observation['values']
+    if values!=['question'+str(i) for i in range(20)]:
+        raise ValueError('original twenty distinct search queries are required')
+    result=verify_observation(observation['before'],observation['after'],values)
+    if (pids!=[observation['before']['pid']] or not 0<start<end or
+            observation['before']['ended_monotonic']>start or
+            observation['after']['started_monotonic']<start or observation['after']['ended_monotonic']>end or
+            observation.get('progress')!=result):
+        raise ValueError('real history updates were not verified inside the CPU capture')
+    return result

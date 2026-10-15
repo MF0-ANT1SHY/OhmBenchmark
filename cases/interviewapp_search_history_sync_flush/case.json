@@ -42,7 +42,7 @@
       "htrace",
       "hiperf"
     ],
-    "step_duration_s": 30,
+    "step_duration_s": 90,
     "rounds": 3,
     "outputs": [
       "htrace/trace.htrace",
@@ -199,5 +199,15 @@
         }
       }
     }
+  },
+  "normal_input_preflight": {
+    "status": "NORMAL_INPUT_AND_PERSISTENCE_VERIFIED_MMI_SUBMITS_UNDER_2000MS",
+    "proof": "validation/interview-sync-flush-native-query-diagnosis.json",
+    "app_callback_timing_verified": false,
+    "performance_accepted": false,
+    "canonical_plan_sha256": "61e2f4e481bd4479aa79df8dec1429782a3e68b78392d7285c1e00d1f43d36a1",
+    "original_values_and_submit_pause_preserved": true,
+    "old_plan_retained": "artifacts/retired-clean/interviewapp_search_history_sync_flush/pre-native-authenticated-workload-1792046262601143836/workload.json",
+    "scope": "Normal source-provided login UI, native touches/keys, twenty persisted queries; no app code or auth-token injection."
   }
 }
