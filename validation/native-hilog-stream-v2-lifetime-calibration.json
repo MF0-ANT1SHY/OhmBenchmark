@@ -1,0 +1,18 @@
+{
+  "status": "OWN_PID_NATIVE_LOGGER_LIFETIME_CALIBRATED",
+  "probe": {
+    "duration_s": 3.5494603839999996,
+    "returncode": 0,
+    "stdout": "__OHM_HILOG_OWNER__29235\n__OHM_HILOG_SELECTION__29235 2\n__OHM_HILOG_STAT__29235 (hilog-stream-a1) R 44549 29235 29235 0 0 0 726 726 399 399 2 4 0 0 20 0 1 0 250013199 2180562944 1132 0 0 0 547672431328 0 0 0 0 0 0 0 0 0 0 7 0 0 0 0 0 366964642160 366964647017 377356001280 547672431995 547672432065 547672432065 547672432560 0 0\n1792052163.525480656 29235 29235 W C02D13/hdcd/HDC_LOG: [SetSelinuxLabel:140] SetSelinuxLabel con:u:r:su:s0 isRoot:1\n",
+    "stderr": ""
+  },
+  "native_owner_pid": 29235,
+  "native_owner_gone_after_probe": true,
+  "binary_removed": true,
+  "source_sha256": "d4629abba07a42d3b1dbca0fe05ba2415a1d950375be7f121dcf78cf144243fa",
+  "binary_sha256": "bcec3f9584c025ca1b6b79d1d8bdafbfa7f646c1c47cd78be383cda15d5496d5",
+  "app_log_stream_captured": false,
+  "all_five_http_results_verified": false,
+  "app_injection": false,
+  "performance_accepted": false
+}

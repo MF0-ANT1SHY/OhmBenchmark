@@ -101,8 +101,15 @@
       "oracle_metric": "hiperf_instructions",
       "app_injection": false,
       "workload_validation": "verified",
-      "measurement_status": "pending_clean_measurement",
-      "rounds_recorded": 0
+      "measurement_status": "negative_screen_failed",
+      "rounds_recorded": 1,
+      "disposition": {
+        "status": "skipped_by_user",
+        "reason": "Verified real five-refresh mandatory CPU pair fails the unchanged 1.2x criterion; user instructed to skip negative cases.",
+        "performance_passed": false,
+        "original_evidence_preserved": true,
+        "full_three_pair_run_completed": false
+      }
     },
     "interviewapp_search_history_sync_flush": {
       "oracle_metric": "hiperf_instructions",
@@ -300,5 +307,5 @@
       "request_completion_verified": false
     }
   },
-  "skipped_case_count": 13
+  "skipped_case_count": 14
 }

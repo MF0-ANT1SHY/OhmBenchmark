@@ -1,0 +1,24 @@
+{
+  "case": "interviewapp_response_log_full_stringify",
+  "status": "CONTINUOUS_NATIVE_HTTP_DIAGNOSIS_PENDING",
+  "app_injection": false,
+  "performance_accepted": false,
+  "variants": {
+    "unfixed": {
+      "status": "FAIL",
+      "error": "UI target not found: {'text': '\u5982\u4f55\u5408\u5e76\u4e24\u4e2a\u5bf9\u8c61?\\n', 'match': 'exact'}",
+      "binary_removed": true,
+      "raw_artifacts": "artifacts/clean/interviewapp_response_log_full_stringify/unfixed/continuous-http-diagnostics/5b80ed2667ec40b88f0bd55bb8677a62",
+      "receipt_sha256": "771dea189685ffe3aca46d7683d0cfe5632022743889ea057d7ee3c79a276535",
+      "signed_sha256": "390abd812e915a5285c1329265ff8e8cc12b3c1515515afc8a1ff4aa0b0a8729"
+    },
+    "fixed": {
+      "status": "FAIL",
+      "error": "native logger ownership/readiness not proven",
+      "binary_removed": true,
+      "raw_artifacts": "artifacts/clean/interviewapp_response_log_full_stringify/fixed/continuous-http-diagnostics/37d01cd97a724426bc97c3a756c46b29",
+      "receipt_sha256": "b8e03489f63e5fc727b0cb511d84af1fbcb177a5d59fe7fccc14c26d3e2a94f2",
+      "signed_sha256": "e304703dd5d1238f4bb033ed5471b7334876fea43cb9b77c75626bd9e2f6fa2a"
+    }
+  }
+}

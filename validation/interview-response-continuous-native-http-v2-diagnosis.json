@@ -1,0 +1,16 @@
+{
+  "case": "interviewapp_response_log_full_stringify",
+  "status": "CONTINUOUS_NATIVE_HTTP_DIAGNOSIS_PENDING",
+  "app_injection": false,
+  "performance_accepted": false,
+  "variants": {
+    "unfixed": {
+      "status": "FAIL",
+      "error": "UI target not found: {'text': '\u70ed\u95e8\u9898\u5e93'}",
+      "binary_removed": true,
+      "raw_artifacts": "artifacts/clean/interviewapp_response_log_full_stringify/unfixed/continuous-http-diagnostics/20834ff1ef804b7a89abffe75f06e47d",
+      "receipt_sha256": "822b5c8580dac9a769538a06cab4bf3d5e902d305c3a17efde4a6bfcc5bd63e1",
+      "signed_sha256": "390abd812e915a5285c1329265ff8e8cc12b3c1515515afc8a1ff4aa0b0a8729"
+    }
+  }
+}

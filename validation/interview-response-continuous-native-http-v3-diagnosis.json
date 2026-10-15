@@ -1,0 +1,84 @@
+{
+  "case": "interviewapp_response_log_full_stringify",
+  "status": "BOTH_VARIANTS_ALL_FIVE_REAL_HTTP_RESULTS_VERIFIED_RENDER_AND_PRIMARY_PENDING",
+  "app_injection": false,
+  "performance_accepted": false,
+  "variants": {
+    "unfixed": {
+      "status": "ALL_FIVE_NORMAL_NATIVE_HTTP_RESULTS_VERIFIED_PRIMARY_AND_FULL_RENDER_PROJECTION_PENDING",
+      "error": null,
+      "binary_removed": true,
+      "raw_artifacts": "artifacts/clean/interviewapp_response_log_full_stringify/unfixed/continuous-http-diagnostics/16cc1fd7a375426c9e438beaed2355b8",
+      "receipt_sha256": "478201d6c04c1a0890b0581067ee28437e1900484aa88315b45dd4825c3031cb",
+      "signed_sha256": "390abd812e915a5285c1329265ff8e8cc12b3c1515515afc8a1ff4aa0b0a8729",
+      "backend_bracket": {
+        "sha256": "7ba64c56ded1d110cf0bc95538f9e1941f2895689fe734d0ea5a31fa3cb68b40",
+        "response_bytes": 4397,
+        "question_ids": [
+          "41292",
+          "41293",
+          "41294",
+          "41296",
+          "41306",
+          "41297",
+          "41300",
+          "41299",
+          "41301",
+          "41298"
+        ],
+        "method": "independent external backend snapshots, not app-body hashing"
+      },
+      "native_http": {
+        "successful_native_http_results": 5,
+        "native_transfer_bytes": 873,
+        "native_result_epochs": [
+          "1792052625.983086835",
+          "1792052635.449596730",
+          "1792052645.411390478",
+          "1792052655.418350372",
+          "1792052665.458863392"
+        ],
+        "actual_app_body_hash_verified": false,
+        "method": "five unique native transfer results matched one-to-one to existing successful business callbacks on the native epoch clock"
+      }
+    },
+    "fixed": {
+      "status": "ALL_FIVE_NORMAL_NATIVE_HTTP_RESULTS_VERIFIED_PRIMARY_AND_FULL_RENDER_PROJECTION_PENDING",
+      "error": null,
+      "binary_removed": true,
+      "raw_artifacts": "artifacts/clean/interviewapp_response_log_full_stringify/fixed/continuous-http-diagnostics/be46322b8bdb4232a12239935dee56de",
+      "receipt_sha256": "2826dbbfc4f496d844147c49bb9ed56a30cc73bc2d7390c0a5b2d311d2099c42",
+      "signed_sha256": "e304703dd5d1238f4bb033ed5471b7334876fea43cb9b77c75626bd9e2f6fa2a",
+      "backend_bracket": {
+        "sha256": "7ba64c56ded1d110cf0bc95538f9e1941f2895689fe734d0ea5a31fa3cb68b40",
+        "response_bytes": 4397,
+        "question_ids": [
+          "41292",
+          "41293",
+          "41294",
+          "41296",
+          "41306",
+          "41297",
+          "41300",
+          "41299",
+          "41301",
+          "41298"
+        ],
+        "method": "independent external backend snapshots, not app-body hashing"
+      },
+      "native_http": {
+        "successful_native_http_results": 5,
+        "native_transfer_bytes": 873,
+        "native_result_epochs": [
+          "1792052768.950107126",
+          "1792052779.416999312",
+          "1792052788.840122227",
+          "1792052798.238102434",
+          "1792052808.033774307"
+        ],
+        "actual_app_body_hash_verified": false,
+        "method": "five unique native transfer results matched one-to-one to existing successful business callbacks on the native epoch clock"
+      }
+    }
+  }
+}

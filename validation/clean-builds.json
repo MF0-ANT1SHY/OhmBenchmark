@@ -2298,21 +2298,92 @@
       "workload": {
         "case": "interviewapp_response_log_full_stringify",
         "variant": "unfixed",
-        "signed_sha256": "390abd812e915a5285c1329265ff8e8cc12b3c1515515afc8a1ff4aa0b0a8729",
-        "plan_sha256": "25e1c28127214cfe1a519fa85de1fa8305a027f5a67c34d21d3744ed89912ca0",
         "status": "PASS",
-        "performance_verified": false,
-        "phase_elapsed_s": {
-          "setup": 16.981456277000007,
-          "measured": 47.49916280299999,
-          "verify": 5.589511947999995
-        },
+        "plan_sha256": "25e1c28127214cfe1a519fa85de1fa8305a027f5a67c34d21d3744ed89912ca0",
+        "signed_sha256": "390abd812e915a5285c1329265ff8e8cc12b3c1515515afc8a1ff4aa0b0a8729",
         "interview_responses": {
           "successful_question_lists": 5,
           "method": "existing successful HTTP response business logs"
         },
-        "functional_check": "five normal pull-to-refresh actions completed successful question-list requests",
-        "capture_duration_required_s": 52
+        "interview_input_proof": {
+          "backend": {
+            "sha256": "2e747e2a8ffd669b4443e151ff57f65cd7411977a50e78c044183031ab6e180e",
+            "response_bytes": 4397,
+            "question_ids": [
+              "41292",
+              "41293",
+              "41294",
+              "41296",
+              "41306",
+              "41297",
+              "41300",
+              "41299",
+              "41301",
+              "41298"
+            ],
+            "method": "independent external backend snapshots, not app-body hashing"
+          },
+          "native_http": {
+            "successful_native_http_results": 5,
+            "native_transfer_bytes": 871,
+            "native_result_epochs": [
+              "1792053205.419416434",
+              "1792053216.365118516",
+              "1792053226.403937785",
+              "1792053236.380415909",
+              "1792053246.536873199"
+            ],
+            "actual_app_body_hash_verified": false,
+            "method": "five unique native transfer results matched one-to-one to existing successful business callbacks on the native epoch clock"
+          },
+          "projection": {
+            "question_ids": [
+              "41292",
+              "41293",
+              "41294",
+              "41296",
+              "41306",
+              "41297",
+              "41300",
+              "41299",
+              "41301",
+              "41298"
+            ],
+            "rendered_stems_verified": 10,
+            "full_business_payload_verified": false
+          }
+        },
+        "performance_verified": false,
+        "source": "normal HTTP and rendered-input checks in original first CPU trial"
+      },
+      "performance": {
+        "status": "NEGATIVE_SCREEN_FAILED",
+        "metric": "hiperf_instructions",
+        "rounds": 1,
+        "samples": [
+          1463268858
+        ],
+        "median": 1463268858,
+        "paired_ratios": [
+          1.0361217802978422
+        ],
+        "median_ratio": 1.0361217802978422,
+        "plan_sha256": "25e1c28127214cfe1a519fa85de1fa8305a027f5a67c34d21d3744ed89912ca0",
+        "signed_sha256": "390abd812e915a5285c1329265ff8e8cc12b3c1515515afc8a1ff4aa0b0a8729",
+        "fixture_sha256": "2e747e2a8ffd669b4443e151ff57f65cd7411977a50e78c044183031ab6e180e",
+        "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+        "captures": [
+          {
+            "round": 1,
+            "report_sha256": "70369228b232c3fbcc3bb6f9e5b25b45970dec70ad643b41a03e6597ab3b6bdb",
+            "app_samples": 5522,
+            "remote_artifacts": "/home/research/ohm-clean/interviewapp_response_log_full_stringify/unfixed/cpu-captures/round-1"
+          }
+        ],
+        "legacy_evidence_reused": false,
+        "required_rounds": 3,
+        "full_performance_run_completed": false,
+        "performance_accepted": false
       }
     },
     {
@@ -2368,21 +2439,92 @@
       "workload": {
         "case": "interviewapp_response_log_full_stringify",
         "variant": "fixed",
-        "signed_sha256": "e304703dd5d1238f4bb033ed5471b7334876fea43cb9b77c75626bd9e2f6fa2a",
-        "plan_sha256": "25e1c28127214cfe1a519fa85de1fa8305a027f5a67c34d21d3744ed89912ca0",
         "status": "PASS",
-        "performance_verified": false,
-        "phase_elapsed_s": {
-          "setup": 17.044655094000007,
-          "measured": 47.03906179399996,
-          "verify": 5.984100344000012
-        },
+        "plan_sha256": "25e1c28127214cfe1a519fa85de1fa8305a027f5a67c34d21d3744ed89912ca0",
+        "signed_sha256": "e304703dd5d1238f4bb033ed5471b7334876fea43cb9b77c75626bd9e2f6fa2a",
         "interview_responses": {
           "successful_question_lists": 5,
           "method": "existing successful HTTP response business logs"
         },
-        "functional_check": "five normal pull-to-refresh actions completed successful question-list requests",
-        "capture_duration_required_s": 52
+        "interview_input_proof": {
+          "backend": {
+            "sha256": "2e747e2a8ffd669b4443e151ff57f65cd7411977a50e78c044183031ab6e180e",
+            "response_bytes": 4397,
+            "question_ids": [
+              "41292",
+              "41293",
+              "41294",
+              "41296",
+              "41306",
+              "41297",
+              "41300",
+              "41299",
+              "41301",
+              "41298"
+            ],
+            "method": "independent external backend snapshots, not app-body hashing"
+          },
+          "native_http": {
+            "successful_native_http_results": 5,
+            "native_transfer_bytes": 871,
+            "native_result_epochs": [
+              "1792053458.829364833",
+              "1792053468.226482540",
+              "1792053478.147291393",
+              "1792053488.352113787",
+              "1792053498.241670035"
+            ],
+            "actual_app_body_hash_verified": false,
+            "method": "five unique native transfer results matched one-to-one to existing successful business callbacks on the native epoch clock"
+          },
+          "projection": {
+            "question_ids": [
+              "41292",
+              "41293",
+              "41294",
+              "41296",
+              "41306",
+              "41297",
+              "41300",
+              "41299",
+              "41301",
+              "41298"
+            ],
+            "rendered_stems_verified": 10,
+            "full_business_payload_verified": false
+          }
+        },
+        "performance_verified": false,
+        "source": "normal HTTP and rendered-input checks in original first CPU trial"
+      },
+      "performance": {
+        "status": "NEGATIVE_SCREEN_FAILED",
+        "metric": "hiperf_instructions",
+        "rounds": 1,
+        "samples": [
+          1412255669
+        ],
+        "median": 1412255669,
+        "paired_ratios": [
+          1.0361217802978422
+        ],
+        "median_ratio": 1.0361217802978422,
+        "plan_sha256": "25e1c28127214cfe1a519fa85de1fa8305a027f5a67c34d21d3744ed89912ca0",
+        "signed_sha256": "e304703dd5d1238f4bb033ed5471b7334876fea43cb9b77c75626bd9e2f6fa2a",
+        "fixture_sha256": "2e747e2a8ffd669b4443e151ff57f65cd7411977a50e78c044183031ab6e180e",
+        "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+        "captures": [
+          {
+            "round": 1,
+            "report_sha256": "9c5f9e3851c265ad312cca0fd0980f1f73efb2785f7ed9474eda34fb34bd22d1",
+            "app_samples": 5208,
+            "remote_artifacts": "/home/research/ohm-clean/interviewapp_response_log_full_stringify/fixed/cpu-captures/round-1"
+          }
+        ],
+        "legacy_evidence_reused": false,
+        "required_rounds": 3,
+        "full_performance_run_completed": false,
+        "performance_accepted": false
       }
     },
     {

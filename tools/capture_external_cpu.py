@@ -46,6 +46,14 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
         raise ValueError('Web refresh trials require their own ordinary one-page native history fixture')
     if cid==WAN_HTML_CASE and (any(p is not None for p in (fixture,local_song_fixture,poem_fixture,reader_fixture,poem_import_fixture,poem_sync_fixture,listening_history_fixture)) or bundled_audio or music_service or bundled_fonts):
         raise ValueError('HTML trials require normal online first-page input, not injected data')
+    if cid==INTERVIEW_RESPONSE_CASE:
+        if any(p is not None for p in (fixture,local_song_fixture,poem_fixture,reader_fixture,poem_import_fixture,poem_sync_fixture,listening_history_fixture)) or bundled_audio or music_service or bundled_fonts:
+            raise ValueError('response-log trials require normal online requests, not injected data')
+        for name in ('hiperf','hiprofiler_cmd','hiprofilerd','native_daemon'):
+            if remote.hdc(['shell','pidof '+name]).strip():
+                raise RuntimeError('another profiler is live; do not alter its application')
+        if remote.hdc(['shell','cat /sys/kernel/tracing/tracing_on']).strip()!='0':
+            raise RuntimeError('another trace is active')
     if local_song_fixture and case['host_app']['bundle_name']!='cc.chenlvin.cloudmusic':
         raise ValueError('local song fixture provided to a different app')
     if poem_fixture and case['host_app']['bundle_name']!='com.hefengbao.jingmo.hw':
@@ -64,6 +72,8 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
     plan_file = ROOT/'cases'/cid/case['testcase']['workload']
     plan_hash = hashlib.sha256(plan_file.read_bytes()).hexdigest()
     output = folder/'cpu-captures'/f'round-{round_number}'
+    if cid==INTERVIEW_RESPONSE_CASE and output.exists():
+        raise FileExistsError('preserve the original response-log CPU trial before any retry')
     if cid==HISTORY_SYNC_CASE and output.exists():
         raise FileExistsError('preserve the original search-flush CPU trial before any retry')
     if cid==WAN_WEB_CASE and output.exists():
@@ -144,7 +154,18 @@ def shell(command):
         code += " node=original_find(selector,timeout)\n"
         code += " if selector.get('id')=='AddAddressBtn':page_observations.append(observe_page(shell,plan['bundle'],node))\n"
         code += " return node\nui.find=observe_find\n"
-    code += "ui.run([{'op':'stop'},{'op':'launch'}]);ui.run(plan['setup'])\n"
+    if cid == INTERVIEW_RESPONSE_CASE:
+        for module in ('interview_backend_inputs.py','native_hilog_stream.py','interview_response_progress.py','system_pss.py'):
+            remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
+        logger_binary=ROOT/'artifacts/native-hilog-stream/native-hilog-stream-v2'
+        remote.upload(logger_binary,remote_base+'/native-logger')
+        logger_device='/data/local/tmp/interview-logger-'+uuid.uuid4().hex
+        code += "from interview_backend_inputs import enter_question_list,snapshot,encoded_snapshot,collect_rendered_stems\nfrom native_hilog_stream import NativeHiLogStream\n"
+        code += "enter_question_list(ui,plan)\ninputs={'before':snapshot()}\ninputs['encoded']=encoded_snapshot(root/'encoded-backend.bin',inputs['before'])\n"
+        code += f"logger_device={logger_device!r}\nsubprocess.run(['hdc','file','send',str(root/'native-logger'),logger_device],check=True,capture_output=True)\nshell('chmod 700 '+logger_device)\n"
+        code += "logger_pid=shell('pidof '+plan['bundle']).strip();assert logger_pid.isdigit()\nlog_stream=NativeHiLogStream(shell,int(logger_pid),logger_device,root/'native-stream',180)\n"
+    else:
+        code += "ui.run([{'op':'stop'},{'op':'launch'}]);ui.run(plan['setup'])\n"
     if cid==WAN_HTML_CASE:
         code += "from wan_html_inputs import prepare_online as prepare_html_online,read_state as read_html_state\n"
         code += f"html_observation,html_preparation=prepare_html_online(ui,root,{variant!r})\n"
@@ -153,7 +174,7 @@ def shell(command):
     if cid == INTERVIEW_RESPONSE_CASE:
         for module in ('interview_response_progress.py','system_pss.py'):
             remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
-        code += "from interview_response_progress import read_state as read_responses,complete as complete_responses\nresponses_before=read_responses(shell)\n"
+        code += "from interview_response_progress import read_state as read_responses,complete as complete_responses\n"
     if cid==HISTORY_SYNC_CASE:
         code += "from interview_history_progress import read_state as read_search_history,verify_observation as verify_search_history,keywords\n"
         code += "search_history_before=read_search_history(shell);assert keywords(search_history_before['raw_preferences'])==[]\n"
@@ -185,6 +206,8 @@ def shell(command):
         code += "record['poem_sync_logs_before']=sync_logs_before\n"
     code += "prepared_ok=False\n"
     code += "try:\n"
+    if cid == INTERVIEW_RESPONSE_CASE:
+        code += " log_stream.__enter__();responses_before=read_responses(shell)\n"
     code += " prepared=shell('hiperf record --control prepare -a --exclude-hiperf --cpu-limit 100 -f 1000 -e hw-instructions --call-stack dwarf --clockid boottime --kernel-callchain -m 1024 -o '+device_file)\n"
     code += " record['prepare_output']=prepared\n"
     code += " if 'fail' in prepared.lower() or 'error' in prepared.lower():raise RuntimeError(prepared)\n"
@@ -245,6 +268,9 @@ def shell(command):
     code += " assert pid_text and all(x.isdigit() for x in pid_text.split()),'app is not alive'\n"
     code += " record['pids']=list(map(int,pid_text.split()))\n"
     code += " record['stop_output']=shell('hiperf record --control stop')\n"
+    if cid == INTERVIEW_RESPONSE_CASE:
+        code += " log_stream.close();inputs['native_stream']=log_stream.receipt()\n"
+        code += " inputs['after']=snapshot();inputs['render']=collect_rendered_stems(ui,inputs['before']);inputs['render_stat']=shell('cat /proc/'+logger_pid+'/stat');record['interview_inputs']=inputs\n"
     code += " subprocess.run(['hdc','file','recv',device_file,str(root/'perf.data')],check=True,capture_output=True)\n"
     code += " assert (root/'perf.data').stat().st_size>0,'empty capture'\n"
     code += f" report_file='/data/local/tmp/profile-{token}.json'\n"
@@ -254,6 +280,8 @@ def shell(command):
     code += " record['status']='CAPTURED'\n"
     code += "except Exception as exc:\n record['error']=str(exc)\n if prepared_ok:shell('hiperf record --control stop')\n"
     code += " if getattr(exc,'observation',None) is not None:record['failure_observation']=exc.observation\n"
+    if cid == INTERVIEW_RESPONSE_CASE:
+        code += "finally:\n log_stream.close()\n shell('rm -f '+logger_device)\n"
     code += "(root/'capture.json').write_text(json.dumps(record,indent=2))\n"
     # Long normal UI plans also need time to finalize/transfer/report native
     # samples. This is a transport budget, not added work or measured idle time.
@@ -275,6 +303,20 @@ def shell(command):
         receipt['listening_history_fixture_before']=history_before
     (output/'capture.json').write_text(json.dumps(receipt,indent=2)+'\n')
     if receipt['status']=='CAPTURED':
+        if cid == INTERVIEW_RESPONSE_CASE:
+            from interview_backend_inputs import verify_capture_inputs
+            for stream in ('stdout','stderr'):
+                remote.download(remote_base+'/native-stream/'+stream+'.bin',output/'native-stream'/(stream+'.bin'))
+            remote.download(remote_base+'/encoded-backend.bin',output/'encoded-backend.bin')
+            receipt['interview_input_proof']=verify_capture_inputs(receipt,output)
+            (output/'capture.json').write_text(json.dumps(receipt,indent=2)+'\n')
+            if round_number==1:
+                retired=ROOT/'artifacts/retired-clean'/cid/variant/('pre-native-input-workload-'+str(time.time_ns()))
+                retired.mkdir(parents=True,exist_ok=False)
+                for name in ('workload.json','workload-device.json'):
+                    if (folder/name).exists():shutil.copy2(folder/name,retired/name)
+                (folder/'workload-device.json').write_text(json.dumps({'status':'PASS','interview_responses':receipt['interview_responses'],'interview_input_proof':receipt['interview_input_proof'],'source':'same original CPU trial; no UI rerun'},indent=2)+'\n')
+                (folder/'workload.json').write_text(json.dumps({'case':cid,'variant':variant,'status':'PASS','plan_sha256':plan_hash,'signed_sha256':sign['audit']['sha256'],'interview_responses':receipt['interview_responses']['progress'],'interview_input_proof':receipt['interview_input_proof'],'performance_verified':False,'source':'normal HTTP and rendered-input checks in original first CPU trial'},indent=2)+'\n')
         if cid==WAN_HTML_CASE:
             from wan_html_inputs import verify_trial as verify_html_trial, verify_capture as verify_html_capture
             for label in ('setup','after'):

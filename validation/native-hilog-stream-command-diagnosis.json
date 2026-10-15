@@ -1,0 +1,11 @@
+{
+  "owner_pid": 29071,
+  "cmdline_base64": "aGlsb2c=",
+  "cmdline_hex": "68696c6f67",
+  "stdout_base64": "X19PSE1fSElMT0dfT1dORVJfXzI5MDcxCjE3OTIwNTIxMDIuMjI5ODc3MDE5IDI5MDcxIDI5MDcxIFcgQzAyRDEzL2hkY2QvSERDX0xPRzogW1NldFNlbGludXhMYWJlbDoxNDBdIFNldFNlbGludXhMYWJlbCBjb246dTpyOnN1OnMwIGlzUm9vdDoxCg==",
+  "stderr_base64": "",
+  "returncode": 0,
+  "status": "OWN_LOGGER_CMDLINE_DIAGNOSTIC_ONLY",
+  "app_observed": false,
+  "performance_accepted": false
+}

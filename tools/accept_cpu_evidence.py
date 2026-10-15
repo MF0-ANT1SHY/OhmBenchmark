@@ -126,10 +126,20 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
             receipt=json.loads((capture_dir/'capture.json').read_text())
             if receipt['status']!='CAPTURED' or receipt['plan_sha256']!=plan_hash or receipt['signed_sha256']!=sign['audit']['sha256']:
                 raise RuntimeError('capture provenance mismatch')
-            if receipt.get('fixture_sha256') != workload.get('fixture',{}).get('sha256'):
+            if cid != INTERVIEW_RESPONSE_CASE and receipt.get('fixture_sha256') != workload.get('fixture',{}).get('sha256'):
                 raise RuntimeError('capture fixture differs from the validated workload')
             if cid == INTERVIEW_RESPONSE_CASE:
                 verify_interview_response_capture(receipt['interview_responses'],receipt['action_start_monotonic'],receipt['action_end_monotonic'],receipt['pids'])
+                from interview_backend_inputs import verify_capture_inputs
+                input_proof=verify_capture_inputs(receipt,capture_dir)
+                if input_proof!=receipt.get('interview_input_proof') or input_proof['backend']['sha256']!=workload['interview_input_proof']['backend']['sha256']:
+                    raise RuntimeError('normal HTTP inputs differ from the original CPU trial')
+                if round_no==1 and (receipt['interview_responses']!=device['interview_responses'] or input_proof!=device.get('interview_input_proof')):
+                    raise RuntimeError('functional HTTP/input proof does not belong to the original CPU trial')
+                if variant=='fixed':
+                    paired=json.loads((ROOT/'artifacts/clean'/cid/'unfixed/cpu-captures'/f'round-{round_no}'/'capture.json').read_text())
+                    if verify_capture_inputs(paired,ROOT/'artifacts/clean'/cid/'unfixed/cpu-captures'/f'round-{round_no}')['backend']!=input_proof['backend']:
+                        raise RuntimeError('paired CPU trials used different sampled backend inputs')
             if cid==HISTORY_SYNC_CASE:
                 preparation=receipt['empty_history_preparation']
                 if preparation['variant']!=variant or verify_empty_history(preparation)!=receipt['fixture_sha256']:
@@ -222,7 +232,9 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
             if receipt['action_end_monotonic']<=receipt['action_start_monotonic']:
                 raise RuntimeError('invalid capture window')
             samples.append(value)
-            fixture_hashes.add(receipt.get('fixture_sha256'))
+            # This case uses the real backend, not a deployed fixture. Its
+            # identity is the exact decoded body bracket verified above.
+            fixture_hashes.add(input_proof['backend']['sha256'] if cid == INTERVIEW_RESPONSE_CASE else receipt.get('fixture_sha256'))
             captures.append({'round':round_no,'report_sha256':hashlib.sha256(report_path.read_bytes()).hexdigest(),
                              'app_samples':count,'remote_artifacts':receipt['remote_artifacts']})
         variants[variant]={'samples':samples,'captures':captures,'fixtures':fixture_hashes,

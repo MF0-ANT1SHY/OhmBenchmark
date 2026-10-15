@@ -1,0 +1,192 @@
+{
+  "case": "interviewapp_response_log_full_stringify",
+  "status": "VERIFIED_MANDATORY_FIRST_PAIR_NEGATIVE_USER_SKIPPED",
+  "app_injection": false,
+  "performance_accepted": false,
+  "full_three_pair_run_completed": false,
+  "response_handler_cpu_mechanism_claimed": false,
+  "samples": {
+    "unfixed": [
+      1463268858
+    ],
+    "fixed": [
+      1412255669
+    ]
+  },
+  "paired_ratios": [
+    1.0361217802978422
+  ],
+  "source": "Original app-attributed native CPU reports, five one-to-one HTTP/business completions, exact sampled backend brackets, and ten normally rendered stems per variant.",
+  "raw_capture_sha256": {
+    "unfixed": "3bd64d7553b33a60108e5611b3bd1e191f04a57e15d031d307a77293a11c13c5",
+    "fixed": "37177ab02b4ac10f6ba4108dfc78db9b12e8211f1f21dda4bd43985a8b9ef363"
+  },
+  "actual_app_body_hash_verified": false,
+  "native_business_input_proofs": {
+    "unfixed": {
+      "backend": {
+        "sha256": "2e747e2a8ffd669b4443e151ff57f65cd7411977a50e78c044183031ab6e180e",
+        "response_bytes": 4397,
+        "question_ids": [
+          "41292",
+          "41293",
+          "41294",
+          "41296",
+          "41306",
+          "41297",
+          "41300",
+          "41299",
+          "41301",
+          "41298"
+        ],
+        "method": "independent external backend snapshots, not app-body hashing"
+      },
+      "native_http": {
+        "successful_native_http_results": 5,
+        "native_transfer_bytes": 871,
+        "native_result_epochs": [
+          "1792053205.419416434",
+          "1792053216.365118516",
+          "1792053226.403937785",
+          "1792053236.380415909",
+          "1792053246.536873199"
+        ],
+        "actual_app_body_hash_verified": false,
+        "method": "five unique native transfer results matched one-to-one to existing successful business callbacks on the native epoch clock"
+      },
+      "projection": {
+        "question_ids": [
+          "41292",
+          "41293",
+          "41294",
+          "41296",
+          "41306",
+          "41297",
+          "41300",
+          "41299",
+          "41301",
+          "41298"
+        ],
+        "rendered_stems_verified": 10,
+        "full_business_payload_verified": false
+      }
+    },
+    "fixed": {
+      "backend": {
+        "sha256": "2e747e2a8ffd669b4443e151ff57f65cd7411977a50e78c044183031ab6e180e",
+        "response_bytes": 4397,
+        "question_ids": [
+          "41292",
+          "41293",
+          "41294",
+          "41296",
+          "41306",
+          "41297",
+          "41300",
+          "41299",
+          "41301",
+          "41298"
+        ],
+        "method": "independent external backend snapshots, not app-body hashing"
+      },
+      "native_http": {
+        "successful_native_http_results": 5,
+        "native_transfer_bytes": 871,
+        "native_result_epochs": [
+          "1792053458.829364833",
+          "1792053468.226482540",
+          "1792053478.147291393",
+          "1792053488.352113787",
+          "1792053498.241670035"
+        ],
+        "actual_app_body_hash_verified": false,
+        "method": "five unique native transfer results matched one-to-one to existing successful business callbacks on the native epoch clock"
+      },
+      "projection": {
+        "question_ids": [
+          "41292",
+          "41293",
+          "41294",
+          "41296",
+          "41306",
+          "41297",
+          "41300",
+          "41299",
+          "41301",
+          "41298"
+        ],
+        "rendered_stems_verified": 10,
+        "full_business_payload_verified": false
+      }
+    }
+  },
+  "raw_report_sha256": {
+    "unfixed": "70369228b232c3fbcc3bb6f9e5b25b45970dec70ad643b41a03e6597ab3b6bdb",
+    "fixed": "9c5f9e3851c265ad312cca0fd0980f1f73efb2785f7ed9474eda34fb34bd22d1"
+  },
+  "post_trial_cleanup": {
+    "all_four_native_profilers_idle": true,
+    "both_external_logger_binaries_removed": true,
+    "observed_after_both_trials_completed": true
+  },
+  "tests": {
+    "command": "python -m unittest discover -s tests",
+    "tests": 283,
+    "passed": true
+  },
+  "gates": {
+    "build": {
+      "returncode": 0,
+      "result": {
+        "stage": "build",
+        "cases": 1,
+        "errors": [],
+        "pending": [],
+        "passed": true
+      }
+    },
+    "sign": {
+      "returncode": 0,
+      "result": {
+        "stage": "sign",
+        "cases": 1,
+        "errors": [],
+        "pending": [],
+        "passed": true
+      }
+    },
+    "smoke": {
+      "returncode": 0,
+      "result": {
+        "stage": "smoke",
+        "cases": 1,
+        "errors": [],
+        "pending": [],
+        "passed": true
+      }
+    },
+    "complete": {
+      "returncode": 1,
+      "result": {
+        "stage": "complete",
+        "cases": 1,
+        "errors": [
+          "interviewapp_response_log_full_stringify/unfixed: oracle coverage/rounds not proven",
+          "interviewapp_response_log_full_stringify/fixed: oracle coverage/rounds not proven"
+        ],
+        "pending": [
+          "interviewapp_response_log_full_stringify/unfixed: performance not validated",
+          "interviewapp_response_log_full_stringify/fixed: performance not validated",
+          "interviewapp_response_log_full_stringify: clean performance oracle not accepted (negative_screen_failed)"
+        ],
+        "passed": false
+      }
+    }
+  },
+  "native_logger_calibration": "validation/native-hilog-stream-v2-lifetime-calibration.json",
+  "earlier_incomplete_preconditions_preserved": [
+    "validation/interview-response-continuous-native-http-diagnosis.json",
+    "validation/interview-response-continuous-native-http-v2-diagnosis.json",
+    "validation/interview-response-full-render-projection.json"
+  ]
+}

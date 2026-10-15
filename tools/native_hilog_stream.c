@@ -34,6 +34,12 @@ int main(int argc, char **argv)
     char selected[32];
     snprintf(selected, sizeof(selected), "%d", pid);
     printf("__OHM_HILOG_OWNER__%ld\n", (long)getpid());
+    printf("__OHM_HILOG_SELECTION__%d %d\n", pid, duration);
+    char stat[4096];
+    FILE *self = fopen("/proc/self/stat", "r");
+    if (!self || !fgets(stat, sizeof(stat), self)) return 4;
+    fclose(self);
+    printf("__OHM_HILOG_STAT__%s", stat);
     fflush(stdout);
     signal(SIGALRM, SIG_DFL);
     /* The timer survives exec; the logger retains this exact process PID. */

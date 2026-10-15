@@ -1,0 +1,113 @@
+{
+  "case": "interviewapp_response_log_full_stringify",
+  "status": "BOTH_VARIANTS_ALL_TEN_RENDERED_STEMS_VERIFIED_UNFIXED_EXTERNAL_BODY_CHANGED",
+  "app_injection": false,
+  "performance_accepted": false,
+  "variants": {
+    "fixed": {
+      "status": "ALL_TEN_SAMPLED_STEMS_VERIFIED_IN_NORMAL_SCROLL_FRAMES",
+      "error": null,
+      "raw_artifacts": "artifacts/clean/interviewapp_response_log_full_stringify/fixed/render-projection/7241b363fb0348e98bdf914f5683918a",
+      "receipt_sha256": "bcde70753f24e2222783ad92403f7ac3c9357fe3ed1aba880f29352e59ab2918",
+      "signed_sha256": "e304703dd5d1238f4bb033ed5471b7334876fea43cb9b77c75626bd9e2f6fa2a",
+      "projection": {
+        "question_ids": [
+          "41292",
+          "41293",
+          "41294",
+          "41296",
+          "41306",
+          "41297",
+          "41300",
+          "41299",
+          "41301",
+          "41298"
+        ],
+        "rendered_stems_verified": 10,
+        "full_business_payload_verified": false
+      },
+      "backend_bracket": {
+        "sha256": "7ba64c56ded1d110cf0bc95538f9e1941f2895689fe734d0ea5a31fa3cb68b40",
+        "response_bytes": 4397,
+        "question_ids": [
+          "41292",
+          "41293",
+          "41294",
+          "41296",
+          "41306",
+          "41297",
+          "41300",
+          "41299",
+          "41301",
+          "41298"
+        ],
+        "method": "independent external backend snapshots, not app-body hashing"
+      },
+      "retained_frames": 4
+    },
+    "unfixed": {
+      "status": "ALL_TEN_NORMAL_RENDERED_STEMS_VERIFIED_BACKEND_FULL_BODY_BRACKET_FAILED",
+      "raw_artifacts": "artifacts/clean/interviewapp_response_log_full_stringify/unfixed/render-projection/95f1e2153f684528853dd417d2043b2b",
+      "receipt_sha256": "fdfd8e5ad570832ca6b9a37d902b31d2987bd1db76d45bba73224eb3c6fd4fe8",
+      "projection": {
+        "question_ids": [
+          "41292",
+          "41293",
+          "41294",
+          "41296",
+          "41306",
+          "41297",
+          "41300",
+          "41299",
+          "41301",
+          "41298"
+        ],
+        "rendered_stems_verified": 10,
+        "full_business_payload_verified": false
+      },
+      "retained_frames": 4,
+      "sampled_body_before_sha256": "095a02b8f995d44aaec1031960725729ce2be1b0823fc0c744552af1e7ac1cdc",
+      "sampled_body_after_sha256": "2e747e2a8ffd669b4443e151ff57f65cd7411977a50e78c044183031ab6e180e",
+      "changed_fields": [
+        {
+          "id": "41294",
+          "field": "views",
+          "before": 8180,
+          "after": 8181
+        },
+        {
+          "id": "41296",
+          "field": "views",
+          "before": 4318,
+          "after": 4319
+        },
+        {
+          "id": "41306",
+          "field": "views",
+          "before": 3208,
+          "after": 3209
+        },
+        {
+          "id": "41297",
+          "field": "views",
+          "before": 2529,
+          "after": 2530
+        },
+        {
+          "id": "41300",
+          "field": "views",
+          "before": 1654,
+          "after": 1655
+        },
+        {
+          "id": "41299",
+          "field": "views",
+          "before": 2212,
+          "after": 2213
+        }
+      ],
+      "full_body_bracket_verified": false
+    }
+  },
+  "note": "Read-only completion of retained original UI frames; no UI rerun. Full-body equality failure retained; no performance acceptance. Only views fields changed; cause not established."
+}

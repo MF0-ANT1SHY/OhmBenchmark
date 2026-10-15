@@ -1,6 +1,6 @@
 {
   "status": "NEGATIVE_CASES_AT_AUDIT_EXCLUDED",
-  "negative_cases": 13,
+  "negative_cases": 14,
   "pending_and_partial_evidence_excluded": true,
   "full_readonly_raw_validation_required": true,
   "cases": [
@@ -28,6 +28,11 @@
       "case": "cloudmusic_songcard_artists_concat",
       "export_rejected": true,
       "source_status": "measured_clean_failed"
+    },
+    {
+      "case": "interviewapp_response_log_full_stringify",
+      "export_rejected": true,
+      "source_status": "negative_screen_failed"
     },
     {
       "case": "interviewapp_search_history_sync_flush",
