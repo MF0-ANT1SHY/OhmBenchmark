@@ -6,7 +6,7 @@
   "source_and_signed_artifact_proof": "validation/all-clean-signed-integrity.json",
   "primary_passed": 11,
   "valid_primary_measurement_failed": 7,
-  "pending_primary_measurement": 12,
+  "pending_primary_measurement": 11,
   "native_heap_collector_calibration_only_proof": "validation/nativeheap-device-clock-calibration.json",
   "supplementary_cold_cache_not_counted": "validation/wan-home-cold-cache-pss-supplement.json",
   "rows": [
@@ -36,30 +36,43 @@
       "primary_measurement_status": "pending_clean_measurement",
       "metric": "hiperf_instructions",
       "app_injection": false,
-      "blockers": [
-        "device_networking",
-        "complete_normal_workload_and_three_paired_measurements"
-      ],
       "proof": [
-        "validation/device-offline-network-diagnosis.json"
+        "validation/cityu-wlan-connectivity.json"
       ],
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "remaining_requirements": [
+        "complete_normal_workload_and_three_paired_measurements"
+      ]
     },
     {
       "case": "cloudmusic_indexof_in_render",
       "primary_measurement_status": "measured_clean_failed",
       "metric": "hiperf_instructions",
       "app_injection": false,
-      "next_requirement": "A faithful normal workload or authorized defect redesign that meets the original criterion; thresholds and input payloads are not silently changed.",
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "disposition": {
+        "status": "skipped_by_user",
+        "reason": "Confirmed negative clean performance case; user instructed to skip negative cases on 2026-10-14.",
+        "performance_passed": false,
+        "original_evidence_preserved": true
+      },
+      "next_requirement": "None: user-directed negative skip; keep original evidence and do not relabel as passed.",
+      "full_performance_run_completed": true
     },
     {
       "case": "cloudmusic_local_song_memory_filter",
       "primary_measurement_status": "measured_clean_failed",
       "metric": "hiperf_instructions",
       "app_injection": false,
-      "next_requirement": "A faithful normal workload or authorized defect redesign that meets the original criterion; thresholds and input payloads are not silently changed.",
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "disposition": {
+        "status": "skipped_by_user",
+        "reason": "Confirmed negative clean performance case; user instructed to skip negative cases on 2026-10-14.",
+        "performance_passed": false,
+        "original_evidence_preserved": true
+      },
+      "next_requirement": "None: user-directed negative skip; keep original evidence and do not relabel as passed.",
+      "full_performance_run_completed": true
     },
     {
       "case": "cloudmusic_play_time_high_frequency_update",
@@ -73,58 +86,78 @@
       "primary_measurement_status": "measured_clean_failed",
       "metric": "hiperf_instructions",
       "app_injection": false,
-      "next_requirement": "A faithful normal workload or authorized defect redesign that meets the original criterion; thresholds and input payloads are not silently changed.",
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "disposition": {
+        "status": "skipped_by_user",
+        "reason": "Confirmed negative clean performance case; user instructed to skip negative cases on 2026-10-14.",
+        "performance_passed": false,
+        "original_evidence_preserved": true
+      },
+      "next_requirement": "None: user-directed negative skip; keep original evidence and do not relabel as passed.",
+      "full_performance_run_completed": true
     },
     {
       "case": "cloudmusic_songcard_artists_concat",
       "primary_measurement_status": "measured_clean_failed",
       "metric": "hiperf_instructions",
       "app_injection": false,
-      "next_requirement": "A faithful normal workload or authorized defect redesign that meets the original criterion; thresholds and input payloads are not silently changed.",
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "disposition": {
+        "status": "skipped_by_user",
+        "reason": "Confirmed negative clean performance case; user instructed to skip negative cases on 2026-10-14.",
+        "performance_passed": false,
+        "original_evidence_preserved": true
+      },
+      "next_requirement": "None: user-directed negative skip; keep original evidence and do not relabel as passed.",
+      "full_performance_run_completed": true
     },
     {
       "case": "interviewapp_response_log_full_stringify",
       "primary_measurement_status": "pending_clean_measurement",
       "metric": "hiperf_instructions",
       "app_injection": false,
-      "blockers": [
-        "device_networking",
-        "complete_normal_workload_and_three_paired_measurements"
-      ],
       "proof": [
-        "validation/device-offline-network-diagnosis.json"
+        "validation/cityu-wlan-connectivity.json",
+        "validation/interview-response-normal-refresh-ui.json"
       ],
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "remaining_requirements": [
+        "comparable_normal_backend_inputs",
+        "native_paired_instruction_measurements_under_unchanged_criterion"
+      ],
+      "normal_workload_validation": "five_successful_first_page_refreshes_per_variant"
     },
     {
       "case": "interviewapp_search_history_sync_flush",
       "primary_measurement_status": "pending_clean_measurement",
       "metric": "hiperf_instructions",
       "app_injection": false,
-      "blockers": [
-        "device_networking",
-        "complete_normal_workload_and_three_paired_measurements"
-      ],
       "proof": [
-        "validation/device-offline-network-diagnosis.json"
+        "validation/cityu-wlan-connectivity.json"
       ],
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "remaining_requirements": [
+        "complete_normal_workload_and_three_paired_measurements"
+      ]
     },
     {
       "case": "interviewapp_search_history_unbounded",
-      "primary_measurement_status": "pending_clean_measurement",
+      "primary_measurement_status": "negative_screen_failed",
       "metric": "app_pss_bytes",
       "app_injection": false,
-      "blockers": [
-        "device_networking",
-        "complete_normal_workload_and_three_paired_measurements"
-      ],
+      "recorded_primary_pass": false,
+      "disposition": {
+        "status": "skipped_by_user",
+        "reason": "A verified mandatory pair fails the unchanged 1.2x criterion; user instructed to skip negative cases.",
+        "performance_passed": false,
+        "original_evidence_preserved": true,
+        "full_three_pair_run_completed": false
+      },
+      "next_requirement": "None: user-directed negative skip; keep original evidence and do not relabel as passed.",
+      "full_performance_run_completed": false,
       "proof": [
-        "validation/device-offline-network-diagnosis.json"
-      ],
-      "recorded_primary_pass": false
+        "validation/interview-history-clean-pss-negative-screen.json"
+      ]
     },
     {
       "case": "jingmo_dataset_import_no_transaction",
@@ -152,13 +185,14 @@
       "primary_measurement_status": "pending_clean_measurement",
       "metric": "hiperf_instructions",
       "app_injection": false,
-      "blockers": [
-        "normal_same_process_MainPage_reconstruction_not_proven"
-      ],
       "proof": [
-        "validation/sepweather-clean-routing-premise.json"
+        "validation/sepweather-clean-routing-premise.json",
+        "validation/cityu-wlan-connectivity.json"
       ],
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "remaining_requirements": [
+        "normal_same_process_MainPage_reconstruction_not_proven"
+      ]
     },
     {
       "case": "sheafreader_article_list_foreach",
@@ -186,102 +220,124 @@
       "primary_measurement_status": "measured_clean_failed",
       "metric": "trace_cpu_ms",
       "app_injection": false,
-      "next_requirement": "A faithful normal workload or authorized defect redesign that meets the original criterion; thresholds and input payloads are not silently changed.",
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "disposition": {
+        "status": "skipped_by_user",
+        "reason": "Confirmed negative clean performance case; user instructed to skip negative cases on 2026-10-14.",
+        "performance_passed": false,
+        "original_evidence_preserved": true
+      },
+      "next_requirement": "None: user-directed negative skip; keep original evidence and do not relabel as passed.",
+      "full_performance_run_completed": true
     },
     {
       "case": "sheafreader_unread_counts_n_plus_1",
       "primary_measurement_status": "measured_clean_failed",
       "metric": "hiperf_instructions",
       "app_injection": false,
-      "next_requirement": "A faithful normal workload or authorized defect redesign that meets the original criterion; thresholds and input payloads are not silently changed.",
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "disposition": {
+        "status": "skipped_by_user",
+        "reason": "Confirmed negative clean performance case; user instructed to skip negative cases on 2026-10-14.",
+        "performance_passed": false,
+        "original_evidence_preserved": true
+      },
+      "next_requirement": "None: user-directed negative skip; keep original evidence and do not relabel as passed.",
+      "full_performance_run_completed": true
     },
     {
       "case": "wanharmony_history_log_materialization",
       "primary_measurement_status": "pending_clean_measurement",
       "metric": "trace_cpu_ms",
       "app_injection": false,
-      "blockers": [
-        "device_networking",
-        "complete_normal_workload_and_three_paired_measurements"
-      ],
       "proof": [
-        "validation/device-offline-network-diagnosis.json"
+        "validation/cityu-wlan-connectivity.json",
+        "validation/wan-public-dns-restoration.json"
       ],
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "remaining_requirements": [
+        "complete_normal_workload_and_three_paired_measurements"
+      ]
     },
     {
       "case": "wanharmony_html_decode_per_render",
       "primary_measurement_status": "pending_clean_measurement",
       "metric": "hiperf_instructions",
       "app_injection": false,
-      "blockers": [
-        "device_networking",
-        "complete_normal_workload_and_three_paired_measurements"
-      ],
       "proof": [
-        "validation/device-offline-network-diagnosis.json"
+        "validation/cityu-wlan-connectivity.json",
+        "validation/wan-public-dns-restoration.json"
       ],
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "remaining_requirements": [
+        "complete_normal_workload_and_three_paired_measurements"
+      ]
     },
     {
       "case": "wanharmony_persisted_home_list_growth",
       "primary_measurement_status": "pending_clean_measurement",
       "metric": "app_pss_bytes",
       "app_injection": false,
-      "blockers": [
-        "device_networking",
-        "complete_normal_workload_and_three_paired_measurements"
-      ],
       "proof": [
-        "validation/device-offline-network-diagnosis.json"
+        "validation/cityu-wlan-connectivity.json",
+        "validation/wan-public-dns-restoration.json"
       ],
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "remaining_requirements": [
+        "original_post_scroll_PSS_oracle",
+        "ten_new_pages_with_native_persistence_write_volume_evidence",
+        "unchanged_paired_measurement_criterion"
+      ],
+      "supplement_only": "validation/wan-home-cold-cache-pss-supplement.json"
     },
     {
       "case": "wanharmony_web_progress_log_storm",
       "primary_measurement_status": "pending_clean_measurement",
       "metric": "hiperf_instructions",
       "app_injection": false,
-      "blockers": [
-        "device_networking",
-        "complete_normal_workload_and_three_paired_measurements"
-      ],
       "proof": [
-        "validation/device-offline-network-diagnosis.json"
+        "validation/cityu-wlan-connectivity.json",
+        "validation/wan-public-dns-restoration.json"
       ],
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "remaining_requirements": [
+        "complete_normal_workload_and_three_paired_measurements"
+      ]
     },
     {
       "case": "weatherassistant_http_session_leak",
       "primary_measurement_status": "pending_clean_measurement",
       "metric": "nativehook_retained_bytes",
       "app_injection": false,
-      "blockers": [
-        "device_networking",
-        "valid_weather_api_configuration"
-      ],
       "proof": [
         "validation/weather-normal-forecast-ui-failure.json",
-        "validation/weather-public-endpoint-schema.json"
+        "validation/weather-public-endpoint-schema.json",
+        "validation/cityu-wlan-connectivity.json"
       ],
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "remaining_requirements": [
+        "valid_weather_api_configuration",
+        "real_successful_forecast_completion",
+        "normal_workload_and_paired_measurements",
+        "business_window_native_heap_and_fd_socket_mechanism_evidence"
+      ]
     },
     {
       "case": "weatherassistant_remote_weather_icons",
       "primary_measurement_status": "pending_clean_measurement",
       "metric": "hiperf_instructions",
       "app_injection": false,
-      "blockers": [
-        "device_networking",
-        "valid_weather_api_configuration"
-      ],
       "proof": [
         "validation/weather-normal-forecast-ui-failure.json",
-        "validation/weather-public-endpoint-schema.json"
+        "validation/weather-public-endpoint-schema.json",
+        "validation/cityu-wlan-connectivity.json"
       ],
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "remaining_requirements": [
+        "valid_weather_api_configuration",
+        "real_successful_forecast_completion",
+        "normal_workload_and_paired_measurements"
+      ]
     },
     {
       "case": "ytmusic_current_playing_timeupdate",
@@ -295,22 +351,34 @@
       "primary_measurement_status": "measured_clean_failed",
       "metric": "hiperf_instructions",
       "app_injection": false,
-      "next_requirement": "A faithful normal workload or authorized defect redesign that meets the original criterion; thresholds and input payloads are not silently changed.",
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "disposition": {
+        "status": "skipped_by_user",
+        "reason": "Confirmed negative clean performance case; user instructed to skip negative cases on 2026-10-14.",
+        "performance_passed": false,
+        "original_evidence_preserved": true
+      },
+      "next_requirement": "None: user-directed negative skip; keep original evidence and do not relabel as passed.",
+      "full_performance_run_completed": true
     },
     {
       "case": "ytmusic_search_no_debounce",
       "primary_measurement_status": "pending_clean_measurement",
       "metric": "hiperf_instructions",
       "app_injection": false,
-      "blockers": [
-        "device_networking",
-        "complete_normal_workload_and_three_paired_measurements"
-      ],
       "proof": [
-        "validation/device-offline-network-diagnosis.json"
+        "validation/cityu-wlan-connectivity.json"
       ],
-      "recorded_primary_pass": false
+      "recorded_primary_pass": false,
+      "remaining_requirements": [
+        "native_key_delivery_spacing",
+        "successful_normal_search_request_count",
+        "comparable_inputs_and_paired_instruction_measurements"
+      ]
     }
-  ]
+  ],
+  "negative_screen_failed": 1,
+  "skipped_by_user": 8,
+  "renewed_signature_proof": "validation/pending-clean-signature-renewal.json",
+  "inventory_note": "Per-case case.json evidence and user dispositions are authoritative. Full negative runs and mandatory-first-pair negative screens are separate; neither is a pass. Pending requirements are not claims of a current device outage."
 }
