@@ -1,0 +1,28 @@
+{
+  "case": "interviewapp_search_history_sync_flush",
+  "status": "FIRST_CPU_PAIR_INVALID_FIXED_RETURNED_TO_LOGIN",
+  "performance_accepted": false,
+  "negative_verdict": false,
+  "app_injection": false,
+  "unfixed": {
+    "status": "CAPTURED",
+    "native_keywords": 20,
+    "instructions": 3063963642,
+    "samples": 6089
+  },
+  "fixed": {
+    "status": "FAIL",
+    "error": "UI target not found: {'hint': '\u8bf7\u8f93\u5165\u5173\u952e\u8bcd', 'match': 'exact'}",
+    "post_failure_pid": 55960,
+    "post_failure_persisted_keywords": 11,
+    "post_failure_login_page_observed": true,
+    "exact_logout_cause_proven": false
+  },
+  "original_capture_sha256": {
+    "unfixed": "1d1c20344537ea1c0363156c4c34d2b32b494fd5076c10545b55cd1e31c5a4ce",
+    "fixed": "bf072543886c4607b2952f574988e91b319f7c52a49cf7632badf0e7a490ea6f"
+  },
+  "post_failure_state_sha256": "8ce4e43678b2e594ef211d312e6fb9e3fc7ca33aa49208fba7b63a61d1e48d10",
+  "no_original_trial_rewritten": true,
+  "next_requirement": "Establish a fresh normal UI login before each variant and verify the session survives all twenty original submissions; preserve this failed trial before any retry. Do not treat interrupted business flow as a performance negative."
+}

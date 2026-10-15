@@ -144,7 +144,9 @@
       "recorded_primary_pass": false,
       "remaining_requirements": [
         "complete_normal_workload_and_three_paired_measurements"
-      ]
+      ],
+      "latest_diagnostic": "validation/interview-sync-flush-first-native-cpu-pair.json",
+      "next_requirement": "Establish a fresh normal UI login before each variant and verify the session survives all twenty original submissions; preserve this failed trial before any retry. Do not treat interrupted business flow as a performance negative."
     },
     {
       "case": "interviewapp_search_history_unbounded",

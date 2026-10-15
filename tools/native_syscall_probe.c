@@ -1,0 +1,115 @@
+/* Private evaluator capability calibration. Traces ONLY its own child, never
+ * an app. No injected code, modified registers, or tracee memory access.
+ * Successful calibration is NOT app-write evidence or app-attach permission.
+ */
+#define _GNU_SOURCE
+#include <errno.h>
+#include <fcntl.h>
+#include <inttypes.h>
+#include <linux/ptrace.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/prctl.h>
+#include <sys/ptrace.h>
+#include <sys/syscall.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+static volatile sig_atomic_t child_pid;
+static void timeout_handler(int sig)
+{
+    (void)sig;
+    if (child_pid > 0) kill((pid_t)child_pid, SIGKILL);
+    _exit(124);
+}
+
+int main(void)
+{
+    int gate[2], status = 0, failed = 0;
+    char path[128];
+    snprintf(path, sizeof(path), "/data/local/tmp/ohm-syscall-calibration-%ld", (long)getpid());
+    if (pipe(gate)) return 2;
+    signal(SIGALRM, timeout_handler);
+    signal(SIGTERM, timeout_handler);
+    signal(SIGINT, timeout_handler);
+    alarm(15);
+    pid_t owner = getpid(), child = fork();
+    if (child < 0) return 3;
+    if (child == 0) {
+        /* Own-child lifetime protection, including the fork/prctl race. */
+        prctl(PR_SET_PDEATHSIG, SIGKILL);
+        if (getppid() != owner) _exit(90);
+        close(gate[1]);
+        char token;
+        if (read(gate[0], &token, 1) != 1) _exit(91);
+        close(gate[0]);
+        int fd = open(path, O_WRONLY | O_CREAT | O_EXCL, 0600);
+        if (fd < 0) _exit(92);
+        const char bytes[] = "native-write-calibration";
+        if (write(fd, bytes, sizeof(bytes)-1) != (ssize_t)(sizeof(bytes)-1)) _exit(93);
+        if (pwrite(fd, "1234567", 7, sizeof(bytes)-1) != 7) _exit(94);
+        close(fd);
+        _exit(0);
+    }
+    child_pid = child;
+    close(gate[0]);
+    errno = 0;
+    long seized = ptrace(PTRACE_SEIZE, child, 0, (void *)(long)PTRACE_O_TRACESYSGOOD);
+    printf("{\"kind\":\"seize_own_child\",\"result\":%ld,\"errno\":%d}\n", seized, errno);
+    fflush(stdout);
+    if (seized || ptrace(PTRACE_INTERRUPT, child, 0, 0) || waitpid(child, &status, 0) != child || !WIFSTOPPED(status)) {
+        failed = 1;
+        goto cleanup;
+    }
+    if (write(gate[1], "x", 1) != 1) { failed = 1; goto cleanup; }
+    close(gate[1]);
+    gate[1] = -1;
+    uint64_t number = 0;
+    int selected = 0, writes = 0;
+    int64_t total = 0;
+    while (1) {
+        if (ptrace(PTRACE_SYSCALL, child, 0, 0)) { failed = 1; break; }
+        if (waitpid(child, &status, 0) != child) { failed = 1; break; }
+        if (WIFEXITED(status)) { failed |= WEXITSTATUS(status) != 0; child_pid = 0; break; }
+        if (!WIFSTOPPED(status) || WSTOPSIG(status) != (SIGTRAP | 0x80)) { failed = 1; break; }
+        struct ptrace_syscall_info info;
+        memset(&info, 0, sizeof(info));
+        long size = ptrace(PTRACE_GET_SYSCALL_INFO, child, sizeof(info), &info);
+        if (size < 0) {
+            printf("{\"kind\":\"syscall_info_failure\",\"errno\":%d}\n", errno);
+            failed = 1;
+            break;
+        }
+        if (info.op == PTRACE_SYSCALL_INFO_ENTRY) {
+            number = info.entry.nr;
+            selected = 0;
+            if (number == SYS_write || number == SYS_pwrite64) {
+                char fdpath[128], resolved[256];
+                snprintf(fdpath, sizeof(fdpath), "/proc/%ld/fd/%" PRIu64, (long)child, (uint64_t)info.entry.args[0]);
+                ssize_t n = readlink(fdpath, resolved, sizeof(resolved)-1);
+                if (n >= 0) { resolved[n] = 0; selected = !strcmp(path, resolved); }
+            }
+        } else if (info.op == PTRACE_SYSCALL_INFO_EXIT && selected) {
+            printf("{\"kind\":\"native_write_exit\",\"syscall\":%" PRIu64 ",\"returned_bytes\":%" PRId64 ",\"is_error\":%u}\n",
+                   number, (int64_t)info.exit.rval, info.exit.is_error);
+            if (info.exit.is_error || info.exit.rval <= 0) failed = 1;
+            else { total += info.exit.rval; writes++; }
+            selected = 0;
+        }
+    }
+    failed |= writes != 2 || total != 31;
+    printf("{\"kind\":\"calibration\",\"writes\":%d,\"returned_bytes\":%" PRId64 ",\"expected_bytes\":31,\"passed\":%s,\"app_traced\":false}\n",
+           writes, total, failed ? "false" : "true");
+cleanup:
+    if (child_pid > 0) {
+        kill(child, SIGKILL);
+        while (waitpid(child, &status, 0) < 0 && errno == EINTR) {}
+        child_pid = 0;
+    }
+    if (gate[1] >= 0) close(gate[1]);
+    unlink(path);
+    alarm(0);
+    return failed ? 1 : 0;
+}
