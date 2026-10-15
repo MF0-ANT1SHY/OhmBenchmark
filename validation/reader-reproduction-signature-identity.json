@@ -39,5 +39,11 @@
     },
     "allowed_acls": [],
     "status": "PASS"
+  },
+  "export_integration": "implemented_but_blocked_until_matching_fresh_launch",
+  "unlaunched_actual_renewal_export_rejected": true,
+  "regression_tests": {
+    "count": 226,
+    "status": "PASS"
   }
 }

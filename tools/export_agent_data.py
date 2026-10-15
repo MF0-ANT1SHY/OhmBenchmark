@@ -16,7 +16,8 @@ from clean_sources import app_ref
 from remote_device import Remote
 from scheduler_cpu import compute, window_from_markers
 from system_pss import verify_window
-from hap_profile_validity import verify_installable_profile
+from hap_profile_validity import verify_installable_profile, ExpiredProfileError
+from reproduction_hap_identity import verify_identity
 from accept_cpu_evidence import accept as validate_cpu
 from accept_trace_evidence import accept as validate_trace
 from accept_pss_evidence import accept as validate_pss
@@ -180,6 +181,36 @@ def app_memory_report(capture, bundle):
             'method': 'App-only kernel process PSS snapshots; times are relative to the first observation.'}
 
 
+def installable_reproduction(cid, measured, unsigned, bundle):
+    tool = ROOT/'toolchain/command-line-tools/sdk/default/openharmony/toolchains/lib/hap-sign-tool.jar'
+    try:
+        verify_installable_profile(measured,bundle,tool)
+        return measured
+    except ExpiredProfileError:
+        pass
+    # Never overwrite the measured HAP/sign receipt to make an old profile
+    # installable. A separate package must preserve all business/package bytes
+    # and provisioning identity, and have its own matching fresh launch proof.
+    folder = ROOT/'artifacts/reproduction-signatures'/cid/'unfixed'
+    if not all((folder/name).is_file() for name in ('app-export.hap','sign.json','smoke.json')):
+        raise ValueError('expired measured HAP requires an independently verified reproduction signature and fresh launch')
+    renewed = folder/'app-export.hap'
+    signature = json.loads((folder/'sign.json').read_text())
+    smoke = json.loads((folder/'smoke.json').read_text())
+    digest = hashlib.sha256(renewed.read_bytes()).hexdigest()
+    if (signature.get('status') != 'PASS' or not signature.get('audit',{}).get('passed') or
+            signature['audit']['sha256'] != digest or
+            signature.get('unsigned_sha256') != hashlib.sha256(unsigned.read_bytes()).hexdigest() or
+            smoke.get('status') != 'PASS' or smoke.get('signed_sha256') != digest or
+            smoke.get('foreground_bundle') != bundle or not smoke.get('pids') or
+            any(type(pid) is not int or pid <= 0 for pid in smoke['pids'])):
+        raise ValueError('renewed reproduction package lacks matching signature/build and fresh launch evidence')
+    identity = verify_identity(unsigned,measured,renewed,bundle,tool)
+    if identity['renewed_signed_sha256'] != digest:
+        raise ValueError('reproduction identity changed during export verification')
+    return renewed
+
+
 def export(cid, destination, symptom, round_number, remote_name='cityuPC', include_source=False):
     case = json.loads((ROOT/'cases'/cid/'case.json').read_text())
     require_accepted_case(cid, case, round_number)
@@ -205,8 +236,7 @@ def export(cid, destination, symptom, round_number, remote_name='cityuPC', inclu
         Remote(remote_name).download(sign['signed_hap'], hap)
     if hashlib.sha256(hap.read_bytes()).hexdigest() != sign['audit']['sha256']:
         raise ValueError('signed package hash mismatch')
-    verify_installable_profile(hap, case['host_app']['bundle_name'],
-        ROOT/'toolchain/command-line-tools/sdk/default/openharmony/toolchains/lib/hap-sign-tool.jar')
+    hap = installable_reproduction(cid,hap,unsigned,case['host_app']['bundle_name'])
     if hashlib.sha256(plan.read_bytes()).hexdigest() != capture['plan_sha256']:
         raise ValueError('workload changed since capture')
     repo = ROOT/case['host_app']['local_path']

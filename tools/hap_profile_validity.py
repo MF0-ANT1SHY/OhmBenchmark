@@ -7,6 +7,10 @@ import time
 from pathlib import Path
 
 
+class ExpiredProfileError(ValueError):
+    """A historically valid signed package is no longer installable now."""
+
+
 def verify_profile(profile, bundle, now=None):
     now = time.time() if now is None else now
     if (not isinstance(profile, dict) or not isinstance(profile.get('validity'), dict)
@@ -23,7 +27,7 @@ def verify_profile(profile, bundle, now=None):
     if now < before:
         raise ValueError('signed app profile is not yet valid')
     if now >= after:
-        raise ValueError('signed app profile is expired; refusing an uninstallable export')
+        raise ExpiredProfileError('signed app profile is expired; refusing an uninstallable export')
     return {'bundle': bundle, 'not_before': before, 'not_after': after,
             'checked_at': now}
 
