@@ -1,0 +1,24 @@
+{
+  "case": "interviewapp_search_history_sync_flush",
+  "status": "VERIFIED_MANDATORY_FIRST_PAIR_NEGATIVE_USER_SKIPPED",
+  "app_injection": false,
+  "performance_accepted": false,
+  "full_three_pair_run_completed": false,
+  "native_callback_or_individual_flush_count_claimed": false,
+  "samples": {
+    "unfixed": [
+      4137642395
+    ],
+    "fixed": [
+      4116119424
+    ]
+  },
+  "paired_ratios": [
+    1.0052289471667186
+  ],
+  "source": "full native app-attributed CPU reports and exact persisted twenty-query states",
+  "raw_capture_sha256": {
+    "unfixed": "4d2d11d4f1e27f393a2579ad2d81b092d0ddcf550661267199ff83e4b16ee815",
+    "fixed": "39a5ba7c6abb2c26da2e63dfd80bb60d2dcf9684d866dd21c72bedc7ca8b8e1a"
+  }
+}

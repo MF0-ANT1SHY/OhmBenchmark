@@ -1,6 +1,6 @@
 {
   "status": "NEGATIVE_CASES_AT_AUDIT_EXCLUDED",
-  "negative_cases": 10,
+  "negative_cases": 11,
   "pending_and_partial_evidence_excluded": true,
   "full_readonly_raw_validation_required": true,
   "cases": [
@@ -30,6 +30,11 @@
       "source_status": "measured_clean_failed"
     },
     {
+      "case": "interviewapp_search_history_sync_flush",
+      "export_rejected": true,
+      "source_status": "negative_screen_failed"
+    },
+    {
       "case": "interviewapp_search_history_unbounded",
       "export_rejected": true,
       "source_status": "negative_screen_failed"
@@ -54,15 +59,5 @@
       "export_rejected": true,
       "source_status": "measured_clean_failed"
     }
-  ],
-  "performance_results_changed": false,
-  "audited_at_utc": "2026-10-15T04:45:26.731012+00:00",
-  "regression_tests": {
-    "count": 207,
-    "status": "PASS"
-  },
-  "positive_raw_gate_smoke": [
-    "browser_eager_history_load",
-    "sheafreader_extract_tag_tolowercase"
   ]
 }
