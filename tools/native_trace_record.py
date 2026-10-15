@@ -10,6 +10,7 @@ from rss_refresh_progress import read_state, complete_refresh, REFRESH_BUTTON
 
 TRACE_ROOT = '/sys/kernel/tracing'
 BUNDLE = 'com.sheafreader.hm'
+BUFFER_KB = 131072
 
 
 def cpu_set(raw):
@@ -44,10 +45,14 @@ def process(shell, bundle=BUNDLE):
 def bracket_cpus(shell, cpus):
     # Observer-only affinity changes happen outside the measured markers. They
     # ensure a sched transition before/after the window even on idle CPUs.
-    for cpu in cpus:
-        result = shell(f"taskset {1 << cpu:x} /system/bin/sh -c 'echo READY'").strip()
-        if result != 'READY':
-            raise ValueError('native observer affinity failed: ' + result)
+    if not cpus or any(type(cpu) is not int or not 0 <= cpu <= 255 for cpu in cpus):
+        raise ValueError('invalid observer CPU set')
+    # One transport round trip: serial HDC calls needlessly kept recording
+    # after the end marker, consuming retention needed for the complete window.
+    command = ' && '.join(f"taskset {1 << cpu:x} /system/bin/sh -c 'echo READY_{cpu}'" for cpu in cpus)
+    result = shell(command).strip().splitlines()
+    if result != [f'READY_{cpu}' for cpu in cpus]:
+        raise ValueError('native observer affinity failed: ' + repr(result))
 
 
 def record(ui, plan, folder, observer=None):
@@ -86,7 +91,7 @@ def record(ui, plan, folder, observer=None):
         receipt['buffer_size_kb_before'] = int(original_buffer)
         if shell(f'cat {TRACE_ROOT}/tracing_on').strip() != '0':
             raise ValueError('a native trace began during UI setup; it is not ours')
-        started = shell('hitrace --trace_begin --trace_clock boot -b 65536 sched')
+        started = shell(f'hitrace --trace_begin --trace_clock boot -b {BUFFER_KB} sched')
         receipt['trace_begin_output'] = started
         if 'OpenRecording done' not in started:
             raise ValueError('native trace start was not acknowledged')
@@ -97,6 +102,11 @@ def record(ui, plan, folder, observer=None):
         receipt['clock_before'] = shell(f'cat {TRACE_ROOT}/trace_clock').strip()
         if '[boot]' not in receipt['clock_before']:
             raise ValueError('native trace does not use the required boot clock')
+        recording_buffer = shell(f'cat {TRACE_ROOT}/buffer_size_kb').strip()
+        if not recording_buffer.isdigit() or int(recording_buffer) <= 0:
+            raise ValueError('effective native recording buffer is unavailable')
+        receipt['requested_buffer_size_kb'] = BUFFER_KB
+        receipt['recording_buffer_size_kb'] = int(recording_buffer)
         bracket_cpus(shell, cpus)
         output = shell(f"echo 'W:{token}:begin' > {TRACE_ROOT}/trace_marker")
         if output.strip():

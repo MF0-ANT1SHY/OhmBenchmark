@@ -5,7 +5,7 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from native_trace_record import BUNDLE, cpu_set, record, process
+from native_trace_record import BUNDLE, cpu_set, record, process, bracket_cpus
 
 
 class NativeTraceOwnershipTest(unittest.TestCase):
@@ -40,6 +40,14 @@ class NativeTraceOwnershipTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder, self.assertRaises(ValueError):
             record(ui, {'bundle': BUNDLE}, Path(folder))
         self.assertEqual(ui.calls, ['pidof hiperf'])
+
+    def test_every_native_cpu_is_bracketed_with_one_transport_call(self):
+        calls=[]
+        def shell(command):calls.append(command);return 'READY_0\nREADY_3\n'
+        bracket_cpus(shell,[0,3])
+        self.assertEqual(len(calls),1)
+        self.assertIn('taskset 1 ',calls[0]);self.assertIn('taskset 8 ',calls[0])
+        with self.assertRaises(ValueError):bracket_cpus(lambda command:'READY_0',[0,3])
 
     def test_our_bad_clock_capture_is_stopped_and_failure_retained(self):
         class UI:

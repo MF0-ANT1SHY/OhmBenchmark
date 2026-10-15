@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import uuid
 from pathlib import Path
 
 from reader_data_fixture import prepare, finish
@@ -34,7 +35,7 @@ def capture(remote, case, variant, round_number, fixture):
     digest = hashlib.sha256(plan.read_bytes()).hexdigest()
     output = folder/'trace-captures'/f'round-{round_number}'
     output.mkdir(parents=True, exist_ok=False)
-    base = f'/home/research/ohm-clean/{cid}/{variant}/trace-captures/round-{round_number}'
+    base = f'/home/research/ohm-clean/{cid}/{variant}/trace-captures/round-{round_number}-{uuid.uuid4().hex}'
     bundles = sorted({json.loads(p.read_text())['host_app']['bundle_name']
                       for p in (ROOT/'cases').glob('*/case.json')})
     for bundle in bundles:

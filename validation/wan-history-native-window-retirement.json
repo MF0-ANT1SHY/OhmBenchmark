@@ -1,0 +1,17 @@
+{
+  "case": "wanharmony_history_log_materialization",
+  "status": "NATIVE_TRACE_REJECTED_NOT_A_PERFORMANCE_NEGATIVE",
+  "performance_accepted": false,
+  "classified_as_negative": false,
+  "reason": "Only the end marker survived; the retained trace begins after the required original window start. Full CPU recomputation remains rejected.",
+  "marker_token": "a02b753754f24a1bba2779bb81b94caf",
+  "trace_sha256": "e956ff762bc945cc4cd6eaa3a870ce9d29291ac0cfc96fac641c1eb44657efa4",
+  "capture_sha256": "455363ea81f2bece772be5d558ec2a46cd04b918fb11bdc69c339b538cc2ef22",
+  "window_s": 148.38215161999995,
+  "original_remote_artifacts_preserved": "/home/research/ohm-clean/wanharmony_history_log_materialization/unfixed/trace-captures/round-1",
+  "buffer_restored": true,
+  "new_requested_buffer_kb": 131072,
+  "new_affinity_transport_calls_per_bracket": 1,
+  "measurement_actions_and_thresholds_changed": false,
+  "local_archive": "artifacts/retired-clean/wanharmony_history_log_materialization/unfixed/native-window-missing-begin"
+}
