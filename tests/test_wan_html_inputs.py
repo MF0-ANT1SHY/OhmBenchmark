@@ -87,7 +87,9 @@ class WanHtmlInputsTest(unittest.TestCase):
                             'https://www.wanandroid.com/article/list/1/json?page=1&page_size=10\n'
                             '100.000000002 42 43 I tag/org.example.wan.ohos/network: (200) response: {"curPage":2}')
         backend = {'errorCode': 0, 'data': {'datas': rows[:10]}}
-        self.assertEqual(verify_trial(setup, after, backend, 'unfixed')['final_ids'], list(range(1,21)))
+        result = verify_trial(setup, after, backend, 'unfixed')
+        self.assertEqual(result['final_ids'], list(range(1,21)))
+        self.assertEqual(json.loads(json.dumps(result)), result)
         for kind in ('pid', 'body', 'network', 'render'):
             left, right, api = copy.deepcopy((setup, after, backend))
             if kind == 'pid':

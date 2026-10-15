@@ -59,7 +59,7 @@ def articles(state, *, allow_empty=False):
 def visible(state, rows, variant, last_page=False):
     normalized = transformed(rows) if variant == 'unfixed' else rows
     texts = {n.get('text') for n in UI.nodes(state['layout']) if n.get('bundleName') == BUNDLE}
-    found = [(i, row['id']) for i, row in enumerate(normalized) if row['title'] in texts]
+    found = [[i, row['id']] for i, row in enumerate(normalized) if row['title'] in texts]
     if not found or (last_page and not any(i >= len(rows)-10 for i, _ in found)):
         raise ValueError('actual decoded article titles are not visible on the required page')
     return found
@@ -94,7 +94,7 @@ def verify_pair(unfixed, fixed):
     if transformed(left) != right:
         raise ValueError('paired native article data differ beyond the exact business HTML transform')
     u, f = visible(unfixed, left, 'unfixed', True), visible(fixed, right, 'fixed', True)
-    shared = sorted(set(u)&set(f))
+    shared = [list(item) for item in sorted(set(map(tuple, u))&set(map(tuple, f)))]
     if not any(i >= len(left)-10 for i, _ in shared):
         raise ValueError('paired viewports do not share an actual last-page article')
     return {'articles': len(left), 'same_complete_business_data_after_exact_transform': True,

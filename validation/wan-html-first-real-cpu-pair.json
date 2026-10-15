@@ -1,0 +1,228 @@
+{
+  "case": "wanharmony_html_decode_per_render",
+  "status": "VERIFIED_REAL_HTML_FIRST_PAIR_NEGATIVE_USER_SKIPPED",
+  "app_injection": false,
+  "performance_accepted": false,
+  "full_three_pair_run_completed": false,
+  "samples": {
+    "unfixed": [
+      5224464512
+    ],
+    "fixed": [
+      5026161911
+    ]
+  },
+  "paired_ratios": [
+    1.0394540813669382
+  ],
+  "native_article_progress": {
+    "unfixed": {
+      "initial_ids": [
+        31845,
+        31844,
+        31842,
+        31831,
+        31828,
+        31826,
+        31824,
+        31822,
+        31821,
+        31820
+      ],
+      "final_ids": [
+        31845,
+        31844,
+        31842,
+        31831,
+        31828,
+        31826,
+        31824,
+        31822,
+        31821,
+        31820,
+        31818,
+        31817,
+        31816,
+        31815,
+        31710,
+        31708,
+        31707,
+        31705,
+        31704,
+        31703,
+        31702,
+        31701,
+        31699,
+        31698,
+        31693,
+        31690,
+        31689,
+        31687,
+        31685,
+        31683,
+        31668,
+        31679,
+        31678,
+        31677,
+        31675,
+        31673,
+        31672,
+        31671,
+        31669,
+        31667
+      ],
+      "network": {
+        "requested_pages": [
+          1,
+          2,
+          3
+        ],
+        "response_curpages": [
+          2,
+          3,
+          4
+        ]
+      },
+      "initial_visible": [
+        [
+          0,
+          31845
+        ],
+        [
+          1,
+          31844
+        ]
+      ],
+      "final_visible": [
+        [
+          30,
+          31668
+        ],
+        [
+          31,
+          31679
+        ],
+        [
+          32,
+          31678
+        ],
+        [
+          33,
+          31677
+        ],
+        [
+          34,
+          31675
+        ]
+      ],
+      "performance_accepted": false
+    },
+    "fixed": {
+      "initial_ids": [
+        31845,
+        31844,
+        31842,
+        31831,
+        31828,
+        31826,
+        31824,
+        31822,
+        31821,
+        31820
+      ],
+      "final_ids": [
+        31845,
+        31844,
+        31842,
+        31831,
+        31828,
+        31826,
+        31824,
+        31822,
+        31821,
+        31820,
+        31818,
+        31817,
+        31816,
+        31815,
+        31710,
+        31708,
+        31707,
+        31705,
+        31704,
+        31703,
+        31702,
+        31701,
+        31699,
+        31698,
+        31693,
+        31690,
+        31689,
+        31687,
+        31685,
+        31683,
+        31668,
+        31679,
+        31678,
+        31677,
+        31675,
+        31673,
+        31672,
+        31671,
+        31669,
+        31667
+      ],
+      "network": {
+        "requested_pages": [
+          1,
+          2,
+          3
+        ],
+        "response_curpages": [
+          2,
+          3,
+          4
+        ]
+      },
+      "initial_visible": [
+        [
+          0,
+          31845
+        ],
+        [
+          1,
+          31844
+        ]
+      ],
+      "final_visible": [
+        [
+          30,
+          31668
+        ],
+        [
+          31,
+          31679
+        ],
+        [
+          32,
+          31678
+        ],
+        [
+          33,
+          31677
+        ],
+        [
+          34,
+          31675
+        ]
+      ],
+      "performance_accepted": false
+    }
+  },
+  "raw_capture_sha256": {
+    "unfixed": "f34ad9e445a128b666bd566ea5ca357e83fbc00ba5d9cba9747fa7fa53b7b7c3",
+    "fixed": "26f4b8ed62228c6523176041dfea4cb767f5c6247ab1040e392914a371bb0c17"
+  },
+  "readonly_validation_recovered_without_device_rerun": true,
+  "representation_fix": "JSON-stable visible article index/ID lists; no native artifact or acceptance threshold changed"
+}

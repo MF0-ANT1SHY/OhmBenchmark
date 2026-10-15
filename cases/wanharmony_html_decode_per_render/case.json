@@ -57,8 +57,24 @@
     "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
     "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "pending_clean_measurement",
-      "note": "Legacy instrumented measurements do not validate these business-only builds."
+      "status": "negative_screen_failed",
+      "metric": "hiperf_instructions",
+      "unfixed": [
+        5224464512
+      ],
+      "fixed": [
+        5026161911
+      ],
+      "paired_ratios": [
+        1.0394540813669382
+      ],
+      "median_ratio": 1.0394540813669382,
+      "rounds_per_variant": 1,
+      "required_rounds": 3,
+      "full_performance_run_completed": false,
+      "performance_accepted": false,
+      "legacy_evidence_reused": false,
+      "note": "The complete mandatory first pair fails the unchanged all-pairs >=1.2x criterion. Both variants completed twelve real normal swipes with complete native article inputs equal after the exact business HTML transformation. User-directed early negative skip; no full three-pair run or scroll CPU-per-item mechanism acceptance is claimed."
     },
     "mechanism_oracle": {
       "metric": "scroll_cpu_ms_per_item",
@@ -100,8 +116,8 @@
   },
   "clean_validation": {
     "policy": "no_app_injection",
-    "workload_validation": "pending",
-    "performance_validation": "pending",
+    "workload_validation": "verified",
+    "performance_validation": "negative_screen_failed",
     "variants": {
       "unfixed": {
         "ref": "clean-app/wanharmony_html_decode_per_render/unfixed",
@@ -134,6 +150,155 @@
           },
           "allowed_acls": [],
           "status": "PASS"
+        },
+        "workload": {
+          "case": "wanharmony_html_decode_per_render",
+          "variant": "unfixed",
+          "status": "PASS",
+          "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+          "signed_sha256": "ef7e73073952ff08aa71c74db6a32ace6088b0e51b6e61d09ea80eb032052a8e",
+          "fixture": {
+            "sha256": "8d64e9f18e2ed8df49c2a376747b8c6a71c73b44521bc2fa7cc1c9b5bc07ecdf",
+            "variant": "unfixed",
+            "backend_url": "https://www.wanandroid.com/article/list/0/json?page=0&page_size=10",
+            "backend_raw_sha256": "f69888b52accbf5dcde833ffcb5e4cffafc41186374b628ab015999c0c460bc8",
+            "normal_online_first_page_verified": true,
+            "native_preferences_written_by_evaluator": false,
+            "method": "production loadList replaces its native first-page cache through the ordinary online API",
+            "functional_read_verified": true
+          },
+          "wan_html": {
+            "initial_ids": [
+              31845,
+              31844,
+              31842,
+              31831,
+              31828,
+              31826,
+              31824,
+              31822,
+              31821,
+              31820
+            ],
+            "final_ids": [
+              31845,
+              31844,
+              31842,
+              31831,
+              31828,
+              31826,
+              31824,
+              31822,
+              31821,
+              31820,
+              31818,
+              31817,
+              31816,
+              31815,
+              31710,
+              31708,
+              31707,
+              31705,
+              31704,
+              31703,
+              31702,
+              31701,
+              31699,
+              31698,
+              31693,
+              31690,
+              31689,
+              31687,
+              31685,
+              31683,
+              31668,
+              31679,
+              31678,
+              31677,
+              31675,
+              31673,
+              31672,
+              31671,
+              31669,
+              31667
+            ],
+            "network": {
+              "requested_pages": [
+                1,
+                2,
+                3
+              ],
+              "response_curpages": [
+                2,
+                3,
+                4
+              ]
+            },
+            "initial_visible": [
+              [
+                0,
+                31845
+              ],
+              [
+                1,
+                31844
+              ]
+            ],
+            "final_visible": [
+              [
+                30,
+                31668
+              ],
+              [
+                31,
+                31679
+              ],
+              [
+                32,
+                31678
+              ],
+              [
+                33,
+                31677
+              ],
+              [
+                34,
+                31675
+              ]
+            ],
+            "performance_accepted": false
+          },
+          "performance_verified": false,
+          "source": "normal online input/rendering checks in original first CPU trial"
+        },
+        "performance": {
+          "status": "NEGATIVE_SCREEN_FAILED",
+          "metric": "hiperf_instructions",
+          "rounds": 1,
+          "samples": [
+            5224464512
+          ],
+          "median": 5224464512,
+          "paired_ratios": [
+            1.0394540813669382
+          ],
+          "median_ratio": 1.0394540813669382,
+          "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+          "signed_sha256": "ef7e73073952ff08aa71c74db6a32ace6088b0e51b6e61d09ea80eb032052a8e",
+          "fixture_sha256": "8d64e9f18e2ed8df49c2a376747b8c6a71c73b44521bc2fa7cc1c9b5bc07ecdf",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "d897c7e2d920998177ea1a17a3819c642758aa6ce11fa54b9fbe354198848a0e",
+              "app_samples": 12409,
+              "remote_artifacts": "/home/research/ohm-clean/wanharmony_html_decode_per_render/unfixed/cpu-captures/round-1"
+            }
+          ],
+          "legacy_evidence_reused": false,
+          "required_rounds": 3,
+          "full_performance_run_completed": false,
+          "performance_accepted": false
         }
       },
       "fixed": {
@@ -167,8 +332,164 @@
           },
           "allowed_acls": [],
           "status": "PASS"
+        },
+        "workload": {
+          "case": "wanharmony_html_decode_per_render",
+          "variant": "fixed",
+          "status": "PASS",
+          "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+          "signed_sha256": "6b6717eb71d6a57a81036cccdf69bc6a1ac3c1a268a5154086f84ee48e19a4f8",
+          "fixture": {
+            "sha256": "8d64e9f18e2ed8df49c2a376747b8c6a71c73b44521bc2fa7cc1c9b5bc07ecdf",
+            "variant": "fixed",
+            "backend_url": "https://www.wanandroid.com/article/list/0/json?page=0&page_size=10",
+            "backend_raw_sha256": "f69888b52accbf5dcde833ffcb5e4cffafc41186374b628ab015999c0c460bc8",
+            "normal_online_first_page_verified": true,
+            "native_preferences_written_by_evaluator": false,
+            "method": "production loadList replaces its native first-page cache through the ordinary online API",
+            "functional_read_verified": true
+          },
+          "wan_html": {
+            "initial_ids": [
+              31845,
+              31844,
+              31842,
+              31831,
+              31828,
+              31826,
+              31824,
+              31822,
+              31821,
+              31820
+            ],
+            "final_ids": [
+              31845,
+              31844,
+              31842,
+              31831,
+              31828,
+              31826,
+              31824,
+              31822,
+              31821,
+              31820,
+              31818,
+              31817,
+              31816,
+              31815,
+              31710,
+              31708,
+              31707,
+              31705,
+              31704,
+              31703,
+              31702,
+              31701,
+              31699,
+              31698,
+              31693,
+              31690,
+              31689,
+              31687,
+              31685,
+              31683,
+              31668,
+              31679,
+              31678,
+              31677,
+              31675,
+              31673,
+              31672,
+              31671,
+              31669,
+              31667
+            ],
+            "network": {
+              "requested_pages": [
+                1,
+                2,
+                3
+              ],
+              "response_curpages": [
+                2,
+                3,
+                4
+              ]
+            },
+            "initial_visible": [
+              [
+                0,
+                31845
+              ],
+              [
+                1,
+                31844
+              ]
+            ],
+            "final_visible": [
+              [
+                30,
+                31668
+              ],
+              [
+                31,
+                31679
+              ],
+              [
+                32,
+                31678
+              ],
+              [
+                33,
+                31677
+              ],
+              [
+                34,
+                31675
+              ]
+            ],
+            "performance_accepted": false
+          },
+          "performance_verified": false,
+          "source": "normal online input/rendering checks in original first CPU trial"
+        },
+        "performance": {
+          "status": "NEGATIVE_SCREEN_FAILED",
+          "metric": "hiperf_instructions",
+          "rounds": 1,
+          "samples": [
+            5026161911
+          ],
+          "median": 5026161911,
+          "paired_ratios": [
+            1.0394540813669382
+          ],
+          "median_ratio": 1.0394540813669382,
+          "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+          "signed_sha256": "6b6717eb71d6a57a81036cccdf69bc6a1ac3c1a268a5154086f84ee48e19a4f8",
+          "fixture_sha256": "8d64e9f18e2ed8df49c2a376747b8c6a71c73b44521bc2fa7cc1c9b5bc07ecdf",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "34f8151e3f09e2d74eaeba79bb03fdbafbd493590f3f705e20941f9a4344d4dc",
+              "app_samples": 12419,
+              "remote_artifacts": "/home/research/ohm-clean/wanharmony_html_decode_per_render/fixed/cpu-captures/round-1"
+            }
+          ],
+          "legacy_evidence_reused": false,
+          "required_rounds": 3,
+          "full_performance_run_completed": false,
+          "performance_accepted": false
         }
       }
     }
+  },
+  "disposition": {
+    "status": "skipped_by_user",
+    "reason": "Verified original twelve real normal swipes fail the unchanged 1.2x mandatory first CPU pair; user instructed to skip negative cases.",
+    "performance_passed": false,
+    "original_evidence_preserved": true,
+    "full_three_pair_run_completed": false
   }
 }

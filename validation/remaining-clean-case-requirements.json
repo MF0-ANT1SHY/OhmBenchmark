@@ -6,7 +6,7 @@
   "source_and_signed_artifact_proof": "validation/all-clean-signed-integrity.json",
   "primary_passed": 11,
   "valid_primary_measurement_failed": 7,
-  "pending_primary_measurement": 6,
+  "pending_primary_measurement": 5,
   "native_heap_collector_calibration_only_proof": "validation/nativeheap-device-clock-calibration.json",
   "supplementary_cold_cache_not_counted": "validation/wan-home-cold-cache-pss-supplement.json",
   "rows": [
@@ -281,19 +281,23 @@
     },
     {
       "case": "wanharmony_html_decode_per_render",
-      "primary_measurement_status": "pending_clean_measurement",
+      "primary_measurement_status": "negative_screen_failed",
       "metric": "hiperf_instructions",
       "app_injection": false,
       "proof": [
-        "validation/cityu-wlan-connectivity.json",
-        "validation/wan-public-dns-restoration.json"
+        "validation/wan-html-first-real-cpu-pair.json"
       ],
       "recorded_primary_pass": false,
-      "remaining_requirements": [
-        "complete_normal_workload_and_three_paired_measurements"
-      ],
       "latest_diagnostic": "validation/wan-html-real-input-diagnosis.json",
-      "next_requirement": "Capture the original twelve normal swipes in both variants with actual online first-page/native article input checks and matched decoded business data. Preserve 1.2x primary threshold and separate scroll-CPU-per-rendered-item mechanism gate."
+      "next_requirement": "None: user-directed early negative skip; original complete first-pair native reports, raw API logs, and actual rendered/native article states retained.",
+      "disposition": {
+        "status": "skipped_by_user",
+        "reason": "Verified original twelve real normal swipes fail the unchanged 1.2x mandatory first CPU pair; user instructed to skip negative cases.",
+        "performance_passed": false,
+        "original_evidence_preserved": true,
+        "full_three_pair_run_completed": false
+      },
+      "full_performance_run_completed": false
     },
     {
       "case": "wanharmony_persisted_home_list_growth",
@@ -407,8 +411,8 @@
       ]
     }
   ],
-  "negative_screen_failed": 5,
-  "skipped_by_user": 12,
+  "negative_screen_failed": 6,
+  "skipped_by_user": 13,
   "renewed_signature_proof": "validation/pending-clean-signature-renewal.json",
   "inventory_note": "Per-case case.json evidence and user dispositions are authoritative. Full negative runs and mandatory-first-pair negative screens are separate; neither is a pass. Pending requirements are not claims of a current device outage.",
   "current_reproduction_signature_gate": {
@@ -434,5 +438,5 @@
     "variants_verified": 22
   },
   "primary_criterion_verified_pending_mechanism": 1,
-  "pending_complete_case_validation": 7
+  "pending_complete_case_validation": 6
 }
