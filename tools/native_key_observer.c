@@ -61,8 +61,8 @@ int main(int argc, char **argv)
     int probe = argc == 2 && !strcmp(argv[1], "--probe");
     int32_t duration = 0;
     if (!probe && (argc != 3 || !parse_number(argv[1], INT32_MAX, &selected_window) ||
-                   !parse_number(argv[2], 30, &duration) || duration == 0)) {
-        fprintf(stderr, "usage: native-key-observer --probe | WINDOW_ID SECONDS(1..30)\n");
+                   !parse_number(argv[2], 120, &duration) || duration == 0)) {
+        fprintf(stderr, "usage: native-key-observer --probe | WINDOW_ID SECONDS(1..120)\n");
         return 2;
     }
     signal(SIGTERM, stop_handler);

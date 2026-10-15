@@ -149,6 +149,38 @@ class UI:
         if str(self.find(selector).get('text', '')) != value:
             raise RuntimeError('keyboard input does not match the requested text')
 
+    def submit_queries(self, selector, values, interval_ms=50, between_submits_ms=150):
+        """Replace and submit ordinary search text through native key events.
+
+        One device command avoids layout polling between submissions. Native
+        event delivery, app handling and persistence must be checked separately.
+        """
+        if (not isinstance(values, list) or not 1 <= len(values) <= 100 or
+                any(not isinstance(value, str) or not re.fullmatch(r'[a-z0-9]{1,100}', value)
+                    for value in values) or
+                type(interval_ms) is not int or not 1 <= interval_ms <= 15000 or
+                type(between_submits_ms) is not int or not 0 <= between_submits_ms <= 15000):
+            raise ValueError('invalid native query sequence')
+        node = self.find(selector)
+        x, y = self.center(node)
+        self.shell(f'uitest uiInput click {x} {y}')
+        parts = ['uinput -K']
+        for index, value in enumerate(values):
+            if index and between_submits_ms:
+                parts.append(f'-i {between_submits_ms}')
+            # Ctrl+A, release both keys, then Backspace: ordinary editable-text
+            # replacement, not an app method or a preference-file mutation.
+            parts.append('-d 2072 -d 2017 -u 2017 -u 2072 -d 2055 -u 2055')
+            for character in value:
+                key = 2000 + int(character) if character.isdigit() else 2017 + ord(character)-ord('a')
+                parts.append(f'-i {interval_ms} -d {key} -u {key}')
+            parts.append('-d 2054 -u 2054')
+        output = self.shell(' '.join(parts))
+        if output.count('you raised the key 2054') != len(values):
+            raise RuntimeError('native keyboard did not confirm all submit releases')
+        if str(self.find(selector).get('text', '')) != values[-1]:
+            raise RuntimeError('query sequence final input does not match requested text')
+
     def run(self, actions):
         for action in actions:
             op = action["op"]
@@ -166,6 +198,9 @@ class UI:
                 self.input(action["selector"], action["value"], action.get('cleared_text',''))
             elif op == "type_keys":
                 self.type_keys(action['selector'], action['value'], action.get('interval_ms', 50))
+            elif op == "submit_queries":
+                self.submit_queries(action['selector'], action['values'], action.get('interval_ms', 50),
+                                    action.get('between_submits_ms', 150))
             elif op == "wait":
                 self.find(action["selector"], action.get("timeout_s", 15))
             elif op == "pause":

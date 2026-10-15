@@ -59,3 +59,40 @@ class NativeKeyEventsTest(unittest.TestCase):
         rows=self.rows()
         for row in rows[-3:-1]:row['observer_monotonic_ns']+=1000000000
         self.assertEqual(self.check(rows)['mmi_key_down_spacing_ms'],[50]*9)
+
+class NativeQueryEventsTest(unittest.TestCase):
+    def rows(self):
+        events=[(2072,1),(2017,1),(2017,2),(2072,2),(2055,1),(2055,2),
+                (2017,1),(2017,2),(2000,1),(2000,2),(2054,1),(2054,2),
+                (2072,1),(2017,1),(2017,2),(2072,2),(2055,1),(2055,2),
+                (2018,1),(2018,2),(2001,1),(2001,2),(2054,1),(2054,2)]
+        rows=[dict(kind='registration',result=0,pid=42,window_id=7,probe=False,monotonic_ns=1000000000)]
+        rows.extend(dict(kind='key',window_id=7,key_code=key,action=action,observer_monotonic_ns=1100000000+i*1000000) for i,(key,action) in enumerate(events))
+        rows.append(dict(kind='removal',result=0,monotonic_ns=6000000000))
+        return rows
+
+    def check(self,rows):
+        from native_key_events import verify_queries
+        return verify_queries('\n'.join(json.dumps(row) for row in rows),7,['a0','b1'],42)
+
+    def test_edit_and_submit_sequence_does_not_claim_business_callbacks(self):
+        result=self.check(self.rows());self.assertEqual(result['submitted_queries'],2)
+        self.assertTrue(result['all_submits_within_interval'])
+        self.assertFalse(result['arkui_callback_spacing_verified'])
+        self.assertFalse(result['business_history_updates_verified'])
+
+    def test_missing_modifier_foreign_target_lifetime_or_owner_cannot_pass(self):
+        for kind in ('missing','modifier','window','clock','owner','removal'):
+            rows=self.rows()
+            if kind=='missing':rows.pop(3)
+            if kind=='modifier':rows[1]['key_code']=2017
+            if kind=='window':rows[1]['window_id']=8
+            if kind=='clock':rows[1]['observer_monotonic_ns']=999999999
+            if kind=='owner':rows[0]['pid']=43
+            if kind=='removal':rows[-1]['result']=201
+            with self.subTest(kind=kind),self.assertRaises(ValueError):self.check(rows)
+
+    def test_slow_real_submits_are_reported_not_falsely_called_rapid(self):
+        rows=self.rows()
+        for row in rows[13:-1]:row['observer_monotonic_ns']+=3000000000
+        result=self.check(rows);self.assertFalse(result['all_submits_within_interval'])

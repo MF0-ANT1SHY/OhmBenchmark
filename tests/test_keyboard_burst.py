@@ -29,3 +29,30 @@ class KeyboardBurstTest(unittest.TestCase):
         self.assertEqual(calls,[])
         ui,calls=self.ui(final='musi')
         with self.assertRaisesRegex(RuntimeError,'does not match'):ui.type_keys({},'music')
+
+class QuerySequenceTest(unittest.TestCase):
+    def ui(self, final='question19', releases=20):
+        calls=[]
+        def shell(command):
+            calls.append(command)
+            return 'you raised the key 2054\n'*releases
+        ui=UI(shell,'app.bundle');states=iter([{'text':'old','bounds':'[0,0][10,10]'},{'text':final}]);ui.find=lambda selector:next(states)
+        return ui,calls
+
+    def test_all_submits_use_normal_keys_without_per_query_layout_round_trips(self):
+        ui,calls=self.ui();ui.submit_queries({},['question'+str(i) for i in range(20)])
+        self.assertEqual(len(calls),2)
+        self.assertTrue(calls[1].startswith('uinput -K '))
+        self.assertEqual(calls[1].count('-d 2054 -u 2054'),20)
+        self.assertEqual(calls[1].count('-d 2072 -d 2017 -u 2017 -u 2072 -d 2055 -u 2055'),20)
+
+    def test_missing_submit_and_wrong_final_text_are_not_success(self):
+        for final,releases in [('question18',20),('question19',19)]:
+            ui,calls=self.ui(final,releases)
+            with self.assertRaises(RuntimeError):ui.submit_queries({},['question'+str(i) for i in range(20)])
+
+    def test_invalid_sequence_is_rejected_before_any_input(self):
+        for values,interval,pause in [([],50,150),(['x;reboot'],50,150),(['x'],True,150),(['x'],50,-1)]:
+            ui,calls=self.ui()
+            with self.assertRaises(ValueError):ui.submit_queries({},values,interval,pause)
+            self.assertEqual(calls,[])
