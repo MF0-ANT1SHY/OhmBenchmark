@@ -1,0 +1,91 @@
+{
+  "case": "interviewapp_response_log_full_stringify",
+  "status": "DIAGNOSTIC_ONLY",
+  "app_injection": false,
+  "performance_accepted": false,
+  "variants": {
+    "unfixed": {
+      "status": "NORMAL_REFRESH_DIAGNOSTIC_CAPTURED",
+      "device_error": null,
+      "signed_sha256": "390abd812e915a5285c1329265ff8e8cc12b3c1515515afc8a1ff4aa0b0a8729",
+      "local_raw_artifacts": "artifacts/clean/interviewapp_response_log_full_stringify/unfixed/input-diagnostics/7e5525abece84ec4b6a017f72dc788de/result.json",
+      "receipt_sha256": "a462bfda0aed1c8e4e9a6f345553984ed1ffd71a60acac04c24b71c00f0f5bd3",
+      "checks": {
+        "backend_bracket": {
+          "status": "PASS",
+          "result": {
+            "sha256": "7ba64c56ded1d110cf0bc95538f9e1941f2895689fe734d0ea5a31fa3cb68b40",
+            "response_bytes": 4397,
+            "question_ids": [
+              "41292",
+              "41293",
+              "41294",
+              "41296",
+              "41306",
+              "41297",
+              "41300",
+              "41299",
+              "41301",
+              "41298"
+            ],
+            "method": "independent external backend snapshots, not app-body hashing"
+          }
+        },
+        "native_http_sizes": {
+          "status": "NOT_PROVEN",
+          "error": "exact normal native HTTP completion count is not proven"
+        },
+        "rendered_before": {
+          "status": "NOT_PROVEN",
+          "error": "complete sampled question-list projection not found in actual UI: 41296,41306,41297,41300,41299,41301,41298"
+        },
+        "rendered_after": {
+          "status": "NOT_PROVEN",
+          "error": "complete sampled question-list projection not found in actual UI: 41296,41306,41297,41300,41299,41301,41298"
+        }
+      }
+    },
+    "fixed": {
+      "status": "NORMAL_REFRESH_DIAGNOSTIC_CAPTURED",
+      "device_error": null,
+      "signed_sha256": "e304703dd5d1238f4bb033ed5471b7334876fea43cb9b77c75626bd9e2f6fa2a",
+      "local_raw_artifacts": "artifacts/clean/interviewapp_response_log_full_stringify/fixed/input-diagnostics/7cb42aa4162b464aaaff988935c16c3f/result.json",
+      "receipt_sha256": "7255c38d52871304e47b018874c39cad440d6b3c3d373d5308a480ce05cbc5de",
+      "checks": {
+        "backend_bracket": {
+          "status": "PASS",
+          "result": {
+            "sha256": "7ba64c56ded1d110cf0bc95538f9e1941f2895689fe734d0ea5a31fa3cb68b40",
+            "response_bytes": 4397,
+            "question_ids": [
+              "41292",
+              "41293",
+              "41294",
+              "41296",
+              "41306",
+              "41297",
+              "41300",
+              "41299",
+              "41301",
+              "41298"
+            ],
+            "method": "independent external backend snapshots, not app-body hashing"
+          }
+        },
+        "native_http_sizes": {
+          "status": "NOT_PROVEN",
+          "error": "exact normal native HTTP completion count is not proven"
+        },
+        "rendered_before": {
+          "status": "NOT_PROVEN",
+          "error": "complete sampled question-list projection not found in actual UI: 41296,41306,41297,41300,41299,41301,41298"
+        },
+        "rendered_after": {
+          "status": "NOT_PROVEN",
+          "error": "complete sampled question-list projection not found in actual UI: 41296,41306,41297,41300,41299,41301,41298"
+        }
+      }
+    }
+  },
+  "conclusion": "Both variants completed five successful normal refreshes and stable external backend brackets. Exact app response-size accounting and complete list projection remain NOT_PROVEN; a single viewport exposes only three of ten rows. No performance acceptance or negative verdict."
+}

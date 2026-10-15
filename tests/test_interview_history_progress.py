@@ -27,3 +27,12 @@ class HistoryPersistenceTest(unittest.TestCase):
         with self.assertRaises(ValueError):verify_observation(before,after,['a'])
         after['started_monotonic']=2;after['ended_monotonic']=3;after['raw_cmdline']='foreign'
         with self.assertRaises(ValueError):verify_observation(before,after,['a'])
+
+    def test_native_version_attribute_is_preserved_and_unknown_formats_rejected(self):
+        import xml.etree.ElementTree as ET
+        native='<preferences version="1.0"><string key="a">a</string></preferences>'
+        empty=empty_preferences(native)
+        self.assertEqual(ET.fromstring(empty).attrib,{'version':'1.0'})
+        self.assertEqual(keywords(empty),[])
+        for attrs in ('version="2.0"','other="value"','version="1.0" other="value"'):
+            with self.assertRaises(ValueError):empty_preferences('<preferences '+attrs+' />')

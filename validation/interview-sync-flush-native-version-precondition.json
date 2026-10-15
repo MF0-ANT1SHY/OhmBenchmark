@@ -1,0 +1,29 @@
+{
+  "case": "interviewapp_search_history_sync_flush",
+  "status": "DIAGNOSTIC_ONLY",
+  "app_injection": false,
+  "performance_accepted": false,
+  "variants": {
+    "unfixed": {
+      "status": "FAIL",
+      "device_error": "not a plain native history preference document",
+      "cleanup_error": null,
+      "observer_binary_removed": true,
+      "receipt_sha256": "9280037446df8589777dcc7119f60bafcf58888cecbb99a6702c2ccc451a34f1",
+      "local_artifacts": "artifacts/clean/interviewapp_search_history_sync_flush/unfixed/native-query-diagnostics/dba78fe8d14a4795b78f7a179668848f",
+      "signed_sha256": "8d691b4d1afcbb4fc37a658b754c10d728c2857d2965688128b454459a96c5f9"
+    },
+    "fixed": {
+      "status": "FAIL",
+      "device_error": "not a plain native history preference document",
+      "cleanup_error": null,
+      "observer_binary_removed": true,
+      "receipt_sha256": "9280037446df8589777dcc7119f60bafcf58888cecbb99a6702c2ccc451a34f1",
+      "local_artifacts": "artifacts/clean/interviewapp_search_history_sync_flush/fixed/native-query-diagnostics/0ad32b209d184f7295831a4ab0651324",
+      "signed_sha256": "ce7d0a5afacdd99379c36883ef0cc942efde3c6a2800b0dd201267ebc79663c7"
+    }
+  },
+  "observer_sha256": "0ac3ceec010f9b0a8a3e3cbce8e39fe0ebe60ef0ec8046115e1da12e6779b4bf",
+  "observer_source_sha256": "40a2eb2c31fb041004d46c0f223a3d012498dd43a665b676e2baf4e158534452",
+  "conclusion": "Both diagnostics stopped at preference-format preflight before test input. No performance result or negative verdict. Native version 1.0 is now supported without discarding that attribute."
+}

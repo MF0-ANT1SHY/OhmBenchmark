@@ -1,0 +1,13 @@
+{
+  "case": "interviewapp_search_history_sync_flush",
+  "status": "NATIVE_VERSION_1_0_OFFLINE_PREPARATION_VERIFIED",
+  "performance_accepted": false,
+  "device_deployment_performed": false,
+  "original_history_entries": 1020,
+  "source_backup": "/home/research/ohm-clean/interview-native-query-diagnostics/0ad32b209d184f7295831a4ab0651324/history-before.xml",
+  "private_artifacts": "artifacts/fixture-preparations/interview-history-format/1792043017153143537",
+  "before_sha256": "0db4eb949351bbfeb771cccff4a9525d285a72cf0e788acc31c6769a5b7c92aa",
+  "empty_preferences_sha256": "a71ad7d15301db0b73ba6fc7cc0e4ba0bde3fd669816fc79f5a40d8051dd4e2b",
+  "native_version_preserved": true,
+  "old_preferences_exported_to_repository": false
+}

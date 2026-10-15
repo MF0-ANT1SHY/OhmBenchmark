@@ -11,7 +11,7 @@ PREFERENCES = '/data/app/el2/100/base/'+BUNDLE+'/haps/phone/preferences/historyS
 
 def keywords(raw):
     root=ET.fromstring(raw)
-    if root.tag!='preferences' or root.attrib:
+    if root.tag!='preferences' or root.attrib not in ({}, {'version':'1.0'}):
         raise ValueError('not a plain native history preference document')
     result=[]
     for child in root:
@@ -25,7 +25,10 @@ def keywords(raw):
 
 def empty_preferences(raw):
     keywords(raw)
-    return b"<?xml version='1.0' encoding='utf-8'?>\n<preferences />"
+    root=ET.fromstring(raw)
+    for child in list(root):
+        root.remove(child)
+    return ET.tostring(root,encoding='utf-8',xml_declaration=True)
 
 
 def read_state(shell):
