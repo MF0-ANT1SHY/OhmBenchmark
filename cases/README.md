@@ -184,3 +184,24 @@ statuses remain pending until actual evidence exists. Legacy instrumented result
 are archived under `test_oracle.legacy_instrumented_evidence`; the old measurement
 contract is in `validation/legacy-measurement-contract.json`. Neither is clean
 validation evidence. Install/build success is not a performance verdict.
+
+### Large subscription unread-count workload
+
+The `sheafreader_unread_counts_n_plus_1` revision `count-100x1000-v2`
+uses unchanged business trees and 100 ordinary subscriptions containing 100,000
+articles. The original small-input retired-instruction failure is retained.
+`tools/seed_reader_count_workload.py` creates varied unread counts, including
+one zero-count subscription. Native `last_fetched` and 60-minute frequency
+settings exclude network refresh through the application's existing rules;
+all six trials must complete before those limits expire. Expired inputs require
+a new revision, not a bypass of the freshness gate.
+
+`tools/capture_reader_count.py` measures app-only scheduler CPU across normal
+startup and unread sidebar loading. `tools/accept_reader_count_evidence.py`
+requires three complete pairs, each ratio and their median at least 2.0x,
+identical full feed/article contents, stable process identity, and unchanged
+tracing conditions. `tools/collect_reader_count_badges.py` separately scrolls
+through all 100 native unread badges in both signed variants; the acceptor
+rechecks every saved layout and both full database snapshots. Application code
+contains no measurement counters or injected benchmark entry points. The
+binary-only diagnosis export excludes evaluator metadata and oracle values.

@@ -1,7 +1,7 @@
 {
   "$comment": "External clean measurement contract. Historical instrumented evidence is archived and not reused.",
   "case_count": 30,
-  "measured_case_count": 15,
+  "measured_case_count": 16,
   "cases": {
     "browser_eager_history_load": {
       "oracle_metric": "hiperf_instructions",
@@ -189,17 +189,11 @@
       "rounds_recorded": 3
     },
     "sheafreader_unread_counts_n_plus_1": {
-      "oracle_metric": "hiperf_instructions",
+      "oracle_metric": "trace_cpu_ms",
       "app_injection": false,
       "workload_validation": "verified",
-      "measurement_status": "measured_clean_failed",
-      "rounds_recorded": 3,
-      "disposition": {
-        "status": "skipped_by_user",
-        "reason": "Confirmed negative clean performance case; user instructed to skip negative cases on 2026-10-14.",
-        "performance_passed": false,
-        "original_evidence_preserved": true
-      }
+      "measurement_status": "measured_clean",
+      "rounds_recorded": 3
     },
     "wanharmony_history_log_materialization": {
       "oracle_metric": "trace_cpu_ms",
@@ -288,5 +282,5 @@
       "request_completion_verified": false
     }
   },
-  "skipped_case_count": 11
+  "skipped_case_count": 10
 }

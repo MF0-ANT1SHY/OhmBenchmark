@@ -5,6 +5,8 @@ Requires a root-capable test device. Existing data is backed up on the evaluator
 workstation before replacement. No measurement files or code enter the HAP.
 """
 import argparse
+import gzip
+import hashlib
 import json
 import re
 import shlex
@@ -52,7 +54,17 @@ def install(remote, bundle, module, database, fixture):
     with tempfile.TemporaryDirectory() as tmp:
         sql = Path(tmp) / "fixture.sql"
         sql.write_text(script)
-        remote.upload(sql, host_base + ".sql")
+        if sql.stat().st_size > 8 * 1024 * 1024:
+            compressed = sql.with_suffix('.sql.gz')
+            compressed.write_bytes(gzip.compress(sql.read_bytes()))
+            digest = hashlib.sha256(sql.read_bytes()).hexdigest()
+            remote.upload(compressed, host_base + '.sql.gz')
+            remote.python("import gzip,hashlib,shutil\nfrom pathlib import Path\n"
+                          f"source=Path({(host_base+'.sql.gz')!r});target=Path({(host_base+'.sql')!r})\n"
+                          "with gzip.open(source,'rb') as src,target.open('wb') as dst:shutil.copyfileobj(src,dst)\n"
+                          f"assert hashlib.sha256(target.read_bytes()).hexdigest()=={digest!r},'SQL transfer changed'\n")
+        else:
+            remote.upload(sql, host_base + ".sql")
     device_sql = f"/data/local/tmp/workload-fixture-{stamp}.sql"
     remote.hdc(["file", "send", host_base + ".sql", device_sql])
     out = remote.hdc(["shell", f"sqlite3 -bail {device_db} < {device_sql}"])

@@ -55,6 +55,11 @@ def verify_capture(receipt, trace):
 
 
 def accept(cid, write=True, require_pass=True, *, negative_screen=False):
+    if cid == 'sheafreader_unread_counts_n_plus_1':
+        if negative_screen:
+            raise ValueError('count revision requires three full paired trials')
+        from accept_reader_count_evidence import accept as accept_counts
+        return accept_counts(cid, write=write, require_pass=require_pass)
     if negative_screen and (write or require_pass):
         raise ValueError('negative screening must be read-only and cannot accept performance')
     round_count = 1 if negative_screen else 3

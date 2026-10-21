@@ -1,0 +1,8 @@
+{
+  "status": "OBSERVER_CLIPPED_ROW_FAILURE",
+  "performance_samples_affected": false,
+  "failed_observations": "artifacts/candidate-builds/reader-count-v1/all-badges-v1/fixed/observations.json",
+  "sha256": "1339071300a7e5ba9390a8f550cc35b2d260d96c9288e375e587e498d0e966f9",
+  "diagnosis": "Journal 73 Row original bounds [0,242][945,377] clipped to [0,333][945,377]; title retained but count outside viewport. Complete-row-only inspection must eventually prove every subscription. Earlier observations preserved.",
+  "retry": "all-badges-v2"
+}

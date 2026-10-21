@@ -1,0 +1,63 @@
+{
+  "status": "NEGATIVE_CASES_AT_AUDIT_EXCLUDED",
+  "negative_cases": 11,
+  "pending_and_partial_evidence_excluded": true,
+  "full_readonly_raw_validation_required": true,
+  "cases": [
+    {
+      "case": "browser_insert_date_lookup_cache",
+      "export_rejected": true,
+      "source_status": "negative_screen_failed"
+    },
+    {
+      "case": "cloudmusic_indexof_in_render",
+      "export_rejected": true,
+      "source_status": "measured_clean_failed"
+    },
+    {
+      "case": "cloudmusic_local_song_memory_filter",
+      "export_rejected": true,
+      "source_status": "measured_clean_failed"
+    },
+    {
+      "case": "cloudmusic_search_result_foreach",
+      "export_rejected": true,
+      "source_status": "measured_clean_failed"
+    },
+    {
+      "case": "cloudmusic_songcard_artists_concat",
+      "export_rejected": true,
+      "source_status": "measured_clean_failed"
+    },
+    {
+      "case": "interviewapp_response_log_full_stringify",
+      "export_rejected": true,
+      "source_status": "negative_screen_failed"
+    },
+    {
+      "case": "interviewapp_search_history_sync_flush",
+      "export_rejected": true,
+      "source_status": "negative_screen_failed"
+    },
+    {
+      "case": "sheafreader_unread_counts_n_plus_1",
+      "export_rejected": true,
+      "source_status": "measured_clean_failed"
+    },
+    {
+      "case": "wanharmony_history_log_materialization",
+      "export_rejected": true,
+      "source_status": "negative_screen_failed"
+    },
+    {
+      "case": "wanharmony_html_decode_per_render",
+      "export_rejected": true,
+      "source_status": "negative_screen_failed"
+    },
+    {
+      "case": "wanharmony_web_progress_log_storm",
+      "export_rejected": true,
+      "source_status": "negative_screen_failed"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "case": "sheafreader_unread_counts_n_plus_1",
+  "status": "CANDIDATE_SCREENING_NOT_ACCEPTED",
+  "business_source_changed": false,
+  "variants": {
+    "unfixed": {
+      "signed_sha256": "b8ef35ad70f8b57e1004953bf3712355061b8bdf3ca8103cf46622e36b2a26be",
+      "source_tree": "fe04f28b6470e2ca7da74b154d6656a39190d01d",
+      "smoke_receipt": "artifacts/candidate-builds/reader-count-v1/sheafreader_unread_counts_n_plus_1/unfixed/smoke.json"
+    },
+    "fixed": {
+      "signed_sha256": "ccc10c500c39108fd01290e1c6f0afeccc98fc3a6a0648e6430b24a16e598c02",
+      "source_tree": "88948fc3c60907d9f0a25cbb28a16a4b0d4e5ecb",
+      "smoke_receipt": "artifacts/candidate-builds/reader-count-v1/sheafreader_unread_counts_n_plus_1/fixed/smoke.json"
+    }
+  },
+  "fixture": "artifacts/fixtures/reader-count-100x1000-v1/reader.db",
+  "feeds": 100,
+  "articles": 100000,
+  "all_native_unread_counts_verified": true,
+  "full_native_database": "artifacts/candidate-builds/reader-count-v1/preflight-fixed/native.db",
+  "full_native_database_sha256": "53e0e308480d1cfc4f23874c2cba237c638eb018cb30561ec969849ddbc903e5",
+  "full_contents": {
+    "feeds": {
+      "rows": 100,
+      "sha256": "069a374b53faa46962cc98339ccf68c06426c5f02a8ab83c44dd6a6600064295"
+    },
+    "articles": {
+      "rows": 100000,
+      "sha256": "cca3d87430a0c487be013aee1521d773172eddd1af2fa0c2b21978c3ca74a0dc"
+    }
+  },
+  "layout": "artifacts/candidate-builds/reader-count-v1/preflight-fixed/layout.json",
+  "layout_sha256": "abf64ba1780ec8acf408be435a4f143c6e2a3f25d6f1317888e9f563d851957f",
+  "visible_badges_verified": 12,
+  "native_query_plan_observed": "SEARCH articles USING INDEX idx_articles_read (read=?)",
+  "preflight_driver_note": "Initial EXPLAIN output was a text tree, not JSON. Counts and saved UI were recovered and independently checked; this was not a performance trial.",
+  "performance_verified": false
+}

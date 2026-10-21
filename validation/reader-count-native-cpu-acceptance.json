@@ -1,0 +1,133 @@
+{
+  "case": "sheafreader_unread_counts_n_plus_1",
+  "status": "NATIVE_UNREAD_COUNTS_CPU_ACCEPTED",
+  "measurement_revision": "count-100x1000-v2",
+  "app_injection": false,
+  "business_source_changed": false,
+  "required_ratio": 2.0,
+  "paired_ratios": [
+    13.437564646832579,
+    12.974571421599611,
+    14.948915516051231
+  ],
+  "median_ratio": 13.437564646832579,
+  "samples": {
+    "unfixed": [
+      16563.935,
+      16483.168,
+      17887.962
+    ],
+    "fixed": [
+      1232.659,
+      1270.421,
+      1196.606
+    ]
+  },
+  "captures": {
+    "unfixed": [
+      {
+        "round": 1,
+        "path": "artifacts/clean/sheafreader_unread_counts_n_plus_1/unfixed/trace-captures/count-100x1000-v2/round-1/capture.json",
+        "sha256": "ec6537bd1cb74df9c16f8022a596bf9e2f34343d27ea2093d369320e4c61d770",
+        "app_cpu_ms": 16563.935,
+        "trace_sha256": "23afe79b95c96ca80318b2027f581648d72b57e32fd14ddc500655ddd613ee9e"
+      },
+      {
+        "round": 2,
+        "path": "artifacts/clean/sheafreader_unread_counts_n_plus_1/unfixed/trace-captures/count-100x1000-v2/round-2/capture.json",
+        "sha256": "b809d9e9fdd7187a9e0aafcda7cf38a7d88819166ba1bc05a79340eee834f92f",
+        "app_cpu_ms": 16483.168,
+        "trace_sha256": "a3db18dff26b8145cc477e7ab90de0d35bae36fd07a12b74e366caebbec4e4f7"
+      },
+      {
+        "round": 3,
+        "path": "artifacts/clean/sheafreader_unread_counts_n_plus_1/unfixed/trace-captures/count-100x1000-v2/round-3/capture.json",
+        "sha256": "82bbe00ebfa4e012e58581acd193cbb068c1d8f5ca4dc543176f964c671a0d28",
+        "app_cpu_ms": 17887.962,
+        "trace_sha256": "c419c4fb11c18e410fe29eeb5da582aa10472119a2dcb407f3c794cdd1f8fa7d"
+      }
+    ],
+    "fixed": [
+      {
+        "round": 1,
+        "path": "artifacts/clean/sheafreader_unread_counts_n_plus_1/fixed/trace-captures/count-100x1000-v2/round-1/capture.json",
+        "sha256": "f1dbffb641ed28bf69918dd20a43b010567c1e5e25fb3f21a08853e78287d120",
+        "app_cpu_ms": 1232.659,
+        "trace_sha256": "d8779d90cfa2ea0bd0fbb661b69dc06f28f23dc133b830c284eaae27cd05108c"
+      },
+      {
+        "round": 2,
+        "path": "artifacts/clean/sheafreader_unread_counts_n_plus_1/fixed/trace-captures/count-100x1000-v2/round-2/capture.json",
+        "sha256": "d6b618f4a2fb3e1c98af1f1305d812b4e652447ab2c28be0ebdebf67482f022f",
+        "app_cpu_ms": 1270.421,
+        "trace_sha256": "630548d5f763795a5a4d6247d59896aafaa2df786c4eb63de7f505b98f6aa6e0"
+      },
+      {
+        "round": 3,
+        "path": "artifacts/clean/sheafreader_unread_counts_n_plus_1/fixed/trace-captures/count-100x1000-v2/round-3/capture.json",
+        "sha256": "6900c05752af5db2b16d29571a2800830a53a9997376a3b7f43bf69e891c0d2c",
+        "app_cpu_ms": 1196.606,
+        "trace_sha256": "e9955c63ff1895c1db2db25c18928f82d2729322db3762f3f533f3617a7edd40"
+      }
+    ]
+  },
+  "variants": {
+    "unfixed": {
+      "signed_sha256": "b8ef35ad70f8b57e1004953bf3712355061b8bdf3ca8103cf46622e36b2a26be",
+      "measured_signed_sha256": "b8ef35ad70f8b57e1004953bf3712355061b8bdf3ca8103cf46622e36b2a26be",
+      "current_validity": {
+        "bundle": "com.sheafreader.hm",
+        "not_before": 1792578754,
+        "not_after": 1795171054,
+        "checked_at": 1792581380.2293038
+      },
+      "fresh_launch_receipt_sha256": "82bbe00ebfa4e012e58581acd193cbb068c1d8f5ca4dc543176f964c671a0d28",
+      "fresh_launch_evidence": "artifacts/clean/sheafreader_unread_counts_n_plus_1/unfixed/trace-captures/count-100x1000-v2/round-3/capture.json",
+      "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified foreground reader page with correct ordinary unread badges. No additional launch rerun.",
+      "renewal_not_required": true
+    },
+    "fixed": {
+      "signed_sha256": "ccc10c500c39108fd01290e1c6f0afeccc98fc3a6a0648e6430b24a16e598c02",
+      "measured_signed_sha256": "ccc10c500c39108fd01290e1c6f0afeccc98fc3a6a0648e6430b24a16e598c02",
+      "current_validity": {
+        "bundle": "com.sheafreader.hm",
+        "not_before": 1792578778,
+        "not_after": 1795171078,
+        "checked_at": 1792581381.261292
+      },
+      "fresh_launch_receipt_sha256": "6900c05752af5db2b16d29571a2800830a53a9997376a3b7f43bf69e891c0d2c",
+      "fresh_launch_evidence": "artifacts/clean/sheafreader_unread_counts_n_plus_1/fixed/trace-captures/count-100x1000-v2/round-3/capture.json",
+      "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified foreground reader page with correct ordinary unread badges. No additional launch rerun.",
+      "renewal_not_required": true
+    }
+  },
+  "agent_export": "artifacts/agent-exports/reader-count-c937abbb3ea2441c84a1002f1e8a6636",
+  "agent_files_sha256": {
+    "app.hap": "b8ef35ad70f8b57e1004953bf3712355061b8bdf3ca8103cf46622e36b2a26be",
+    "workload.json": "1ab24ca171c83b0a58eced4be2757d9cea7bab0e90ca07161779633bd9aa6c6f",
+    "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
+    "profile.json": "95df705c14f9816c714040b1d1fc8c2be87335b092a6949321f8e5ed28fed6c8",
+    "symptom.txt": "82e61e2b3beead93013a6d6f859d9258de6dec1b7e6f23f3816932c84deeffab"
+  },
+  "complete_gate": {
+    "stage": "complete",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "tests_passed": 331,
+  "historical_contract": "validation/reader-count-original-contract-before-v2.json",
+  "source_sha256": {
+    "tools/capture_reader_count.py": "2e5ae0bd88ba471142f8fcad862194946903aea12e620fff1dbe27233c122114",
+    "tools/native_reader_count_record.py": "8bfc1b4a9f8e0f41e9cb93632e522f119aa350ea08202b8d4dd8b22630f9f026",
+    "tools/accept_reader_count_evidence.py": "fd7bea3cda7728efd6d34ca80e9b788244a415a2641618ab69c7d0bdbff90d4e",
+    "tools/reader_count_progress.py": "d2316c178501b36a090b6589aa0b5bbc2d8fdc08f57645d93cf657fce4fea62a",
+    "tools/reader_count_fixture.py": "882905e10e1b691ce200f175771ee01474583e150069c998f84956507900b592",
+    "tools/collect_reader_count_badges.py": "4f0c4f94d47331966986381fa88514ed1d86f91d5f344d48c2f6222f45269f6f",
+    "tools/seed_reader_count_workload.py": "9e7e46d8cfb288e1be21d38769664d189082af974b219c7704563923450abfb5"
+  },
+  "cpu_improvement_claimed": true,
+  "all_native_badges_proof": "validation/reader-count-all-native-badges.json",
+  "all_native_badges_sha256": "ec4ac4322b824f99b3bf45fcac0d95232198ccd2be6c169595840bdb2aba4eeb"
+}

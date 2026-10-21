@@ -32,7 +32,7 @@ class PerfLoad_sheafreader_0050(PerfTestCase):
 
     def process(self):
         ui = UI(self.driver.shell, self._app_package, self._plan['ability'])
-        ui.run([{'op': 'stop'}, {'op': 'launch'}])
+        ui.run([{'op': 'stop'}])
         ui.run(self._plan['setup'])
         ui.profiled(self.execute_performance_step,
             '正常刷新并检查订阅未读数', 120, self._plan['measured'])

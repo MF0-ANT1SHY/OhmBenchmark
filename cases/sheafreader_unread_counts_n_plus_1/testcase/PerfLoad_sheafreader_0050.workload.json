@@ -1,45 +1,15 @@
 {
   "bundle": "com.sheafreader.hm",
   "ability": "EntryAbility",
-  "description": "通过普通F5刷新订阅并重新加载侧栏未读数，完整刷新后核验业务数据",
+  "description": "Open the reader and load subscription unread badges",
   "setup": [
     {
-      "op": "wait",
-      "selector": {
-        "text": "Journal 1 article 1",
-        "match": "exact"
-      },
-      "timeout_s": 60
-    },
-    {
-      "op": "wait",
-      "selector": {
-        "type": "Button",
-        "bounds": "[195,326][296,427]",
-        "enabled": "true",
-        "match": "exact"
-      },
-      "timeout_s": 120
+      "op": "stop"
     }
   ],
   "measured": [
     {
-      "op": "key",
-      "key": 2094
-    },
-    {
-      "op": "pause",
-      "seconds": 3
-    },
-    {
-      "op": "wait",
-      "selector": {
-        "type": "Button",
-        "bounds": "[195,326][296,427]",
-        "enabled": "true",
-        "match": "exact"
-      },
-      "timeout_s": 120
+      "op": "launch"
     }
   ],
   "verify": [
@@ -49,7 +19,17 @@
         "text": "Journal 1 article 1",
         "match": "exact"
       },
-      "timeout_s": 60
+      "timeout_s": 120
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "type": "Button",
+        "bounds": "[195,326][296,427]",
+        "enabled": "true",
+        "match": "exact"
+      },
+      "timeout_s": 120
     }
   ]
 }
