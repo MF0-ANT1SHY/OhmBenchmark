@@ -1,0 +1,61 @@
+{
+  "bundle": "com.example.myapplication",
+  "ability": "EntryAbility",
+  "description": "通过普通观看记录入口读取200条原生歌曲历史并滚动列表",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "首页"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "type": "Button",
+        "index": 2,
+        "match": "exact"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "观看记录"
+      }
+    }
+  ],
+  "measured": [
+    {
+      "op": "tap",
+      "selector": {
+        "text": "观看记录"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "历史记录"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Listening Track 200",
+        "match": "exact"
+      },
+      "timeout_s": 60
+    },
+    {
+      "op": "swipe",
+      "count": 3
+    }
+  ],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "历史记录"
+      }
+    }
+  ]
+}

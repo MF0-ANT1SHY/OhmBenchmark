@@ -1,0 +1,110 @@
+{
+  "case": "ytmusic_history_json_parse_per_row",
+  "status": "BOTH_NORMAL_HISTORY_WORKLOADS_VERIFIED",
+  "performance_accepted": false,
+  "entries": 1000,
+  "variants": {
+    "unfixed": {
+      "signed_sha256": "4128f42689cbc5aea0d27d0a0560512a3b4d34a8b8c9d37cd5815185f706cf5b",
+      "plan_sha256": "86a3c7a5f7c61010157bb965a34f745d4259c5cc7c6023aaa1048b2177bd157d",
+      "fixture_sha256": "012e189b26128ea6037451556ce94049ff09114fecfb7098823dbd79ce164181",
+      "workload_sha256": "1a7b9bfad9cb67d54fb3cb0673aaf5edac319612180f3f8a9a0baa97f8810fe0",
+      "native_ui_sha256": "d66119d667039b9d1c2010b0eafb5b544aa85831bac52b861dbb123ac77578cc",
+      "phases": {
+        "setup": 3.6032665000002453,
+        "measured": 16.00940719999926,
+        "verify": 1.5118361999993795
+      },
+      "visible_rows": {
+        "catalogue_songs": 1000,
+        "visible_songs": [
+          [
+            "Listening Track 978",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 979",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 980",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 981",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 982",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 983",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 984",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 985",
+            "My Chemical Romance"
+          ]
+        ]
+      }
+    },
+    "fixed": {
+      "signed_sha256": "4a8a302cdd50642d4bdfca025d3d29bff9bdb606f310d98a1bec5eba5c41e8ca",
+      "plan_sha256": "86a3c7a5f7c61010157bb965a34f745d4259c5cc7c6023aaa1048b2177bd157d",
+      "fixture_sha256": "012e189b26128ea6037451556ce94049ff09114fecfb7098823dbd79ce164181",
+      "workload_sha256": "4db1de51b3ff1a8807cfe5c2472f44fa1107f74da09dc6f888bf3a4dfbdad3ce",
+      "native_ui_sha256": "8627c1698ddd683758f52b956298e046ed24f6f5c9f76ebd6a560c8c9252e6ca",
+      "phases": {
+        "setup": 3.6069062999995367,
+        "measured": 15.157280999999784,
+        "verify": 1.171602399999756
+      },
+      "visible_rows": {
+        "catalogue_songs": 1000,
+        "visible_songs": [
+          [
+            "Listening Track 978",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 979",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 980",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 981",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 982",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 983",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 984",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 985",
+            "My Chemical Romance"
+          ],
+          [
+            "Listening Track 986",
+            "My Chemical Romance"
+          ]
+        ]
+      }
+    }
+  }
+}

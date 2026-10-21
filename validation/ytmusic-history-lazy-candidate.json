@@ -1,0 +1,39 @@
+{
+  "case": "ytmusic_history_json_parse_per_row",
+  "status": "CANDIDATE_BUILT_AND_SIGNED_NOT_PERFORMANCE_ACCEPTED",
+  "app_injection": false,
+  "unfixed_changed": false,
+  "fixed_ref": "candidate/ytmusic-history-lazy-v2",
+  "fixed_commit": "7c80e3331210fa73b6ae64d75e43584fcf111c40",
+  "fixed_tree": "5de823520486d769850274e7d5bcb3ea804207d2",
+  "production_patch": "hosts_patches/ytmusic/history-lazy-v2.patch",
+  "production_patch_sha256": "265bf628255d67f14b8f4f27047b5f526ddbd6a6e25c34e015044cc672206925",
+  "build_status": "PASS",
+  "bytecode_audit": {
+    "sha256": "0c26c438a7f460290dbd45e7d4d3bbbcce397e2e582d52869ff3378fd6f99cc6",
+    "abc_modules_checked": [
+      "ets/modules.abc"
+    ],
+    "findings": [],
+    "passed": true
+  },
+  "signed_sha256": "4a8a302cdd50642d4bdfca025d3d29bff9bdb606f310d98a1bec5eba5c41e8ca",
+  "native_smoke": {
+    "case": "ytmusic_history_json_parse_per_row",
+    "variant": "fixed",
+    "signed_sha256": "4a8a302cdd50642d4bdfca025d3d29bff9bdb606f310d98a1bec5eba5c41e8ca",
+    "install": "[Info]App install path:C:\\home\\research\\ohm-clean\\history-lazy-v2\\ytmusic_history_json_parse_per_row\\fixed\\app.hap msg:install bundle successfully. \r\nAppMod finish",
+    "launch": "start ability successfully.",
+    "pids": [
+      4131
+    ],
+    "foreground_bundle": "com.example.myapplication",
+    "status": "PASS",
+    "performance_verified": false
+  },
+  "host_functional_check": "2,000 entries: reverse order, lazy decode, object reuse, exact-key deletion, reinsertion, empty state and listener lifecycle",
+  "device_functional_check": "validation/ytmusic-history-lazy-native-functional.json",
+  "performance_accepted": false,
+  "production_patch_reconstruction_verified": true,
+  "published_candidate_ref": "clean-app/ytmusic_history_json_parse_per_row/fixed-v2"
+}

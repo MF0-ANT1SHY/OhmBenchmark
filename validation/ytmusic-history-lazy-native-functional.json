@@ -1,0 +1,51 @@
+{
+  "case": "ytmusic_history_json_parse_per_row",
+  "status": "CANDIDATE_NATIVE_FUNCTIONAL_CHECK_PASSED",
+  "initial_entries": 1001,
+  "remaining_entries": 1000,
+  "exact_requested_row_deleted": true,
+  "normal_play_page_song_and_creator_preserved": true,
+  "packaged_audio_available": true,
+  "scroll_rows": {
+    "catalogue_songs": 1000,
+    "visible_songs": [
+      [
+        "Listening Track 979",
+        "My Chemical Romance"
+      ],
+      [
+        "Listening Track 980",
+        "My Chemical Romance"
+      ],
+      [
+        "Listening Track 981",
+        "My Chemical Romance"
+      ],
+      [
+        "Listening Track 982",
+        "My Chemical Romance"
+      ],
+      [
+        "Listening Track 983",
+        "My Chemical Romance"
+      ],
+      [
+        "Listening Track 984",
+        "My Chemical Romance"
+      ],
+      [
+        "Listening Track 985",
+        "My Chemical Romance"
+      ],
+      [
+        "Listening Track 986",
+        "My Chemical Romance"
+      ]
+    ]
+  },
+  "complete_remaining_native_history_preserved": true,
+  "observations": "artifacts/candidate-builds/history-lazy-v2/native-functional/observations.json",
+  "observations_sha256": "912ff30c09bf4d51fbe1ba713b20ccd543b639c2bab371d279896667d4777f19",
+  "performance_accepted": false,
+  "signed_sha256": "4a8a302cdd50642d4bdfca025d3d29bff9bdb606f310d98a1bec5eba5c41e8ca"
+}

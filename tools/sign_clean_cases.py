@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Sign rebuilt cases with the existing device-workstation identity and audit them."""
 import argparse
+import hashlib
 import json
+import re
 import zipfile
 from pathlib import Path
 
@@ -10,7 +12,9 @@ from remote_device import Remote
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def sign_case(remote, case, variant, artifacts, remote_root='/home/research/ohm-clean', renew=False):
+def sign_case(remote, case, variant, artifacts, remote_root='/home/research/ohm-clean', renew=False, device_udid=None):
+    if device_udid is not None and (not isinstance(device_udid,str) or not re.fullmatch(r'[0-9A-F]{64}',device_udid)):
+        raise ValueError('invalid explicit device binding')
     cid, bundle = case["id"], case["host_app"]["bundle_name"]
     local = artifacts / cid / variant
     build = json.loads((local / "build.json").read_text())
@@ -26,6 +30,8 @@ def sign_case(remote, case, variant, artifacts, remote_root='/home/research/ohm-
         if (previous.get("status") == "PASS" and previous.get("unsigned_sha256") == build["hap"]["sha256"]
                 and previous.get("allowed_acls", []) == allowed_acls
                 and previous.get('signed_hap') == folder + '/app.hap'):
+            if device_udid is not None and previous.get('device_binding_sha256') != hashlib.sha256(device_udid.encode()).hexdigest():
+                raise ValueError('existing signature device binding is not verified; use --renew with a new remote root')
             remote.python("import hashlib\nfrom pathlib import Path\n"
                           f"assert hashlib.sha256(Path({previous['signed_hap']!r}).read_bytes()).hexdigest()=={previous['audit']['sha256']!r}\n",
                           timeout=300)
@@ -53,10 +59,12 @@ from audit_clean_app import audit_hap
     code += f"assert hashlib.sha256(unsigned.read_bytes()).hexdigest()=={build['hap']['sha256']!r}\n"
     code += "spec=importlib.util.spec_from_file_location('signing','/home/research/ohm-clean/tools/sdk_signing.py')\n"
     code += "signing=importlib.util.module_from_spec(spec);spec.loader.exec_module(signing)\n"
-    code += f"signing.sign(str(unsigned),str(signed),{bundle!r})\n"
+    code += f"signing.sign(str(unsigned),str(signed),{bundle!r},device_udid={device_udid!r})\n"
     code += "audit=audit_hap(signed,Path('/home/research/OhmBenchmark-toolchain/command-line-tools/sdk/default/openharmony/toolchains/ark_disasm'))\n"
     code += "assert audit['passed'],audit\n"
     code += f"record={{'case':{cid!r},'variant':{variant!r},'unsigned_sha256':{build['hap']['sha256']!r},'signed_hap':str(signed),'audit':audit,'allowed_acls':{allowed_acls!r},'status':'PASS'}}\n"
+    if device_udid is not None:
+        code += f"record['device_binding_sha256']={hashlib.sha256(device_udid.encode()).hexdigest()!r}\n"
     code += "signed.with_name('sign.json').write_text(json.dumps(record,indent=2)+'\\n')\n"
     remote.python(code, timeout=600)
     remote.download(folder + "/sign.json", record)
@@ -70,8 +78,16 @@ def main():
     parser.add_argument("--artifacts", type=Path, default=ROOT / "artifacts/clean")
     parser.add_argument('--renew', action='store_true', help='renew profile, retaining old signed artifacts and receipts')
     parser.add_argument('--remote-root', default='/home/research/ohm-clean')
+    parser.add_argument('--device-remote', help='device workstation when different from the signing workstation')
     args = parser.parse_args()
     remote = Remote(args.remote)
+    device_udid = None
+    if args.device_remote:
+        value=Remote(args.device_remote).hdc(['shell','bm','get','--udid'])
+        matches=re.findall(r'(?<![0-9A-F])[0-9A-F]{64}(?![0-9A-F])',value)
+        if len(matches)!=1:
+            raise ValueError('device workstation did not return one unambiguous UDID')
+        device_udid=matches[0]
     remote.upload(ROOT / "tools/audit_clean_app.py", "/home/research/ohm-clean/tools/audit_clean_app.py")
     remote.upload(ROOT / "tools/sdk_signing.py", "/home/research/ohm-clean/tools/sdk_signing.py")
     for path in sorted((ROOT / "cases").glob("*/case.json")):
@@ -79,7 +95,7 @@ def main():
         if args.cases and case["id"] not in args.cases:
             continue
         for variant in ("unfixed", "fixed"):
-            sign_case(remote, case, variant, args.artifacts, args.remote_root, args.renew)
+            sign_case(remote, case, variant, args.artifacts, args.remote_root, args.renew,device_udid)
 
 
 if __name__ == "__main__":

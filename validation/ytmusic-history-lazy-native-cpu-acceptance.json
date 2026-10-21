@@ -1,0 +1,133 @@
+{
+  "case": "ytmusic_history_json_parse_per_row",
+  "status": "LAZY_HISTORY_CPU_ACCEPTED",
+  "measurement_revision": "lazy-history-1000-v2",
+  "app_injection": false,
+  "business_source_changed": true,
+  "required_ratio": 1.3,
+  "paired_ratios": [
+    3.300594049226642,
+    3.2764399949548517,
+    3.306939898075585
+  ],
+  "median_ratio": 3.296771525918986,
+  "samples": {
+    "unfixed": [
+      6512780327,
+      6408099493,
+      6447864138
+    ],
+    "fixed": [
+      1973214588,
+      1955811644,
+      1949797800
+    ]
+  },
+  "captures": {
+    "unfixed": [
+      {
+        "round": 1,
+        "path": "artifacts/clean/ytmusic_history_json_parse_per_row/unfixed/cpu-captures/lazy-history-1000-v2/round-1/capture.json",
+        "sha256": "962d3919e498628c74db95177257765d043071c0e10644706fdae43bed71c888",
+        "app_instruction_period_sum": 6512780327,
+        "report_sha256": "38691d65c9fc19f1f8c9af33bec58e064b79ac9152ab256b599105b385a8fa3e"
+      },
+      {
+        "round": 2,
+        "path": "artifacts/clean/ytmusic_history_json_parse_per_row/unfixed/cpu-captures/lazy-history-1000-v2/round-2/capture.json",
+        "sha256": "ec96e179a088007eb9e98b8f616f76f3a20899906f86fef564c784915c6e80dd",
+        "app_instruction_period_sum": 6408099493,
+        "report_sha256": "77912b6ee06bdc2396d6e74010f1f873a7477e0271011a7c37379f00c27b48c4"
+      },
+      {
+        "round": 3,
+        "path": "artifacts/clean/ytmusic_history_json_parse_per_row/unfixed/cpu-captures/lazy-history-1000-v2/round-3/capture.json",
+        "sha256": "c66859857c6c4f2f36c257a043d2b59b7bb20f7d7e36e66bb964831262a9d0ca",
+        "app_instruction_period_sum": 6447864138,
+        "report_sha256": "3ecdb4b99742ffdae756bdf52a6e8517d8f09117d559a67c295139ea9ee2f414"
+      }
+    ],
+    "fixed": [
+      {
+        "round": 1,
+        "path": "artifacts/clean/ytmusic_history_json_parse_per_row/fixed/cpu-captures/lazy-history-1000-v2/round-1/capture.json",
+        "sha256": "29647050dee8c89dccf7d7a8b7f49719f4142fb7e08dd8df72079681077033f4",
+        "app_instruction_period_sum": 1973214588,
+        "report_sha256": "840e240aae89dfa2ac5f9afb1df22f21947c9b228cf5cfa27343acb4315268c6"
+      },
+      {
+        "round": 2,
+        "path": "artifacts/clean/ytmusic_history_json_parse_per_row/fixed/cpu-captures/lazy-history-1000-v2/round-2/capture.json",
+        "sha256": "0d4ac7ec20bbe0038475729d4da647acb7545c814b453d51ba71de1a9e1bd88b",
+        "app_instruction_period_sum": 1955811644,
+        "report_sha256": "32d0edfe083285426aa682ca6829690a9c20e4a94e3d4b9fda460da77b71983a"
+      },
+      {
+        "round": 3,
+        "path": "artifacts/clean/ytmusic_history_json_parse_per_row/fixed/cpu-captures/lazy-history-1000-v2/round-3/capture.json",
+        "sha256": "8b3d834dfb0d1d5778666c9cdd3772a7987f971e4f8111cbe2698d93cbc8c5cb",
+        "app_instruction_period_sum": 1949797800,
+        "report_sha256": "ba6f2b3d63f1cb7d4008a8deff20b0c3b5b5be8f3b026ed7be0356c89803ccea"
+      }
+    ]
+  },
+  "variants": {
+    "unfixed": {
+      "signed_sha256": "4128f42689cbc5aea0d27d0a0560512a3b4d34a8b8c9d37cd5815185f706cf5b",
+      "measured_signed_sha256": "4128f42689cbc5aea0d27d0a0560512a3b4d34a8b8c9d37cd5815185f706cf5b",
+      "current_validity": {
+        "bundle": "com.example.myapplication",
+        "not_before": 1792574321,
+        "not_after": 1795166621,
+        "checked_at": 1792575864.6132193
+      },
+      "fresh_launch_receipt_sha256": "c66859857c6c4f2f36c257a043d2b59b7bb20f7d7e36e66bb964831262a9d0ca",
+      "fresh_launch_evidence": "artifacts/clean/ytmusic_history_json_parse_per_row/unfixed/cpu-captures/lazy-history-1000-v2/round-3/capture.json",
+      "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified foreground history page. No additional launch rerun.",
+      "renewal_not_required": true
+    },
+    "fixed": {
+      "signed_sha256": "4a8a302cdd50642d4bdfca025d3d29bff9bdb606f310d98a1bec5eba5c41e8ca",
+      "measured_signed_sha256": "4a8a302cdd50642d4bdfca025d3d29bff9bdb606f310d98a1bec5eba5c41e8ca",
+      "current_validity": {
+        "bundle": "com.example.myapplication",
+        "not_before": 1792573350,
+        "not_after": 1795165650,
+        "checked_at": 1792575866.4242568
+      },
+      "fresh_launch_receipt_sha256": "8b3d834dfb0d1d5778666c9cdd3772a7987f971e4f8111cbe2698d93cbc8c5cb",
+      "fresh_launch_evidence": "artifacts/clean/ytmusic_history_json_parse_per_row/fixed/cpu-captures/lazy-history-1000-v2/round-3/capture.json",
+      "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified foreground history page. No additional launch rerun.",
+      "renewal_not_required": true
+    }
+  },
+  "agent_export": "artifacts/agent-exports/yt-history-lazy-50f47f87d6f7459091d5202e7ed56806",
+  "agent_files_sha256": {
+    "app.hap": "4128f42689cbc5aea0d27d0a0560512a3b4d34a8b8c9d37cd5815185f706cf5b",
+    "workload.json": "5c7571f883a3c584b16a9dac6ff9ca4c3a0e42187e483dab5bb7fee97eb8e948",
+    "reproduce.py": "be7050610526575dc19f5a29b298f8fa29c5405c3e25aa413f66a4010d6a0115",
+    "profile.json": "acb89c8e219875e53e7a084230d749b2ef2a240528395a15415aa3eeffabc8e6",
+    "symptom.txt": "771c0ee41c9fcac93790c14c4691ddbd77562046644425881e74e58e70bef679"
+  },
+  "complete_gate": {
+    "stage": "complete",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "tests_passed": 310,
+  "historical_contract": "validation/ytmusic-history-original-contract-before-lazy.json",
+  "source_sha256": {
+    "tools/capture_external_cpu.py": "8c37312d0dd25ce53151e4c7bfcc8773a690515c8f4d60fa861a217e394c05f0",
+    "tools/accept_cpu_evidence.py": "cd7348ba62b8c543150d72f2edfb531fdc91855cb92e48db082f1cba5911323c",
+    "tools/ytmusic_history_progress.py": "8d980507610b54ec626a45431900de738c616d43824bee27fe57c78ee7dec01f",
+    "tools/measurement_paths.py": "29636175c5f0c65029ad43a1a3064383c25985db4a9122fba6fb43510949ae27",
+    "tools/verify_history_datasource.js": "dd228519e82dda0e3f6d45177a22ea46f6b13ebb2f5a55d4cbf00be5755c85c7",
+    "hosts_patches/ytmusic/history-lazy-v2.patch": "265bf628255d67f14b8f4f27047b5f526ddbd6a6e25c34e015044cc672206925"
+  },
+  "native_functional_proof": {
+    "path": "validation/ytmusic-history-lazy-native-functional.json",
+    "sha256": "2a10e8f8c48e133949f413aa8b771dedb7e84c7b8d7e5775293df61a4b4c7eb4"
+  }
+}

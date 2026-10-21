@@ -11,6 +11,7 @@ import uuid
 import time
 import shutil
 from pathlib import Path
+from measurement_paths import capture_root
 
 from install_sqlite_fixture import install as install_fixture
 from remote_device import Remote
@@ -71,7 +72,9 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
         fixture_hash=service_fixture['sha256']
     plan_file = ROOT/'cases'/cid/case['testcase']['workload']
     plan_hash = hashlib.sha256(plan_file.read_bytes()).hexdigest()
-    output = folder/'cpu-captures'/f'round-{round_number}'
+    output = capture_root(folder,case,'hiperf_instructions')/f'round-{round_number}'
+    if case.get('measurement_revision') and output.exists():
+        raise FileExistsError('preserve the revised CPU trial before any retry')
     if cid==INTERVIEW_RESPONSE_CASE and output.exists():
         raise FileExistsError('preserve the original response-log CPU trial before any retry')
     if cid==HISTORY_SYNC_CASE and output.exists():
@@ -81,7 +84,8 @@ def capture(remote, case, variant, round_number, fixture=None, local_song_fixtur
     if cid==WAN_HTML_CASE and output.exists():
         raise FileExistsError('preserve the original HTML CPU trial before any retry')
     output.mkdir(parents=True,exist_ok=True)
-    remote_base = f'/home/research/ohm-clean/{cid}/{variant}/cpu-captures/round-{round_number}'
+    relative = output.relative_to(folder).as_posix()
+    remote_base = f'/home/research/ohm-clean/{cid}/{variant}/{relative}'
     remote_plan = remote_base+'/plan.json'
     # Isolate this trial from the other benchmark apps left running by smoke
     # checks. Do not stop unrelated applications installed on the device.
@@ -138,7 +142,7 @@ def shell(command):
  if p.returncode:raise RuntimeError(p.stdout+p.stderr)
  return p.stdout
 """
-    code += f"root=Path({remote_base!r});plan_file=Path({remote_plan!r})\n"
+    code += f"root=Path({remote_base!r}).resolve();plan_file=Path({remote_plan!r})\n"
     code += f"assert hashlib.sha256(plan_file.read_bytes()).hexdigest()=={plan_hash!r}\n"
     code += f"assert hashlib.sha256(Path({sign['signed_hap']!r}).read_bytes()).hexdigest()=={sign['audit']['sha256']!r}\n"
     code += "plan=json.loads(plan_file.read_text());ui=UI(shell,plan['bundle'],plan['ability'])\n"

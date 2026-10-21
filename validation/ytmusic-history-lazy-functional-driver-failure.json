@@ -1,0 +1,13 @@
+{
+  "case": "ytmusic_history_json_parse_per_row",
+  "status": "EVALUATOR_ARGUMENT_ERROR_NOT_APP_FAILURE",
+  "error": "The external UI driver requires Back, not back. It rejected the argument before sending a device key event.",
+  "last_completed_assertions": [
+    "requested row removed from native history",
+    "correct song and creator visible in normal player page"
+  ],
+  "raw_ui_snapshots_not_saved_before_exception": true,
+  "performance_accepted": false,
+  "runner_sha256": "0dc06c5f386294564df1124b9f9b668c9cda162a58366e9aebe01ed8ac3ea00e",
+  "next_action": "Rerun functional checks from the same fresh ordinary fixture, using the supported Back key."
+}

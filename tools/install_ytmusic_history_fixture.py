@@ -58,7 +58,7 @@ def install(remote, case, folder, device_path):
     stamp = str(time.time_ns())
     backup = f'/home/research/ohm-clean/backups/{BUNDLE}/{stamp}/persistent_storage.xml'
     remote.python("import subprocess,xml.etree.ElementTree as ET\nfrom pathlib import Path\n"
-                  f"p=Path({backup!r});p.parent.mkdir(parents=True,exist_ok=True)\n"
+                  f"p=Path({backup!r}).resolve();p.parent.mkdir(parents=True,exist_ok=True)\n"
                   f"subprocess.run(['hdc','file','recv',{device_path!r},str(p)],check=True,capture_output=True)\n"
                   "root=ET.fromstring(p.read_bytes())\n"
                   "assert root.tag=='preferences' and len([x for x in root if x.attrib.get('key')=='history' and x.tag=='string'])==1\n")
@@ -75,7 +75,7 @@ def install(remote, case, folder, device_path):
     # methods, routes, counters, or diagnostic callbacks are invoked.
     remote.hdc(['shell', f'cp {temporary} {device_path} && chown {uid}:{gid} {device_path} && chmod 660 {device_path}'])
     verified = remote.python("import subprocess,hashlib\nfrom pathlib import Path\n"
-                             f"p=Path({source+'.readback'!r})\n"
+                             f"p=Path({source+'.readback'!r}).resolve()\n"
                              f"subprocess.run(['hdc','file','recv',{device_path!r},str(p)],check=True,capture_output=True)\n"
                              f"assert hashlib.sha256(p.read_bytes()).hexdigest()=={hashlib.sha256(blob).hexdigest()!r}\n"
                              "print('VERIFIED')\n").strip()

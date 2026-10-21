@@ -1,7 +1,7 @@
 {
   "bundle": "com.example.myapplication",
   "ability": "EntryAbility",
-  "description": "通过普通观看记录入口读取200条原生歌曲历史并滚动列表",
+  "description": "通过普通观看记录入口读取1000条原生歌曲历史并滚动列表",
   "setup": [
     {
       "op": "wait",
@@ -40,7 +40,7 @@
     {
       "op": "wait",
       "selector": {
-        "text": "Listening Track 200",
+        "text": "Listening Track 1000",
         "match": "exact"
       },
       "timeout_s": 60

@@ -388,7 +388,12 @@
         },
         "case/ytmusic_history_json_parse_per_row/fixed": {
           "state": "patch-series commit 2",
-          "tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d"
+          "tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d",
+          "app_ref": "clean-app/ytmusic_history_json_parse_per_row/fixed-v2",
+          "app_tree": "5de823520486d769850274e7d5bcb3ea804207d2",
+          "production_patches": [
+            "hosts_patches/ytmusic/history-lazy-v2.patch"
+          ]
         },
         "case/ytmusic_search_no_debounce/unfixed": {
           "state": "patch-series commit 2",

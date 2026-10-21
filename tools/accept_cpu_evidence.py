@@ -5,6 +5,7 @@ import hashlib
 import json
 import statistics
 from pathlib import Path
+from measurement_paths import capture_root
 from playback_progress import check_progress, CASES as PLAYBACK_CASES
 from music_service_fixture import same_instance
 from page_lifecycle import verify_reconstructions
@@ -35,6 +36,15 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
     case=json.loads(path.read_text())
     if case['test_oracle']['metric']!='hiperf_instructions':
         raise ValueError('CPU capture cannot validate a different oracle')
+    comparison=case['test_oracle'].get('comparison','unfixed >= 1.2 * fixed over >= 3 rounds per variant')
+    thresholds={f'unfixed >= {value} * fixed over >= 3 rounds per variant':value for value in (1.2,1.3)}
+    if comparison not in thresholds:
+        raise ValueError('unsupported CPU comparison contract')
+    threshold=thresholds[comparison]
+    if cid==LISTENING_HISTORY_CASE and case.get('measurement_revision'):
+        from ytmusic_history_progress import verify_lazy_functional
+        fixed_sign=json.loads((ROOT/'artifacts/clean'/cid/'fixed/sign.json').read_text())
+        verify_lazy_functional(ROOT,fixed_sign['audit']['sha256'])
     plan_hash=hashlib.sha256((path.parent/case['testcase']['workload']).read_bytes()).hexdigest()
     variants={}
     for variant in ['unfixed','fixed']:
@@ -122,7 +132,7 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
         captures=[]
         fixture_hashes=set()
         for round_no in range(1,round_count+1):
-            capture_dir=folder/'cpu-captures'/f'round-{round_no}'
+            capture_dir=capture_root(folder,case,'hiperf_instructions')/f'round-{round_no}'
             receipt=json.loads((capture_dir/'capture.json').read_text())
             if receipt['status']!='CAPTURED' or receipt['plan_sha256']!=plan_hash or receipt['signed_sha256']!=sign['audit']['sha256']:
                 raise RuntimeError('capture provenance mismatch')
@@ -137,8 +147,8 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
                 if round_no==1 and (receipt['interview_responses']!=device['interview_responses'] or input_proof!=device.get('interview_input_proof')):
                     raise RuntimeError('functional HTTP/input proof does not belong to the original CPU trial')
                 if variant=='fixed':
-                    paired=json.loads((ROOT/'artifacts/clean'/cid/'unfixed/cpu-captures'/f'round-{round_no}'/'capture.json').read_text())
-                    if verify_capture_inputs(paired,ROOT/'artifacts/clean'/cid/'unfixed/cpu-captures'/f'round-{round_no}')['backend']!=input_proof['backend']:
+                    paired=json.loads((capture_root(ROOT/'artifacts/clean'/cid/'unfixed',case,'hiperf_instructions')/f'round-{round_no}'/'capture.json').read_text())
+                    if verify_capture_inputs(paired,capture_root(ROOT/'artifacts/clean'/cid/'unfixed',case,'hiperf_instructions')/f'round-{round_no}')['backend']!=input_proof['backend']:
                         raise RuntimeError('paired CPU trials used different sampled backend inputs')
             if cid==HISTORY_SYNC_CASE:
                 preparation=receipt['empty_history_preparation']
@@ -157,7 +167,7 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
                 if round_no==1 and receipt['wan_html']!=device['wan_html']:
                     raise RuntimeError('functional article proof does not belong to the original CPU trial')
                 if variant=='fixed':
-                    paired=json.loads((ROOT/'artifacts/clean'/cid/'unfixed/cpu-captures'/f'round-{round_no}'/'capture.json').read_text())
+                    paired=json.loads((capture_root(ROOT/'artifacts/clean'/cid/'unfixed',case,'hiperf_instructions')/f'round-{round_no}'/'capture.json').read_text())
                     verify_html_pair(paired['wan_html']['after'],receipt['wan_html']['after'])
             if cid==BROWSER_VISIT_CASE:
                 verify_browser_visit_capture(receipt['browser_visits'],receipt['action_start_monotonic'],receipt['action_end_monotonic'])
@@ -243,7 +253,7 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
     if len(fixtures)!=1 or None in fixtures:raise RuntimeError('identical fixture is not proven across all rounds')
     ratios=[u/f for u,f in zip(variants['unfixed']['samples'],variants['fixed']['samples'])]
     median_ratio=statistics.median(variants['unfixed']['samples'])/statistics.median(variants['fixed']['samples'])
-    passed=min(ratios)>=1.2 and median_ratio>=1.2
+    passed=min(ratios)>=threshold and median_ratio>=threshold
     if negative_screen and passed:
         raise ValueError('first pair is not negative; three complete pairs are required for acceptance')
     if passed and cid==HISTORY_SYNC_CASE:
@@ -265,8 +275,8 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
     case['test_oracle']['evidence']={'status':'measured_clean' if passed else 'measured_clean_failed','metric':'hiperf_instructions',
         'unfixed':variants['unfixed']['samples'],'fixed':variants['fixed']['samples'],'median_ratio':median_ratio,
         'rounds_per_variant':round_count,'legacy_evidence_reused':False,'note':
-        'Every paired round exceeds 1.2x; app process explicitly selected from the system report.' if passed else
-        'Clean captures are valid, but the required 1.2x performance improvement is not met; this case is not accepted.'}
+        f'Every paired round meets {threshold}x; app process explicitly selected from the system report.' if passed else
+        f'Clean captures are valid, but the required {threshold}x performance improvement is not met; this case is not accepted.'}
     case['test_oracle']['definition']='Sampled retired-instruction period sum (hw-instructions) attributed to the app process in the complete externally driven measured window.'
     if write:
         path.write_text(json.dumps(case,indent=2,ensure_ascii=False)+'\n')

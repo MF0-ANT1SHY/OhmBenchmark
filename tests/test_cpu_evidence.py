@@ -66,6 +66,26 @@ class CPUEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError,'completion'):
             self.check()
 
+    def test_revised_run_cannot_fall_back_to_old_captures(self):
+        path=self.case_dir/'case.json';case=json.loads(path.read_text())
+        case['measurement_revision']='new-run';self.put(path,case)
+        with self.assertRaises(FileNotFoundError):self.check()
+        for variant in ('unfixed','fixed'):
+            folder=self.root/'artifacts/clean'/self.cid/variant/'cpu-captures'
+            (folder/'new-run').mkdir()
+            for number in (1,2,3):
+                (folder/f'round-{number}').rename(folder/'new-run'/f'round-{number}')
+        self.assertEqual(self.check()['unfixed']['samples'],[200]*3)
+
+    def test_raised_cpu_threshold_rejects_a_125_percent_pair(self):
+        for number in (1,2,3):
+            folder=self.root/'artifacts/clean'/self.cid/'unfixed/cpu-captures'/f'round-{number}'
+            path=folder/'capture.json';record=json.loads(path.read_text());record['app_instruction_period_sum']=125;self.put(path,record)
+            path=folder/'report.json';record=json.loads(path.read_text());record['recordSampleInfo'][0]['processes'][0]['eventCount']=125;self.put(path,record)
+        path=self.case_dir/'case.json';case=json.loads(path.read_text())
+        case['test_oracle']['comparison']='unfixed >= 1.3 * fixed over >= 3 rounds per variant';self.put(path,case)
+        with self.assertRaisesRegex(RuntimeError,'criterion not met'):self.check()
+
     def test_fixture_different_from_ui_validation_rejected(self):
         self.change_capture('fixture_sha256','different')
         with self.assertRaisesRegex(RuntimeError,'fixture differs'):

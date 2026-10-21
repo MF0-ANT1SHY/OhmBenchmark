@@ -1,46 +1,127 @@
+diff --git a/entry/src/main/ets/models/HistoryDataSource.ets b/entry/src/main/ets/models/HistoryDataSource.ets
+new file mode 100644
+index 0000000..3ab96f3
+--- /dev/null
++++ b/entry/src/main/ets/models/HistoryDataSource.ets
+@@ -0,0 +1,42 @@
++import { SongProps } from './song'
++
++export interface HistoryEntry {
++  key: string
++  song: SongProps
++}
++
++export class HistoryDataSource implements IDataSource {
++  private keys: string[] = []
++  private entries: Map<string, HistoryEntry> = new Map<string, HistoryEntry>()
++  private listeners: DataChangeListener[] = []
++
++  setHistory(history: Set<string>): void {
++    this.keys = Array.from(history).reverse()
++    this.entries.forEach((_entry: HistoryEntry, key: string) => {
++      if (!history.has(key)) this.entries.delete(key)
++    })
++    this.listeners.forEach((listener: DataChangeListener) => listener.onDataReloaded())
++  }
++
++  totalCount(): number {
++    return this.keys.length
++  }
++
++  getData(index: number): HistoryEntry {
++    const key: string = this.keys[index]
++    const existing: HistoryEntry | undefined = this.entries.get(key)
++    if (existing) return existing
++    const entry: HistoryEntry = { key: key, song: JSON.parse(key) as SongProps }
++    this.entries.set(key, entry)
++    return entry
++  }
++
++  registerDataChangeListener(listener: DataChangeListener): void {
++    if (this.listeners.indexOf(listener) < 0) this.listeners.push(listener)
++  }
++
++  unregisterDataChangeListener(listener: DataChangeListener): void {
++    const index: number = this.listeners.indexOf(listener)
++    if (index >= 0) this.listeners.splice(index, 1)
++  }
++}
 diff --git a/entry/src/main/ets/pages/History.ets b/entry/src/main/ets/pages/History.ets
-index 53b3f9c..8769d69 100644
+index 53b3f9c..75b20a9 100644
 --- a/entry/src/main/ets/pages/History.ets
 +++ b/entry/src/main/ets/pages/History.ets
-@@ -36,21 +36,22 @@ struct History {
+@@ -1,9 +1,19 @@
+ import { router } from '@kit.ArkUI'
++import { HistoryDataSource, HistoryEntry } from '../models/HistoryDataSource'
+ 
+ @Entry
+ @Component
+ struct History {
+-  @StorageLink('history') history: Set<string> = new Set<string>()
++  @StorageLink('history') @Watch('reloadHistory') history: Set<string> = new Set<string>()
++  private rows: HistoryDataSource = new HistoryDataSource()
++
++  aboutToAppear(): void {
++    this.reloadHistory()
++  }
++
++  private reloadHistory(): void {
++    this.rows.setHistory(this.history)
++  }
+ 
+   build() {
+     Column() {
+@@ -34,23 +44,23 @@ struct History {
+       .margin({ top: 38, left: 15, right: 15 })
+ 
        if (this.history.size > 0) {
-         Scroll() {
-           Column() {
+-        Scroll() {
+-          Column() {
 -            ForEach(Array.from(this.history).reverse(), (item: string) => {
-+            // 每条历史记录只解析一次 JSON，避免在每次组件构建时重复解析
-+            ForEach(Array.from(this.history).reverse().map((item: string): Record<string, Object> => JSON.parse(item) as Record<string, Object>), (item: Record<string, Object>) => {
++        List() {
++          LazyForEach(this.rows, (entry: HistoryEntry) => {
++            ListItem() {
                Row() {
 -                Image(JSON.parse(item).img)
-+                Image(item['img'] as string)
++                Image(entry.song.img)
                    .width(80)
                    .height(80)
                    .borderRadius(3)
                    .margin({ right: 15 })
                  Column() {
 -                  Text(JSON.parse(item).name)
-+                  Text(item['name'] as string)
++                  Text(entry.song.name)
                      .fontSize(16)
                      .fontWeight(700)
                      .fontColor('#fff')
                      .textOverflow({ overflow: TextOverflow.Ellipsis })
                      .maxLines(1)
 -                  Text(JSON.parse(item).creator)
-+                  Text(item['creator'] as string)
++                  Text(entry.song.creator)
                      .fontSize(14)
                      .fontColor('#cdcdcd')
                      .textOverflow({ overflow: TextOverflow.Ellipsis })
-@@ -63,12 +64,12 @@ struct History {
+@@ -63,15 +73,19 @@ struct History {
                  Image($rawfile('header/close.svg'))
                    .width(20)
                    .onClick(() => {
 -                    this.history.delete(item)
-+                    this.history.delete(JSON.stringify(item))
++                    const next: Set<string> = new Set<string>(this.history)
++                    next.delete(entry.key)
++                    this.history = next
                    })
                }
                .alignItems(VerticalAlign.Center)
                .margin({ top: 12, left: 15, right: 15 })
 -              .onClick(() => router.pushUrl({ url: 'pages/CurrentPlaying', params: JSON.parse(item) }))
-+              .onClick(() => router.pushUrl({ url: 'pages/CurrentPlaying', params: item }))
-             })
-           }
+-            })
+-          }
++              .onClick(() => router.pushUrl({ url: 'pages/CurrentPlaying', params: entry.song }))
++            }
++          }, (entry: HistoryEntry) => entry.key)
          }
++        .layoutWeight(1)
++        .width('100%')
+         .margin({ top: 15 })
+       } else {
+         Image($rawfile('header/history.svg'))

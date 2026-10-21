@@ -24,6 +24,20 @@ source trees may reuse only a hash-checked, audited compiled artifact.
 
 ## External workload contract
 
+The device workstation is now `hkrc` (Windows, reached through Tailscale).
+Use `--remote hkrc` for device commands. Signing remains on `cityuPC`; use
+`--remote cityuPC --device-remote hkrc` with `tools/sign_clean_cases.py` to bind
+the signature to the attached device without moving signing keys.
+
+The YTMusic history revision `lazy-history-1000-v2` evaluates lazy row creation
+and cached JSON decoding together, not JSON parsing in isolation. It uses the
+same 1,000-song native history in both variants and requires an unfixed/fixed
+app-attributed instruction ratio of at least 1.3 in each of three paired trials. Separate native
+checks cover exact-key deletion, retained history, scrolling, and navigation to
+the selected song's player page; they do not establish audible playback.
+Original contracts and unsuccessful trials remain archived. Revision-specific
+capture directories prevent those trials from being reused as new evidence.
+
 UI plans declare `setup`, `measured` and `verify` actions driven through `uitest`.
 Their existence or syntax validity does not prove successful reproduction. The
 plans must reach the actual business path in both variants on the real device.

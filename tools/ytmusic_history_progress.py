@@ -1,11 +1,47 @@
 """Verify actual history rows and unchanged ordinary native history storage."""
 import json
+import hashlib
+from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
 
 from install_ytmusic_history_fixture import BUNDLE, CASE
 from seed_ytmusic_history import MARKERS, encoded_songs
 from ui_driver import UI
+
+
+def verify_lazy_functional(root, signed_sha256):
+    """Recheck saved native deletion, scroll and navigation evidence."""
+    from install_ytmusic_history_fixture import fixture_state
+    proof=json.loads((root/'validation/ytmusic-history-lazy-native-functional.json').read_text())
+    path=root/proof['observations']
+    if (proof.get('case')!=CASE or proof.get('signed_sha256')!=signed_sha256 or
+            hashlib.sha256(path.read_bytes()).hexdigest()!=proof['observations_sha256']):
+        raise ValueError('lazy history functional evidence belongs to another package or changed')
+    observation=json.loads(path.read_text())
+    folder=Path(observation['preparation']['fixture_dir'])
+    fixture,_=fixture_state(folder)
+    if fixture['fixture_sha256']!=observation['preparation']['sha256']:
+        raise ValueError('functional history fixture identity changed')
+    songs=json.loads((folder/'songs.json').read_text())
+    remaining=[song for song in songs if song['name']!='Listening Track 1000']
+    if len(songs)!=1001 or len(remaining)!=1000:
+        raise ValueError('functional deletion must remove exactly the selected record')
+    verify_layout(observation['before'],songs)
+    if not any(n.get('text')=='Listening Track 1000' and n.get('bundleName')==BUNDLE
+               for n in UI.nodes(observation['before'])):
+        raise ValueError('selected deletion row was not visible before the action')
+    verify_layout(observation['after_delete'],remaining)
+    if any(n.get('text')=='Listening Track 1000' for n in UI.nodes(observation['after_delete'])):
+        raise ValueError('deleted row is still present')
+    verify_state(observation['state_after_delete']['raw_xml'],remaining)
+    verify_state(observation['final_state']['raw_xml'],remaining)
+    if verify_layout(observation['scrolled'],remaining)!=proof['scroll_rows']:
+        raise ValueError('scroll summary differs from native rows')
+    texts={n.get('text') for n in UI.nodes(observation['player']) if n.get('bundleName')==BUNDLE}
+    if songs[-1]['name'] not in texts or songs[-1]['creator'] not in texts:
+        raise ValueError('normal player page did not preserve the selected song')
+    return {'exact_key_deletion':True,'complete_remaining_history':True,'normal_navigation':True}
 
 
 def verify_layout(layout, songs):

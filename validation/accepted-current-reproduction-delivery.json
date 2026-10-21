@@ -1,11 +1,11 @@
 {
   "status": "ALL_ACCEPTED_REPRODUCTION_DELIVERIES_VERIFIED",
-  "scope": "Current delivery for 13 accepted cases. Revised contracts are explicit. Goal of at least 21 accepted cases remains incomplete.",
+  "scope": "Current delivery for 14 accepted cases. Revised contracts are explicit. Goal of at least 21 accepted cases remains incomplete.",
   "goal_complete": false,
-  "checked_at": 1792573340.7227545,
-  "cases": 13,
-  "variants": 26,
-  "binary_only_agent_exports": 13,
+  "checked_at": 1792575888.5207396,
+  "cases": 14,
+  "variants": 28,
+  "binary_only_agent_exports": 14,
   "historical_measured_artifacts_retained": true,
   "rows": [
     {
@@ -517,6 +517,49 @@
         "reproduce.py": "be7050610526575dc19f5a29b298f8fa29c5405c3e25aa413f66a4010d6a0115",
         "profile.json": "42f548baabaf25d9abe2f2dd27f320e8ee175b717d293940efe4888398391c19",
         "symptom.txt": "38cd2ada17d684f5788e9cf020099b5cf09233dae281e17950458bc367cdd3fd"
+      }
+    },
+    {
+      "case": "ytmusic_history_json_parse_per_row",
+      "case_proof": "validation/ytmusic-history-lazy-native-cpu-acceptance.json",
+      "case_proof_sha256": "536833f63822a7cac10d325f55b3cb8379a5042eb17763ade3a778d47483e27d",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "4128f42689cbc5aea0d27d0a0560512a3b4d34a8b8c9d37cd5815185f706cf5b",
+          "measured_signed_sha256": "4128f42689cbc5aea0d27d0a0560512a3b4d34a8b8c9d37cd5815185f706cf5b",
+          "current_validity": {
+            "bundle": "com.example.myapplication",
+            "not_before": 1792574321,
+            "not_after": 1795166621,
+            "checked_at": 1792575864.6132193
+          },
+          "fresh_launch_receipt_sha256": "c66859857c6c4f2f36c257a043d2b59b7bb20f7d7e36e66bb964831262a9d0ca",
+          "fresh_launch_evidence": "artifacts/clean/ytmusic_history_json_parse_per_row/unfixed/cpu-captures/lazy-history-1000-v2/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified foreground history page. No additional launch rerun.",
+          "renewal_not_required": true
+        },
+        "fixed": {
+          "signed_sha256": "4a8a302cdd50642d4bdfca025d3d29bff9bdb606f310d98a1bec5eba5c41e8ca",
+          "measured_signed_sha256": "4a8a302cdd50642d4bdfca025d3d29bff9bdb606f310d98a1bec5eba5c41e8ca",
+          "current_validity": {
+            "bundle": "com.example.myapplication",
+            "not_before": 1792573350,
+            "not_after": 1795165650,
+            "checked_at": 1792575866.4242568
+          },
+          "fresh_launch_receipt_sha256": "8b3d834dfb0d1d5778666c9cdd3772a7987f971e4f8111cbe2698d93cbc8c5cb",
+          "fresh_launch_evidence": "artifacts/clean/ytmusic_history_json_parse_per_row/fixed/cpu-captures/lazy-history-1000-v2/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified foreground history page. No additional launch rerun.",
+          "renewal_not_required": true
+        }
+      },
+      "agent_export": "artifacts/agent-exports/yt-history-lazy-50f47f87d6f7459091d5202e7ed56806",
+      "agent_files_sha256": {
+        "app.hap": "4128f42689cbc5aea0d27d0a0560512a3b4d34a8b8c9d37cd5815185f706cf5b",
+        "workload.json": "5c7571f883a3c584b16a9dac6ff9ca4c3a0e42187e483dab5bb7fee97eb8e948",
+        "reproduce.py": "be7050610526575dc19f5a29b298f8fa29c5405c3e25aa413f66a4010d6a0115",
+        "profile.json": "acb89c8e219875e53e7a084230d749b2ef2a240528395a15415aa3eeffabc8e6",
+        "symptom.txt": "771c0ee41c9fcac93790c14c4691ddbd77562046644425881e74e58e70bef679"
       }
     }
   ]
