@@ -1,0 +1,20 @@
+{
+  "case": "weatherassistant_remote_weather_icons",
+  "status": "ORIGINAL_CAPTURE_RECOVERED",
+  "capture": "artifacts/candidate-builds/weather-icons-v2/image-ready-v2/unfixed/round-2/capture.json",
+  "capture_sha256": "f8d5318bb3589983ec782010138339d64054d5738a0fbd025a20a77b78614c45",
+  "recovery": {
+    "reason": "SSH transport disconnected after complete native capture; original frame and trace files recovered without rerunning the application.",
+    "native_original_sha256": "f7d9cc2466e004aeb4d43e90ea44683b1d57f99c729d99b10fba9fa874fdcb08",
+    "before_basis": "Previous paired trial final complete catalogue/image check, earlier than this launch, with the exact same still-live service identity. Original current-trial prepare completed before plan.json was created, but its in-memory receipt was lost; no fresh-before receipt is invented."
+  },
+  "before_anchor": {
+    "capture": "/data2/syang75/workspace/OhmBenchmark/artifacts/candidate-builds/weather-icons-v2/image-ready-v2/fixed/round-1/capture.json",
+    "sha256": "9707c56a7d464d5cf829abfa4baef922573e9b5f48bbc7777f6da6337006cf41",
+    "field": "fixture_after"
+  },
+  "bounds": {
+    "lower_s": 3.963447800000722,
+    "upper_s": 5.248315900000307
+  }
+}

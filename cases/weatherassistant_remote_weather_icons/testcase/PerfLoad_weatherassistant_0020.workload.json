@@ -1,24 +1,25 @@
 {
   "bundle": "com.alatus.futureweather",
   "ability": "AlatusAbility",
-  "description": "HarmonyOS-Next-Weather-Assistant页面操作",
+  "description": "Open the weather forecast",
   "setup": [
     {
-      "op": "wait",
-      "selector": {
-        "text": "添加"
-      }
-    },
-    {
       "op": "stop"
-    },
+    }
+  ],
+  "measured": [
+    {
+      "op": "launch"
+    }
+  ],
+  "verify": [
     {
       "op": "wait",
       "selector": {
         "text": "深圳市",
         "match": "exact"
       },
-      "timeout_s": 60
+      "timeout_s": 120
     },
     {
       "op": "wait",
@@ -26,30 +27,7 @@
         "text": "近期天气",
         "match": "exact"
       },
-      "timeout_s": 60
-    }
-  ],
-  "measured": [
-    {
-      "op": "launch"
-    },
-    {
-      "op": "wait",
-      "selector": {
-        "text": "添加"
-      }
-    },
-    {
-      "op": "pause",
-      "seconds": 3
-    }
-  ],
-  "verify": [
-    {
-      "op": "wait",
-      "selector": {
-        "text": "添加"
-      }
+      "timeout_s": 120
     }
   ]
 }

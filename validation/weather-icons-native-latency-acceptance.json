@@ -1,0 +1,157 @@
+{
+  "case": "weatherassistant_remote_weather_icons",
+  "status": "NATIVE_COMPLETE_WEATHER_ICONS_ACCEPTED",
+  "measurement_revision": "image-ready-v2",
+  "app_injection": false,
+  "business_source_changed": true,
+  "required_ratio": 2.0,
+  "paired_ratios": [
+    2.3038157997126643,
+    2.2222213625121823,
+    2.320266050141039
+  ],
+  "median_ratio": 2.272420575171862,
+  "samples": {
+    "unfixed": [
+      5.178534800001216,
+      5.248315900000307,
+      5.398252799997863
+    ],
+    "fixed": [
+      1.6858432000008179,
+      1.7835522000023047,
+      1.7441524000023492
+    ]
+  },
+  "captures": {
+    "unfixed": [
+      {
+        "round": 1,
+        "path": "artifacts/clean/weatherassistant_remote_weather_icons/unfixed/trace-captures/image-ready-v2/round-1/capture.json",
+        "sha256": "541a246091b7f58fbd40c538894cd1897065e35a3a182fb288550cf627c5b025",
+        "latency_bounds": {
+          "lower_s": 3.8838722000000416,
+          "upper_s": 5.178534800001216
+        },
+        "trace_sha256": "4bb3b6496e6529efb61b90cb55bab0e71e31d79112a6752f329a8a7ca78b8be2"
+      },
+      {
+        "round": 2,
+        "path": "artifacts/clean/weatherassistant_remote_weather_icons/unfixed/trace-captures/image-ready-v2/round-2/capture.json",
+        "sha256": "f8d5318bb3589983ec782010138339d64054d5738a0fbd025a20a77b78614c45",
+        "latency_bounds": {
+          "lower_s": 3.963447800000722,
+          "upper_s": 5.248315900000307
+        },
+        "trace_sha256": "6fd8c09d914cd5360604a442449205044c48a1307e6a3f1a397853bcc4bff049"
+      },
+      {
+        "round": 3,
+        "path": "artifacts/clean/weatherassistant_remote_weather_icons/unfixed/trace-captures/image-ready-v2/round-3/capture.json",
+        "sha256": "67857a3f56fc2b8ff4b3dea80f642b08ca759865c7be451ebbd689f4a9a5dbb8",
+        "latency_bounds": {
+          "lower_s": 4.046897599997465,
+          "upper_s": 5.398252799997863
+        },
+        "trace_sha256": "3708a188a33e6fa7f540a9662744a49967bf30bbe9d53f1fed160e806800542b"
+      }
+    ],
+    "fixed": [
+      {
+        "round": 1,
+        "path": "artifacts/clean/weatherassistant_remote_weather_icons/fixed/trace-captures/image-ready-v2/round-1/capture.json",
+        "sha256": "9707c56a7d464d5cf829abfa4baef922573e9b5f48bbc7777f6da6337006cf41",
+        "latency_bounds": {
+          "lower_s": 0.4822671000001719,
+          "upper_s": 1.6858432000008179
+        },
+        "trace_sha256": "dca47e8cd2c1663b41523572cb30fd6a07a9e9542fa18e24528587e613310ba1"
+      },
+      {
+        "round": 2,
+        "path": "artifacts/clean/weatherassistant_remote_weather_icons/fixed/trace-captures/image-ready-v2/round-2/capture.json",
+        "sha256": "7962fd5cbfd369683c2deeac55e0def5550de12d6fd19edf8cf4606780ac272c",
+        "latency_bounds": {
+          "lower_s": 0.5215744000015547,
+          "upper_s": 1.7835522000023047
+        },
+        "trace_sha256": "dea44ece2d575e7aa3258a9b16f4ad6f65c8200b41a56431198086511a23bd7e"
+      },
+      {
+        "round": 3,
+        "path": "artifacts/clean/weatherassistant_remote_weather_icons/fixed/trace-captures/image-ready-v2/round-3/capture.json",
+        "sha256": "868167bcf6819b457890a60fc6095becdef85c58a055c906f8f3fdba10e153d8",
+        "latency_bounds": {
+          "lower_s": 0.5095457000024908,
+          "upper_s": 1.7441524000023492
+        },
+        "trace_sha256": "53df6e9bc68fe8b96cb671dc929458cd57016b4a3988212234aa74b8fc8ca1b2"
+      }
+    ]
+  },
+  "variants": {
+    "unfixed": {
+      "signed_sha256": "34697dfef5c4e34bb9248503d47d59a748c7214f2c0c5f9c64c68259f550c1ed",
+      "measured_signed_sha256": "34697dfef5c4e34bb9248503d47d59a748c7214f2c0c5f9c64c68259f550c1ed",
+      "current_validity": {
+        "bundle": "com.alatus.futureweather",
+        "not_before": 1792583000,
+        "not_after": 1795175300,
+        "checked_at": 1792585530.9457953
+      },
+      "fresh_launch_receipt_sha256": "67857a3f56fc2b8ff4b3dea80f642b08ca759865c7be451ebbd689f4a9a5dbb8",
+      "fresh_launch_evidence": "artifacts/clean/weatherassistant_remote_weather_icons/unfixed/trace-captures/image-ready-v2/round-3/capture.json",
+      "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified complete native forecast and all image pixels. No additional launch rerun.",
+      "renewal_not_required": true
+    },
+    "fixed": {
+      "signed_sha256": "bb42ca20a4ae99c1fc0dc08c741c1b04017bc4822eb4c3c3869196c2d662f171",
+      "measured_signed_sha256": "bb42ca20a4ae99c1fc0dc08c741c1b04017bc4822eb4c3c3869196c2d662f171",
+      "current_validity": {
+        "bundle": "com.alatus.futureweather",
+        "not_before": 1792583003,
+        "not_after": 1795175303,
+        "checked_at": 1792585531.6764042
+      },
+      "fresh_launch_receipt_sha256": "868167bcf6819b457890a60fc6095becdef85c58a055c906f8f3fdba10e153d8",
+      "fresh_launch_evidence": "artifacts/clean/weatherassistant_remote_weather_icons/fixed/trace-captures/image-ready-v2/round-3/capture.json",
+      "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified complete native forecast and all image pixels. No additional launch rerun.",
+      "renewal_not_required": true
+    }
+  },
+  "agent_export": "artifacts/agent-exports/weather-icons-2310712e4db946b0b6d15abb564430ee",
+  "agent_files_sha256": {
+    "app.hap": "34697dfef5c4e34bb9248503d47d59a748c7214f2c0c5f9c64c68259f550c1ed",
+    "workload.json": "53bebd05d3a2b7ce349745477610ba19cdd79d9990be4f0270bb6af5a3e39978",
+    "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
+    "profile.json": "ac8012d422db25b691a81f26f1c98cb6cc9f2091dd5afd31cac085b9c0e411f9",
+    "symptom.txt": "dd0f953f5be053e903fab841ea2e173a10a4fd4e8c66934a3243cb59cdb208fb"
+  },
+  "complete_gate": {
+    "stage": "complete",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "tests_passed": 347,
+  "historical_contract": "validation/weather-icons-original-contract-before-v2.json",
+  "source_sha256": {
+    "tools/capture_weather_icons.py": "017c993e0e3a361b2855e384173108c96c4cea508d03349cc3815c6afc6876c4",
+    "tools/accept_weather_icon_evidence.py": "13dd71c67edea448a3555cc3405ab43ec3c0ecfb353b09794139e266d233a7af",
+    "tools/weather_icon_latency.py": "88fca637de654e60d8810c3a7a06731654fc26ee12ba1fb5bd48219bac201dcb",
+    "tools/weather_icon_pixels.py": "5658f328a28de4b718b5e1364318258740876be9bb8f85821ab44fa89709c19d",
+    "tools/weather_service_fixture.py": "687a67d7caf67991024528e260c8d4bb6b76f5f0f8a02eba9660e1e061302e32",
+    "tools/weather_data_service.py": "a17835b73dfe5994d18e1943302c273c353192b054affe7b4df0a7dd4ad54eaf",
+    "tools/weather_workstation_lease.py": "bbf6860443e4c9dcefc15f9ab126fb24e217c2d2ea41038aacc9b9039cfdae72",
+    "hosts_patches/weatherassistant/icons-ordinary-origin-unfixed-v2.patch": "1521aaa7d76a925aa72f2fb28d749c0d3bab99caf0c31024f7195544065fb1af",
+    "hosts_patches/weatherassistant/icons-ordinary-origin-fixed-v2.patch": "4e98c2b96cf1238b6aab179c5d77aab4ae3cdac20b00565817e946caf401b163"
+  },
+  "cpu_improvement_claimed": false,
+  "declared_icon_delay_s": 4.0,
+  "cache_condition": "cold",
+  "native_reference": "validation/weather-icons-native-reference.json",
+  "native_reference_sha256": "c28d85e761f5150ec0cc9f57bac64d11b4ae9357ae86a7cca97e6a126acd70e6",
+  "transport_recovery": "validation/weather-icons-transport-recovery.json",
+  "transport_recovery_sha256": "ea359dc944e5429cf796fdbf960c84ac87692e23b4f0703f75172d0e74232e2a"
+}

@@ -1,11 +1,11 @@
 {
   "status": "ALL_ACCEPTED_REPRODUCTION_DELIVERIES_VERIFIED",
-  "scope": "Current delivery for 17 accepted cases. Revised contracts are explicit. Goal of at least 21 accepted cases remains incomplete.",
+  "scope": "Current delivery for 18 accepted cases. Revised contracts are explicit. Goal of at least 21 accepted cases remains incomplete.",
   "goal_complete": false,
-  "checked_at": 1792584163.4101691,
-  "cases": 17,
-  "variants": 34,
-  "binary_only_agent_exports": 17,
+  "checked_at": 1792585546.9339557,
+  "cases": 18,
+  "variants": 36,
+  "binary_only_agent_exports": 18,
   "historical_measured_artifacts_retained": true,
   "rows": [
     {
@@ -689,6 +689,49 @@
         "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
         "profile.json": "b1293798173a34da40c5fd5637b704c0bb5ef7a3e50c6acfa3167de443524935",
         "symptom.txt": "16e5f38887cce2088ac693e78ea35574130a8b035643bb7d0b46b34bfaa6b133"
+      }
+    },
+    {
+      "case": "weatherassistant_remote_weather_icons",
+      "case_proof": "validation/weather-icons-native-latency-acceptance.json",
+      "case_proof_sha256": "46e32e43409b655338d659432e94de5e432a8ccd3f3e3826560d68891d441009",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "34697dfef5c4e34bb9248503d47d59a748c7214f2c0c5f9c64c68259f550c1ed",
+          "measured_signed_sha256": "34697dfef5c4e34bb9248503d47d59a748c7214f2c0c5f9c64c68259f550c1ed",
+          "current_validity": {
+            "bundle": "com.alatus.futureweather",
+            "not_before": 1792583000,
+            "not_after": 1795175300,
+            "checked_at": 1792585530.9457953
+          },
+          "fresh_launch_receipt_sha256": "67857a3f56fc2b8ff4b3dea80f642b08ca759865c7be451ebbd689f4a9a5dbb8",
+          "fresh_launch_evidence": "artifacts/clean/weatherassistant_remote_weather_icons/unfixed/trace-captures/image-ready-v2/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified complete native forecast and all image pixels. No additional launch rerun.",
+          "renewal_not_required": true
+        },
+        "fixed": {
+          "signed_sha256": "bb42ca20a4ae99c1fc0dc08c741c1b04017bc4822eb4c3c3869196c2d662f171",
+          "measured_signed_sha256": "bb42ca20a4ae99c1fc0dc08c741c1b04017bc4822eb4c3c3869196c2d662f171",
+          "current_validity": {
+            "bundle": "com.alatus.futureweather",
+            "not_before": 1792583003,
+            "not_after": 1795175303,
+            "checked_at": 1792585531.6764042
+          },
+          "fresh_launch_receipt_sha256": "868167bcf6819b457890a60fc6095becdef85c58a055c906f8f3fdba10e153d8",
+          "fresh_launch_evidence": "artifacts/clean/weatherassistant_remote_weather_icons/fixed/trace-captures/image-ready-v2/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified complete native forecast and all image pixels. No additional launch rerun.",
+          "renewal_not_required": true
+        }
+      },
+      "agent_export": "artifacts/agent-exports/weather-icons-2310712e4db946b0b6d15abb564430ee",
+      "agent_files_sha256": {
+        "app.hap": "34697dfef5c4e34bb9248503d47d59a748c7214f2c0c5f9c64c68259f550c1ed",
+        "workload.json": "53bebd05d3a2b7ce349745477610ba19cdd79d9990be4f0270bb6af5a3e39978",
+        "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
+        "profile.json": "ac8012d422db25b691a81f26f1c98cb6cc9f2091dd5afd31cac085b9c0e411f9",
+        "symptom.txt": "dd0f953f5be053e903fab841ea2e173a10a4fd4e8c66934a3243cb59cdb208fb"
       }
     }
   ]

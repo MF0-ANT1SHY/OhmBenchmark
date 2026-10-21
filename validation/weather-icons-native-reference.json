@@ -1,0 +1,173 @@
+{
+  "status": "NATIVE_REFERENCE_VERIFIED_NOT_PERFORMANCE_ACCEPTANCE",
+  "case": "weatherassistant_remote_weather_icons",
+  "boxes": [
+    [
+      191,
+      491,
+      1069,
+      1166
+    ],
+    [
+      218,
+      1695,
+      286,
+      1763
+    ],
+    [
+      218,
+      2222,
+      286,
+      2290
+    ],
+    [
+      470,
+      1695,
+      538,
+      1763
+    ],
+    [
+      470,
+      2222,
+      538,
+      2290
+    ],
+    [
+      722,
+      1695,
+      790,
+      1763
+    ],
+    [
+      722,
+      2222,
+      790,
+      2290
+    ],
+    [
+      974,
+      1695,
+      1042,
+      1763
+    ],
+    [
+      974,
+      2222,
+      1042,
+      2290
+    ]
+  ],
+  "pixels": {
+    "size": [
+      1260,
+      2844
+    ],
+    "regions": [
+      "e6fe8cd6fe4a643524d213863330e6b758032937c054a6ea475296afa2293bfb",
+      "83311bfd8f913330b1b9ccc1f7d03912d24caa8627f4c573131d6420fc64540a",
+      "f3718a816900e85fe9be4c9f52b51909995095110aad212982e1c1ae4490baf0",
+      "f3718a816900e85fe9be4c9f52b51909995095110aad212982e1c1ae4490baf0",
+      "8fb074bddee7704228a36712436dfc20505b5ebf74a05b94c3a50087a64dceda",
+      "8fb074bddee7704228a36712436dfc20505b5ebf74a05b94c3a50087a64dceda",
+      "7cb4eec9f6db7a27cede779607703dae27eaf029071fc30a006959d113c29c96",
+      "7cb4eec9f6db7a27cede779607703dae27eaf029071fc30a006959d113c29c96",
+      "83311bfd8f913330b1b9ccc1f7d03912d24caa8627f4c573131d6420fc64540a"
+    ]
+  },
+  "reference": "/data2/syang75/workspace/OhmBenchmark/artifacts/candidate-builds/weather-icons-v2/native-preflight-v1/fixed/screen.png",
+  "reference_sha256": "1dd50d84e1bdf94209ce8fef1612aa32f1800943ba2a24af2ade3dc7e15967d5",
+  "variants": {
+    "unfixed": {
+      "signed_sha256": "34697dfef5c4e34bb9248503d47d59a748c7214f2c0c5f9c64c68259f550c1ed",
+      "before": {
+        "source_sha256": "a17835b73dfe5994d18e1943302c273c353192b054affe7b4df0a7dd4ad54eaf",
+        "launcher_sha256": "bbf6860443e4c9dcefc15f9ab126fb24e217c2d2ea41038aacc9b9039cfdae72",
+        "icons_sha256": {
+          "sunny.img": "8c4567401a3c8f8585078b67526a8afe1fe1a2a959c3f5fa961166fb179ef781",
+          "overcast.img": "40446411ae12cfda4cb25914bf788504c2a1b50f8a142f09a078a724cec0d049",
+          "cloudy.img": "98dd4b314d8ac1fbfb400dc13987dd19f74db1df24abc05ede3b48fbcf3fe585",
+          "rain.img": "5d1205c6b1b9f2a83dfc9e678258f950e4f5794889e87335125e1f75e5ad5146"
+        },
+        "forecasts_sha256": "7d2644de80baaae918c7591a282ee975e80dc6e34930ad7f5b50b152564688d1",
+        "service_pid": 7584,
+        "service_identity": {
+          "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather\\weather_workstation_lease.py --duration 7200 --delay 4.0",
+          "start_ticks": 639281805442883130
+        },
+        "icon_delay_s": 4.0,
+        "base_url": "http://127.0.0.1:18492",
+        "method": "All ordinary forecast and image responses checked outside profiling; exact image identity with fixed signed HAP."
+      },
+      "after": {
+        "source_sha256": "a17835b73dfe5994d18e1943302c273c353192b054affe7b4df0a7dd4ad54eaf",
+        "launcher_sha256": "bbf6860443e4c9dcefc15f9ab126fb24e217c2d2ea41038aacc9b9039cfdae72",
+        "icons_sha256": {
+          "sunny.img": "8c4567401a3c8f8585078b67526a8afe1fe1a2a959c3f5fa961166fb179ef781",
+          "overcast.img": "40446411ae12cfda4cb25914bf788504c2a1b50f8a142f09a078a724cec0d049",
+          "cloudy.img": "98dd4b314d8ac1fbfb400dc13987dd19f74db1df24abc05ede3b48fbcf3fe585",
+          "rain.img": "5d1205c6b1b9f2a83dfc9e678258f950e4f5794889e87335125e1f75e5ad5146"
+        },
+        "forecasts_sha256": "7d2644de80baaae918c7591a282ee975e80dc6e34930ad7f5b50b152564688d1",
+        "service_pid": 7584,
+        "service_identity": {
+          "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather\\weather_workstation_lease.py --duration 7200 --delay 4.0",
+          "start_ticks": 639281805442883130
+        },
+        "icon_delay_s": 4.0,
+        "base_url": "http://127.0.0.1:18492",
+        "method": "All ordinary forecast and image responses checked outside profiling; exact image identity with fixed signed HAP."
+      },
+      "observation": "/data2/syang75/workspace/OhmBenchmark/artifacts/candidate-builds/weather-icons-v2/native-preflight-v1/unfixed/observation.json",
+      "observation_sha256": "dd020f6121dc31bc4b4c2743e92008a3e499cf889337ecbbceaa0bb82f3af014",
+      "screenshot": "/data2/syang75/workspace/OhmBenchmark/artifacts/candidate-builds/weather-icons-v2/native-preflight-v1/unfixed/screen.png",
+      "screenshot_sha256": "679c870069754d2f0d20cb0f50e06d9239d8385be33290d3fcccce7d570c45df"
+    },
+    "fixed": {
+      "signed_sha256": "bb42ca20a4ae99c1fc0dc08c741c1b04017bc4822eb4c3c3869196c2d662f171",
+      "before": {
+        "source_sha256": "a17835b73dfe5994d18e1943302c273c353192b054affe7b4df0a7dd4ad54eaf",
+        "launcher_sha256": "bbf6860443e4c9dcefc15f9ab126fb24e217c2d2ea41038aacc9b9039cfdae72",
+        "icons_sha256": {
+          "sunny.img": "8c4567401a3c8f8585078b67526a8afe1fe1a2a959c3f5fa961166fb179ef781",
+          "overcast.img": "40446411ae12cfda4cb25914bf788504c2a1b50f8a142f09a078a724cec0d049",
+          "cloudy.img": "98dd4b314d8ac1fbfb400dc13987dd19f74db1df24abc05ede3b48fbcf3fe585",
+          "rain.img": "5d1205c6b1b9f2a83dfc9e678258f950e4f5794889e87335125e1f75e5ad5146"
+        },
+        "forecasts_sha256": "7d2644de80baaae918c7591a282ee975e80dc6e34930ad7f5b50b152564688d1",
+        "service_pid": 7584,
+        "service_identity": {
+          "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather\\weather_workstation_lease.py --duration 7200 --delay 4.0",
+          "start_ticks": 639281805442883130
+        },
+        "icon_delay_s": 4.0,
+        "base_url": "http://127.0.0.1:18492",
+        "method": "All ordinary forecast and image responses checked outside profiling; exact image identity with fixed signed HAP."
+      },
+      "after": {
+        "source_sha256": "a17835b73dfe5994d18e1943302c273c353192b054affe7b4df0a7dd4ad54eaf",
+        "launcher_sha256": "bbf6860443e4c9dcefc15f9ab126fb24e217c2d2ea41038aacc9b9039cfdae72",
+        "icons_sha256": {
+          "sunny.img": "8c4567401a3c8f8585078b67526a8afe1fe1a2a959c3f5fa961166fb179ef781",
+          "overcast.img": "40446411ae12cfda4cb25914bf788504c2a1b50f8a142f09a078a724cec0d049",
+          "cloudy.img": "98dd4b314d8ac1fbfb400dc13987dd19f74db1df24abc05ede3b48fbcf3fe585",
+          "rain.img": "5d1205c6b1b9f2a83dfc9e678258f950e4f5794889e87335125e1f75e5ad5146"
+        },
+        "forecasts_sha256": "7d2644de80baaae918c7591a282ee975e80dc6e34930ad7f5b50b152564688d1",
+        "service_pid": 7584,
+        "service_identity": {
+          "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather\\weather_workstation_lease.py --duration 7200 --delay 4.0",
+          "start_ticks": 639281805442883130
+        },
+        "icon_delay_s": 4.0,
+        "base_url": "http://127.0.0.1:18492",
+        "method": "All ordinary forecast and image responses checked outside profiling; exact image identity with fixed signed HAP."
+      },
+      "observation": "/data2/syang75/workspace/OhmBenchmark/artifacts/candidate-builds/weather-icons-v2/native-preflight-v1/fixed/observation.json",
+      "observation_sha256": "145285100f6a8015785882010d267965b93a990f545b1f5e3117eb05ca34f819",
+      "screenshot": "/data2/syang75/workspace/OhmBenchmark/artifacts/candidate-builds/weather-icons-v2/native-preflight-v1/fixed/screen.png",
+      "screenshot_sha256": "1dd50d84e1bdf94209ce8fef1612aa32f1800943ba2a24af2ade3dc7e15967d5"
+    }
+  },
+  "declared_icon_delay_s": 4.0,
+  "method": "All nine native icon regions are pixel-identical between successful unfixed and fixed forecasts; HTTP image bytes equal the fixed signed package resources."
+}

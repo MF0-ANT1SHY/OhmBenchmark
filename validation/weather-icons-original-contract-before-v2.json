@@ -1,0 +1,197 @@
+{
+  "id": "weatherassistant_remote_weather_icons",
+  "host_app": {
+    "name": "HarmonyOS-Next-Weather-Assistant",
+    "repository": "https://github.com/AlatusLee/HarmonyOS-Next-Weather-Assistant",
+    "bundle_name": "com.alatus.futureweather",
+    "local_path": "hosts/weatherassistant",
+    "base_branch": "ohmbase",
+    "base_commit": "167ca48"
+  },
+  "android_source_case": "gdroid_network_74cae42ede14",
+  "android_mechanism": "Check whether a download is really required before performing it (static assets re-fetched every time)",
+  "category": "latency",
+  "bug_description": "The weather condition glyphs (sunny/cloudy/overcast/rain) are rendered from four hard-coded remote CDN URLs (i-blog.csdnimg.cn). The forecast view shows ~9 icon instances per city tab (big current-weather icon plus per-day day/night icons); every cold start and every cache miss re-downloads these static images over the network, delaying first paint of the weather panel and wasting bandwidth.",
+  "perf_scenarios": [
+    "图片加载",
+    "页面启动",
+    "页面切换"
+  ],
+  "unfixed_commit": "20e8e16b0c81fd5dee14b636433089cc2796f707",
+  "fixed_commit": "c181b312ec1c31ad1ea13641b2953fa2efd4778f",
+  "fix_summary": "The four weather glyphs are bundled as local rawfile resources and referenced with $rawfile, eliminating the network fetches and speeding up first render.",
+  "build": {
+    "mode": "release",
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "testcase": {
+    "name": "PerfLoad_weatherassistant_0020",
+    "py_file": "testcase/PerfLoad_weatherassistant_0020.py",
+    "descriptor": "testcase/PerfLoad_weatherassistant_0020.json",
+    "install_dir": "perf_testing/hapray/testcases/com.alatus.futureweather",
+    "driver": "DeviceTest",
+    "module": "alatus",
+    "ability": "AlatusAbility",
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_weatherassistant_0020.workload.json"
+  },
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 25,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "icon_first_paint_ms_and_net_bytes",
+      "definition": "(a) Time from page build start to weather-icon render completion in the ace trace; (b) bytes of image downloads to the icon CDN observed in the network trace.",
+      "comparison": "unfixed downloads ~9 images (hundreds of KB) before/while icons appear and shows network stalls on cold start; fixed has zero icon-related network traffic and near-instant icon paint."
+    },
+    "legacy_instrumented_evidence": {
+      "status": "expected",
+      "measured_as": "icon fetch+decode instructions",
+      "unfixed": [],
+      "fixed": [],
+      "note": "icons come from a remote CDN on every cold start; fixed loads them from local resources, so fetch+decode instructions dominate the diff"
+    }
+  },
+  "reproduction": [
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py weatherassistant_remote_weather_icons",
+    "python3 tools/sign_clean_cases.py weatherassistant_remote_weather_icons",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/weatherassistant_remote_weather_icons/testcase/ into perf_testing/hapray/testcases/com.alatus.futureweather/.",
+    "Install each clean signed variant and run the PerfLoad_weatherassistant_0020 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "20e8e16",
+    "fixed_commit": "c181b31",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/weatherassistant_remote_weather_icons/unfixed",
+        "commit": "20e8e16b0c81fd5dee14b636433089cc2796f707",
+        "tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+        "business_base_tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+        "production_patches": [],
+        "unsigned_sha256": "f61f7bc56a4a82e22d0b7558cf6df63e8aef5db32bce13a0c3bbd0a79195abc9",
+        "bytecode_audit": {
+          "sha256": "f61f7bc56a4a82e22d0b7558cf6df63e8aef5db32bce13a0c3bbd0a79195abc9",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "weatherassistant_remote_weather_icons",
+          "variant": "unfixed",
+          "unsigned_sha256": "f61f7bc56a4a82e22d0b7558cf6df63e8aef5db32bce13a0c3bbd0a79195abc9",
+          "signed_hap": "/home/research/ohm-clean/weatherassistant_remote_weather_icons/unfixed/app.hap",
+          "audit": {
+            "sha256": "12230719fe30a509377b743bc2002922cf21d43e185415a57be0f3b271bc5617",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "weatherassistant_remote_weather_icons",
+          "variant": "unfixed",
+          "signed_sha256": "12230719fe30a509377b743bc2002922cf21d43e185415a57be0f3b271bc5617",
+          "install": "[Info]App install path:/home/research/ohm-clean/weatherassistant_remote_weather_icons/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            62763
+          ],
+          "foreground_bundle": "com.alatus.futureweather",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/weatherassistant_remote_weather_icons/fixed",
+        "commit": "c181b312ec1c31ad1ea13641b2953fa2efd4778f",
+        "tree": "9542890dec7276586992a10a72fe723731107419",
+        "business_base_tree": "9542890dec7276586992a10a72fe723731107419",
+        "production_patches": [],
+        "unsigned_sha256": "56091d86c7bf4acf2f2c13d24a1fb0f67789b623cfcd50b1bbc4f63f4a012fd9",
+        "bytecode_audit": {
+          "sha256": "56091d86c7bf4acf2f2c13d24a1fb0f67789b623cfcd50b1bbc4f63f4a012fd9",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "weatherassistant_remote_weather_icons",
+          "variant": "fixed",
+          "unsigned_sha256": "56091d86c7bf4acf2f2c13d24a1fb0f67789b623cfcd50b1bbc4f63f4a012fd9",
+          "signed_hap": "/home/research/ohm-clean/weatherassistant_remote_weather_icons/fixed/app.hap",
+          "audit": {
+            "sha256": "cd48452d25c7c37bad9e4c2e57769232eb0eeac9b7efe7b18189b54f3f8c2da3",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "weatherassistant_remote_weather_icons",
+          "variant": "fixed",
+          "signed_sha256": "cd48452d25c7c37bad9e4c2e57769232eb0eeac9b7efe7b18189b54f3f8c2da3",
+          "install": "[Info]App install path:/home/research/ohm-clean/weatherassistant_remote_weather_icons/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            63124
+          ],
+          "foreground_bundle": "com.alatus.futureweather",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      }
+    },
+    "business_reproduction_blocker": {
+      "status": "invalid_builtin_weather_key",
+      "proof": "../../validation/weather-public-endpoint-schema.json",
+      "forecast_render_verified": false,
+      "performance_accepted": false
+    }
+  }
+}

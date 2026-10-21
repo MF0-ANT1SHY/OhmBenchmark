@@ -1,0 +1,41 @@
+diff --git a/alatus/src/main/ets/view/cityView.ets b/alatus/src/main/ets/view/cityView.ets
+index bfb53d2..497b128 100644
+--- a/alatus/src/main/ets/view/cityView.ets
++++ b/alatus/src/main/ets/view/cityView.ets
+@@ -6,19 +6,19 @@ export struct cityView{
+   casts:Array<cast> = [];
+   @Builder weatherImage(weather:string,width:number,height:number){
+     if(weather === "晴"){
+-      Image("https://i-blog.csdnimg.cn/direct/bf01538113ef4f218fd4495c430e0568.jpeg")
++      Image("http://127.0.0.1:18492/weather/sunny.img")
+         .width(width).height(height);
+     }
+     if(weather === "阴"){
+-      Image("https://i-blog.csdnimg.cn/direct/cdccb8075bb8473db2672bed70190ba7.jpeg")
++      Image("http://127.0.0.1:18492/weather/overcast.img")
+         .width(width).height(height);
+     }
+     if(weather === "多云"){
+-      Image("https://i-blog.csdnimg.cn/direct/cc6430c2542b4f49b98d33bac2005829.jpeg")
++      Image("http://127.0.0.1:18492/weather/cloudy.img")
+         .width(width).height(height);
+     }
+     if(weather.includes("雨")){
+-      Image("https://i-blog.csdnimg.cn/direct/de1260f193c446e7a1e9468140997ae2.jpeg")
++      Image("http://127.0.0.1:18492/weather/rain.img")
+         .width(width).height(height);
+     }
+   }
+diff --git a/alatus/src/main/ets/viewmodel/getWeatherUtil.ets b/alatus/src/main/ets/viewmodel/getWeatherUtil.ets
+index 7ab0698..030bc39 100644
+--- a/alatus/src/main/ets/viewmodel/getWeatherUtil.ets
++++ b/alatus/src/main/ets/viewmodel/getWeatherUtil.ets
+@@ -7,7 +7,7 @@ class getWeatherUtil{
+   getWeather(cityCode:number){
+     return new Promise<weatherModel>((resolve,reject)=>{
+       let request = http.createHttp();
+-      let url = `https://restapi.amap.com/v3/weather/weatherInfo?city=${cityCode}&extensions=all&key=${key}`;
++      let url = `http://127.0.0.1:18492/v3/weather/weatherInfo?city=${cityCode}&extensions=all&key=${key}`;
+       let result = request.request(url);
+       result.then((res)=>{
+         if(res.responseCode===200){

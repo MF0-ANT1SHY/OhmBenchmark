@@ -1,5 +1,5 @@
 diff --git a/alatus/src/main/ets/view/cityView.ets b/alatus/src/main/ets/view/cityView.ets
-index bfb53d2..50332c9 100644
+index 497b128..50332c9 100644
 --- a/alatus/src/main/ets/view/cityView.ets
 +++ b/alatus/src/main/ets/view/cityView.ets
 @@ -4,21 +4,22 @@ import { cast } from '../viewmodel/cast';
@@ -9,22 +9,22 @@ index bfb53d2..50332c9 100644
 +  // 天气图标使用本地静态资源，避免每次渲染都从远程 CDN 加载
    @Builder weatherImage(weather:string,width:number,height:number){
      if(weather === "晴"){
--      Image("https://i-blog.csdnimg.cn/direct/bf01538113ef4f218fd4495c430e0568.jpeg")
+-      Image("http://127.0.0.1:18492/weather/sunny.img")
 +      Image($rawfile('weather/sunny.img'))
          .width(width).height(height);
      }
      if(weather === "阴"){
--      Image("https://i-blog.csdnimg.cn/direct/cdccb8075bb8473db2672bed70190ba7.jpeg")
+-      Image("http://127.0.0.1:18492/weather/overcast.img")
 +      Image($rawfile('weather/overcast.img'))
          .width(width).height(height);
      }
      if(weather === "多云"){
--      Image("https://i-blog.csdnimg.cn/direct/cc6430c2542b4f49b98d33bac2005829.jpeg")
+-      Image("http://127.0.0.1:18492/weather/cloudy.img")
 +      Image($rawfile('weather/cloudy.img'))
          .width(width).height(height);
      }
      if(weather.includes("雨")){
--      Image("https://i-blog.csdnimg.cn/direct/de1260f193c446e7a1e9468140997ae2.jpeg")
+-      Image("http://127.0.0.1:18492/weather/rain.img")
 +      Image($rawfile('weather/rain.img'))
          .width(width).height(height);
      }

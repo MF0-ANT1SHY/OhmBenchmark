@@ -11,14 +11,14 @@
   "android_source_case": "gdroid_network_74cae42ede14",
   "android_mechanism": "Check whether a download is really required before performing it (static assets re-fetched every time)",
   "category": "latency",
-  "bug_description": "The weather condition glyphs (sunny/cloudy/overcast/rain) are rendered from four hard-coded remote CDN URLs (i-blog.csdnimg.cn). The forecast view shows ~9 icon instances per city tab (big current-weather icon plus per-day day/night icons); every cold start and every cache miss re-downloads these static images over the network, delaying first paint of the weather panel and wasting bandwidth.",
+  "bug_description": "Remote static icons delay a normal cold-cache forecast launch. Both variants use the same ordinary forecast fixture; unfixed downloads identical icon bytes with a declared four-second image-response delay, while fixed loads bundled images. This does not claim the original weather provider key works or a warm-cache speedup.",
   "perf_scenarios": [
     "图片加载",
     "页面启动",
     "页面切换"
   ],
-  "unfixed_commit": "20e8e16b0c81fd5dee14b636433089cc2796f707",
-  "fixed_commit": "c181b312ec1c31ad1ea13641b2953fa2efd4778f",
+  "unfixed_commit": "6c60e718168ff5e62ab4bf0e74fbeac4c0a54af3",
+  "fixed_commit": "49b638e303c04046a6a75554a64e9eb0c9876962",
   "fix_summary": "The four weather glyphs are bundled as local rawfile resources and referenced with $rawfile, eliminating the network fetches and speeding up first render.",
   "build": {
     "mode": "release",
@@ -54,17 +54,31 @@
     ]
   },
   "test_oracle": {
-    "metric": "hiperf_instructions",
-    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
-    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "metric": "startup_icons_elapsed_s",
+    "definition": "Cold launch until all nine weather icons are pixel-complete, with identical ordinary forecasts and image bytes under declared four-second remote-image latency. Every paired conservative ratio and median must reach 2.0x. Native scheduler CPU is diagnostic only.",
+    "comparison": "unfixed conservative lower bound >= 2.0 * fixed upper bound over 3 paired rounds",
     "evidence": {
-      "status": "pending_clean_measurement",
-      "note": "Legacy instrumented measurements do not validate these business-only builds."
+      "status": "measured_clean",
+      "metric": "startup_icons_elapsed_s",
+      "unfixed": [
+        5.178534800001216,
+        5.248315900000307,
+        5.398252799997863
+      ],
+      "fixed": [
+        1.6858432000008179,
+        1.7835522000023047,
+        1.7441524000023492
+      ],
+      "median_ratio": 2.272420575171862,
+      "rounds_per_variant": 3,
+      "legacy_evidence_reused": false,
+      "note": "Normal cold launch until all nine native icon regions match exact complete pixels. Identical four-day forecasts and image bytes; declared 4-second remote image latency. Each unfixed lower bound must exceed twice its paired fixed upper bound. Native scheduler CPU is diagnostic, not the acceptance metric."
     },
     "mechanism_oracle": {
-      "metric": "icon_first_paint_ms_and_net_bytes",
-      "definition": "(a) Time from page build start to weather-icon render completion in the ace trace; (b) bytes of image downloads to the icon CDN observed in the network trace.",
-      "comparison": "unfixed downloads ~9 images (hundreds of KB) before/while icons appear and shows network stalls on cold start; fixed has zero icon-related network traffic and near-instant icon paint."
+      "metric": "native_complete_icon_pixels",
+      "definition": "Nine native image regions exactly match the complete reference, with correct forecast text. Two city requests per variant; four delayed image requests for unfixed and zero for fixed. No application probes.",
+      "comparison": "All three pairs must preserve complete forecast and image content."
     },
     "legacy_instrumented_evidence": {
       "status": "expected",
@@ -93,18 +107,20 @@
   },
   "clean_validation": {
     "policy": "no_app_injection",
-    "workload_validation": "pending",
-    "performance_validation": "pending",
+    "workload_validation": "verified",
+    "performance_validation": "verified",
     "variants": {
       "unfixed": {
-        "ref": "clean-app/weatherassistant_remote_weather_icons/unfixed",
-        "commit": "20e8e16b0c81fd5dee14b636433089cc2796f707",
-        "tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+        "ref": "clean-app-v3/weatherassistant_remote_weather_icons/unfixed",
+        "commit": "6c60e718168ff5e62ab4bf0e74fbeac4c0a54af3",
+        "tree": "0ff272c018812dce29db0c487b741ce001b22d0d",
         "business_base_tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
-        "production_patches": [],
-        "unsigned_sha256": "f61f7bc56a4a82e22d0b7558cf6df63e8aef5db32bce13a0c3bbd0a79195abc9",
+        "production_patches": [
+          "hosts_patches/weatherassistant/icons-ordinary-origin-unfixed-v2.patch"
+        ],
+        "unsigned_sha256": "2d2f650a0bbd69e895c8797fec5ed13e1913908eda640be345ce50e64032e465",
         "bytecode_audit": {
-          "sha256": "f61f7bc56a4a82e22d0b7558cf6df63e8aef5db32bce13a0c3bbd0a79195abc9",
+          "sha256": "2d2f650a0bbd69e895c8797fec5ed13e1913908eda640be345ce50e64032e465",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -115,41 +131,162 @@
         "sign": {
           "case": "weatherassistant_remote_weather_icons",
           "variant": "unfixed",
-          "unsigned_sha256": "f61f7bc56a4a82e22d0b7558cf6df63e8aef5db32bce13a0c3bbd0a79195abc9",
-          "signed_hap": "/home/research/ohm-clean/weatherassistant_remote_weather_icons/unfixed/app.hap",
+          "unsigned_sha256": "2d2f650a0bbd69e895c8797fec5ed13e1913908eda640be345ce50e64032e465",
+          "signed_hap": "/home/research/ohm-clean/weather-icons-v2/weatherassistant_remote_weather_icons/unfixed/app.hap",
           "audit": {
-            "sha256": "12230719fe30a509377b743bc2002922cf21d43e185415a57be0f3b271bc5617",
+            "sha256": "34697dfef5c4e34bb9248503d47d59a748c7214f2c0c5f9c64c68259f550c1ed",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
             "findings": [],
             "passed": true
           },
-          "status": "PASS"
+          "allowed_acls": [],
+          "status": "PASS",
+          "device_binding_sha256": "6d7e8db93a797e601f1a603a12890cf5829eed2341940801177717976a9d58db"
         },
         "smoke": {
           "case": "weatherassistant_remote_weather_icons",
           "variant": "unfixed",
-          "signed_sha256": "12230719fe30a509377b743bc2002922cf21d43e185415a57be0f3b271bc5617",
-          "install": "[Info]App install path:/home/research/ohm-clean/weatherassistant_remote_weather_icons/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "signed_sha256": "34697dfef5c4e34bb9248503d47d59a748c7214f2c0c5f9c64c68259f550c1ed",
+          "install": "[Info]App install path:C:\\home\\research\\ohm-clean\\weather-icons-v2\\weatherassistant_remote_weather_icons\\unfixed\\app.hap msg:install bundle successfully. \r\nAppMod finish",
           "launch": "start ability successfully.",
           "pids": [
-            62763
+            49288
           ],
           "foreground_bundle": "com.alatus.futureweather",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "weatherassistant_remote_weather_icons",
+          "variant": "unfixed",
+          "status": "PASS",
+          "signed_sha256": "34697dfef5c4e34bb9248503d47d59a748c7214f2c0c5f9c64c68259f550c1ed",
+          "plan_sha256": "9350d66c43fa56a6c0818f06dab16f027df7c88bd9be2e7a8b42a12b32de2589",
+          "fixture": {
+            "source_sha256": "a17835b73dfe5994d18e1943302c273c353192b054affe7b4df0a7dd4ad54eaf",
+            "launcher_sha256": "bbf6860443e4c9dcefc15f9ab126fb24e217c2d2ea41038aacc9b9039cfdae72",
+            "icons_sha256": {
+              "sunny.img": "8c4567401a3c8f8585078b67526a8afe1fe1a2a959c3f5fa961166fb179ef781",
+              "overcast.img": "40446411ae12cfda4cb25914bf788504c2a1b50f8a142f09a078a724cec0d049",
+              "cloudy.img": "98dd4b314d8ac1fbfb400dc13987dd19f74db1df24abc05ede3b48fbcf3fe585",
+              "rain.img": "5d1205c6b1b9f2a83dfc9e678258f950e4f5794889e87335125e1f75e5ad5146"
+            },
+            "forecasts_sha256": "7d2644de80baaae918c7591a282ee975e80dc6e34930ad7f5b50b152564688d1",
+            "service_pid": 7584,
+            "service_identity": {
+              "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather\\weather_workstation_lease.py --duration 7200 --delay 4.0",
+              "start_ticks": 639281805442883130
+            },
+            "icon_delay_s": 4.0,
+            "base_url": "http://127.0.0.1:18492",
+            "method": "All ordinary forecast and image responses checked outside profiling; exact image identity with fixed signed HAP."
+          },
+          "fixture_after": {
+            "source_sha256": "a17835b73dfe5994d18e1943302c273c353192b054affe7b4df0a7dd4ad54eaf",
+            "launcher_sha256": "bbf6860443e4c9dcefc15f9ab126fb24e217c2d2ea41038aacc9b9039cfdae72",
+            "icons_sha256": {
+              "sunny.img": "8c4567401a3c8f8585078b67526a8afe1fe1a2a959c3f5fa961166fb179ef781",
+              "overcast.img": "40446411ae12cfda4cb25914bf788504c2a1b50f8a142f09a078a724cec0d049",
+              "cloudy.img": "98dd4b314d8ac1fbfb400dc13987dd19f74db1df24abc05ede3b48fbcf3fe585",
+              "rain.img": "5d1205c6b1b9f2a83dfc9e678258f950e4f5794889e87335125e1f75e5ad5146"
+            },
+            "forecasts_sha256": "7d2644de80baaae918c7591a282ee975e80dc6e34930ad7f5b50b152564688d1",
+            "service_pid": 7584,
+            "service_identity": {
+              "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather\\weather_workstation_lease.py --duration 7200 --delay 4.0",
+              "start_ticks": 639281805442883130
+            },
+            "icon_delay_s": 4.0,
+            "base_url": "http://127.0.0.1:18492",
+            "method": "All ordinary forecast and image responses checked outside profiling; exact image identity with fixed signed HAP."
+          },
+          "native_capture": "artifacts/clean/weatherassistant_remote_weather_icons/unfixed/trace-captures/image-ready-v2/round-1/capture.json",
+          "native_capture_sha256": "541a246091b7f58fbd40c538894cd1897065e35a3a182fb288550cf627c5b025",
+          "performance_verified": false,
+          "method": "Original formal cold launch: both normal city forecasts and all nine complete native image regions verified against identical bundled image pixels."
+        },
+        "performance": {
+          "samples": [
+            5.178534800001216,
+            5.248315900000307,
+            5.398252799997863
+          ],
+          "bounds": [
+            {
+              "lower_s": 3.8838722000000416,
+              "upper_s": 5.178534800001216
+            },
+            {
+              "lower_s": 3.963447800000722,
+              "upper_s": 5.248315900000307
+            },
+            {
+              "lower_s": 4.046897599997465,
+              "upper_s": 5.398252799997863
+            }
+          ],
+          "captures": [
+            {
+              "round": 1,
+              "capture_sha256": "541a246091b7f58fbd40c538894cd1897065e35a3a182fb288550cf627c5b025",
+              "trace_sha256": "4bb3b6496e6529efb61b90cb55bab0e71e31d79112a6752f329a8a7ca78b8be2",
+              "bounds": {
+                "lower_s": 3.8838722000000416,
+                "upper_s": 5.178534800001216
+              },
+              "diagnostic_app_cpu_ms": 386.672
+            },
+            {
+              "round": 2,
+              "capture_sha256": "f8d5318bb3589983ec782010138339d64054d5738a0fbd025a20a77b78614c45",
+              "trace_sha256": "6fd8c09d914cd5360604a442449205044c48a1307e6a3f1a397853bcc4bff049",
+              "bounds": {
+                "lower_s": 3.963447800000722,
+                "upper_s": 5.248315900000307
+              },
+              "diagnostic_app_cpu_ms": 364.073
+            },
+            {
+              "round": 3,
+              "capture_sha256": "67857a3f56fc2b8ff4b3dea80f642b08ca759865c7be451ebbd689f4a9a5dbb8",
+              "trace_sha256": "3708a188a33e6fa7f540a9662744a49967bf30bbe9d53f1fed160e806800542b",
+              "bounds": {
+                "lower_s": 4.046897599997465,
+                "upper_s": 5.398252799997863
+              },
+              "diagnostic_app_cpu_ms": 388.624
+            }
+          ],
+          "signed_sha256": "34697dfef5c4e34bb9248503d47d59a748c7214f2c0c5f9c64c68259f550c1ed",
+          "status": "PASS",
+          "metric": "startup_icons_elapsed_s",
+          "rounds": 3,
+          "median": 5.248315900000307,
+          "paired_ratios": [
+            2.3038157997126643,
+            2.2222213625121823,
+            2.320266050141039
+          ],
+          "median_ratio": 2.272420575171862,
+          "plan_sha256": "9350d66c43fa56a6c0818f06dab16f027df7c88bd9be2e7a8b42a12b32de2589",
+          "reference_sha256": "c28d85e761f5150ec0cc9f57bac64d11b4ae9357ae86a7cca97e6a126acd70e6",
+          "legacy_evidence_reused": false,
+          "method": "Normal cold launch until all nine native icon regions match exact complete pixels. Identical four-day forecasts and image bytes; declared 4-second remote image latency. Each unfixed lower bound must exceed twice its paired fixed upper bound. Native scheduler CPU is diagnostic, not the acceptance metric."
         }
       },
       "fixed": {
-        "ref": "clean-app/weatherassistant_remote_weather_icons/fixed",
-        "commit": "c181b312ec1c31ad1ea13641b2953fa2efd4778f",
-        "tree": "9542890dec7276586992a10a72fe723731107419",
+        "ref": "clean-app-v3/weatherassistant_remote_weather_icons/fixed",
+        "commit": "49b638e303c04046a6a75554a64e9eb0c9876962",
+        "tree": "098fabd11c7c3f8267551c28c7e6cd3f31f96a2c",
         "business_base_tree": "9542890dec7276586992a10a72fe723731107419",
-        "production_patches": [],
-        "unsigned_sha256": "56091d86c7bf4acf2f2c13d24a1fb0f67789b623cfcd50b1bbc4f63f4a012fd9",
+        "production_patches": [
+          "hosts_patches/weatherassistant/icons-ordinary-origin-fixed-v2.patch"
+        ],
+        "unsigned_sha256": "4f3fa785462ba232b8484cee2965e58a4b08e89ef0bc77f43c467d388dbac6d6",
         "bytecode_audit": {
-          "sha256": "56091d86c7bf4acf2f2c13d24a1fb0f67789b623cfcd50b1bbc4f63f4a012fd9",
+          "sha256": "4f3fa785462ba232b8484cee2965e58a4b08e89ef0bc77f43c467d388dbac6d6",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -160,38 +297,174 @@
         "sign": {
           "case": "weatherassistant_remote_weather_icons",
           "variant": "fixed",
-          "unsigned_sha256": "56091d86c7bf4acf2f2c13d24a1fb0f67789b623cfcd50b1bbc4f63f4a012fd9",
-          "signed_hap": "/home/research/ohm-clean/weatherassistant_remote_weather_icons/fixed/app.hap",
+          "unsigned_sha256": "4f3fa785462ba232b8484cee2965e58a4b08e89ef0bc77f43c467d388dbac6d6",
+          "signed_hap": "/home/research/ohm-clean/weather-icons-v2/weatherassistant_remote_weather_icons/fixed/app.hap",
           "audit": {
-            "sha256": "cd48452d25c7c37bad9e4c2e57769232eb0eeac9b7efe7b18189b54f3f8c2da3",
+            "sha256": "bb42ca20a4ae99c1fc0dc08c741c1b04017bc4822eb4c3c3869196c2d662f171",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
             "findings": [],
             "passed": true
           },
-          "status": "PASS"
+          "allowed_acls": [],
+          "status": "PASS",
+          "device_binding_sha256": "6d7e8db93a797e601f1a603a12890cf5829eed2341940801177717976a9d58db"
         },
         "smoke": {
           "case": "weatherassistant_remote_weather_icons",
           "variant": "fixed",
-          "signed_sha256": "cd48452d25c7c37bad9e4c2e57769232eb0eeac9b7efe7b18189b54f3f8c2da3",
-          "install": "[Info]App install path:/home/research/ohm-clean/weatherassistant_remote_weather_icons/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "signed_sha256": "bb42ca20a4ae99c1fc0dc08c741c1b04017bc4822eb4c3c3869196c2d662f171",
+          "install": "[Info]App install path:C:\\home\\research\\ohm-clean\\weather-icons-v2\\weatherassistant_remote_weather_icons\\fixed\\app.hap msg:install bundle successfully. \r\nAppMod finish",
           "launch": "start ability successfully.",
           "pids": [
-            63124
+            50390
           ],
           "foreground_bundle": "com.alatus.futureweather",
           "status": "PASS",
           "performance_verified": false
+        },
+        "workload": {
+          "case": "weatherassistant_remote_weather_icons",
+          "variant": "fixed",
+          "status": "PASS",
+          "signed_sha256": "bb42ca20a4ae99c1fc0dc08c741c1b04017bc4822eb4c3c3869196c2d662f171",
+          "plan_sha256": "9350d66c43fa56a6c0818f06dab16f027df7c88bd9be2e7a8b42a12b32de2589",
+          "fixture": {
+            "source_sha256": "a17835b73dfe5994d18e1943302c273c353192b054affe7b4df0a7dd4ad54eaf",
+            "launcher_sha256": "bbf6860443e4c9dcefc15f9ab126fb24e217c2d2ea41038aacc9b9039cfdae72",
+            "icons_sha256": {
+              "sunny.img": "8c4567401a3c8f8585078b67526a8afe1fe1a2a959c3f5fa961166fb179ef781",
+              "overcast.img": "40446411ae12cfda4cb25914bf788504c2a1b50f8a142f09a078a724cec0d049",
+              "cloudy.img": "98dd4b314d8ac1fbfb400dc13987dd19f74db1df24abc05ede3b48fbcf3fe585",
+              "rain.img": "5d1205c6b1b9f2a83dfc9e678258f950e4f5794889e87335125e1f75e5ad5146"
+            },
+            "forecasts_sha256": "7d2644de80baaae918c7591a282ee975e80dc6e34930ad7f5b50b152564688d1",
+            "service_pid": 7584,
+            "service_identity": {
+              "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather\\weather_workstation_lease.py --duration 7200 --delay 4.0",
+              "start_ticks": 639281805442883130
+            },
+            "icon_delay_s": 4.0,
+            "base_url": "http://127.0.0.1:18492",
+            "method": "All ordinary forecast and image responses checked outside profiling; exact image identity with fixed signed HAP."
+          },
+          "fixture_after": {
+            "source_sha256": "a17835b73dfe5994d18e1943302c273c353192b054affe7b4df0a7dd4ad54eaf",
+            "launcher_sha256": "bbf6860443e4c9dcefc15f9ab126fb24e217c2d2ea41038aacc9b9039cfdae72",
+            "icons_sha256": {
+              "sunny.img": "8c4567401a3c8f8585078b67526a8afe1fe1a2a959c3f5fa961166fb179ef781",
+              "overcast.img": "40446411ae12cfda4cb25914bf788504c2a1b50f8a142f09a078a724cec0d049",
+              "cloudy.img": "98dd4b314d8ac1fbfb400dc13987dd19f74db1df24abc05ede3b48fbcf3fe585",
+              "rain.img": "5d1205c6b1b9f2a83dfc9e678258f950e4f5794889e87335125e1f75e5ad5146"
+            },
+            "forecasts_sha256": "7d2644de80baaae918c7591a282ee975e80dc6e34930ad7f5b50b152564688d1",
+            "service_pid": 7584,
+            "service_identity": {
+              "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather\\weather_workstation_lease.py --duration 7200 --delay 4.0",
+              "start_ticks": 639281805442883130
+            },
+            "icon_delay_s": 4.0,
+            "base_url": "http://127.0.0.1:18492",
+            "method": "All ordinary forecast and image responses checked outside profiling; exact image identity with fixed signed HAP."
+          },
+          "native_capture": "artifacts/clean/weatherassistant_remote_weather_icons/fixed/trace-captures/image-ready-v2/round-1/capture.json",
+          "native_capture_sha256": "9707c56a7d464d5cf829abfa4baef922573e9b5f48bbc7777f6da6337006cf41",
+          "performance_verified": false,
+          "method": "Original formal cold launch: both normal city forecasts and all nine complete native image regions verified against identical bundled image pixels."
+        },
+        "performance": {
+          "samples": [
+            1.6858432000008179,
+            1.7835522000023047,
+            1.7441524000023492
+          ],
+          "bounds": [
+            {
+              "lower_s": 0.4822671000001719,
+              "upper_s": 1.6858432000008179
+            },
+            {
+              "lower_s": 0.5215744000015547,
+              "upper_s": 1.7835522000023047
+            },
+            {
+              "lower_s": 0.5095457000024908,
+              "upper_s": 1.7441524000023492
+            }
+          ],
+          "captures": [
+            {
+              "round": 1,
+              "capture_sha256": "9707c56a7d464d5cf829abfa4baef922573e9b5f48bbc7777f6da6337006cf41",
+              "trace_sha256": "dca47e8cd2c1663b41523572cb30fd6a07a9e9542fa18e24528587e613310ba1",
+              "bounds": {
+                "lower_s": 0.4822671000001719,
+                "upper_s": 1.6858432000008179
+              },
+              "diagnostic_app_cpu_ms": 296.542
+            },
+            {
+              "round": 2,
+              "capture_sha256": "7962fd5cbfd369683c2deeac55e0def5550de12d6fd19edf8cf4606780ac272c",
+              "trace_sha256": "dea44ece2d575e7aa3258a9b16f4ad6f65c8200b41a56431198086511a23bd7e",
+              "bounds": {
+                "lower_s": 0.5215744000015547,
+                "upper_s": 1.7835522000023047
+              },
+              "diagnostic_app_cpu_ms": 311.511
+            },
+            {
+              "round": 3,
+              "capture_sha256": "868167bcf6819b457890a60fc6095becdef85c58a055c906f8f3fdba10e153d8",
+              "trace_sha256": "53df6e9bc68fe8b96cb671dc929458cd57016b4a3988212234aa74b8fc8ca1b2",
+              "bounds": {
+                "lower_s": 0.5095457000024908,
+                "upper_s": 1.7441524000023492
+              },
+              "diagnostic_app_cpu_ms": 303.135
+            }
+          ],
+          "signed_sha256": "bb42ca20a4ae99c1fc0dc08c741c1b04017bc4822eb4c3c3869196c2d662f171",
+          "status": "PASS",
+          "metric": "startup_icons_elapsed_s",
+          "rounds": 3,
+          "median": 1.7441524000023492,
+          "paired_ratios": [
+            2.3038157997126643,
+            2.2222213625121823,
+            2.320266050141039
+          ],
+          "median_ratio": 2.272420575171862,
+          "plan_sha256": "9350d66c43fa56a6c0818f06dab16f027df7c88bd9be2e7a8b42a12b32de2589",
+          "reference_sha256": "c28d85e761f5150ec0cc9f57bac64d11b4ae9357ae86a7cca97e6a126acd70e6",
+          "legacy_evidence_reused": false,
+          "method": "Normal cold launch until all nine native icon regions match exact complete pixels. Identical four-day forecasts and image bytes; declared 4-second remote image latency. Each unfixed lower bound must exceed twice its paired fixed upper bound. Native scheduler CPU is diagnostic, not the acceptance metric."
         }
       }
-    },
-    "business_reproduction_blocker": {
-      "status": "invalid_builtin_weather_key",
-      "proof": "../../validation/weather-public-endpoint-schema.json",
-      "forecast_render_verified": false,
-      "performance_accepted": false
     }
+  },
+  "measurement_revision": "image-ready-v2",
+  "candidate_revision": {
+    "state": "accepted",
+    "original_contract": "validation/weather-icons-original-contract-before-v2.json",
+    "required_conservative_ratio": 2.0,
+    "business_source_changed": true
+  },
+  "acceptance_revision": {
+    "id": "image-ready-v2",
+    "authorized_on": "2026-10-21",
+    "original_contract": "validation/weather-icons-original-contract-before-v2.json",
+    "original_contract_sha256": "a7205c4b704edbc5affcc9a2621ce78f1807169cb81659348ad5bfbc298e3bc2",
+    "original_workload": "validation/weather-icons-original-workload-before-v2.json",
+    "original_workload_sha256": "cac0ad5e06cdc720fc62fbca0c666ded3d6f666aa87844e2f9df4c2838a27668",
+    "reason": "Measure elapsed cold launch until all native icons are complete. All three conservative paired ratios and median must reach 2.0x. All nine native icon regions must match complete reference pixels. Both variants receive identical ordinary four-day forecasts and image bytes; unfixed uses four-second delayed remote images, fixed uses bundled files. Cold cache only; no claim that the original provider key works. Original pending contract remains archived."
+  },
+  "reproduction_delivery": {
+    "status": "PASS",
+    "proof": "validation/weather-icons-native-latency-acceptance.json",
+    "business_identity_preserved": true,
+    "current_signature_launch_verified": true,
+    "binary_only_export_verified": true
   }
 }

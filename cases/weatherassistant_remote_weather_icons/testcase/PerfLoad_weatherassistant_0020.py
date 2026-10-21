@@ -32,7 +32,7 @@ class PerfLoad_weatherassistant_0020(PerfTestCase):
 
     def process(self):
         ui = UI(self.driver.shell, self._app_package, self._plan['ability'])
-        ui.run([{'op': 'stop'}, {'op': 'launch'}])
+        ui.run([{'op': 'stop'}])
         ui.run(self._plan['setup'])
         ui.profiled(self.execute_performance_step,
             'HarmonyOS-Next-Weather-Assistant页面操作', 25, self._plan['measured'])

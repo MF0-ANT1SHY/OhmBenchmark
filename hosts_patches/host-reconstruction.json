@@ -348,11 +348,21 @@
         },
         "case/weatherassistant_remote_weather_icons/fixed": {
           "state": "perf: bundle weather icons as local raw resources instead of fetching static glyphs from a remote CDN on every render",
-          "tree": "9542890dec7276586992a10a72fe723731107419"
+          "tree": "9542890dec7276586992a10a72fe723731107419",
+          "app_ref": "clean-app-v3/weatherassistant_remote_weather_icons/fixed",
+          "app_tree": "098fabd11c7c3f8267551c28c7e6cd3f31f96a2c",
+          "production_patches": [
+            "hosts_patches/weatherassistant/icons-ordinary-origin-fixed-v2.patch"
+          ]
         },
         "case/weatherassistant_remote_weather_icons/unfixed": {
           "state": "fix: destroy the HTTP session after each weather request to avoid leaking connections and fds",
-          "tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0"
+          "tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+          "app_ref": "clean-app-v3/weatherassistant_remote_weather_icons/unfixed",
+          "app_tree": "0ff272c018812dce29db0c487b741ce001b22d0d",
+          "production_patches": [
+            "hosts_patches/weatherassistant/icons-ordinary-origin-unfixed-v2.patch"
+          ]
         }
       }
     },
