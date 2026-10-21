@@ -1,0 +1,403 @@
+{
+  "id": "cloudmusic_search_result_foreach",
+  "host_app": {
+    "name": "CloudMusic-HarmonyOSNext (仿网易云音乐)",
+    "repository": "https://github.com/Chenlvin/CloudMusic-HarmonyOSNext",
+    "bundle_name": "cc.chenlvin.cloudmusic",
+    "local_path": "hosts/cloudmusic",
+    "base_branch": "ohmbase",
+    "base_commit": "f8fd90d"
+  },
+  "android_source_case": "listmyapps_view_recycling",
+  "android_mechanism": "List rows eagerly created / not recycled while scrolling",
+  "category": "latency",
+  "bug_description": "The song search-result tab renders results with a plain ForEach inside List. Loading several result pages (30 per page) eagerly creates SongCard components for every accumulated result — including off-screen ones — and rebuilds them as the array grows, slowing search-result display and scrolling.",
+  "perf_scenarios": [
+    "列表滑动",
+    "网络结果渲染",
+    "组件创建"
+  ],
+  "unfixed_commit": "d755085f20e4ba7bddffce1e6ee8e06b1e0b1966",
+  "fixed_commit": "153f8c7dc8203197ffb3ff14e8856d6c124f001b",
+  "fix_summary": "Results render through LazyForEach backed by a LazyData data source (already used elsewhere in the app), so rows are created on demand and recycled.",
+  "build": {
+    "mode": "release",
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "testcase": {
+    "name": "PerfLoad_cloudmusic_0040",
+    "py_file": "testcase/PerfLoad_cloudmusic_0040.py",
+    "descriptor": "testcase/PerfLoad_cloudmusic_0040.json",
+    "install_dir": "perf_testing/hapray/testcases/cc.chenlvin.cloudmusic",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_cloudmusic_0040.workload.json"
+  },
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 480,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "hiperf_instructions",
+    "definition": "Sampled retired-instruction period sum (hw-instructions) attributed to the app process in the complete externally driven measured window.",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "measured_clean_failed",
+      "metric": "hiperf_instructions",
+      "unfixed": [
+        21108845730,
+        21009621821,
+        20983545175
+      ],
+      "fixed": [
+        21713786874,
+        21743695957,
+        21818629457
+      ],
+      "median_ratio": 0.9662396798846115,
+      "rounds_per_variant": 3,
+      "legacy_evidence_reused": false,
+      "note": "Clean captures are valid, but the required 1.2x performance improvement is not met; this case is not accepted."
+    },
+    "mechanism_oracle": {
+      "metric": "search_list_render_cpu_and_jank",
+      "definition": "(a) UI-thread CPU from results display to end of scroll; (b) count of SongCard component builds; (c) dropped frames while scrolling.",
+      "comparison": "unfixed builds all accumulated rows (150+ after 5 pages) at once; fixed builds only visible rows. unfixed first-paint after load-more and scroll CPU measurably higher; more jank frames."
+    },
+    "legacy_instrumented_evidence": {
+      "status": "supporting",
+      "measured_as": "SongCard builds",
+      "unfixed": [
+        150,
+        150,
+        150
+      ],
+      "fixed": [
+        12,
+        12,
+        12
+      ],
+      "note": "150 vs 12 row builds per render (mechanism counter, authoritative); whole-step hw-instruction medians are flat (3.4M vs 3.5M) because the window is dominated by page setup, so the declared metric needs a narrower region to separate (measurements-staging)."
+    }
+  },
+  "reproduction": [
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py cloudmusic_search_result_foreach",
+    "python3 tools/sign_clean_cases.py cloudmusic_search_result_foreach",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/cloudmusic_search_result_foreach/testcase/ into perf_testing/hapray/testcases/cc.chenlvin.cloudmusic/.",
+    "Install each clean signed variant and run the PerfLoad_cloudmusic_0040 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "d755085",
+    "fixed_commit": "153f8c7",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "verified",
+    "performance_validation": "failed",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/cloudmusic_search_result_foreach/unfixed",
+        "commit": "d755085f20e4ba7bddffce1e6ee8e06b1e0b1966",
+        "tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
+        "business_base_tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
+        "production_patches": [],
+        "unsigned_sha256": "ea6b4400e75f80efdfdb6ad574b0e659b1b5c53d202d2bf67172973700a83076",
+        "bytecode_audit": {
+          "sha256": "ea6b4400e75f80efdfdb6ad574b0e659b1b5c53d202d2bf67172973700a83076",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "cloudmusic_search_result_foreach",
+          "variant": "unfixed",
+          "unsigned_sha256": "ea6b4400e75f80efdfdb6ad574b0e659b1b5c53d202d2bf67172973700a83076",
+          "signed_hap": "/home/research/ohm-clean/cloudmusic_search_result_foreach/unfixed/app.hap",
+          "audit": {
+            "sha256": "3e5c26c7909ac4a8ac5a1057f41e15c79d16a2da7d8879d9294a5d5fa283d02f",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "allowed_acls": [
+            "ohos.permission.SYSTEM_FLOAT_WINDOW"
+          ],
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "cloudmusic_search_result_foreach",
+          "variant": "unfixed",
+          "signed_sha256": "3e5c26c7909ac4a8ac5a1057f41e15c79d16a2da7d8879d9294a5d5fa283d02f",
+          "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_search_result_foreach/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            38772
+          ],
+          "foreground_bundle": "cc.chenlvin.cloudmusic",
+          "status": "PASS",
+          "performance_verified": false
+        },
+        "workload": {
+          "case": "cloudmusic_search_result_foreach",
+          "variant": "unfixed",
+          "signed_sha256": "3e5c26c7909ac4a8ac5a1057f41e15c79d16a2da7d8879d9294a5d5fa283d02f",
+          "plan_sha256": "20634e7c8dd8e1b55ba1e818b40d26ba5ba4448ad2c7f8da9e3206c235221028",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+            "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+            "songs": 10000,
+            "artist_count": 12,
+            "base_url": "http://127.0.0.1:18490",
+            "service_pid": 53975,
+            "service_start_ticks": 1980273,
+            "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+          },
+          "phase_elapsed_s": {
+            "setup": 31.77696486700006,
+            "measured": 376.6819861410004,
+            "verify": 11.133434669001872
+          },
+          "fixture_after": {
+            "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+            "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+            "songs": 10000,
+            "artist_count": 12,
+            "base_url": "http://127.0.0.1:18490",
+            "service_pid": 53975,
+            "service_start_ticks": 1980273,
+            "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+          },
+          "functional_check": "normal song titles and artist lines match the ordinary music catalogue",
+          "observed_titles": [
+            "Track 141",
+            "Track 142",
+            "Track 143",
+            "Track 144",
+            "Track 145",
+            "Track 146",
+            "Track 147",
+            "Track 148",
+            "Track 149",
+            "Track 150"
+          ],
+          "capture_duration_required_s": 382
+        },
+        "performance": {
+          "status": "FAIL",
+          "metric": "hiperf_instructions",
+          "rounds": 3,
+          "samples": [
+            21108845730,
+            21009621821,
+            20983545175
+          ],
+          "median": 21009621821,
+          "paired_ratios": [
+            0.9721402283484529,
+            0.9662396798846115,
+            0.9617260889990465
+          ],
+          "median_ratio": 0.9662396798846115,
+          "plan_sha256": "20634e7c8dd8e1b55ba1e818b40d26ba5ba4448ad2c7f8da9e3206c235221028",
+          "signed_sha256": "3e5c26c7909ac4a8ac5a1057f41e15c79d16a2da7d8879d9294a5d5fa283d02f",
+          "fixture_sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "4f7a579b59670c6e50a6638cd284b04e8ab8b9317eb03d61dad4a7279fb29300",
+              "app_samples": 37998,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_search_result_foreach/unfixed/cpu-captures/round-1"
+            },
+            {
+              "round": 2,
+              "report_sha256": "5c79acf3287e83265cde090dfa32d8ba08dce9509187e497975e2dcc075c7d3f",
+              "app_samples": 37444,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_search_result_foreach/unfixed/cpu-captures/round-2"
+            },
+            {
+              "round": 3,
+              "report_sha256": "1ee1769e17f9031f604db99f1db234b9742b9c834b6d2c72fbae5f503732e43d",
+              "app_samples": 37748,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_search_result_foreach/unfixed/cpu-captures/round-3"
+            }
+          ],
+          "legacy_evidence_reused": false
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/cloudmusic_search_result_foreach/fixed",
+        "commit": "153f8c7dc8203197ffb3ff14e8856d6c124f001b",
+        "tree": "9fce0f474edb3690c2c562d83cc82629ae42fb24",
+        "business_base_tree": "9fce0f474edb3690c2c562d83cc82629ae42fb24",
+        "production_patches": [],
+        "unsigned_sha256": "49e6fb6115749be857d5267e2280a5767738ef10ed8a362b026a0ac945bfe8b3",
+        "bytecode_audit": {
+          "sha256": "49e6fb6115749be857d5267e2280a5767738ef10ed8a362b026a0ac945bfe8b3",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "cloudmusic_search_result_foreach",
+          "variant": "fixed",
+          "unsigned_sha256": "49e6fb6115749be857d5267e2280a5767738ef10ed8a362b026a0ac945bfe8b3",
+          "signed_hap": "/home/research/ohm-clean/cloudmusic_search_result_foreach/fixed/app.hap",
+          "audit": {
+            "sha256": "c9370192b53e02d4ce12758a489d691052866891931a340bc4c4c94761e2783a",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "allowed_acls": [
+            "ohos.permission.SYSTEM_FLOAT_WINDOW"
+          ],
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "cloudmusic_search_result_foreach",
+          "variant": "fixed",
+          "signed_sha256": "c9370192b53e02d4ce12758a489d691052866891931a340bc4c4c94761e2783a",
+          "install": "[Info]App install path:/home/research/ohm-clean/cloudmusic_search_result_foreach/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            39164
+          ],
+          "foreground_bundle": "cc.chenlvin.cloudmusic",
+          "status": "PASS",
+          "performance_verified": false
+        },
+        "workload": {
+          "case": "cloudmusic_search_result_foreach",
+          "variant": "fixed",
+          "signed_sha256": "c9370192b53e02d4ce12758a489d691052866891931a340bc4c4c94761e2783a",
+          "plan_sha256": "20634e7c8dd8e1b55ba1e818b40d26ba5ba4448ad2c7f8da9e3206c235221028",
+          "status": "PASS",
+          "performance_verified": false,
+          "fixture": {
+            "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+            "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+            "songs": 10000,
+            "artist_count": 12,
+            "base_url": "http://127.0.0.1:18490",
+            "service_pid": 53975,
+            "service_start_ticks": 1980273,
+            "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+          },
+          "phase_elapsed_s": {
+            "setup": 31.749178493002546,
+            "measured": 376.5718560230016,
+            "verify": 11.753508477999276
+          },
+          "fixture_after": {
+            "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+            "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+            "songs": 10000,
+            "artist_count": 12,
+            "base_url": "http://127.0.0.1:18490",
+            "service_pid": 53975,
+            "service_start_ticks": 1980273,
+            "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+          },
+          "functional_check": "normal song titles and artist lines match the ordinary music catalogue",
+          "observed_titles": [
+            "Track 141",
+            "Track 142",
+            "Track 143",
+            "Track 144",
+            "Track 145",
+            "Track 146",
+            "Track 147",
+            "Track 148",
+            "Track 149",
+            "Track 150"
+          ],
+          "capture_duration_required_s": 382
+        },
+        "performance": {
+          "status": "FAIL",
+          "metric": "hiperf_instructions",
+          "rounds": 3,
+          "samples": [
+            21713786874,
+            21743695957,
+            21818629457
+          ],
+          "median": 21743695957,
+          "paired_ratios": [
+            0.9721402283484529,
+            0.9662396798846115,
+            0.9617260889990465
+          ],
+          "median_ratio": 0.9662396798846115,
+          "plan_sha256": "20634e7c8dd8e1b55ba1e818b40d26ba5ba4448ad2c7f8da9e3206c235221028",
+          "signed_sha256": "c9370192b53e02d4ce12758a489d691052866891931a340bc4c4c94761e2783a",
+          "fixture_sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+          "method": "app-process sampled retired-instruction period sum from system hiperf; not system total",
+          "captures": [
+            {
+              "round": 1,
+              "report_sha256": "b7eb96dcfed27b9e6fa3d63d2889e12e413bfe3dbdf9ccb9d31319e6af25c615",
+              "app_samples": 38261,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_search_result_foreach/fixed/cpu-captures/round-1"
+            },
+            {
+              "round": 2,
+              "report_sha256": "86a029e0354792e2b2832273585dd6a06eb77dad5a9c6ac11a79b7b193321cfe",
+              "app_samples": 38467,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_search_result_foreach/fixed/cpu-captures/round-2"
+            },
+            {
+              "round": 3,
+              "report_sha256": "756f214b5f587e8aa54bcaceb54a552e6bb001eb3536b80de3223393b4040c1e",
+              "app_samples": 38723,
+              "remote_artifacts": "/home/research/ohm-clean/cloudmusic_search_result_foreach/fixed/cpu-captures/round-3"
+            }
+          ],
+          "legacy_evidence_reused": false
+        }
+      }
+    }
+  },
+  "disposition": {
+    "status": "skipped_by_user",
+    "reason": "Confirmed negative clean performance case; user instructed to skip negative cases on 2026-10-14.",
+    "performance_passed": false,
+    "original_evidence_preserved": true
+  }
+}

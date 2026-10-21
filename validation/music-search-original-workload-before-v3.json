@@ -1,0 +1,180 @@
+{
+  "bundle": "cc.chenlvin.cloudmusic",
+  "ability": "EntryAbility",
+  "description": "搜索歌曲并逐页浏览结果",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "音乐云盘",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "hint": "搜索内容"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "搜索",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "input",
+      "selector": {
+        "type": "SearchField",
+        "hint": "搜索内容"
+      },
+      "value": "music"
+    }
+  ],
+  "measured": [
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Track 1",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "scroll_to",
+      "selector": {
+        "text": "加载更多",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "加载更多",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Track 31",
+        "match": "exact"
+      },
+      "timeout_s": 30
+    },
+    {
+      "op": "scroll_to",
+      "selector": {
+        "text": "Track 60",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "scroll_to",
+      "selector": {
+        "text": "加载更多",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "加载更多",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Track 61",
+        "match": "exact"
+      },
+      "timeout_s": 30
+    },
+    {
+      "op": "scroll_to",
+      "selector": {
+        "text": "Track 90",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "scroll_to",
+      "selector": {
+        "text": "加载更多",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "加载更多",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Track 91",
+        "match": "exact"
+      },
+      "timeout_s": 30
+    },
+    {
+      "op": "scroll_to",
+      "selector": {
+        "text": "Track 120",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "scroll_to",
+      "selector": {
+        "text": "加载更多",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "加载更多",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Track 121",
+        "match": "exact"
+      },
+      "timeout_s": 30
+    },
+    {
+      "op": "scroll_to",
+      "selector": {
+        "text": "Track 150",
+        "match": "exact"
+      }
+    }
+  ],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Track 150",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "Artist 1, Artist 2, Artist 3, Artist 4, Artist 5, Artist 6, Artist 7, Artist 8, Artist 9, Artist 10, Artist 11, Artist 12",
+        "match": "exact"
+      }
+    }
+  ]
+}

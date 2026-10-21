@@ -1,0 +1,60 @@
+{
+  "case": "cloudmusic_search_result_foreach",
+  "status": "CANDIDATE_SIGNED_NATIVE_SMOKE_PASSED_NOT_ACCEPTED",
+  "app_injection": false,
+  "common_workload_change": "Both variants request 1000 songs per page and advance pagination by response list length. Their eager/lazy row-creation difference remains.",
+  "required_ratio": 2.0,
+  "formal_requirement": "At least three complete paired measurements plus native page/identity/pagination correctness; screen alone is not acceptance.",
+  "variants": {
+    "unfixed": {
+      "ref": "candidate/music-search-v2/unfixed",
+      "source": {
+        "tree": "4f85a008f5da6713dd500d451e466d4332ebd356",
+        "files_checked": 181,
+        "findings": [],
+        "passed": true
+      },
+      "unsigned_sha256": "cc4104c393ebe1e023f767f0bbe886149f5843c378fd9a1d96bd96a74e6875ae",
+      "signed_sha256": "d24dc809c023d224d371a8560e6303eb972c5793be943a757a1e0610c1c9cd02",
+      "smoke": {
+        "case": "cloudmusic_search_result_foreach",
+        "variant": "unfixed",
+        "signed_sha256": "d24dc809c023d224d371a8560e6303eb972c5793be943a757a1e0610c1c9cd02",
+        "install": "[Info]App install path:C:\\home\\research\\ohm-clean\\music-search-v2\\cloudmusic_search_result_foreach\\unfixed\\app.hap msg:install bundle successfully. \r\nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          19386
+        ],
+        "foreground_bundle": "cc.chenlvin.cloudmusic",
+        "status": "PASS",
+        "performance_verified": false
+      },
+      "common_patch_sha256": "4dc94b324d968c5fb38e6cd29eda209f36ccf24c1c23738e1eb434c611dbcf87"
+    },
+    "fixed": {
+      "ref": "candidate/music-search-v2/fixed",
+      "source": {
+        "tree": "e3471407d84d006ca33e7401fdb1881c829e56a0",
+        "files_checked": 181,
+        "findings": [],
+        "passed": true
+      },
+      "unsigned_sha256": "cbf493ed156ee55707e827ce6a2b028491ad3279d4fdebf18bd6495e8f76c174",
+      "signed_sha256": "aecc55c7afa944532556d712617e8c5bb68a576a7cedfbe9b647c046e4e72edc",
+      "smoke": {
+        "case": "cloudmusic_search_result_foreach",
+        "variant": "fixed",
+        "signed_sha256": "aecc55c7afa944532556d712617e8c5bb68a576a7cedfbe9b647c046e4e72edc",
+        "install": "[Info]App install path:C:\\home\\research\\ohm-clean\\music-search-v2\\cloudmusic_search_result_foreach\\fixed\\app.hap msg:install bundle successfully. \r\nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          20018
+        ],
+        "foreground_bundle": "cc.chenlvin.cloudmusic",
+        "status": "PASS",
+        "performance_verified": false
+      },
+      "common_patch_sha256": "149b83fecc1d518be3cf5887eca50123c9433aea6a341add068a6de7c50457ed"
+    }
+  }
+}

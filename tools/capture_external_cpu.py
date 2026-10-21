@@ -202,6 +202,9 @@ def shell(command):
         remote.upload(ROOT/'tools/playback_progress.py','/home/research/ohm-clean/tools/playback_progress.py')
         code += "from playback_progress import check_progress\n"
         code += "playback_start_layout=ui.layout();playback_start_time=time.monotonic()\n"
+    large_music_search = cid == 'cloudmusic_search_result_foreach' and str(case.get('measurement_revision','')).startswith('music-search-')
+    if large_music_search:
+        code += "music_log=Path('/home/research/ohm-clean/services/cloudmusic/requests.jsonl');music_offset=music_log.stat().st_size\n"
     token=uuid.uuid4().hex
     code += f"device_file='/data/local/tmp/profile-{token}.data'\n"
     code += "assert not shell('pidof hiperf').strip(),'another profiler session is active'\n"
@@ -220,6 +223,8 @@ def shell(command):
     code += " if 'fail' in record['start_output'].lower() or 'error' in record['start_output'].lower():raise RuntimeError(record['start_output'])\n"
     code += " record['action_start_monotonic']=time.monotonic()\n"
     code += " ui.run(plan['measured']);ui.run(plan['verify'])\n"
+    if large_music_search:
+        code += " record['music_search']={'layout':ui.layout(),'requests':[json.loads(line) for line in music_log.read_bytes()[music_offset:].decode().splitlines()]}\n"
     if cid==WAN_HTML_CASE:
         code += " html_actions_end=time.monotonic();html_after=read_html_state(ui,root/'native-logs','after')\n"
         code += " html_after.update(status='ORIGINAL_TWELVE_SWIPES_COMPLETED',action_start_monotonic=record['action_start_monotonic'],action_end_monotonic=html_actions_end)\n"

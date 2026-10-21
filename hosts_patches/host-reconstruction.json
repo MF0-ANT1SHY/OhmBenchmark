@@ -193,11 +193,21 @@
         },
         "case/cloudmusic_search_result_foreach/fixed": {
           "state": "perf: render song search results with LazyForEach and a data source so off-screen result rows are not created eagerly",
-          "tree": "9fce0f474edb3690c2c562d83cc82629ae42fb24"
+          "tree": "9fce0f474edb3690c2c562d83cc82629ae42fb24",
+          "app_ref": "clean-app-v3/cloudmusic_search_result_foreach/fixed",
+          "app_tree": "e3471407d84d006ca33e7401fdb1881c829e56a0",
+          "production_patches": [
+            "hosts_patches/cloudmusic/search-large-page-fixed-v2.patch"
+          ]
         },
         "case/cloudmusic_search_result_foreach/unfixed": {
           "state": "perf: update the global play-time state only when the displayed second changes instead of on every high-frequency timeUpdate callback",
-          "tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a"
+          "tree": "86e2414cd33836172a421d2cf9749e9fd1a0b94a",
+          "app_ref": "clean-app-v3/cloudmusic_search_result_foreach/unfixed",
+          "app_tree": "4f85a008f5da6713dd500d451e466d4332ebd356",
+          "production_patches": [
+            "hosts_patches/cloudmusic/search-large-page-unfixed-v2.patch"
+          ]
         },
         "case/cloudmusic_songcard_artists_concat/fixed": {
           "state": "perf: assemble artist names with a single join instead of repeated string concatenation in a loop",

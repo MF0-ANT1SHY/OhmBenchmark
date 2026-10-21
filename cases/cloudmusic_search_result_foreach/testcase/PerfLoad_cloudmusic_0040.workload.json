@@ -1,7 +1,7 @@
 {
   "bundle": "cc.chenlvin.cloudmusic",
   "ability": "EntryAbility",
-  "description": "搜索歌曲并逐页浏览结果",
+  "description": "Search and load the first song result page",
   "setup": [
     {
       "op": "wait",
@@ -43,131 +43,16 @@
         "text": "Track 1",
         "match": "exact"
       }
-    },
-    {
-      "op": "scroll_to",
-      "selector": {
-        "text": "加载更多",
-        "match": "exact"
-      }
-    },
-    {
-      "op": "tap",
-      "selector": {
-        "text": "加载更多",
-        "match": "exact"
-      }
-    },
-    {
-      "op": "wait",
-      "selector": {
-        "text": "Track 31",
-        "match": "exact"
-      },
-      "timeout_s": 30
-    },
-    {
-      "op": "scroll_to",
-      "selector": {
-        "text": "Track 60",
-        "match": "exact"
-      }
-    },
-    {
-      "op": "scroll_to",
-      "selector": {
-        "text": "加载更多",
-        "match": "exact"
-      }
-    },
-    {
-      "op": "tap",
-      "selector": {
-        "text": "加载更多",
-        "match": "exact"
-      }
-    },
-    {
-      "op": "wait",
-      "selector": {
-        "text": "Track 61",
-        "match": "exact"
-      },
-      "timeout_s": 30
-    },
-    {
-      "op": "scroll_to",
-      "selector": {
-        "text": "Track 90",
-        "match": "exact"
-      }
-    },
-    {
-      "op": "scroll_to",
-      "selector": {
-        "text": "加载更多",
-        "match": "exact"
-      }
-    },
-    {
-      "op": "tap",
-      "selector": {
-        "text": "加载更多",
-        "match": "exact"
-      }
-    },
-    {
-      "op": "wait",
-      "selector": {
-        "text": "Track 91",
-        "match": "exact"
-      },
-      "timeout_s": 30
-    },
-    {
-      "op": "scroll_to",
-      "selector": {
-        "text": "Track 120",
-        "match": "exact"
-      }
-    },
-    {
-      "op": "scroll_to",
-      "selector": {
-        "text": "加载更多",
-        "match": "exact"
-      }
-    },
-    {
-      "op": "tap",
-      "selector": {
-        "text": "加载更多",
-        "match": "exact"
-      }
-    },
-    {
-      "op": "wait",
-      "selector": {
-        "text": "Track 121",
-        "match": "exact"
-      },
-      "timeout_s": 30
-    },
-    {
-      "op": "scroll_to",
-      "selector": {
-        "text": "Track 150",
-        "match": "exact"
-      }
     }
   ],
   "verify": [
     {
       "op": "wait",
       "selector": {
-        "text": "Track 150",
+        "text": "Track 1",
         "match": "exact"
-      }
+      },
+      "timeout_s": 120
     },
     {
       "op": "wait",

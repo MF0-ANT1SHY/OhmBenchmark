@@ -37,7 +37,7 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
     if case['test_oracle']['metric']!='hiperf_instructions':
         raise ValueError('CPU capture cannot validate a different oracle')
     comparison=case['test_oracle'].get('comparison','unfixed >= 1.2 * fixed over >= 3 rounds per variant')
-    thresholds={f'unfixed >= {value} * fixed over >= 3 rounds per variant':value for value in (1.2,1.3)}
+    thresholds={f'unfixed >= {value} * fixed over >= 3 rounds per variant':value for value in (1.2,1.3,2.0)}
     if comparison not in thresholds:
         raise ValueError('unsupported CPU comparison contract')
     threshold=thresholds[comparison]
@@ -128,6 +128,9 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
                                     case['host_app']['bundle_name'],phases['measured']['elapsed_s'])
             if progress!=workload.get('playback_progress'):
                 raise RuntimeError('real playback progression is not proven')
+        if cid=='cloudmusic_search_result_foreach' and case.get('measurement_revision'):
+            from music_search_progress import verify_functional
+            verify_functional(ROOT,variant,sign['audit']['sha256'],workload['fixture']['sha256'])
         samples=[]
         captures=[]
         fixture_hashes=set()
@@ -136,6 +139,9 @@ def accept(cid, write=True, require_pass=True, *, negative_screen=False):
             receipt=json.loads((capture_dir/'capture.json').read_text())
             if receipt['status']!='CAPTURED' or receipt['plan_sha256']!=plan_hash or receipt['signed_sha256']!=sign['audit']['sha256']:
                 raise RuntimeError('capture provenance mismatch')
+            if cid=='cloudmusic_search_result_foreach' and case.get('measurement_revision'):
+                from music_search_progress import verify_capture as verify_music_search
+                verify_music_search(receipt['music_search'])
             if cid != INTERVIEW_RESPONSE_CASE and receipt.get('fixture_sha256') != workload.get('fixture',{}).get('sha256'):
                 raise RuntimeError('capture fixture differs from the validated workload')
             if cid == INTERVIEW_RESPONSE_CASE:

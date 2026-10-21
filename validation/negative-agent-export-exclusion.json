@@ -1,6 +1,6 @@
 {
   "status": "NEGATIVE_CASES_AT_AUDIT_EXCLUDED",
-  "negative_cases": 10,
+  "negative_cases": 9,
   "pending_and_partial_evidence_excluded": true,
   "full_readonly_raw_validation_required": true,
   "cases": [
@@ -16,11 +16,6 @@
     },
     {
       "case": "cloudmusic_local_song_memory_filter",
-      "export_rejected": true,
-      "source_status": "measured_clean_failed"
-    },
-    {
-      "case": "cloudmusic_search_result_foreach",
       "export_rejected": true,
       "source_status": "measured_clean_failed"
     },

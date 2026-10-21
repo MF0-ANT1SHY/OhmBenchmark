@@ -205,3 +205,21 @@ through all 100 native unread badges in both signed variants; the acceptor
 rechecks every saved layout and both full database snapshots. Application code
 contains no measurement counters or injected benchmark entry points. The
 binary-only diagnosis export excludes evaluator metadata and oracle values.
+
+### Large music search result pages
+
+The `cloudmusic_search_result_foreach` revision `music-search-v3` compares a
+normal first-page search with 1,000 songs. Both business variants use the same
+page size and advance offsets by the actual response length; the business fix
+remains eager `ForEach` versus lazy result-row construction. The original
+30-song-page failure is archived, not reclassified.
+
+Each of three native instruction-profile pairs must exceed 2.0x, as must the
+median ratio. The complete ordinary 10,000-song service catalogue is hashed
+before and after each capture. Same-run workstation requests must show exactly
+one 1,000-song first-page search, and native result-list rows must agree with
+that catalogue. A separate two-page check uses ordinary scrolling and the
+load-more button to verify Track 1, 1000, 1001 and 2000 with offsets 0 and 1000
+in both signed variants. The persistent mini-player is not a search-result row.
+All request logs and acceptance logic remain outside the application and outside
+its binary-only diagnosis export.

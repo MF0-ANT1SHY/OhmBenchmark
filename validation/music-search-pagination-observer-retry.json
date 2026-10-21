@@ -1,0 +1,27 @@
+{
+  "status": "INVALID_GESTURE_OBSERVER_STOPPED",
+  "reason": "uitest swipe final parameter is velocity, valid range 200..40000. The attempted 150 value was invalid; no performance capture affected.",
+  "remote_pid": 10268,
+  "creation_time_ms": 1792582175982,
+  "identity_verified_before_stop": true,
+  "stop_output": "Stopped only invalid-gesture pagination observer 10268\r\n\r\n",
+  "retry_namespace": "native-pagination-v2",
+  "retry_velocity": 4000,
+  "second_attempt": {
+    "namespace": "native-pagination-v2",
+    "status": "SUCCESS_MESSAGE_MISPARSED",
+    "reason": "The device returns No Error for a successful swipe; the observer rejected any nonempty output. No performance samples changed."
+  },
+  "active_retry_namespace": "native-pagination-v4-fixed",
+  "third_attempt": {
+    "namespace": "native-pagination-v3",
+    "status": "TRANSIENT_NATIVE_LAYOUT_TIMEOUT",
+    "preserved_boundaries": [
+      "first",
+      "page1_end",
+      "page2_start"
+    ],
+    "continuation": "artifacts/candidate-builds/music-search-v2/native-pagination-v3/unfixed/resumed-observations.json",
+    "performance_samples_changed": false
+  }
+}

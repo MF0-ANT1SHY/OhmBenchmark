@@ -1,0 +1,26 @@
+diff --git a/entry/src/main/ets/pages/search/SearchSongsList.ets b/entry/src/main/ets/pages/search/SearchSongsList.ets
+index 9007a36..3b7c5eb 100644
+--- a/entry/src/main/ets/pages/search/SearchSongsList.ets
++++ b/entry/src/main/ets/pages/search/SearchSongsList.ets
+@@ -12,6 +12,7 @@ import { LazyData } from "@pie/lazy-data"
+  * 搜索结果——单曲列表
+  */
+ const TAG = "[SearchSongsList] "
++const SONG_PAGE_SIZE: number = 1000
+ 
+ @Component
+ export struct SearchSongsList {
+@@ -99,11 +100,11 @@ export struct SearchSongsList {
+       this.isLoadingMore = true // 加载更多
+     }
+     try {
+-      const result = await searchSongs(this.searchKeyword, offset)
++      const result = await searchSongs(this.searchKeyword, offset, SONG_PAGE_SIZE)
+       this.songList = [...this.songList, ...result.list] // 合并歌曲列表
+       this.songDataSource.setData(this.songList)
+       this.songDataSource.notifyDataReload()
+-      this.songOffset += 30
++      this.songOffset += result.list.length
+       this.hasMoreSongs = result.hasMore
+     } catch (e) {
+       LogUtil.error(TAG, 'Error fetching songs: ', JSON.stringify(e))

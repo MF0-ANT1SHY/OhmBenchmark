@@ -1,0 +1,27 @@
+{
+  "case": "cloudmusic_search_result_foreach",
+  "status": "SCREEN_ONLY",
+  "values": {
+    "unfixed": 1058093763,
+    "fixed": 476166026
+  },
+  "ratio": 2.2221109974780098,
+  "formal_acceptance": false,
+  "required_ratio": 2.0,
+  "captures": {
+    "unfixed": {
+      "path": "artifacts/candidate-builds/music-search-v2/cloudmusic_search_result_foreach/unfixed/cpu-captures/music-search-v2-screen/round-1",
+      "capture_sha256": "bdee9282756e61efa6e4f7426fe19c9b688843c842bdcd431e38f97b82d40523",
+      "report_sha256": "9c7b44d0c9f5b253fa6952d03f21ae857a0053d54104a689cb256da29d02ea4c",
+      "signed_sha256": "d24dc809c023d224d371a8560e6303eb972c5793be943a757a1e0610c1c9cd02",
+      "instructions": 1058093763
+    },
+    "fixed": {
+      "path": "artifacts/candidate-builds/music-search-v2/cloudmusic_search_result_foreach/fixed/cpu-captures/music-search-v2-screen/round-1",
+      "capture_sha256": "cdcce6a56c927d92f12429ff907a13f2f8a0afc6c0c7aa65100cdf51a5325837",
+      "report_sha256": "6f6d98d99b172f34edcc6618ce79a8bcd8a54d9b3baead9233f9af291919f6d6",
+      "signed_sha256": "aecc55c7afa944532556d712617e8c5bb68a576a7cedfbe9b647c046e4e72edc",
+      "instructions": 476166026
+    }
+  }
+}

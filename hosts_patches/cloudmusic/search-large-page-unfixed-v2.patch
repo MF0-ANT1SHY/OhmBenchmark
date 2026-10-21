@@ -1,0 +1,24 @@
+diff --git a/entry/src/main/ets/pages/search/SearchSongsList.ets b/entry/src/main/ets/pages/search/SearchSongsList.ets
+index 4c98cb4..7727df3 100644
+--- a/entry/src/main/ets/pages/search/SearchSongsList.ets
++++ b/entry/src/main/ets/pages/search/SearchSongsList.ets
+@@ -11,6 +11,7 @@ import { SongCard } from "../../components/cards/SongCard"
+  * 搜索结果——单曲列表
+  */
+ const TAG = "[SearchSongsList] "
++const SONG_PAGE_SIZE: number = 1000
+ 
+ @Component
+ export struct SearchSongsList {
+@@ -97,9 +98,9 @@ export struct SearchSongsList {
+       this.isLoadingMore = true // 加载更多
+     }
+     try {
+-      const result = await searchSongs(this.searchKeyword, offset)
++      const result = await searchSongs(this.searchKeyword, offset, SONG_PAGE_SIZE)
+       this.songList = [...this.songList, ...result.list] // 合并歌曲列表
+-      this.songOffset += 30
++      this.songOffset += result.list.length
+       this.hasMoreSongs = result.hasMore
+     } catch (e) {
+       LogUtil.error(TAG, 'Error fetching songs: ', JSON.stringify(e))

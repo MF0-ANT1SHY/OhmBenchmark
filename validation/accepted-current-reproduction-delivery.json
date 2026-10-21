@@ -1,11 +1,11 @@
 {
   "status": "ALL_ACCEPTED_REPRODUCTION_DELIVERIES_VERIFIED",
-  "scope": "Current delivery for 16 accepted cases. Revised contracts are explicit. Goal of at least 21 accepted cases remains incomplete.",
+  "scope": "Current delivery for 17 accepted cases. Revised contracts are explicit. Goal of at least 21 accepted cases remains incomplete.",
   "goal_complete": false,
-  "checked_at": 1792581445.559432,
-  "cases": 16,
-  "variants": 32,
-  "binary_only_agent_exports": 16,
+  "checked_at": 1792584163.4101691,
+  "cases": 17,
+  "variants": 34,
+  "binary_only_agent_exports": 17,
   "historical_measured_artifacts_retained": true,
   "rows": [
     {
@@ -646,6 +646,49 @@
         "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
         "profile.json": "95df705c14f9816c714040b1d1fc8c2be87335b092a6949321f8e5ed28fed6c8",
         "symptom.txt": "82e61e2b3beead93013a6d6f859d9258de6dec1b7e6f23f3816932c84deeffab"
+      }
+    },
+    {
+      "case": "cloudmusic_search_result_foreach",
+      "case_proof": "validation/music-search-native-cpu-acceptance.json",
+      "case_proof_sha256": "30b6862ceb1a2c98ef4115f129a36b30605b49f10f8d61856a7c8bd371c7d643",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "d24dc809c023d224d371a8560e6303eb972c5793be943a757a1e0610c1c9cd02",
+          "measured_signed_sha256": "d24dc809c023d224d371a8560e6303eb972c5793be943a757a1e0610c1c9cd02",
+          "current_validity": {
+            "bundle": "cc.chenlvin.cloudmusic",
+            "not_before": 1792581286,
+            "not_after": 1795173586,
+            "checked_at": 1792584151.9368105
+          },
+          "fresh_launch_receipt_sha256": "42a4aa66cce113ca504a59097db62de90eb6adc122b4c812035fd6d9323f1183",
+          "fresh_launch_evidence": "artifacts/clean/cloudmusic_search_result_foreach/unfixed/cpu-captures/music-search-v3/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified native search list and ordinary first-page request. No additional launch rerun.",
+          "renewal_not_required": true
+        },
+        "fixed": {
+          "signed_sha256": "aecc55c7afa944532556d712617e8c5bb68a576a7cedfbe9b647c046e4e72edc",
+          "measured_signed_sha256": "aecc55c7afa944532556d712617e8c5bb68a576a7cedfbe9b647c046e4e72edc",
+          "current_validity": {
+            "bundle": "cc.chenlvin.cloudmusic",
+            "not_before": 1792581309,
+            "not_after": 1795173609,
+            "checked_at": 1792584152.6511374
+          },
+          "fresh_launch_receipt_sha256": "c51362cf003419d94dc0e5baec23dd09a869ff5049d5d2ec40645ec96ddef121",
+          "fresh_launch_evidence": "artifacts/clean/cloudmusic_search_result_foreach/fixed/cpu-captures/music-search-v3/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified native search list and ordinary first-page request. No additional launch rerun.",
+          "renewal_not_required": true
+        }
+      },
+      "agent_export": "artifacts/agent-exports/music-search-840d760d07514498a51ab2cc5ad2ee3d",
+      "agent_files_sha256": {
+        "app.hap": "d24dc809c023d224d371a8560e6303eb972c5793be943a757a1e0610c1c9cd02",
+        "workload.json": "e61e6d571dfa809c4bb6d8ccfeef4e6a2f8963bc8d476445d80ff86c921c7df9",
+        "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
+        "profile.json": "b1293798173a34da40c5fd5637b704c0bb5ef7a3e50c6acfa3167de443524935",
+        "symptom.txt": "16e5f38887cce2088ac693e78ea35574130a8b035643bb7d0b46b34bfaa6b133"
       }
     }
   ]

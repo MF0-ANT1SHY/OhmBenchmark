@@ -1,0 +1,62 @@
+{
+  "case": "cloudmusic_search_result_foreach",
+  "performance_sample": false,
+  "variants": {
+    "fixed": {
+      "signed_sha256": "aecc55c7afa944532556d712617e8c5bb68a576a7cedfbe9b647c046e4e72edc",
+      "fixture_before": {
+        "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+        "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+        "songs": 10000,
+        "artist_count": 12,
+        "base_url": "http://127.0.0.1:18490",
+        "service_pid": 20880,
+        "service_start_ticks": 639281783665606370,
+        "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+      },
+      "fixture_after": {
+        "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+        "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+        "songs": 10000,
+        "artist_count": 12,
+        "base_url": "http://127.0.0.1:18490",
+        "service_pid": 20880,
+        "service_start_ticks": 639281783665606370,
+        "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+      },
+      "observations": "/data2/syang75/workspace/OhmBenchmark/artifacts/candidate-builds/music-search-v2/native-pagination-v4/fixed/observations.json",
+      "observations_sha256": "499729db72220edc6dec84a04634529c14cd08ecf70c8d9f68792c928eb54f42"
+    },
+    "unfixed": {
+      "signed_sha256": "d24dc809c023d224d371a8560e6303eb972c5793be943a757a1e0610c1c9cd02",
+      "fixture_before": {
+        "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+        "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+        "songs": 10000,
+        "artist_count": 12,
+        "base_url": "http://127.0.0.1:18490",
+        "service_pid": 20880,
+        "service_start_ticks": 639281783665606370,
+        "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+      },
+      "fixture_after": {
+        "sha256": "f819302e8e8809c986a138abd27f6b7d8ca8947447aa76b321c1439f3ec1f18d",
+        "source_sha256": "5eb6248f092b6a5a74ae4327b0e5311a8adb1b9dbb03388c697699bbead70c32",
+        "songs": 10000,
+        "artist_count": 12,
+        "base_url": "http://127.0.0.1:18490",
+        "service_pid": 20880,
+        "service_start_ticks": 639281783665606370,
+        "method": "ordinary API catalogue fetched and hashed before profiling; no app instrumentation"
+      },
+      "observations": "/data2/syang75/workspace/OhmBenchmark/artifacts/candidate-builds/music-search-v2/native-pagination-v3/unfixed/complete-observations.json",
+      "observations_sha256": "8d3e1114192ca5c320289ce8eb294dcfb736d80152167854678a7e89e21d06b1",
+      "partial_observations": "artifacts/candidate-builds/music-search-v2/native-pagination-v3/unfixed/observations.json",
+      "partial_sha256": "5712292a9821995d6f60c913437a016d8a49f1961f839819f76ede243e325502",
+      "continuation": "artifacts/candidate-builds/music-search-v2/native-pagination-v3/unfixed/resumed-observations.json",
+      "continuation_sha256": "87f03aadf91e929afe67e6dcf8ca7071be382c6393558af0e936b2c7bd2ee21a",
+      "note": "Retained first three page-boundary layouts from failed native snapshot trial; continued the same installed unfixed package to Track 2000. No performance sample reused or changed."
+    }
+  },
+  "status": "PASS"
+}
