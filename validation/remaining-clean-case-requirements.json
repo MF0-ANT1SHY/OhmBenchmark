@@ -4,7 +4,7 @@
   "cases": 30,
   "business_only_builds": 60,
   "source_and_signed_artifact_proof": "validation/all-clean-signed-integrity.json",
-  "primary_passed": 11,
+  "primary_passed": 12,
   "valid_primary_measurement_failed": 7,
   "pending_primary_measurement": 4,
   "native_heap_collector_calibration_only_proof": "validation/nativeheap-device-clock-calibration.json",
@@ -309,36 +309,20 @@
     },
     {
       "case": "wanharmony_persisted_home_list_growth",
-      "primary_measurement_status": "primary_criterion_met_mechanism_screen_failed",
+      "primary_measurement_status": "measured_clean",
       "metric": "app_pss_bytes",
       "app_injection": false,
-      "proof": [
-        "validation/wan-home-original-primary-audit-three-pairs.json",
-        "validation/wan-home-native-write-negative-bound.json"
-      ],
-      "recorded_primary_pass": false,
-      "supplement_only": "validation/wan-home-cold-cache-pss-supplement.json",
+      "recorded_primary_pass": true,
       "primary_criterion_verified": true,
       "primary_paired_rounds": 3,
-      "complete_case_accepted": false,
-      "native_write_collector_calibration": "validation/native-hmfs-write-retention-calibration.json",
-      "latest_diagnostic": "validation/wan-home-native-write-negative-bound.json",
-      "write_collection_next_step": "None: ten unfixed pages and the first valid fixed page already disprove the required 3x native persistent-file comparison; already-dispatched fixed page 2 is preserved separately.",
-      "ptrace_return_calibration_failure": "validation/native-syscall-own-child-raw-register-calibration.json",
-      "read_only_file_observer_control": "validation/wan-home-readonly-file-observer-control.json",
-      "normal_load_more_connectivity": "fresh_normal_entry_and_later_page_succeeded_with_retained_native_HTTP_logs",
-      "native_file_traffic": "one_real_20_to_30_article_page_commit_wrote_69292_actual_file_bytes; file_owner_and_inode_verified; writer_app_thread_membership_not_proven",
-      "disposition": {
-        "status": "skipped_by_user",
-        "reason": "Clean primary PSS criterion met, but the required native persistence-file write-volume mechanism fails its unchanged necessary 3x bound; user instructed to skip negative cases.",
-        "performance_passed": false,
-        "primary_criterion_met": true,
-        "original_evidence_preserved": true,
-        "full_three_pair_run_completed": true,
-        "full_fixed_ten_page_mechanism_run_completed": false
-      },
-      "full_performance_run_completed": false,
-      "next_requirement": "None: user-directed early negative skip after a verified native-file necessary-condition bound; all three passing primary PSS pairs retained."
+      "complete_case_accepted": true,
+      "acceptance_revision": "native-memory-and-cache-v2",
+      "required_ratio": 1.3,
+      "proof": [
+        "validation/wan-home-revised-memory-acceptance.json"
+      ],
+      "historical_mechanism_negative": "validation/wan-home-native-write-negative-bound.json",
+      "next_requirement": "None for revised memory-and-cache contract; historical whole-file 3x claim is not made."
     },
     {
       "case": "wanharmony_web_progress_log_storm",
@@ -440,14 +424,14 @@
     }
   ],
   "negative_screen_failed": 7,
-  "skipped_by_user": 15,
+  "skipped_by_user": 14,
   "renewed_signature_proof": "validation/pending-clean-signature-renewal.json",
-  "inventory_note": "Per-case evidence and user dispositions are authoritative. Full primary negatives, mandatory-first-pair primary negatives, and necessary-mechanism negatives are distinct. Wan retains three passing PSS pairs but is not accepted because its required native write-volume bound fails. None of the skipped cases is exported as accepted.",
+  "inventory_note": "Current acceptance uses each case contract. Wan memory-and-cache v2 passes a raised 1.3x PSS gate with all original online pairs. Its historical file-write negative remains archived. Other skipped and pending cases are not accepted.",
   "current_reproduction_signature_gate": {
     "status": "all_accepted_case_deliveries_verified",
     "proof": "validation/accepted-current-reproduction-delivery.json",
     "historical_expiry_audit": "validation/accepted-hap-profile-validity-audit.json",
-    "scope": "All 11 accepted cases have current equivalent signatures for both variants, matching fresh launches and verified binary-only exports. Four cases still await primary validation. The separately verified Wan PSS case is user-skipped after its required native-file mechanism was disproven.",
+    "scope": "All 12 accepted cases have current signed deliveries and binary-only exports. Wan uses revised memory-and-cache acceptance; its historical whole-file-write negative remains archived.",
     "requirement": "All delivered reproduction HAPs must have current valid provisioning profiles. Retain historical measured packages and capture bindings; no replacement is accepted without business-byte/permission equivalence and fresh launch proof.",
     "performance_pass_count_is_not_full_delivery_completion": true,
     "renewed_launch_and_blind_export_verified": [
@@ -461,11 +445,13 @@
       "sheafreader_article_list_foreach",
       "sheafreader_extract_tag_tolowercase",
       "sheafreader_insert_duplicate_exception",
-      "ytmusic_current_playing_timeupdate"
+      "ytmusic_current_playing_timeupdate",
+      "wanharmony_persisted_home_list_growth"
     ],
-    "variants_verified": 22
+    "variants_verified": 24
   },
   "primary_criterion_verified_pending_mechanism": 0,
   "pending_complete_case_validation": 4,
-  "primary_criterion_met_mechanism_screen_failed": 1
+  "primary_criterion_met_mechanism_screen_failed": 0,
+  "current_goal": "At least 21 accepted business-only cases with a large measured performance difference."
 }

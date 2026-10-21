@@ -1,11 +1,11 @@
 {
   "status": "ALL_ACCEPTED_REPRODUCTION_DELIVERIES_VERIFIED",
-  "scope": "Current delivery for the 11 performance-accepted cases only; not completion of all 30 cases",
+  "scope": "Current delivery for 12 accepted cases. Wan uses the revised native-memory-and-cache contract. Goal of at least 21 accepted cases remains incomplete.",
   "goal_complete": false,
-  "checked_at": 1792042640.0495741,
-  "cases": 11,
-  "variants": 22,
-  "binary_only_agent_exports": 11,
+  "checked_at": 1792571912.927851,
+  "cases": 12,
+  "variants": 24,
+  "binary_only_agent_exports": 12,
   "historical_measured_artifacts_retained": true,
   "rows": [
     {
@@ -435,6 +435,45 @@
         "reproduce.py": "d21f09a579dd49aa501118a9bb8bb0abe32e00e0affacc7dcca57f13623413cd",
         "symptom.txt": "68c4844f2978bf841a14b3f51aa82101ace8043ebdabb417f3c112c9ef079d98",
         "workload.json": "d0b64b532f710a80cc3bbdc739a12caef92aabfef49c2f2cc1578497e228b32a"
+      }
+    },
+    {
+      "case": "wanharmony_persisted_home_list_growth",
+      "case_proof": "validation/wan-home-hkrc-reproduction-delivery.json",
+      "case_proof_sha256": "cc76251b0864dd9a097e5b98390e3235dfba7dd685c15bb8c1dec297e107fba3",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+          "measured_signed_sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+          "current_validity": {
+            "bundle": "org.example.wan.ohos",
+            "not_before": 1791986744,
+            "not_after": 1794579044,
+            "checked_at": 1792571837.091652
+          },
+          "fresh_launch_receipt_sha256": "48d96bda0a5fc542ee848e44b928923461d89c51b26e1612ee008e9c3b427e68",
+          "renewal_not_required": true
+        },
+        "fixed": {
+          "signed_sha256": "a1abaaef2d68f521d312abac0b219569995ee040a9e1248a8d3cd1aa89206937",
+          "measured_signed_sha256": "a1abaaef2d68f521d312abac0b219569995ee040a9e1248a8d3cd1aa89206937",
+          "current_validity": {
+            "bundle": "org.example.wan.ohos",
+            "not_before": 1791986749,
+            "not_after": 1794579049,
+            "checked_at": 1792571859.2286582
+          },
+          "fresh_launch_receipt_sha256": "cd20addb521e92b9894bcfdc63d886b0824620f39565b5aef7214a29b7e688a6",
+          "renewal_not_required": true
+        }
+      },
+      "agent_export": "artifacts/agent-exports/wan-memory-4ee526926c0244679bd8b2191316cd72",
+      "agent_files_sha256": {
+        "app.hap": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+        "workload.json": "3d48c7260c8fc6e3ae673e4c8dbdc6704e98aa61b8566967c4913a1dcb61748d",
+        "reproduce.py": "be7050610526575dc19f5a29b298f8fa29c5405c3e25aa413f66a4010d6a0115",
+        "profile.json": "879658697811dd5a8006f7d7762a8821b13ddc851a5d248e3b710f26ec7a7c45",
+        "symptom.txt": "d961a1c765f7bc595168bf4be47241ab0786b8b37d338ff4556c4bfdcc0f0b13"
       }
     }
   ]

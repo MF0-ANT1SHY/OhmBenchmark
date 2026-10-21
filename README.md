@@ -28,6 +28,12 @@ Signing/device tools default to the existing `cityuPC` SSH alias and Ubuntu-24.0
 WSL workstation. Signing keys stay there; app bundle names are not rewritten.
 See `cases/README.md` for external preparation and performance acceptance.
 
+The device moved to the Tailscale host `hkrc` on 2026-10-21. Device commands
+support native Windows Python/HDC on that host; pass `--remote hkrc` to commands
+that expose this option. The old `cityuPC` host still holds historical packages
+and signing tools. Do not treat a package path on one host as a transferred file
+on the other host. Transfer the exact signed bytes and verify their hash first.
+
 ## Blind-evaluation boundary
 
 Give the diagnosis agent only the **clean unfixed HAP**, symptom description,

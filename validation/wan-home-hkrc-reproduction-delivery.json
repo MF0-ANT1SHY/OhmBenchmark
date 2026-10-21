@@ -1,0 +1,60 @@
+{
+  "case": "wanharmony_persisted_home_list_growth",
+  "host": "hkrc",
+  "new_performance_trials": false,
+  "variants": {
+    "unfixed": {
+      "signed_sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+      "validity": {
+        "bundle": "org.example.wan.ohos",
+        "not_before": 1791986744,
+        "not_after": 1794579044,
+        "checked_at": 1792571837.091652
+      },
+      "smoke": {
+        "case": "wanharmony_persisted_home_list_growth",
+        "variant": "unfixed",
+        "signed_sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+        "install": "[Info]App install path:C:\\home\\research\\ohm-clean\\renewed-20261014\\wanharmony_persisted_home_list_growth\\unfixed\\app.hap msg:install bundle successfully. \r\nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          46772
+        ],
+        "foreground_bundle": "org.example.wan.ohos",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    },
+    "fixed": {
+      "signed_sha256": "a1abaaef2d68f521d312abac0b219569995ee040a9e1248a8d3cd1aa89206937",
+      "validity": {
+        "bundle": "org.example.wan.ohos",
+        "not_before": 1791986749,
+        "not_after": 1794579049,
+        "checked_at": 1792571859.2286582
+      },
+      "smoke": {
+        "case": "wanharmony_persisted_home_list_growth",
+        "variant": "fixed",
+        "signed_sha256": "a1abaaef2d68f521d312abac0b219569995ee040a9e1248a8d3cd1aa89206937",
+        "install": "[Info]App install path:C:\\home\\research\\ohm-clean\\renewed-20261014\\wanharmony_persisted_home_list_growth\\fixed\\app.hap msg:install bundle successfully. \r\nAppMod finish",
+        "launch": "start ability successfully.",
+        "pids": [
+          47190
+        ],
+        "foreground_bundle": "org.example.wan.ohos",
+        "status": "PASS",
+        "performance_verified": false
+      }
+    }
+  },
+  "status": "PASS",
+  "agent_export": "artifacts/agent-exports/wan-memory-4ee526926c0244679bd8b2191316cd72",
+  "agent_files_sha256": {
+    "app.hap": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+    "workload.json": "3d48c7260c8fc6e3ae673e4c8dbdc6704e98aa61b8566967c4913a1dcb61748d",
+    "reproduce.py": "be7050610526575dc19f5a29b298f8fa29c5405c3e25aa413f66a4010d6a0115",
+    "profile.json": "879658697811dd5a8006f7d7762a8821b13ddc851a5d248e3b710f26ec7a7c45",
+    "symptom.txt": "d961a1c765f7bc595168bf4be47241ab0786b8b37d338ff4556c4bfdcc0f0b13"
+  }
+}

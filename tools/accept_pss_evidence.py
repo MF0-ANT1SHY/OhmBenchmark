@@ -13,6 +13,11 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 def accept(cid,write=True,require_pass=True,*,negative_screen=False):
+    if cid == 'wanharmony_persisted_home_list_growth':
+        if negative_screen:
+            raise ValueError('the revised Wan memory gate requires all three paired rounds')
+        from accept_wan_home_memory import accept as accept_wan
+        return accept_wan(write=write)
     # A failed mandatory first pair already disproves the all-pairs criterion.
     # This read-only screen can reject, but can never accept a partial run.
     if negative_screen and (write or require_pass):

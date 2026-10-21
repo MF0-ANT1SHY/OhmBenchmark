@@ -1,0 +1,337 @@
+{
+  "id": "wanharmony_persisted_home_list_growth",
+  "host_app": {
+    "name": "WanHarmony (WanAndroid 客户端)",
+    "repository": "https://github.com/zjmok/WanHarmony",
+    "bundle_name": "org.example.wan.ohos",
+    "local_path": "hosts/wanharmony",
+    "base_branch": "ohmbase",
+    "base_commit": "dd45ad2"
+  },
+  "android_source_case": "dns66_packet_cache_growth",
+  "android_mechanism": "Packet-factory properties cache grows without bound; fix bounds the retained data",
+  "category": "resource_retention",
+  "bug_description": "The home article list is bound to PersistentStorage ('homeList'). Every load-more during infinite scrolling concatenates another page and rewrites the ENTIRE accumulated list (JSON serialization + preferences write) to disk, so persistent-storage write time and retained memory grow quadratically with scroll depth; the full tail is also re-parsed on every cold start even though it is stale feed data.",
+  "perf_scenarios": [
+    "列表滑动",
+    "状态更新"
+  ],
+  "unfixed_commit": "87d63ec508b1d6ee950f9e5f55c0146bc189b233",
+  "fixed_commit": "d1618b99cc613e0333c750137beb833f814c910a",
+  "fix_summary": "Only the first-page home-article snapshot is persisted ('homeListCache') for fast cold-start rendering; pages loaded during the session accumulate in component state without rewriting persistent storage.",
+  "build": {
+    "mode": "release",
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "testcase": {
+    "name": "MemLoad_wanharmony_0030",
+    "py_file": "testcase/MemLoad_wanharmony_0030.py",
+    "descriptor": "testcase/MemLoad_wanharmony_0030.json",
+    "install_dir": "perf_testing/hapray/testcases/org.example.wan.ohos",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "external_ui",
+    "workload": "testcase/MemLoad_wanharmony_0030.workload.json"
+  },
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf",
+      "memory"
+    ],
+    "step_duration_s": 60,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "app_pss_bytes",
+    "definition": "Pss of the app process after the workload, from the periodic smaps_rollup snapshots in memory/.",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "primary_criterion_met_mechanism_screen_failed",
+      "metric": "app_pss_bytes",
+      "unfixed": [
+        144357376,
+        144671744,
+        140647424
+      ],
+      "fixed": [
+        105409536,
+        105155584,
+        105619456
+      ],
+      "paired_ratios": [
+        1.3694906692312923,
+        1.375787556845293,
+        1.331643139688203
+      ],
+      "median_ratio": 1.3694906692312923,
+      "rounds_per_variant": 3,
+      "primary_criterion_met": true,
+      "mechanism_criterion_met": false,
+      "performance_accepted": false,
+      "full_primary_three_pair_run_completed": true,
+      "full_fixed_ten_page_mechanism_run_completed": false,
+      "legacy_evidence_reused": false,
+      "mechanism_proof": "validation/wan-home-native-write-negative-bound.json",
+      "note": "All three original clean PSS pairs pass unchanged 1.2x. The required native persistent-file write-volume reduction cannot reach 3x: complete unfixed ten-page bytes are below three times the first verified fixed cycle alone. Shared cookie/inactive-cache traffic is retained; no exclusive-key byte estimate is claimed. User-directed early negative skip, not a primary PSS failure or a full fixed ten-page run."
+    },
+    "mechanism_oracle": {
+      "metric": "persistent_write_bytes_per_loadmore",
+      "definition": "Bytes written to app preferences/storage attributable to home-list persistence per load-more cycle, from disk/filesystem trace activity (write sizes grow with list length in unfixed, stay constant in fixed).",
+      "comparison": "unfixed: write size per load-more grows linearly with accumulated pages (total write volume quadratic in pages); fixed: writes only at first-page fetch. unfixed_total_write_bytes > fixed by >= 3x after 10 pages; unfixed resident memory higher."
+    },
+    "legacy_instrumented_evidence": {
+      "status": "measured",
+      "measured_as": "perf_hw-instructions over the load-more persistence workload (Pura 70 Ultra)",
+      "unfixed": [
+        38880689,
+        55970360,
+        23187060
+      ],
+      "fixed": [
+        4284000,
+        4561975,
+        4611977
+      ],
+      "note": "38.9M vs 4.56M median hw-instructions (8.5x, disjoint ranges, high unfixed variance); mechanism counter 284970 vs 5111 persisted bytes per load-more (measurements-staging)."
+    },
+    "supplementary_clean_evidence": {
+      "status": "offline_cold_cache_verified_not_full_case_acceptance",
+      "proof": "../../validation/wan-home-cold-cache-pss-supplement.json",
+      "metric": "app_pss_bytes",
+      "median_ratio": 2.9869011000469214,
+      "rounds_per_variant": 3,
+      "app_injection": false,
+      "original_successful_load_more_and_write_volume_pending": true
+    }
+  },
+  "reproduction": [
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py wanharmony_persisted_home_list_growth",
+    "python3 tools/sign_clean_cases.py wanharmony_persisted_home_list_growth",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/wanharmony_persisted_home_list_growth/testcase/ into perf_testing/hapray/testcases/org.example.wan.ohos/.",
+    "Install each clean signed variant and run the MemLoad_wanharmony_0030 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "87d63ec",
+    "fixed_commit": "d1618b9",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "mechanism_screen_failed",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/wanharmony_persisted_home_list_growth/unfixed",
+        "commit": "87d63ec508b1d6ee950f9e5f55c0146bc189b233",
+        "tree": "4335f38febb7059d241de4f6ef22ade69767e729",
+        "business_base_tree": "4335f38febb7059d241de4f6ef22ade69767e729",
+        "production_patches": [],
+        "unsigned_sha256": "0f49cab6d143afade5ff2f597154434b01f022b3898d8129180c3435f8783c11",
+        "bytecode_audit": {
+          "sha256": "0f49cab6d143afade5ff2f597154434b01f022b3898d8129180c3435f8783c11",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "wanharmony_persisted_home_list_growth",
+          "variant": "unfixed",
+          "unsigned_sha256": "0f49cab6d143afade5ff2f597154434b01f022b3898d8129180c3435f8783c11",
+          "signed_hap": "/home/research/ohm-clean/renewed-20261014/wanharmony_persisted_home_list_growth/unfixed/app.hap",
+          "audit": {
+            "sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "allowed_acls": [],
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "wanharmony_persisted_home_list_growth",
+          "variant": "unfixed",
+          "status": "PASS",
+          "signed_sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+          "install": "[Info]App install path:/home/research/ohm-clean/renewed-20261014/wanharmony_persisted_home_list_growth/unfixed/app.hap msg:install bundle successfully. \nAppMod finish\n",
+          "launch": "Verified by the original normal native setup process, foreground app layout and successful real backend requests; no fresh UI rerun.",
+          "pids": [
+            58958
+          ],
+          "foreground_bundle": "org.example.wan.ohos",
+          "native_setup_file": "artifacts/clean/wanharmony_persisted_home_list_growth/unfixed/ten-page-filesystem/fad0791ce42c4136a66c5b0603bc5438/setup.json",
+          "native_setup_sha256": "374c6ee5f5fd2048069c630afee98a01681c943c89cbae298b8e78dfbd7bfb87",
+          "layout_sha256": "2c5915aa30639f362e662548209a4330b893f7fec35ca938b8ae504019d3169c",
+          "performance_verified": false,
+          "ui_workload_rerun": false
+        },
+        "performance": {
+          "status": "MECHANISM_SCREEN_FAILED",
+          "metric": "app_pss_bytes",
+          "rounds": 3,
+          "samples": [
+            144357376,
+            144671744,
+            140647424
+          ],
+          "primary_criterion_met": true,
+          "primary_paired_ratios": [
+            1.3694906692312923,
+            1.375787556845293,
+            1.331643139688203
+          ],
+          "primary_median_ratio": 1.3694906692312923,
+          "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+          "signed_sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+          "performance_accepted": false,
+          "full_primary_run_completed": true,
+          "full_mechanism_run_completed": false,
+          "mechanism_negative_bound": {
+            "unfixed_complete_ten_page_bytes": 1212155,
+            "fixed_verified_prefix_bytes": 611898,
+            "unfixed_pages_completed": 10,
+            "fixed_prefix_pages_completed": 1,
+            "remaining_fixed_bytes_lower_bound": 0,
+            "maximum_possible_unfixed_to_fixed_ratio": 1.980975587434507,
+            "required_ratio": 3,
+            "necessary_criterion_failed": true,
+            "reason": "Any complete valid fixed ten-page run includes this nonnegative prefix. Even zero bytes on every remaining fixed page cannot reach 3x."
+          },
+          "mechanism_proof": "validation/wan-home-native-write-negative-bound.json",
+          "legacy_evidence_reused": false
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/wanharmony_persisted_home_list_growth/fixed",
+        "commit": "d1618b99cc613e0333c750137beb833f814c910a",
+        "tree": "892d60f0762ef9cbf11fc32972f2b4116df74aa1",
+        "business_base_tree": "892d60f0762ef9cbf11fc32972f2b4116df74aa1",
+        "production_patches": [],
+        "unsigned_sha256": "df1d6aa039fe134c34ac639b3eb73e708f4f942da69024b29dd2cdd5083c10ca",
+        "bytecode_audit": {
+          "sha256": "df1d6aa039fe134c34ac639b3eb73e708f4f942da69024b29dd2cdd5083c10ca",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "wanharmony_persisted_home_list_growth",
+          "variant": "fixed",
+          "unsigned_sha256": "df1d6aa039fe134c34ac639b3eb73e708f4f942da69024b29dd2cdd5083c10ca",
+          "signed_hap": "/home/research/ohm-clean/renewed-20261014/wanharmony_persisted_home_list_growth/fixed/app.hap",
+          "audit": {
+            "sha256": "a1abaaef2d68f521d312abac0b219569995ee040a9e1248a8d3cd1aa89206937",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "allowed_acls": [],
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "wanharmony_persisted_home_list_growth",
+          "variant": "fixed",
+          "status": "PASS",
+          "signed_sha256": "a1abaaef2d68f521d312abac0b219569995ee040a9e1248a8d3cd1aa89206937",
+          "install": "[Info]App install path:/home/research/ohm-clean/renewed-20261014/wanharmony_persisted_home_list_growth/fixed/app.hap msg:install bundle successfully. \nAppMod finish\n",
+          "launch": "Verified by the original normal native setup process, foreground app layout and successful real backend requests; no fresh UI rerun.",
+          "pids": [
+            8260
+          ],
+          "foreground_bundle": "org.example.wan.ohos",
+          "native_setup_file": "artifacts/clean/wanharmony_persisted_home_list_growth/fixed/ten-page-filesystem/b79f3f816a4f4d57aea258ed3130a46f/setup.json",
+          "native_setup_sha256": "8fb52d5cee2031315ede61079f1bf8f9e812afb6494a22be86b5af35dadbba2a",
+          "layout_sha256": "b63742ca998c8dbb410003f1aa7fce4c4fe45d2c130c3fdfadb6682c0828528c",
+          "performance_verified": false,
+          "ui_workload_rerun": false
+        },
+        "performance": {
+          "status": "MECHANISM_SCREEN_FAILED",
+          "metric": "app_pss_bytes",
+          "rounds": 3,
+          "samples": [
+            105409536,
+            105155584,
+            105619456
+          ],
+          "primary_criterion_met": true,
+          "primary_paired_ratios": [
+            1.3694906692312923,
+            1.375787556845293,
+            1.331643139688203
+          ],
+          "primary_median_ratio": 1.3694906692312923,
+          "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+          "signed_sha256": "a1abaaef2d68f521d312abac0b219569995ee040a9e1248a8d3cd1aa89206937",
+          "performance_accepted": false,
+          "full_primary_run_completed": true,
+          "full_mechanism_run_completed": false,
+          "mechanism_negative_bound": {
+            "unfixed_complete_ten_page_bytes": 1212155,
+            "fixed_verified_prefix_bytes": 611898,
+            "unfixed_pages_completed": 10,
+            "fixed_prefix_pages_completed": 1,
+            "remaining_fixed_bytes_lower_bound": 0,
+            "maximum_possible_unfixed_to_fixed_ratio": 1.980975587434507,
+            "required_ratio": 3,
+            "necessary_criterion_failed": true,
+            "reason": "Any complete valid fixed ten-page run includes this nonnegative prefix. Even zero bytes on every remaining fixed page cannot reach 3x."
+          },
+          "mechanism_proof": "validation/wan-home-native-write-negative-bound.json",
+          "legacy_evidence_reused": false
+        }
+      }
+    },
+    "native_primary_audit": "../../validation/wan-home-original-primary-audit-three-pairs.json",
+    "native_mechanism_negative_bound": "../../validation/wan-home-native-write-negative-bound.json",
+    "remaining": "None: user-directed early necessary-mechanism negative skip; all three passing primary PSS pairs retained."
+  },
+  "primary_measurement_validation": {
+    "status": "PRIMARY_CRITERION_MET_MECHANISM_PENDING",
+    "proof": "validation/wan-home-original-primary-audit-three-pairs.json",
+    "rounds_per_variant": 3,
+    "paired_ratios": [
+      1.3694906692312923,
+      1.375787556845293,
+      1.331643139688203
+    ],
+    "full_case_accepted": false,
+    "remaining": "ten-page native filesystem write-volume mechanism"
+  },
+  "disposition": {
+    "status": "skipped_by_user",
+    "reason": "Clean primary PSS criterion met, but the required native persistence-file write-volume mechanism fails its unchanged necessary 3x bound; user instructed to skip negative cases.",
+    "performance_passed": false,
+    "primary_criterion_met": true,
+    "original_evidence_preserved": true,
+    "full_three_pair_run_completed": true,
+    "full_fixed_ten_page_mechanism_run_completed": false
+  }
+}

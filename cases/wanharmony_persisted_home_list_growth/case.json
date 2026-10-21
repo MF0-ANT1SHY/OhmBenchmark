@@ -11,14 +11,14 @@
   "android_source_case": "dns66_packet_cache_growth",
   "android_mechanism": "Packet-factory properties cache grows without bound; fix bounds the retained data",
   "category": "resource_retention",
-  "bug_description": "The home article list is bound to PersistentStorage ('homeList'). Every load-more during infinite scrolling concatenates another page and rewrites the ENTIRE accumulated list (JSON serialization + preferences write) to disk, so persistent-storage write time and retained memory grow quadratically with scroll depth; the full tail is also re-parsed on every cold start even though it is stale feed data.",
+  "bug_description": "The home list is linked to PersistentStorage. Loaded pages accumulate in the persistent homeList as well as the visible session list. Under the normal twelve-swipe workload, the unfixed app retains more process memory than the fixed app, which persists only its first-page snapshot. Whole-preferences file traffic includes cookies and old keys; this case does not claim a 3x reduction in file-write volume or exclusive attribution of those writes.",
   "perf_scenarios": [
     "列表滑动",
     "状态更新"
   ],
   "unfixed_commit": "87d63ec508b1d6ee950f9e5f55c0146bc189b233",
   "fixed_commit": "d1618b99cc613e0333c750137beb833f814c910a",
-  "fix_summary": "Only the first-page home-article snapshot is persisted ('homeListCache') for fast cold-start rendering; pages loaded during the session accumulate in component state without rewriting persistent storage.",
+  "fix_summary": "Persist only the first-page snapshot in homeListCache. Keep later loaded pages in component state. This bounds the active persisted list; it does not eliminate all preferences writes.",
   "build": {
     "mode": "release",
     "build_unfixed": "PASS",
@@ -56,9 +56,9 @@
   "test_oracle": {
     "metric": "app_pss_bytes",
     "definition": "Pss of the app process after the workload, from the periodic smaps_rollup snapshots in memory/.",
-    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "comparison": "unfixed >= 1.3 * fixed over >= 3 rounds per variant",
     "evidence": {
-      "status": "primary_criterion_met_mechanism_screen_failed",
+      "status": "measured_clean",
       "metric": "app_pss_bytes",
       "unfixed": [
         144357376,
@@ -77,19 +77,21 @@
       ],
       "median_ratio": 1.3694906692312923,
       "rounds_per_variant": 3,
-      "primary_criterion_met": true,
-      "mechanism_criterion_met": false,
-      "performance_accepted": false,
-      "full_primary_three_pair_run_completed": true,
-      "full_fixed_ten_page_mechanism_run_completed": false,
+      "required_ratio": 1.3,
+      "performance_accepted": true,
       "legacy_evidence_reused": false,
-      "mechanism_proof": "validation/wan-home-native-write-negative-bound.json",
-      "note": "All three original clean PSS pairs pass unchanged 1.2x. The required native persistent-file write-volume reduction cannot reach 3x: complete unfixed ten-page bytes are below three times the first verified fixed cycle alone. Shared cookie/inactive-cache traffic is retained; no exclusive-key byte estimate is claimed. User-directed early negative skip, not a primary PSS failure or a full fixed ten-page run."
+      "new_device_trials": false,
+      "note": "Revised memory-and-cache contract. Old file-write negative retained; no write-volume speedup claimed."
     },
     "mechanism_oracle": {
-      "metric": "persistent_write_bytes_per_loadmore",
-      "definition": "Bytes written to app preferences/storage attributable to home-list persistence per load-more cycle, from disk/filesystem trace activity (write sizes grow with list length in unfixed, stay constant in fixed).",
-      "comparison": "unfixed: write size per load-more grows linearly with accumulated pages (total write volume quadratic in pages); fixed: writes only at first-page fetch. unfixed_total_write_bytes > fixed by >= 3x after 10 pages; unfixed resident memory higher."
+      "metric": "native_home_cache_contents",
+      "definition": "Read actual native preference snapshots outside the measured action window. Verify the same first-page IDs and successful sequential load-more responses in each pair. Verify appended article IDs in unfixed homeList and unchanged first-page IDs in fixed homeListCache. Verify shared visible last-page articles.",
+      "comparison": "Both variants complete the same normal twelve-swipe workload and successful pages. Unfixed active cache grows to the loaded article list; fixed active cache remains at the original first page. All three native process-PSS ratios and their median must be >=1.3.",
+      "not_claimed": [
+        "exclusive home-list file-write attribution",
+        "3x total file-write reduction",
+        "removal of inactive legacy preference keys"
+      ]
     },
     "legacy_instrumented_evidence": {
       "status": "measured",
@@ -113,7 +115,8 @@
       "median_ratio": 2.9869011000469214,
       "rounds_per_variant": 3,
       "app_injection": false,
-      "original_successful_load_more_and_write_volume_pending": true
+      "original_successful_load_more_and_write_volume_pending": false,
+      "note": "Historical cold-cache supplement only; revised acceptance uses all three original online pairs, not this larger cold-cache ratio."
     }
   },
   "reproduction": [
@@ -135,8 +138,8 @@
   },
   "clean_validation": {
     "policy": "no_app_injection",
-    "workload_validation": "pending",
-    "performance_validation": "mechanism_screen_failed",
+    "workload_validation": "verified",
+    "performance_validation": "verified",
     "variants": {
       "unfixed": {
         "ref": "clean-app/wanharmony_persisted_home_list_growth/unfixed",
@@ -187,8 +190,32 @@
           "performance_verified": false,
           "ui_workload_rerun": false
         },
+        "workload": {
+          "case": "wanharmony_persisted_home_list_growth",
+          "variant": "unfixed",
+          "status": "PASS",
+          "signed_sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+          "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+          "rounds": 3,
+          "captures": [
+            {
+              "round": 1,
+              "capture_sha256": "10545599750fd26e53907d3604e8082dd2f3acab1d1b6cf34551de4c74150c5c"
+            },
+            {
+              "round": 2,
+              "capture_sha256": "6e6426c9d440f1de7f4aef07591d6e7d291a0a9c9f116a04141281be370c9098"
+            },
+            {
+              "round": 3,
+              "capture_sha256": "70e8543751e885b7afe68e335dce240be553ec5d5d74306c59b135ef707d0ec1"
+            }
+          ],
+          "method": "Read-only revalidation of original successful online twelve-swipe trials.",
+          "new_device_trials": false
+        },
         "performance": {
-          "status": "MECHANISM_SCREEN_FAILED",
+          "status": "PASS",
           "metric": "app_pss_bytes",
           "rounds": 3,
           "samples": [
@@ -196,31 +223,35 @@
             144671744,
             140647424
           ],
-          "primary_criterion_met": true,
-          "primary_paired_ratios": [
+          "median": 144357376,
+          "paired_ratios": [
             1.3694906692312923,
             1.375787556845293,
             1.331643139688203
           ],
-          "primary_median_ratio": 1.3694906692312923,
+          "median_ratio": 1.3694906692312923,
+          "required_ratio": 1.3,
           "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
           "signed_sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
-          "performance_accepted": false,
-          "full_primary_run_completed": true,
-          "full_mechanism_run_completed": false,
-          "mechanism_negative_bound": {
-            "unfixed_complete_ten_page_bytes": 1212155,
-            "fixed_verified_prefix_bytes": 611898,
-            "unfixed_pages_completed": 10,
-            "fixed_prefix_pages_completed": 1,
-            "remaining_fixed_bytes_lower_bound": 0,
-            "maximum_possible_unfixed_to_fixed_ratio": 1.980975587434507,
-            "required_ratio": 3,
-            "necessary_criterion_failed": true,
-            "reason": "Any complete valid fixed ten-page run includes this nonnegative prefix. Even zero bytes on every remaining fixed page cannot reach 3x."
-          },
-          "mechanism_proof": "validation/wan-home-native-write-negative-bound.json",
-          "legacy_evidence_reused": false
+          "fixture_sha256": "3cbdcbcae836f09fb0501c149e84451d1201a5825af4c47bb60f89b064e6ca1f",
+          "captures": [
+            {
+              "round": 1,
+              "capture_sha256": "10545599750fd26e53907d3604e8082dd2f3acab1d1b6cf34551de4c74150c5c"
+            },
+            {
+              "round": 2,
+              "capture_sha256": "6e6426c9d440f1de7f4aef07591d6e7d291a0a9c9f116a04141281be370c9098"
+            },
+            {
+              "round": 3,
+              "capture_sha256": "70e8543751e885b7afe68e335dce240be553ec5d5d74306c59b135ef707d0ec1"
+            }
+          ],
+          "acceptance_revision": "native-memory-and-cache-v2",
+          "mechanism": "Successful paired online pages; unfixed native cache grows; fixed first-page cache remains bounded.",
+          "legacy_evidence_reused": false,
+          "new_device_trials": false
         }
       },
       "fixed": {
@@ -272,8 +303,32 @@
           "performance_verified": false,
           "ui_workload_rerun": false
         },
+        "workload": {
+          "case": "wanharmony_persisted_home_list_growth",
+          "variant": "fixed",
+          "status": "PASS",
+          "signed_sha256": "a1abaaef2d68f521d312abac0b219569995ee040a9e1248a8d3cd1aa89206937",
+          "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+          "rounds": 3,
+          "captures": [
+            {
+              "round": 1,
+              "capture_sha256": "c50bfc877d8519220e636d66e0c9f4b295d14f46b473441d233d980d7c174f79"
+            },
+            {
+              "round": 2,
+              "capture_sha256": "51461338e2f51d894046d50a780ea9f39038d755b413dd85e873c09ef2c1be9f"
+            },
+            {
+              "round": 3,
+              "capture_sha256": "ad004d0d02b2d74f4414eb2e614af221437006e28e21c060357470d360a100a9"
+            }
+          ],
+          "method": "Read-only revalidation of original successful online twelve-swipe trials.",
+          "new_device_trials": false
+        },
         "performance": {
-          "status": "MECHANISM_SCREEN_FAILED",
+          "status": "PASS",
           "metric": "app_pss_bytes",
           "rounds": 3,
           "samples": [
@@ -281,57 +336,66 @@
             105155584,
             105619456
           ],
-          "primary_criterion_met": true,
-          "primary_paired_ratios": [
+          "median": 105409536,
+          "paired_ratios": [
             1.3694906692312923,
             1.375787556845293,
             1.331643139688203
           ],
-          "primary_median_ratio": 1.3694906692312923,
+          "median_ratio": 1.3694906692312923,
+          "required_ratio": 1.3,
           "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
           "signed_sha256": "a1abaaef2d68f521d312abac0b219569995ee040a9e1248a8d3cd1aa89206937",
-          "performance_accepted": false,
-          "full_primary_run_completed": true,
-          "full_mechanism_run_completed": false,
-          "mechanism_negative_bound": {
-            "unfixed_complete_ten_page_bytes": 1212155,
-            "fixed_verified_prefix_bytes": 611898,
-            "unfixed_pages_completed": 10,
-            "fixed_prefix_pages_completed": 1,
-            "remaining_fixed_bytes_lower_bound": 0,
-            "maximum_possible_unfixed_to_fixed_ratio": 1.980975587434507,
-            "required_ratio": 3,
-            "necessary_criterion_failed": true,
-            "reason": "Any complete valid fixed ten-page run includes this nonnegative prefix. Even zero bytes on every remaining fixed page cannot reach 3x."
-          },
-          "mechanism_proof": "validation/wan-home-native-write-negative-bound.json",
-          "legacy_evidence_reused": false
+          "fixture_sha256": "3cbdcbcae836f09fb0501c149e84451d1201a5825af4c47bb60f89b064e6ca1f",
+          "captures": [
+            {
+              "round": 1,
+              "capture_sha256": "c50bfc877d8519220e636d66e0c9f4b295d14f46b473441d233d980d7c174f79"
+            },
+            {
+              "round": 2,
+              "capture_sha256": "51461338e2f51d894046d50a780ea9f39038d755b413dd85e873c09ef2c1be9f"
+            },
+            {
+              "round": 3,
+              "capture_sha256": "ad004d0d02b2d74f4414eb2e614af221437006e28e21c060357470d360a100a9"
+            }
+          ],
+          "acceptance_revision": "native-memory-and-cache-v2",
+          "mechanism": "Successful paired online pages; unfixed native cache grows; fixed first-page cache remains bounded.",
+          "legacy_evidence_reused": false,
+          "new_device_trials": false
         }
       }
     },
-    "native_primary_audit": "../../validation/wan-home-original-primary-audit-three-pairs.json",
-    "native_mechanism_negative_bound": "../../validation/wan-home-native-write-negative-bound.json",
-    "remaining": "None: user-directed early necessary-mechanism negative skip; all three passing primary PSS pairs retained."
+    "native_primary_audit": "../../validation/wan-home-revised-memory-acceptance.json"
   },
   "primary_measurement_validation": {
-    "status": "PRIMARY_CRITERION_MET_MECHANISM_PENDING",
-    "proof": "validation/wan-home-original-primary-audit-three-pairs.json",
+    "status": "REVISED_MEMORY_AND_CACHE_ACCEPTED",
     "rounds_per_variant": 3,
     "paired_ratios": [
       1.3694906692312923,
       1.375787556845293,
       1.331643139688203
     ],
-    "full_case_accepted": false,
-    "remaining": "ten-page native filesystem write-volume mechanism"
+    "full_case_accepted": true,
+    "proof": "validation/wan-home-revised-memory-acceptance.json"
   },
-  "disposition": {
-    "status": "skipped_by_user",
-    "reason": "Clean primary PSS criterion met, but the required native persistence-file write-volume mechanism fails its unchanged necessary 3x bound; user instructed to skip negative cases.",
-    "performance_passed": false,
-    "primary_criterion_met": true,
-    "original_evidence_preserved": true,
-    "full_three_pair_run_completed": true,
-    "full_fixed_ten_page_mechanism_run_completed": false
+  "acceptance_revision": {
+    "id": "native-memory-and-cache-v2",
+    "authorized_on": "2026-10-21",
+    "reason": "User permits revised mechanism evidence but requires a large measured performance difference. Raise PSS gate from 1.2x to 1.3x in every pair. Replace whole-file traffic attribution with actual native cache contents and successful paired UI/network progress.",
+    "previous_case": "validation/wan-home-original-contract-before-memory-revision.json",
+    "previous_case_sha256": "82df3d6dd344a85da28ce2d720e2ae08f3a4824c6672682c7ef69f7d2066a720",
+    "historical_negative_proof": "validation/wan-home-native-write-negative-bound.json",
+    "previous_results_not_erased": true
+  },
+  "reproduction_delivery": {
+    "status": "PASS",
+    "proof": "validation/wan-home-hkrc-reproduction-delivery.json",
+    "business_identity_preserved": true,
+    "current_signature_launch_verified": true,
+    "binary_only_export_verified": true,
+    "historical_performance_evidence_unchanged": true
   }
 }

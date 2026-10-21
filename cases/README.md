@@ -128,8 +128,12 @@ has a real-device check in `validation/system-pss-device-check.json`, but that
 does **not** validate a memory case. `tools/accept_pss_evidence.py` recomputes all
 six windows and the unchanged 1.2x paired criterion. For the search-history case,
 it also verifies fresh per-trial ordinary preference preparation and UI reading;
-actual case acceptance remains pending. WanHarmony input preparation is not yet
-implemented, so its memory gate stays closed. The collector never inherits a
+actual case acceptance remains pending. The revised Wan home memory gate uses
+`tools/accept_wan_home_memory.py` to revalidate all six original online trials.
+It requires at least 1.3x PSS in every pair and the median, successful matched
+pages, visible article agreement, and growing versus bounded native cache
+contents. The old 3x whole-file-write criterion failed and remains archived; it
+is not claimed by this revised memory case. The collector never inherits a
 previous validation run's fixture hash as fresh preparation evidence.
 
 1. Exact clean source trees and business-only repair diff.

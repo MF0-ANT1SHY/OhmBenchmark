@@ -67,8 +67,17 @@ class Remote:
         destination.write_bytes(blob)
 
     def hdc(self, args, timeout=90):
-        return self.python("import subprocess\n"
-                           f"p=subprocess.run({['hdc', *args]!r},capture_output=True,text=True,timeout={timeout})\n"
+        code = "import subprocess\n" + f"args={list(args)!r}\n"
+        if self.backend == 'windows':
+            # HDC resolves slash-rooted host paths against cwd rather than the
+            # drive root. Python's absolute Windows paths avoid that ambiguity.
+            code += "from pathlib import Path\n"
+            code += "if args and args[0]=='install':\n"
+            code += " args=[str(Path(a).resolve()) if a.startswith('/') else a for a in args]\n"
+            code += "if args[:2]==['file','send']:args[2]=str(Path(args[2]).resolve())\n"
+            code += "if args[:2]==['file','recv']:args[3]=str(Path(args[3]).resolve())\n"
+        return self.python(code +
+                           f"p=subprocess.run(['hdc',*args],capture_output=True,text=True,timeout={timeout})\n"
                            "print(p.stdout,end='');print(p.stderr,end='')\n"
                            "raise SystemExit(p.returncode)", timeout=timeout+20)
 

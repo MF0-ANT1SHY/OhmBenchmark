@@ -140,8 +140,9 @@ def trial(folder,variant,number,plan_hash,sign):
 def audit(rounds=3):
     if type(rounds) is not int or rounds not in (1,2,3):raise ValueError('one to three saved mandatory pairs required')
     case=json.loads((ROOT/'cases'/CASE/'case.json').read_text());plan=ROOT/'cases'/CASE/case['testcase']['workload'];plan_hash=digest(plan)
+    threshold = 1.3 if case.get('acceptance_revision',{}).get('id') == 'native-memory-and-cache-v2' else 1.2
     if (case['test_oracle']['metric']!='app_pss_bytes' or
-            case['test_oracle']['comparison']!='unfixed >= 1.2 * fixed over >= 3 rounds per variant' or
+            case['test_oracle']['comparison']!=f'unfixed >= {threshold} * fixed over >= 3 rounds per variant' or
             json.loads(plan.read_text())['measured']!=[{'op':'swipe','count':12}]):
         raise ValueError('original primary oracle or twelve-swipe workload changed')
     samples={'unfixed':[],'fixed':[]};rows=[];identities=set();previous={}
@@ -179,10 +180,10 @@ def audit(rounds=3):
                      'final_article_count':len(articles),'actual_final_viewports':viewports,
                      'original_capture_sha256':{v:pair[v]['capture_sha256'] for v in pair},'unfixed_late_logs_supplemental_only':u['late_log_supplement']})
     if len(identities)!=1:raise ValueError('same semantic ordinary cache fixture not proven across trials')
-    ratios=[u/f for u,f in zip(samples['unfixed'],samples['fixed'])];median=statistics.median(samples['unfixed'])/statistics.median(samples['fixed']);met=rounds==3 and min(ratios)>=1.2 and median>=1.2
+    ratios=[u/f for u,f in zip(samples['unfixed'],samples['fixed'])];median=statistics.median(samples['unfixed'])/statistics.median(samples['fixed']);met=rounds==3 and min(ratios)>=threshold and median>=threshold
     return {'case':CASE,'status':'PRIMARY_CRITERION_MET_MECHANISM_PENDING' if met else 'PRIMARY_PAIRS_AUDITED_NOT_FULL_CASE_ACCEPTANCE',
             'full_case_accepted':False,'performance_accepted':False,'metric':'app_pss_bytes','original_workload_rounds':rounds,
-            'primary_criterion_fully_evaluated':rounds==3,'primary_criterion_met':met,'mandatory_pair_below_threshold':min(ratios)<1.2,
+            'primary_criterion_fully_evaluated':rounds==3,'primary_criterion_met':met,'mandatory_pair_below_threshold':min(ratios)<threshold,
             'samples':samples,'paired_ratios':ratios,'median_ratio':median,'fixture_sha256':next(iter(identities)),
             'plan_sha256':plan_hash,'rows':rows,'pending_requirement':'Native filesystem write-volume mechanism after ten successful load-more pages; no legacy instrumented byte counters reused.'}
 

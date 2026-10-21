@@ -241,6 +241,13 @@ def export(cid, destination, symptom, round_number, remote_name='cityuPC', inclu
     if metric not in ('hiperf_instructions','trace_cpu_ms','app_pss_bytes'):
         raise ValueError('agent data export is not implemented for this metric')
     capture_folder = folder/{'trace_cpu_ms':'trace-captures','app_pss_bytes':'pss-captures','hiperf_instructions':'cpu-captures'}[metric]/f'round-{round_number}'
+    expected_capture_status = 'CAPTURED'
+    if cid == 'wanharmony_persisted_home_list_growth':
+        # require_accepted_case has revalidated all six original raw trials.
+        # Preserve their original paths and diagnostic labels; do not rewrite them.
+        from accept_wan_home_memory import capture_folder as original_wan_folder
+        capture_folder = original_wan_folder('unfixed', round_number)
+        expected_capture_status = 'DIAGNOSTIC_CAPTURED'
     capture = json.loads((capture_folder/'capture.json').read_text())
     hap = folder/'app-export.hap'
     plan = ROOT/'cases'/cid/case['testcase']['workload']
@@ -250,7 +257,7 @@ def export(cid, destination, symptom, round_number, remote_name='cityuPC', inclu
     unsigned=folder/'app-unsigned.hap'
     if hashlib.sha256(unsigned.read_bytes()).hexdigest()!=build['hap']['sha256']:
         raise ValueError('unsigned artifact differs from audited clean build')
-    if sign['status'] != 'PASS' or not sign['audit']['passed'] or capture['status'] != 'CAPTURED' or capture['signed_sha256'] != sign['audit']['sha256']:
+    if sign['status'] != 'PASS' or not sign['audit']['passed'] or capture['status'] != expected_capture_status or capture['signed_sha256'] != sign['audit']['sha256']:
         raise ValueError('unmatched capture/package')
     if not hap.exists() or hashlib.sha256(hap.read_bytes()).hexdigest() != sign['audit']['sha256']:
         Remote(remote_name).download(sign['signed_hap'], hap)

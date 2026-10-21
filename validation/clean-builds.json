@@ -6921,8 +6921,32 @@
         "performance_verified": false,
         "ui_workload_rerun": false
       },
+      "workload": {
+        "case": "wanharmony_persisted_home_list_growth",
+        "variant": "unfixed",
+        "status": "PASS",
+        "signed_sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
+        "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+        "rounds": 3,
+        "captures": [
+          {
+            "round": 1,
+            "capture_sha256": "10545599750fd26e53907d3604e8082dd2f3acab1d1b6cf34551de4c74150c5c"
+          },
+          {
+            "round": 2,
+            "capture_sha256": "6e6426c9d440f1de7f4aef07591d6e7d291a0a9c9f116a04141281be370c9098"
+          },
+          {
+            "round": 3,
+            "capture_sha256": "70e8543751e885b7afe68e335dce240be553ec5d5d74306c59b135ef707d0ec1"
+          }
+        ],
+        "method": "Read-only revalidation of original successful online twelve-swipe trials.",
+        "new_device_trials": false
+      },
       "performance": {
-        "status": "MECHANISM_SCREEN_FAILED",
+        "status": "PASS",
         "metric": "app_pss_bytes",
         "rounds": 3,
         "samples": [
@@ -6930,31 +6954,35 @@
           144671744,
           140647424
         ],
-        "primary_criterion_met": true,
-        "primary_paired_ratios": [
+        "median": 144357376,
+        "paired_ratios": [
           1.3694906692312923,
           1.375787556845293,
           1.331643139688203
         ],
-        "primary_median_ratio": 1.3694906692312923,
+        "median_ratio": 1.3694906692312923,
+        "required_ratio": 1.3,
         "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
         "signed_sha256": "894277ff6337c8d73966a17838b9b8b8d5cef998be7b1eaf2de6c1fdf93694af",
-        "performance_accepted": false,
-        "full_primary_run_completed": true,
-        "full_mechanism_run_completed": false,
-        "mechanism_negative_bound": {
-          "unfixed_complete_ten_page_bytes": 1212155,
-          "fixed_verified_prefix_bytes": 611898,
-          "unfixed_pages_completed": 10,
-          "fixed_prefix_pages_completed": 1,
-          "remaining_fixed_bytes_lower_bound": 0,
-          "maximum_possible_unfixed_to_fixed_ratio": 1.980975587434507,
-          "required_ratio": 3,
-          "necessary_criterion_failed": true,
-          "reason": "Any complete valid fixed ten-page run includes this nonnegative prefix. Even zero bytes on every remaining fixed page cannot reach 3x."
-        },
-        "mechanism_proof": "validation/wan-home-native-write-negative-bound.json",
-        "legacy_evidence_reused": false
+        "fixture_sha256": "3cbdcbcae836f09fb0501c149e84451d1201a5825af4c47bb60f89b064e6ca1f",
+        "captures": [
+          {
+            "round": 1,
+            "capture_sha256": "10545599750fd26e53907d3604e8082dd2f3acab1d1b6cf34551de4c74150c5c"
+          },
+          {
+            "round": 2,
+            "capture_sha256": "6e6426c9d440f1de7f4aef07591d6e7d291a0a9c9f116a04141281be370c9098"
+          },
+          {
+            "round": 3,
+            "capture_sha256": "70e8543751e885b7afe68e335dce240be553ec5d5d74306c59b135ef707d0ec1"
+          }
+        ],
+        "acceptance_revision": "native-memory-and-cache-v2",
+        "mechanism": "Successful paired online pages; unfixed native cache grows; fixed first-page cache remains bounded.",
+        "legacy_evidence_reused": false,
+        "new_device_trials": false
       }
     },
     {
@@ -7009,8 +7037,32 @@
         "performance_verified": false,
         "ui_workload_rerun": false
       },
+      "workload": {
+        "case": "wanharmony_persisted_home_list_growth",
+        "variant": "fixed",
+        "status": "PASS",
+        "signed_sha256": "a1abaaef2d68f521d312abac0b219569995ee040a9e1248a8d3cd1aa89206937",
+        "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
+        "rounds": 3,
+        "captures": [
+          {
+            "round": 1,
+            "capture_sha256": "c50bfc877d8519220e636d66e0c9f4b295d14f46b473441d233d980d7c174f79"
+          },
+          {
+            "round": 2,
+            "capture_sha256": "51461338e2f51d894046d50a780ea9f39038d755b413dd85e873c09ef2c1be9f"
+          },
+          {
+            "round": 3,
+            "capture_sha256": "ad004d0d02b2d74f4414eb2e614af221437006e28e21c060357470d360a100a9"
+          }
+        ],
+        "method": "Read-only revalidation of original successful online twelve-swipe trials.",
+        "new_device_trials": false
+      },
       "performance": {
-        "status": "MECHANISM_SCREEN_FAILED",
+        "status": "PASS",
         "metric": "app_pss_bytes",
         "rounds": 3,
         "samples": [
@@ -7018,31 +7070,35 @@
           105155584,
           105619456
         ],
-        "primary_criterion_met": true,
-        "primary_paired_ratios": [
+        "median": 105409536,
+        "paired_ratios": [
           1.3694906692312923,
           1.375787556845293,
           1.331643139688203
         ],
-        "primary_median_ratio": 1.3694906692312923,
+        "median_ratio": 1.3694906692312923,
+        "required_ratio": 1.3,
         "plan_sha256": "b382c967265966f6e9db8e1e2134fdc6402f076cfc0aeb264d672bce4b6fdeb5",
         "signed_sha256": "a1abaaef2d68f521d312abac0b219569995ee040a9e1248a8d3cd1aa89206937",
-        "performance_accepted": false,
-        "full_primary_run_completed": true,
-        "full_mechanism_run_completed": false,
-        "mechanism_negative_bound": {
-          "unfixed_complete_ten_page_bytes": 1212155,
-          "fixed_verified_prefix_bytes": 611898,
-          "unfixed_pages_completed": 10,
-          "fixed_prefix_pages_completed": 1,
-          "remaining_fixed_bytes_lower_bound": 0,
-          "maximum_possible_unfixed_to_fixed_ratio": 1.980975587434507,
-          "required_ratio": 3,
-          "necessary_criterion_failed": true,
-          "reason": "Any complete valid fixed ten-page run includes this nonnegative prefix. Even zero bytes on every remaining fixed page cannot reach 3x."
-        },
-        "mechanism_proof": "validation/wan-home-native-write-negative-bound.json",
-        "legacy_evidence_reused": false
+        "fixture_sha256": "3cbdcbcae836f09fb0501c149e84451d1201a5825af4c47bb60f89b064e6ca1f",
+        "captures": [
+          {
+            "round": 1,
+            "capture_sha256": "c50bfc877d8519220e636d66e0c9f4b295d14f46b473441d233d980d7c174f79"
+          },
+          {
+            "round": 2,
+            "capture_sha256": "51461338e2f51d894046d50a780ea9f39038d755b413dd85e873c09ef2c1be9f"
+          },
+          {
+            "round": 3,
+            "capture_sha256": "ad004d0d02b2d74f4414eb2e614af221437006e28e21c060357470d360a100a9"
+          }
+        ],
+        "acceptance_revision": "native-memory-and-cache-v2",
+        "mechanism": "Successful paired online pages; unfixed native cache grows; fixed first-page cache remains bounded.",
+        "legacy_evidence_reused": false,
+        "new_device_trials": false
       }
     },
     {
