@@ -1,0 +1,18 @@
+{
+  "checked_utc": "2026-10-21T08:31:52.834550+00:00",
+  "host": "hkrc",
+  "backend": "windows",
+  "runtime": {
+    "platform": "win32",
+    "python": "3.14.6",
+    "cwd": "C:\\Users\\xiexi"
+  },
+  "binary_roundtrip_sha256": "4043ab3659cd61351795c186762a045221774893a97dcc74f6ba3deade65ac03",
+  "targets": [
+    "2MU0123C26000031"
+  ],
+  "kernel": "HarmonyOS localhost HongMeng Kernel 1.11.0 #1 SMP Mon Nov  3 17:37:19 UTC 2025 aarch64",
+  "native_state": "0\r\n0",
+  "status": "TRANSPORT_AND_DEVICE_IDENTITY_VERIFIED",
+  "performance_validation": false
+}

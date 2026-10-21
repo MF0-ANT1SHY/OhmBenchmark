@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Transport artifacts/commands to the existing WSL device workstation via SSH.
+"""Transport artifacts/commands to a WSL or native Windows workstation via SSH.
 
 No keys or account passwords are copied. Signing uses the identity already on
 that workstation. The installed application's bundle name is not rewritten.
@@ -13,8 +13,12 @@ from pathlib import Path
 
 
 class Remote:
-    def __init__(self, host="cityuPC", distro="Ubuntu-24.04"):
+    def __init__(self, host="cityuPC", distro="Ubuntu-24.04", backend=None):
         self.host, self.distro = host, distro
+        self.backend = backend or ('windows' if host.lower() in
+                                   ('hkrc', 'hkrc-2', 'hkrc_2', 'hkrc_2-laptop') else 'wsl')
+        if self.backend not in ('wsl', 'windows'):
+            raise ValueError('remote backend must be wsl or windows')
 
     def python(self, code, data=None, timeout=120):
         # Windows OpenSSH uses cmd.exe, whose quoting differs from POSIX. Keep
@@ -23,8 +27,12 @@ class Remote:
         if data is not None:
             # File payloads are embedded in a Python string, not shell commands.
             script = "python3 - <<'OHM_REMOTE_PY'\nPAYLOAD = " + repr(data) + "\n" + code + "\nOHM_REMOTE_PY\n"
-        result = subprocess.run(["ssh", "-o", "BatchMode=yes", self.host,
-                                 f"wsl -d {self.distro} -- bash -s"],
+        command = f"wsl -d {self.distro} -- bash -s"
+        if self.backend == 'windows':
+            # Feed Python directly. Windows cmd.exe never parses source or data.
+            script = ("PAYLOAD = " + repr(data) + "\n" if data is not None else "") + code
+            command = 'python -X utf8 -'
+        result = subprocess.run(["ssh", "-o", "BatchMode=yes", self.host, command],
                                 input=script.encode(), capture_output=True, timeout=timeout)
         if result.returncode:
             raise RuntimeError(result.stdout.decode(errors="replace") + result.stderr.decode(errors="replace"))
@@ -41,7 +49,9 @@ class Remote:
                 "blob=sys.stdin.buffer.read(); digest=hashlib.sha256(blob).hexdigest(); "
                 "assert digest==sys.argv[2]; p=Path(sys.argv[1]); "
                 "p.parent.mkdir(parents=True,exist_ok=True); p.write_bytes(blob); print(digest)")
-        command = f'wsl -d {self.distro} -- python3 -c "{code}" {destination} {digest}'
+        interpreter = ('python -X utf8' if self.backend == 'windows'
+                       else f'wsl -d {self.distro} -- python3')
+        command = f'{interpreter} -c "{code}" {destination} {digest}'
         result = subprocess.run(["ssh", "-o", "BatchMode=yes", self.host, command],
                                 input=blob, capture_output=True, timeout=600)
         if result.returncode or result.stdout.decode(errors="replace").strip() != digest:
