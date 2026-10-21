@@ -1,0 +1,14 @@
+diff --git a/entry/src/main/ets/services/FeedService.ets b/entry/src/main/ets/services/FeedService.ets
+index 8845e09..4be935d 100644
+--- a/entry/src/main/ets/services/FeedService.ets
++++ b/entry/src/main/ets/services/FeedService.ets
+@@ -167,7 +167,8 @@ export class FeedService {
+       const runWorker: () => Promise<void> = async (): Promise<void> => {
+         while (next < due.length) {
+           const index: number = next++;
+-          outcome.inserted += await this.refreshFeed(due[index].id, outcome);
++          const inserted: number = await this.refreshFeed(due[index].id, outcome);
++          outcome.inserted += inserted;
+           done++;
+           onProgress(done, due.length);
+         }

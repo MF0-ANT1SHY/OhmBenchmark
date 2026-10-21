@@ -1,0 +1,168 @@
+{
+  "case": "sheafreader_refresh_feeds_sequential",
+  "status": "STARTUP_REFRESH_LATENCY_ACCEPTED",
+  "measurement_revision": "startup-refresh-latency-v7",
+  "app_injection": false,
+  "business_source_changed": true,
+  "required_ratio": 1.5,
+  "paired_ratios": [
+    1.8567428193989528,
+    1.8735227455124577,
+    1.7951272436965613
+  ],
+  "median_ratio": 1.844020161540805,
+  "samples": {
+    "unfixed": [
+      21.25579310000103,
+      21.574176899999657,
+      21.187260400000014
+    ],
+    "fixed": [
+      9.72918910000044,
+      9.796314799999891,
+      9.960387299999638
+    ]
+  },
+  "captures": {
+    "unfixed": [
+      {
+        "round": 1,
+        "path": "artifacts/clean/sheafreader_refresh_feeds_sequential/unfixed/trace-captures/startup-refresh-latency-v7/round-1/capture.json",
+        "sha256": "f2587def78d23bdfb8390b6dd4b18e331a19d4daf550ff9a637c2f3f975df076",
+        "latency_bounds": {
+          "elapsed_upper_s": 21.25579310000103,
+          "elapsed_lower_s": 18.064602000000377,
+          "feeds_refreshed": 10,
+          "method": "normal app launch to all-feed native completion and enabled refresh UI"
+        },
+        "trace_sha256": "44f1928187496a8390b8da0cb8cd9b4502e3835747b8c5273f74ff169a6fdeb6"
+      },
+      {
+        "round": 2,
+        "path": "artifacts/clean/sheafreader_refresh_feeds_sequential/unfixed/trace-captures/startup-refresh-latency-v7/round-2/capture.json",
+        "sha256": "133d510078ce40260386a3e3e49e30e131fa3bee9a551e0da5fe165946ef83d1",
+        "latency_bounds": {
+          "elapsed_upper_s": 21.574176899999657,
+          "elapsed_lower_s": 18.353618600000118,
+          "feeds_refreshed": 10,
+          "method": "normal app launch to all-feed native completion and enabled refresh UI"
+        },
+        "trace_sha256": "8eaabb93ee701013c966c99cf05960f3bada52ef15bac52dad0edc94204175f2"
+      },
+      {
+        "round": 3,
+        "path": "artifacts/clean/sheafreader_refresh_feeds_sequential/unfixed/trace-captures/startup-refresh-latency-v7/round-3/capture.json",
+        "sha256": "23999ae3449ff02745aaa4bce4725ffc59c14ebb82ee6122ec0f3f7ec6d45bfa",
+        "latency_bounds": {
+          "elapsed_upper_s": 21.187260400000014,
+          "elapsed_lower_s": 17.880162599998584,
+          "feeds_refreshed": 10,
+          "method": "normal app launch to all-feed native completion and enabled refresh UI"
+        },
+        "trace_sha256": "7d9e568cbc711faa7e0b90f0348d53cb08e8e1c99b641dd4059630622e44c28b"
+      }
+    ],
+    "fixed": [
+      {
+        "round": 1,
+        "path": "artifacts/clean/sheafreader_refresh_feeds_sequential/fixed/trace-captures/startup-refresh-latency-v7/round-1/capture.json",
+        "sha256": "3719b6de96d9aff590b341862088a2e454cc061710620464fc2768fe43785c6c",
+        "latency_bounds": {
+          "elapsed_upper_s": 9.72918910000044,
+          "elapsed_lower_s": 6.449731800001246,
+          "feeds_refreshed": 10,
+          "method": "normal app launch to all-feed native completion and enabled refresh UI"
+        },
+        "trace_sha256": "b94cfd40f5a5447ee5b1c043104566b8d7d6f7ffa6b9f55c08337a9d57827701"
+      },
+      {
+        "round": 2,
+        "path": "artifacts/clean/sheafreader_refresh_feeds_sequential/fixed/trace-captures/startup-refresh-latency-v7/round-2/capture.json",
+        "sha256": "f6b28ce65921f3afc16b04fd5089ff37c84e37e62b2a51a204f3d624a89aebaa",
+        "latency_bounds": {
+          "elapsed_upper_s": 9.796314799999891,
+          "elapsed_lower_s": 6.536784399999306,
+          "feeds_refreshed": 10,
+          "method": "normal app launch to all-feed native completion and enabled refresh UI"
+        },
+        "trace_sha256": "613e0f03efc65a7c5f252f6ebcc3763391d394013f9e07e46faba829c0090050"
+      },
+      {
+        "round": 3,
+        "path": "artifacts/clean/sheafreader_refresh_feeds_sequential/fixed/trace-captures/startup-refresh-latency-v7/round-3/capture.json",
+        "sha256": "4ff91af8bdccebebde8b2801775380d347b3f6d82af6b8335382f19dae9f7815",
+        "latency_bounds": {
+          "elapsed_upper_s": 9.960387299999638,
+          "elapsed_lower_s": 6.574151700000584,
+          "feeds_refreshed": 10,
+          "method": "normal app launch to all-feed native completion and enabled refresh UI"
+        },
+        "trace_sha256": "120d910140a7b669fc9c5617fc5a4acac5f7b39482d583127067bbb5736a70db"
+      }
+    ]
+  },
+  "variants": {
+    "unfixed": {
+      "signed_sha256": "05e3218de2da87d754f0d00fb5938bbb70979081d00302d622fb02e9c72cc5ed",
+      "measured_signed_sha256": "05e3218de2da87d754f0d00fb5938bbb70979081d00302d622fb02e9c72cc5ed",
+      "current_validity": {
+        "bundle": "com.sheafreader.hm",
+        "not_before": 1792575752,
+        "not_after": 1795168052,
+        "checked_at": 1792578817.0467262
+      },
+      "fresh_launch_receipt_sha256": "23999ae3449ff02745aaa4bce4725ffc59c14ebb82ee6122ec0f3f7ec6d45bfa",
+      "fresh_launch_evidence": "artifacts/clean/sheafreader_refresh_feeds_sequential/unfixed/trace-captures/startup-refresh-latency-v7/round-3/capture.json",
+      "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified foreground reader page after all-feed refresh. No additional launch rerun.",
+      "renewal_not_required": true
+    },
+    "fixed": {
+      "signed_sha256": "06a52bf67a30e3143f9bf08510e80d0b384a17589902ecdd3b726c38b937cc15",
+      "measured_signed_sha256": "06a52bf67a30e3143f9bf08510e80d0b384a17589902ecdd3b726c38b937cc15",
+      "current_validity": {
+        "bundle": "com.sheafreader.hm",
+        "not_before": 1792575775,
+        "not_after": 1795168075,
+        "checked_at": 1792578817.954393
+      },
+      "fresh_launch_receipt_sha256": "4ff91af8bdccebebde8b2801775380d347b3f6d82af6b8335382f19dae9f7815",
+      "fresh_launch_evidence": "artifacts/clean/sheafreader_refresh_feeds_sequential/fixed/trace-captures/startup-refresh-latency-v7/round-3/capture.json",
+      "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified foreground reader page after all-feed refresh. No additional launch rerun.",
+      "renewal_not_required": true
+    }
+  },
+  "agent_export": "artifacts/agent-exports/reader-startup-17fa0b24c4294a809dda856495694cc6",
+  "agent_files_sha256": {
+    "app.hap": "05e3218de2da87d754f0d00fb5938bbb70979081d00302d622fb02e9c72cc5ed",
+    "workload.json": "cde1ab6ee2a6b3e526d3c8748f720972d6eed70135541a5d1717c1f0d3e2e2f5",
+    "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
+    "profile.json": "26ab816420f98dc162a8f0b4ad90002b768888ad0e4a9c9cba32b958cfc88d99",
+    "symptom.txt": "06890ca0372a56d538280e5522ea4e171e823e64a854c2cf95416537b5685a43"
+  },
+  "complete_gate": {
+    "stage": "complete",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "tests_passed": 323,
+  "historical_contract": "validation/reader-refresh-original-contract-before-startup.json",
+  "source_sha256": {
+    "tools/capture_reader_startup_refresh.py": "1278d56cae1d790f42e9c18c9fe31c34b37244b999ac52d51fcfcbd94c7aa7b3",
+    "tools/native_startup_refresh_record.py": "2a76aff038cb59f51d37584a47bbe6aceabd0234bb47b7bb44663d6007ede2dc",
+    "tools/accept_reader_startup_evidence.py": "0a2d1f3c04e6137c76452cf9ca37d3bed75f3255cf52b5434c6ac2420895e686",
+    "tools/reader_refresh_latency.py": "fb9ff48dc1ad14ad43c6e6965e2f1f2216e991557fb8a4b6656d561bbb887a9d",
+    "tools/rss_workstation_lease.py": "ba680df94fff6f781ad9c5c871e3556c5ecdc6bfa914916a5edc98e804a73c3c",
+    "tools/verify_reader_refresh_candidate.js": "e65d8695957bf77bad6cb87c99dfaadb0eaba3449a6b8f59f8a30e51ba807d8b",
+    "hosts_patches/sheafreader/refresh-concurrent-totals-v3.patch": "58b058bf85b99eebf08ae3d90ba0ea3d36c91ce3e8ea035a88d9bb8e10462f22"
+  },
+  "nominal_paired_ratios": [
+    2.184744574447635,
+    2.202274767650372,
+    2.127152264450679
+  ],
+  "declared_rss_response_delay_s": 1.5,
+  "acceptance_uses_conservative_bounds": true,
+  "cpu_improvement_claimed": false
+}

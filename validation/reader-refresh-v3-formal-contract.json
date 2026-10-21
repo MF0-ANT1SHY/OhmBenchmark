@@ -1,0 +1,19 @@
+{
+  "case": "sheafreader_refresh_feeds_sequential",
+  "status": "FORMAL_COLLECTION_COMPLETE_AND_ACCEPTED",
+  "metric": "startup_refresh_elapsed_s",
+  "revision": "startup-refresh-latency-v7",
+  "comparison": "unfixed conservative lower bound >= 1.5 * fixed upper bound over 3 paired rounds",
+  "scope": "Normal app startup including automatic all-feed refresh. Identical ten RSS subscriptions, 100 articles per feed, 256-byte bodies, and 1.5-second external server response delay. Not a manual-refresh or CPU-reduction claim.",
+  "lower_bound": "Last incomplete native database observation start minus launch-command return. Completion is also checked against the enabled normal refresh UI.",
+  "upper_bound": "Start of normal launch command to completed native refresh plus normal UI checks.",
+  "native_profile": "Same-run OS scheduling trace; evaluator markers stay outside app code and are removed from app-only agent export.",
+  "plan": "artifacts/candidate-builds/reader-refresh-v3/startup-refresh-latency-v7/unfixed/round-1/plan.json",
+  "plan_sha256": "aa4ebb3cd2797c6d9d0c1f457c4e0b1069d6ffc27281e8bc1ad464c2ae498bc1",
+  "first_native_capture": "artifacts/candidate-builds/reader-refresh-v3/startup-refresh-latency-v7/unfixed/round-1/capture.json",
+  "tests_passed": 318,
+  "collector": "tools/capture_reader_startup_refresh.py",
+  "collector_sha256": "1278d56cae1d790f42e9c18c9fe31c34b37244b999ac52d51fcfcbd94c7aa7b3",
+  "original_cpu_negative_retained": true,
+  "acceptance_proof": "validation/reader-startup-refresh-latency-acceptance.json"
+}

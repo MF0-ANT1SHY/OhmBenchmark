@@ -11,6 +11,7 @@ from clean_sources import app_ref
 from accept_cpu_evidence import accept as validate_cpu
 from accept_pss_evidence import accept as validate_pss
 from accept_trace_evidence import accept as validate_trace
+from accept_reader_startup_evidence import accept as validate_startup
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -85,7 +86,7 @@ def verify(stage, selected=None):
         if stage == 'complete' and c['test_oracle']['evidence'].get('status')=='measured_clean':
             if c['test_oracle']['metric'] in ('hiperf_instructions','app_pss_bytes') or cid in ('sheafreader_refresh_feeds_sequential', 'wanharmony_history_log_materialization'):
                 try:
-                    validator={'hiperf_instructions':validate_cpu,'app_pss_bytes':validate_pss,'trace_cpu_ms':validate_trace}[c['test_oracle']['metric']]
+                    validator={'hiperf_instructions':validate_cpu,'app_pss_bytes':validate_pss,'trace_cpu_ms':validate_trace, 'startup_refresh_elapsed_s':validate_startup}[c['test_oracle']['metric']]
                     recomputed=validator(cid,write=False)
                     for variant,expected in recomputed.items():
                         actual=json.loads((ROOT/'artifacts/clean'/cid/variant/'performance.json').read_text())

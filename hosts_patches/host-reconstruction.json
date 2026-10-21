@@ -272,10 +272,11 @@
         "case/sheafreader_refresh_feeds_sequential/fixed": {
           "state": "perf: refresh feeds with bounded concurrency (4 workers) instead of fetching every source strictly sequentially",
           "tree": "4b512d02c35abc48453ad713fe944ba816bbbcdf",
-          "app_tree": "fe04f28b6470e2ca7da74b154d6656a39190d01d",
-          "app_ref": "clean-app-v2/sheafreader_refresh_feeds_sequential/fixed",
+          "app_tree": "29b4e350573fc64a3383c1d5b31c30700da254e0",
+          "app_ref": "clean-app-v3/sheafreader_refresh_feeds_sequential/fixed",
           "production_patches": [
-            "hosts_patches/sheafreader/production-phone-support.patch"
+            "hosts_patches/sheafreader/production-phone-support.patch",
+            "hosts_patches/sheafreader/refresh-concurrent-totals-v3.patch"
           ]
         },
         "case/sheafreader_refresh_feeds_sequential/unfixed": {

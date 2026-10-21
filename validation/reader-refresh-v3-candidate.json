@@ -1,0 +1,42 @@
+{
+  "case": "sheafreader_refresh_feeds_sequential",
+  "state": "candidate_not_accepted",
+  "performance_verified": false,
+  "candidate_ref": "candidate/reader-refresh-v3",
+  "candidate_commit": "a2028d7f46d7bb93b829df5788b89907f8594084",
+  "production_patch": "hosts_patches/sheafreader/refresh-concurrent-totals-v3.patch",
+  "production_patch_sha256": "58b058bf85b99eebf08ae3d90ba0ea3d36c91ce3e8ea035a88d9bb8e10462f22",
+  "build_receipt": "artifacts/candidate-builds/reader-refresh-v3/sheafreader_refresh_feeds_sequential/fixed/build.json",
+  "build_receipt_sha256": "bc0a283e11555d46f7d3dab75c23d7f23191365098f348770768e076c1967a80",
+  "unsigned_sha256": "51693c73b8e5b0ed9fb23e852b07498e03e41a21d71a5168ad1ccd19ed231270",
+  "regression": {
+    "test": "tools/verify_reader_refresh_candidate.js",
+    "sha256": "e65d8695957bf77bad6cb87c99dfaadb0eaba3449a6b8f59f8a30e51ba807d8b",
+    "original_expected": 55,
+    "original_actual": 17,
+    "candidate_result": "PASS",
+    "checks": [
+      "out-of-order completion totals",
+      "four-worker bound",
+      "scope filtering",
+      "frequency filtering",
+      "monotonic progress",
+      "empty input"
+    ]
+  },
+  "planned_measurement": "Externally observed complete normal refresh latency, with identical RSS responses and network conditions. No app counters or injected markers. Historical trace-CPU failure is not reclassified.",
+  "variants": {
+    "unfixed": {
+      "signed_sha256": "05e3218de2da87d754f0d00fb5938bbb70979081d00302d622fb02e9c72cc5ed",
+      "smoke_receipt": "artifacts/candidate-builds/reader-refresh-v3/sheafreader_refresh_feeds_sequential/unfixed/smoke.json",
+      "smoke_receipt_sha256": "053378b21676f3c9648da10dc33e1a6aa34f963eff30bd8de0e4b1f8d651e426",
+      "status": "signed_installed_foreground_verified"
+    },
+    "fixed": {
+      "signed_sha256": "06a52bf67a30e3143f9bf08510e80d0b384a17589902ecdd3b726c38b937cc15",
+      "smoke_receipt": "artifacts/candidate-builds/reader-refresh-v3/sheafreader_refresh_feeds_sequential/fixed/smoke.json",
+      "smoke_receipt_sha256": "23b9eb774aa343ac4baa15af6b3da7e448b5bd19256a327b51a66afbbe933c83",
+      "status": "signed_installed_foreground_verified"
+    }
+  }
+}

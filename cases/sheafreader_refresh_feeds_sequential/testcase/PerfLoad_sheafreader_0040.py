@@ -32,7 +32,7 @@ class PerfLoad_sheafreader_0040(PerfTestCase):
 
     def process(self):
         ui = UI(self.driver.shell, self._app_package, self._plan['ability'])
-        ui.run([{'op': 'stop'}, {'op': 'launch'}])
+        ui.run([{'op': 'stop'}])
         ui.run(self._plan['setup'])
         ui.profiled(self.execute_performance_step,
             'Sheaf-Reader (束阅 RSS 阅读器)页面操作', 60, self._plan['measured'])

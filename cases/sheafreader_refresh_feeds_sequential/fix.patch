@@ -1,8 +1,8 @@
 diff --git a/entry/src/main/ets/services/FeedService.ets b/entry/src/main/ets/services/FeedService.ets
-index 26d38d4..8845e09 100644
+index 26d38d4..4be935d 100644
 --- a/entry/src/main/ets/services/FeedService.ets
 +++ b/entry/src/main/ets/services/FeedService.ets
-@@ -158,20 +158,25 @@ export class FeedService {
+@@ -158,20 +158,26 @@ export class FeedService {
          feeds = feeds.filter((f: Feed) => ScopeFilter.contains(scopeIds, f.id));
        }
        const now: number = Date.now();
@@ -26,7 +26,8 @@ index 26d38d4..8845e09 100644
 +      const runWorker: () => Promise<void> = async (): Promise<void> => {
 +        while (next < due.length) {
 +          const index: number = next++;
-+          outcome.inserted += await this.refreshFeed(due[index].id, outcome);
++          const inserted: number = await this.refreshFeed(due[index].id, outcome);
++          outcome.inserted += inserted;
 +          done++;
 +          onProgress(done, due.length);
          }

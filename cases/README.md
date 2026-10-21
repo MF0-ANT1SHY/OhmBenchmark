@@ -38,6 +38,21 @@ the selected song's player page; they do not establish audible playback.
 Original contracts and unsuccessful trials remain archived. Revision-specific
 capture directories prevent those trials from being reused as new evidence.
 
+The reader revision `startup-refresh-latency-v7` measures normal app startup
+through its automatic refresh of all ten subscriptions. Both variants receive
+the same 1,000 articles and an explicitly configured 1.5-second RSS response
+delay. Acceptance requires each unfixed conservative latency lower bound to be
+at least 1.5 times its paired fixed upper bound, for three pairs. This is a
+latency result under those network conditions, not a CPU-reduction claim.
+The original CPU-negative trials remain archived.
+
+Each reader trial also records an OS scheduler trace. Native feed timestamps,
+complete database contents, process identity, and the normal completed UI are
+checked outside the app. Diagnostic exports retain only app scheduling events;
+they exclude evaluator markers, fixtures, comparisons, and fixed sources.
+The revised four-worker implementation also preserves inserted-article totals
+when requests finish out of order. Its regression test is external to the HAP.
+
 UI plans declare `setup`, `measured` and `verify` actions driven through `uitest`.
 Their existence or syntax validity does not prove successful reproduction. The
 plans must reach the actual business path in both variants on the real device.

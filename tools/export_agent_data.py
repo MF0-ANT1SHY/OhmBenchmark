@@ -19,6 +19,7 @@ from hap_profile_validity import verify_installable_profile, ExpiredProfileError
 from reproduction_hap_identity import verify_identity
 from accept_cpu_evidence import accept as validate_cpu
 from accept_trace_evidence import accept as validate_trace
+from accept_reader_startup_evidence import accept as validate_startup
 from accept_pss_evidence import accept as validate_pss
 from measurement_paths import capture_root
 
@@ -34,7 +35,7 @@ def require_accepted_case(cid, case, round_number):
         raise ValueError('selected round must belong to the three accepted paired rounds')
     metric = case['test_oracle']['metric']
     validator = {'hiperf_instructions':validate_cpu, 'trace_cpu_ms':validate_trace,
-                 'app_pss_bytes':validate_pss}.get(metric)
+                 'app_pss_bytes':validate_pss, 'startup_refresh_elapsed_s':validate_startup}.get(metric)
     if validator is None:
         raise ValueError('agent data export is not implemented for this metric')
     # Recompute the original full criterion read-only. Flags or one favorable
@@ -65,7 +66,9 @@ if __name__ == '__main__':
         return result.stdout
     ui=UI(shell,plan['bundle'],plan['ability'])
     if args.phase in ('all','setup'):
-        ui.run([{'op':'stop'},{'op':'launch'}]);ui.run(plan['setup'])
+        startup = plan.get('measured', [{}])[0].get('op') == 'launch'
+        ui.run([{'op':'stop'}] if startup else [{'op':'stop'},{'op':'launch'}])
+        ui.run(plan['setup'])
     if args.phase in ('all','measured'):ui.run(plan['measured'])
     if args.phase in ('all','verify'):ui.run(plan['verify'])
 '''
@@ -239,7 +242,7 @@ def export(cid, destination, symptom, round_number, remote_name='cityuPC', inclu
     build = json.loads((folder/'build.json').read_text())
     sign = json.loads((folder/'sign.json').read_text())
     metric=case.get('test_oracle',{}).get('metric','hiperf_instructions')
-    if metric not in ('hiperf_instructions','trace_cpu_ms','app_pss_bytes'):
+    if metric not in ('hiperf_instructions','trace_cpu_ms','app_pss_bytes','startup_refresh_elapsed_s'):
         raise ValueError('agent data export is not implemented for this metric')
     capture_folder = capture_root(folder,case,metric)/f'round-{round_number}'
     expected_capture_status = 'CAPTURED'
@@ -272,7 +275,7 @@ def export(cid, destination, symptom, round_number, remote_name='cityuPC', inclu
     tree = subprocess.check_output(['git', '-C', str(repo), 'rev-parse', ref+'^{tree}'], text=True).strip()
     if tree != build['source']['tree'] or not build['source']['passed']:
         raise ValueError('source/build mismatch')
-    if metric=='trace_cpu_ms':
+    if metric in ('trace_cpu_ms','startup_refresh_elapsed_s'):
         report=app_scheduler_report(capture_folder/'trace.htrace',capture,case['host_app']['bundle_name'])
     elif metric=='app_pss_bytes':
         report=app_memory_report(capture,case['host_app']['bundle_name'])

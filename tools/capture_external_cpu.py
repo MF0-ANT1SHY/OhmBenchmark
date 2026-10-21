@@ -147,7 +147,7 @@ def shell(command):
     code += f"assert hashlib.sha256(Path({sign['signed_hap']!r}).read_bytes()).hexdigest()=={sign['audit']['sha256']!r}\n"
     code += "plan=json.loads(plan_file.read_text());ui=UI(shell,plan['bundle'],plan['ability'])\n"
     if poem_import_fixture or poem_sync_fixture:
-        for module in ('jingmo_import_fixture.py','jingmo_data_service.py','rss_service_fixture.py','rss_data_service.py','rss_dataset.py','install_sqlite_fixture.py','remote_device.py'):
+        for module in ('jingmo_import_fixture.py','jingmo_data_service.py','rss_service_fixture.py','rss_data_service.py','rss_dataset.py','workstation_process.py','rss_workstation_lease.py','install_sqlite_fixture.py','remote_device.py'):
             remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
         code += "from jingmo_import_fixture import complete_import,read_state,verify_state\n"
     if cid=='sepweather_font_register_per_page':

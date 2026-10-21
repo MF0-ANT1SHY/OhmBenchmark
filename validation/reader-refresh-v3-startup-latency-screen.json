@@ -1,0 +1,42 @@
+{
+  "case": "sheafreader_refresh_feeds_sequential",
+  "status": "POSITIVE_SCREEN_NOT_ACCEPTED",
+  "scope": "Normal startup including automatic all-feed refresh under identical declared 1.5-second RSS server latency. Not a manual-button or CPU-improvement claim.",
+  "variants": {
+    "unfixed": {
+      "timing": {
+        "elapsed_upper_s": 20.148071499999787,
+        "elapsed_lower_s": 18.186160900000687,
+        "feeds_refreshed": 10,
+        "method": "normal app launch to all-feed native completion and enabled refresh UI"
+      },
+      "artifacts": {
+        "artifacts/candidate-builds/reader-refresh-v3/latency-screen-startup-v6/unfixed/preparation.json": "40fef61c8e037bf02c2940deb4c56a4921dec1b7e0509f4a5e1d45d5c09adc8e",
+        "artifacts/candidate-builds/reader-refresh-v3/latency-screen-startup-v6/unfixed/capture.json": "4396e1c62b3b8637826d0b39dceb52d6d62e3bab67217b8d5934a59e1fece416",
+        "artifacts/candidate-builds/reader-refresh-v3/latency-screen-startup-v6/unfixed/completion.json": "d9856c088bdf435a6fc97a008baf6ee0dd2bdb8a886607434160d6030a59d1cd"
+      },
+      "ordinary_data_verified": true
+    },
+    "fixed": {
+      "timing": {
+        "elapsed_upper_s": 8.53986889999942,
+        "elapsed_lower_s": 6.611504000000423,
+        "feeds_refreshed": 10,
+        "method": "normal app launch to all-feed native completion and enabled refresh UI"
+      },
+      "artifacts": {
+        "artifacts/candidate-builds/reader-refresh-v3/latency-screen-startup-v6/fixed/preparation.json": "770b8a78e94993bfe62cbfdd6b338ecf4c82c5c2f3310505fdd7567b8bb5acf1",
+        "artifacts/candidate-builds/reader-refresh-v3/latency-screen-startup-v6/fixed/capture.json": "37973fa53aab9fdde612a6ce6153f3037ce32002ecf4c32d9798b2d0ee66681b",
+        "artifacts/candidate-builds/reader-refresh-v3/latency-screen-startup-v6/fixed/completion.json": "f1039a0365d8762f20c0d696a7a77f48abd94fc06bbad62be1be2bdb8bb55fa8"
+      },
+      "ordinary_data_verified": true
+    }
+  },
+  "ratio": 2.359295176065426,
+  "conservative_ratio": 2.1295597289557833,
+  "remaining": [
+    "three paired formal captures with native diagnostic profiles",
+    "complete gate and current blind delivery",
+    "case commit and push"
+  ]
+}

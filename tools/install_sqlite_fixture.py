@@ -35,7 +35,7 @@ def install(remote, bundle, module, database, fixture):
     remote.hdc(["shell", f"sqlite3 {device_db} 'PRAGMA wal_checkpoint(TRUNCATE);'"])
     remote.hdc(["shell", f"sqlite3 {device_db} '.backup {device_backup}'"])
     remote.python("from pathlib import Path\nimport subprocess\n"
-                  f"p=Path({backup!r});p.parent.mkdir(parents=True,exist_ok=True)\n"
+                  f"p=Path({backup!r}).resolve();p.parent.mkdir(parents=True,exist_ok=True)\n"
                   f"subprocess.run(['hdc','file','recv',{device_backup!r},str(p)],check=True,capture_output=True)\n"
                   "assert p.is_file() and p.stat().st_size>0,'backup transfer failed'\n"
                   "import sqlite3\n"

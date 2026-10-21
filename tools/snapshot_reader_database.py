@@ -20,7 +20,7 @@ def snapshot(remote, destination, dataset=None):
     database = '/data/app/el2/100/database/com.sheafreader.hm/entry/rdb/sheaf_reader.db'
     code = """import hashlib,json,sqlite3,subprocess
 from pathlib import Path
-archive=Path(PAYLOAD['archive']);archive.parent.mkdir(parents=True,exist_ok=True)
+archive=Path(PAYLOAD['archive']).resolve();archive.parent.mkdir(parents=True,exist_ok=True)
 try:
  p=subprocess.run(['hdc','shell',"sqlite3 "+PAYLOAD['database']+" '.backup "+PAYLOAD['device']+"'"],capture_output=True,text=True,timeout=90)
  assert p.returncode==0 and not p.stderr,p.stdout+p.stderr

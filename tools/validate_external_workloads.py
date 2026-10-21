@@ -119,7 +119,7 @@ def shell(command):
             code += "from wan_history_progress import WanHistoryObserver\n"
             code += f"wan_observer=WanHistoryObserver({entries!r})\n"
         if poem_import_fixture or poem_sync_fixture:
-            for module in ('jingmo_import_fixture.py','jingmo_data_service.py','rss_service_fixture.py','rss_data_service.py','rss_dataset.py','install_sqlite_fixture.py','remote_device.py'):
+            for module in ('jingmo_import_fixture.py','jingmo_data_service.py','rss_service_fixture.py','rss_data_service.py','rss_dataset.py','workstation_process.py','rss_workstation_lease.py','install_sqlite_fixture.py','remote_device.py'):
                 remote.upload(ROOT/'tools'/module,'/home/research/ohm-clean/tools/'+module)
             code += "from jingmo_import_fixture import complete_import,read_state,verify_state\n"
         if poem_sync_fixture:

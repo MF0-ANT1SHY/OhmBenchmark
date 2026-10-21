@@ -1,0 +1,12 @@
+{
+  "case": "sheafreader_refresh_feeds_sequential",
+  "status": "INVALID_NETWORK_PRECONDITION",
+  "performance_sample": false,
+  "capture": "artifacts/candidate-builds/reader-refresh-v3/latency-screen-button-v3/unfixed/capture.json",
+  "capture_sha256": "c8b884c7dfa1034a81b0a657e04a0ef3696234a37e955dadb9c3f20467c35523",
+  "rss_log": "artifacts/candidate-builds/reader-refresh-v3/network-failure-requests.jsonl",
+  "rss_log_sha256": "e642fcc3d548a453f7924f0ec7db3217a17fb85397ef51d64f1858ac6fd5a88e",
+  "requests_in_attempt": 0,
+  "reason": "No RSS listener remained on device after short SSH forwarding session. Button attempt timed out without any server requests. Earlier F5 failure cannot be attributed to the trigger alone.",
+  "next_revision": "latency-screen-session-v4 creates and checks the HDC reverse port within the long-lived capture SSH session."
+}

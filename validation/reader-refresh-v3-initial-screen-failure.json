@@ -1,0 +1,10 @@
+{
+  "case": "sheafreader_refresh_feeds_sequential",
+  "status": "PREMEASUREMENT_UI_FAILURE",
+  "performance_sample": false,
+  "cause": "Device was on lock screen; original refresh button coordinates were subsequently verified unchanged after wake and swipe. No action timing was collected.",
+  "raw_capture": "artifacts/candidate-builds/reader-refresh-v3/latency-screen/unfixed/capture.json",
+  "raw_sha256": "d9bcd3ec51b3c0def4876dd69bdf07e2dd24aa58f50ede5d04041497df8f57ea",
+  "lockscreen_layout": "artifacts/candidate-builds/reader-refresh-v3/current-layout.json",
+  "corrective_action": "Wake device before launch and again after startup wait; new capture namespace latency-screen-awake-v2. Original failed run retained."
+}

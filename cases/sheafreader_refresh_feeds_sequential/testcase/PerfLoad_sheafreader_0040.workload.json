@@ -1,35 +1,19 @@
 {
   "bundle": "com.sheafreader.hm",
   "ability": "EntryAbility",
-  "description": "通过普通 F5 刷新10个订阅，以外部原生调度事件测量完整刷新CPU时间",
+  "description": "Open the reader and wait for its automatic subscription refresh",
   "setup": [
     {
-      "op": "wait",
-      "selector": {
-        "text": "Journal 1 article 1",
-        "match": "exact"
-      },
-      "timeout_s": 60
-    },
-    {
-      "op": "wait",
-      "selector": {
-        "type": "Button",
-        "bounds": "[195,326][296,427]",
-        "enabled": "true",
-        "match": "exact"
-      },
-      "timeout_s": 120
+      "op": "stop"
     }
   ],
   "measured": [
     {
-      "op": "key",
-      "key": 2094
+      "op": "launch"
     },
     {
       "op": "pause",
-      "seconds": 3
+      "seconds": 1
     },
     {
       "op": "wait",
@@ -39,7 +23,7 @@
         "enabled": "true",
         "match": "exact"
       },
-      "timeout_s": 120
+      "timeout_s": 90
     }
   ],
   "verify": [

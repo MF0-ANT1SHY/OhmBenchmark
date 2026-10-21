@@ -4,8 +4,8 @@
   "cases": 30,
   "business_only_builds": 60,
   "source_and_signed_artifact_proof": "validation/all-clean-signed-integrity.json",
-  "primary_passed": 14,
-  "valid_primary_measurement_failed": 6,
+  "primary_passed": 15,
+  "valid_primary_measurement_failed": 5,
   "pending_primary_measurement": 4,
   "native_heap_collector_calibration_only_proof": "validation/nativeheap-device-clock-calibration.json",
   "supplementary_cold_cache_not_counted": "validation/wan-home-cold-cache-pss-supplement.json",
@@ -235,18 +235,17 @@
     },
     {
       "case": "sheafreader_refresh_feeds_sequential",
-      "primary_measurement_status": "measured_clean_failed",
-      "metric": "trace_cpu_ms",
+      "primary_measurement_status": "measured_clean",
+      "metric": "startup_refresh_elapsed_s",
       "app_injection": false,
-      "recorded_primary_pass": false,
-      "disposition": {
-        "status": "skipped_by_user",
-        "reason": "Confirmed negative clean performance case; user instructed to skip negative cases on 2026-10-14.",
-        "performance_passed": false,
-        "original_evidence_preserved": true
-      },
-      "next_requirement": "None: user-directed negative skip; keep original evidence and do not relabel as passed.",
-      "full_performance_run_completed": true
+      "recorded_primary_pass": true,
+      "proof": [
+        "validation/reader-startup-refresh-latency-acceptance.json"
+      ],
+      "complete_case_accepted": true,
+      "required_ratio": 1.5,
+      "paired_rounds": 3,
+      "historical_negative": "validation/reader-refresh-original-contract-before-startup.json"
     },
     {
       "case": "sheafreader_unread_counts_n_plus_1",
@@ -418,14 +417,14 @@
     }
   ],
   "negative_screen_failed": 6,
-  "skipped_by_user": 12,
+  "skipped_by_user": 11,
   "renewed_signature_proof": "validation/pending-clean-signature-renewal.json",
   "inventory_note": "Current acceptance uses each case contract. Wan memory-and-cache v2 passes a raised 1.3x PSS gate with all original online pairs. Its historical file-write negative remains archived. Other skipped and pending cases are not accepted.",
   "current_reproduction_signature_gate": {
     "status": "all_accepted_case_deliveries_verified",
     "proof": "validation/accepted-current-reproduction-delivery.json",
     "historical_expiry_audit": "validation/accepted-hap-profile-validity-audit.json",
-    "scope": "All 14 accepted cases have current signed deliveries and binary-only exports. Historical negative contracts remain archived.",
+    "scope": "All 15 accepted cases have current signed deliveries and binary-only exports. Historical negative contracts remain archived.",
     "requirement": "All delivered reproduction HAPs must have current valid provisioning profiles. Retain historical measured packages and capture bindings; no replacement is accepted without business-byte/permission equivalence and fresh launch proof.",
     "performance_pass_count_is_not_full_delivery_completion": true,
     "renewed_launch_and_blind_export_verified": [
@@ -442,9 +441,10 @@
       "ytmusic_current_playing_timeupdate",
       "wanharmony_persisted_home_list_growth",
       "interviewapp_search_history_unbounded",
-      "ytmusic_history_json_parse_per_row"
+      "ytmusic_history_json_parse_per_row",
+      "sheafreader_refresh_feeds_sequential"
     ],
-    "variants_verified": 28
+    "variants_verified": 30
   },
   "primary_criterion_verified_pending_mechanism": 0,
   "pending_complete_case_validation": 4,

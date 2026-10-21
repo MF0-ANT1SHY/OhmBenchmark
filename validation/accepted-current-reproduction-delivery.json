@@ -1,11 +1,11 @@
 {
   "status": "ALL_ACCEPTED_REPRODUCTION_DELIVERIES_VERIFIED",
-  "scope": "Current delivery for 14 accepted cases. Revised contracts are explicit. Goal of at least 21 accepted cases remains incomplete.",
+  "scope": "Current delivery for 15 accepted cases. Revised contracts are explicit. Goal of at least 21 accepted cases remains incomplete.",
   "goal_complete": false,
-  "checked_at": 1792575888.5207396,
-  "cases": 14,
-  "variants": 28,
-  "binary_only_agent_exports": 14,
+  "checked_at": 1792578850.651045,
+  "cases": 15,
+  "variants": 30,
+  "binary_only_agent_exports": 15,
   "historical_measured_artifacts_retained": true,
   "rows": [
     {
@@ -560,6 +560,49 @@
         "reproduce.py": "be7050610526575dc19f5a29b298f8fa29c5405c3e25aa413f66a4010d6a0115",
         "profile.json": "acb89c8e219875e53e7a084230d749b2ef2a240528395a15415aa3eeffabc8e6",
         "symptom.txt": "771c0ee41c9fcac93790c14c4691ddbd77562046644425881e74e58e70bef679"
+      }
+    },
+    {
+      "case": "sheafreader_refresh_feeds_sequential",
+      "case_proof": "validation/reader-startup-refresh-latency-acceptance.json",
+      "case_proof_sha256": "855663f48d52399dbd22da3b9aecd7dfa9df18daebc757f2f4480524d5a315f5",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "05e3218de2da87d754f0d00fb5938bbb70979081d00302d622fb02e9c72cc5ed",
+          "measured_signed_sha256": "05e3218de2da87d754f0d00fb5938bbb70979081d00302d622fb02e9c72cc5ed",
+          "current_validity": {
+            "bundle": "com.sheafreader.hm",
+            "not_before": 1792575752,
+            "not_after": 1795168052,
+            "checked_at": 1792578817.0467262
+          },
+          "fresh_launch_receipt_sha256": "23999ae3449ff02745aaa4bce4725ffc59c14ebb82ee6122ec0f3f7ec6d45bfa",
+          "fresh_launch_evidence": "artifacts/clean/sheafreader_refresh_feeds_sequential/unfixed/trace-captures/startup-refresh-latency-v7/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified foreground reader page after all-feed refresh. No additional launch rerun.",
+          "renewal_not_required": true
+        },
+        "fixed": {
+          "signed_sha256": "06a52bf67a30e3143f9bf08510e80d0b384a17589902ecdd3b726c38b937cc15",
+          "measured_signed_sha256": "06a52bf67a30e3143f9bf08510e80d0b384a17589902ecdd3b726c38b937cc15",
+          "current_validity": {
+            "bundle": "com.sheafreader.hm",
+            "not_before": 1792575775,
+            "not_after": 1795168075,
+            "checked_at": 1792578817.954393
+          },
+          "fresh_launch_receipt_sha256": "4ff91af8bdccebebde8b2801775380d347b3f6d82af6b8335382f19dae9f7815",
+          "fresh_launch_evidence": "artifacts/clean/sheafreader_refresh_feeds_sequential/fixed/trace-captures/startup-refresh-latency-v7/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified foreground reader page after all-feed refresh. No additional launch rerun.",
+          "renewal_not_required": true
+        }
+      },
+      "agent_export": "artifacts/agent-exports/reader-startup-17fa0b24c4294a809dda856495694cc6",
+      "agent_files_sha256": {
+        "app.hap": "05e3218de2da87d754f0d00fb5938bbb70979081d00302d622fb02e9c72cc5ed",
+        "workload.json": "cde1ab6ee2a6b3e526d3c8748f720972d6eed70135541a5d1717c1f0d3e2e2f5",
+        "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
+        "profile.json": "26ab816420f98dc162a8f0b4ad90002b768888ad0e4a9c9cba32b958cfc88d99",
+        "symptom.txt": "06890ca0372a56d538280e5522ea4e171e823e64a854c2cf95416537b5685a43"
       }
     }
   ]
