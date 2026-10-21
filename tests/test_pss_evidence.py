@@ -56,6 +56,23 @@ class PSSEvidenceTest(unittest.TestCase):
         self.assertEqual(r['unfixed']['median_ratio'],2)
         self.assertEqual(before,{p:p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
 
+    def test_raised_contract_cannot_accept_an_old_threshold_only_result(self):
+        for number in (1,2,3):
+            path=self.root/'artifacts/clean'/self.cid/'unfixed'/f'pss-captures/round-{number}/capture.json'
+            record=json.loads(path.read_text())
+            record['app_pss_bytes']=125*1024
+            record['snapshots'][-1].update(pss_bytes=125*1024,raw_smaps_rollup='Pss: 125 kB\n')
+            self.put(path,record)
+        path=self.case/'case.json';case=json.loads(path.read_text())
+        case['test_oracle']['comparison']='unfixed >= 1.3 * fixed over >= 3 rounds per variant'
+        self.put(path,case)
+        with patch('accept_pss_evidence.ROOT',self.root):
+            result=accept(self.cid,write=False,require_pass=False)
+            self.assertEqual(result['unfixed']['status'],'FAIL')
+            case['test_oracle']['comparison']='unfixed >= 1.2 * fixed over >= 3 rounds per variant'
+            self.put(path,case)
+            self.assertEqual(accept(self.cid,write=False)['unfixed']['status'],'PASS')
+
     def test_missing_fresh_reset_or_changed_raw_total_cannot_pass(self):
         path=self.root/'artifacts/clean'/self.cid/'unfixed/pss-captures/round-1/capture.json'
         original=json.loads(path.read_text())

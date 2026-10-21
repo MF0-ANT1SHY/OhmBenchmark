@@ -257,7 +257,10 @@ def shell(command):
             from ui_driver import UI
             events=json.loads((search_history_fixture/'submissions.json').read_text())
             expected=set(events if variant=='unfixed' else list(dict.fromkeys(reversed(events)))[:20])
-            texts={n.get('text') for n in UI.nodes(device['phases']['setup']['layout'])
+            phase=case.get('fixture_validation_phase','setup')
+            if phase not in ('setup','measured','verify'):
+                raise ValueError('invalid history fixture validation phase')
+            texts={n.get('text') for n in UI.nodes(device['phases'][phase]['layout'])
                    if n.get('bundleName')==case['host_app']['bundle_name']}
             if not expected.intersection(texts):
                 raise RuntimeError('normal search-history UI did not read the deployed preference fixture')

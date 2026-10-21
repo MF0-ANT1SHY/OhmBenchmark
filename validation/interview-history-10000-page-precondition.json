@@ -1,0 +1,20 @@
+{
+  "case": "interviewapp_search_history_unbounded",
+  "status": "UNFIXED_PAGE_NOT_VERIFIED_NO_PERFORMANCE_ACCEPTANCE",
+  "variants": {
+    "unfixed": {
+      "status": "FAIL",
+      "error": "UI target not found: {'hint': '\u8bf7\u8f93\u5165\u5173\u952e\u8bcd'}",
+      "artifacts": "artifacts/clean/interviewapp_search_history_unbounded/unfixed/preflights/history-10000-page",
+      "workload_sha256": "de1b0ecdbcdda8ebb2463eeb252e2c956462267d060bb7f2dca5c39ed70e5ce5"
+    },
+    "fixed": {
+      "status": "PASS",
+      "error": null,
+      "artifacts": "artifacts/clean/interviewapp_search_history_unbounded/fixed/preflights/history-10000-page",
+      "workload_sha256": "9317eed22051309768e7755ea4b8de59203325bdbc535ae4197e756d2d3205bd"
+    }
+  },
+  "candidate_replaced_with": 2500,
+  "threshold_not_reduced": 1.3
+}

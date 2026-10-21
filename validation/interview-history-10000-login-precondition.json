@@ -1,0 +1,16 @@
+{
+  "case": "interviewapp_search_history_unbounded",
+  "status": "PRECONDITION_FAILED_NOT_PERFORMANCE_VERDICT",
+  "performance_accepted": false,
+  "cause": "Normal search navigation redirected to the login page; prior authentication expired.",
+  "variants": {
+    "unfixed": {
+      "artifacts": "artifacts/clean/interviewapp_search_history_unbounded/unfixed/preflights/history-10000-expired-login",
+      "error": "UI target not found: {'hint': '\u8bf7\u8f93\u5165\u5173\u952e\u8bcd'}"
+    },
+    "fixed": {
+      "artifacts": "artifacts/clean/interviewapp_search_history_unbounded/fixed/preflights/history-10000-expired-login",
+      "error": "UI target not found: {'hint': '\u8bf7\u8f93\u5165\u5173\u952e\u8bcd'}"
+    }
+  }
+}

@@ -8,6 +8,7 @@ from pathlib import Path
 
 from install_search_history_fixture import fixture_state
 from system_pss import verify_window
+from measurement_paths import capture_root
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -27,6 +28,11 @@ def accept(cid,write=True,require_pass=True,*,negative_screen=False):
     case=json.loads(path.read_text())
     if case['test_oracle']['metric']!='app_pss_bytes':
         raise ValueError('PSS evidence cannot validate a different metric')
+    comparison=case['test_oracle'].get('comparison','unfixed >= 1.2 * fixed over >= 3 rounds per variant')
+    thresholds={f'unfixed >= {value} * fixed over >= 3 rounds per variant':value for value in (1.2,1.3)}
+    if comparison not in thresholds:
+        raise ValueError('unsupported PSS comparison contract')
+    threshold=thresholds[comparison]
     plan_hash=hashlib.sha256((path.parent/case['testcase']['workload']).read_bytes()).hexdigest()
     variants={};identities=set()
     for variant in ('unfixed','fixed'):
@@ -43,7 +49,7 @@ def accept(cid,write=True,require_pass=True,*,negative_screen=False):
             raise ValueError('normal UI read of the preference fixture is not proven')
         values=[];captures=[]
         for number in range(1,round_count+1):
-            capture_path=folder/'pss-captures'/f'round-{number}'/'capture.json'
+            capture_path=capture_root(folder,case,'app_pss_bytes')/f'round-{number}'/'capture.json'
             record=json.loads(capture_path.read_text())
             if (record['status']!='CAPTURED' or record['metric']!='app_pss_bytes'
                     or record['signed_sha256']!=sign['audit']['sha256']
@@ -59,6 +65,13 @@ def accept(cid,write=True,require_pass=True,*,negative_screen=False):
                     or preparation['sha256']!=identity or preparation['variant']!=variant
                     or preparation['deployed_sha256']!=hashlib.sha256(blob).hexdigest()):
                 raise ValueError('prepared input differs from the validated ordinary fixture')
+            if case.get('fixture_validation_phase') == 'measured':
+                from history_memory_progress import verify as verify_history
+                page=record.get('history_page',{})
+                submissions=json.loads((Path(preparation['fixture_dir'])/'submissions.json').read_text())
+                checked=verify_history(page['layout'],page['raw_preferences'],submissions,variant,case['host_app']['bundle_name'])
+                if checked!=page.get('verified'):
+                    raise ValueError('history-page summary differs from native state')
             values.append(verify_window(record,case['host_app']['bundle_name']))
             identities.add(identity)
             captures.append({'round':number,'capture_sha256':hashlib.sha256(capture_path.read_bytes()).hexdigest(),
@@ -68,7 +81,7 @@ def accept(cid,write=True,require_pass=True,*,negative_screen=False):
         raise ValueError('identical semantic inputs are not proven across paired memory trials')
     ratios=[u/f for u,f in zip(variants['unfixed']['samples'],variants['fixed']['samples'])]
     median_ratio=statistics.median(variants['unfixed']['samples'])/statistics.median(variants['fixed']['samples'])
-    passed=min(ratios)>=1.2 and median_ratio>=1.2
+    passed=min(ratios)>=threshold and median_ratio>=threshold
     if negative_screen and passed:
         raise ValueError('first pair is not negative; three complete pairs are required for acceptance')
     results={}
@@ -85,8 +98,8 @@ def accept(cid,write=True,require_pass=True,*,negative_screen=False):
     case['test_oracle']['evidence']={'status':'measured_clean' if passed else 'measured_clean_failed',
         'metric':'app_pss_bytes','unfixed':variants['unfixed']['samples'],'fixed':variants['fixed']['samples'],
         'median_ratio':median_ratio,'rounds_per_variant':round_count,'legacy_evidence_reused':False,
-        'note':'Every paired round and the median exceed 1.2x.' if passed else
-               'Raw clean PSS trials are valid, but the unchanged 1.2x criterion is not met.'}
+        'note':f'Every paired round and the median meet {threshold}x.' if passed else
+               f'Raw clean PSS trials are valid, but the declared {threshold}x criterion is not met.'}
     if write:
         path.write_text(json.dumps(case,ensure_ascii=False,indent=2)+'\n')
     if not passed and require_pass:

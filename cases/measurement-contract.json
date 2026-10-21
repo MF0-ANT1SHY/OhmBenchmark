@@ -1,7 +1,7 @@
 {
   "$comment": "External clean measurement contract. Historical instrumented evidence is archived and not reused.",
   "case_count": 30,
-  "measured_case_count": 12,
+  "measured_case_count": 13,
   "cases": {
     "browser_eager_history_load": {
       "oracle_metric": "hiperf_instructions",
@@ -129,15 +129,8 @@
       "oracle_metric": "app_pss_bytes",
       "app_injection": false,
       "workload_validation": "verified",
-      "measurement_status": "negative_screen_failed",
-      "rounds_recorded": 1,
-      "disposition": {
-        "status": "skipped_by_user",
-        "reason": "A verified mandatory pair fails the unchanged 1.2x criterion; user instructed to skip negative cases.",
-        "performance_passed": false,
-        "original_evidence_preserved": true,
-        "full_three_pair_run_completed": false
-      }
+      "measurement_status": "measured_clean",
+      "rounds_recorded": 3
     },
     "jingmo_dataset_import_no_transaction": {
       "oracle_metric": "hiperf_instructions",
@@ -307,5 +300,5 @@
       "request_completion_verified": false
     }
   },
-  "skipped_case_count": 14
+  "skipped_case_count": 13
 }

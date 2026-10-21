@@ -1,11 +1,11 @@
 {
   "status": "ALL_ACCEPTED_REPRODUCTION_DELIVERIES_VERIFIED",
-  "scope": "Current delivery for 12 accepted cases. Wan uses the revised native-memory-and-cache contract. Goal of at least 21 accepted cases remains incomplete.",
+  "scope": "Current delivery for 13 accepted cases. Revised contracts are explicit. Goal of at least 21 accepted cases remains incomplete.",
   "goal_complete": false,
-  "checked_at": 1792571912.927851,
-  "cases": 12,
-  "variants": 24,
-  "binary_only_agent_exports": 12,
+  "checked_at": 1792573340.7227545,
+  "cases": 13,
+  "variants": 26,
+  "binary_only_agent_exports": 13,
   "historical_measured_artifacts_retained": true,
   "rows": [
     {
@@ -474,6 +474,49 @@
         "reproduce.py": "be7050610526575dc19f5a29b298f8fa29c5405c3e25aa413f66a4010d6a0115",
         "profile.json": "879658697811dd5a8006f7d7762a8821b13ddc851a5d248e3b710f26ec7a7c45",
         "symptom.txt": "d961a1c765f7bc595168bf4be47241ab0786b8b37d338ff4556c4bfdcc0f0b13"
+      }
+    },
+    {
+      "case": "interviewapp_search_history_unbounded",
+      "case_proof": "validation/interview-history-2500-native-memory-acceptance.json",
+      "case_proof_sha256": "1ebe34d04940effdad987105bc90a641951d18ad79a4972e05c103462c715d02",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "6f02bc78ed03c93b319945316a834e5f070f9d6cc11000524849587a0b2256c9",
+          "measured_signed_sha256": "6f02bc78ed03c93b319945316a834e5f070f9d6cc11000524849587a0b2256c9",
+          "current_validity": {
+            "bundle": "com.itcast.pass_interview",
+            "not_before": 1791986025,
+            "not_after": 1794578325,
+            "checked_at": 1792573338.1685212
+          },
+          "fresh_launch_receipt_sha256": "f77afb531f0d35b5e6ed6fe2dbd63b73cc195981ed980d0b45a77e850a941f24",
+          "fresh_launch_evidence": "artifacts/clean/interviewapp_search_history_unbounded/unfixed/pss-captures/history-2500-v3/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified foreground history page. No additional launch rerun.",
+          "renewal_not_required": true
+        },
+        "fixed": {
+          "signed_sha256": "a4d9e2d2c7ad6e50d2c6b59ab31ee0978ea18e3f6c9f6b56368952c8048c5b04",
+          "measured_signed_sha256": "a4d9e2d2c7ad6e50d2c6b59ab31ee0978ea18e3f6c9f6b56368952c8048c5b04",
+          "current_validity": {
+            "bundle": "com.itcast.pass_interview",
+            "not_before": 1791986029,
+            "not_after": 1794578329,
+            "checked_at": 1792573338.8266993
+          },
+          "fresh_launch_receipt_sha256": "e33b8fffb30080484e33497e127e9d3a525a76b08c0f8b7713e2cb4815bafa72",
+          "fresh_launch_evidence": "artifacts/clean/interviewapp_search_history_unbounded/fixed/pss-captures/history-2500-v3/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified foreground history page. No additional launch rerun.",
+          "renewal_not_required": true
+        }
+      },
+      "agent_export": "artifacts/agent-exports/history-memory-5864173deb854fd18d0da6c6bc7e5602",
+      "agent_files_sha256": {
+        "app.hap": "6f02bc78ed03c93b319945316a834e5f070f9d6cc11000524849587a0b2256c9",
+        "workload.json": "6447dea5241929b43ba1f6f43c501055739d48d41b3a0d6a1c3c50321d5802a2",
+        "reproduce.py": "be7050610526575dc19f5a29b298f8fa29c5405c3e25aa413f66a4010d6a0115",
+        "profile.json": "42f548baabaf25d9abe2f2dd27f320e8ee175b717d293940efe4888398391c19",
+        "symptom.txt": "38cd2ada17d684f5788e9cf020099b5cf09233dae281e17950458bc367cdd3fd"
       }
     }
   ]

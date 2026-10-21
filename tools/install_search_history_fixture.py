@@ -49,7 +49,7 @@ def install(remote,case,variant,folder,device_path):
     stamp=str(time.time_ns())
     backup=f'/home/research/ohm-clean/backups/{bundle}/{stamp}/historyStore.xml'
     remote.python("import subprocess,xml.etree.ElementTree as ET\nfrom pathlib import Path\n"
-                  f"p=Path({backup!r});p.parent.mkdir(parents=True,exist_ok=True)\n"
+                  f"p=Path({backup!r}).resolve();p.parent.mkdir(parents=True,exist_ok=True)\n"
                   f"subprocess.run(['hdc','file','recv',{device_path!r},str(p)],check=True,capture_output=True)\n"
                   "assert p.is_file() and ET.fromstring(p.read_bytes()).tag=='preferences','existing data is not ordinary XML preferences'\n")
     host_fixture=f'/home/research/ohm-clean/fixtures/{stamp}/historyStore.xml'
@@ -59,7 +59,7 @@ def install(remote,case,variant,folder,device_path):
     remote.hdc(['file','send',host_fixture,temporary])
     remote.hdc(['shell',f'cp {temporary} {device_path} && chown {uid}:{gid} {device_path} && chmod 660 {device_path}'])
     verified=remote.python("import subprocess,hashlib\nfrom pathlib import Path\n"
-                           f"p=Path({host_fixture+'.readback'!r})\n"
+                           f"p=Path({host_fixture+'.readback'!r}).resolve()\n"
                            f"subprocess.run(['hdc','file','recv',{device_path!r},str(p)],check=True,capture_output=True)\n"
                            f"assert hashlib.sha256(p.read_bytes()).hexdigest()=={hashlib.sha256(blob).hexdigest()!r}\n"
                            "print('VERIFIED')\n").strip()

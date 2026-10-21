@@ -12,6 +12,7 @@ from pathlib import Path
 from remote_device import Remote
 from system_pss import capture_window,verify_window
 from install_search_history_fixture import install as install_search_history
+from measurement_paths import capture_root
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -24,7 +25,7 @@ def capture(remote,case,variant,round_number,search_history_fixture=None,prefere
     folder=ROOT/'artifacts/clean'/cid/variant
     if round_number<1:
         raise ValueError('round number must be positive')
-    output=folder/'pss-captures'/f'round-{round_number}'
+    output=capture_root(folder,case,'app_pss_bytes')/f'round-{round_number}'
     if output.exists():
         raise FileExistsError('refusing to replace an existing raw PSS trial')
     sign=json.loads((folder/'sign.json').read_text())
@@ -73,6 +74,19 @@ def shell(command):
                           lambda:remote.python(code+"ui.run(plan['measured']);ui.run(plan['verify'])\n",
                                                timeout=max(600, int(case['collection']['step_duration_s']) + 300)))
     verify_window(result,bundle)
+    if case.get('fixture_validation_phase') == 'measured' and search_history_fixture:
+        from history_memory_progress import verify as verify_history
+        from ui_driver import UI
+        from system_pss import read_process
+        ui = UI(lambda command: remote.hdc(['shell',command]),bundle,case['testcase']['ability'])
+        layout = ui.layout()
+        raw_xml = remote.hdc(['shell','cat '+preferences_path])
+        submissions = json.loads((search_history_fixture/'submissions.json').read_text())
+        check = verify_history(layout,raw_xml,submissions,variant,bundle)
+        identity = read_process(remote,int(pids[0]),bundle)
+        if identity['process_start_ticks'] != result['snapshots'][0]['process_start_ticks']:
+            raise ValueError('app restarted before the history-state check')
+        result['history_page'] = {'layout':layout,'raw_preferences':raw_xml,'verified':check}
     result.update(status='CAPTURED',case=cid,variant=variant,round=round_number,
                   metric='app_pss_bytes',plan_sha256=plan_hash,
                   signed_sha256=sign['audit']['sha256'],

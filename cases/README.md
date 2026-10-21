@@ -126,9 +126,15 @@ selected minimum. Process name and start time must remain consistent throughout
 the trial; UI/observer failures and restarts invalidate collection. The reader
 has a real-device check in `validation/system-pss-device-check.json`, but that
 does **not** validate a memory case. `tools/accept_pss_evidence.py` recomputes all
-six windows and the unchanged 1.2x paired criterion. For the search-history case,
-it also verifies fresh per-trial ordinary preference preparation and UI reading;
-actual case acceptance remains pending. The revised Wan home memory gate uses
+six windows and the declared paired criterion. The revised search-history case
+uses the same 2,500 normal submissions for both variants, opens the history page,
+and requires at least 1.3x final PSS in each of three pairs and their median.
+Each trial verifies fresh ordinary preferences, the visible history page and
+the complete post-window native preference contents: 2,500 retained keywords
+versus the latest 20. The business code is unchanged. Earlier 1,000-entry
+search-submission measurements and unsuccessful 10,000-entry preflights remain
+archived. Revised raw trials use a separate `measurement_revision` directory;
+they do not replace earlier captures. The revised Wan home memory gate uses
 `tools/accept_wan_home_memory.py` to revalidate all six original online trials.
 It requires at least 1.3x PSS in every pair and the median, successful matched
 pages, visible article agreement, and growing versus bounded native cache

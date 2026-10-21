@@ -1,0 +1,336 @@
+{
+  "bundle": "com.itcast.pass_interview",
+  "ability": "PhoneAbility",
+  "description": "interview-handbook-project (面试通)页面操作",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "热门题库"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "搜索题目",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "hint": "请输入关键词"
+      }
+    }
+  ],
+  "measured": [
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question0"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question1"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question2"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question3"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question4"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question5"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question6"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question7"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question8"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question9"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question10"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question11"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question12"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question13"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question14"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question15"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question16"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question17"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question18"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    },
+    {
+      "op": "input",
+      "selector": {
+        "hint": "请输入关键词"
+      },
+      "value": "question19"
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 0.15
+    }
+  ],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "question19"
+      }
+    }
+  ]
+}

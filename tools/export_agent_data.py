@@ -20,6 +20,7 @@ from reproduction_hap_identity import verify_identity
 from accept_cpu_evidence import accept as validate_cpu
 from accept_trace_evidence import accept as validate_trace
 from accept_pss_evidence import accept as validate_pss
+from measurement_paths import capture_root
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -240,7 +241,7 @@ def export(cid, destination, symptom, round_number, remote_name='cityuPC', inclu
     metric=case.get('test_oracle',{}).get('metric','hiperf_instructions')
     if metric not in ('hiperf_instructions','trace_cpu_ms','app_pss_bytes'):
         raise ValueError('agent data export is not implemented for this metric')
-    capture_folder = folder/{'trace_cpu_ms':'trace-captures','app_pss_bytes':'pss-captures','hiperf_instructions':'cpu-captures'}[metric]/f'round-{round_number}'
+    capture_folder = capture_root(folder,case,metric)/f'round-{round_number}'
     expected_capture_status = 'CAPTURED'
     if cid == 'wanharmony_persisted_home_list_growth':
         # require_accepted_case has revalidated all six original raw trials.

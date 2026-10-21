@@ -1,0 +1,37 @@
+{
+  "case": "interviewapp_search_history_unbounded",
+  "status": "BOTH_NORMAL_HISTORY_PAGES_VERIFIED",
+  "measurement_revision": "history-2500-v3",
+  "submissions": 2500,
+  "performance_accepted": false,
+  "new_threshold": 1.3,
+  "source_changed": false,
+  "app_injection": false,
+  "variants": {
+    "unfixed": {
+      "workload_sha256": "fcaa730ebcde8744e2be224e92f3fdfd99b61acbcaed855df48e2add6a24901a",
+      "native_ui_receipt_sha256": "8a665783a383b3a02f708879a258f8adfc11ea7bac8150908e6facab61a2f53f",
+      "fixture_sha256": "2d41cdfe0b5cce34480a197f278fd3ade8f9fa4f39321259a6f3f414d07d5a95",
+      "plan_sha256": "5b1612d2b9e8f1af3825c50138ac4e969052391b5af9a8f333955c6f3b71809a",
+      "signed_sha256": "6f02bc78ed03c93b319945316a834e5f070f9d6cc11000524849587a0b2256c9",
+      "phases": {
+        "setup": 3.8907741000002716,
+        "measured": 8.057829700000184,
+        "verify": 1.687705299999834
+      }
+    },
+    "fixed": {
+      "workload_sha256": "cae384a96ba80e3638fba8188b69d7b59a02cb0076dd2bca98970ab60e2fb696",
+      "native_ui_receipt_sha256": "9605e83603f37e219e32a0cf96fd95c733cf8672906cff5bec99579a6690d151",
+      "fixture_sha256": "2d41cdfe0b5cce34480a197f278fd3ade8f9fa4f39321259a6f3f414d07d5a95",
+      "plan_sha256": "5b1612d2b9e8f1af3825c50138ac4e969052391b5af9a8f333955c6f3b71809a",
+      "signed_sha256": "a4d9e2d2c7ad6e50d2c6b59ab31ee0978ea18e3f6c9f6b56368952c8048c5b04",
+      "phases": {
+        "setup": 3.85996139999952,
+        "measured": 7.1532852999998795,
+        "verify": 1.240023100000144
+      }
+    }
+  },
+  "prior_10000_preflight": "validation/interview-history-10000-page-precondition.json"
+}
