@@ -10,14 +10,14 @@
   },
   "android_source_case": "portauthority_excessive_ui_callbacks",
   "android_mechanism": "Every scanned port enqueues UI work without throttling; fix moves/throttles the work",
-  "category": "cpu",
-  "bug_description": "The search input's onChange handler fires a network search request to the backend for every single keystroke with no debounce or cancellation. Typing a 10-character query issues 10 requests, most of which are obsolete by the time they return; their responses race and each response re-assigns the result state, re-rendering the result list repeatedly and wasting radio/CPU and UI-thread time.",
+  "category": "network",
+  "bug_description": "Searching on every keystroke transfers obsolete result bodies. The revised ordinary backend makes previously failing DNS-independent searches reproducible. Both variants receive the same 20-song catalogue without artificial response delay. The existing 300 ms debounce suppresses intermediate queries; original CPU-pending evidence remains archived.",
   "perf_scenarios": [
     "网络结果渲染",
     "状态更新"
   ],
-  "unfixed_commit": "1e3d086fee748d99ffcdd31d18b4f793ddab8491",
-  "fixed_commit": "b32b7202acf9d94f2a372e35fdfc5c2d02363824",
+  "unfixed_commit": "9040d64b784a3f5c676bd729f521b3a5101350e4",
+  "fixed_commit": "b04924213bb97a151c2e5e6076d3b572a551268d",
   "fix_summary": "Search-as-you-type is debounced by 300ms (timer reset on each keystroke, cleared on submit), so one request is issued per paused query instead of one per keystroke.",
   "build": {
     "mode": "release",
@@ -53,17 +53,31 @@
     ]
   },
   "test_oracle": {
-    "metric": "hiperf_instructions",
-    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
-    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "metric": "search_response_body_bytes",
+    "definition": "Successful ordinary search JSON response-body bytes during ten native key changes and submit. Every pair and median must show at least a five-fold reduction while preserving the final song results. No artificial service delay. This is not a CPU or radio-byte claim.",
+    "comparison": "unfixed >= 5.0 * fixed successful search response bytes over 3 paired rounds",
     "evidence": {
-      "status": "pending_clean_measurement",
-      "note": "Legacy instrumented measurements do not validate these business-only builds."
+      "status": "measured_clean",
+      "metric": "search_response_body_bytes",
+      "unfixed": [
+        23309,
+        23309,
+        23309
+      ],
+      "fixed": [
+        4238,
+        4238,
+        4238
+      ],
+      "median_ratio": 5.5,
+      "rounds_per_variant": 3,
+      "legacy_evidence_reused": false,
+      "note": "Completed ordinary search JSON body bytes under the same ten-key input and submit; exact response contents and native results verified. No artificial delay. Excludes headers, images, and unrelated home traffic; not CPU or radio-byte improvement."
     },
     "mechanism_oracle": {
-      "metric": "search_requests_per_query",
-      "definition": "Count of outbound HTTP search requests observed in the network trace while typing one 10-character query (plus submit).",
-      "comparison": "unfixed: ~11 requests per typed query (one per keystroke + submit); fixed: 1-2 requests. Corresponding CPU/radio activity and result-list re-renders drop proportionally."
+      "metric": "ordinary_search_requests_and_native_results",
+      "definition": "Unfixed completes ten query-prefix searches plus submit; fixed completes one or two full-query searches with no prefix searches. All successful body hashes match the same ordinary catalogue and native result titles/artists/durations.",
+      "comparison": "Three complete paired trials, identical service identity and catalogue."
     },
     "legacy_instrumented_evidence": {
       "status": "expected",
@@ -92,18 +106,20 @@
   },
   "clean_validation": {
     "policy": "no_app_injection",
-    "workload_validation": "pending",
-    "performance_validation": "pending",
+    "workload_validation": "verified",
+    "performance_validation": "verified",
     "variants": {
       "unfixed": {
-        "ref": "clean-app/ytmusic_search_no_debounce/unfixed",
-        "commit": "1e3d086fee748d99ffcdd31d18b4f793ddab8491",
-        "tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d",
+        "ref": "clean-app-v3/ytmusic_search_no_debounce/unfixed",
+        "commit": "9040d64b784a3f5c676bd729f521b3a5101350e4",
+        "tree": "27f90889d4707e3772dc2a526e907d82683618ff",
         "business_base_tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d",
-        "production_patches": [],
-        "unsigned_sha256": "10757512790d4f51d28b45e3be90ddbb3d21ba1e772524f0a28a88e349cc42b7",
+        "production_patches": [
+          "hosts_patches/ytmusic/search-ordinary-origin-unfixed-v2.patch"
+        ],
+        "unsigned_sha256": "129de34ec8ab009fc5fd70b6d503d7e45829b73540ecfc7b28877ea24472bd23",
         "bytecode_audit": {
-          "sha256": "10757512790d4f51d28b45e3be90ddbb3d21ba1e772524f0a28a88e349cc42b7",
+          "sha256": "129de34ec8ab009fc5fd70b6d503d7e45829b73540ecfc7b28877ea24472bd23",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -114,41 +130,164 @@
         "sign": {
           "case": "ytmusic_search_no_debounce",
           "variant": "unfixed",
-          "unsigned_sha256": "10757512790d4f51d28b45e3be90ddbb3d21ba1e772524f0a28a88e349cc42b7",
-          "signed_hap": "/home/research/ohm-clean/ytmusic_search_no_debounce/unfixed/app.hap",
+          "unsigned_sha256": "129de34ec8ab009fc5fd70b6d503d7e45829b73540ecfc7b28877ea24472bd23",
+          "signed_hap": "/home/research/ohm-clean/ytsearch-v2/ytmusic_search_no_debounce/unfixed/app.hap",
           "audit": {
-            "sha256": "3d56cf94f5976964feb24140784d539b30a5323a0633b2427ee420873d674662",
+            "sha256": "439901059f9125f8018c65e357bb9b38461e3328b3b502413a81ed0c03f8e85b",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
             "findings": [],
             "passed": true
           },
-          "status": "PASS"
+          "allowed_acls": [],
+          "status": "PASS",
+          "device_binding_sha256": "6d7e8db93a797e601f1a603a12890cf5829eed2341940801177717976a9d58db"
         },
         "smoke": {
           "case": "ytmusic_search_no_debounce",
           "variant": "unfixed",
-          "signed_sha256": "3d56cf94f5976964feb24140784d539b30a5323a0633b2427ee420873d674662",
-          "install": "[Info]App install path:/home/research/ohm-clean/ytmusic_search_no_debounce/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
-          "launch": "start ability successfully.",
+          "signed_sha256": "439901059f9125f8018c65e357bb9b38461e3328b3b502413a81ed0c03f8e85b",
+          "install": "[Info]App install path:C:\\home\\research\\ohm-clean\\ytsearch-v2\\ytmusic_search_no_debounce\\unfixed\\app.hap msg:install bundle successfully. \r\nAppMod finish\r\n",
           "pids": [
-            1376
+            1123
           ],
           "foreground_bundle": "com.example.myapplication",
           "status": "PASS",
-          "performance_verified": false
+          "performance_verified": false,
+          "method": "Original first native search trial: install, fresh launch, native empty search page and completed result page."
+        },
+        "workload": {
+          "case": "ytmusic_search_no_debounce",
+          "variant": "unfixed",
+          "status": "PASS",
+          "signed_sha256": "439901059f9125f8018c65e357bb9b38461e3328b3b502413a81ed0c03f8e85b",
+          "plan_sha256": "11e24c31a8c56df6ad445b14c7ecc1c08d3f9b848eb64cb371a6907c07360371",
+          "fixture": {
+            "pid": 11556,
+            "identity": {
+              "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py --duration 7200",
+              "start_ticks": 639281824649366050
+            },
+            "source": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_data_service.py",
+            "source_sha256": "d1be169775c375f7bb5eb9a8bf00cb46624c8756011f308376f4e7304ab8f05b",
+            "launcher": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py",
+            "launcher_sha256": "46cb0e685585fb1aa303f6cbfd847da29a7f3ecd8cc4e097f70f39991fcdc70d",
+            "catalogue_sha256": "10b3b4fd978d8448be3a46a949a9f2ce1b628090f759824ffd71e110a65d60a5",
+            "base_url": "http://127.0.0.1:18493",
+            "hosting": "bounded foreground SSH lease"
+          },
+          "fixture_after": {
+            "pid": 11556,
+            "identity": {
+              "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py --duration 7200",
+              "start_ticks": 639281824649366050
+            },
+            "source": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_data_service.py",
+            "source_sha256": "d1be169775c375f7bb5eb9a8bf00cb46624c8756011f308376f4e7304ab8f05b",
+            "launcher": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py",
+            "launcher_sha256": "46cb0e685585fb1aa303f6cbfd847da29a7f3ecd8cc4e097f70f39991fcdc70d",
+            "catalogue_sha256": "10b3b4fd978d8448be3a46a949a9f2ce1b628090f759824ffd71e110a65d60a5",
+            "base_url": "http://127.0.0.1:18493",
+            "hosting": "bounded foreground SSH lease"
+          },
+          "native_capture": "artifacts/clean/ytmusic_search_no_debounce/unfixed/trace-captures/search-payload-v2/round-1/capture.json",
+          "native_capture_sha256": "ef114db91a450267e1ea54bffae85dfbce8551033a72ab3f36c2121156ae8491",
+          "performance_verified": false,
+          "method": "Original formal native ten-key search and submit, with ordinary result titles, creators, durations, and exact completed response bodies verified."
+        },
+        "performance": {
+          "samples": [
+            23309,
+            23309,
+            23309
+          ],
+          "captures": [
+            {
+              "round": 1,
+              "capture_sha256": "ef114db91a450267e1ea54bffae85dfbce8551033a72ab3f36c2121156ae8491",
+              "trace_sha256": "a557dce50b1a9db0e846fc1182bd8ae82cf4c7dd07496085a3f520648e3542c6",
+              "search_queries": [
+                "e",
+                "el",
+                "ele",
+                "elec",
+                "elect",
+                "electr",
+                "electro",
+                "electron",
+                "electroni",
+                "electronic",
+                "electronic"
+              ],
+              "diagnostic_app_cpu_ms": 659.734
+            },
+            {
+              "round": 2,
+              "capture_sha256": "d164f323b7c6be2fda6944b18d9f1e4dc69fc5fa0661f455c25e0048fa83da9a",
+              "trace_sha256": "e568d725cfe789d21462a0b99798f0cc3439f69aa282c821b2d494bb37591de3",
+              "search_queries": [
+                "e",
+                "el",
+                "ele",
+                "elec",
+                "elect",
+                "electr",
+                "electro",
+                "electron",
+                "electroni",
+                "electronic",
+                "electronic"
+              ],
+              "diagnostic_app_cpu_ms": 598.255
+            },
+            {
+              "round": 3,
+              "capture_sha256": "e21bf50d5be776d6127edd835aab000014739ffb0f88b93e751c0413d09b5868",
+              "trace_sha256": "54009bda2087a7dbeb71d49a5264876656c85b5bda8fe3bfab9b25cd5d38078f",
+              "search_queries": [
+                "e",
+                "el",
+                "ele",
+                "elec",
+                "elect",
+                "electr",
+                "electro",
+                "electron",
+                "electroni",
+                "electronic",
+                "electronic"
+              ],
+              "diagnostic_app_cpu_ms": 633.525
+            }
+          ],
+          "signed_sha256": "439901059f9125f8018c65e357bb9b38461e3328b3b502413a81ed0c03f8e85b",
+          "status": "PASS",
+          "metric": "search_response_body_bytes",
+          "rounds": 3,
+          "median": 23309,
+          "paired_ratios": [
+            5.5,
+            5.5,
+            5.5
+          ],
+          "median_ratio": 5.5,
+          "plan_sha256": "11e24c31a8c56df6ad445b14c7ecc1c08d3f9b848eb64cb371a6907c07360371",
+          "legacy_evidence_reused": false,
+          "method": "Completed ordinary search JSON body bytes under the same ten-key input and submit; exact response contents and native results verified. No artificial delay. Excludes headers, images, and unrelated home traffic; not CPU or radio-byte improvement."
         }
       },
       "fixed": {
-        "ref": "clean-app/ytmusic_search_no_debounce/fixed",
-        "commit": "b32b7202acf9d94f2a372e35fdfc5c2d02363824",
-        "tree": "73d702e49b2e7ec1974e5035e8eaf2c70ebb4d82",
+        "ref": "clean-app-v3/ytmusic_search_no_debounce/fixed",
+        "commit": "b04924213bb97a151c2e5e6076d3b572a551268d",
+        "tree": "57d85de89a8510285fa3125a162f3cce94b0c326",
         "business_base_tree": "73d702e49b2e7ec1974e5035e8eaf2c70ebb4d82",
-        "production_patches": [],
-        "unsigned_sha256": "70715cb25a89ebe42f17bcd4464ba86f1ff8179b6ca150f1750f40039124f68d",
+        "production_patches": [
+          "hosts_patches/ytmusic/search-ordinary-origin-fixed-v2.patch"
+        ],
+        "unsigned_sha256": "e1566fa40058fab5fa8b132f38e87392af270ea966f4dd0bb783f4f952e12404",
         "bytecode_audit": {
-          "sha256": "70715cb25a89ebe42f17bcd4464ba86f1ff8179b6ca150f1750f40039124f68d",
+          "sha256": "e1566fa40058fab5fa8b132f38e87392af270ea966f4dd0bb783f4f952e12404",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
@@ -159,52 +298,149 @@
         "sign": {
           "case": "ytmusic_search_no_debounce",
           "variant": "fixed",
-          "unsigned_sha256": "70715cb25a89ebe42f17bcd4464ba86f1ff8179b6ca150f1750f40039124f68d",
-          "signed_hap": "/home/research/ohm-clean/ytmusic_search_no_debounce/fixed/app.hap",
+          "unsigned_sha256": "e1566fa40058fab5fa8b132f38e87392af270ea966f4dd0bb783f4f952e12404",
+          "signed_hap": "/home/research/ohm-clean/ytsearch-v2/ytmusic_search_no_debounce/fixed/app.hap",
           "audit": {
-            "sha256": "55b4708c057fdcab89f6f084c8e8a2e0ccc79ebb0bf9cf45b028059e0a059e38",
+            "sha256": "ae52ac5864fe08a4b5cf7773c8f6cb2a3df5069e0f3737dbef050d06a3865c78",
             "abc_modules_checked": [
               "ets/modules.abc"
             ],
             "findings": [],
             "passed": true
           },
-          "status": "PASS"
+          "allowed_acls": [],
+          "status": "PASS",
+          "device_binding_sha256": "6d7e8db93a797e601f1a603a12890cf5829eed2341940801177717976a9d58db"
         },
         "smoke": {
           "case": "ytmusic_search_no_debounce",
           "variant": "fixed",
-          "signed_sha256": "55b4708c057fdcab89f6f084c8e8a2e0ccc79ebb0bf9cf45b028059e0a059e38",
-          "install": "[Info]App install path:/home/research/ohm-clean/ytmusic_search_no_debounce/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
-          "launch": "start ability successfully.",
+          "signed_sha256": "ae52ac5864fe08a4b5cf7773c8f6cb2a3df5069e0f3737dbef050d06a3865c78",
+          "install": "[Info]App install path:C:\\home\\research\\ohm-clean\\ytsearch-v2\\ytmusic_search_no_debounce\\fixed\\app.hap msg:install bundle successfully. \r\nAppMod finish\r\n",
           "pids": [
-            2276
+            2630
           ],
           "foreground_bundle": "com.example.myapplication",
           "status": "PASS",
-          "performance_verified": false
+          "performance_verified": false,
+          "method": "Original first native search trial: install, fresh launch, native empty search page and completed result page."
+        },
+        "workload": {
+          "case": "ytmusic_search_no_debounce",
+          "variant": "fixed",
+          "status": "PASS",
+          "signed_sha256": "ae52ac5864fe08a4b5cf7773c8f6cb2a3df5069e0f3737dbef050d06a3865c78",
+          "plan_sha256": "11e24c31a8c56df6ad445b14c7ecc1c08d3f9b848eb64cb371a6907c07360371",
+          "fixture": {
+            "pid": 11556,
+            "identity": {
+              "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py --duration 7200",
+              "start_ticks": 639281824649366050
+            },
+            "source": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_data_service.py",
+            "source_sha256": "d1be169775c375f7bb5eb9a8bf00cb46624c8756011f308376f4e7304ab8f05b",
+            "launcher": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py",
+            "launcher_sha256": "46cb0e685585fb1aa303f6cbfd847da29a7f3ecd8cc4e097f70f39991fcdc70d",
+            "catalogue_sha256": "10b3b4fd978d8448be3a46a949a9f2ce1b628090f759824ffd71e110a65d60a5",
+            "base_url": "http://127.0.0.1:18493",
+            "hosting": "bounded foreground SSH lease"
+          },
+          "fixture_after": {
+            "pid": 11556,
+            "identity": {
+              "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py --duration 7200",
+              "start_ticks": 639281824649366050
+            },
+            "source": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_data_service.py",
+            "source_sha256": "d1be169775c375f7bb5eb9a8bf00cb46624c8756011f308376f4e7304ab8f05b",
+            "launcher": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py",
+            "launcher_sha256": "46cb0e685585fb1aa303f6cbfd847da29a7f3ecd8cc4e097f70f39991fcdc70d",
+            "catalogue_sha256": "10b3b4fd978d8448be3a46a949a9f2ce1b628090f759824ffd71e110a65d60a5",
+            "base_url": "http://127.0.0.1:18493",
+            "hosting": "bounded foreground SSH lease"
+          },
+          "native_capture": "artifacts/clean/ytmusic_search_no_debounce/fixed/trace-captures/search-payload-v2/round-1/capture.json",
+          "native_capture_sha256": "42ae76e6439d622db081aef2c28d90f9b2bd5adc2bfe2c377d8426617ae85cdd",
+          "performance_verified": false,
+          "method": "Original formal native ten-key search and submit, with ordinary result titles, creators, durations, and exact completed response bodies verified."
+        },
+        "performance": {
+          "samples": [
+            4238,
+            4238,
+            4238
+          ],
+          "captures": [
+            {
+              "round": 1,
+              "capture_sha256": "42ae76e6439d622db081aef2c28d90f9b2bd5adc2bfe2c377d8426617ae85cdd",
+              "trace_sha256": "c1746d08f603ed640ae9cdc24dd82f08eb5b8df7a5dec49c80795c734a0b21c6",
+              "search_queries": [
+                "electronic",
+                "electronic"
+              ],
+              "diagnostic_app_cpu_ms": 573.555
+            },
+            {
+              "round": 2,
+              "capture_sha256": "dd86dea88497ae9b1eef8edfb31d42a276feb3ec7f01d7eb9731ed0eaeba28a8",
+              "trace_sha256": "d8fc575d63b14257d064e93be89c41aacdd3efcc09475658a0804ca3151e93ef",
+              "search_queries": [
+                "electronic",
+                "electronic"
+              ],
+              "diagnostic_app_cpu_ms": 609.866
+            },
+            {
+              "round": 3,
+              "capture_sha256": "0f2f19ac92f00df8241c5e3b4b90dfd632325fda4f3b8538f42cbec71d664034",
+              "trace_sha256": "87d604c0b12189c9012ceddab3c9ede0b00a54c5c12f522ba9b8c7866755dc61",
+              "search_queries": [
+                "electronic",
+                "electronic"
+              ],
+              "diagnostic_app_cpu_ms": 575.211
+            }
+          ],
+          "signed_sha256": "ae52ac5864fe08a4b5cf7773c8f6cb2a3df5069e0f3737dbef050d06a3865c78",
+          "status": "PASS",
+          "metric": "search_response_body_bytes",
+          "rounds": 3,
+          "median": 4238,
+          "paired_ratios": [
+            5.5,
+            5.5,
+            5.5
+          ],
+          "median_ratio": 5.5,
+          "plan_sha256": "11e24c31a8c56df6ad445b14c7ecc1c08d3f9b848eb64cb371a6907c07360371",
+          "legacy_evidence_reused": false,
+          "method": "Completed ordinary search JSON body bytes under the same ten-key input and submit; exact response contents and native results verified. No artificial delay. Excludes headers, images, and unrelated home traffic; not CPU or radio-byte improvement."
         }
       }
-    },
-    "input_ui_validation": {
-      "status": "verified_input_only",
-      "successful_search_requests_verified": false,
-      "event_delivery_spacing_verified": false,
-      "full_workload_validation": "pending",
-      "proof": "../../validation/ytmusic-ten-character-native-diagnosis.json",
-      "plan_sha256": "11e24c31a8c56df6ad445b14c7ecc1c08d3f9b848eb64cb371a6907c07360371",
-      "native_mmi_spacing_verified": true,
-      "arkui_callback_spacing_verified": false,
-      "scope": "Ten characters plus submit; native MMI timing only, not business callback timing or successful network work."
-    },
-    "historical_input_ui_validation": {
-      "status": "verified",
-      "proof": "../../validation/ytmusic-normal-keyboard-ui.json",
-      "successful_search_requests_verified": false,
-      "event_delivery_spacing_verified": false,
-      "full_workload_validation": "pending",
-      "plan_sha256": "69d02662ee3f957dc89b807e41d3b9ae8d4ebe6345523d12aabfbde0c3752c12",
-      "scope": "Historical five-character input-only validation; not proof for the ten-character-plus-submit workload."
     }
+  },
+  "measurement_revision": "search-payload-v2",
+  "candidate_revision": {
+    "state": "accepted",
+    "original_contract": "validation/ytsearch-original-contract-before-v2.json",
+    "required_ratio": 5.0,
+    "business_source_changed": true
+  },
+  "acceptance_revision": {
+    "id": "search-payload-v2",
+    "authorized_on": "2026-10-21",
+    "original_contract": "validation/ytsearch-original-contract-before-v2.json",
+    "original_contract_sha256": "2b4f79d8088f85d499e494cab5748f4c9897de204f874b4cf20be7008c9d8b7b",
+    "original_workload": "validation/ytsearch-original-workload-before-v2.json",
+    "original_workload_sha256": "11e24c31a8c56df6ad445b14c7ecc1c08d3f9b848eb64cb371a6907c07360371",
+    "reason": "Measure successful ordinary search response-body bytes during ten native key changes and submit. All three paired ratios and median must reach 5.0x. Exact ordinary catalogue body hashes and native result titles, artists, and durations must match. Both variants use the same ordinary backend without artificial delay; only the search endpoint changes alongside the existing debounce fix. Original CPU-pending evidence remains archived; no CPU or radio-byte improvement claim."
+  },
+  "reproduction_delivery": {
+    "status": "PASS",
+    "proof": "validation/ytsearch-native-payload-acceptance.json",
+    "business_identity_preserved": true,
+    "current_signature_launch_verified": true,
+    "binary_only_export_verified": true
   }
 }

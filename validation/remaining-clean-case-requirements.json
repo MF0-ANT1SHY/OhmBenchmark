@@ -4,9 +4,9 @@
   "cases": 30,
   "business_only_builds": 60,
   "source_and_signed_artifact_proof": "validation/all-clean-signed-integrity.json",
-  "primary_passed": 18,
+  "primary_passed": 19,
   "valid_primary_measurement_failed": 3,
-  "pending_primary_measurement": 3,
+  "pending_primary_measurement": 2,
   "native_heap_collector_calibration_only_proof": "validation/nativeheap-device-clock-calibration.json",
   "supplementary_cold_cache_not_counted": "validation/wan-home-cold-cache-pss-supplement.json",
   "rows": [
@@ -393,20 +393,17 @@
     },
     {
       "case": "ytmusic_search_no_debounce",
-      "primary_measurement_status": "pending_clean_measurement",
-      "metric": "hiperf_instructions",
+      "primary_measurement_status": "measured_clean",
+      "metric": "search_response_body_bytes",
       "app_injection": false,
+      "recorded_primary_pass": true,
       "proof": [
-        "validation/cityu-wlan-connectivity.json"
+        "validation/ytsearch-native-payload-acceptance.json"
       ],
-      "recorded_primary_pass": false,
-      "remaining_requirements": [
-        "native_key_delivery_spacing",
-        "successful_normal_search_request_count",
-        "comparable_inputs_and_paired_instruction_measurements"
-      ],
-      "latest_diagnostic": "validation/remaining-provider-current-host-recheck.json",
-      "external_configuration_requirement": "Working original-compatible business search backend required; current public host DNS does not resolve yt.c12k.dev. No substitute backend or failed-response timing is used as a performance verdict."
+      "complete_case_accepted": true,
+      "required_ratio": 5.0,
+      "paired_rounds": 3,
+      "historical_pending": "validation/ytsearch-original-contract-before-v2.json"
     }
   ],
   "negative_screen_failed": 6,
@@ -417,7 +414,7 @@
     "status": "all_accepted_case_deliveries_verified",
     "proof": "validation/accepted-current-reproduction-delivery.json",
     "historical_expiry_audit": "validation/accepted-hap-profile-validity-audit.json",
-    "scope": "All 18 accepted cases have current signed deliveries and binary-only exports. Historical negative contracts remain archived.",
+    "scope": "All 19 accepted cases have current signed deliveries and binary-only exports. Historical negative contracts remain archived.",
     "requirement": "All delivered reproduction HAPs must have current valid provisioning profiles. Retain historical measured packages and capture bindings; no replacement is accepted without business-byte/permission equivalence and fresh launch proof.",
     "performance_pass_count_is_not_full_delivery_completion": true,
     "renewed_launch_and_blind_export_verified": [
@@ -438,12 +435,13 @@
       "sheafreader_refresh_feeds_sequential",
       "sheafreader_unread_counts_n_plus_1",
       "cloudmusic_search_result_foreach",
-      "weatherassistant_remote_weather_icons"
+      "weatherassistant_remote_weather_icons",
+      "ytmusic_search_no_debounce"
     ],
-    "variants_verified": 36
+    "variants_verified": 38
   },
   "primary_criterion_verified_pending_mechanism": 0,
-  "pending_complete_case_validation": 3,
+  "pending_complete_case_validation": 2,
   "primary_criterion_met_mechanism_screen_failed": 0,
   "current_goal": "At least 21 accepted business-only cases with a large measured performance difference."
 }

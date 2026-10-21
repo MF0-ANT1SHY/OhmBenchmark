@@ -1,0 +1,55 @@
+{
+  "bundle": "com.example.myapplication",
+  "ability": "EntryAbility",
+  "description": "Youtube-Music-ArkTS-Clone页面操作",
+  "setup": [
+    {
+      "op": "wait",
+      "selector": {
+        "text": "首页"
+      }
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "type": "Button",
+        "index": 1
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "hint": "搜索歌曲、音乐人、播客"
+      }
+    }
+  ],
+  "measured": [
+    {
+      "op": "type_keys",
+      "selector": {
+        "hint": "搜索歌曲、音乐人、播客",
+        "match": "exact"
+      },
+      "value": "electronic",
+      "interval_ms": 50
+    },
+    {
+      "op": "key",
+      "key": 2054
+    },
+    {
+      "op": "pause",
+      "seconds": 1
+    }
+  ],
+  "verify": [
+    {
+      "op": "wait",
+      "selector": {
+        "hint": "搜索歌曲、音乐人、播客",
+        "text": "electronic",
+        "match": "exact"
+      }
+    }
+  ]
+}

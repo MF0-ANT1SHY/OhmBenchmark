@@ -1,0 +1,104 @@
+{
+  "case": "ytmusic_search_no_debounce",
+  "status": "BOTH_NATIVE_SEARCH_RESULTS_VERIFIED_NOT_PERFORMANCE_ACCEPTANCE",
+  "variants": {
+    "unfixed": {
+      "observation": "artifacts/candidate-builds/ytsearch-v2/native-preflight/unfixed/observation.json",
+      "observation_sha256": "be750f863ca9b192d39080f242360e8e2d4cff8e701dc1b2578329022673a962",
+      "proof": {
+        "signed_sha256": "439901059f9125f8018c65e357bb9b38461e3328b3b502413a81ed0c03f8e85b",
+        "before": {
+          "pid": 11556,
+          "identity": {
+            "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py --duration 7200",
+            "start_ticks": 639281824649366050
+          },
+          "source": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_data_service.py",
+          "source_sha256": "d1be169775c375f7bb5eb9a8bf00cb46624c8756011f308376f4e7304ab8f05b",
+          "launcher": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py",
+          "launcher_sha256": "46cb0e685585fb1aa303f6cbfd847da29a7f3ecd8cc4e097f70f39991fcdc70d",
+          "catalogue_sha256": "10b3b4fd978d8448be3a46a949a9f2ce1b628090f759824ffd71e110a65d60a5",
+          "base_url": "http://127.0.0.1:18493",
+          "hosting": "bounded foreground SSH lease"
+        },
+        "after": {
+          "pid": 11556,
+          "identity": {
+            "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py --duration 7200",
+            "start_ticks": 639281824649366050
+          },
+          "source": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_data_service.py",
+          "source_sha256": "d1be169775c375f7bb5eb9a8bf00cb46624c8756011f308376f4e7304ab8f05b",
+          "launcher": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py",
+          "launcher_sha256": "46cb0e685585fb1aa303f6cbfd847da29a7f3ecd8cc4e097f70f39991fcdc70d",
+          "catalogue_sha256": "10b3b4fd978d8448be3a46a949a9f2ce1b628090f759824ffd71e110a65d60a5",
+          "base_url": "http://127.0.0.1:18493",
+          "hosting": "bounded foreground SSH lease"
+        },
+        "observation_sha256": "be750f863ca9b192d39080f242360e8e2d4cff8e701dc1b2578329022673a962",
+        "status": "NATIVE_RESULTS_VERIFIED_NOT_ACCEPTED"
+      },
+      "payload": {
+        "search_response_body_bytes": 23309,
+        "search_queries": [
+          "e",
+          "el",
+          "ele",
+          "elec",
+          "elect",
+          "electr",
+          "electro",
+          "electron",
+          "electroni",
+          "electronic",
+          "electronic"
+        ]
+      }
+    },
+    "fixed": {
+      "observation": "artifacts/candidate-builds/ytsearch-v2/native-preflight/fixed/observation.json",
+      "observation_sha256": "58e4e3ae144ef489f3ca5a0e6c0f9216b5facc6b8e4db1ec42fff93021e15962",
+      "proof": {
+        "signed_sha256": "ae52ac5864fe08a4b5cf7773c8f6cb2a3df5069e0f3737dbef050d06a3865c78",
+        "before": {
+          "pid": 11556,
+          "identity": {
+            "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py --duration 7200",
+            "start_ticks": 639281824649366050
+          },
+          "source": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_data_service.py",
+          "source_sha256": "d1be169775c375f7bb5eb9a8bf00cb46624c8756011f308376f4e7304ab8f05b",
+          "launcher": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py",
+          "launcher_sha256": "46cb0e685585fb1aa303f6cbfd847da29a7f3ecd8cc4e097f70f39991fcdc70d",
+          "catalogue_sha256": "10b3b4fd978d8448be3a46a949a9f2ce1b628090f759824ffd71e110a65d60a5",
+          "base_url": "http://127.0.0.1:18493",
+          "hosting": "bounded foreground SSH lease"
+        },
+        "after": {
+          "pid": 11556,
+          "identity": {
+            "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py --duration 7200",
+            "start_ticks": 639281824649366050
+          },
+          "source": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_data_service.py",
+          "source_sha256": "d1be169775c375f7bb5eb9a8bf00cb46624c8756011f308376f4e7304ab8f05b",
+          "launcher": "C:\\home\\research\\ohm-clean\\services\\ytsearch\\ytsearch_workstation_lease.py",
+          "launcher_sha256": "46cb0e685585fb1aa303f6cbfd847da29a7f3ecd8cc4e097f70f39991fcdc70d",
+          "catalogue_sha256": "10b3b4fd978d8448be3a46a949a9f2ce1b628090f759824ffd71e110a65d60a5",
+          "base_url": "http://127.0.0.1:18493",
+          "hosting": "bounded foreground SSH lease"
+        },
+        "observation_sha256": "58e4e3ae144ef489f3ca5a0e6c0f9216b5facc6b8e4db1ec42fff93021e15962",
+        "status": "NATIVE_RESULTS_VERIFIED_NOT_ACCEPTED"
+      },
+      "payload": {
+        "search_response_body_bytes": 4238,
+        "search_queries": [
+          "electronic",
+          "electronic"
+        ]
+      }
+    }
+  },
+  "screen_ratio": 5.5
+}

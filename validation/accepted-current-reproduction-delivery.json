@@ -1,11 +1,11 @@
 {
   "status": "ALL_ACCEPTED_REPRODUCTION_DELIVERIES_VERIFIED",
-  "scope": "Current delivery for 18 accepted cases. Revised contracts are explicit. Goal of at least 21 accepted cases remains incomplete.",
+  "scope": "Current delivery for 19 accepted cases. Revised contracts are explicit. Goal of at least 21 accepted cases remains incomplete.",
   "goal_complete": false,
-  "checked_at": 1792585546.9339557,
-  "cases": 18,
-  "variants": 36,
-  "binary_only_agent_exports": 18,
+  "checked_at": 1792586571.7192414,
+  "cases": 19,
+  "variants": 38,
+  "binary_only_agent_exports": 19,
   "historical_measured_artifacts_retained": true,
   "rows": [
     {
@@ -732,6 +732,49 @@
         "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
         "profile.json": "ac8012d422db25b691a81f26f1c98cb6cc9f2091dd5afd31cac085b9c0e411f9",
         "symptom.txt": "dd0f953f5be053e903fab841ea2e173a10a4fd4e8c66934a3243cb59cdb208fb"
+      }
+    },
+    {
+      "case": "ytmusic_search_no_debounce",
+      "case_proof": "validation/ytsearch-native-payload-acceptance.json",
+      "case_proof_sha256": "3f969084196e928d138b45913df8a61598ab026ee1b12babfe22a3e93bacc6ba",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "439901059f9125f8018c65e357bb9b38461e3328b3b502413a81ed0c03f8e85b",
+          "measured_signed_sha256": "439901059f9125f8018c65e357bb9b38461e3328b3b502413a81ed0c03f8e85b",
+          "current_validity": {
+            "bundle": "com.example.myapplication",
+            "not_before": 1792585397,
+            "not_after": 1795177697,
+            "checked_at": 1792586548.6448073
+          },
+          "fresh_launch_receipt_sha256": "e21bf50d5be776d6127edd835aab000014739ffb0f88b93e751c0413d09b5868",
+          "fresh_launch_evidence": "artifacts/clean/ytmusic_search_no_debounce/unfixed/trace-captures/search-payload-v2/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified complete native search input and ordinary song results. No additional launch rerun.",
+          "renewal_not_required": true
+        },
+        "fixed": {
+          "signed_sha256": "ae52ac5864fe08a4b5cf7773c8f6cb2a3df5069e0f3737dbef050d06a3865c78",
+          "measured_signed_sha256": "ae52ac5864fe08a4b5cf7773c8f6cb2a3df5069e0f3737dbef050d06a3865c78",
+          "current_validity": {
+            "bundle": "com.example.myapplication",
+            "not_before": 1792585552,
+            "not_after": 1795177852,
+            "checked_at": 1792586550.3706203
+          },
+          "fresh_launch_receipt_sha256": "0f2f19ac92f00df8241c5e3b4b90dfd632325fda4f3b8538f42cbec71d664034",
+          "fresh_launch_evidence": "artifacts/clean/ytmusic_search_no_debounce/fixed/trace-captures/search-payload-v2/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process identity, and verified complete native search input and ordinary song results. No additional launch rerun.",
+          "renewal_not_required": true
+        }
+      },
+      "agent_export": "artifacts/agent-exports/ytsearch-c151858f80f04f6784995db24a777092",
+      "agent_files_sha256": {
+        "app.hap": "439901059f9125f8018c65e357bb9b38461e3328b3b502413a81ed0c03f8e85b",
+        "workload.json": "1d812d2f642101bcf40050be754942e0055be9d608d37807d5a91eead1fde2d9",
+        "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
+        "profile.json": "9bd6f1fed4a612c724f193cde75238fee33d043586ac3b9576adf8ac6fef61ca",
+        "symptom.txt": "15ab41846fff7cab3ebf2579556eeb64cc614f7516cf21d5497cc93a9c9bf5d6"
       }
     }
   ]

@@ -1,0 +1,23 @@
+{
+  "case": "ytmusic_search_no_debounce",
+  "status": "DECLARED_BEFORE_FORMAL_CAPTURE_NOT_ACCEPTANCE",
+  "measurement_revision": "search-payload-v2",
+  "metric": "search_response_body_bytes",
+  "required_ratio_each_pair_and_median": 5.0,
+  "paired_rounds": 3,
+  "input": "Ten ordinary keyboard characters: electronic, followed by submit",
+  "ordinary_catalogue_size": 20,
+  "network_condition": "No artificial response delay; identical ordinary search responses in both variants",
+  "scope": "Successful search JSON response-body bytes written and flushed by the isolated ordinary backend during the native input action. Excludes image bodies, HTTP headers, and unrelated external home-page requests. Not a radio-byte or CPU-improvement claim.",
+  "functional_requirements": [
+    "Native input begins empty and ends with the full query",
+    "Native results contain the expected song titles, creators, and durations",
+    "Every recorded response body matches the ordinary catalogue query exactly and is fully sent",
+    "Unfixed completes all ten prefix searches plus submit; fixed completes one or two full-query searches and no prefix searches",
+    "Same native application process throughout each action; identical signed business source except ordinary endpoint and existing debounce fix",
+    "Same live service process and unchanged complete catalogue verified before and after each trial"
+  ],
+  "app_injection": false,
+  "original_contract_preserved_until_acceptance": true,
+  "performance_accepted": false
+}

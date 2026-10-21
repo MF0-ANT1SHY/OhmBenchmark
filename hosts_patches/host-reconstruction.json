@@ -418,11 +418,21 @@
         },
         "case/ytmusic_search_no_debounce/unfixed": {
           "state": "patch-series commit 2",
-          "tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d"
+          "tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d",
+          "app_ref": "clean-app-v3/ytmusic_search_no_debounce/unfixed",
+          "app_tree": "27f90889d4707e3772dc2a526e907d82683618ff",
+          "production_patches": [
+            "hosts_patches/ytmusic/search-ordinary-origin-unfixed-v2.patch"
+          ]
         },
         "case/ytmusic_search_no_debounce/fixed": {
           "state": "patch-series commit 3",
-          "tree": "73d702e49b2e7ec1974e5035e8eaf2c70ebb4d82"
+          "tree": "73d702e49b2e7ec1974e5035e8eaf2c70ebb4d82",
+          "app_ref": "clean-app-v3/ytmusic_search_no_debounce/fixed",
+          "app_tree": "57d85de89a8510285fa3125a162f3cce94b0c326",
+          "production_patches": [
+            "hosts_patches/ytmusic/search-ordinary-origin-fixed-v2.patch"
+          ]
         },
         "case/ytmusic_current_playing_timeupdate/unfixed": {
           "state": "patch-series commit 3",

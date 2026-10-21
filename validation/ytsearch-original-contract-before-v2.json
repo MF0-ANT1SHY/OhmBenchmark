@@ -1,0 +1,210 @@
+{
+  "id": "ytmusic_search_no_debounce",
+  "host_app": {
+    "name": "Youtube-Music-ArkTS-Clone",
+    "repository": "https://github.com/Charles-Stark/Youtube-Music-ArkTS-Clone",
+    "bundle_name": "com.example.myapplication",
+    "local_path": "hosts/ytmusic",
+    "base_branch": "ohmbase",
+    "base_commit": "5bf6142"
+  },
+  "android_source_case": "portauthority_excessive_ui_callbacks",
+  "android_mechanism": "Every scanned port enqueues UI work without throttling; fix moves/throttles the work",
+  "category": "cpu",
+  "bug_description": "The search input's onChange handler fires a network search request to the backend for every single keystroke with no debounce or cancellation. Typing a 10-character query issues 10 requests, most of which are obsolete by the time they return; their responses race and each response re-assigns the result state, re-rendering the result list repeatedly and wasting radio/CPU and UI-thread time.",
+  "perf_scenarios": [
+    "网络结果渲染",
+    "状态更新"
+  ],
+  "unfixed_commit": "1e3d086fee748d99ffcdd31d18b4f793ddab8491",
+  "fixed_commit": "b32b7202acf9d94f2a372e35fdfc5c2d02363824",
+  "fix_summary": "Search-as-you-type is debounced by 300ms (timer reset on each keystroke, cleared on submit), so one request is issued per paused query instead of one per keystroke.",
+  "build": {
+    "mode": "release",
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "testcase": {
+    "name": "PerfLoad_ytmusic_0030",
+    "py_file": "testcase/PerfLoad_ytmusic_0030.py",
+    "descriptor": "testcase/PerfLoad_ytmusic_0030.json",
+    "install_dir": "perf_testing/hapray/testcases/com.example.myapplication",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_ytmusic_0030.workload.json"
+  },
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 60,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "search_requests_per_query",
+      "definition": "Count of outbound HTTP search requests observed in the network trace while typing one 10-character query (plus submit).",
+      "comparison": "unfixed: ~11 requests per typed query (one per keystroke + submit); fixed: 1-2 requests. Corresponding CPU/radio activity and result-list re-renders drop proportionally."
+    },
+    "legacy_instrumented_evidence": {
+      "status": "expected",
+      "measured_as": "search requests per query",
+      "unfixed": [],
+      "fixed": [],
+      "note": "unfixed issues ~11 requests per typed query vs 1-2 fixed; each extra request costs serialise+send+parse+render instructions"
+    }
+  },
+  "reproduction": [
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py ytmusic_search_no_debounce",
+    "python3 tools/sign_clean_cases.py ytmusic_search_no_debounce",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/ytmusic_search_no_debounce/testcase/ into perf_testing/hapray/testcases/com.example.myapplication/.",
+    "Install each clean signed variant and run the PerfLoad_ytmusic_0030 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "157104d",
+    "fixed_commit": "c4b1879",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/ytmusic_search_no_debounce/unfixed",
+        "commit": "1e3d086fee748d99ffcdd31d18b4f793ddab8491",
+        "tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d",
+        "business_base_tree": "6e5d4f8c79e76325caf474b620fe1560a4881f1d",
+        "production_patches": [],
+        "unsigned_sha256": "10757512790d4f51d28b45e3be90ddbb3d21ba1e772524f0a28a88e349cc42b7",
+        "bytecode_audit": {
+          "sha256": "10757512790d4f51d28b45e3be90ddbb3d21ba1e772524f0a28a88e349cc42b7",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "ytmusic_search_no_debounce",
+          "variant": "unfixed",
+          "unsigned_sha256": "10757512790d4f51d28b45e3be90ddbb3d21ba1e772524f0a28a88e349cc42b7",
+          "signed_hap": "/home/research/ohm-clean/ytmusic_search_no_debounce/unfixed/app.hap",
+          "audit": {
+            "sha256": "3d56cf94f5976964feb24140784d539b30a5323a0633b2427ee420873d674662",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "ytmusic_search_no_debounce",
+          "variant": "unfixed",
+          "signed_sha256": "3d56cf94f5976964feb24140784d539b30a5323a0633b2427ee420873d674662",
+          "install": "[Info]App install path:/home/research/ohm-clean/ytmusic_search_no_debounce/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            1376
+          ],
+          "foreground_bundle": "com.example.myapplication",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/ytmusic_search_no_debounce/fixed",
+        "commit": "b32b7202acf9d94f2a372e35fdfc5c2d02363824",
+        "tree": "73d702e49b2e7ec1974e5035e8eaf2c70ebb4d82",
+        "business_base_tree": "73d702e49b2e7ec1974e5035e8eaf2c70ebb4d82",
+        "production_patches": [],
+        "unsigned_sha256": "70715cb25a89ebe42f17bcd4464ba86f1ff8179b6ca150f1750f40039124f68d",
+        "bytecode_audit": {
+          "sha256": "70715cb25a89ebe42f17bcd4464ba86f1ff8179b6ca150f1750f40039124f68d",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "ytmusic_search_no_debounce",
+          "variant": "fixed",
+          "unsigned_sha256": "70715cb25a89ebe42f17bcd4464ba86f1ff8179b6ca150f1750f40039124f68d",
+          "signed_hap": "/home/research/ohm-clean/ytmusic_search_no_debounce/fixed/app.hap",
+          "audit": {
+            "sha256": "55b4708c057fdcab89f6f084c8e8a2e0ccc79ebb0bf9cf45b028059e0a059e38",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "ytmusic_search_no_debounce",
+          "variant": "fixed",
+          "signed_sha256": "55b4708c057fdcab89f6f084c8e8a2e0ccc79ebb0bf9cf45b028059e0a059e38",
+          "install": "[Info]App install path:/home/research/ohm-clean/ytmusic_search_no_debounce/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            2276
+          ],
+          "foreground_bundle": "com.example.myapplication",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      }
+    },
+    "input_ui_validation": {
+      "status": "verified_input_only",
+      "successful_search_requests_verified": false,
+      "event_delivery_spacing_verified": false,
+      "full_workload_validation": "pending",
+      "proof": "../../validation/ytmusic-ten-character-native-diagnosis.json",
+      "plan_sha256": "11e24c31a8c56df6ad445b14c7ecc1c08d3f9b848eb64cb371a6907c07360371",
+      "native_mmi_spacing_verified": true,
+      "arkui_callback_spacing_verified": false,
+      "scope": "Ten characters plus submit; native MMI timing only, not business callback timing or successful network work."
+    },
+    "historical_input_ui_validation": {
+      "status": "verified",
+      "proof": "../../validation/ytmusic-normal-keyboard-ui.json",
+      "successful_search_requests_verified": false,
+      "event_delivery_spacing_verified": false,
+      "full_workload_validation": "pending",
+      "plan_sha256": "69d02662ee3f957dc89b807e41d3b9ae8d4ebe6345523d12aabfbde0c3752c12",
+      "scope": "Historical five-character input-only validation; not proof for the ten-character-plus-submit workload."
+    }
+  }
+}

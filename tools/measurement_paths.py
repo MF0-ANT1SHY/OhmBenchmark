@@ -4,7 +4,7 @@ import re
 
 def capture_root(folder, case, metric):
     name = {'app_pss_bytes': 'pss-captures', 'hiperf_instructions': 'cpu-captures',
-            'trace_cpu_ms': 'trace-captures', 'startup_refresh_elapsed_s': 'trace-captures', 'startup_icons_elapsed_s': 'trace-captures'}[metric]
+            'trace_cpu_ms': 'trace-captures', 'startup_refresh_elapsed_s': 'trace-captures', 'startup_icons_elapsed_s': 'trace-captures', 'search_response_body_bytes': 'trace-captures'}[metric]
     root = folder/name
     revision = case.get('measurement_revision')
     if revision is not None:

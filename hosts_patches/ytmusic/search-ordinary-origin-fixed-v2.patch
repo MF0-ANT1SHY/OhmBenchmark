@@ -1,0 +1,13 @@
+diff --git a/entry/src/main/ets/pages/SearchPage.ets b/entry/src/main/ets/pages/SearchPage.ets
+index e774593..08072f3 100644
+--- a/entry/src/main/ets/pages/SearchPage.ets
++++ b/entry/src/main/ets/pages/SearchPage.ets
+@@ -9,7 +9,7 @@ export struct SearchPage {
+   private searchDebounceTimer: number = -1
+ 
+   private doSearch(keyword: string) {
+-    axios.get('https://yt.c12k.dev/search', {
++    axios.get('http://127.0.0.1:18493/search', {
+       params: {
+         keyword: keyword
+       }

@@ -1,0 +1,22 @@
+diff --git a/entry/src/main/ets/pages/SearchPage.ets b/entry/src/main/ets/pages/SearchPage.ets
+index 9ca72af..1817d0b 100644
+--- a/entry/src/main/ets/pages/SearchPage.ets
++++ b/entry/src/main/ets/pages/SearchPage.ets
+@@ -25,7 +25,7 @@ export struct SearchPage {
+           .backgroundColor('#ff3c3c3c')
+           .layoutWeight(1)
+           .onChange((keyword: string) => {
+-            axios.get('https://yt.c12k.dev/search', {
++            axios.get('http://127.0.0.1:18493/search', {
+               params: {
+                 keyword: keyword
+               }
+@@ -37,7 +37,7 @@ export struct SearchPage {
+               })
+           })
+           .onSubmit((_enterKey: EnterKeyType, event: SubmitEvent) => {
+-            axios.get('https://yt.c12k.dev/search', {
++            axios.get('http://127.0.0.1:18493/search', {
+               params: {
+                 keyword: event.text
+               }
