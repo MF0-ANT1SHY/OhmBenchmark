@@ -350,11 +350,21 @@
       "case_tags": {
         "case/weatherassistant_http_session_leak/fixed": {
           "state": "fix: destroy the HTTP session after each weather request to avoid leaking connections and fds",
-          "tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0"
+          "tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+          "app_ref": "clean-app-v3/weatherassistant_http_session_leak/fixed",
+          "app_tree": "c0a58c0017e87dfb1c4984e8dc76a4aa6d7ef419",
+          "production_patches": [
+            "hosts_patches/weatherassistant/sessions-hourly-forecast-fixed-v5.patch"
+          ]
         },
         "case/weatherassistant_http_session_leak/unfixed": {
           "state": "perf: also retain every full weather response body for the lifetime of the app",
-          "tree": "53a80521604b9d78ecce523623c36ca8dd3d9458"
+          "tree": "53a80521604b9d78ecce523623c36ca8dd3d9458",
+          "app_ref": "clean-app-v3/weatherassistant_http_session_leak/unfixed",
+          "app_tree": "f391f3f176d03c8029b08b4169e33b351a4916b0",
+          "production_patches": [
+            "hosts_patches/weatherassistant/sessions-hourly-forecast-unfixed-v5.patch"
+          ]
         },
         "case/weatherassistant_remote_weather_icons/fixed": {
           "state": "perf: bundle weather icons as local raw resources instead of fetching static glyphs from a remote CDN on every render",

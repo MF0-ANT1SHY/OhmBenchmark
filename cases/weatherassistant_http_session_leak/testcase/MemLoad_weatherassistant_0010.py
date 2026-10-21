@@ -1,3 +1,4 @@
+# Optional ordinary-UI profiling wrapper. Accepted GC-conditioned memory evidence uses the dedicated collector in case.json.
 from pathlib import Path
 import json
 import importlib.util
@@ -35,5 +36,5 @@ class MemLoad_weatherassistant_0010(PerfTestCase):
         ui.run([{'op': 'stop'}, {'op': 'launch'}])
         ui.run(self._plan['setup'])
         ui.profiled(self.execute_performance_step,
-            'HarmonyOS-Next-Weather-Assistant页面操作', 60, self._plan['measured'])
+            'HarmonyOS-Next-Weather-Assistant页面操作', 1200, self._plan['measured'])
         ui.run(self._plan['verify'])

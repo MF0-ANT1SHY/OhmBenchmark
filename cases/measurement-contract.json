@@ -1,7 +1,7 @@
 {
   "$comment": "External clean measurement contract. Historical instrumented evidence is archived and not reused.",
   "case_count": 30,
-  "measured_case_count": 20,
+  "measured_case_count": 21,
   "cases": {
     "browser_eager_history_load": {
       "oracle_metric": "hiperf_instructions",
@@ -239,11 +239,11 @@
       }
     },
     "weatherassistant_http_session_leak": {
-      "oracle_metric": "nativehook_retained_bytes",
+      "oracle_metric": "app_gc_requested_pss_growth_bytes",
       "app_injection": false,
-      "workload_validation": "pending",
-      "measurement_status": "pending_clean_measurement",
-      "rounds_recorded": 0
+      "workload_validation": "verified",
+      "measurement_status": "measured_clean",
+      "rounds_recorded": 3
     },
     "weatherassistant_remote_weather_icons": {
       "oracle_metric": "startup_icons_elapsed_s",

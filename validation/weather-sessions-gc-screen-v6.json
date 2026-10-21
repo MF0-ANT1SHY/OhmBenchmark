@@ -1,0 +1,27 @@
+{
+  "status": "DIAGNOSTIC_ONLY_NOT_ACCEPTANCE",
+  "bounds": {
+    "unfixed": {
+      "lower_bytes": 108544,
+      "upper_bytes": 112640,
+      "median_bytes": 112640
+    },
+    "fixed": {
+      "lower_bytes": 951296,
+      "upper_bytes": 955392,
+      "median_bytes": 955392
+    }
+  },
+  "hypothetical_gate": {
+    "passed": false,
+    "noise_bounded_ratio": 0.103515625,
+    "excess_growth_bytes": -846848,
+    "fixed_denominator_bytes": 1048576
+  },
+  "captures_sha256": {
+    "unfixed": "845e96f7cd8bf1dacafed8ef76199abc5ba40556d9a9208c995ae29d10e13a23",
+    "fixed": "7a1548fd2205a53a97e9466239cfa1c209d015bccf57617c6bceb0cc13815e94"
+  },
+  "gc_completion_proven": false,
+  "decision": "Preserve complete screen; insufficient unfixed persistent growth. Evaluate real hourly forecast functionality in separate candidates."
+}

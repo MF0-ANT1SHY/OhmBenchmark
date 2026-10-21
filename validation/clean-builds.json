@@ -7936,14 +7936,16 @@
       "case": "weatherassistant_http_session_leak",
       "variant": "unfixed",
       "host": "weatherassistant",
-      "ref": "clean-app/weatherassistant_http_session_leak/unfixed",
-      "commit": "1f787390a703886e69d30ba8968765d363d55a19",
-      "tree": "53a80521604b9d78ecce523623c36ca8dd3d9458",
+      "ref": "clean-app-v3/weatherassistant_http_session_leak/unfixed",
+      "commit": "20baaf478cb6f2a5cefc7c73cd1bd75935af43a4",
+      "tree": "f391f3f176d03c8029b08b4169e33b351a4916b0",
       "business_base_tree": "53a80521604b9d78ecce523623c36ca8dd3d9458",
-      "production_patches": [],
-      "unsigned_sha256": "4cacc61b8ca69b12fd44ab88cbc19bb4ee666d64f059f7427d63fa19e409e0b6",
+      "production_patches": [
+        "hosts_patches/weatherassistant/sessions-hourly-forecast-unfixed-v5.patch"
+      ],
+      "unsigned_sha256": "a1439555cb78fe4b0f6f97027fd41b08dc61a37291314e324dc0dbe74fd8c88d",
       "bytecode_audit": {
-        "sha256": "4cacc61b8ca69b12fd44ab88cbc19bb4ee666d64f059f7427d63fa19e409e0b6",
+        "sha256": "a1439555cb78fe4b0f6f97027fd41b08dc61a37291314e324dc0dbe74fd8c88d",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -7954,44 +7956,175 @@
       "sign": {
         "case": "weatherassistant_http_session_leak",
         "variant": "unfixed",
-        "unsigned_sha256": "4cacc61b8ca69b12fd44ab88cbc19bb4ee666d64f059f7427d63fa19e409e0b6",
-        "signed_hap": "/home/research/ohm-clean/weatherassistant_http_session_leak/unfixed/app.hap",
+        "unsigned_sha256": "a1439555cb78fe4b0f6f97027fd41b08dc61a37291314e324dc0dbe74fd8c88d",
+        "signed_hap": "/home/research/ohm-clean/weather-hourly-v5/weatherassistant_http_session_leak/unfixed/app.hap",
         "audit": {
-          "sha256": "dd4a89db292ae4a9c48024fb14e5d1e66dc76315aed214301a9a600924aa7b72",
+          "sha256": "015ccf5f7da6f3256a3979fe8f1b6102037cbc234370f8e468802a7a82a10bf2",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
-        "status": "PASS"
+        "allowed_acls": [],
+        "status": "PASS",
+        "device_binding_sha256": "6d7e8db93a797e601f1a603a12890cf5829eed2341940801177717976a9d58db"
       },
       "smoke": {
         "case": "weatherassistant_http_session_leak",
         "variant": "unfixed",
-        "signed_sha256": "dd4a89db292ae4a9c48024fb14e5d1e66dc76315aed214301a9a600924aa7b72",
-        "install": "[Info]App install path:/home/research/ohm-clean/weatherassistant_http_session_leak/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
-        "launch": "start ability successfully.",
+        "signed_sha256": "015ccf5f7da6f3256a3979fe8f1b6102037cbc234370f8e468802a7a82a10bf2",
+        "install": "[Info]App install path:C:\\home\\research\\ohm-clean\\weather-hourly-v5\\weatherassistant_http_session_leak\\unfixed\\app.hap msg:install bundle successfully. \r\nAppMod finish\r\n",
         "pids": [
-          61943
+          17020
         ],
         "foreground_bundle": "com.alatus.futureweather",
         "status": "PASS",
-        "performance_verified": false
+        "performance_verified": false,
+        "method": "Original formal native trial: successful signed installation, fresh process, ten warmup and forty normal forecast refreshes with complete successful ordinary responses."
+      },
+      "workload": {
+        "case": "weatherassistant_http_session_leak",
+        "variant": "unfixed",
+        "status": "PASS",
+        "signed_sha256": "015ccf5f7da6f3256a3979fe8f1b6102037cbc234370f8e468802a7a82a10bf2",
+        "plan_sha256": "bd2e8dd3cf10ecba5ed6d0377d34ab51088b851a4cc777c6df82514633244a7e",
+        "fixture": {
+          "pid": 26748,
+          "identity": {
+            "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather_hourly\\weather_hourly_workstation_lease.py --duration 7200",
+            "start_ticks": 639281934497644780
+          },
+          "source": "C:\\home\\research\\ohm-clean\\services\\weather_hourly\\weather_hourly_data_service.py",
+          "daily_sha256": "7152d5f607b6df2e044472ef1c7e3520fc22dcc5a3d9fd2bcbc8165dafc04f68",
+          "source_sha256": "adf60f969b57d9394abe871dece95b54ecc6e7de5b288723b699355d400596db",
+          "launcher": "C:\\home\\research\\ohm-clean\\services\\weather_hourly\\weather_hourly_workstation_lease.py",
+          "launcher_sha256": "5440e9538b5389860c1d389123a1c6d4c06dbe41d1d4489c4efa19c87b638b0a",
+          "catalogue_sha256": "e69cbbd19c319e7272ae6bb3e4661ffcf752a5c3c75634f4088acb14bbe97253",
+          "base_url": "http://127.0.0.1:18496",
+          "hosting": "bounded foreground SSH lease"
+        },
+        "fixture_after": {
+          "pid": 26748,
+          "identity": {
+            "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather_hourly\\weather_hourly_workstation_lease.py --duration 7200",
+            "start_ticks": 639281934497644780
+          },
+          "source": "C:\\home\\research\\ohm-clean\\services\\weather_hourly\\weather_hourly_data_service.py",
+          "daily_sha256": "7152d5f607b6df2e044472ef1c7e3520fc22dcc5a3d9fd2bcbc8165dafc04f68",
+          "source_sha256": "adf60f969b57d9394abe871dece95b54ecc6e7de5b288723b699355d400596db",
+          "launcher": "C:\\home\\research\\ohm-clean\\services\\weather_hourly\\weather_hourly_workstation_lease.py",
+          "launcher_sha256": "5440e9538b5389860c1d389123a1c6d4c06dbe41d1d4489c4efa19c87b638b0a",
+          "catalogue_sha256": "e69cbbd19c319e7272ae6bb3e4661ffcf752a5c3c75634f4088acb14bbe97253",
+          "base_url": "http://127.0.0.1:18496",
+          "hosting": "bounded foreground SSH lease"
+        },
+        "native_capture": "artifacts/clean/weatherassistant_http_session_leak/unfixed/pss-captures/gc-growth-v7/round-1/capture.json",
+        "native_capture_sha256": "2068874c80c447399e7d9aa5918df7711b0aafc4f57172b3b95f2b1d0a232826",
+        "performance_verified": false,
+        "method": "Original native forty-return workload. Exactly four hundred ordinary ten-city forecast responses, native forecast layouts, continuous process identity, and raw kernel PSS verified."
+      },
+      "performance": {
+        "status": "PASS",
+        "metric": "app_gc_requested_pss_growth_bytes",
+        "rounds": 3,
+        "bounds": [
+          {
+            "lower_bytes": 41842688,
+            "upper_bytes": 41846784,
+            "median_bytes": 41846784
+          },
+          {
+            "lower_bytes": 42250240,
+            "upper_bytes": 42250240,
+            "median_bytes": 42250240
+          },
+          {
+            "lower_bytes": 43884544,
+            "upper_bytes": 43974656,
+            "median_bytes": 43941888
+          }
+        ],
+        "samples": [
+          41846784,
+          42250240,
+          43941888
+        ],
+        "captures": [
+          {
+            "round": 1,
+            "capture_sha256": "2068874c80c447399e7d9aa5918df7711b0aafc4f57172b3b95f2b1d0a232826",
+            "snapshots": 42,
+            "successful_forecasts": 400
+          },
+          {
+            "round": 2,
+            "capture_sha256": "2e8d1075509eb270e5ad692dc163d055e52770e0a4215764d0692d298a832a7b",
+            "snapshots": 42,
+            "successful_forecasts": 400
+          },
+          {
+            "round": 3,
+            "capture_sha256": "3df7a58bae9b501699b1b94624c3cc4a847f73f1940e4a2c945f8807063bdf29",
+            "snapshots": 42,
+            "successful_forecasts": 400
+          }
+        ],
+        "signed_sha256": "015ccf5f7da6f3256a3979fe8f1b6102037cbc234370f8e468802a7a82a10bf2",
+        "median": 42250240,
+        "paired_ratios": [
+          39.904296875,
+          40.29296875,
+          9.418901098901099
+        ],
+        "paired_gates": [
+          {
+            "passed": true,
+            "noise_bounded_ratio": 39.904296875,
+            "excess_growth_bytes": 42246144,
+            "fixed_denominator_bytes": 1048576
+          },
+          {
+            "passed": true,
+            "noise_bounded_ratio": 40.29296875,
+            "excess_growth_bytes": 41875456,
+            "fixed_denominator_bytes": 1048576
+          },
+          {
+            "passed": true,
+            "noise_bounded_ratio": 9.418901098901099,
+            "excess_growth_bytes": 39225344,
+            "fixed_denominator_bytes": 4659200
+          }
+        ],
+        "median_ratio": 40.29296875,
+        "median_gate": {
+          "passed": true,
+          "noise_bounded_ratio": 40.29296875,
+          "excess_growth_bytes": 41875456,
+          "fixed_denominator_bytes": 1048576
+        },
+        "plan_sha256": "bd2e8dd3cf10ecba5ed6d0377d34ab51088b851a4cc777c6df82514633244a7e",
+        "contract_sha256": "443a50d2fd0d18252a2d9f81646815caa96416fbeb25e74565cc66f807e63d0b",
+        "fixture_sha256": "e69cbbd19c319e7272ae6bb3e4661ffcf752a5c3c75634f4088acb14bbe97253",
+        "legacy_evidence_reused": false,
+        "method": "Observed kernel PSS growth bounds after successful native GC requests and fixed ten-second waits, around forty successful ordinary ten-city seven-day-hourly refreshes after ten warmup returns. Gate uses unfixed lower growth and fixed upper growth with a 1 MiB denominator floor; raw signed growth remains unclamped."
       }
     },
     {
       "case": "weatherassistant_http_session_leak",
       "variant": "fixed",
       "host": "weatherassistant",
-      "ref": "clean-app/weatherassistant_http_session_leak/fixed",
-      "commit": "20e8e16b0c81fd5dee14b636433089cc2796f707",
-      "tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+      "ref": "clean-app-v3/weatherassistant_http_session_leak/fixed",
+      "commit": "0bbf0a6bede4c4dfaef952fc93ceb66dfd833e1b",
+      "tree": "c0a58c0017e87dfb1c4984e8dc76a4aa6d7ef419",
       "business_base_tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
-      "production_patches": [],
-      "unsigned_sha256": "404f2887764ec596574bc5fe8ede81401d25ad78b13f6aeab446e250dffd36fc",
+      "production_patches": [
+        "hosts_patches/weatherassistant/sessions-hourly-forecast-fixed-v5.patch"
+      ],
+      "unsigned_sha256": "7f0c4f9f0940cd1adb41f1fc06c1bd00e6fbfc0ab9a6478b8f69bc16c24804aa",
       "bytecode_audit": {
-        "sha256": "404f2887764ec596574bc5fe8ede81401d25ad78b13f6aeab446e250dffd36fc",
+        "sha256": "7f0c4f9f0940cd1adb41f1fc06c1bd00e6fbfc0ab9a6478b8f69bc16c24804aa",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -8002,30 +8135,159 @@
       "sign": {
         "case": "weatherassistant_http_session_leak",
         "variant": "fixed",
-        "unsigned_sha256": "404f2887764ec596574bc5fe8ede81401d25ad78b13f6aeab446e250dffd36fc",
-        "signed_hap": "/home/research/ohm-clean/weatherassistant_http_session_leak/fixed/app.hap",
+        "unsigned_sha256": "7f0c4f9f0940cd1adb41f1fc06c1bd00e6fbfc0ab9a6478b8f69bc16c24804aa",
+        "signed_hap": "/home/research/ohm-clean/weather-hourly-v5/weatherassistant_http_session_leak/fixed/app.hap",
         "audit": {
-          "sha256": "9711924f552264e21e5155358fdb672939b452a83279a4e518f134201aa5a73e",
+          "sha256": "e23d51ec96244b3a71cf210f203235d93e2a09152792df6d0cb84fcce38a5e72",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
-        "status": "PASS"
+        "allowed_acls": [],
+        "status": "PASS",
+        "device_binding_sha256": "6d7e8db93a797e601f1a603a12890cf5829eed2341940801177717976a9d58db"
       },
       "smoke": {
         "case": "weatherassistant_http_session_leak",
         "variant": "fixed",
-        "signed_sha256": "9711924f552264e21e5155358fdb672939b452a83279a4e518f134201aa5a73e",
-        "install": "[Info]App install path:/home/research/ohm-clean/weatherassistant_http_session_leak/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
-        "launch": "start ability successfully.",
+        "signed_sha256": "e23d51ec96244b3a71cf210f203235d93e2a09152792df6d0cb84fcce38a5e72",
+        "install": "[Info]App install path:C:\\home\\research\\ohm-clean\\weather-hourly-v5\\weatherassistant_http_session_leak\\fixed\\app.hap msg:install bundle successfully. \r\nAppMod finish\r\n",
         "pids": [
-          62335
+          26207
         ],
         "foreground_bundle": "com.alatus.futureweather",
         "status": "PASS",
-        "performance_verified": false
+        "performance_verified": false,
+        "method": "Original formal native trial: successful signed installation, fresh process, ten warmup and forty normal forecast refreshes with complete successful ordinary responses."
+      },
+      "workload": {
+        "case": "weatherassistant_http_session_leak",
+        "variant": "fixed",
+        "status": "PASS",
+        "signed_sha256": "e23d51ec96244b3a71cf210f203235d93e2a09152792df6d0cb84fcce38a5e72",
+        "plan_sha256": "bd2e8dd3cf10ecba5ed6d0377d34ab51088b851a4cc777c6df82514633244a7e",
+        "fixture": {
+          "pid": 26748,
+          "identity": {
+            "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather_hourly\\weather_hourly_workstation_lease.py --duration 7200",
+            "start_ticks": 639281934497644780
+          },
+          "source": "C:\\home\\research\\ohm-clean\\services\\weather_hourly\\weather_hourly_data_service.py",
+          "daily_sha256": "7152d5f607b6df2e044472ef1c7e3520fc22dcc5a3d9fd2bcbc8165dafc04f68",
+          "source_sha256": "adf60f969b57d9394abe871dece95b54ecc6e7de5b288723b699355d400596db",
+          "launcher": "C:\\home\\research\\ohm-clean\\services\\weather_hourly\\weather_hourly_workstation_lease.py",
+          "launcher_sha256": "5440e9538b5389860c1d389123a1c6d4c06dbe41d1d4489c4efa19c87b638b0a",
+          "catalogue_sha256": "e69cbbd19c319e7272ae6bb3e4661ffcf752a5c3c75634f4088acb14bbe97253",
+          "base_url": "http://127.0.0.1:18496",
+          "hosting": "bounded foreground SSH lease"
+        },
+        "fixture_after": {
+          "pid": 26748,
+          "identity": {
+            "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather_hourly\\weather_hourly_workstation_lease.py --duration 7200",
+            "start_ticks": 639281934497644780
+          },
+          "source": "C:\\home\\research\\ohm-clean\\services\\weather_hourly\\weather_hourly_data_service.py",
+          "daily_sha256": "7152d5f607b6df2e044472ef1c7e3520fc22dcc5a3d9fd2bcbc8165dafc04f68",
+          "source_sha256": "adf60f969b57d9394abe871dece95b54ecc6e7de5b288723b699355d400596db",
+          "launcher": "C:\\home\\research\\ohm-clean\\services\\weather_hourly\\weather_hourly_workstation_lease.py",
+          "launcher_sha256": "5440e9538b5389860c1d389123a1c6d4c06dbe41d1d4489c4efa19c87b638b0a",
+          "catalogue_sha256": "e69cbbd19c319e7272ae6bb3e4661ffcf752a5c3c75634f4088acb14bbe97253",
+          "base_url": "http://127.0.0.1:18496",
+          "hosting": "bounded foreground SSH lease"
+        },
+        "native_capture": "artifacts/clean/weatherassistant_http_session_leak/fixed/pss-captures/gc-growth-v7/round-1/capture.json",
+        "native_capture_sha256": "fd2f78bb61b6bc2affef1a5e5c55cab444fc8b8cb805e91c17899e28a6f3ba38",
+        "performance_verified": false,
+        "method": "Original native forty-return workload. Exactly four hundred ordinary ten-city forecast responses, native forecast layouts, continuous process identity, and raw kernel PSS verified."
+      },
+      "performance": {
+        "status": "PASS",
+        "metric": "app_gc_requested_pss_growth_bytes",
+        "rounds": 3,
+        "bounds": [
+          {
+            "lower_bytes": -407552,
+            "upper_bytes": -403456,
+            "median_bytes": -404480
+          },
+          {
+            "lower_bytes": 370688,
+            "upper_bytes": 374784,
+            "median_bytes": 374784
+          },
+          {
+            "lower_bytes": 4646912,
+            "upper_bytes": 4659200,
+            "median_bytes": 4646912
+          }
+        ],
+        "samples": [
+          -404480,
+          374784,
+          4646912
+        ],
+        "captures": [
+          {
+            "round": 1,
+            "capture_sha256": "fd2f78bb61b6bc2affef1a5e5c55cab444fc8b8cb805e91c17899e28a6f3ba38",
+            "snapshots": 42,
+            "successful_forecasts": 400
+          },
+          {
+            "round": 2,
+            "capture_sha256": "75798243e16d311412d686e3adda562db7ce2f6bde8031f2947dca4fb02aaa45",
+            "snapshots": 42,
+            "successful_forecasts": 400
+          },
+          {
+            "round": 3,
+            "capture_sha256": "f20e0d5ceec6211830f23b6c77c03020f9b1f2436a958564c3ab1863c21a6f90",
+            "snapshots": 42,
+            "successful_forecasts": 400
+          }
+        ],
+        "signed_sha256": "e23d51ec96244b3a71cf210f203235d93e2a09152792df6d0cb84fcce38a5e72",
+        "median": 374784,
+        "paired_ratios": [
+          39.904296875,
+          40.29296875,
+          9.418901098901099
+        ],
+        "paired_gates": [
+          {
+            "passed": true,
+            "noise_bounded_ratio": 39.904296875,
+            "excess_growth_bytes": 42246144,
+            "fixed_denominator_bytes": 1048576
+          },
+          {
+            "passed": true,
+            "noise_bounded_ratio": 40.29296875,
+            "excess_growth_bytes": 41875456,
+            "fixed_denominator_bytes": 1048576
+          },
+          {
+            "passed": true,
+            "noise_bounded_ratio": 9.418901098901099,
+            "excess_growth_bytes": 39225344,
+            "fixed_denominator_bytes": 4659200
+          }
+        ],
+        "median_ratio": 40.29296875,
+        "median_gate": {
+          "passed": true,
+          "noise_bounded_ratio": 40.29296875,
+          "excess_growth_bytes": 41875456,
+          "fixed_denominator_bytes": 1048576
+        },
+        "plan_sha256": "bd2e8dd3cf10ecba5ed6d0377d34ab51088b851a4cc777c6df82514633244a7e",
+        "contract_sha256": "443a50d2fd0d18252a2d9f81646815caa96416fbeb25e74565cc66f807e63d0b",
+        "fixture_sha256": "e69cbbd19c319e7272ae6bb3e4661ffcf752a5c3c75634f4088acb14bbe97253",
+        "legacy_evidence_reused": false,
+        "method": "Observed kernel PSS growth bounds after successful native GC requests and fixed ten-second waits, around forty successful ordinary ten-city seven-day-hourly refreshes after ten warmup returns. Gate uses unfixed lower growth and fixed upper growth with a 1 MiB denominator floor; raw signed growth remains unclamped."
       }
     },
     {

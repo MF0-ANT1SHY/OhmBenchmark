@@ -1,0 +1,69 @@
+{
+  "status": "FUNCTIONAL_ONLY_NOT_PERFORMANCE_ACCEPTANCE",
+  "variants": {
+    "unfixed": {
+      "capture_sha256": "da31f7f35bc5aeee96ce0102e641354af832334fe0179ffe65b9ea2ada6f18ff",
+      "signed_hap_sha256": "015ccf5f7da6f3256a3979fe8f1b6102037cbc234370f8e468802a7a82a10bf2",
+      "hourly_rows": [
+        {
+          "hour": "2026-10-21T00:00",
+          "displayed_fields": [
+            "2026-10-21T00:00 晴",
+            "气温 17.7° 体感 17.2° 露点 12.7°",
+            "湿度 55% 降水 0 mm 概率 10%",
+            "气压 1008 hPa 云量 10% 能见度 20 km",
+            "东南风 6 km/h 阵风 15 km/h 紫外线 0"
+          ],
+          "retrieved_at": "2026-10-21T15:12:22+00:00"
+        },
+        {
+          "hour": "2026-10-27T23:00",
+          "displayed_fields": [
+            "2026-10-27T23:00 阴",
+            "气温 17° 体感 18.5° 露点 12°",
+            "湿度 78% 降水 0 mm 概率 10%",
+            "气压 1017 hPa 云量 85% 能见度 20 km",
+            "南风 17 km/h 阵风 22 km/h 紫外线 0"
+          ],
+          "retrieved_at": "2026-10-21T15:12:22+00:00"
+        }
+      ],
+      "initial_icon_count": 9,
+      "returned_icon_count": 9
+    },
+    "fixed": {
+      "capture_sha256": "f8e34340ef26ed03b1fe14b255480008f89007d50b3747993c222b53d9f79574",
+      "signed_hap_sha256": "e23d51ec96244b3a71cf210f203235d93e2a09152792df6d0cb84fcce38a5e72",
+      "hourly_rows": [
+        {
+          "hour": "2026-10-21T00:00",
+          "displayed_fields": [
+            "2026-10-21T00:00 晴",
+            "气温 17.7° 体感 17.2° 露点 12.7°",
+            "湿度 55% 降水 0 mm 概率 10%",
+            "气压 1008 hPa 云量 10% 能见度 20 km",
+            "东南风 6 km/h 阵风 15 km/h 紫外线 0"
+          ],
+          "retrieved_at": "2026-10-21T15:15:49+00:00"
+        },
+        {
+          "hour": "2026-10-27T23:00",
+          "displayed_fields": [
+            "2026-10-27T23:00 阴",
+            "气温 17° 体感 18.5° 露点 12°",
+            "湿度 78% 降水 0 mm 概率 10%",
+            "气压 1017 hPa 云量 85% 能见度 20 km",
+            "南风 17 km/h 阵风 22 km/h 紫外线 0"
+          ],
+          "retrieved_at": "2026-10-21T15:15:49+00:00"
+        }
+      ],
+      "initial_icon_count": 9,
+      "returned_icon_count": 9
+    }
+  },
+  "source_preflight": "validation/weather-hourly-v5-reconstruction-preflight.json",
+  "source_preflight_sha256": "e4269130e3550f57129dcfe9a96cec2e6b8149fe3fc9cb3a460e5cbfd98e7bb3",
+  "data_kind": "Deterministic synthetic weather fixture; all first/last-hour meteorological fields verified against native visible UI.",
+  "variant_business_equivalence": "Same weather values and fields; actual retrieval timestamp differs normally between installations."
+}

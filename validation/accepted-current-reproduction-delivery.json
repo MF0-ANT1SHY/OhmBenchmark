@@ -1,11 +1,11 @@
 {
   "status": "ALL_ACCEPTED_REPRODUCTION_DELIVERIES_VERIFIED",
-  "scope": "Current delivery for 20 accepted cases. Revised contracts are explicit. Goal of at least 21 accepted cases remains incomplete.",
+  "scope": "Current delivery for 21 accepted cases. Revised contracts are explicit; all failed diagnostics and nine skipped cases are retained. Final full-suite audit and case commit still required.",
   "goal_complete": false,
-  "checked_at": 1792591890.8792477,
-  "cases": 20,
-  "variants": 40,
-  "binary_only_agent_exports": 20,
+  "checked_at": 1792600021.1917043,
+  "cases": 21,
+  "variants": 42,
+  "binary_only_agent_exports": 21,
   "historical_measured_artifacts_retained": true,
   "rows": [
     {
@@ -818,6 +818,49 @@
         "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
         "profile.json": "4e80c23409e31678be557e5ac8016b8617fc246a1717d7c34dfa089159bccc58",
         "symptom.txt": "0dba1abbcfffb2fadc883567682e88899e6f678d41b47bd7c77899830e7efe32"
+      }
+    },
+    {
+      "case": "weatherassistant_http_session_leak",
+      "case_proof": "validation/weather-hourly-native-pss-acceptance.json",
+      "case_proof_sha256": "4d9b6a34b45b1046cfc86f24a57e9e50002bf21bc8ed17b787cd9e2488caaba1",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "015ccf5f7da6f3256a3979fe8f1b6102037cbc234370f8e468802a7a82a10bf2",
+          "measured_signed_sha256": "015ccf5f7da6f3256a3979fe8f1b6102037cbc234370f8e468802a7a82a10bf2",
+          "current_validity": {
+            "bundle": "com.alatus.futureweather",
+            "not_before": 1792595232,
+            "not_after": 1795187532,
+            "checked_at": 1792600016.0982094
+          },
+          "fresh_launch_receipt_sha256": "3df7a58bae9b501699b1b94624c3cc4a847f73f1940e4a2c945f8807063bdf29",
+          "fresh_launch_evidence": "artifacts/clean/weatherassistant_http_session_leak/unfixed/pss-captures/gc-growth-v7/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete formal native trial: successful signed install, fresh process, ten warmup and forty ordinary forecast refreshes. No extra launch rerun.",
+          "renewal_not_required": true
+        },
+        "fixed": {
+          "signed_sha256": "e23d51ec96244b3a71cf210f203235d93e2a09152792df6d0cb84fcce38a5e72",
+          "measured_signed_sha256": "e23d51ec96244b3a71cf210f203235d93e2a09152792df6d0cb84fcce38a5e72",
+          "current_validity": {
+            "bundle": "com.alatus.futureweather",
+            "not_before": 1792595235,
+            "not_after": 1795187535,
+            "checked_at": 1792600016.938071
+          },
+          "fresh_launch_receipt_sha256": "f20e0d5ceec6211830f23b6c77c03020f9b1f2436a958564c3ab1863c21a6f90",
+          "fresh_launch_evidence": "artifacts/clean/weatherassistant_http_session_leak/fixed/pss-captures/gc-growth-v7/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete formal native trial: successful signed install, fresh process, ten warmup and forty ordinary forecast refreshes. No extra launch rerun.",
+          "renewal_not_required": true
+        }
+      },
+      "agent_export": "artifacts/agent-exports/weather-hourly-31d27d7f614b4e898a0d38ebe256e915",
+      "agent_files_sha256": {
+        "app.hap": "015ccf5f7da6f3256a3979fe8f1b6102037cbc234370f8e468802a7a82a10bf2",
+        "workload.json": "710d6a5784dbb4c414d6542d8f6dbb0290e179a92217dbc8da3289274541758c",
+        "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
+        "profile.json": "5cebfa748415e869ad0536c68cf2f76c7cf872dd9e749def513431d11411a882",
+        "symptom.txt": "512697127a191bdf9e5eb2041517be219995cca837b5fcad74a4736c0b8efaa8"
       }
     }
   ]

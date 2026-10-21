@@ -1,0 +1,54 @@
+{
+  "case": "weatherassistant_http_session_leak",
+  "status": "COMPLETE_FIRST_PAIR_FAILED_FROZEN_GROWTH_GATE",
+  "performance_accepted": false,
+  "paired_rounds": 1,
+  "gate": {
+    "round": 1,
+    "bounds": {
+      "unfixed": {
+        "lower_bytes": 20098048,
+        "upper_bytes": 20098048,
+        "median_bytes": 20098048
+      },
+      "fixed": {
+        "lower_bytes": 13805568,
+        "upper_bytes": 13805568,
+        "median_bytes": 13805568
+      }
+    },
+    "passed": false,
+    "noise_bounded_ratio": 1.455792909063937,
+    "excess_growth_bytes": 6292480,
+    "fixed_denominator_bytes": 13805568
+  },
+  "variants": {
+    "unfixed": {
+      "capture": "artifacts/candidate-builds/weather-sessions-v3/growth-v5/unfixed/round-1/capture.json",
+      "sha256": "91d4df8f8f1f28160726bddb467f0fd79c29d9b07114a3d08293535025aae221",
+      "signed_sha256": "456aca2848bc9c244ee52a58a402d77215e2b4ebd238d653925d0cce350dbac6",
+      "requests": 600,
+      "growth_bounds": {
+        "lower_bytes": 20098048,
+        "upper_bytes": 20098048,
+        "median_bytes": 20098048
+      },
+      "final_pss_bytes": 78076928
+    },
+    "fixed": {
+      "capture": "artifacts/candidate-builds/weather-sessions-v3/growth-v5/fixed/round-1/capture.json",
+      "sha256": "19707c70802d0995dff0a54d122e5cc62bd677098f844d14b6f1bdc8df661162",
+      "signed_sha256": "73d16cdbc05e0d42fc0c3301bddba0f5a015ab29b47022ef7d7761459aaf348c",
+      "requests": 600,
+      "growth_bounds": {
+        "lower_bytes": 13805568,
+        "upper_bytes": 13805568,
+        "median_bytes": 13805568
+      },
+      "final_pss_bytes": 73311232
+    }
+  },
+  "contract": "validation/weather-sessions-growth-v5-contract.json",
+  "contract_sha256": "2059a6db57c82bd316a65dc4805bd7d6ae927ad47bde7635a9852f253c2ac38a",
+  "decision": "Preserve the complete original pair. Do not collect further pairs under this failed all-pairs contract, lower its 3x threshold, or substitute later GC-conditioned samples."
+}

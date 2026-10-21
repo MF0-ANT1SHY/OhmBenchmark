@@ -1,0 +1,250 @@
+{
+  "case": "weatherassistant_http_session_leak",
+  "status": "NATIVE_GC_REQUEST_CONDITIONED_PSS_GROWTH_ACCEPTED",
+  "measurement_revision": "gc-growth-v7",
+  "metric": "app_gc_requested_pss_growth_bytes",
+  "app_injection": false,
+  "business_source_changed": true,
+  "required_ratio": 3.0,
+  "minimum_excess_growth_bytes": 5242880,
+  "paired_ratios": [
+    39.904296875,
+    40.29296875,
+    9.418901098901099
+  ],
+  "paired_gates": [
+    {
+      "passed": true,
+      "noise_bounded_ratio": 39.904296875,
+      "excess_growth_bytes": 42246144,
+      "fixed_denominator_bytes": 1048576
+    },
+    {
+      "passed": true,
+      "noise_bounded_ratio": 40.29296875,
+      "excess_growth_bytes": 41875456,
+      "fixed_denominator_bytes": 1048576
+    },
+    {
+      "passed": true,
+      "noise_bounded_ratio": 9.418901098901099,
+      "excess_growth_bytes": 39225344,
+      "fixed_denominator_bytes": 4659200
+    }
+  ],
+  "median_ratio": 40.29296875,
+  "median_gate": {
+    "passed": true,
+    "noise_bounded_ratio": 40.29296875,
+    "excess_growth_bytes": 41875456,
+    "fixed_denominator_bytes": 1048576
+  },
+  "samples": {
+    "unfixed": [
+      41846784,
+      42250240,
+      43941888
+    ],
+    "fixed": [
+      -404480,
+      374784,
+      4646912
+    ]
+  },
+  "captures": {
+    "unfixed": [
+      {
+        "round": 1,
+        "path": "artifacts/clean/weatherassistant_http_session_leak/unfixed/pss-captures/gc-growth-v7/round-1/capture.json",
+        "sha256": "2068874c80c447399e7d9aa5918df7711b0aafc4f57172b3b95f2b1d0a232826",
+        "growth_bounds": {
+          "lower_bytes": 41842688,
+          "upper_bytes": 41846784,
+          "median_bytes": 41846784
+        },
+        "successful_forecasts": 400
+      },
+      {
+        "round": 2,
+        "path": "artifacts/clean/weatherassistant_http_session_leak/unfixed/pss-captures/gc-growth-v7/round-2/capture.json",
+        "sha256": "2e8d1075509eb270e5ad692dc163d055e52770e0a4215764d0692d298a832a7b",
+        "growth_bounds": {
+          "lower_bytes": 42250240,
+          "upper_bytes": 42250240,
+          "median_bytes": 42250240
+        },
+        "successful_forecasts": 400
+      },
+      {
+        "round": 3,
+        "path": "artifacts/clean/weatherassistant_http_session_leak/unfixed/pss-captures/gc-growth-v7/round-3/capture.json",
+        "sha256": "3df7a58bae9b501699b1b94624c3cc4a847f73f1940e4a2c945f8807063bdf29",
+        "growth_bounds": {
+          "lower_bytes": 43884544,
+          "upper_bytes": 43974656,
+          "median_bytes": 43941888
+        },
+        "successful_forecasts": 400
+      }
+    ],
+    "fixed": [
+      {
+        "round": 1,
+        "path": "artifacts/clean/weatherassistant_http_session_leak/fixed/pss-captures/gc-growth-v7/round-1/capture.json",
+        "sha256": "fd2f78bb61b6bc2affef1a5e5c55cab444fc8b8cb805e91c17899e28a6f3ba38",
+        "growth_bounds": {
+          "lower_bytes": -407552,
+          "upper_bytes": -403456,
+          "median_bytes": -404480
+        },
+        "successful_forecasts": 400
+      },
+      {
+        "round": 2,
+        "path": "artifacts/clean/weatherassistant_http_session_leak/fixed/pss-captures/gc-growth-v7/round-2/capture.json",
+        "sha256": "75798243e16d311412d686e3adda562db7ce2f6bde8031f2947dca4fb02aaa45",
+        "growth_bounds": {
+          "lower_bytes": 370688,
+          "upper_bytes": 374784,
+          "median_bytes": 374784
+        },
+        "successful_forecasts": 400
+      },
+      {
+        "round": 3,
+        "path": "artifacts/clean/weatherassistant_http_session_leak/fixed/pss-captures/gc-growth-v7/round-3/capture.json",
+        "sha256": "f20e0d5ceec6211830f23b6c77c03020f9b1f2436a958564c3ab1863c21a6f90",
+        "growth_bounds": {
+          "lower_bytes": 4646912,
+          "upper_bytes": 4659200,
+          "median_bytes": 4646912
+        },
+        "successful_forecasts": 400
+      }
+    ]
+  },
+  "variants": {
+    "unfixed": {
+      "signed_sha256": "015ccf5f7da6f3256a3979fe8f1b6102037cbc234370f8e468802a7a82a10bf2",
+      "measured_signed_sha256": "015ccf5f7da6f3256a3979fe8f1b6102037cbc234370f8e468802a7a82a10bf2",
+      "current_validity": {
+        "bundle": "com.alatus.futureweather",
+        "not_before": 1792595232,
+        "not_after": 1795187532,
+        "checked_at": 1792600016.0982094
+      },
+      "fresh_launch_receipt_sha256": "3df7a58bae9b501699b1b94624c3cc4a847f73f1940e4a2c945f8807063bdf29",
+      "fresh_launch_evidence": "artifacts/clean/weatherassistant_http_session_leak/unfixed/pss-captures/gc-growth-v7/round-3/capture.json",
+      "fresh_launch_basis": "Latest complete formal native trial: successful signed install, fresh process, ten warmup and forty ordinary forecast refreshes. No extra launch rerun.",
+      "renewal_not_required": true
+    },
+    "fixed": {
+      "signed_sha256": "e23d51ec96244b3a71cf210f203235d93e2a09152792df6d0cb84fcce38a5e72",
+      "measured_signed_sha256": "e23d51ec96244b3a71cf210f203235d93e2a09152792df6d0cb84fcce38a5e72",
+      "current_validity": {
+        "bundle": "com.alatus.futureweather",
+        "not_before": 1792595235,
+        "not_after": 1795187535,
+        "checked_at": 1792600016.938071
+      },
+      "fresh_launch_receipt_sha256": "f20e0d5ceec6211830f23b6c77c03020f9b1f2436a958564c3ab1863c21a6f90",
+      "fresh_launch_evidence": "artifacts/clean/weatherassistant_http_session_leak/fixed/pss-captures/gc-growth-v7/round-3/capture.json",
+      "fresh_launch_basis": "Latest complete formal native trial: successful signed install, fresh process, ten warmup and forty ordinary forecast refreshes. No extra launch rerun.",
+      "renewal_not_required": true
+    }
+  },
+  "functional_preflight": {
+    "unfixed": {
+      "path": "artifacts/candidate-builds/weather-hourly-v5/functional-preflight/unfixed/capture.json",
+      "sha256": "da31f7f35bc5aeee96ce0102e641354af832334fe0179ffe65b9ea2ada6f18ff",
+      "hourly_rows": [
+        {
+          "hour": "2026-10-21T00:00",
+          "displayed_fields": [
+            "2026-10-21T00:00 晴",
+            "气温 17.7° 体感 17.2° 露点 12.7°",
+            "湿度 55% 降水 0 mm 概率 10%",
+            "气压 1008 hPa 云量 10% 能见度 20 km",
+            "东南风 6 km/h 阵风 15 km/h 紫外线 0"
+          ],
+          "retrieved_at": "2026-10-21T15:12:22+00:00"
+        },
+        {
+          "hour": "2026-10-27T23:00",
+          "displayed_fields": [
+            "2026-10-27T23:00 阴",
+            "气温 17° 体感 18.5° 露点 12°",
+            "湿度 78% 降水 0 mm 概率 10%",
+            "气压 1017 hPa 云量 85% 能见度 20 km",
+            "南风 17 km/h 阵风 22 km/h 紫外线 0"
+          ],
+          "retrieved_at": "2026-10-21T15:12:22+00:00"
+        }
+      ]
+    },
+    "fixed": {
+      "path": "artifacts/candidate-builds/weather-hourly-v5/functional-preflight/fixed/capture.json",
+      "sha256": "f8e34340ef26ed03b1fe14b255480008f89007d50b3747993c222b53d9f79574",
+      "hourly_rows": [
+        {
+          "hour": "2026-10-21T00:00",
+          "displayed_fields": [
+            "2026-10-21T00:00 晴",
+            "气温 17.7° 体感 17.2° 露点 12.7°",
+            "湿度 55% 降水 0 mm 概率 10%",
+            "气压 1008 hPa 云量 10% 能见度 20 km",
+            "东南风 6 km/h 阵风 15 km/h 紫外线 0"
+          ],
+          "retrieved_at": "2026-10-21T15:15:49+00:00"
+        },
+        {
+          "hour": "2026-10-27T23:00",
+          "displayed_fields": [
+            "2026-10-27T23:00 阴",
+            "气温 17° 体感 18.5° 露点 12°",
+            "湿度 78% 降水 0 mm 概率 10%",
+            "气压 1017 hPa 云量 85% 能见度 20 km",
+            "南风 17 km/h 阵风 22 km/h 紫外线 0"
+          ],
+          "retrieved_at": "2026-10-21T15:15:49+00:00"
+        }
+      ]
+    }
+  },
+  "agent_export": "artifacts/agent-exports/weather-hourly-31d27d7f614b4e898a0d38ebe256e915",
+  "agent_files_sha256": {
+    "app.hap": "015ccf5f7da6f3256a3979fe8f1b6102037cbc234370f8e468802a7a82a10bf2",
+    "workload.json": "710d6a5784dbb4c414d6542d8f6dbb0290e179a92217dbc8da3289274541758c",
+    "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
+    "profile.json": "5cebfa748415e869ad0536c68cf2f76c7cf872dd9e749def513431d11411a882",
+    "symptom.txt": "512697127a191bdf9e5eb2041517be219995cca837b5fcad74a4736c0b8efaa8"
+  },
+  "complete_gate": {
+    "stage": "complete",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "historical_contract": "validation/weather-hourly-original-contract-before-gc-growth-v7.json",
+  "formal_contract": "validation/weather-hourly-gc-growth-v7-contract.json",
+  "gc_completion_claimed": false,
+  "absolute_pss_ratio_claimed": false,
+  "exact_live_malloc_claimed": false,
+  "retained_fd_count_claimed": false,
+  "cpu_improvement_claimed": false,
+  "data_kind": "Deterministic synthetic seven-day hourly weather fixture with displayed retrieval time; no padding fields or app instrumentation.",
+  "formal_contract_sha256": "443a50d2fd0d18252a2d9f81646815caa96416fbeb25e74565cc66f807e63d0b",
+  "source_sha256": {
+    "tools/capture_weather_hourly_memory.py": "19b840ae261aa3e2d91427336caa273966540c10666c35430e0020cdd785920d",
+    "tools/accept_weather_hourly_memory.py": "2f007771601b7b0c45e6d49f5dab6fb61179ec58a57bcd0afd211632ae9ad5f6",
+    "tools/weather_hourly_memory.py": "540b289a8a9448812ca80090388f1817f87e2e6f84638d1edde9735c78224732",
+    "tools/weather_session_gc_memory.py": "5455a0bce1f180ce8c86408a0a8a5a7c42c194b899ba02f2d6435d1830bb7abd",
+    "tools/weather_hourly_ui.py": "deda3269212f093e71797f3de80da3a595a0785a583dba4c7c0dc4df8b3190d5",
+    "tools/weather_hourly_data_service.py": "adf60f969b57d9394abe871dece95b54ecc6e7de5b288723b699355d400596db",
+    "tools/weather_hourly_workstation_lease.py": "5440e9538b5389860c1d389123a1c6d4c06dbe41d1d4489c4efa19c87b638b0a",
+    "tools/weather_hourly_service_fixture.py": "f747028aeec1f779944576db6b266cf995a8808f6e2258e6816e9b8ebbed32f6",
+    "hosts_patches/weatherassistant/sessions-hourly-forecast-unfixed-v5.patch": "136673a97a0aab2fb348367bfcf4ef45e6d2670cf7b0432835a38ac73ff91605",
+    "hosts_patches/weatherassistant/sessions-hourly-forecast-fixed-v5.patch": "9baa8a920582494b91f05c789f3ea36cf0637897fbe0ba35e6bad8c93e3a9d99"
+  }
+}

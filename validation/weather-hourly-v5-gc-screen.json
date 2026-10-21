@@ -1,0 +1,33 @@
+{
+  "status": "DIAGNOSTIC_ONLY_NOT_PERFORMANCE_ACCEPTANCE",
+  "variants": {
+    "unfixed": {
+      "capture": "artifacts/candidate-builds/weather-hourly-v5/hourly-gc-screen-v1/unfixed/round-1/capture.json",
+      "capture_sha256": "b008b39e1629a2c9a5ce55ddc6838289a8eb213bb0faaf56420435cba98093b1",
+      "bounds": {
+        "lower_bytes": 22604800,
+        "upper_bytes": 22621184,
+        "median_bytes": 22621184
+      },
+      "signed_hap_sha256": "015ccf5f7da6f3256a3979fe8f1b6102037cbc234370f8e468802a7a82a10bf2"
+    },
+    "fixed": {
+      "capture": "artifacts/candidate-builds/weather-hourly-v5/hourly-gc-screen-v1/fixed/round-1/capture.json",
+      "capture_sha256": "19529dc5cfa9c0b65ed1ef918e29088754e5279704c441e543f5c474e5d33632",
+      "bounds": {
+        "lower_bytes": 3038208,
+        "upper_bytes": 3038208,
+        "median_bytes": 3038208
+      },
+      "signed_hap_sha256": "e23d51ec96244b3a71cf210f203235d93e2a09152792df6d0cb84fcce38a5e72"
+    }
+  },
+  "screen_gate": {
+    "passed": true,
+    "noise_bounded_ratio": 7.440175261206606,
+    "excess_growth_bytes": 19566592,
+    "fixed_denominator_bytes": 3038208
+  },
+  "gc_completion_proven": false,
+  "formal_contract_sha256": "443a50d2fd0d18252a2d9f81646815caa96416fbeb25e74565cc66f807e63d0b"
+}

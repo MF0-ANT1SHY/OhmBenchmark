@@ -1,0 +1,60 @@
+{
+  "case": "weatherassistant_http_session_leak",
+  "status": "EXPLORATORY_TEN_CITY_PSS_NOT_ACCEPTED",
+  "performance_accepted": false,
+  "variants": {
+    "unfixed": {
+      "capture": "artifacts/candidate-builds/weather-sessions-v3/pss-screen-v1/unfixed/capture.json",
+      "sha256": "44233dd94ac7cf87fb57622d28a78d6979708a467341782720199bc608b457df",
+      "pss_bytes": [
+        57939968,
+        59101184,
+        60203008,
+        61382656,
+        62730240,
+        64573440,
+        67809280,
+        68575232,
+        68718592,
+        68512768,
+        68552704,
+        68319232,
+        68372480,
+        68749312,
+        68697088,
+        68590592,
+        68250624
+      ],
+      "growth_bytes": 10310656,
+      "forecast_requests": 150
+    },
+    "fixed": {
+      "capture": "artifacts/candidate-builds/weather-sessions-v3/pss-screen-v1/fixed/capture.json",
+      "sha256": "b256ba8cc1ccb061a2aabce34e43031f2ed95285c5d3aa5157e2683d4d250f53",
+      "pss_bytes": [
+        58067968,
+        59771904,
+        61068288,
+        61862912,
+        63046656,
+        64652288,
+        61961216,
+        61473792,
+        61740032,
+        61886464,
+        61871104,
+        61617152,
+        61879296,
+        61940736,
+        61836288,
+        62106624,
+        62020608
+      ],
+      "growth_bytes": 3952640,
+      "forecast_requests": 150
+    }
+  },
+  "growth_ratio": 2.6085492227979277,
+  "excess_growth_bytes": 6358016,
+  "note": "Observed growth ratio is below the declared three-fold growth gate; no formal acceptance. The first two-city screen and nativehook rejection remain preserved."
+}

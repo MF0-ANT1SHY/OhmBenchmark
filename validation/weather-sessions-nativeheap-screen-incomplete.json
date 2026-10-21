@@ -1,0 +1,25 @@
+{
+  "case": "weatherassistant_http_session_leak",
+  "status": "REJECTED_INCOMPLETE_ALLOCATION_HISTORY",
+  "performance_accepted": false,
+  "original_measurement_repeated": false,
+  "raw_artifacts": "artifacts/candidate-builds/weather-sessions-v2/heap-screen/unfixed/c3660cde87b049088fb663af028a47ac",
+  "capture_sha256": "97cc232b55d0386b96279a95221a3832662737fe130380ade5aab7b6459167bd",
+  "trace_sha256": "a0d5860cb7a714a822c57d3e010b0f9929d387eca26424a06287db73f51f7d0e",
+  "trace_bytes": 564879577,
+  "native_profiler_cleanup_verified": true,
+  "ordinary_returns": 5,
+  "ordinary_forecast_requests": 10,
+  "event_counts": {
+    "(10,)": 51,
+    "(3,)": 393469,
+    "(4,)": 405038,
+    "(5,)": 46
+  },
+  "initial_parser_issue": "Official FilePage snapshots use MmapEvent payloads; they are now explicitly excluded from malloc totals, without allowing true mmap or aggregate substitution.",
+  "remaining_rejection": "Repeated unmatched free suggests incomplete native allocation history. The strict accounting gate remains in place; no retained-byte result is accepted.",
+  "reference_source": "artifacts/reference/nativehook/source-5.1/device/plugins/native_daemon/src/stack_preprocess.cpp",
+  "reference_source_sha256": "ccb7995aead0dfaaa80d46298481c6092da18cc0dad4107ae8834559041a3061",
+  "reference_url": "https://github.com/openharmony/developtools_profiler/blob/OpenHarmony-5.1.0-Release/device/plugins/native_daemon/src/stack_preprocess.cpp",
+  "next_action": "Independent kernel PSS screening after normal refreshes, without nativehook instrumentation. Not a performance-negative verdict."
+}

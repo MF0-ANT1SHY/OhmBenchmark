@@ -1,0 +1,19 @@
+{
+  "status": "EXACT_CANDIDATE_TREES_RECONSTRUCTED_NOT_PERFORMANCE_ACCEPTANCE",
+  "variants": {
+    "unfixed": {
+      "base_ref": "clean-app/weatherassistant_http_session_leak/unfixed",
+      "base_tree": "53a80521604b9d78ecce523623c36ca8dd3d9458",
+      "candidate_ref": "candidate/weather-sessions-v3/unfixed",
+      "reconstructed_tree": "0fc74b4a1cc9f68284feca03ae0b756a360b8bd5",
+      "patch_sha256": "824f9d3e1e9825fe50ed66b310566ef98bc8a2652ac729773e779ce5d4ce1551"
+    },
+    "fixed": {
+      "base_ref": "clean-app/weatherassistant_http_session_leak/fixed",
+      "base_tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+      "candidate_ref": "candidate/weather-sessions-v3/fixed",
+      "reconstructed_tree": "5275be3421c7279dc113f772ca1e422a509cbd62",
+      "patch_sha256": "f9b593c58ac254ea703947359712fe2f0de4d7d6b96e8269a6f15f97863a665c"
+    }
+  }
+}

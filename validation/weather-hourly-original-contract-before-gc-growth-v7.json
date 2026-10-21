@@ -1,0 +1,205 @@
+{
+  "id": "weatherassistant_http_session_leak",
+  "host_app": {
+    "name": "HarmonyOS-Next-Weather-Assistant",
+    "repository": "https://github.com/AlatusLee/HarmonyOS-Next-Weather-Assistant",
+    "bundle_name": "com.alatus.futureweather",
+    "local_path": "hosts/weatherassistant",
+    "base_branch": "ohmbase",
+    "base_commit": "167ca48"
+  },
+  "android_source_case": "portauthority_b311d3140b48",
+  "android_mechanism": "Network resource (socket/stream) not released after use; fix closes/releases it",
+  "category": "resource_retention",
+  "bug_description": "getWeatherUtil.getWeather creates a new http.createHttp() session for every weather request, retains the session and the full response body in the viewmodel, and never calls request.destroy(). Each city refresh leaks an HTTP session plus its complete response for the lifetime of the app, so repeated refreshes and multi-city loads accumulate retained memory.",
+  "perf_scenarios": [
+    "网络结果渲染",
+    "页面切换"
+  ],
+  "unfixed_commit": "1f787390a703886e69d30ba8968765d363d55a19",
+  "fixed_commit": "20e8e16b0c81fd5dee14b636433089cc2796f707",
+  "fix_summary": "Sessions are no longer retained after creation, and each request session is destroyed in a finally handler after the response/error callback completes.",
+  "build": {
+    "mode": "release",
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "testcase": {
+    "name": "MemLoad_weatherassistant_0010",
+    "py_file": "testcase/MemLoad_weatherassistant_0010.py",
+    "descriptor": "testcase/MemLoad_weatherassistant_0010.json",
+    "install_dir": "perf_testing/hapray/testcases/com.alatus.futureweather",
+    "driver": "DeviceTest",
+    "module": "alatus",
+    "ability": "AlatusAbility",
+    "trigger": "external_ui",
+    "workload": "testcase/MemLoad_weatherassistant_0010.workload.json"
+  },
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf",
+      "memory"
+    ],
+    "step_duration_s": 60,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "nativehook_retained_bytes",
+    "definition": "bytes still allocated at step end (malloc/free matching) from the nativehook plugin stream in trace.htrace.",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "retained_fds_and_connections",
+      "definition": "Growth of the app process fd count and ESTABLISHED/TIME_WAIT socket count attributable to weather requests after N refreshes.",
+      "comparison": "unfixed retains roughly one session (fd) per request after requests complete; fixed returns to baseline. unfixed_fd_growth > fixed_fd_growth by >= 5x over 30 requests."
+    },
+    "legacy_instrumented_evidence": {
+      "status": "measured",
+      "measured_as": "VmRSS delta over 120 weather requests (Pura 70 Ultra)",
+      "unfixed": [
+        56884,
+        56972,
+        57440
+      ],
+      "fixed": [
+        38644,
+        37880,
+        38512
+      ],
+      "note": "+57.0MB vs +38.5MB VmRSS growth over the same 120-request workload (~18MB = 120 retained response bodies; disjoint ranges, 1.48x). fd counts are flat in both variants because sessions pool sockets, so the oracle is retained bytes (measurements-staging-v2)."
+    }
+  },
+  "reproduction": [
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py weatherassistant_http_session_leak",
+    "python3 tools/sign_clean_cases.py weatherassistant_http_session_leak",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/weatherassistant_http_session_leak/testcase/ into perf_testing/hapray/testcases/com.alatus.futureweather/.",
+    "Install each clean signed variant and run the MemLoad_weatherassistant_0010 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "0de1081",
+    "fixed_commit": "20e8e16",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/weatherassistant_http_session_leak/unfixed",
+        "commit": "1f787390a703886e69d30ba8968765d363d55a19",
+        "tree": "53a80521604b9d78ecce523623c36ca8dd3d9458",
+        "business_base_tree": "53a80521604b9d78ecce523623c36ca8dd3d9458",
+        "production_patches": [],
+        "unsigned_sha256": "4cacc61b8ca69b12fd44ab88cbc19bb4ee666d64f059f7427d63fa19e409e0b6",
+        "bytecode_audit": {
+          "sha256": "4cacc61b8ca69b12fd44ab88cbc19bb4ee666d64f059f7427d63fa19e409e0b6",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "weatherassistant_http_session_leak",
+          "variant": "unfixed",
+          "unsigned_sha256": "4cacc61b8ca69b12fd44ab88cbc19bb4ee666d64f059f7427d63fa19e409e0b6",
+          "signed_hap": "/home/research/ohm-clean/weatherassistant_http_session_leak/unfixed/app.hap",
+          "audit": {
+            "sha256": "dd4a89db292ae4a9c48024fb14e5d1e66dc76315aed214301a9a600924aa7b72",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "weatherassistant_http_session_leak",
+          "variant": "unfixed",
+          "signed_sha256": "dd4a89db292ae4a9c48024fb14e5d1e66dc76315aed214301a9a600924aa7b72",
+          "install": "[Info]App install path:/home/research/ohm-clean/weatherassistant_http_session_leak/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            61943
+          ],
+          "foreground_bundle": "com.alatus.futureweather",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/weatherassistant_http_session_leak/fixed",
+        "commit": "20e8e16b0c81fd5dee14b636433089cc2796f707",
+        "tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+        "business_base_tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+        "production_patches": [],
+        "unsigned_sha256": "404f2887764ec596574bc5fe8ede81401d25ad78b13f6aeab446e250dffd36fc",
+        "bytecode_audit": {
+          "sha256": "404f2887764ec596574bc5fe8ede81401d25ad78b13f6aeab446e250dffd36fc",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "weatherassistant_http_session_leak",
+          "variant": "fixed",
+          "unsigned_sha256": "404f2887764ec596574bc5fe8ede81401d25ad78b13f6aeab446e250dffd36fc",
+          "signed_hap": "/home/research/ohm-clean/weatherassistant_http_session_leak/fixed/app.hap",
+          "audit": {
+            "sha256": "9711924f552264e21e5155358fdb672939b452a83279a4e518f134201aa5a73e",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "weatherassistant_http_session_leak",
+          "variant": "fixed",
+          "signed_sha256": "9711924f552264e21e5155358fdb672939b452a83279a4e518f134201aa5a73e",
+          "install": "[Info]App install path:/home/research/ohm-clean/weatherassistant_http_session_leak/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            62335
+          ],
+          "foreground_bundle": "com.alatus.futureweather",
+          "status": "PASS",
+          "performance_verified": false
+        }
+      }
+    },
+    "business_reproduction_blocker": {
+      "status": "invalid_builtin_weather_key",
+      "proof": "../../validation/weather-public-endpoint-schema.json",
+      "forecast_render_verified": false,
+      "performance_accepted": false
+    }
+  }
+}

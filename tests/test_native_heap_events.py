@@ -79,3 +79,18 @@ class NativeHeapEventTest(unittest.TestCase):
             changed={**self.config_fields,number:value}
             self.write([event(3,1,128)],b''.join(field(k,v) for k,v in changed.items()))
             with self.subTest(number=number),self.assertRaises(ValueError):compute(self.path,100)
+
+    def test_file_page_snapshot_is_not_a_malloc_or_free(self):
+        payload=field(1,100)+field(2,101)+field(3,1)+field(4,b'FilePage:ashmem')+field(5,999999)
+        snapshot=field(1,11)+field(5,payload)
+        self.write([event(3,1,128),snapshot,event(4,1,second=12)])
+        result=compute(self.path,100)
+        self.assertEqual(result['retained_bytes'],0)
+        self.assertEqual(result['matched_frees'],1)
+        self.assertEqual(result['excluded_file_page_snapshots'],1)
+
+    def test_true_mmap_and_foreign_file_pages_are_rejected(self):
+        for tag,pid in ((b'Anonymous',100),(b'FilePage:',100),(b'FilePage:ashmem',200)):
+            payload=field(1,pid)+field(2,101)+field(3,123)+field(4,tag)+field(5,4096)
+            self.write([event(3,1,128),field(1,11)+field(5,payload)])
+            with self.subTest(tag=tag,pid=pid),self.assertRaises(ValueError):compute(self.path,100)

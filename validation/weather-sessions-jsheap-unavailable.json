@@ -1,0 +1,15 @@
+{
+  "case": "weatherassistant_http_session_leak",
+  "status": "NO_VERIFIABLE_SNAPSHOT_NOT_ACCEPTED",
+  "app_injection": false,
+  "probe_directory": "artifacts/candidate-builds/weather-sessions-v3/jsheap-probe",
+  "native_pid": 32877,
+  "observations": [
+    "Native hidumper --mem-jsheap returned status 0 with no output, with and without --gc.",
+    "App hilog recorded DumpHeapSnapshot and missing user.event_config.js_heap_logtype xattr. This is not proof of a complete heap dump.",
+    "Read-only searches found no heap file under /data/log/faultlog or the target app base directory; target app log directory contained watchdog only."
+  ],
+  "decision": "Do not infer live retained objects, a memory ratio, or successful snapshot capture from command exit status. Preserve PSS and native-hook failures separately.",
+  "gc_only_clarification": "Reference OpenHarmony 5.1 source intentionally disables snapshot creation for --gc. Missing files from GC-only mode do not establish GC unavailability; device GC behavior remains to be probed separately.",
+  "gc_reference": "artifacts/reference/jsheap-5.1/gc-reference-diagnosis.json"
+}

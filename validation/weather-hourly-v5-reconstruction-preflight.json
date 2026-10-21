@@ -1,0 +1,28 @@
+{
+  "status": "EXACT_CANDIDATE_TREES_RECONSTRUCTED_NOT_PERFORMANCE_ACCEPTANCE",
+  "variants": {
+    "unfixed": {
+      "base_ref": "clean-app/weatherassistant_http_session_leak/unfixed",
+      "base_tree": "53a80521604b9d78ecce523623c36ca8dd3d9458",
+      "candidate_ref": "candidate/weather-hourly-v5/unfixed",
+      "reconstructed_tree": "f391f3f176d03c8029b08b4169e33b351a4916b0",
+      "patch_sha256": "136673a97a0aab2fb348367bfcf4ef45e6d2670cf7b0432835a38ac73ff91605",
+      "build_receipt_sha256": "45223406a3769f308100e3cdc797f75e7d04639d5799dbec2105832a7f6fdb9a",
+      "sign_receipt_sha256": "fcf73167b92546ac7f90bfa27ae39d964c55b83e506f770eee717a78e9b9db6d",
+      "signed_hap_sha256": "015ccf5f7da6f3256a3979fe8f1b6102037cbc234370f8e468802a7a82a10bf2"
+    },
+    "fixed": {
+      "base_ref": "clean-app/weatherassistant_http_session_leak/fixed",
+      "base_tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+      "candidate_ref": "candidate/weather-hourly-v5/fixed",
+      "reconstructed_tree": "c0a58c0017e87dfb1c4984e8dc76a4aa6d7ef419",
+      "patch_sha256": "9baa8a920582494b91f05c789f3ea36cf0637897fbe0ba35e6bad8c93e3a9d99",
+      "build_receipt_sha256": "5e21c8be907f2620b5ed314321b9d508afbca2e0c8d84cdbc0e9b65d2242bf53",
+      "sign_receipt_sha256": "6b87eefa86873a4af9ab1d4ac8e03db1955b189519a29df91f333856089d48d9",
+      "signed_hap_sha256": "e23d51ec96244b3a71cf210f203235d93e2a09152792df6d0cb84fcce38a5e72"
+    }
+  },
+  "variant_differences": [
+    "alatus/src/main/ets/viewmodel/getWeatherUtil.ets"
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "case": "weatherassistant_http_session_leak",
+  "status": "BOTH_ORDINARY_REFRESH_PATHS_VERIFIED_NOT_PERFORMANCE_ACCEPTANCE",
+  "variants": {
+    "unfixed": {
+      "observation": "artifacts/candidate-builds/weather-sessions-v2/native-preflight/unfixed/observation.json",
+      "sha256": "d17f0d29718f3108a080c6babae712222aeffe9de84db58e1ae74ef1c1ddc537",
+      "proof": {
+        "status": "FUNCTIONAL_PREFLIGHT_NOT_ACCEPTANCE",
+        "signed_sha256": "08fca263b357d2ba0ebeb1366dbf1219384db27094f109deac4e325ef6609874",
+        "before": {
+          "source_sha256": "a17835b73dfe5994d18e1943302c273c353192b054affe7b4df0a7dd4ad54eaf",
+          "launcher_sha256": "bbf6860443e4c9dcefc15f9ab126fb24e217c2d2ea41038aacc9b9039cfdae72",
+          "icons_sha256": {
+            "sunny.img": "8c4567401a3c8f8585078b67526a8afe1fe1a2a959c3f5fa961166fb179ef781",
+            "overcast.img": "40446411ae12cfda4cb25914bf788504c2a1b50f8a142f09a078a724cec0d049",
+            "cloudy.img": "98dd4b314d8ac1fbfb400dc13987dd19f74db1df24abc05ede3b48fbcf3fe585",
+            "rain.img": "5d1205c6b1b9f2a83dfc9e678258f950e4f5794889e87335125e1f75e5ad5146"
+          },
+          "forecasts_sha256": "7d2644de80baaae918c7591a282ee975e80dc6e34930ad7f5b50b152564688d1",
+          "service_pid": 7584,
+          "service_identity": {
+            "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather\\weather_workstation_lease.py --duration 7200 --delay 4.0",
+            "start_ticks": 639281805442883130
+          },
+          "icon_delay_s": 4.0,
+          "base_url": "http://127.0.0.1:18492",
+          "method": "All ordinary forecast and image responses checked outside profiling; exact image identity with fixed signed HAP."
+        },
+        "after": {
+          "source_sha256": "a17835b73dfe5994d18e1943302c273c353192b054affe7b4df0a7dd4ad54eaf",
+          "launcher_sha256": "bbf6860443e4c9dcefc15f9ab126fb24e217c2d2ea41038aacc9b9039cfdae72",
+          "icons_sha256": {
+            "sunny.img": "8c4567401a3c8f8585078b67526a8afe1fe1a2a959c3f5fa961166fb179ef781",
+            "overcast.img": "40446411ae12cfda4cb25914bf788504c2a1b50f8a142f09a078a724cec0d049",
+            "cloudy.img": "98dd4b314d8ac1fbfb400dc13987dd19f74db1df24abc05ede3b48fbcf3fe585",
+            "rain.img": "5d1205c6b1b9f2a83dfc9e678258f950e4f5794889e87335125e1f75e5ad5146"
+          },
+          "forecasts_sha256": "7d2644de80baaae918c7591a282ee975e80dc6e34930ad7f5b50b152564688d1",
+          "service_pid": 7584,
+          "service_identity": {
+            "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather\\weather_workstation_lease.py --duration 7200 --delay 4.0",
+            "start_ticks": 639281805442883130
+          },
+          "icon_delay_s": 4.0,
+          "base_url": "http://127.0.0.1:18492",
+          "method": "All ordinary forecast and image responses checked outside profiling; exact image identity with fixed signed HAP."
+        },
+        "observation_sha256": "d17f0d29718f3108a080c6babae712222aeffe9de84db58e1ae74ef1c1ddc537"
+      }
+    },
+    "fixed": {
+      "observation": "artifacts/candidate-builds/weather-sessions-v2/native-preflight/fixed/observation.json",
+      "sha256": "b7530f0ea62eaf616625e69ef29c52e5568fe821fe7b09c98579c9bca5d7e606",
+      "proof": {
+        "status": "FUNCTIONAL_PREFLIGHT_NOT_ACCEPTANCE",
+        "signed_sha256": "e81daeb912604b75dff0ed5fd792a98942c7de04e5722efd3f88b4bfc8ae26eb",
+        "before": {
+          "source_sha256": "a17835b73dfe5994d18e1943302c273c353192b054affe7b4df0a7dd4ad54eaf",
+          "launcher_sha256": "bbf6860443e4c9dcefc15f9ab126fb24e217c2d2ea41038aacc9b9039cfdae72",
+          "icons_sha256": {
+            "sunny.img": "8c4567401a3c8f8585078b67526a8afe1fe1a2a959c3f5fa961166fb179ef781",
+            "overcast.img": "40446411ae12cfda4cb25914bf788504c2a1b50f8a142f09a078a724cec0d049",
+            "cloudy.img": "98dd4b314d8ac1fbfb400dc13987dd19f74db1df24abc05ede3b48fbcf3fe585",
+            "rain.img": "5d1205c6b1b9f2a83dfc9e678258f950e4f5794889e87335125e1f75e5ad5146"
+          },
+          "forecasts_sha256": "7d2644de80baaae918c7591a282ee975e80dc6e34930ad7f5b50b152564688d1",
+          "service_pid": 7584,
+          "service_identity": {
+            "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather\\weather_workstation_lease.py --duration 7200 --delay 4.0",
+            "start_ticks": 639281805442883130
+          },
+          "icon_delay_s": 4.0,
+          "base_url": "http://127.0.0.1:18492",
+          "method": "All ordinary forecast and image responses checked outside profiling; exact image identity with fixed signed HAP."
+        },
+        "after": {
+          "source_sha256": "a17835b73dfe5994d18e1943302c273c353192b054affe7b4df0a7dd4ad54eaf",
+          "launcher_sha256": "bbf6860443e4c9dcefc15f9ab126fb24e217c2d2ea41038aacc9b9039cfdae72",
+          "icons_sha256": {
+            "sunny.img": "8c4567401a3c8f8585078b67526a8afe1fe1a2a959c3f5fa961166fb179ef781",
+            "overcast.img": "40446411ae12cfda4cb25914bf788504c2a1b50f8a142f09a078a724cec0d049",
+            "cloudy.img": "98dd4b314d8ac1fbfb400dc13987dd19f74db1df24abc05ede3b48fbcf3fe585",
+            "rain.img": "5d1205c6b1b9f2a83dfc9e678258f950e4f5794889e87335125e1f75e5ad5146"
+          },
+          "forecasts_sha256": "7d2644de80baaae918c7591a282ee975e80dc6e34930ad7f5b50b152564688d1",
+          "service_pid": 7584,
+          "service_identity": {
+            "command": "C:\\Python314\\python.exe -X utf8 C:\\home\\research\\ohm-clean\\services\\weather\\weather_workstation_lease.py --duration 7200 --delay 4.0",
+            "start_ticks": 639281805442883130
+          },
+          "icon_delay_s": 4.0,
+          "base_url": "http://127.0.0.1:18492",
+          "method": "All ordinary forecast and image responses checked outside profiling; exact image identity with fixed signed HAP."
+        },
+        "observation_sha256": "b7530f0ea62eaf616625e69ef29c52e5568fe821fe7b09c98579c9bca5d7e606"
+      }
+    }
+  }
+}

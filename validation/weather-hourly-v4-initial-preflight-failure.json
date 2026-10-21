@@ -1,0 +1,8 @@
+{
+  "status": "FUNCTIONAL_PREFLIGHT_FAILED_NOT_PERFORMANCE_EVIDENCE",
+  "variant": "unfixed",
+  "symptom": "city forecast text not found after launch",
+  "native_observation": "NETSTACK epoll wait event 0 err: 111; external HDC forwarding list empty",
+  "correction": "Establish and check reverse forwarding after package installation and before each app launch. No business-source change.",
+  "original_log_sha256": "c7e255a50d2b743c8a29d54e9476f661d0b2f454f1f24f97fae6cc9f991dc942"
+}

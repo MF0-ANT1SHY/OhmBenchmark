@@ -1,0 +1,48 @@
+{
+  "case": "weatherassistant_http_session_leak",
+  "status": "EXPLORATORY_TWO_CITY_PSS_NOT_ACCEPTED",
+  "performance_accepted": false,
+  "variants": {
+    "unfixed": {
+      "path": "artifacts/candidate-builds/weather-sessions-v2/pss-screen-v1/unfixed/capture.json",
+      "sha256": "31932dd697c6785726da26b1f7c5747d166327b27e11f596968c4cd60be31f66",
+      "pss_bytes": [
+        48028672,
+        49442816,
+        50813952,
+        51952640,
+        52596736,
+        52516864,
+        53184512,
+        53564416,
+        55117824,
+        56059904,
+        57778176,
+        57199616
+      ],
+      "growth_bytes": 9170944,
+      "requests": 20
+    },
+    "fixed": {
+      "path": "artifacts/candidate-builds/weather-sessions-v2/pss-screen-v1/fixed/capture.json",
+      "sha256": "27ab01db351ed3acc518fe6a21d953309339c419594126af77649ed326c31337",
+      "pss_bytes": [
+        48858112,
+        49736704,
+        51148800,
+        52557824,
+        55069696,
+        55112704,
+        55145472,
+        55215104,
+        55541760,
+        56369152,
+        57653248,
+        56686592
+      ],
+      "growth_bytes": 7828480,
+      "requests": 20
+    }
+  },
+  "observation": "Both processes grow during repeated page returns; this two-city screen does not establish a large leak-specific gap. No acceptance threshold has been lowered."
+}

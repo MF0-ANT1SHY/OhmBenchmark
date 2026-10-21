@@ -1,0 +1,29 @@
+{
+  "status": "EXACT_CANDIDATE_TREES_RECONSTRUCTED_NOT_PERFORMANCE_ACCEPTANCE",
+  "variants": {
+    "unfixed": {
+      "base_ref": "clean-app/weatherassistant_http_session_leak/unfixed",
+      "base_tree": "53a80521604b9d78ecce523623c36ca8dd3d9458",
+      "candidate_ref": "candidate/weather-hourly-v4/unfixed",
+      "reconstructed_tree": "3b5f9e1676b2591f77829a6f5736156e359d0acd",
+      "patch_sha256": "b62929014099b2736f7e68f335d076ae348f3728ada926116074649228f3080f",
+      "build_receipt_sha256": "53970481bd30ea846c1ec366699f7a117529a9d7af2aa6574df2b4a0ee998694",
+      "sign_receipt_sha256": "5832cd42f0ccafddf5c4603ed02596bd2c03717ba5e4bfa004e67eda06596dde",
+      "signed_hap_sha256": "0f871a80f2c595faa5232b51cae4b5660b2cb0ee428c851e144405c56a0dcf9c"
+    },
+    "fixed": {
+      "base_ref": "clean-app/weatherassistant_http_session_leak/fixed",
+      "base_tree": "f0a6c3388039a37e99a1b922dfa889916440b8a0",
+      "candidate_ref": "candidate/weather-hourly-v4/fixed",
+      "reconstructed_tree": "00cafce4f5d7497c863b9cb0229ba66770077651",
+      "patch_sha256": "c4b26582249a318f40cb0758d170c282ba891407acd5cfba925311edf0ef6ec1",
+      "build_receipt_sha256": "7a1f0197e78435a75abb0cbe2ca351e46ec376df697ebd6627fa48add603fc4f",
+      "sign_receipt_sha256": "1db51f23c66de39f4bbed8b4ba68abff55f30c5bb8653b814137e2e8dffa9250",
+      "signed_hap_sha256": "eff5fd9ea43e9df3630b67655bcfa439034bfb6391ba6c2a816ca1bf2210da68"
+    }
+  },
+  "variant_differences": [
+    "alatus/src/main/ets/viewmodel/getWeatherUtil.ets"
+  ],
+  "shared_business_change": "Seven-day hourly forecast detail page; all hourly fields are displayed. Retrieval time is displayed separately. No app instrumentation."
+}

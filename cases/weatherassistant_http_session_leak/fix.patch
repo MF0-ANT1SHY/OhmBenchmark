@@ -1,5 +1,5 @@
 diff --git a/alatus/src/main/ets/viewmodel/getWeatherUtil.ets b/alatus/src/main/ets/viewmodel/getWeatherUtil.ets
-index c84ca96..7ab0698 100644
+index aec9dd7..441f639 100644
 --- a/alatus/src/main/ets/viewmodel/getWeatherUtil.ets
 +++ b/alatus/src/main/ets/viewmodel/getWeatherUtil.ets
 @@ -3,24 +3,21 @@ import http from '@ohos.net.http';
@@ -15,7 +15,7 @@ index c84ca96..7ab0698 100644
      return new Promise<weatherModel>((resolve,reject)=>{
        let request = http.createHttp();
 -      this.sessions.push(request);
-       let url = `https://restapi.amap.com/v3/weather/weatherInfo?city=${cityCode}&extensions=all&key=${key}`;
+       let url = `http://127.0.0.1:18496/v3/weather/weatherInfo?city=${cityCode}&extensions=all&key=${key}`;
        let result = request.request(url);
        result.then((res)=>{
          if(res.responseCode===200){

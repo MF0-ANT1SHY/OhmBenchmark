@@ -1,0 +1,22 @@
+{
+  "case": "weatherassistant_http_session_leak",
+  "status": "SYSTEM_GC_REQUEST_PSS_PROBE_NOT_ACCEPTANCE",
+  "capture": "artifacts/candidate-builds/weather-sessions-v3/gc-probe-after-growth-v5-fixed/capture.json",
+  "capture_sha256": "0d95d5e28508a9544b5eaa7d3eb331f4e962412108656add04300a8d33269991",
+  "pid": 29596,
+  "before_pss_bytes": [
+    71940096,
+    71940096,
+    71923712
+  ],
+  "after_pss_bytes": [
+    47223808,
+    46897152,
+    46895104
+  ],
+  "runtime_trigger_log_observed": false,
+  "gc_completion_proven": false,
+  "interpretation": "Successful system command and a large subsequent PSS drop in the same kernel-identified process. No TriggerGC log was observed. Do not infer an exact live-object census or replace the failed original trial with these later samples.",
+  "reference_source": "artifacts/reference/jsheap-5.1/gc-reference-diagnosis.json",
+  "performance_accepted": false
+}

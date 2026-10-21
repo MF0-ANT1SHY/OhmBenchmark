@@ -1,0 +1,157 @@
+{
+  "status": "PRE_FINAL_CASE_BASELINE",
+  "head": "3cece977bc64a84b769ad4c5e1f67c9e26bc7578",
+  "counts": {
+    "accepted": 20,
+    "skipped": 9,
+    "pending": 1
+  },
+  "case_to_complete": "weatherassistant_http_session_leak",
+  "other_case_files_must_remain_unchanged": {
+    "browser_eager_history_load": {
+      "path": "cases/browser_eager_history_load/case.json",
+      "sha256": "7a5fd810905211d8fde3a5e11570c1d3471d4d4dbecf709136884f12eb5bc77d",
+      "status": "accepted"
+    },
+    "browser_history_delete_no_transaction": {
+      "path": "cases/browser_history_delete_no_transaction/case.json",
+      "sha256": "398205fbe2a509db82b476ac8686546a55db6c18d3e4440061b0483163ec8790",
+      "status": "accepted"
+    },
+    "browser_history_list_foreach": {
+      "path": "cases/browser_history_list_foreach/case.json",
+      "sha256": "b378b21043cce806b598592a5bf272810290a0898f3f633bd3e391fea1cbd9c7",
+      "status": "accepted"
+    },
+    "browser_insert_date_lookup_cache": {
+      "path": "cases/browser_insert_date_lookup_cache/case.json",
+      "sha256": "11d3b4887cf18722bcc895594d0826fbcac4f2c9e04edb546ba8f26d7e73f302",
+      "status": "skipped"
+    },
+    "cloudmusic_indexof_in_render": {
+      "path": "cases/cloudmusic_indexof_in_render/case.json",
+      "sha256": "52bf7028f30be3eb4cc680e5a2d5a0b410bb461479a214163a5c60286ec05f6f",
+      "status": "skipped"
+    },
+    "cloudmusic_local_song_memory_filter": {
+      "path": "cases/cloudmusic_local_song_memory_filter/case.json",
+      "sha256": "5e9f1b8541faf0d751bc0551933d53a185e4f329a017554df57ced4adc314c43",
+      "status": "skipped"
+    },
+    "cloudmusic_play_time_high_frequency_update": {
+      "path": "cases/cloudmusic_play_time_high_frequency_update/case.json",
+      "sha256": "746f4e779eb21618b80f64de732edabb1530ef4158c92df5e51daede4ef02e00",
+      "status": "accepted"
+    },
+    "cloudmusic_search_result_foreach": {
+      "path": "cases/cloudmusic_search_result_foreach/case.json",
+      "sha256": "da61b0cb1596a8c58e3a3f2766f57bd56b8895cc932f4791d02389e99a6f80da",
+      "status": "accepted"
+    },
+    "cloudmusic_songcard_artists_concat": {
+      "path": "cases/cloudmusic_songcard_artists_concat/case.json",
+      "sha256": "f885b824a0cdf64b74cb04acab410a8c58bd50d379990e29ea2fb2b06df459a5",
+      "status": "skipped"
+    },
+    "interviewapp_response_log_full_stringify": {
+      "path": "cases/interviewapp_response_log_full_stringify/case.json",
+      "sha256": "cf0791db9887180348c231c30f03d6e19898cb783e40a52f00f112659d9f637e",
+      "status": "skipped"
+    },
+    "interviewapp_search_history_sync_flush": {
+      "path": "cases/interviewapp_search_history_sync_flush/case.json",
+      "sha256": "2c5286c9b81d63fd65e45bce85d4fec775106711ae3e1badd52f9f3f1e6a7f2a",
+      "status": "skipped"
+    },
+    "interviewapp_search_history_unbounded": {
+      "path": "cases/interviewapp_search_history_unbounded/case.json",
+      "sha256": "70d7db5aa1943a06a0a3536fa11b8a13d7d20ddddfe3f000cf52afe4586d58ca",
+      "status": "accepted"
+    },
+    "jingmo_dataset_import_no_transaction": {
+      "path": "cases/jingmo_dataset_import_no_transaction/case.json",
+      "sha256": "78b7e613466f32259e13785dddcfb92792ca603b2b7ad2f71bb1a45ef5cbcfc5",
+      "status": "accepted"
+    },
+    "jingmo_random_poem_orderby_random": {
+      "path": "cases/jingmo_random_poem_orderby_random/case.json",
+      "sha256": "3dfd31503119ed8fdd3b7e248ca94d40059ec9baa24b44f1358145bb75b582e1",
+      "status": "accepted"
+    },
+    "jingmo_sync_page_reimport": {
+      "path": "cases/jingmo_sync_page_reimport/case.json",
+      "sha256": "08ad3cb7ecf140ae1b49181c53988d78ce7e101657e89113360013d371dac209",
+      "status": "accepted"
+    },
+    "sepweather_font_register_per_page": {
+      "path": "cases/sepweather_font_register_per_page/case.json",
+      "sha256": "144906c0b1106bdc097dbae09d738bdc668e584a0eddc76307e7f922e7cc2867",
+      "status": "accepted"
+    },
+    "sheafreader_article_list_foreach": {
+      "path": "cases/sheafreader_article_list_foreach/case.json",
+      "sha256": "1671e9995ac1460228ec5615d5d37996c0ba0d2a6834edafd5b930f73b2dd4e2",
+      "status": "accepted"
+    },
+    "sheafreader_extract_tag_tolowercase": {
+      "path": "cases/sheafreader_extract_tag_tolowercase/case.json",
+      "sha256": "27a5977c496dc0eb5f4dc08722ecfb88515ed0083a32d445b51cf643aab7cae7",
+      "status": "accepted"
+    },
+    "sheafreader_insert_duplicate_exception": {
+      "path": "cases/sheafreader_insert_duplicate_exception/case.json",
+      "sha256": "173c5d40c4e468fab46b996fed5ae0473a147a2d1e82d4917631a79f46f1fd12",
+      "status": "accepted"
+    },
+    "sheafreader_refresh_feeds_sequential": {
+      "path": "cases/sheafreader_refresh_feeds_sequential/case.json",
+      "sha256": "cab09f4c97020a418b2a543eed3bbfd3a2eef3e08260869439139f19b02d9182",
+      "status": "accepted"
+    },
+    "sheafreader_unread_counts_n_plus_1": {
+      "path": "cases/sheafreader_unread_counts_n_plus_1/case.json",
+      "sha256": "36c98708f7889da61ff61ebd7f2fe214af787b2c7800c3e15bbdb74028da3f2e",
+      "status": "accepted"
+    },
+    "wanharmony_history_log_materialization": {
+      "path": "cases/wanharmony_history_log_materialization/case.json",
+      "sha256": "db540caae52aa27d920a10fddc9655235a947fcfe7bf6c5f7576e5a95d86eacf",
+      "status": "skipped"
+    },
+    "wanharmony_html_decode_per_render": {
+      "path": "cases/wanharmony_html_decode_per_render/case.json",
+      "sha256": "ed3e46ce1e10be5924edc13043377967a04788c9961cf51f10e9394f6465bc60",
+      "status": "skipped"
+    },
+    "wanharmony_persisted_home_list_growth": {
+      "path": "cases/wanharmony_persisted_home_list_growth/case.json",
+      "sha256": "963ef88b8ba4abfafe1d3aef76bf21de24c4ee9e9ff86de7dd22b2243f006a76",
+      "status": "accepted"
+    },
+    "wanharmony_web_progress_log_storm": {
+      "path": "cases/wanharmony_web_progress_log_storm/case.json",
+      "sha256": "9ad803dc316635f1a74115e54061e49e18c2971760da91ce54407d873a6b33a0",
+      "status": "skipped"
+    },
+    "weatherassistant_remote_weather_icons": {
+      "path": "cases/weatherassistant_remote_weather_icons/case.json",
+      "sha256": "16dc3694d04c8b5b203387804154574c3cb16d5a6ac00016fef0852afce15eb0",
+      "status": "accepted"
+    },
+    "ytmusic_current_playing_timeupdate": {
+      "path": "cases/ytmusic_current_playing_timeupdate/case.json",
+      "sha256": "4384818ef8e232ab87e7857d0cd835cf51609187bad3576e9ba34a4942276470",
+      "status": "accepted"
+    },
+    "ytmusic_history_json_parse_per_row": {
+      "path": "cases/ytmusic_history_json_parse_per_row/case.json",
+      "sha256": "e6bd066345170f0dd3833d80b066a8d769dc2f0785154532f69de16cca391672",
+      "status": "accepted"
+    },
+    "ytmusic_search_no_debounce": {
+      "path": "cases/ytmusic_search_no_debounce/case.json",
+      "sha256": "60aa1cc935bbc29e4747cde360a69aeb76fe422b4028eb3dd9a939409a67d46d",
+      "status": "accepted"
+    }
+  }
+}

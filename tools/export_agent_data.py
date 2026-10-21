@@ -23,6 +23,7 @@ from accept_reader_startup_evidence import accept as validate_startup
 from accept_weather_icon_evidence import accept as validate_icons
 from accept_ytsearch_payload import accept as validate_search_payload
 from accept_pss_evidence import accept as validate_pss
+from accept_weather_hourly_memory import accept as validate_hourly_growth
 from measurement_paths import capture_root
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,7 +38,7 @@ def require_accepted_case(cid, case, round_number):
         raise ValueError('selected round must belong to the three accepted paired rounds')
     metric = case['test_oracle']['metric']
     validator = {'hiperf_instructions':validate_cpu, 'trace_cpu_ms':validate_trace,
-                 'app_pss_bytes':validate_pss, 'startup_refresh_elapsed_s':validate_startup, 'startup_icons_elapsed_s':validate_icons, 'search_response_body_bytes':validate_search_payload}.get(metric)
+                 'app_pss_bytes':validate_pss,'app_gc_requested_pss_growth_bytes':validate_hourly_growth, 'startup_refresh_elapsed_s':validate_startup, 'startup_icons_elapsed_s':validate_icons, 'search_response_body_bytes':validate_search_payload}.get(metric)
     if validator is None:
         raise ValueError('agent data export is not implemented for this metric')
     # Recompute the original full criterion read-only. Flags or one favorable
@@ -244,7 +245,7 @@ def export(cid, destination, symptom, round_number, remote_name='cityuPC', inclu
     build = json.loads((folder/'build.json').read_text())
     sign = json.loads((folder/'sign.json').read_text())
     metric=case.get('test_oracle',{}).get('metric','hiperf_instructions')
-    if metric not in ('hiperf_instructions','trace_cpu_ms','app_pss_bytes','startup_refresh_elapsed_s','startup_icons_elapsed_s','search_response_body_bytes'):
+    if metric not in ('hiperf_instructions','trace_cpu_ms','app_pss_bytes','app_gc_requested_pss_growth_bytes','startup_refresh_elapsed_s','startup_icons_elapsed_s','search_response_body_bytes'):
         raise ValueError('agent data export is not implemented for this metric')
     capture_folder = capture_root(folder,case,metric)/f'round-{round_number}'
     expected_capture_status = 'CAPTURED'
@@ -279,7 +280,7 @@ def export(cid, destination, symptom, round_number, remote_name='cityuPC', inclu
         raise ValueError('source/build mismatch')
     if metric in ('trace_cpu_ms','startup_refresh_elapsed_s','startup_icons_elapsed_s','search_response_body_bytes'):
         report=app_scheduler_report(capture_folder/'trace.htrace',capture,case['host_app']['bundle_name'])
-    elif metric=='app_pss_bytes':
+    elif metric in ('app_pss_bytes','app_gc_requested_pss_growth_bytes'):
         report=app_memory_report(capture,case['host_app']['bundle_name'])
     else:
         report=app_report(json.loads((capture_folder/'report.json').read_text()), capture['pids'], case['host_app']['bundle_name'])

@@ -1,0 +1,50 @@
+{
+  "status": "ALL_REQUESTED_CASE_AND_DELIVERY_CHECKS_PASSED_PENDING_COMMIT_PUSH",
+  "accepted_cases": [
+    "browser_eager_history_load",
+    "browser_history_delete_no_transaction",
+    "browser_history_list_foreach",
+    "cloudmusic_play_time_high_frequency_update",
+    "cloudmusic_search_result_foreach",
+    "interviewapp_search_history_unbounded",
+    "jingmo_dataset_import_no_transaction",
+    "jingmo_random_poem_orderby_random",
+    "jingmo_sync_page_reimport",
+    "sepweather_font_register_per_page",
+    "sheafreader_article_list_foreach",
+    "sheafreader_extract_tag_tolowercase",
+    "sheafreader_insert_duplicate_exception",
+    "sheafreader_refresh_feeds_sequential",
+    "sheafreader_unread_counts_n_plus_1",
+    "wanharmony_persisted_home_list_growth",
+    "weatherassistant_http_session_leak",
+    "weatherassistant_remote_weather_icons",
+    "ytmusic_current_playing_timeupdate",
+    "ytmusic_history_json_parse_per_row",
+    "ytmusic_search_no_debounce"
+  ],
+  "skipped_cases": [
+    "browser_insert_date_lookup_cache",
+    "cloudmusic_indexof_in_render",
+    "cloudmusic_local_song_memory_filter",
+    "cloudmusic_songcard_artists_concat",
+    "interviewapp_response_log_full_stringify",
+    "interviewapp_search_history_sync_flush",
+    "wanharmony_history_log_materialization",
+    "wanharmony_html_decode_per_render",
+    "wanharmony_web_progress_log_storm"
+  ],
+  "pending_cases": [],
+  "other_29_case_files_unchanged": true,
+  "native_gap_gate": "Three original pairs and conservative median each >=3x, with >=5 MiB unfixed growth and >=5 MiB excess growth; GC-request-conditioned PSS, not absolute PSS ratio.",
+  "reports_sha256": {
+    "artifacts/completion-audit/accepted-21-final.json": "277689a9cff017b46ffd3c4b8f8154219698a20ef14ebab464ba2a1137b0f40d",
+    "artifacts/completion-audit/business-only-builds-30-final.json": "f5a66fb5dd846b1043c41f31d9cc10352f5ea9b9115f160023e5781fa084c6d2",
+    "artifacts/completion-audit/current-deliveries-21.json": "fffbae94f1613d44dbf1abf8afee5edf168777ac196e2b5f9cf4409b5c0fd5f6",
+    "artifacts/completion-audit/tests-final.txt": "555a958539e70aa1353b151c6151379b467ee4c9154fbe9801aa55d92c1261fa",
+    "validation/weather-hourly-native-pss-acceptance.json": "4d9b6a34b45b1046cfc86f24a57e9e50002bf21bc8ed17b787cd9e2488caaba1",
+    "validation/weather-hourly-completion-baseline.json": "163ac209b410a65d6560c03b85d57fbd371887dd6cd4d03c4c74e2e9b67582cb"
+  },
+  "checked_at": 1792600580.5362685,
+  "commit_push_still_required": true
+}

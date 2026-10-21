@@ -94,6 +94,7 @@ def compute(path, pid, end_ns=None):
         raise ValueError('native allocation cutoff must be positive monotonic nanoseconds')
     blob, messages = records(path)
     config_count, events = 0, []
+    file_page_snapshots = 0
     for message in messages:
         name = scalar(message, 1, 2, b'')
         if name == b'nativehook_config':
@@ -115,6 +116,19 @@ def compute(path, pid, end_ns=None):
             if len(kinds) != 1:
                 raise ValueError('nativehook event must have one supported payload')
             kind = kinds[0]
+            if kind == 5:
+                payload = fields(scalar(event, kind, 2))
+                tag = scalar(payload, 4, 2, b'')
+                # The official writer also encodes MMAP_FILE_PAGE_MSG as
+                # MmapEvent. These named file-page observations are not malloc
+                # allocations (nor mmap lifetime events). Never add their bytes
+                # to the address-matched malloc result.
+                if tag.startswith(b'FilePage:') and len(tag) > len(b'FilePage:'):
+                    if (scalar(payload, 1) != pid or scalar(payload, 2) <= 0
+                            or scalar(event, 1) <= 0 or scalar(event, 2) >= 1000000000):
+                        raise ValueError('invalid file-page observation identity or clock')
+                    file_page_snapshots += 1
+                    continue
             if kind in (5, 6, 15):
                 raise ValueError('mmap or aggregate statistics cannot replace malloc/free matching')
             if kind not in (3, 4):
@@ -163,4 +177,6 @@ def compute(path, pid, end_ns=None):
 
     if end_ns is not None:
         result['evaluation_end_ns'] = end_ns
+    if file_page_snapshots:
+        result['excluded_file_page_snapshots'] = file_page_snapshots
     return result

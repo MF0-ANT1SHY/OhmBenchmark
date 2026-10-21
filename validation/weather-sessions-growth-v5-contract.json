@@ -1,0 +1,22 @@
+{
+  "case": "weatherassistant_http_session_leak",
+  "status": "FROZEN_BEFORE_FORMAL_CAPTURE_NOT_ACCEPTANCE",
+  "measurement_revision": "growth-v5",
+  "metric": "app_pss_growth_bytes",
+  "cities": 10,
+  "warmup_returns": 10,
+  "measured_returns": 60,
+  "required_successful_forecasts_per_trial": 600,
+  "kernel_samples_per_boundary_window": 3,
+  "paired_rounds": 3,
+  "required_ratio_each_pair_and_median": 3.0,
+  "fixed_growth_denominator_floor_bytes": 1048576,
+  "minimum_unfixed_lower_growth_bytes": 5242880,
+  "minimum_excess_growth_bytes": 5242880,
+  "bound_definition": "Observed lower growth = minimum post PSS minus maximum baseline PSS; observed upper growth = maximum post PSS minus minimum baseline PSS. Raw signed growth values are never clamped. Ratio denominator alone has the declared 1 MiB noise floor.",
+  "scope": "Same process, successful complete ordinary ten-city forecasts, unchanged bundled icons. No nativehook in these trials. This measures warmed process-PSS growth, not total live malloc blocks or open file descriptors.",
+  "app_injection": false,
+  "performance_accepted": false,
+  "previous_contract": "validation/weather-sessions-growth-v4-contract.json",
+  "reason": "Observe retained-session growth over sixty ordinary ten-city refreshes rather than fifteen; preserve the previous 2.61x screen and the unexecuted v4 contract. No payload padding, source changes, native allocation probes, or reduced gap threshold."
+}

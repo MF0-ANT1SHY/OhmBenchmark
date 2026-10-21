@@ -1,0 +1,7 @@
+{
+  "status": "FUNCTIONAL_PREFLIGHT_FAILED_NOT_ACCEPTED",
+  "failure": "Forecast detail button was clipped to seven physical pixels at the bottom of the screen; ordinary city and forecast texts loaded successfully.",
+  "button_native_bounds": "[387,2837][873,2844]",
+  "layout_sha256": "34a5c3c111bf83f334209b794cf2afa425f2ed748502572df101a323dd6838ba",
+  "correction": "New v5 candidates constrain Tabs to the remaining 90% of the parent height in both variants. Retain v4 signed packages."
+}
