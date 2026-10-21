@@ -3835,14 +3835,16 @@
       "case": "sepweather_font_register_per_page",
       "variant": "unfixed",
       "host": "sepweather",
-      "ref": "clean-app/sepweather_font_register_per_page/unfixed",
-      "commit": "30cc357936f8fff776d9c0e6b7e6f4b29668367b",
-      "tree": "370125e32dcc9e352b052fbe25a8098878ad0ac7",
+      "ref": "clean-app-v3/sepweather_font_register_per_page/unfixed",
+      "commit": "f9b744f09f80c3c552ea4659ff8b3b67f4a263c9",
+      "tree": "42f2e82c38df53356755551f93e240e5c11efb33",
       "business_base_tree": "370125e32dcc9e352b052fbe25a8098878ad0ac7",
-      "production_patches": [],
-      "unsigned_sha256": "522f316a9c31440e202be7d3b726aab42317f1c3d59f95173460096284f4c67f",
+      "production_patches": [
+        "hosts_patches/sepweather/page-title-font-unfixed-v2.patch"
+      ],
+      "unsigned_sha256": "dd28a7b09b6743bcfc673da45e225066e985d0cfb0192f6788fa3828e3922435",
       "bytecode_audit": {
-        "sha256": "522f316a9c31440e202be7d3b726aab42317f1c3d59f95173460096284f4c67f",
+        "sha256": "dd28a7b09b6743bcfc673da45e225066e985d0cfb0192f6788fa3828e3922435",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -3853,72 +3855,107 @@
       "sign": {
         "case": "sepweather_font_register_per_page",
         "variant": "unfixed",
-        "unsigned_sha256": "522f316a9c31440e202be7d3b726aab42317f1c3d59f95173460096284f4c67f",
-        "signed_hap": "/home/research/ohm-clean/sepweather_font_register_per_page/unfixed/app.hap",
+        "unsigned_sha256": "dd28a7b09b6743bcfc673da45e225066e985d0cfb0192f6788fa3828e3922435",
+        "signed_hap": "/home/research/ohm-clean/font-page-v2/sepweather_font_register_per_page/unfixed/app.hap",
         "audit": {
-          "sha256": "effefb72e7c738ff6714ddbe303aa54a3cb9b59d6f31c12ca57146442e625d9d",
+          "sha256": "3644c77c902d356262d4c17ac661062f9e6b99c20beb77bdc58337bdff18967b",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
-        "status": "PASS"
+        "allowed_acls": [],
+        "status": "PASS",
+        "device_binding_sha256": "6d7e8db93a797e601f1a603a12890cf5829eed2341940801177717976a9d58db"
       },
       "smoke": {
         "case": "sepweather_font_register_per_page",
         "variant": "unfixed",
-        "signed_sha256": "effefb72e7c738ff6714ddbe303aa54a3cb9b59d6f31c12ca57146442e625d9d",
-        "install": "[Info]App install path:/home/research/ohm-clean/sepweather_font_register_per_page/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
-        "launch": "start ability successfully.",
+        "signed_sha256": "3644c77c902d356262d4c17ac661062f9e6b99c20beb77bdc58337bdff18967b",
+        "install": "[Info]App install path:C:\\home\\research\\ohm-clean\\font-page-v2\\sepweather_font_register_per_page\\unfixed\\app.hap msg:install bundle successfully. \r\nAppMod finish\r\n",
         "pids": [
-          46112
+          40855
         ],
         "foreground_bundle": "cn.seayj.sepweather",
         "status": "PASS",
-        "performance_verified": false
+        "performance_verified": false,
+        "method": "Original formal native trial: successful signed install, fresh process, forty ordinary city-manager visits and return to main page."
       },
       "workload": {
         "case": "sepweather_font_register_per_page",
         "variant": "unfixed",
-        "signed_sha256": "effefb72e7c738ff6714ddbe303aa54a3cb9b59d6f31c12ca57146442e625d9d",
-        "plan_sha256": "8d51fce3d25805ebfd2a0e18b2f578763035f4160166bdbb205b16d85ad14530",
-        "status": "FAIL",
-        "performance_verified": false,
+        "status": "PASS",
+        "signed_sha256": "3644c77c902d356262d4c17ac661062f9e6b99c20beb77bdc58337bdff18967b",
+        "plan_sha256": "fb83bde550221aefc96a1f1e8a43d87d80055d74c57eca2e2de41855be6901b9",
         "fixture": {
-          "kind": "bundled business fonts",
-          "sha256": "bdf0f909288b29b6a76e84cc682599366efccedd489e72cc398b737f29f4022b",
-          "fonts": {
-            "resources/rawfile/DINCOROS-Black.ttf": "efde0708facc851b87fe8ba73d366e24c3a8694f878b09fe05aa883b6c9bd280",
-            "resources/rawfile/DINCOROS-Bold.ttf": "370f0bef24f4c0a2af52c50af58f6585a59b2b303175d580a82e6c9d4f5af321",
-            "resources/rawfile/DINCOROS-Regular.ttf": "efa4366d7c7e9a3dfb37ef513a50ccb44c241a84f09438b56479082b87220cbf",
-            "resources/rawfile/iconfont.ttf": "e33f7722988dfb8fb7c0cdfd27b1ed1473157045992cee12530b3d44107f4899"
+          "kind": "bundled CJK page title font",
+          "sha256": "acb6440a713d880a13a21b468ba7cd43f5a2b2934972e51be791c880730777b8"
+        },
+        "native_capture": "artifacts/clean/sepweather_font_register_per_page/unfixed/pss-captures/page-font-pss-v2/round-1/capture.json",
+        "native_capture_sha256": "4d48381fd46a6d15d4cf58eee75aa54d4f28b3e6adb3cf32bf258e175baa1274",
+        "performance_verified": false,
+        "method": "Original native forty-page trial; city content, title pixels, same process lifetime and raw kernel PSS verified."
+      },
+      "performance": {
+        "status": "PASS",
+        "metric": "app_pss_bytes",
+        "rounds": 3,
+        "samples": [
+          263899136,
+          262072320,
+          262572032
+        ],
+        "captures": [
+          {
+            "round": 1,
+            "capture_sha256": "4d48381fd46a6d15d4cf58eee75aa54d4f28b3e6adb3cf32bf258e175baa1274",
+            "snapshots": 42
           },
-          "registered_font_paths": [
-            "resources/rawfile/DINCOROS-Regular.ttf",
-            "resources/rawfile/iconfont.ttf"
-          ]
-        },
-        "phase_elapsed_s": {
-          "setup": 10.914921440002217,
-          "measured": 127.78472963999957,
-          "verify": 11.560733051002899
-        },
-        "error": "launches reused a window instead of reconstructing MainPage"
+          {
+            "round": 2,
+            "capture_sha256": "d94ddd44513f37982fad7fa715d63aa4e2263e3aa398fa3097f3441839f5c99f",
+            "snapshots": 42
+          },
+          {
+            "round": 3,
+            "capture_sha256": "d8bfde25485ed84b4dc6fb86343cea5d7ba034c533046b5bc8fda54af584f26e",
+            "snapshots": 42
+          }
+        ],
+        "signed_sha256": "3644c77c902d356262d4c17ac661062f9e6b99c20beb77bdc58337bdff18967b",
+        "median": 262572032,
+        "paired_ratios": [
+          2.6674878121991865,
+          2.855596715165581,
+          2.6308726209408504
+        ],
+        "paired_excess_bytes": [
+          164967424,
+          170297344,
+          162767872
+        ],
+        "median_ratio": 2.6540734683738214,
+        "plan_sha256": "fb83bde550221aefc96a1f1e8a43d87d80055d74c57eca2e2de41855be6901b9",
+        "fixture_sha256": "1716a5b069e432313d05c1a06f8f12d2ae6ab0b99cf89b77c5af9f274c448912",
+        "legacy_evidence_reused": false,
+        "method": "Final absolute kernel process PSS after forty normal city-manager visits; identical native city content and title pixels."
       }
     },
     {
       "case": "sepweather_font_register_per_page",
       "variant": "fixed",
       "host": "sepweather",
-      "ref": "clean-app/sepweather_font_register_per_page/fixed",
-      "commit": "e720e2150a6a062c85ccbe8269399d4edc6e7300",
-      "tree": "3264b46ab990081c90469f9095e6a1bf96f717d7",
+      "ref": "clean-app-v3/sepweather_font_register_per_page/fixed",
+      "commit": "83885dc897333b3f4ed6708b728cad27ae2eaa08",
+      "tree": "7a05838c171ffc589790e291937af857e628c916",
       "business_base_tree": "3264b46ab990081c90469f9095e6a1bf96f717d7",
-      "production_patches": [],
-      "unsigned_sha256": "dcba512e7da08e5cf095b2678f351370e21457d1567ce1bb1e1b09b481bc2526",
+      "production_patches": [
+        "hosts_patches/sepweather/page-title-font-fixed-v2.patch"
+      ],
+      "unsigned_sha256": "c4d95997f5005579c614dfceb8288306bee8408110f546037777314193f2ae1e",
       "bytecode_audit": {
-        "sha256": "dcba512e7da08e5cf095b2678f351370e21457d1567ce1bb1e1b09b481bc2526",
+        "sha256": "c4d95997f5005579c614dfceb8288306bee8408110f546037777314193f2ae1e",
         "abc_modules_checked": [
           "ets/modules.abc"
         ],
@@ -3929,53 +3966,91 @@
       "sign": {
         "case": "sepweather_font_register_per_page",
         "variant": "fixed",
-        "unsigned_sha256": "dcba512e7da08e5cf095b2678f351370e21457d1567ce1bb1e1b09b481bc2526",
-        "signed_hap": "/home/research/ohm-clean/sepweather_font_register_per_page/fixed/app.hap",
+        "unsigned_sha256": "c4d95997f5005579c614dfceb8288306bee8408110f546037777314193f2ae1e",
+        "signed_hap": "/home/research/ohm-clean/font-page-v2/sepweather_font_register_per_page/fixed/app.hap",
         "audit": {
-          "sha256": "00fa3c507f02679f7033c3257bb9ab9afb45fdba1a87b793e446bcb6b9643ea3",
+          "sha256": "c71ae0f2801b04ea2d6f3d434c625084794fa87fb2eca07b5600d0a335f7a5d6",
           "abc_modules_checked": [
             "ets/modules.abc"
           ],
           "findings": [],
           "passed": true
         },
-        "status": "PASS"
+        "allowed_acls": [],
+        "status": "PASS",
+        "device_binding_sha256": "6d7e8db93a797e601f1a603a12890cf5829eed2341940801177717976a9d58db"
       },
       "smoke": {
         "case": "sepweather_font_register_per_page",
         "variant": "fixed",
-        "signed_sha256": "00fa3c507f02679f7033c3257bb9ab9afb45fdba1a87b793e446bcb6b9643ea3",
-        "install": "[Info]App install path:/home/research/ohm-clean/sepweather_font_register_per_page/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
-        "launch": "start ability successfully.",
+        "signed_sha256": "c71ae0f2801b04ea2d6f3d434c625084794fa87fb2eca07b5600d0a335f7a5d6",
+        "install": "[Info]App install path:C:\\home\\research\\ohm-clean\\font-page-v2\\sepweather_font_register_per_page\\fixed\\app.hap msg:install bundle successfully. \r\nAppMod finish\r\n",
         "pids": [
-          46555
+          47609
         ],
         "foreground_bundle": "cn.seayj.sepweather",
         "status": "PASS",
-        "performance_verified": false
+        "performance_verified": false,
+        "method": "Original formal native trial: successful signed install, fresh process, forty ordinary city-manager visits and return to main page."
       },
       "workload": {
         "case": "sepweather_font_register_per_page",
         "variant": "fixed",
-        "signed_sha256": "00fa3c507f02679f7033c3257bb9ab9afb45fdba1a87b793e446bcb6b9643ea3",
-        "plan_sha256": "8d51fce3d25805ebfd2a0e18b2f578763035f4160166bdbb205b16d85ad14530",
-        "status": "FAIL",
-        "performance_verified": false,
+        "status": "PASS",
+        "signed_sha256": "c71ae0f2801b04ea2d6f3d434c625084794fa87fb2eca07b5600d0a335f7a5d6",
+        "plan_sha256": "fb83bde550221aefc96a1f1e8a43d87d80055d74c57eca2e2de41855be6901b9",
         "fixture": {
-          "kind": "bundled business fonts",
-          "sha256": "bdf0f909288b29b6a76e84cc682599366efccedd489e72cc398b737f29f4022b",
-          "fonts": {
-            "resources/rawfile/DINCOROS-Black.ttf": "efde0708facc851b87fe8ba73d366e24c3a8694f878b09fe05aa883b6c9bd280",
-            "resources/rawfile/DINCOROS-Bold.ttf": "370f0bef24f4c0a2af52c50af58f6585a59b2b303175d580a82e6c9d4f5af321",
-            "resources/rawfile/DINCOROS-Regular.ttf": "efa4366d7c7e9a3dfb37ef513a50ccb44c241a84f09438b56479082b87220cbf",
-            "resources/rawfile/iconfont.ttf": "e33f7722988dfb8fb7c0cdfd27b1ed1473157045992cee12530b3d44107f4899"
-          },
-          "registered_font_paths": [
-            "resources/rawfile/DINCOROS-Regular.ttf",
-            "resources/rawfile/iconfont.ttf"
-          ]
+          "kind": "bundled CJK page title font",
+          "sha256": "acb6440a713d880a13a21b468ba7cd43f5a2b2934972e51be791c880730777b8"
         },
-        "error": "UI target not found: {'id': 'AddAddressBtn'}"
+        "native_capture": "artifacts/clean/sepweather_font_register_per_page/fixed/pss-captures/page-font-pss-v2/round-1/capture.json",
+        "native_capture_sha256": "293639a666f7df32d643302583e8f0a8c2809c72425dcd1eca3439d0d5293d54",
+        "performance_verified": false,
+        "method": "Original native forty-page trial; city content, title pixels, same process lifetime and raw kernel PSS verified."
+      },
+      "performance": {
+        "status": "PASS",
+        "metric": "app_pss_bytes",
+        "rounds": 3,
+        "samples": [
+          98931712,
+          91774976,
+          99804160
+        ],
+        "captures": [
+          {
+            "round": 1,
+            "capture_sha256": "293639a666f7df32d643302583e8f0a8c2809c72425dcd1eca3439d0d5293d54",
+            "snapshots": 42
+          },
+          {
+            "round": 2,
+            "capture_sha256": "9dd50a84d0383e4d38b6489c01e0b3d18f44b4b7bf9a6a604028cad64d613300",
+            "snapshots": 42
+          },
+          {
+            "round": 3,
+            "capture_sha256": "4d8a8d01aa464b91f23a74489678a28d27b5663aa53df17428e621b5fa805a00",
+            "snapshots": 42
+          }
+        ],
+        "signed_sha256": "c71ae0f2801b04ea2d6f3d434c625084794fa87fb2eca07b5600d0a335f7a5d6",
+        "median": 98931712,
+        "paired_ratios": [
+          2.6674878121991865,
+          2.855596715165581,
+          2.6308726209408504
+        ],
+        "paired_excess_bytes": [
+          164967424,
+          170297344,
+          162767872
+        ],
+        "median_ratio": 2.6540734683738214,
+        "plan_sha256": "fb83bde550221aefc96a1f1e8a43d87d80055d74c57eca2e2de41855be6901b9",
+        "fixture_sha256": "1716a5b069e432313d05c1a06f8f12d2ae6ab0b99cf89b77c5af9f274c448912",
+        "legacy_evidence_reused": false,
+        "method": "Final absolute kernel process PSS after forty normal city-manager visits; identical native city content and title pixels."
       }
     },
     {

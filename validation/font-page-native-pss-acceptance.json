@@ -1,0 +1,206 @@
+{
+  "case": "sepweather_font_register_per_page",
+  "status": "NATIVE_PAGE_FONT_PSS_ACCEPTED",
+  "measurement_revision": "page-font-pss-v2",
+  "app_injection": false,
+  "business_source_changed": true,
+  "required_ratio": 2.0,
+  "minimum_excess_bytes": 67108864,
+  "paired_ratios": [
+    2.6674878121991865,
+    2.855596715165581,
+    2.6308726209408504
+  ],
+  "paired_excess_bytes": [
+    164967424,
+    170297344,
+    162767872
+  ],
+  "median_ratio": 2.6540734683738214,
+  "samples": {
+    "unfixed": [
+      263899136,
+      262072320,
+      262572032
+    ],
+    "fixed": [
+      98931712,
+      91774976,
+      99804160
+    ]
+  },
+  "captures": {
+    "unfixed": [
+      {
+        "round": 1,
+        "path": "artifacts/clean/sepweather_font_register_per_page/unfixed/pss-captures/page-font-pss-v2/round-1/capture.json",
+        "sha256": "4d48381fd46a6d15d4cf58eee75aa54d4f28b3e6adb3cf32bf258e175baa1274",
+        "app_pss_bytes": 263899136,
+        "title_frames": [
+          {
+            "step": 1,
+            "file": "page-1.png",
+            "sha256": "8e17978fbc8012eba731226927391ee3f3fa28e5ed473b58620c2d9d6eac4436"
+          },
+          {
+            "step": 40,
+            "file": "page-40.png",
+            "sha256": "29805735326417ad3777be39b2c4e67302802e383cdec27407a99a908cc6fdc1"
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "path": "artifacts/clean/sepweather_font_register_per_page/unfixed/pss-captures/page-font-pss-v2/round-2/capture.json",
+        "sha256": "d94ddd44513f37982fad7fa715d63aa4e2263e3aa398fa3097f3441839f5c99f",
+        "app_pss_bytes": 262072320,
+        "title_frames": [
+          {
+            "step": 1,
+            "file": "page-1.png",
+            "sha256": "72ce36156cc7026dd965395f56c024054fd4f9f041aa9e578f0909ce481c12cd"
+          },
+          {
+            "step": 40,
+            "file": "page-40.png",
+            "sha256": "b2ad3270f128d7e4c2585ef9d9027e85ee3ee1f16dd9bc379b954c018f5ea552"
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "path": "artifacts/clean/sepweather_font_register_per_page/unfixed/pss-captures/page-font-pss-v2/round-3/capture.json",
+        "sha256": "d8bfde25485ed84b4dc6fb86343cea5d7ba034c533046b5bc8fda54af584f26e",
+        "app_pss_bytes": 262572032,
+        "title_frames": [
+          {
+            "step": 1,
+            "file": "page-1.png",
+            "sha256": "c298e1b9959b9f8253214572dfb0a5aae800e8726b399d4fc93e3d670c9da00c"
+          },
+          {
+            "step": 40,
+            "file": "page-40.png",
+            "sha256": "4056607eaf757ddb8524ee3228da72d748b41aece458fb234d9f708dced26471"
+          }
+        ]
+      }
+    ],
+    "fixed": [
+      {
+        "round": 1,
+        "path": "artifacts/clean/sepweather_font_register_per_page/fixed/pss-captures/page-font-pss-v2/round-1/capture.json",
+        "sha256": "293639a666f7df32d643302583e8f0a8c2809c72425dcd1eca3439d0d5293d54",
+        "app_pss_bytes": 98931712,
+        "title_frames": [
+          {
+            "step": 1,
+            "file": "page-1.png",
+            "sha256": "824b9cd8fc5ff0aebc6c99181b3ddd6e02c34303a478aad79f27095e61d7cdc8"
+          },
+          {
+            "step": 40,
+            "file": "page-40.png",
+            "sha256": "40383a5966ba8ed7efdb9b04ebefddad6b79db4aada822303417ac52e709c9be"
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "path": "artifacts/clean/sepweather_font_register_per_page/fixed/pss-captures/page-font-pss-v2/round-2/capture.json",
+        "sha256": "9dd50a84d0383e4d38b6489c01e0b3d18f44b4b7bf9a6a604028cad64d613300",
+        "app_pss_bytes": 91774976,
+        "title_frames": [
+          {
+            "step": 1,
+            "file": "page-1.png",
+            "sha256": "06ea1f6b8e592c76ffc3396fc528606625a05cf63f000f2ec2bccb53c01214b7"
+          },
+          {
+            "step": 40,
+            "file": "page-40.png",
+            "sha256": "0bf3fc776c421daa4fa10c5cf7ede3c97eb2722a7cce9c61900a6a05b9f5d772"
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "path": "artifacts/clean/sepweather_font_register_per_page/fixed/pss-captures/page-font-pss-v2/round-3/capture.json",
+        "sha256": "4d8a8d01aa464b91f23a74489678a28d27b5663aa53df17428e621b5fa805a00",
+        "app_pss_bytes": 99804160,
+        "title_frames": [
+          {
+            "step": 1,
+            "file": "page-1.png",
+            "sha256": "ad289fe76d17fce90567f906e47e64b989c67a356ece3d596ee79f4918e65b8d"
+          },
+          {
+            "step": 40,
+            "file": "page-40.png",
+            "sha256": "04ed745122034d79eb7d37df76cb383f02004c9dff4a6f330b17dc90ad209e82"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "unfixed": {
+      "signed_sha256": "3644c77c902d356262d4c17ac661062f9e6b99c20beb77bdc58337bdff18967b",
+      "measured_signed_sha256": "3644c77c902d356262d4c17ac661062f9e6b99c20beb77bdc58337bdff18967b",
+      "current_validity": {
+        "bundle": "cn.seayj.sepweather",
+        "not_before": 1792586899,
+        "not_after": 1795179199,
+        "checked_at": 1792591888.2316966
+      },
+      "fresh_launch_receipt_sha256": "d8bfde25485ed84b4dc6fb86343cea5d7ba034c533046b5bc8fda54af584f26e",
+      "fresh_launch_evidence": "artifacts/clean/sepweather_font_register_per_page/unfixed/pss-captures/page-font-pss-v2/round-3/capture.json",
+      "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process, forty native page visits and matching title pixels. No additional launch rerun.",
+      "renewal_not_required": true
+    },
+    "fixed": {
+      "signed_sha256": "c71ae0f2801b04ea2d6f3d434c625084794fa87fb2eca07b5600d0a335f7a5d6",
+      "measured_signed_sha256": "c71ae0f2801b04ea2d6f3d434c625084794fa87fb2eca07b5600d0a335f7a5d6",
+      "current_validity": {
+        "bundle": "cn.seayj.sepweather",
+        "not_before": 1792586905,
+        "not_after": 1795179205,
+        "checked_at": 1792591889.1492622
+      },
+      "fresh_launch_receipt_sha256": "4d8a8d01aa464b91f23a74489678a28d27b5663aa53df17428e621b5fa805a00",
+      "fresh_launch_evidence": "artifacts/clean/sepweather_font_register_per_page/fixed/pss-captures/page-font-pss-v2/round-3/capture.json",
+      "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process, forty native page visits and matching title pixels. No additional launch rerun.",
+      "renewal_not_required": true
+    }
+  },
+  "agent_export": "artifacts/agent-exports/font-page-8141759252ad43339ffcaa5e389bc359",
+  "agent_files_sha256": {
+    "app.hap": "3644c77c902d356262d4c17ac661062f9e6b99c20beb77bdc58337bdff18967b",
+    "workload.json": "48a90111ab32766d7f04f739a33e3e4ae656ee6a78336e84ed8eae28252026eb",
+    "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
+    "profile.json": "4e80c23409e31678be557e5ac8016b8617fc246a1717d7c34dfa089159bccc58",
+    "symptom.txt": "0dba1abbcfffb2fadc883567682e88899e6f678d41b47bd7c77899830e7efe32"
+  },
+  "complete_gate": {
+    "stage": "complete",
+    "cases": 1,
+    "errors": [],
+    "pending": [],
+    "passed": true
+  },
+  "historical_contract": "validation/font-page-original-contract-before-v2.json",
+  "source_sha256": {
+    "tools/capture_font_page_memory.py": "81310b584cf6e6c65eb71c1c85fbee2dec305446ad5fc5de5002efd89f1f3e39",
+    "tools/accept_font_page_memory.py": "bba2f085c8f57aab30239817062ab21ef5744a6f1fafd04328477734747aa6bb",
+    "tools/font_page_memory.py": "b43dd264d8852ae112cca83c6f7721749b5decd06314e83c46838408d02d532a",
+    "hosts_patches/sepweather/page-title-font-unfixed-v2.patch": "e0e8318403c3a63e707f186b90d8630d4478a45ee72bba31e90a976742c0afcd",
+    "hosts_patches/sepweather/page-title-font-fixed-v2.patch": "0caaed1857e9afedb0eb40688ff7a056cdef4adf8385535eb968bd7ff1f361d8"
+  },
+  "cpu_improvement_claimed": false,
+  "original_same_family_reparse_claimed": false,
+  "weather_network_claimed": false,
+  "formal_contract": "validation/font-page-pss-v2-contract.json",
+  "native_preflight": "validation/font-page-native-reference.json",
+  "formal_contract_sha256": "76035b01ec80937d1d0304a9870218ae18d94a034021ebfeabf466ac71600f56",
+  "native_preflight_sha256": "1716a5b069e432313d05c1a06f8f12d2ae6ab0b99cf89b77c5af9f274c448912"
+}

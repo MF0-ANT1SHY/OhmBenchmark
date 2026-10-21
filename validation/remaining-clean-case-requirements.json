@@ -4,9 +4,9 @@
   "cases": 30,
   "business_only_builds": 60,
   "source_and_signed_artifact_proof": "validation/all-clean-signed-integrity.json",
-  "primary_passed": 19,
+  "primary_passed": 20,
   "valid_primary_measurement_failed": 3,
-  "pending_primary_measurement": 2,
+  "pending_primary_measurement": 1,
   "native_heap_collector_calibration_only_proof": "validation/nativeheap-device-clock-calibration.json",
   "supplementary_cold_cache_not_counted": "validation/wan-home-cold-cache-pss-supplement.json",
   "rows": [
@@ -195,21 +195,17 @@
     },
     {
       "case": "sepweather_font_register_per_page",
-      "primary_measurement_status": "pending_clean_measurement",
-      "metric": "hiperf_instructions",
+      "primary_measurement_status": "measured_clean",
+      "metric": "app_pss_bytes",
       "app_injection": false,
+      "recorded_primary_pass": true,
       "proof": [
-        "validation/sepweather-clean-routing-premise.json",
-        "validation/cityu-wlan-connectivity.json",
-        "validation/sepweather-recents-reopen-process-identity.json"
+        "validation/font-page-native-pss-acceptance.json"
       ],
-      "recorded_primary_pass": false,
-      "remaining_requirements": [
-        "normal_same_process_MainPage_reconstruction_not_proven"
-      ],
-      "normal_task_close_reopen": "restarts_process_not_valid_for_per_process_font_cache",
-      "latest_diagnostic": "validation/sepweather-current-compiled-lifecycle-premise.json",
-      "normal_reconstruction_requirement": "A genuine normal same-process MainPage re-creation path, or user disposition as unreproducible. Current launches reuse singleton; root Back/reopen reuses window; task removal restarts process."
+      "complete_case_accepted": true,
+      "required_ratio": 2.0,
+      "paired_rounds": 3,
+      "historical_pending": "validation/font-page-original-contract-before-v2.json"
     },
     {
       "case": "sheafreader_article_list_foreach",
@@ -414,7 +410,7 @@
     "status": "all_accepted_case_deliveries_verified",
     "proof": "validation/accepted-current-reproduction-delivery.json",
     "historical_expiry_audit": "validation/accepted-hap-profile-validity-audit.json",
-    "scope": "All 19 accepted cases have current signed deliveries and binary-only exports. Historical negative contracts remain archived.",
+    "scope": "All 20 accepted cases have current signed deliveries and binary-only exports. Historical negative contracts remain archived.",
     "requirement": "All delivered reproduction HAPs must have current valid provisioning profiles. Retain historical measured packages and capture bindings; no replacement is accepted without business-byte/permission equivalence and fresh launch proof.",
     "performance_pass_count_is_not_full_delivery_completion": true,
     "renewed_launch_and_blind_export_verified": [
@@ -436,12 +432,13 @@
       "sheafreader_unread_counts_n_plus_1",
       "cloudmusic_search_result_foreach",
       "weatherassistant_remote_weather_icons",
-      "ytmusic_search_no_debounce"
+      "ytmusic_search_no_debounce",
+      "sepweather_font_register_per_page"
     ],
-    "variants_verified": 38
+    "variants_verified": 40
   },
   "primary_criterion_verified_pending_mechanism": 0,
-  "pending_complete_case_validation": 2,
+  "pending_complete_case_validation": 1,
   "primary_criterion_met_mechanism_screen_failed": 0,
   "current_goal": "At least 21 accepted business-only cases with a large measured performance difference."
 }

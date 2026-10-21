@@ -1,0 +1,211 @@
+{
+  "page_content": {
+    "texts": [
+      "临汾",
+      "乌兰察布",
+      "乌海",
+      "侯马",
+      "保定",
+      "兴安盟",
+      "包头",
+      "北京",
+      "吕梁",
+      "呼伦贝尔",
+      "呼和浩特",
+      "唐山",
+      "城市管理",
+      "大同",
+      "大连",
+      "天津",
+      "太原",
+      "巴彦淖尔",
+      "廊坊",
+      "张家口",
+      "忻州",
+      "承德",
+      "抚顺",
+      "晋城",
+      "沈阳",
+      "沧州",
+      "石家庄",
+      "秦皇岛",
+      "衡水",
+      "赤峰",
+      "运城",
+      "通辽",
+      "邢台",
+      "邯郸",
+      "鄂尔多斯",
+      "锡林郭勒盟",
+      "长治",
+      "阳泉",
+      "阿拉善盟",
+      "鞍山",
+      ""
+    ],
+    "title_box": [
+      509,
+      189,
+      752,
+      284
+    ]
+  },
+  "title_pixels": {
+    "size": [
+      1260,
+      2844
+    ],
+    "regions": [
+      "a46230da83c08ff05cd39e382ffcec7a73dccbd29fd730d68b9f3e3036a77b34"
+    ]
+  },
+  "case": "sepweather_font_register_per_page",
+  "candidate": {
+    "case": "sepweather_font_register_per_page",
+    "status": "CANDIDATE_ONLY_NOT_ACCEPTED",
+    "business_revision": "Ordinary secondary-page titles use the same complete bundled CJK font. Unfixed registers a unique family for each page instance; fixed shares one immutable family. No route changes, repeated-call loops, or app measurement hooks. Original same-family MainPage registration premise is archived separately if this revision is accepted.",
+    "font_sha256": "acb6440a713d880a13a21b468ba7cd43f5a2b2934972e51be791c880730777b8",
+    "font_bytes": 4033420,
+    "font_license": "Apache-2.0",
+    "original_reference_diagnosis": "artifacts/reference/font-registration-5.1/diagnosis.json"
+  },
+  "preflight": {
+    "case": "sepweather_font_register_per_page",
+    "status": "NATIVE_TITLE_PREFLIGHT_NOT_ACCEPTED",
+    "variants": {
+      "unfixed": {
+        "capture": "artifacts/candidate-builds/font-page-v2/native-preflight/unfixed/capture.json",
+        "sha256": "97b3144518969cd3d31d5ba800e25068ce3e656a6fa0fd772b2b8caaf406a62f",
+        "signed_sha256": "3644c77c902d356262d4c17ac661062f9e6b99c20beb77bdc58337bdff18967b",
+        "pss_before": 45772800,
+        "pss_after": 83195904,
+        "frames": [
+          {
+            "box": [
+              509,
+              189,
+              752,
+              284
+            ],
+            "pixels": {
+              "size": [
+                1260,
+                2844
+              ],
+              "regions": [
+                "a46230da83c08ff05cd39e382ffcec7a73dccbd29fd730d68b9f3e3036a77b34"
+              ]
+            },
+            "screen": "artifacts/candidate-builds/font-page-v2/native-preflight/unfixed/page-1.png",
+            "sha256": "772ca43353bd88587bda8ed2f7883f381365040cd285d783f9d769d951c5c745"
+          },
+          {
+            "box": [
+              509,
+              189,
+              752,
+              284
+            ],
+            "pixels": {
+              "size": [
+                1260,
+                2844
+              ],
+              "regions": [
+                "a46230da83c08ff05cd39e382ffcec7a73dccbd29fd730d68b9f3e3036a77b34"
+              ]
+            },
+            "screen": "artifacts/candidate-builds/font-page-v2/native-preflight/unfixed/page-2.png",
+            "sha256": "772ca43353bd88587bda8ed2f7883f381365040cd285d783f9d769d951c5c745"
+          },
+          {
+            "box": [
+              509,
+              189,
+              752,
+              284
+            ],
+            "pixels": {
+              "size": [
+                1260,
+                2844
+              ],
+              "regions": [
+                "a46230da83c08ff05cd39e382ffcec7a73dccbd29fd730d68b9f3e3036a77b34"
+              ]
+            },
+            "screen": "artifacts/candidate-builds/font-page-v2/native-preflight/unfixed/page-3.png",
+            "sha256": "e53912299a7e4ee6d98a2a32ea081feb839c105936f1f697b8efbbdd00e91f36"
+          }
+        ]
+      },
+      "fixed": {
+        "capture": "artifacts/candidate-builds/font-page-v2/native-preflight/fixed/capture.json",
+        "sha256": "7a377444289bcf16f40e10acbab1600c31a210faa8962c98ea6fb5e352b5de23",
+        "signed_sha256": "c71ae0f2801b04ea2d6f3d434c625084794fa87fb2eca07b5600d0a335f7a5d6",
+        "pss_before": 45360128,
+        "pss_after": 74616832,
+        "frames": [
+          {
+            "box": [
+              509,
+              189,
+              752,
+              284
+            ],
+            "pixels": {
+              "size": [
+                1260,
+                2844
+              ],
+              "regions": [
+                "a46230da83c08ff05cd39e382ffcec7a73dccbd29fd730d68b9f3e3036a77b34"
+              ]
+            },
+            "screen": "artifacts/candidate-builds/font-page-v2/native-preflight/fixed/page-1.png",
+            "sha256": "e53912299a7e4ee6d98a2a32ea081feb839c105936f1f697b8efbbdd00e91f36"
+          },
+          {
+            "box": [
+              509,
+              189,
+              752,
+              284
+            ],
+            "pixels": {
+              "size": [
+                1260,
+                2844
+              ],
+              "regions": [
+                "a46230da83c08ff05cd39e382ffcec7a73dccbd29fd730d68b9f3e3036a77b34"
+              ]
+            },
+            "screen": "artifacts/candidate-builds/font-page-v2/native-preflight/fixed/page-2.png",
+            "sha256": "e53912299a7e4ee6d98a2a32ea081feb839c105936f1f697b8efbbdd00e91f36"
+          },
+          {
+            "box": [
+              509,
+              189,
+              752,
+              284
+            ],
+            "pixels": {
+              "size": [
+                1260,
+                2844
+              ],
+              "regions": [
+                "a46230da83c08ff05cd39e382ffcec7a73dccbd29fd730d68b9f3e3036a77b34"
+              ]
+            },
+            "screen": "artifacts/candidate-builds/font-page-v2/native-preflight/fixed/page-3.png",
+            "sha256": "e53912299a7e4ee6d98a2a32ea081feb839c105936f1f697b8efbbdd00e91f36"
+          }
+        ]
+      }
+    }
+  },
+  "status": "FROZEN_NATIVE_CONTENT_REFERENCE_NOT_PERFORMANCE_ACCEPTANCE"
+}

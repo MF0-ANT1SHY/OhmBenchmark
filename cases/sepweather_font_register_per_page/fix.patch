@@ -1,3 +1,25 @@
+diff --git a/entry/src/main/ets/common/utils/PageTitleFont.ets b/entry/src/main/ets/common/utils/PageTitleFont.ets
+index 2b836a3..90a3ff7 100644
+--- a/entry/src/main/ets/common/utils/PageTitleFont.ets
++++ b/entry/src/main/ets/common/utils/PageTitleFont.ets
+@@ -1,9 +1,13 @@
+ import { font } from '@kit.ArkUI';
+-import { util } from '@kit.ArkTS';
+ 
+-// Each page owns its title font family.
++const family = 'PageTitle';
++let registered = false;
++
++// All page titles share the same immutable bundled font.
+ export function registerPageTitleFont(): string {
+-  const family = 'PageTitle-' + util.generateRandomUUID();
+-  font.registerFont({ familyName: family, familySrc: $rawfile('DroidSansFallbackFull.ttf') });
++  if (!registered) {
++    font.registerFont({ familyName: family, familySrc: $rawfile('DroidSansFallbackFull.ttf') });
++    registered = true;
++  }
+   return family;
+ }
 diff --git a/entry/src/main/ets/pages/MainPage.ets b/entry/src/main/ets/pages/MainPage.ets
 index 01f7a39..ff364cf 100644
 --- a/entry/src/main/ets/pages/MainPage.ets

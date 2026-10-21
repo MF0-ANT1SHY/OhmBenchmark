@@ -1,29 +1,105 @@
 {
   "bundle": "cn.seayj.sepweather",
   "ability": "EntryAbility",
-  "description": "SepWeather页面操作",
+  "description": "Open and return from the city manager",
   "setup": [
     {
       "op": "wait",
       "selector": {
-        "id": "AddAddressBtn"
+        "id": "AddAddressBtn",
+        "match": "exact"
+      },
+      "timeout_s": 120
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "id": "AddAddressBtn",
+        "match": "exact"
       }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "城市管理",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "text": "北京",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "pause",
+      "seconds": 0.5
+    },
+    {
+      "op": "tap",
+      "selector": {
+        "text": "",
+        "match": "exact"
+      }
+    },
+    {
+      "op": "wait",
+      "selector": {
+        "id": "AddAddressBtn",
+        "match": "exact"
+      },
+      "timeout_s": 120
+    },
+    {
+      "op": "pause",
+      "seconds": 3
     }
   ],
   "measured": [
     {
       "op": "repeat",
-      "count": 10,
+      "count": 40,
       "actions": [
         {
-          "op": "launch",
-          "flags": 268468224
+          "op": "tap",
+          "selector": {
+            "id": "AddAddressBtn",
+            "match": "exact"
+          }
         },
         {
           "op": "wait",
           "selector": {
-            "id": "AddAddressBtn"
+            "text": "城市管理",
+            "match": "exact"
           }
+        },
+        {
+          "op": "wait",
+          "selector": {
+            "text": "北京",
+            "match": "exact"
+          }
+        },
+        {
+          "op": "pause",
+          "seconds": 0.5
+        },
+        {
+          "op": "tap",
+          "selector": {
+            "text": "",
+            "match": "exact"
+          }
+        },
+        {
+          "op": "wait",
+          "selector": {
+            "id": "AddAddressBtn",
+            "match": "exact"
+          },
+          "timeout_s": 120
         }
       ]
     }
@@ -32,8 +108,10 @@
     {
       "op": "wait",
       "selector": {
-        "id": "AddAddressBtn"
-      }
+        "id": "AddAddressBtn",
+        "match": "exact"
+      },
+      "timeout_s": 120
     }
   ]
 }

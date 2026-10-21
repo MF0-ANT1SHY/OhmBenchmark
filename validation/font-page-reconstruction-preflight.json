@@ -1,0 +1,21 @@
+{
+  "status": "EXACT_CANDIDATE_TREES_RECONSTRUCTED_NOT_PERFORMANCE_ACCEPTANCE",
+  "variants": {
+    "unfixed": {
+      "base_ref": "clean-app/sepweather_font_register_per_page/unfixed",
+      "base_tree": "370125e32dcc9e352b052fbe25a8098878ad0ac7",
+      "candidate_ref": "candidate/font-page-v2/unfixed",
+      "reconstructed_tree": "42f2e82c38df53356755551f93e240e5c11efb33",
+      "patch_sha256": "e0e8318403c3a63e707f186b90d8630d4478a45ee72bba31e90a976742c0afcd",
+      "patch_bytes": 3048371
+    },
+    "fixed": {
+      "base_ref": "clean-app/sepweather_font_register_per_page/fixed",
+      "base_tree": "3264b46ab990081c90469f9095e6a1bf96f717d7",
+      "candidate_ref": "candidate/font-page-v2/fixed",
+      "reconstructed_tree": "7a05838c171ffc589790e291937af857e628c916",
+      "patch_sha256": "0caaed1857e9afedb0eb40688ff7a056cdef4adf8385535eb968bd7ff1f361d8",
+      "patch_bytes": 3048402
+    }
+  }
+}

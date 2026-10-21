@@ -1,0 +1,4 @@
+# Generated patches must preserve context and original third-party source bytes.
+cases/*/fix.patch -whitespace
+hosts_patches/**/*.patch -whitespace
+validation/*.patch -whitespace

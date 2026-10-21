@@ -1,0 +1,13 @@
+{
+  "case": "sepweather_font_register_per_page",
+  "revision": "page-font-pss-v2",
+  "status": "FROZEN_BEFORE_FORMAL_CAPTURE_NOT_ACCEPTANCE",
+  "metric": "app_pss_bytes",
+  "warmup_visits": 1,
+  "measured_visits": 40,
+  "paired_rounds": 3,
+  "minimum_unfixed_over_fixed": 2.0,
+  "minimum_excess_bytes": 67108864,
+  "scope": "Final whole-process kernel PSS after ordinary city-manager visits. Identical visible title and city content; no weather network or CPU claim. Candidate revision explicitly changes per-page font family lifetime, not original same-family registration.",
+  "reference_sha256": "1716a5b069e432313d05c1a06f8f12d2ae6ab0b99cf89b77c5af9f274c448912"
+}

@@ -14,6 +14,11 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 def accept(cid,write=True,require_pass=True,*,negative_screen=False):
+    if cid == 'sepweather_font_register_per_page':
+        if negative_screen:
+            raise ValueError('the revised font gate requires all three paired rounds')
+        from accept_font_page_memory import accept as accept_font
+        return accept_font(write=write)
     if cid == 'wanharmony_persisted_home_list_growth':
         if negative_screen:
             raise ValueError('the revised Wan memory gate requires all three paired rounds')

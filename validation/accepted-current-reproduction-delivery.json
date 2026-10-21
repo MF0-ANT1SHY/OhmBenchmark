@@ -1,11 +1,11 @@
 {
   "status": "ALL_ACCEPTED_REPRODUCTION_DELIVERIES_VERIFIED",
-  "scope": "Current delivery for 19 accepted cases. Revised contracts are explicit. Goal of at least 21 accepted cases remains incomplete.",
+  "scope": "Current delivery for 20 accepted cases. Revised contracts are explicit. Goal of at least 21 accepted cases remains incomplete.",
   "goal_complete": false,
-  "checked_at": 1792586571.7192414,
-  "cases": 19,
-  "variants": 38,
-  "binary_only_agent_exports": 19,
+  "checked_at": 1792591890.8792477,
+  "cases": 20,
+  "variants": 40,
+  "binary_only_agent_exports": 20,
   "historical_measured_artifacts_retained": true,
   "rows": [
     {
@@ -775,6 +775,49 @@
         "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
         "profile.json": "9bd6f1fed4a612c724f193cde75238fee33d043586ac3b9576adf8ac6fef61ca",
         "symptom.txt": "15ab41846fff7cab3ebf2579556eeb64cc614f7516cf21d5497cc93a9c9bf5d6"
+      }
+    },
+    {
+      "case": "sepweather_font_register_per_page",
+      "case_proof": "validation/font-page-native-pss-acceptance.json",
+      "case_proof_sha256": "fa44b84bea7b49b46146771de33fd130199f3e0170fd4a3ceec1db26b602ef62",
+      "variants": {
+        "unfixed": {
+          "signed_sha256": "3644c77c902d356262d4c17ac661062f9e6b99c20beb77bdc58337bdff18967b",
+          "measured_signed_sha256": "3644c77c902d356262d4c17ac661062f9e6b99c20beb77bdc58337bdff18967b",
+          "current_validity": {
+            "bundle": "cn.seayj.sepweather",
+            "not_before": 1792586899,
+            "not_after": 1795179199,
+            "checked_at": 1792591888.2316966
+          },
+          "fresh_launch_receipt_sha256": "d8bfde25485ed84b4dc6fb86343cea5d7ba034c533046b5bc8fda54af584f26e",
+          "fresh_launch_evidence": "artifacts/clean/sepweather_font_register_per_page/unfixed/pss-captures/page-font-pss-v2/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process, forty native page visits and matching title pixels. No additional launch rerun.",
+          "renewal_not_required": true
+        },
+        "fixed": {
+          "signed_sha256": "c71ae0f2801b04ea2d6f3d434c625084794fa87fb2eca07b5600d0a335f7a5d6",
+          "measured_signed_sha256": "c71ae0f2801b04ea2d6f3d434c625084794fa87fb2eca07b5600d0a335f7a5d6",
+          "current_validity": {
+            "bundle": "cn.seayj.sepweather",
+            "not_before": 1792586905,
+            "not_after": 1795179205,
+            "checked_at": 1792591889.1492622
+          },
+          "fresh_launch_receipt_sha256": "4d8a8d01aa464b91f23a74489678a28d27b5663aa53df17428e621b5fa805a00",
+          "fresh_launch_evidence": "artifacts/clean/sepweather_font_register_per_page/fixed/pss-captures/page-font-pss-v2/round-3/capture.json",
+          "fresh_launch_basis": "Latest complete native trial: successful signed install, fresh process, forty native page visits and matching title pixels. No additional launch rerun.",
+          "renewal_not_required": true
+        }
+      },
+      "agent_export": "artifacts/agent-exports/font-page-8141759252ad43339ffcaa5e389bc359",
+      "agent_files_sha256": {
+        "app.hap": "3644c77c902d356262d4c17ac661062f9e6b99c20beb77bdc58337bdff18967b",
+        "workload.json": "48a90111ab32766d7f04f739a33e3e4ae656ee6a78336e84ed8eae28252026eb",
+        "reproduce.py": "53267cc6615dde72af5924a9c08179fe13becca773dc7d16863e9a36c6d10e91",
+        "profile.json": "4e80c23409e31678be557e5ac8016b8617fc246a1717d7c34dfa089159bccc58",
+        "symptom.txt": "0dba1abbcfffb2fadc883567682e88899e6f678d41b47bd7c77899830e7efe32"
       }
     }
   ]

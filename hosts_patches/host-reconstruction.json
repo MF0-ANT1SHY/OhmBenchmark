@@ -325,11 +325,21 @@
       "case_tags": {
         "case/sepweather_font_register_per_page/fixed": {
           "state": "perf: register custom fonts once per process instead of re-loading the TTFs on every MainPage creation",
-          "tree": "3264b46ab990081c90469f9095e6a1bf96f717d7"
+          "tree": "3264b46ab990081c90469f9095e6a1bf96f717d7",
+          "app_ref": "clean-app-v3/sepweather_font_register_per_page/fixed",
+          "app_tree": "7a05838c171ffc589790e291937af857e628c916",
+          "production_patches": [
+            "hosts_patches/sepweather/page-title-font-fixed-v2.patch"
+          ]
         },
         "case/sepweather_font_register_per_page/unfixed": {
           "state": "build: refresh ohpm lockfile for headless CI build",
-          "tree": "370125e32dcc9e352b052fbe25a8098878ad0ac7"
+          "tree": "370125e32dcc9e352b052fbe25a8098878ad0ac7",
+          "app_ref": "clean-app-v3/sepweather_font_register_per_page/unfixed",
+          "app_tree": "42f2e82c38df53356755551f93e240e5c11efb33",
+          "production_patches": [
+            "hosts_patches/sepweather/page-title-font-unfixed-v2.patch"
+          ]
         }
       }
     },

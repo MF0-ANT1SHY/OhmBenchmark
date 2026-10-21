@@ -1,0 +1,246 @@
+{
+  "id": "sepweather_font_register_per_page",
+  "host_app": {
+    "name": "SepWeather",
+    "repository": "https://github.com/SeaEpoch/SepWeather",
+    "bundle_name": "cn.seayj.sepweather",
+    "local_path": "hosts/sepweather",
+    "base_branch": "ohmbase",
+    "base_commit": "30cc357"
+  },
+  "android_source_case": "calculator_themed_font_lookup",
+  "android_mechanism": "Themed-font handling repeated expensive font work; fix performs the lookup/registration once",
+  "category": "latency",
+  "bug_description": "MainPage.aboutToAppear unconditionally registers iconfont.ttf and DINCOROS-Regular.ttf whenever a MainPage component is created. The business fix guards registration once per process. Repeated same-process MainPage creation via normal UI has not been established: clean source uses router.pushUrl and router.back, not the previously claimed router.replaceUrl flow. Duplicate file parsing, typeface retention, and resulting latency remain unverified without native evidence.",
+  "perf_scenarios": [
+    "页面启动",
+    "页面切换"
+  ],
+  "unfixed_commit": "30cc357936f8fff776d9c0e6b7e6f4b29668367b",
+  "fixed_commit": "e720e2150a6a062c85ccbe8269399d4edc6e7300",
+  "fix_summary": "Font registration is guarded by a once-per-process static flag so the TTFs are loaded only on first creation.",
+  "build": {
+    "mode": "release",
+    "build_unfixed": "PASS",
+    "build_fixed": "PASS"
+  },
+  "testcase": {
+    "name": "PerfLoad_sepweather_0010",
+    "py_file": "testcase/PerfLoad_sepweather_0010.py",
+    "descriptor": "testcase/PerfLoad_sepweather_0010.json",
+    "install_dir": "perf_testing/hapray/testcases/cn.seayj.sepweather",
+    "driver": "DeviceTest",
+    "module": "entry",
+    "ability": "EntryAbility",
+    "trigger": "external_ui",
+    "workload": "testcase/PerfLoad_sepweather_0010.workload.json"
+  },
+  "collection": {
+    "config": "../collection.yaml",
+    "modes": [
+      "htrace",
+      "hiperf"
+    ],
+    "step_duration_s": 30,
+    "rounds": 3,
+    "outputs": [
+      "htrace/trace.htrace",
+      "hiperf/perf.data",
+      "pids.json",
+      "memory/",
+      "ui/",
+      "thermal/"
+    ]
+  },
+  "test_oracle": {
+    "metric": "hiperf_instructions",
+    "definition": "raw-instruction-retired sample count attributed to the app process during the measured step, aggregated from perf.data (HapRay perf.db instruction counts).",
+    "comparison": "unfixed >= 1.2 * fixed over >= 3 rounds per variant",
+    "evidence": {
+      "status": "pending_clean_measurement",
+      "note": "Legacy instrumented measurements do not validate these business-only builds."
+    },
+    "mechanism_oracle": {
+      "metric": "mainpage_build_ms",
+      "definition": "Time from MainPage creation (first build event in ace trace) to first frame rendered, averaged over recreations.",
+      "comparison": "unfixed shows TTF file reads + font registration work in the page-build path on every creation; fixed only on the first. unfixed_avg_build_ms > fixed_avg_build_ms (fixed approaches the no-font-work floor)."
+    },
+    "legacy_instrumented_evidence": {
+      "status": "supporting",
+      "measured_as": "font registrations per MainPage creation",
+      "unfixed": [
+        2.0
+      ],
+      "fixed": [
+        0.1
+      ],
+      "note": "2.0 vs 0.1 font registrations per MainPage creation (mechanism counter, authoritative); whole-step hw-instruction medians are flat (59M vs 60M) because the window is dominated by page build, so the declared metric needs a narrower region to separate (measurements-staging)."
+    }
+  },
+  "reproduction": [
+    "python3 tools/reconstruct_clean_hosts.py",
+    "python3 tools/build_clean_cases.py sepweather_font_register_per_page",
+    "python3 tools/sign_clean_cases.py sepweather_font_register_per_page",
+    "Prepare the external workload fixtures; never apply measurement patches to the app.",
+    "Copy all files from cases/sepweather_font_register_per_page/testcase/ into perf_testing/hapray/testcases/cn.seayj.sepweather/.",
+    "Install each clean signed variant and run the PerfLoad_sepweather_0010 HapRay testcase for >= 3 rounds.",
+    "Verify the real UI path and compare the declared CPU/memory metric; build/smoke success alone is not a performance verdict."
+  ],
+  "legacy_source": {
+    "unfixed_commit": "49e6faf",
+    "fixed_commit": "cba3514",
+    "build": {
+      "build_unfixed": "PASS",
+      "build_fixed": "PASS"
+    }
+  },
+  "clean_validation": {
+    "policy": "no_app_injection",
+    "workload_validation": "pending",
+    "performance_validation": "pending",
+    "variants": {
+      "unfixed": {
+        "ref": "clean-app/sepweather_font_register_per_page/unfixed",
+        "commit": "30cc357936f8fff776d9c0e6b7e6f4b29668367b",
+        "tree": "370125e32dcc9e352b052fbe25a8098878ad0ac7",
+        "business_base_tree": "370125e32dcc9e352b052fbe25a8098878ad0ac7",
+        "production_patches": [],
+        "unsigned_sha256": "522f316a9c31440e202be7d3b726aab42317f1c3d59f95173460096284f4c67f",
+        "bytecode_audit": {
+          "sha256": "522f316a9c31440e202be7d3b726aab42317f1c3d59f95173460096284f4c67f",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "sepweather_font_register_per_page",
+          "variant": "unfixed",
+          "unsigned_sha256": "522f316a9c31440e202be7d3b726aab42317f1c3d59f95173460096284f4c67f",
+          "signed_hap": "/home/research/ohm-clean/sepweather_font_register_per_page/unfixed/app.hap",
+          "audit": {
+            "sha256": "effefb72e7c738ff6714ddbe303aa54a3cb9b59d6f31c12ca57146442e625d9d",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "sepweather_font_register_per_page",
+          "variant": "unfixed",
+          "signed_sha256": "effefb72e7c738ff6714ddbe303aa54a3cb9b59d6f31c12ca57146442e625d9d",
+          "install": "[Info]App install path:/home/research/ohm-clean/sepweather_font_register_per_page/unfixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            46112
+          ],
+          "foreground_bundle": "cn.seayj.sepweather",
+          "status": "PASS",
+          "performance_verified": false
+        },
+        "workload": {
+          "case": "sepweather_font_register_per_page",
+          "variant": "unfixed",
+          "signed_sha256": "effefb72e7c738ff6714ddbe303aa54a3cb9b59d6f31c12ca57146442e625d9d",
+          "plan_sha256": "8d51fce3d25805ebfd2a0e18b2f578763035f4160166bdbb205b16d85ad14530",
+          "status": "FAIL",
+          "performance_verified": false,
+          "fixture": {
+            "kind": "bundled business fonts",
+            "sha256": "bdf0f909288b29b6a76e84cc682599366efccedd489e72cc398b737f29f4022b",
+            "fonts": {
+              "resources/rawfile/DINCOROS-Black.ttf": "efde0708facc851b87fe8ba73d366e24c3a8694f878b09fe05aa883b6c9bd280",
+              "resources/rawfile/DINCOROS-Bold.ttf": "370f0bef24f4c0a2af52c50af58f6585a59b2b303175d580a82e6c9d4f5af321",
+              "resources/rawfile/DINCOROS-Regular.ttf": "efa4366d7c7e9a3dfb37ef513a50ccb44c241a84f09438b56479082b87220cbf",
+              "resources/rawfile/iconfont.ttf": "e33f7722988dfb8fb7c0cdfd27b1ed1473157045992cee12530b3d44107f4899"
+            },
+            "registered_font_paths": [
+              "resources/rawfile/DINCOROS-Regular.ttf",
+              "resources/rawfile/iconfont.ttf"
+            ]
+          },
+          "phase_elapsed_s": {
+            "setup": 10.914921440002217,
+            "measured": 127.78472963999957,
+            "verify": 11.560733051002899
+          },
+          "error": "launches reused a window instead of reconstructing MainPage"
+        }
+      },
+      "fixed": {
+        "ref": "clean-app/sepweather_font_register_per_page/fixed",
+        "commit": "e720e2150a6a062c85ccbe8269399d4edc6e7300",
+        "tree": "3264b46ab990081c90469f9095e6a1bf96f717d7",
+        "business_base_tree": "3264b46ab990081c90469f9095e6a1bf96f717d7",
+        "production_patches": [],
+        "unsigned_sha256": "dcba512e7da08e5cf095b2678f351370e21457d1567ce1bb1e1b09b481bc2526",
+        "bytecode_audit": {
+          "sha256": "dcba512e7da08e5cf095b2678f351370e21457d1567ce1bb1e1b09b481bc2526",
+          "abc_modules_checked": [
+            "ets/modules.abc"
+          ],
+          "findings": [],
+          "passed": true
+        },
+        "build_status": "PASS",
+        "sign": {
+          "case": "sepweather_font_register_per_page",
+          "variant": "fixed",
+          "unsigned_sha256": "dcba512e7da08e5cf095b2678f351370e21457d1567ce1bb1e1b09b481bc2526",
+          "signed_hap": "/home/research/ohm-clean/sepweather_font_register_per_page/fixed/app.hap",
+          "audit": {
+            "sha256": "00fa3c507f02679f7033c3257bb9ab9afb45fdba1a87b793e446bcb6b9643ea3",
+            "abc_modules_checked": [
+              "ets/modules.abc"
+            ],
+            "findings": [],
+            "passed": true
+          },
+          "status": "PASS"
+        },
+        "smoke": {
+          "case": "sepweather_font_register_per_page",
+          "variant": "fixed",
+          "signed_sha256": "00fa3c507f02679f7033c3257bb9ab9afb45fdba1a87b793e446bcb6b9643ea3",
+          "install": "[Info]App install path:/home/research/ohm-clean/sepweather_font_register_per_page/fixed/app.hap msg:install bundle successfully. \nAppMod finish",
+          "launch": "start ability successfully.",
+          "pids": [
+            46555
+          ],
+          "foreground_bundle": "cn.seayj.sepweather",
+          "status": "PASS",
+          "performance_verified": false
+        },
+        "workload": {
+          "case": "sepweather_font_register_per_page",
+          "variant": "fixed",
+          "signed_sha256": "00fa3c507f02679f7033c3257bb9ab9afb45fdba1a87b793e446bcb6b9643ea3",
+          "plan_sha256": "8d51fce3d25805ebfd2a0e18b2f578763035f4160166bdbb205b16d85ad14530",
+          "status": "FAIL",
+          "performance_verified": false,
+          "fixture": {
+            "kind": "bundled business fonts",
+            "sha256": "bdf0f909288b29b6a76e84cc682599366efccedd489e72cc398b737f29f4022b",
+            "fonts": {
+              "resources/rawfile/DINCOROS-Black.ttf": "efde0708facc851b87fe8ba73d366e24c3a8694f878b09fe05aa883b6c9bd280",
+              "resources/rawfile/DINCOROS-Bold.ttf": "370f0bef24f4c0a2af52c50af58f6585a59b2b303175d580a82e6c9d4f5af321",
+              "resources/rawfile/DINCOROS-Regular.ttf": "efa4366d7c7e9a3dfb37ef513a50ccb44c241a84f09438b56479082b87220cbf",
+              "resources/rawfile/iconfont.ttf": "e33f7722988dfb8fb7c0cdfd27b1ed1473157045992cee12530b3d44107f4899"
+            },
+            "registered_font_paths": [
+              "resources/rawfile/DINCOROS-Regular.ttf",
+              "resources/rawfile/iconfont.ttf"
+            ]
+          },
+          "error": "UI target not found: {'id': 'AddAddressBtn'}"
+        }
+      }
+    },
+    "reproduction_diagnosis": "../../validation/sepweather-clean-routing-premise.json"
+  }
+}
